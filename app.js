@@ -46,13 +46,21 @@
 
   // ── View Switching ──
   window.switchView = function(viewName) {
-    document.querySelectorAll('.report-section').forEach(s => s.style.display = 'none');
+    // Hide ALL views
+    document.querySelectorAll('.report-section').forEach(s => {
+      s.style.display = 'none';
+      s.classList.remove('view-active');
+    });
     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
 
+    // Show target view
     const target = document.getElementById('view-' + viewName);
-    if (target) target.style.display = 'block';
+    if (target) {
+      target.style.display = 'block';
+      target.classList.add('view-active');
+    }
 
-    const nav = document.querySelector(`.nav-link[data-view="${viewName}"]`);
+    const nav = document.querySelector('.nav-link[data-view="' + viewName + '"]');
     if (nav) nav.classList.add('active');
 
     if (viewName === 'archive') renderArchive();
