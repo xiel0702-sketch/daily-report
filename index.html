@@ -12,14 +12,14 @@
 <body>
 <header class="site-header">
   <div class="header-inner">
-    <a href="/" class="logo">
+    <a href="#" class="logo" onclick="switchView('today')">
       <span class="logo-icon">YF</span>
       <span class="logo-text">盈峰投研日报</span>
     </a>
     <nav class="header-nav">
-      <a href="#today" class="nav-link active">今日</a>
-      <a href="#archive" class="nav-link">往期</a>
-      <a href="#about" class="nav-link">关于</a>
+      <a href="#" class="nav-link active" data-view="today" onclick="switchView('today')">今日</a>
+      <a href="#" class="nav-link" data-view="archive" onclick="switchView('archive')">往期</a>
+      <a href="#" class="nav-link" data-view="about" onclick="switchView('about')">关于</a>
     </nav>
     <div class="header-right">
       <span class="header-date" id="headerDate"></span>
@@ -28,13 +28,14 @@
 </header>
 
 <main class="main-container">
+
   <!-- Today's Report -->
-  <section id="today" class="report-section">
+  <section id="view-today" class="report-section view-active">
     <div class="section-header">
       <h2 class="section-title">今日日报</h2>
       <span class="section-date" id="todayDate"></span>
     </div>
-    <div class="report-meta" id="reportMeta">
+    <div class="report-meta">
       <span class="meta-item">📡 AI</span>
       <span class="meta-item">🔬 半导体</span>
       <span class="meta-item">🤖 机器人</span>
@@ -44,6 +45,44 @@
       <p>📭 暂无今日日报</p>
     </div>
   </section>
+
+  <!-- Archive -->
+  <section id="view-archive" class="report-section" style="display:none">
+    <div class="section-header">
+      <h2 class="section-title">往期日报</h2>
+      <span class="section-date" id="archiveCount"></span>
+    </div>
+    <div class="archive-list" id="archiveList"></div>
+  </section>
+
+  <!-- Archive Detail -->
+  <section id="view-detail" class="report-section" style="display:none">
+    <div class="section-header">
+      <a href="#" class="back-link" onclick="switchView('archive')">← 返回往期</a>
+    </div>
+    <h2 class="section-title" id="detailTitle"></h2>
+    <span class="section-date" id="detailDate"></span>
+    <div class="timeline" id="detailTimeline"></div>
+  </section>
+
+  <!-- About -->
+  <section id="view-about" class="report-section" style="display:none">
+    <div class="section-header">
+      <h2 class="section-title">关于</h2>
+    </div>
+    <div class="about-content">
+      <p>盈峰投研日报由盈峰投资投研团队出品。</p>
+      <p>每日覆盖 <strong>AI</strong>、<strong>半导体</strong>、<strong>机器人</strong> 三大赛道资讯与资本信号。</p>
+      <p>数据来源：</p>
+      <ul>
+        <li>AI 赛道：<a href="https://aihot.virxact.com" target="_blank">AI HOT</a></li>
+        <li>半导体：Yahoo Finance SOX + Google News</li>
+        <li>机器人：Google News 融资事件</li>
+      </ul>
+      <p>AI 生成：DeepSeek · 推送：钉钉机器人</p>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
