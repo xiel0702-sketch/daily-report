@@ -46,21 +46,29 @@
 
   // ── View Switching ──
   window.switchView = function(viewName) {
-    // Hide ALL views
-    document.querySelectorAll('.report-section').forEach(s => {
-      s.style.display = 'none';
-      s.classList.remove('view-active');
+    // Aggressively hide every view by ID
+    var views = ['today', 'archive', 'detail', 'about'];
+    views.forEach(function(v) {
+      var el = document.getElementById('view-' + v);
+      if (el) {
+        el.style.display = 'none';
+        el.classList.remove('view-active');
+      }
     });
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
 
-    // Show target view
-    const target = document.getElementById('view-' + viewName);
+    // Deactivate all nav links
+    document.querySelectorAll('.nav-link').forEach(function(l) {
+      l.classList.remove('active');
+    });
+
+    // Activate target
+    var target = document.getElementById('view-' + viewName);
     if (target) {
       target.style.display = 'block';
       target.classList.add('view-active');
     }
 
-    const nav = document.querySelector('.nav-link[data-view="' + viewName + '"]');
+    var nav = document.querySelector('.nav-link[data-view="' + viewName + '"]');
     if (nav) nav.classList.add('active');
 
     if (viewName === 'archive') renderArchive();
@@ -198,10 +206,18 @@
 
   // ── Init ──
   function init() {
+    // Ensure only today view is visible on load
+    ['archive', 'detail', 'about'].forEach(function(v) {
+      var el = document.getElementById('view-' + v);
+      if (el) el.style.display = 'none';
+    });
+    var todayEl = document.getElementById('view-today');
+    if (todayEl) todayEl.style.display = 'block';
+
     renderToday();
 
     // Handle URL hash for direct linking
-    const hash = window.location.hash;
+    var hash = window.location.hash;
     if (hash === '#archive') {
       switchView('archive');
     }
