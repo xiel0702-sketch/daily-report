@@ -1,4 +1,4 @@
-// 盈峰投研日报 - 渲染引擎 v4 (卡片式)
+// 盈峰投研日报 - 渲染引擎 v5 (卡片式 + 周报)
 (function() {
   'use strict';
 
@@ -12,6 +12,7 @@
   }
   function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+  // ========== Daily Report Parser ==========
   function parseMD(text) {
     var sections = {};
     var lines = text.split('\n');
@@ -91,6 +92,7 @@
     return {date: date, sections: sections};
   }
 
+  // ========== Daily Card Renderer ==========
   function renderCards(sections, container) {
     container.innerHTML = '';
     var keys = ['ai', 'semi', 'robot'];
@@ -157,6 +159,162 @@
     });
   }
 
+  // ========== Weekly Report Parser & Renderer ==========
+  function parseWeeklyMD(text) {
+    // Parse weekly markdown into structured sections
+    var lines = text.split('\n');
+    var title = '';
+    var sections = [];
+    var currentSection = null;
+    var currentContent = [];
+    var inCodeBlock = false;
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.trim();
+
+      if (trimmed === '```') { inCodeBlock = !inCodeBlock; continue; }
+      if (inCodeBlock) {
+        if (trimmed.indexOf('一级市场投研周报') !== -1) {
+          title = trimmed;
+        }
+        continue;
+      }
+      if (trimmed.indexOf('# ') === 0) continue;
+
+      // Section header: ## —— XXX ——
+      if (trimmed.indexOf('## ——') === 0 || trimmed.indexOf('## ——') === 0) {
+        if (currentSection) {
+          currentSection.content = currentContent.join('\n').trim();
+          sections.push(currentSection);
+        }
+        currentSection = {title: trimmed.replace(/^##\s*/, ''), content: ''};
+        currentContent = [];
+        continue;
+      }
+
+      // Sub-header: **xxx**
+      if (trimmed.match(/^\*\*.+\*\*$/)) {
+        if (currentContent.length > 0) currentContent.push('');
+        currentContent.push(trimmed);
+        continue;
+      }
+
+      // Divider
+      if (trimmed === '---') continue;
+
+      // Table rows
+      if (trimmed.indexOf('|') === 0) {
+        currentContent.push(trimmed);
+        continue;
+      }
+
+      if (trimmed) {
+        currentContent.push(trimmed);
+      } else if (currentContent.length > 0 && currentContent[currentContent.length-1] !== '') {
+        currentContent.push('');
+      }
+    }
+
+    if (currentSection) {
+      currentSection.content = currentContent.join('\n').trim();
+      sections.push(currentSection);
+    }
+
+    return {title: title, sections: sections};
+  }
+
+  function renderWeeklyContent(data, container) {
+    container.innerHTML = '';
+
+    // Title
+    if (data.title) {
+      var titleEl = document.createElement('div');
+      titleEl.className = 'weekly-title';
+      titleEl.textContent = data.title;
+      container.appendChild(titleEl);
+    }
+
+    data.sections.forEach(function(sec) {
+      var secDiv = document.createElement('div');
+      secDiv.className = 'weekly-section';
+
+      // Section header
+      var hdr = document.createElement('div');
+      hdr.className = 'weekly-section-header';
+
+      // Color the dot based on section
+      var secColor = '#58a6ff';
+      if (sec.title.indexOf('半导体') !== -1) secColor = '#d2991d';
+      else if (sec.title.indexOf('机器人') !== -1) secColor = '#3fb950';
+      else if (sec.title.indexOf('关键信号') !== -1 || sec.title.indexOf('总结') !== -1) secColor = '#8b5cf6';
+
+      hdr.innerHTML = '<span class="section-dot" style="background:'+secColor+'"></span><h3>'+esc(sec.title)+'</h3>';
+      secDiv.appendChild(hdr);
+
+      // Content
+      var content = document.createElement('div');
+      content.className = 'weekly-content';
+
+      var paragraphs = sec.content.split('\n');
+      var inTable = false;
+      var tableHtml = '';
+
+      paragraphs.forEach(function(p) {
+        var trimmed = p.trim();
+        if (!trimmed) return;
+
+        // Bold sub-header
+        if (trimmed.match(/^\*\*(.+)\*\*$/)) {
+          if (inTable) {
+            content.innerHTML += '<div class="weekly-table">'+tableHtml+'</div>';
+            tableHtml = '';
+            inTable = false;
+          }
+          var bold = document.createElement('p');
+          bold.className = 'weekly-bold';
+          bold.textContent = trimmed.replace(/\*\*/g, '');
+          content.appendChild(bold);
+          return;
+        }
+
+        // Table
+        if (trimmed.indexOf('|') === 0) {
+          if (!inTable) inTable = true;
+          var cells = trimmed.split('|').filter(function(c){return c.trim();});
+          var isHeader = cells.every(function(c){return c.trim().match(/^[-—]+$/);});
+          if (!isHeader) {
+            var tag = inTable && tableHtml.indexOf('<tr>') === -1 ? 'th' : 'td';
+            var row = '<tr>';
+            cells.forEach(function(c){
+              row += '<'+tag+'>'+esc(c.trim())+'</'+tag+'>';
+            });
+            row += '</tr>';
+            tableHtml += row;
+          }
+          return;
+        } else if (inTable) {
+          content.innerHTML += '<div class="weekly-table"><table>'+tableHtml+'</table></div>';
+          tableHtml = '';
+          inTable = false;
+        }
+
+        // Normal paragraph
+        var para = document.createElement('p');
+        para.textContent = trimmed;
+        content.appendChild(para);
+      });
+
+      if (inTable && tableHtml) {
+        content.innerHTML += '<div class="weekly-table"><table>'+tableHtml+'</table></div>';
+      }
+
+      secDiv.appendChild(content);
+      container.appendChild(secDiv);
+    });
+  }
+
+  // ========== Daily Views ==========
   function renderToday() {
     var t = tb();
     var hd = document.getElementById('headerDate');
@@ -196,7 +354,6 @@
     cnt.textContent = '共 ' + REPORT_DATA.length + ' 期';
     l.innerHTML = '';
 
-    // Show newest first
     var reversed = REPORT_DATA.slice().reverse();
     reversed.forEach(function(r){
       var a = document.createElement('a');
@@ -230,19 +387,66 @@
       });
   }
 
-  window.switchView = function(v) {
-    ['today','archive','detail','about'].forEach(function(x){
-      var el = document.getElementById('view-'+x);
-      if (el) el.style.display = x === v ? 'block' : 'none';
+  // ========== Weekly Views ==========
+  function renderWeekly() {
+    var l = document.getElementById('weeklyList'), cnt = document.getElementById('weeklyCount');
+    if (!l) return;
+    cnt.textContent = '共 ' + WEEKLY_DATA.length + ' 期';
+    l.innerHTML = '';
+
+    WEEKLY_DATA.forEach(function(w){
+      var a = document.createElement('a');
+      a.className = 'archive-item weekly-item';
+      a.href = '#';
+      a.onclick = function(ev){ ev.preventDefault(); showWeeklyDetail(w); };
+      a.innerHTML = '<div class="archive-item-header"><span class="weekly-icon">📊</span><span class="archive-date">'+esc(w.label)+'</span><span class="archive-coverage">'+esc(w.coverage)+'</span></div><div class="archive-summary"><span class="archive-arrow">查看 →</span></div>';
+      l.appendChild(a);
     });
+  }
+
+  function showWeeklyDetail(weekly) {
+    document.querySelectorAll('.report-section').forEach(function(s){ s.style.display = 'none'; });
+    var dv = document.getElementById('view-weekly-detail');
+    if (!dv) return;
+    dv.style.display = 'block';
+    document.querySelectorAll('.nav-link').forEach(function(l){ l.classList.remove('active'); });
+    window.scrollTo(0,0);
+
+    var container = document.getElementById('weeklyDetailContent');
+    container.innerHTML = '<div class="empty-state"><p>⏳ 加载中...</p></div>';
+
+    fetch(weekly.file)
+      .then(function(x){ return x.text(); })
+      .then(function(tx){
+        var data = parseWeeklyMD(tx);
+        renderWeeklyContent(data, container);
+      })
+      .catch(function(err){
+        container.innerHTML = '<div class="empty-state"><p>⏳ 加载失败</p><small>'+esc(String(err))+'</small></div>';
+      });
+  }
+
+  // ========== View Switching ==========
+  window.switchView = function(v) {
+    ['today','archive','detail','weekly','weekly-detail','about'].forEach(function(x){
+      var el = document.getElementById('view-'+x);
+      if (el) el.style.display = 'none';
+    });
+
+    var target = document.getElementById('view-'+v);
+    if (target) target.style.display = 'block';
+
     document.querySelectorAll('.nav-link').forEach(function(l){
       l.classList.toggle('active', l.dataset.view === v);
     });
+
     if (v === 'archive') renderArchive();
     if (v === 'today') renderToday();
+    if (v === 'weekly') renderWeekly();
     window.location.hash = v;
   };
 
+  // ========== Init ==========
   (function init(){
     var hd = document.getElementById('headerDate');
     if (hd) hd.textContent = fd(tb());

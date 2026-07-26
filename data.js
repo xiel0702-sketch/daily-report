@@ -8,3 +8,8 @@ const REPORT_DATA = [
   {"date":"2026-07-21","coverage":"2026-07-20","file":"reports/2026-07-21.md"},
   {"date":"2026-07-20","coverage":"2026-07-19","file":"reports/2026-07-20.md"}
 ];
+
+// 投研周报数据
+const WEEKLY_DATA = [
+  {"week":"W30","label":"2026 Week 30","coverage":"7月20日 — 7月26日","file":"weekly-reports/2026-W30.md"}
+];
