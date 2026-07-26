@@ -1,4 +1,4 @@
-// 盈峰投研日报 - 渲染引擎 v3 (卡片式)
+// 盈峰投研日报 - 渲染引擎 v4 (卡片式)
 (function() {
   'use strict';
 
@@ -10,11 +10,9 @@
     var n = new Date();
     return new Date(n.getTime()+(8*60+n.getTimezoneOffset())*60000).toISOString().slice(0,10);
   }
-
   function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
   function parseMD(text) {
-    // Parse the daily report markdown into sections
     var sections = {};
     var lines = text.split('\n');
     var currentSection = null;
@@ -24,17 +22,14 @@
       var line = lines[i].trim();
       if (!line) continue;
 
-      // Extract date from title
       if (line.indexOf('一级市场投研日报') !== -1) {
         var m = line.match(/(\d{4}-\d{2}-\d{2})/);
         if (m) date = m[1];
         continue;
       }
-      // Remove # headers
       if (line.indexOf('# ') === 0) continue;
       if (line === '```') continue;
 
-      // Section headers
       if (line.indexOf('—— AI') !== -1 || line.indexOf('AI 技术') !== -1) {
         currentSection = 'ai';
         if (!sections.ai) sections.ai = {label:'AI 技术-资本信号', badge:'ai', items:[]};
@@ -53,20 +48,16 @@
 
       if (!currentSection) continue;
 
-      // Item lines starting with bullet
       if (line.indexOf('•') === 0 || line.indexOf('- ') === 0) {
         var item = {title:'', body:'', link:'', signal:'', badge:''};
         var text = line.replace(/^[•\-]\s*/, '');
 
-        // Extract signal tag 【xxx】
         var sm = text.match(/^【(\S+?)】/);
         if (sm) { item.signal = sm[1]; text = text.replace(sm[0], '').trim(); }
 
-        // Extract bold title **xxx**
         var bm = text.match(/\*\*(.+?)\*\*/);
         if (bm) { item.title = bm[1]; text = text.replace(bm[0], ''); }
 
-        // Split title and body by period or colon
         var dotIdx = text.indexOf('。');
         var colonIdx = text.indexOf('：');
         var splitIdx = -1;
@@ -81,7 +72,6 @@
           else item.body = text;
         }
 
-        // Check next line for URL
         if (i + 1 < lines.length && lines[i+1].trim().match(/^https?:\/\//)) {
           i++;
           item.link = lines[i].trim();
@@ -105,7 +95,8 @@
     container.innerHTML = '';
     var keys = ['ai', 'semi', 'robot'];
     var labels = {'ai':'AI 技术-资本信号','semi':'半导体周期-供需信号','robot':'机器人资本-落地信号'};
-    var colors = {'ai':'#3b82f6','semi':'#f59e0b','robot':'#10b981'};
+    var colors = {'ai':'#58a6ff','semi':'#d2991d','robot':'#3fb950'};
+    var cardClass = {'ai':'card-ai','semi':'card-semi','robot':'card-robot'};
 
     keys.forEach(function(k) {
       var sec = sections[k];
@@ -121,7 +112,7 @@
 
       sec.items.forEach(function(item) {
         var card = document.createElement('div');
-        card.className = 'news-card';
+        card.className = 'news-card ' + cardClass[k];
 
         var top = document.createElement('div');
         top.className = 'card-top';
@@ -130,13 +121,6 @@
         badge.className = 'card-badge ' + (k === 'ai' ? 'badge-ai' : k === 'semi' ? 'badge-semi' : 'badge-robot');
         badge.textContent = item.signal || item.badge || k;
         top.appendChild(badge);
-
-        if (item.signal && k === 'semi') {
-          var sig = document.createElement('span');
-          sig.className = 'card-signal';
-          sig.textContent = '【'+item.signal+'】';
-          top.appendChild(sig);
-        }
 
         card.appendChild(top);
 
@@ -162,7 +146,7 @@
           link.href = item.link;
           link.target = '_blank';
           link.rel = 'noopener';
-          link.textContent = item.link.length > 70 ? item.link.substring(0, 70) + '...' : item.link;
+          link.textContent = '🔗 ' + (item.link.length > 60 ? item.link.substring(0, 60) + '...' : item.link);
           card.appendChild(link);
         }
 
@@ -175,33 +159,46 @@
 
   function renderToday() {
     var t = tb();
-    document.getElementById('headerDate').textContent = fd(t);
+    var hd = document.getElementById('headerDate');
+    if (hd) hd.textContent = fd(t);
+
     var r = REPORT_DATA.find(function(x){return x.date===t;});
-    var c = document.getElementById('timeline'), e = document.getElementById('emptyState'), d = document.getElementById('todayDate');
+    var c = document.getElementById('timeline');
+    var e = document.getElementById('emptyState');
+    var d = document.getElementById('todayDate');
+
+    if (!c) return;
+
     if (r) {
-      d.textContent = '覆盖 '+(r.coverage||r.date)+' | '+fd(r.date);
-      fetch(r.file).then(function(x){return x.text();}).then(function(tx){
-        var p = parseMD(tx);
-        renderCards(p.sections, c);
-        e.style.display = 'none';
-        c.style.display = '';
-      }).catch(function(){
-        c.innerHTML = '<div class="empty-state"><p>📭 日报生成中...</p></div>';
-        e.style.display = 'none';
-        c.style.display = '';
-      });
+      if (d) d.textContent = '覆盖 ' + (r.coverage||r.date) + ' | ' + fd(r.date);
+      fetch(r.file)
+        .then(function(x){ return x.text(); })
+        .then(function(tx){
+          var p = parseMD(tx);
+          renderCards(p.sections, c);
+          if (e) e.style.display = 'none';
+          c.style.display = '';
+        })
+        .catch(function(err){
+          c.innerHTML = '<div class="empty-state"><p>⏳ 日报加载中...</p><small>'+esc(String(err))+'</small></div>';
+          if (e) e.style.display = 'none';
+          c.style.display = '';
+        });
     } else {
       c.style.display = 'none';
-      e.style.display = 'block';
+      if (e) e.style.display = 'block';
     }
   }
 
   function renderArchive() {
     var l = document.getElementById('archiveList'), cnt = document.getElementById('archiveCount');
     if (!l) return;
-    cnt.textContent = '共 '+REPORT_DATA.length+' 期';
+    cnt.textContent = '共 ' + REPORT_DATA.length + ' 期';
     l.innerHTML = '';
-    REPORT_DATA.forEach(function(r){
+
+    // Show newest first
+    var reversed = REPORT_DATA.slice().reverse();
+    reversed.forEach(function(r){
       var a = document.createElement('a');
       a.className = 'archive-item';
       a.href = '#';
@@ -214,33 +211,41 @@
   function showDetail(report) {
     document.querySelectorAll('.report-section').forEach(function(s){ s.style.display = 'none'; });
     var dv = document.getElementById('view-detail');
+    if (!dv) return;
     dv.style.display = 'block';
     document.getElementById('detailTitle').textContent = '投研日报';
-    document.getElementById('detailDate').textContent = fd(report.date)+' | 覆盖 '+report.coverage;
+    document.getElementById('detailDate').textContent = fd(report.date) + ' | 覆盖 ' + report.coverage;
     document.querySelectorAll('.nav-link').forEach(function(l){ l.classList.remove('active'); });
     window.scrollTo(0,0);
 
-    fetch(report.file).then(function(x){return x.text();}).then(function(tx){
-      var p = parseMD(tx);
-      renderCards(p.sections, document.getElementById('detailTimeline'));
-    });
+    var dt = document.getElementById('detailTimeline');
+    fetch(report.file)
+      .then(function(x){ return x.text(); })
+      .then(function(tx){
+        var p = parseMD(tx);
+        renderCards(p.sections, dt);
+      })
+      .catch(function(err){
+        dt.innerHTML = '<div class="empty-state"><p>⏳ 加载失败</p><small>'+esc(String(err))+'</small></div>';
+      });
   }
 
   window.switchView = function(v) {
     ['today','archive','detail','about'].forEach(function(x){
       var el = document.getElementById('view-'+x);
-      if (el) el.style.display = x===v ? 'block' : 'none';
+      if (el) el.style.display = x === v ? 'block' : 'none';
     });
     document.querySelectorAll('.nav-link').forEach(function(l){
-      l.classList.toggle('active', l.dataset.view===v);
+      l.classList.toggle('active', l.dataset.view === v);
     });
-    if (v==='archive') renderArchive();
-    if (v==='today') renderToday();
+    if (v === 'archive') renderArchive();
+    if (v === 'today') renderToday();
     window.location.hash = v;
   };
 
   (function init(){
-    document.getElementById('headerDate').textContent = fd(tb());
+    var hd = document.getElementById('headerDate');
+    if (hd) hd.textContent = fd(tb());
     renderToday();
   })();
 })();
