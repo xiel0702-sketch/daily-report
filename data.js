@@ -1,5 +1,6 @@
 // 投研日报数据
 const REPORT_DATA = [
+  {"date":"2026-09-26","coverage":"2026-09-25","file":"reports/2026-09-26.md"},
   {"date":"2026-09-25","coverage":"2026-09-24","file":"reports/2026-09-25.md"},
   {"date":"2026-09-24","coverage":"2026-09-23","file":"reports/2026-09-24.md"},
   {"date":"2026-09-23","coverage":"2026-09-22","file":"reports/2026-09-23.md"},
