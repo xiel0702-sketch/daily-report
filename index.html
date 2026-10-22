@@ -1,117 +1,74 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<title>盈峰投研日报 — 一级市场 AI · 半导体 · 机器人</title>
-<meta name="description" content="盈峰投资一级市场投研日报，每日覆盖 AI、半导体、机器人三大赛道资讯与资本信号。">
-<meta name="theme-color" content="#003C94">
-<link rel="icon" type="image/png" href="assets/logo-mark.png?v=1792670000">
-<link rel="stylesheet" href="style.css?v=1792670000">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>盈峰投研日报 · AI / 半导体 / 机器人</title>
+<meta name="description" content="盈峰投资的产业资讯与投资观察。聚焦 AI、半导体、机器人，阅读每日精选、往期日报与投研周报。">
+<meta name="theme-color" content="#fafbf9">
+<link rel="icon" type="image/png" href="assets/logo-mark.png?v=20261022">
+<link rel="stylesheet" href="style.css?v=20261022-redesign">
 </head>
 <body>
-<header class="site-header">
-  <div class="header-inner">
-    <a href="#" class="logo" onclick="switchView('today')">
-      <img class="logo-icon" src="assets/logo-mark.png" alt="盈峰">
-      <span class="logo-text">盈峰投研日报</span>
-    </a>
-    <nav class="header-nav">
-      <a href="#" class="nav-link active" data-view="today" onclick="switchView('today')">今日</a>
-      <a href="#" class="nav-link" data-view="archive" onclick="switchView('archive')">往期</a>
-      <a href="#" class="nav-link" data-view="weekly" onclick="switchView('weekly')">周报</a>
-      <a href="#" class="nav-link" data-view="about" onclick="switchView('about')">关于</a>
-    </nav>
-    <div class="header-right">
-      <span class="header-date" id="headerDate"></span>
-    </div>
-  </div>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<symbol id="icon-spark" viewBox="0 0 24 24"><path d="m13 2-3 8H4l7 5-1 7 10-13h-7z"/></symbol>
+<symbol id="icon-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+<symbol id="icon-book" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></symbol>
+<symbol id="icon-chart" viewBox="0 0 24 24"><path d="M4 3v17h17M9 16V9M14 16V5M19 16v-5"/></symbol>
+<symbol id="icon-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></symbol>
+<symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></symbol>
+<symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+<symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+</svg>
+<a class="skip-link" href="#main">跳到正文</a>
+<button id="menuBackdrop" class="menu-backdrop" type="button" aria-label="关闭导航" hidden></button>
+<aside class="sidebar" id="sidebar" aria-label="网站导航">
+<a class="brand" href="#feed" aria-label="盈峰投资 · 投研日报首页"><img src="assets/logo-mark.png" width="38" height="38" alt="盈峰集团图标"><span class="brand-name">盈峰投资<small>INFORE INVESTMENT</small></span></a>
+<div class="sidebar-caption">产业资讯与投资观察</div>
+<nav aria-label="主导航">
+<div class="nav-label">内容</div>
+<a class="nav-link active" href="#feed" data-view="feed"><svg class="icon"><use href="#icon-spark"/></svg>每日精选</a>
+<a class="nav-link" href="#all" data-view="all"><svg class="icon"><use href="#icon-list"/></svg>全部动态</a>
+<a class="nav-link" href="#daily" data-view="daily"><svg class="icon"><use href="#icon-book"/></svg>投研日报</a>
+<a class="nav-link" href="#weekly" data-view="weekly"><svg class="icon"><use href="#icon-chart"/></svg>投研周报</a>
+<a class="nav-link" href="#saved" data-view="saved"><svg class="icon"><use href="#icon-bookmark"/></svg>我的收藏<span class="nav-count" id="savedCount">0</span></a>
+<div class="nav-label sector-nav-label">关注赛道</div>
+<a class="sector-link" data-category="ai" href="#feed/ai"><span class="sector-dot ai"></span>人工智能<span>AI</span></a>
+<a class="sector-link" data-category="semi" href="#feed/semi"><span class="sector-dot semi"></span>半导体<span>CHIP</span></a>
+<a class="sector-link" data-category="robot" href="#feed/robot"><span class="sector-dot robot"></span>机器人<span>ROBOT</span></a>
+</nav>
+<div class="sidebar-bottom"><a class="nav-link" href="#about" data-view="about"><svg class="icon"><use href="#icon-info"/></svg>关于日报</a><div class="sidebar-note"><span class="status-dot"></span>每日更新 · 持续关注</div><div class="sidebar-copyright">盈峰投资 © 2026</div></div>
+</aside>
+<div class="workspace">
+<header class="topbar">
+<button id="mobileMenu" class="icon-button mobile-menu" type="button" aria-label="打开导航" aria-controls="sidebar" aria-expanded="false"><svg class="icon"><use href="#icon-menu"/></svg></button>
+<a class="mobile-brand" href="#feed"><img src="assets/logo-mark.png" alt="" width="26" height="26">盈峰投研</a>
+<div class="topbar-title">投研日报<span>RESEARCH DAILY</span></div>
+<form class="search-form" id="searchForm" role="search"><svg class="icon"><use href="#icon-search"/></svg><input id="searchInput" type="search" placeholder="搜索已加载资讯…" aria-label="搜索已加载资讯" autocomplete="off"><button type="button" id="searchClear" aria-label="清空搜索" hidden>×</button></form>
+<time class="header-date" id="headerDate"></time>
 </header>
-
-<main class="main-container">
-
-  <!-- Today's Report -->
-  <section id="view-today" class="report-section" style="display:block">
-    <div class="section-header">
-      <h2 class="section-title">📰 今日日报</h2>
-      <span class="section-date" id="todayDate"></span>
-    </div>
-    <div class="timeline" id="timeline"><div class="empty-state"><p>⏳ 加载中...</p></div></div>
-    <div class="empty-state" id="emptyState" style="display:none">
-      <p>📭 暂无今日日报</p>
-      <small>请稍后刷新或查看往期日报</small>
-    </div>
-  </section>
-
-  <!-- Archive -->
-  <section id="view-archive" class="report-section" style="display:none">
-    <div class="section-header">
-      <h2 class="section-title">📂 往期日报</h2>
-      <span class="section-date" id="archiveCount"></span>
-      <button class="archive-sort-btn" id="archiveSortBtn" type="button" onclick="toggleArchiveOrder()" title="切换正序/倒序"><span id="archiveSortLabel">正序 ↑</span></button>
-    </div>
-    <div class="archive-list" id="archiveList"></div>
-  </section>
-
-  <!-- Archive Detail -->
-  <section id="view-detail" class="report-section" style="display:none">
-    <div class="section-header">
-      <a href="#" class="back-link" onclick="switchView('archive')">← 返回往期列表</a>
-    </div>
-    <h2 class="section-title" id="detailTitle"></h2>
-    <span class="section-date" id="detailDate"></span>
-    <div class="timeline" id="detailTimeline"></div>
-  </section>
-
-  <!-- Weekly Report -->
-  <section id="view-weekly" class="report-section" style="display:none">
-    <div class="section-header">
-      <h2 class="section-title">📊 投研周报</h2>
-      <span class="section-date" id="weeklyCount"></span>
-      <button class="archive-sort-btn" id="weeklySortBtn" type="button" onclick="toggleWeeklyOrder()" title="切换正序/倒序"><span id="weeklySortLabel">倒序 ↓</span></button>
-    </div>
-    <div class="weekly-list" id="weeklyList"></div>
-    <div class="empty-state" id="weeklyEmpty" style="display:none">
-      <p>📭 暂无周报</p>
-    </div>
-  </section>
-
-  <!-- Weekly Detail -->
-  <section id="view-weekly-detail" class="report-section" style="display:none">
-    <div class="section-header">
-      <a href="#" class="back-link" onclick="switchView('weekly')">← 返回周报列表</a>
-    </div>
-    <div class="weekly-detail-content" id="weeklyDetailContent"></div>
-  </section>
-
-  <!-- About -->
-  <section id="view-about" class="report-section" style="display:none">
-    <div class="section-header">
-      <h2 class="section-title">ℹ️ 关于</h2>
-    </div>
-    <div class="about-content">
-      <p>盈峰投研日报由<strong>盈峰投资</strong>投研团队出品。</p>
-      <p>每日覆盖 <strong>AI</strong> · <strong>半导体</strong> · <strong>机器人</strong> 三大赛道资讯与资本信号。</p>
-      <p><strong>数据来源</strong></p>
-      <ul>
-        <li>AI 赛道：<a href="https://aihot.virxact.com" target="_blank">AI HOT</a> 中国AI行业资讯聚合</li>
-        <li>半导体：财经媒体 + 东方财富 + 新浪财经</li>
-        <li>机器人：36氪 / 每日经济新闻 / 智东西 等</li>
-      </ul>
-      <p><strong>技术栈</strong>：GitHub Pages · DeepSeek · 钉钉机器人推送</p>
-    </div>
-  </section>
-
+<main id="main" class="main-container" tabindex="-1">
+<div class="page-intro"><div class="page-eyebrow" id="pageEyebrow">THE DAILY BRIEF</div><h1 id="pageHeading">每日精选<span class="heading-period">.</span></h1><p id="pageDescription">从产业动态中，发现值得关注的投资信号。</p></div>
+<div class="content-grid">
+<div class="content-column" id="contentColumn">
+<div id="feedControls" class="feed-controls"><div class="category-filters" id="categoryFilters" aria-label="按赛道筛选"><button type="button" data-filter="all" class="active" aria-pressed="true">全部</button><button type="button" data-filter="ai" aria-pressed="false">人工智能</button><button type="button" data-filter="semi" aria-pressed="false">半导体</button><button type="button" data-filter="robot" aria-pressed="false">机器人</button></div><div class="layout-switch" aria-label="列表显示方式"><button type="button" id="layoutList" class="active" title="摘要视图" aria-label="摘要视图" aria-pressed="true"><svg class="icon"><use href="#icon-book"/></svg></button><button type="button" id="layoutCompact" title="紧凑视图" aria-label="紧凑视图" aria-pressed="false"><svg class="icon"><use href="#icon-list"/></svg></button></div></div>
+<section id="feedView" aria-label="资讯列表"><div class="feed-summary"><span id="resultCount" role="status">正在加载最新一期…</span><span>产业 · 技术 · 资本</span></div><div id="feedList" class="feed-list"></div><div id="feedStatus" class="feed-status" role="status"></div><button type="button" id="loadMore" class="load-more" hidden>加载更多动态 <span>↓</span></button></section>
+<section id="readerView" class="reader-view" aria-label="投研报告阅读" hidden><div class="reader-layout"><aside class="archive-panel" aria-label="报告归档"><nav class="report-tabs" id="reportTabs" aria-label="报告类型"><a href="#daily">日报</a><a href="#weekly">周报</a></nav><div class="archive-toolbar"><span>往期档案</span><select id="archiveSort" aria-label="报告排列顺序"><option value="asc">正序 ↑</option><option value="desc">倒序 ↓</option></select></div><input class="archive-search" id="archiveSearch" type="search" placeholder="查找日期或期数" aria-label="查找报告日期或期数"><div id="archiveRail" class="archive-rail"></div></aside><article id="reportContent" class="report-paper" aria-label="报告正文"></article></div></section>
+<section id="aboutView" class="about-view" hidden><div class="about-lead">连接产业变化与投资判断。</div><p>盈峰投研日报聚焦人工智能、半导体和机器人，整理产业动态、技术进展与资本信号，为日常投研提供信息索引。</p><div class="about-sectors"><div><span class="sector-dot ai"></span><h2>人工智能</h2><p>技术进展与资本信号</p></div><div><span class="sector-dot semi"></span><h2>半导体</h2><p>产业周期与供需变化</p></div><div><span class="sector-dot robot"></span><h2>机器人</h2><p>融资进展与商业落地</p></div></div><h2>阅读与使用</h2><p>「每日精选」展示最新一期日报的资讯。「全部动态」汇集往期日报，可继续加载更早内容；搜索范围为当前已加载的资讯。日报与周报按月份归档，支持日期定位和正倒序切换。</p><p>点击资讯标题或「阅读原文」可打开对应来源。收藏保存在当前浏览器，清除浏览器数据后将不再保留。</p><h2>来源与说明</h2><p>AI 资讯来源包括 <a href="https://aihot.news/" target="_blank" rel="noopener noreferrer">AI HOT</a>，其他赛道来源包括财经及产业媒体。资讯与投资观察沿用已发布日报，保留可用原文链接；无链接条目会明确标示。</p><p>本网站的信息组织参考 <a href="https://github.com/KKKKhazix/AIHOT" target="_blank" rel="noopener noreferrer">AIHOT 开源项目</a>，以盈峰投资的品牌与报告内容重新实现。文中观察供研究参考，具体事实请以原始披露为准。</p></section>
+</div>
+<aside id="rightRail" class="right-rail" aria-label="日报概览">
+<section class="issue-card"><div class="rail-eyebrow">LATEST ISSUE <span class="status-dot"></span></div><div class="issue-label">最新一期</div><time id="latestDate">—</time><a class="issue-link" href="#daily">阅读完整日报<svg class="icon"><use href="#icon-arrow"/></svg></a></section>
+<section class="rail-section"><h2>投研档案<span>ARCHIVE</span></h2><div class="archive-stats"><a href="#daily"><strong id="statDaily">—</strong><span>期日报</span></a><a href="#weekly"><strong id="statWeekly">—</strong><span>期周报</span></a></div></section>
+<section class="rail-section"><h2>本期赛道<span><span id="statItems">—</span> 条动态</span></h2><div id="sectorStats" class="sector-stats"></div></section>
+<section class="rail-section"><h2>最近日报<span>RECENT</span></h2><div id="recentReports" class="recent-reports"></div><a href="#daily" class="all-reports-link">查看全部档案 <span>↗</span></a></section>
+<div class="rail-note"><span class="rail-note-line"></span><p>关注技术的变化，<br>也关注变化的价值。</p><small>盈峰投资 · 一级市场投研</small></div>
+</aside>
+</div>
+<footer class="site-footer"><span>INFORE INVESTMENT</span><span>AI · 半导体 · 机器人</span></footer>
 </main>
-
-<footer class="site-footer">
-  <p>盈峰投资 © 2026 · v1785302899 · 一级市场投研日报 · 每日自动更新</p>
-</footer>
-
-<script src="data.js?v=1792660000"></script>
-<script src="app.js?v=1792660000"></script>
+</div>
+<div id="liveStatus" class="sr-only" role="status" aria-live="polite"></div>
+<button id="backToTop" class="back-to-top" type="button" aria-label="回到顶部" title="回到顶部">↑</button>
+<script src="data.js?v=20261022-redesign"></script><script src="app.js?v=20261022-redesign"></script>
 </body>
 </html>
