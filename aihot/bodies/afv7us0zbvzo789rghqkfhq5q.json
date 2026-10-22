@@ -1,0 +1,3740 @@
+{
+  "schemaVersion": 1,
+  "id": "afv7us0zbvzo789rghqkfhq5q",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/afv7us0zbvzo789rghqkfhq5q",
+  "fetchedAt": "2026-10-22T13:17:35.950622Z",
+  "label": "正文",
+  "notice": "来源未返回支持的图片。；来源未返回支持的图片。；来源未返回支持的图片。；来源未返回支持的图片。；来源未返回支持的图片。",
+  "topics": [
+    "开源生态",
+    "部署工程",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "开源/仓库",
+    "部署/工程"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "蚂蚁集团与 vLLM 社区开源 Humming，这是一个面向量化推理的通用高性能内核库。Humming 具备以下特性：",
+          "inlines": [
+            {
+              "text": "蚂蚁集团与 vLLM 社区开源 Humming，这是一个面向量化推理的通用高性能内核库。Humming 具备以下特性："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "广泛的设备支持"
+                },
+                {
+                  "text": "：支持从 Turing 起的 NVIDIA GPU 架构，以及平头哥镇岳 810E 等 CUDA 兼容设备。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "全面的量化支持"
+                },
+                {
+                  "text": "：统一架构支持稠密与 MoE 工作负载下权重和激活格式的多种组合，覆盖广泛的整数与浮点类型、位宽及缩放方案。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "强劲的执行性能"
+                },
+                {
+                  "text": "：在许多代表性工作负载上显著优于 vLLM Marlin、FlashInfer 和 DeepGEMM 的现有实现。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "仓库：github.com/vllm-project/humming",
+          "inlines": [
+            {
+              "text": "仓库："
+            },
+            {
+              "href": "https://github.com/vllm-project/humming",
+              "text": "github.com/vllm-project/humming"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "背景",
+          "inlines": [
+            {
+              "text": "背景"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "随着模型和推理工作负载的增长，内存容量、内存带宽和计算成本日益制约部署。这在 MoE 模型中尤为明显：每个 token 仅激活一部分专家，但全部权重仍需存储。例如 DeepSeek-V3 拥有 6710 亿参数，每个 token 激活 370 亿参数。量化通过降低权重和激活的精度来减少内存占用和数据搬运，同时也能提升计算效率。",
+          "inlines": [
+            {
+              "text": "随着模型和推理工作负载的增长，内存容量、内存带宽和计算成本日益制约部署。这在 MoE 模型中尤为明显：每个 token 仅激活一部分专家，但全部权重仍需存储。例如 DeepSeek-V3 拥有 6710 亿参数，每个 token 激活 370 亿参数。量化通过降低权重和激活的精度来减少内存占用和数据搬运，同时也能提升计算效率。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不同模型和 GPU 代际对量化的需求各不相同。常见配置包括 WNA16、W8A8、W4A8 和 W4A4，其中 W 和 A 分别表示权重和激活位宽，N 表示可变的权重位宽。即使精度相同，INT4 和 NVFP4 等方案在数值格式和缩放方式上也有差异。缩放粒度、缩放表示、分组大小以及对称或非对称量化进一步扩展了配置空间。",
+          "inlines": [
+            {
+              "text": "不同模型和 GPU 代际对量化的需求各不相同。常见配置包括 WNA16、W8A8、W4A8 和 W4A4，其中 W 和 A 分别表示权重和激活位宽，N 表示可变的权重位宽。即使精度相同，INT4 和 NVFP4 等方案在数值格式和缩放方式上也有差异。缩放粒度、缩放表示、分组大小以及对称或非对称量化进一步扩展了配置空间。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "只有借助高效内核，这些存储和计算上的节省才能转化为更低的延迟和更高的吞吐。Prefill、decode 以及不同的 MoE 专家负载对计算和内存提出不同要求。内核必须适应这些工作负载，同时保持转换、反量化和调度开销处于低位。",
+          "inlines": [
+            {
+              "text": "只有借助高效内核，这些存储和计算上的节省才能转化为更低的延迟和更高的吞吐。Prefill、decode 以及不同的 MoE 专家负载对计算和内存提出不同要求。内核必须适应这些工作负载，同时保持转换、反量化和调度开销处于低位。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为每种组合开发和集成专用内核会带来不断增长的维护负担。每新增一种组合，都可能需要各自的权重预处理、内核选择、框架适配器和测试。优化工作随后还需在多个实现之间同步。",
+          "inlines": [
+            {
+              "text": "为每种组合开发和集成专用内核会带来不断增长的维护负担。每新增一种组合，都可能需要各自的权重预处理、内核选择、框架适配器和测试。优化工作随后还需在多个实现之间同步。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 通过将量化描述与执行选择分离，并由共享组件组合内核来解决这一问题。",
+          "inlines": [
+            {
+              "text": "Humming 通过将量化描述与执行选择分离，并由共享组件组合内核来解决这一问题。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "通用架构",
+          "inlines": [
+            {
+              "text": "通用架构"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 的执行路径分为三部分：表示量化计算、为硬件和工作负载选择配置、从 CUDA 组件编译内核。",
+          "inlines": [
+            {
+              "text": "Humming 的执行路径分为三部分：表示量化计算、为硬件和工作负载选择配置、从 CUDA 组件编译内核。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "统一的量化表示",
+          "inlines": [
+            {
+              "text": "统一的量化表示"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "不同量化工具导出的模型在数值格式、参数组织和权重布局上各不相同。Humming 将支持的导出格式转换为 Humming 标准格式：一种通用的量化描述，权重、缩放、零点及其他张量均按一致方式组织。",
+          "inlines": [
+            {
+              "text": "不同量化工具导出的模型在数值格式、参数组织和权重布局上各不相同。Humming 将支持的导出格式转换为 Humming 标准格式：一种通用的量化描述，权重、缩放、零点及其他张量均按一致方式组织。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该表示在保留各方案量化语义的同时，将权重格式、缩放粒度、缩放数据类型、零点及二级缩放描述为独立参数。激活有其自身的数值格式和量化设置。这些参数可在格式和硬件约束下进行组合。",
+          "inlines": [
+            {
+              "text": "该表示在保留各方案量化语义的同时，将权重格式、缩放粒度、缩放数据类型、零点及二级缩放描述为独立参数。激活有其自身的数值格式和量化设置。这些参数可在格式和硬件约束下进行组合。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "例如，分组 INT4 权重可以与 BF16 激活值配对使用。采用不同缩放方案的低精度浮点权重使用同一套参数体系。这为推理框架提供了面向不同来源模型的统一接口。",
+          "inlines": [
+            {
+              "text": "例如，分组 INT4 权重可以与 BF16 激活值配对使用。采用不同缩放方案的低精度浮点权重使用同一套参数体系。这为推理框架提供了面向不同来源模型的统一接口。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "针对每种工作负载的调优与 JIT 编译",
+          "inlines": [
+            {
+              "text": "针对每种工作负载的调优与 JIT 编译"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "标准格式在各类导出格式之间提供统一的表示。随后，预处理会校验参数、填充维度，并将这些张量重新打包为目标内核适用的布局。Humming 将量化描述与权重形状、GEMM 类型、目标 GPU 和计算选项结合起来，以配置执行过程。",
+          "inlines": [
+            {
+              "text": "标准格式在各类导出格式之间提供统一的表示。随后，预处理会校验参数、填充维度，并将这些张量重新打包为目标内核适用的布局。Humming 将量化描述与权重形状、GEMM 类型、目标 GPU 和计算选项结合起来，以配置执行过程。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "三种配置用于描述内核：",
+          "inlines": [
+            {
+              "text": "三种配置用于描述内核："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "层配置"
+                },
+                {
+                  "text": "描述张量形状、数据类型、量化参数和目标架构。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "计算配置"
+                },
+                {
+                  "text": "指定 GEMM 类型和计算选项，例如批次不变性和输入缩放布局。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "调优配置"
+                },
+                {
+                  "text": "选择瓦片形状、流水线阶段数、warp 特化、内存访问和 MMA 指令。它还控制并发与调度；TMA 可以按张量进行配置。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "默认情况下，Humming 使用针对具体设备的启发式规则来选择调优配置。它可以为不同范围的输入尺寸准备不同的配置，并在运行时分派到合适的内核。",
+          "inlines": [
+            {
+              "text": "默认情况下，Humming 使用针对具体设备的启发式规则来选择调优配置。它可以为不同范围的输入尺寸准备不同的配置，并在运行时分派到合适的内核。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 的统一架构使针对不同工作负载调优执行参数和选择流水线变得简单直接。在小批次尺寸下，使用异步拷贝（cp.async）和 MMA 的多级流水线可能优于围绕 TMA 和 UMMA 构建的流水线。在较大批次尺寸下，TMA 和 UMMA 可以提供更好的吞吐量。Humming 在同一配置和组件框架内同时支持这两种执行路径，从而能够为每种工作负载选择更有效的策略。",
+          "inlines": [
+            {
+              "text": "Humming 的统一架构使针对不同工作负载调优执行参数和选择流水线变得简单直接。在小批次尺寸下，使用异步拷贝（"
+            },
+            {
+              "code": true,
+              "text": "cp.async"
+            },
+            {
+              "text": "）和 MMA 的多级流水线可能优于围绕 TMA 和 UMMA 构建的流水线。在较大批次尺寸下，TMA 和 UMMA 可以提供更好的吞吐量。Humming 在同一配置和组件框架内同时支持这两种执行路径，从而能够为每种工作负载选择更有效的策略。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这三种配置共同特化由 NVRTC 或 NVCC 编译的内核。编译后的内核会被缓存以便复用。推理时将选定的内核与预处理后的权重和运行时激活值结合起来。",
+          "inlines": [
+            {
+              "text": "这三种配置共同特化由 NVRTC 或 NVCC 编译的内核。编译后的内核会被缓存以便复用。推理时将选定的内核与预处理后的权重和运行时激活值结合起来。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "跨格式与架构的共享 CUDA 组件",
+          "inlines": [
+            {
+              "text": "跨格式与架构的共享 CUDA 组件"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在 CUDA 层面，Humming 将任务调度、数据移动、反量化与缩放、Tensor Core 计算以及输出处理组织为可复用的组件。它提供标准流水线、warp 特化流水线和专用 UMMA 流水线。这些流水线共享兼容的组件，同时采用各自执行策略所需的数据流和同步方式。",
+          "inlines": [
+            {
+              "text": "在 CUDA 层面，Humming 将任务调度、数据移动、反量化与缩放、Tensor Core 计算以及输出处理组织为可复用的组件。它提供标准流水线、warp 特化流水线和专用 UMMA 流水线。这些流水线共享兼容的组件，同时采用各自执行策略所需的数据流和同步方式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每组组件处理不同的变化来源：",
+          "inlines": [
+            {
+              "text": "每组组件处理不同的变化来源："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "数值处理负责量化格式。"
+                },
+                {
+                  "text": "解码和算术组件处理位宽、整数或浮点表示、缩放因子和零点。反量化与缩放被集成到内核的计算中。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "内存与计算后端负责 GPU 架构。"
+                },
+                {
+                  "text": "Humming 为目标架构选择数据移动和 Tensor Core 实现，并在支持时使用异步拷贝、TMA 和多播。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "任务映射与调度负责稠密和 MoE 工作负载。"
+                },
+                {
+                  "text": "每种 GEMM 类型使用相应的调度逻辑。缩放和偏置加法也可以融合到输出阶段。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "JIT 编译会根据三种配置组合这些组件，并消除未使用的实现分支。因此，可以通过扩展相关组件来支持新的格式或架构。对共享组件的改进会使兼容的配置受益，从而减少对各自专用内核的重复开发和维护。",
+          "inlines": [
+            {
+              "text": "JIT 编译会根据三种配置组合这些组件，并消除未使用的实现分支。因此，可以通过扩展相关组件来支持新的格式或架构。对共享组件的改进会使兼容的配置受益，从而减少对各自专用内核的重复开发和维护。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这个 CUDA 实现轻量且避免了重量级内核框架依赖，同时保持 JIT 编译快速。在我们于配备 CUDA 13.4 的 H200 服务器上进行的单 W4A16 内核编译测试中，在禁用编译缓存的情况下，编译时间从 CUTLASS 配合 NVCC 的 23.35 秒降至 Humming 配合 NVCC 的 1.82 秒或配合 NVRTC 的 1.88 秒。这降低了为新工作负载准备内核的成本，并使迭代调优更加实用。Humming 还会在模型预热期间并行编译内核。在我们的测试中，编译并加载覆盖单层 GEMM 所有受支持 M 大小的内核仅需约 2–4 秒，使得在推理前准备多个专用内核变得切实可行。",
+          "inlines": [
+            {
+              "text": "这个 CUDA 实现轻量且避免了重量级内核框架依赖，同时保持 JIT 编译快速。在我们于配备 CUDA 13.4 的 H200 服务器上进行的单 W4A16 内核编译测试中，在禁用编译缓存的情况下，编译时间从 "
+            },
+            {
+              "bold": true,
+              "text": "CUTLASS 配合 NVCC 的 23.35 秒"
+            },
+            {
+              "text": "降至 "
+            },
+            {
+              "bold": true,
+              "text": "Humming 配合 NVCC 的 1.82 秒"
+            },
+            {
+              "text": "或"
+            },
+            {
+              "bold": true,
+              "text": "配合 NVRTC 的 1.88 秒"
+            },
+            {
+              "text": "。这降低了为新工作负载准备内核的成本，并使迭代调优更加实用。Humming 还会在模型预热期间并行编译内核。在我们的测试中，编译并加载覆盖单层 GEMM 所有受支持 M 大小的内核仅需"
+            },
+            {
+              "bold": true,
+              "text": "约 2–4 秒"
+            },
+            {
+              "text": "，使得在推理前准备多个专用内核变得切实可行。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "基于设备参数的性能调优",
+          "inlines": [
+            {
+              "text": "基于设备参数的性能调优"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 利用 GEMM 配置和设备参数对内核进行深度优化。量化格式、矩阵形状、GPU 指令支持、SM 数量、共享内存和寄存器资源都会影响执行选择，从而将低位存储的优势转化为实际的推理性能。",
+          "inlines": [
+            {
+              "text": "Humming 利用 GEMM 配置和设备参数对内核进行深度优化。量化格式、矩阵形状、GPU 指令支持、SM 数量、共享内存和寄存器资源都会影响执行选择，从而将低位存储的优势转化为实际的推理性能。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在现有 GPU 上实现高效的 W4A8-MXFP4 推理。Blackwell 之前的架构缺乏原生 MXFP4 Tensor Core 支持，而传统的 W4A8-MXFP4 内核在较大 M 时可能受限于反量化和缩放开销。Humming 通过快速的 MXFP4 到 INT8/FP8 反量化路径解决了这一问题，该路径在内核内将 MXFP4 权重转换为受支持的计算格式。在此设置下，该路径在较小 M 时显著优于传统 W4A8 实现，在较大 M 时接近 W8A8 性能。因此，H200 等 GPU 可以运行高性能 W4A8-MXFP4 内核，同时保留 4 位权重的存储优势。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "在现有 GPU 上实现高效的 W4A8-MXFP4 推理。"
+            },
+            {
+              "text": "Blackwell 之前的架构缺乏原生 MXFP4 Tensor Core 支持，而传统的 W4A8-MXFP4 内核在较大 M 时可能受限于反量化和缩放开销。Humming 通过快速的 MXFP4 到 INT8/FP8 反量化路径解决了这一问题，该路径在内核内将 MXFP4 权重转换为受支持的计算格式。在此设置下，该路径在较小 M 时显著优于传统 W4A8 实现，在较大 M 时接近 W8A8 性能。因此，H200 等 GPU 可以运行高性能 W4A8-MXFP4 内核，同时保留 4 位权重的存储优势。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为每种设备匹配反量化路径。相同的量化格式在不同 GPU 上可能受益于不同的实现。Humming 会为设备选择解码、数值转换和缩放路径，并将它们与合适的内存访问和计算流水线配对，以减少指令和数据移动开销。共享组件使这些优化可在兼容的稠密和 MoE 内核中复用。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "为每种设备匹配反量化路径。"
+            },
+            {
+              "text": "相同的量化格式在不同 GPU 上可能受益于不同的实现。Humming 会为设备选择解码、数值转换和缩放路径，并将它们与合适的内存访问和计算流水线配对，以减少指令和数据移动开销。共享组件使这些优化可在兼容的稠密和 MoE 内核中复用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "丰富的调优控制与设备特定启发式。Humming 提供 tile 形状、流水线阶段数、warp 特化、TMA、MMA 指令、CTA 并发和 Stream-K 调度等控制项。设备特定的启发式将 GEMM 形状与资源约束相结合，以平衡并行性、数据复用和流水线开销，并随着输入大小变化选择不同的执行策略。开发者可以直接使用默认配置，或针对特定模型和部署场景对其进行调整。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "丰富的调优控制与设备特定启发式。"
+            },
+            {
+              "text": "Humming 提供 tile 形状、流水线阶段数、warp 特化、TMA、MMA 指令、CTA 并发和 Stream-K 调度等控制项。设备特定的启发式将 GEMM 形状与资源约束相结合，以平衡并行性、数据复用和流水线开销，并随着输入大小变化选择不同的执行策略。开发者可以直接使用默认配置，或针对特定模型和部署场景对其进行调整。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结果",
+          "inlines": [
+            {
+              "text": "结果"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "广泛的设备支持",
+          "inlines": [
+            {
+              "text": "广泛的设备支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 的统一架构实现了广泛的 GPU 支持。对于 NVIDIA GPU，Humming 全面支持从 Turing 起的每一代架构，为多代硬件带来统一的量化计算框架。",
+          "inlines": [
+            {
+              "text": "Humming 的统一架构实现了广泛的 GPU 支持。对于 NVIDIA GPU，Humming 全面支持从 Turing 起的每一代架构，为多代硬件带来统一的量化计算框架。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "统一的 JIT 架构也让 Humming 可以轻松扩展到其他兼容 CUDA 编程的 GPU。Humming 已全面支持平头哥镇岳 810E，将其共享内核与调优能力带到更多硬件平台。",
+          "inlines": [
+            {
+              "text": "统一的 JIT 架构也让 Humming 可以轻松扩展到其他兼容 CUDA 编程的 GPU。Humming 已全面支持平头哥镇岳 810E，将其共享内核与调优能力带到更多硬件平台。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下图展示了 Humming 在各设备上支持的高性能激活类型：这些类型能够充分利用设备的峰值计算能力。图中省略的部分类型仍可通过其他指令路径运行。例如，B300（SM103）上的 UMMA 指令不再支持 INT8 计算，但更早的 MMA 指令仍可执行 INT8 GEMM，只是性能会大幅降低。",
+          "inlines": [
+            {
+              "text": "下图展示了 Humming 在各设备上支持的高性能激活类型：这些类型能够充分利用设备的峰值计算能力。图中省略的部分类型仍可通过其他指令路径运行。例如，B300（SM103）上的 UMMA 指令不再支持 INT8 计算，但更早的 MMA 指令仍可执行 INT8 GEMM，只是性能会大幅降低。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "量化支持",
+          "inlines": [
+            {
+              "text": "量化支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 对量化类型的支持主要取决于激活类型与权重类型之间的兼容性。其统一的量化表示与内核架构允许多种整数和浮点权重格式与不同精度的激活配合使用，为模型精度和部署性能提供灵活选择。",
+          "inlines": [
+            {
+              "text": "Humming 对量化类型的支持主要取决于激活类型与权重类型之间的兼容性。其统一的量化表示与内核架构允许多种整数和浮点权重格式与不同精度的激活配合使用，为模型精度和部署性能提供灵活选择。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下图展示了 Humming 支持的权重与激活类型组合。行表示权重类型，列表示激活类型，勾选表示支持的组合。结合上文的设备支持矩阵，它勾勒出各硬件架构上可用的高性能量化计算路径。",
+          "inlines": [
+            {
+              "text": "下图展示了 Humming 支持的权重与激活类型组合。行表示权重类型，列表示激活类型，勾选表示支持的组合。结合上文的设备支持矩阵，它勾勒出各硬件架构上可用的高性能量化计算路径。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 还支持一种指数位为零的特殊浮点格式，其可表示的值与相同位宽的对称整数一致。例如，排除 -128 和 float8e0m7 的 INT8 与 -127 到 127 的整数表示相同。该格式权重的激活类型兼容性与相同位宽的 INT 权重相同。Humming 会自动将符合条件的对称整数权重转换为该格式，以实现更快的反量化。",
+          "inlines": [
+            {
+              "text": "Humming 还支持一种指数位为零的特殊浮点格式，其可表示的值与相同位宽的对称整数一致。例如，排除 "
+            },
+            {
+              "code": true,
+              "text": "-128"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "float8e0m7"
+            },
+            {
+              "text": " 的 INT8 与 "
+            },
+            {
+              "code": true,
+              "text": "-127"
+            },
+            {
+              "text": " 到 "
+            },
+            {
+              "code": true,
+              "text": "127"
+            },
+            {
+              "text": " 的整数表示相同。该格式权重的激活类型兼容性与相同位宽的 INT 权重相同。Humming 会自动将符合条件的对称整数权重转换为该格式，以实现更快的反量化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "社区还发现了 Blackwell Tensor Core 的两项隐藏能力：原生支持 float4e0m3 和 float8e3m4，这两种特殊浮点格式未在 PTX 类型系统中公开。Humming 在所有 Blackwell 架构上支持这些特性，包括数据中心的 SM100/SM103 以及面向工作站和个人计算的 SM120/SM121 设备。两种格式均已集成到其统一的量化与计算框架中，为低精度推理提供更多原生计算选项。Rubin 不支持这两种隐藏的 Tensor Core 格式，因此对这些原生计算路径的支持不会延伸到 Rubin。",
+          "inlines": [
+            {
+              "text": "社区还发现了 "
+            },
+            {
+              "href": "https://zhuanlan.zhihu.com/p/2059376150565089368",
+              "text": "Blackwell Tensor Core 的两项隐藏能力"
+            },
+            {
+              "text": "：原生支持 "
+            },
+            {
+              "code": true,
+              "text": "float4e0m3"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "float8e3m4"
+            },
+            {
+              "text": "，这两种特殊浮点格式未在 PTX 类型系统中公开。Humming 在所有 Blackwell 架构上支持这些特性，包括数据中心的 SM100/SM103 以及面向工作站和个人计算的 SM120/SM121 设备。两种格式均已集成到其统一的量化与计算框架中，为低精度推理提供更多原生计算选项。Rubin 不支持这两种隐藏的 Tensor Core 格式，因此对这些原生计算路径的支持不会延伸到 Rubin。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "性能",
+          "inlines": [
+            {
+              "text": "性能"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "以下内核微基准测试由 vLLM 社区运行，测量 M 覆盖 1 到 8192 之间每个 2 的幂时的 GEMM 性能。内核完全预热，并在冷 L2 缓存下独立计时，样本之间短暂停顿。MoE 加速比使用 Gateup 和 Down GEMM 延迟之和。每张图都标明了其基线、量化格式、矩阵维度和软件版本。",
+          "inlines": [
+            {
+              "text": "以下内核微基准测试由 vLLM 社区运行，测量 M 覆盖 1 到 8192 之间每个 2 的幂时的 GEMM 性能。内核完全预热，并在冷 L2 缓存下独立计时，样本之间短暂停顿。MoE 加速比使用 Gateup 和 Down GEMM 延迟之和。每张图都标明了其基线、量化格式、矩阵维度和软件版本。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "WnA16",
+          "inlines": [
+            {
+              "text": "WnA16"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "WnA16 是量化推理中最通用、应用最广泛的方法之一。它将低比特权重与 FP16/BF16 激活相结合，在减少权重存储和内存流量的同时，利用广泛可用的 16 位计算能力。这使其适用于许多 GPU 世代和模型部署场景。W4A16 系列尤其受到社区关注，也是 Humming 优化工作的重点。",
+          "inlines": [
+            {
+              "text": "WnA16 是量化推理中最通用、应用最广泛的方法之一。它将低比特权重与 FP16/BF16 激活相结合，在减少权重存储和内存流量的同时，利用广泛可用的 16 位计算能力。这使其适用于许多 GPU 世代和模型部署场景。W4A16 系列尤其受到社区关注，也是 Humming 优化工作的重点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对于密集 W4A16，Humming 在大多数测试配置中与 vLLM Marlin 持平或优于后者，并在若干 Hopper 和 Blackwell 工作负载上取得显著提升。下图以 cuBLAS 作为共同基线。在小批量下，Humming 在多个设备上带来约 3–4 倍加速。随着批量增大，它持续高效利用硬件，在 H200 大批量工作负载上达到约 Marlin 的两倍性能，在部分 B300 场景下超过其三倍。",
+          "inlines": [
+            {
+              "text": "对于密集 W4A16，Humming 在大多数测试配置中与 vLLM Marlin 持平或优于后者，并在若干 Hopper 和 Blackwell 工作负载上取得显著提升。下图以 cuBLAS 作为共同基线。在小批量下，Humming 在多个设备上带来约 3–4 倍加速。随着批量增大，它持续高效利用硬件，在 H200 大批量工作负载上达到约 Marlin 的两倍性能，在部分 B300 场景下超过其三倍。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些收益也延伸到 MoE。Humming 为 token 分布在各专家上、且每个专家的工作量随负载变化的工作负载提供高效的 Indexed 和 Grouped 路径。在下图中，H20 和 H200 上的 MXFP4 W4A16 在若干中大批量场景下达到约 Marlin 的两倍性能。在 B300 上，MXINT4 和 NVFP4 路径在大批量下取得更大收益，其中 Grouped 路径达到约 5 倍。SM120 和 SM121 上的结果也显示，Humming 在一系列工作负载中优于 Marlin 及相应的 FlashInfer 实现。",
+          "inlines": [
+            {
+              "text": "这些收益也延伸到 MoE。Humming 为 token 分布在各专家上、且每个专家的工作量随负载变化的工作负载提供高效的 Indexed 和 Grouped 路径。在下图中，H20 和 H200 上的 MXFP4 W4A16 在若干中大批量场景下达到约 Marlin 的两倍性能。在 B300 上，MXINT4 和 NVFP4 路径在大批量下取得更大收益，其中 Grouped 路径达到约 5 倍。SM120 和 SM121 上的结果也显示，Humming 在一系列工作负载中优于 Marlin 及相应的 FlashInfer 实现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 的优化还从 W4A16 扩展到其他 WnA16 组合。其共享的反量化与计算路径为不同位宽的整数和浮点权重提供强劲性能，包括 INT1、INT2、INT3 以及 FP4 到 FP8。下图展示了这些格式在小批量和中等批量下的广泛收益，其中 SM120 上的最低位宽配置超过 BF16 cuBLAS 性能的 5 倍。在 H20 的大批量下，多个位宽保持接近 BF16 cuBLAS 的计算效率。这使模型能够在精度、存储和吞吐之间做出更细粒度的选择。",
+          "inlines": [
+            {
+              "text": "Humming 的优化还从 W4A16 扩展到其他 WnA16 组合。其共享的反量化与计算路径为不同位宽的整数和浮点权重提供强劲性能，包括 INT1、INT2、INT3 以及 FP4 到 FP8。下图展示了这些格式在小批量和中等批量下的广泛收益，其中 SM120 上的最低位宽配置超过 BF16 cuBLAS 性能的 5 倍。在 H20 的大批量下，多个位宽保持接近 BF16 cuBLAS 的计算效率。这使模型能够在精度、存储和吞吐之间做出更细粒度的选择。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "W8A8 / W4A8 / W4A4",
+          "inlines": [
+            {
+              "text": "W8A8 / W4A8 / W4A4"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Hopper 上，采用块级缩放的 FP8 W8A8 已成为高性能量化推理的主流方法。Humming 通过协同优化数据移动、缩放和专家调度，进一步改进这一成熟的计算路径。下方左列展示了 H20 和 H200 上的 W8A8 结果。在小批量和中等批量下，Humming 分别达到 DeepGEMM Contiguous 约 2.6 倍和 2.5 倍的性能，Indexed 和 Grouped 两种布局均具有竞争力。",
+          "inlines": [
+            {
+              "text": "在 Hopper 上，采用块级缩放的 FP8 W8A8 已成为高性能量化推理的主流方法。Humming 通过协同优化数据移动、缩放和专家调度，进一步改进这一成熟的计算路径。下方左列展示了 H20 和 H200 上的 W8A8 结果。在小批量和中等批量下，Humming 分别达到 DeepGEMM Contiguous 约 2.6 倍和 2.5 倍的性能，Indexed 和 Grouped 两种布局均具有竞争力。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随着更多模型采用原生 MXFP4 权重量化，将更小的权重占用转化为实际推理收益变得越来越有价值。Humming 通过高效的 W4A8 路径解决这一问题：在加载 MXFP4 权重时快速反量化，并使用 FP8 Tensor Core 进行计算，从而在 Hopper 上实现高效的 W4A8-MXFP4 执行。上方右列以 DeepGEMM W8A8 为基线。在小批量和中等批量下，Humming 的 W4A8 在 H20 上达到约 4.2 倍基线性能，在 H200 上达到 4.5 倍，同时也大幅优于同一图中 Humming 的 W8A8 结果。权重流量的减少转化为更低的 GEMM 延迟。FlashInfer CUTLASS W4A8 也是基于 Humming 方法的实现，而 Humming 当前的实现在此处展示的基准测试中取得更好性能。",
+          "inlines": [
+            {
+              "text": "随着更多模型采用原生 MXFP4 权重量化，将更小的权重占用转化为实际推理收益变得越来越有价值。Humming 通过高效的 W4A8 路径解决这一问题：在加载 MXFP4 权重时快速反量化，并使用 FP8 Tensor Core 进行计算，从而在 Hopper 上实现高效的 W4A8-MXFP4 执行。上方右列以 DeepGEMM W8A8 为基线。在小批量和中等批量下，Humming 的 W4A8 在 H20 上达到约 4.2 倍基线性能，在 H200 上达到 4.5 倍，同时也大幅优于同一图中 Humming 的 W8A8 结果。权重流量的减少转化为更低的 GEMM 延迟。FlashInfer CUTLASS W4A8 也是基于 Humming 方法的实现，而 Humming 当前的实现在此处展示的基准测试中取得更好性能。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Blackwell 为 MXFP8 和 MXFP4 等微缩放格式增加了原生 Tensor Core 支持。从数据中心 SM100/SM103 设备到面向工作站和个人计算的 SM120/SM121 设备，Humming 利用各架构的低精度计算能力，在单一内核和调优框架内支持 W8A8、W4A8 和 W4A4。",
+          "inlines": [
+            {
+              "text": "Blackwell 为 MXFP8 和 MXFP4 等微缩放格式增加了原生 Tensor Core 支持。从数据中心 SM100/SM103 设备到面向工作站和个人计算的 SM120/SM121 设备，Humming 利用各架构的低精度计算能力，在单一内核和调优框架内支持 W8A8、W4A8 和 W4A4。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 B300（SM103）上，Humming 在全部三种 MX 格式组合下均展现出显著的性能提升。下方每个面板均以对应精度下的 DeepGEMM Contiguous 作为基线。在中小批量规模下，W8A8、W4A8 和 W4A4 分别达到约 1.25×、1.6× 和 1.4× 的基线性能，并在许多工作负载下优于对应的 FlashInfer 实现。Indexed 和 Grouped 两条路径均受益于原生低精度计算，为不同的专家布局提供了高效选项。",
+          "inlines": [
+            {
+              "text": "在 B300（SM103）上，Humming 在全部三种 MX 格式组合下均展现出显著的性能提升。下方每个面板均以对应精度下的 DeepGEMM Contiguous 作为基线。在中小批量规模下，W8A8、W4A8 和 W4A4 分别达到约 1.25×、1.6× 和 1.4× 的基线性能，并在许多工作负载下优于对应的 FlashInfer 实现。Indexed 和 Grouped 两条路径均受益于原生低精度计算，为不同的专家布局提供了高效选项。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些收益同样延伸至 SM120 和 SM121。在下方结果中，Humming 的 MXFP4 × MXFP8 W4A8 和 NVFP4 × NVFP4 W4A4 在大多数测试点上优于 FlashInfer CUTLASS。在 SM121 的小批量规模下，W4A8 的性能提升约达 19%，W4A4 约达 9%；在 SM120 上，Humming 在大多数测试规模下同样领先。统一架构将这些低精度推理优化带到更多设备，把高效量化计算扩展到数据中心之外。",
+          "inlines": [
+            {
+              "text": "这些收益同样延伸至 SM120 和 SM121。在下方结果中，Humming 的 MXFP4 × MXFP8 W4A8 和 NVFP4 × NVFP4 W4A4 在大多数测试点上优于 FlashInfer CUTLASS。在 SM121 的小批量规模下，W4A8 的性能提升约达 19%，W4A4 约达 9%；在 SM120 上，Humming 在大多数测试规模下同样领先。统一架构将这些低精度推理优化带到更多设备，把高效量化计算扩展到数据中心之外。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "端到端推理性能",
+          "inlines": [
+            {
+              "text": "端到端推理性能"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 的 W4A8 收益延伸至模型服务。在我们于八块 H20 GPU 上以 TP=8 进行的 DeepSeek-V4.1-Flash 测试中，保持模型 MXFP4 权重不变，并将 MoE 执行从 Marlin W4A16（BF16 激活）切换为 Humming W4A8（tokenwise FP8 激活），端到端吞吐提升约 14%–43%，平均首 token 时延（TTFT）降低约 25%–32%。吞吐优势随并发度增长而扩大：在并发度为 64 时，输出吞吐从 442.37 tokens/s 提升至 633.94 tokens/s，而平均每输出 token 耗时（TPOT）下降约 31%。",
+          "inlines": [
+            {
+              "text": "Humming 的 W4A8 收益延伸至模型服务。在我们于八块 H20 GPU 上以 TP=8 进行的 DeepSeek-V4.1-Flash 测试中，保持模型 MXFP4 权重不变，并将 MoE 执行从 Marlin W4A16（BF16 激活）切换为 Humming W4A8（tokenwise FP8 激活），端到端吞吐提升约 "
+            },
+            {
+              "bold": true,
+              "text": "14%–43%"
+            },
+            {
+              "text": "，平均首 token 时延（TTFT）降低约 "
+            },
+            {
+              "bold": true,
+              "text": "25%–32%"
+            },
+            {
+              "text": "。吞吐优势随并发度增长而扩大：在并发度为 64 时，输出吞吐从 442.37 tokens/s 提升至 633.94 tokens/s，而平均每输出 token 耗时（TPOT）下降约 "
+            },
+            {
+              "bold": true,
+              "text": "31%"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "并发度",
+          "inlines": [
+            {
+              "text": "并发度"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MoE 后端",
+          "inlines": [
+            {
+              "text": "MoE 后端"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "输入吞吐（tokens/s）↑",
+          "inlines": [
+            {
+              "text": "输入吞吐（tokens/s）↑"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "输出吞吐（tokens/s）↑",
+          "inlines": [
+            {
+              "text": "输出吞吐（tokens/s）↑"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TTFT（ms）↓",
+          "inlines": [
+            {
+              "text": "TTFT（ms）↓"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TPOT（ms）↓",
+          "inlines": [
+            {
+              "text": "TPOT（ms）↓"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2827.15",
+          "inlines": [
+            {
+              "text": "2827.15"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.30",
+          "inlines": [
+            {
+              "text": "88.30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "543.13",
+          "inlines": [
+            {
+              "text": "543.13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.24",
+          "inlines": [
+            {
+              "text": "9.24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3226.23 (+14.1%)",
+          "inlines": [
+            {
+              "text": "3226.23 (+14.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "100.77 (+14.1%)",
+          "inlines": [
+            {
+              "text": "100.77 (+14.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "383.80 (-29.3%)",
+          "inlines": [
+            {
+              "text": "383.80 (-29.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.46 (-8.5%)",
+          "inlines": [
+            {
+              "text": "8.46 (-8.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2",
+          "inlines": [
+            {
+              "text": "2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4781.06",
+          "inlines": [
+            {
+              "text": "4781.06"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "149.33",
+          "inlines": [
+            {
+              "text": "149.33"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "794.31",
+          "inlines": [
+            {
+              "text": "794.31"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.33",
+          "inlines": [
+            {
+              "text": "10.33"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2",
+          "inlines": [
+            {
+              "text": "2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5646.98 (+18.1%)",
+          "inlines": [
+            {
+              "text": "5646.98 (+18.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "176.38 (+18.1%)",
+          "inlines": [
+            {
+              "text": "176.38 (+18.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "555.66 (-30.0%)",
+          "inlines": [
+            {
+              "text": "555.66 (-30.0%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.20 (-10.9%)",
+          "inlines": [
+            {
+              "text": "9.20 (-10.9%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7427.64",
+          "inlines": [
+            {
+              "text": "7427.64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "231.99",
+          "inlines": [
+            {
+              "text": "231.99"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1422.32",
+          "inlines": [
+            {
+              "text": "1422.32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11.72",
+          "inlines": [
+            {
+              "text": "11.72"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9160.81 (+23.3%)",
+          "inlines": [
+            {
+              "text": "9160.81 (+23.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "286.12 (+23.3%)",
+          "inlines": [
+            {
+              "text": "286.12 (+23.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "971.74 (-31.7%)",
+          "inlines": [
+            {
+              "text": "971.74 (-31.7%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.22 (-12.9%)",
+          "inlines": [
+            {
+              "text": "10.22 (-12.9%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9190.03",
+          "inlines": [
+            {
+              "text": "9190.03"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "287.04",
+          "inlines": [
+            {
+              "text": "287.04"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2049.81",
+          "inlines": [
+            {
+              "text": "2049.81"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "19.90",
+          "inlines": [
+            {
+              "text": "19.90"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12263.89 (+33.4%)",
+          "inlines": [
+            {
+              "text": "12263.89 (+33.4%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "383.04 (+33.4%)",
+          "inlines": [
+            {
+              "text": "383.04 (+33.4%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1386.91 (-32.3%)",
+          "inlines": [
+            {
+              "text": "1386.91 (-32.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.49 (-22.2%)",
+          "inlines": [
+            {
+              "text": "15.49 (-22.2%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11124.67",
+          "inlines": [
+            {
+              "text": "11124.67"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "348.96",
+          "inlines": [
+            {
+              "text": "348.96"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2463.69",
+          "inlines": [
+            {
+              "text": "2463.69"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "36.28",
+          "inlines": [
+            {
+              "text": "36.28"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15171.00 (+36.4%)",
+          "inlines": [
+            {
+              "text": "15171.00 (+36.4%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "475.89 (+36.4%)",
+          "inlines": [
+            {
+              "text": "475.89 (+36.4%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1844.71 (-25.1%)",
+          "inlines": [
+            {
+              "text": "1844.71 (-25.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26.44 (-27.1%)",
+          "inlines": [
+            {
+              "text": "26.44 (-27.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12669.43",
+          "inlines": [
+            {
+              "text": "12669.43"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "398.83",
+          "inlines": [
+            {
+              "text": "398.83"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3546.74",
+          "inlines": [
+            {
+              "text": "3546.74"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "66.44",
+          "inlines": [
+            {
+              "text": "66.44"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17804.79 (+40.5%)",
+          "inlines": [
+            {
+              "text": "17804.79 (+40.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "560.49 (+40.5%)",
+          "inlines": [
+            {
+              "text": "560.49 (+40.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2465.47 (-30.5%)",
+          "inlines": [
+            {
+              "text": "2465.47 (-30.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "47.48 (-28.5%)",
+          "inlines": [
+            {
+              "text": "47.48 (-28.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "64",
+          "inlines": [
+            {
+              "text": "64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13937.42",
+          "inlines": [
+            {
+              "text": "13937.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "442.37",
+          "inlines": [
+            {
+              "text": "442.37"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5467.35",
+          "inlines": [
+            {
+              "text": "5467.35"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "123.25",
+          "inlines": [
+            {
+              "text": "123.25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "64",
+          "inlines": [
+            {
+              "text": "64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "19973.00 (+43.3%)",
+          "inlines": [
+            {
+              "text": "19973.00 (+43.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "633.94 (+43.3%)",
+          "inlines": [
+            {
+              "text": "633.94 (+43.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3882.94 (-29.0%)",
+          "inlines": [
+            {
+              "text": "3882.94 (-29.0%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "85.70 (-30.5%)",
+          "inlines": [
+            {
+              "text": "85.70 (-30.5%)"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "用法",
+          "inlines": [
+            {
+              "text": "用法"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "安装",
+          "inlines": [
+            {
+              "text": "安装"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "使用 pip 安装 Humming：",
+          "inlines": [
+            {
+              "text": "使用 pip 安装 Humming："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "pip install humming-kernels"
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 使用 CUDA 编译器按需生成内核。如果系统上没有可用的 CUDA 编译器，请选择以下安装选项之一，以包含适用于你所在环境 CUDA 主版本的编译依赖：",
+          "inlines": [
+            {
+              "text": "Humming 使用 CUDA 编译器按需生成内核。如果系统上没有可用的 CUDA 编译器，请选择以下安装选项之一，以包含适用于你所在环境 CUDA 主版本的编译依赖："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "pip install \"humming-kernels[cu12]\"  # CUDA 12\npip install \"humming-kernels[cu13]\"  # CUDA 13"
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 本身极为轻量，依赖简单，wheel 包仅约 500 KB。按需编译避免了打包大量预编译内核。原则上，任何能够运行 PyTorch 2.7 的环境也能运行 Humming，因此易于集成到现有推理环境中。",
+          "inlines": [
+            {
+              "text": "Humming 本身极为轻量，依赖简单，wheel 包仅约 500 KB。按需编译避免了打包大量预编译内核。原则上，任何能够运行 PyTorch 2.7 的环境也能运行 Humming，因此易于集成到现有推理环境中。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在 vLLM 中使用 Humming",
+          "inlines": [
+            {
+              "text": "在 vLLM 中使用 Humming"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 已深度集成到 vLLM 中。从 vLLM 0.29.0 开始，CUDA 安装已包含 Humming 作为依赖，因此无需单独安装 Humming。Humming 支持从 Turing 起所有架构的 NVIDIA GPU（SM75 及以上）。",
+          "inlines": [
+            {
+              "text": "Humming 已深度集成到 vLLM 中。从 vLLM 0.29.0 开始，CUDA 安装已包含 Humming 作为依赖，因此无需单独安装 Humming。Humming 支持从 Turing 起所有架构的 NVIDIA GPU（SM75 及以上）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "--linear-backend 和 --moe-backend 选项分别选择 Humming 作为稠密 GEMM 和 MoE GEMM 的计算后端。例如，在张量并行规模为 8 时同时为两者启用 Humming：",
+          "inlines": [
+            {
+              "code": true,
+              "text": "--linear-backend"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "--moe-backend"
+            },
+            {
+              "text": " 选项分别选择 Humming 作为稠密 GEMM 和 MoE GEMM 的计算后端。例如，在张量并行规模为 8 时同时为两者启用 Humming："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve deepseek-ai/DeepSeek-V4.1-Flash-1017 \\\n    --tensor-parallel-size 8 \\\n    --linear-backend humming --moe-backend humming"
+        },
+        {
+          "type": "paragraph",
+          "text": "--quantization humming 选项仅作为兼容路径，用于 Humming 支持但 vLLM 不再支持或尚未原生支持的格式，例如 GPTQ INT3。例如，通过此兼容路径加载 GPTQ INT3 检查点：",
+          "inlines": [
+            {
+              "code": true,
+              "text": "--quantization humming"
+            },
+            {
+              "text": " 选项仅作为兼容路径，用于 Humming 支持但 vLLM 不再支持或尚未原生支持的格式，例如 GPTQ INT3。例如，通过此兼容路径加载 GPTQ INT3 检查点："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve hfl/Qwen2.5-VL-3B-Instruct-GPTQ-Int3 --quantization humming"
+        },
+        {
+          "type": "heading",
+          "text": "选择激活类型",
+          "inlines": [
+            {
+              "text": "选择激活类型"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "默认情况下，Humming 使用 checkpoint 中指定的激活类型，并根据设备调整执行方式。如果 GPU 不支持该计算类型，Humming 会回退到受支持的更高精度类型。例如，不具备原生 MXFP4 支持的设备可以自动使用 FP8、BF16 或 FP16 计算路径，从而让同一个量化 checkpoint 跨 GPU 代际运行。",
+          "inlines": [
+            {
+              "text": "默认情况下，Humming 使用 checkpoint 中指定的激活类型，并根据设备调整执行方式。如果 GPU 不支持该计算类型，Humming 会回退到受支持的更高精度类型。例如，不具备原生 MXFP4 支持的设备可以自动使用 FP8、BF16 或 FP16 计算路径，从而让同一个量化 checkpoint 跨 GPU 代际运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户可以通过 vLLM 的量化配置接口覆盖默认设置，为部署选择激活类型。以下示例将 MoE 层的激活类型设置为 MXFP8：",
+          "inlines": [
+            {
+              "text": "用户可以通过 vLLM 的量化配置接口覆盖默认设置，为部署选择激活类型。以下示例将 MoE 层的激活类型设置为 MXFP8："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve openai/gpt-oss-20b --moe-backend humming --quantization-config.moe.activation mxfp8"
+        },
+        {
+          "type": "heading",
+          "text": "未来计划",
+          "inlines": [
+            {
+              "text": "未来计划"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "更广泛、更深入的设备支持",
+          "inlines": [
+            {
+              "text": "更广泛、更深入的设备支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 将继续扩大硬件覆盖范围，同时适配新设备的计算与内存能力，帮助更多平台释放量化推理的性能潜力。优先事项包括：",
+          "inlines": [
+            {
+              "text": "Humming 将继续扩大硬件覆盖范围，同时适配新设备的计算与内存能力，帮助更多平台释放量化推理的性能潜力。优先事项包括："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "支持更多 Rubin 架构特性，包括 Locality Domains，以进一步优化任务映射和数据访问。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "将支持扩展到更多 T-Head PPU 设备，包括 Zhenwu M890。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "支持更多兼容 CUDA 编程的设备，将现有量化格式、内核组件和调优能力带到更多硬件平台。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "加入 Autotune",
+          "inlines": [
+            {
+              "text": "加入 Autotune"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "通过针对性调优，Humming 在大多数场景下已经能够达到业界领先的性能。然而，模型形状、量化配置和设备资源的范围十分广泛，启发式方法难以在每种情况下都选出最优配置。",
+          "inlines": [
+            {
+              "text": "通过针对性调优，Humming 在大多数场景下已经能够达到业界领先的性能。然而，模型形状、量化配置和设备资源的范围十分广泛，启发式方法难以在每种情况下都选出最优配置。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "因此，Humming 计划引入 autotune，在目标设备上对候选配置进行基准测试，为每个工作负载找到更好的执行参数。Autotune 将补充现有启发式方法，减少手动配置搜索，帮助更多工作负载接近内核可达到的最佳性能。",
+          "inlines": [
+            {
+              "text": "因此，Humming 计划引入 autotune，在目标设备上对候选配置进行基准测试，为每个工作负载找到更好的执行参数。Autotune 将补充现有启发式方法，减少手动配置搜索，帮助更多工作负载接近内核可达到的最佳性能。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "与推理框架的更深集成",
+          "inlines": [
+            {
+              "text": "与推理框架的更深集成"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 将继续深化与 vLLM 等推理框架的集成，扩大在量化模型加载、后端选择、并行推理、运行时调度和设备适配等方面的支持。我们的目标是让更多量化方法能够配合框架的完整能力，包括面向专家并行（EP）的量化 All-to-All（A2A）通信等优化。这些工作将使高性能量化内核在多样化部署场景中更易使用，并帮助将内核性能收益转化为端到端推理收益。",
+          "inlines": [
+            {
+              "text": "Humming 将继续深化与 vLLM 等推理框架的集成，扩大在量化模型加载、后端选择、并行推理、运行时调度和设备适配等方面的支持。我们的目标是让更多量化方法能够配合框架的完整能力，包括面向专家并行（EP）的量化 All-to-All（A2A）通信等优化。这些工作将使高性能量化内核在多样化部署场景中更易使用，并帮助将内核性能收益转化为端到端推理收益。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "致谢",
+          "inlines": [
+            {
+              "text": "致谢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们感谢蚂蚁集团的 Jinzhen Lin、Zekai Gu 和 Zhilin Huang，以及 Michael Goin、Roberto L. Castro、Chauncey Jiang 和 vLLM 社区的其他成员，感谢他们在 Humming 开发过程中的贡献与支持。",
+          "inlines": [
+            {
+              "text": "我们感谢蚂蚁集团的 Jinzhen Lin、Zekai Gu 和 Zhilin Huang，以及 Michael Goin、Roberto L. Castro、Chauncey Jiang 和 vLLM 社区的其他成员，感谢他们在 Humming 开发过程中的贡献与支持。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还要感谢 vLLM 社区提供开发、测试和 CI 资源，使我们能够在广泛的硬件和工作负载上验证并改进 Humming。",
+          "inlines": [
+            {
+              "text": "我们还要感谢 vLLM 社区提供开发、测试和 CI 资源，使我们能够在广泛的硬件和工作负载上验证并改进 Humming。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming 的设计与优化灵感来自 Marlin、vLLM Marlin、LMDeploy、DeepGEMM、FlashInfer、CUTLASS 及其他开源项目。我们感谢这些项目的作者和贡献者分享他们的想法与实现，帮助推动整个社区的高性能量化推理发展。",
+          "inlines": [
+            {
+              "text": "Humming 的设计与优化灵感来自 Marlin、vLLM Marlin、LMDeploy、DeepGEMM、FlashInfer、CUTLASS 及其他开源项目。我们感谢这些项目的作者和贡献者分享他们的想法与实现，帮助推动整个社区的高性能量化推理发展。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Ant Group and the vLLM community are open-sourcing Humming, a general-purpose, high-performance kernel library for quantized inference. Humming offers the following features:",
+          "inlines": [
+            {
+              "text": "Ant Group and the vLLM community are open-sourcing Humming, a general-purpose, high-performance kernel library for quantized inference. Humming offers the following features:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Broad device support"
+                },
+                {
+                  "text": ": Supports NVIDIA GPU architectures from Turing onward, along with CUDA-compatible devices such as T-Head's Zhenwu 810E."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Extensive quantization support"
+                },
+                {
+                  "text": ": A unified architecture supports diverse combinations of weight and activation formats for dense and MoE workloads, covering a wide range of integer and floating-point types, bit widths, and scaling schemes."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Strong execution performance"
+                },
+                {
+                  "text": ": Significantly outperforms existing implementations from vLLM Marlin, FlashInfer, and DeepGEMM across many representative workloads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Repository: github.com/vllm-project/humming",
+          "inlines": [
+            {
+              "text": "Repository: "
+            },
+            {
+              "href": "https://github.com/vllm-project/humming",
+              "text": "github.com/vllm-project/humming"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Background",
+          "inlines": [
+            {
+              "text": "Background"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "As models and inference workloads grow, memory capacity, memory bandwidth, and compute costs increasingly constrain deployment. This is especially apparent in MoE models: each token activates only a subset of experts, but the full set of weights still needs to be stored. DeepSeek-V3, for example, has 671 billion parameters, with 37 billion activated per token. Quantization lowers the precision of weights and activations to reduce memory usage and data movement, and can also improve compute efficiency.",
+          "inlines": [
+            {
+              "text": "As models and inference workloads grow, memory capacity, memory bandwidth, and compute costs increasingly constrain deployment. This is especially apparent in MoE models: each token activates only a subset of experts, but the full set of weights still needs to be stored. DeepSeek-V3, for example, has 671 billion parameters, with 37 billion activated per token. Quantization lowers the precision of weights and activations to reduce memory usage and data movement, and can also improve compute efficiency."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Quantization requirements vary across models and GPU generations. Common configurations include WNA16, W8A8, W4A8, and W4A4, where W and A specify weight and activation bit widths, and N denotes a variable weight bit width. Even at the same precision, schemes such as INT4 and NVFP4 differ in numeric format and scaling. Scaling granularity, scale representation, group size, and symmetric or asymmetric quantization further expand the configuration space.",
+          "inlines": [
+            {
+              "text": "Quantization requirements vary across models and GPU generations. Common configurations include WNA16, W8A8, W4A8, and W4A4, where W and A specify weight and activation bit widths, and N denotes a variable weight bit width. Even at the same precision, schemes such as INT4 and NVFP4 differ in numeric format and scaling. Scaling granularity, scale representation, group size, and symmetric or asymmetric quantization further expand the configuration space."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These storage and compute savings only translate into lower latency and higher throughput with efficient kernels. Prefill, decode, and varying MoE expert loads place different demands on compute and memory. Kernels must adapt to these workloads while keeping conversion, dequantization, and scheduling overhead low.",
+          "inlines": [
+            {
+              "text": "These storage and compute savings only translate into lower latency and higher throughput with efficient kernels. Prefill, decode, and varying MoE expert loads place different demands on compute and memory. Kernels must adapt to these workloads while keeping conversion, dequantization, and scheduling overhead low."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Developing and integrating a dedicated kernel for every combination creates a growing maintenance burden. Each addition can require its own weight preprocessing, kernel selection, framework adapters, and tests. Optimizations must then be carried across multiple implementations.",
+          "inlines": [
+            {
+              "text": "Developing and integrating a dedicated kernel for every combination creates a growing maintenance burden. Each addition can require its own weight preprocessing, kernel selection, framework adapters, and tests. Optimizations must then be carried across multiple implementations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming addresses this problem by separating quantization descriptions from execution choices and composing kernels from shared components.",
+          "inlines": [
+            {
+              "text": "Humming addresses this problem by separating quantization descriptions from execution choices and composing kernels from shared components."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "General-Purpose Architecture",
+          "inlines": [
+            {
+              "text": "General-Purpose Architecture"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming's execution path has three parts: represent the quantized computation, select configurations for the hardware and workload, and compile a kernel from CUDA components.",
+          "inlines": [
+            {
+              "text": "Humming's execution path has three parts: represent the quantized computation, select configurations for the hardware and workload, and compile a kernel from CUDA components."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A Unified Quantization Representation",
+          "inlines": [
+            {
+              "text": "A Unified Quantization Representation"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Models exported by different quantization tools vary in numeric format, parameter organization, and weight layout. Humming converts supported export formats into the Humming standard format: a common quantization description with consistently organized weights, scales, zero points, and other tensors.",
+          "inlines": [
+            {
+              "text": "Models exported by different quantization tools vary in numeric format, parameter organization, and weight layout. Humming converts supported export formats into the Humming standard format: a common quantization description with consistently organized weights, scales, zero points, and other tensors."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This representation preserves each scheme's quantization semantics while describing weight format, scaling granularity, scale data type, zero points, and secondary scales as separate parameters. Activations have their own numeric format and quantization settings. These parameters can be combined subject to format and hardware constraints.",
+          "inlines": [
+            {
+              "text": "This representation preserves each scheme's quantization semantics while describing weight format, scaling granularity, scale data type, zero points, and secondary scales as separate parameters. Activations have their own numeric format and quantization settings. These parameters can be combined subject to format and hardware constraints."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For example, groupwise INT4 weights can be paired with BF16 activations. Low-precision floating-point weights with different scaling schemes use the same parameter system. This gives inference frameworks a common interface for models from different sources.",
+          "inlines": [
+            {
+              "text": "For example, groupwise INT4 weights can be paired with BF16 activations. Low-precision floating-point weights with different scaling schemes use the same parameter system. This gives inference frameworks a common interface for models from different sources."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Tuning and JIT Compilation for Each Workload",
+          "inlines": [
+            {
+              "text": "Tuning and JIT Compilation for Each Workload"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The standard format provides a common representation across export formats. Preprocessing then validates parameters, pads dimensions, and repacks these tensors into layouts suited to the target kernel. Humming combines the quantization description with the weight shape, GEMM type, target GPU, and compute options to configure execution.",
+          "inlines": [
+            {
+              "text": "The standard format provides a common representation across export formats. Preprocessing then validates parameters, pads dimensions, and repacks these tensors into layouts suited to the target kernel. Humming combines the quantization description with the weight shape, GEMM type, target GPU, and compute options to configure execution."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Three configurations describe the kernel:",
+          "inlines": [
+            {
+              "text": "Three configurations describe the kernel:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Layer Config"
+                },
+                {
+                  "text": " describes tensor shapes, data types, quantization parameters, and the target architecture."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Compute Config"
+                },
+                {
+                  "text": " specifies the GEMM type and computation options, such as batch invariance and input scale layout."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Tuning Config"
+                },
+                {
+                  "text": " selects tile shapes, pipeline stage counts, warp specialization, memory access, and MMA instructions. It also controls concurrency and scheduling; TMA can be configured per tensor."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "By default, Humming selects tuning configurations using device-specific heuristics. It can prepare different configurations for ranges of input sizes and dispatch to the appropriate kernel at runtime.",
+          "inlines": [
+            {
+              "text": "By default, Humming selects tuning configurations using device-specific heuristics. It can prepare different configurations for ranges of input sizes and dispatch to the appropriate kernel at runtime."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming’s unified architecture makes it straightforward to tune execution parameters and select pipelines for different workloads. At small batch sizes, a multistage pipeline using asynchronous copies (cp.async) and MMA can outperform a pipeline built around TMA and UMMA. At larger batch sizes, TMA and UMMA can offer better throughput. Humming accommodates both execution paths within the same configuration and component framework, allowing it to select the more effective strategy for each workload.",
+          "inlines": [
+            {
+              "text": "Humming’s unified architecture makes it straightforward to tune execution parameters and select pipelines for different workloads. At small batch sizes, a multistage pipeline using asynchronous copies ("
+            },
+            {
+              "code": true,
+              "text": "cp.async"
+            },
+            {
+              "text": ") and MMA can outperform a pipeline built around TMA and UMMA. At larger batch sizes, TMA and UMMA can offer better throughput. Humming accommodates both execution paths within the same configuration and component framework, allowing it to select the more effective strategy for each workload."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Together, the three configurations specialize kernels compiled with NVRTC or NVCC. Compiled kernels are cached for reuse. Inference combines the selected kernel with the preprocessed weights and runtime activations.",
+          "inlines": [
+            {
+              "text": "Together, the three configurations specialize kernels compiled with NVRTC or NVCC. Compiled kernels are cached for reuse. Inference combines the selected kernel with the preprocessed weights and runtime activations."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Shared CUDA Components Across Formats and Architectures",
+          "inlines": [
+            {
+              "text": "Shared CUDA Components Across Formats and Architectures"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "At the CUDA level, Humming organizes task scheduling, data movement, dequantization and scaling, Tensor Core computation, and output processing into reusable components. It provides standard, warp-specialized, and dedicated UMMA pipelines. These pipelines share compatible components while using the dataflow and synchronization required by each execution strategy.",
+          "inlines": [
+            {
+              "text": "At the CUDA level, Humming organizes task scheduling, data movement, dequantization and scaling, Tensor Core computation, and output processing into reusable components. It provides standard, warp-specialized, and dedicated UMMA pipelines. These pipelines share compatible components while using the dataflow and synchronization required by each execution strategy."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each group of components handles a different source of variation:",
+          "inlines": [
+            {
+              "text": "Each group of components handles a different source of variation:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Numeric processing handles quantization formats."
+                },
+                {
+                  "text": " Decoding and arithmetic components account for bit width, integer or floating-point representation, scales, and zero points. Dequantization and scaling are integrated into the kernel's computation."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Memory and compute backends handle GPU architectures."
+                },
+                {
+                  "text": " Humming selects data movement and Tensor Core implementations for the target architecture, using asynchronous copies, TMA, and multicast where supported."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Task mapping and scheduling handle dense and MoE workloads."
+                },
+                {
+                  "text": " Each GEMM type uses the appropriate scheduling logic. Scaling and bias addition can also be fused into the output stage."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "JIT compilation combines these components according to the three configurations and eliminates unused implementation branches. A new format or architecture can therefore be supported by extending the relevant components. Improvements to a shared component benefit compatible configurations, reducing the duplicated development and maintenance of separate specialized kernels.",
+          "inlines": [
+            {
+              "text": "JIT compilation combines these components according to the three configurations and eliminates unused implementation branches. A new format or architecture can therefore be supported by extending the relevant components. Improvements to a shared component benefit compatible configurations, reducing the duplicated development and maintenance of separate specialized kernels."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This CUDA implementation is lightweight and avoids heavyweight kernel framework dependencies, keeping JIT compilation fast as well. In our single W4A16 kernel compilation test on an H200 server with CUDA 13.4, compilation time dropped from 23.35 seconds for CUTLASS with NVCC to 1.82 seconds for Humming with NVCC or 1.88 seconds with NVRTC, with compilation caches disabled. This reduces the cost of preparing kernels for new workloads and makes iterative tuning more practical. Humming also compiles kernels in parallel during model warmup. In our tests, compiling and loading the kernels covering all supported M sizes for a single layer's GEMM takes only about 2–4 seconds, making it practical to prepare multiple specialized kernels before inference.",
+          "inlines": [
+            {
+              "text": "This CUDA implementation is lightweight and avoids heavyweight kernel framework dependencies, keeping JIT compilation fast as well. In our single W4A16 kernel compilation test on an H200 server with CUDA 13.4, compilation time dropped from "
+            },
+            {
+              "bold": true,
+              "text": "23.35 seconds for CUTLASS with NVCC"
+            },
+            {
+              "text": " to "
+            },
+            {
+              "bold": true,
+              "text": "1.82 seconds for Humming with NVCC"
+            },
+            {
+              "text": " or "
+            },
+            {
+              "bold": true,
+              "text": "1.88 seconds with NVRTC"
+            },
+            {
+              "text": ", with compilation caches disabled. This reduces the cost of preparing kernels for new workloads and makes iterative tuning more practical. Humming also compiles kernels in parallel during model warmup. In our tests, compiling and loading the kernels covering all supported M sizes for a single layer's GEMM takes only "
+            },
+            {
+              "bold": true,
+              "text": "about 2–4 seconds"
+            },
+            {
+              "text": ", making it practical to prepare multiple specialized kernels before inference."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Performance Tuning Based on Device Parameters",
+          "inlines": [
+            {
+              "text": "Performance Tuning Based on Device Parameters"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming deeply optimizes kernels using both the GEMM configuration and device parameters. Quantization formats, matrix shapes, GPU instruction support, SM count, shared memory, and register resources all inform execution choices, turning the benefits of low-bit storage into practical inference performance.",
+          "inlines": [
+            {
+              "text": "Humming deeply optimizes kernels using both the GEMM configuration and device parameters. Quantization formats, matrix shapes, GPU instruction support, SM count, shared memory, and register resources all inform execution choices, turning the benefits of low-bit storage into practical inference performance."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Efficient W4A8-MXFP4 inference on existing GPUs. Architectures before Blackwell lack native MXFP4 Tensor Core support, and conventional W4A8-MXFP4 kernels can be limited by dequantization and scaling overhead at larger M. Humming addresses this with a fast MXFP4-to-INT8/FP8 dequantization path that converts MXFP4 weights into a supported compute format within the kernel. In this setting, the path substantially outperforms conventional W4A8 implementations at small M and approaches W8A8 performance at large M. GPUs such as H200 can therefore run high-performance W4A8-MXFP4 kernels while retaining the storage benefits of 4-bit weights.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Efficient W4A8-MXFP4 inference on existing GPUs."
+            },
+            {
+              "text": " Architectures before Blackwell lack native MXFP4 Tensor Core support, and conventional W4A8-MXFP4 kernels can be limited by dequantization and scaling overhead at larger M. Humming addresses this with a fast MXFP4-to-INT8/FP8 dequantization path that converts MXFP4 weights into a supported compute format within the kernel. In this setting, the path substantially outperforms conventional W4A8 implementations at small M and approaches W8A8 performance at large M. GPUs such as H200 can therefore run high-performance W4A8-MXFP4 kernels while retaining the storage benefits of 4-bit weights."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Dequantization paths matched to each device. The same quantization format can benefit from different implementations across GPUs. Humming selects decoding, numeric conversion, and scaling paths for the device, pairing them with suitable memory access and compute pipelines to reduce instruction and data movement overhead. Shared components make these optimizations reusable across compatible dense and MoE kernels.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Dequantization paths matched to each device."
+            },
+            {
+              "text": " The same quantization format can benefit from different implementations across GPUs. Humming selects decoding, numeric conversion, and scaling paths for the device, pairing them with suitable memory access and compute pipelines to reduce instruction and data movement overhead. Shared components make these optimizations reusable across compatible dense and MoE kernels."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Extensive tuning controls with device-specific heuristics. Humming exposes tile shapes, pipeline stage counts, warp specialization, TMA, MMA instructions, CTA concurrency, and Stream-K scheduling. Device-specific heuristics combine GEMM shapes with resource constraints to balance parallelism, data reuse, and pipeline overhead, selecting different execution strategies as input sizes change. Developers can use the default configurations directly or refine them for particular models and deployment scenarios.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Extensive tuning controls with device-specific heuristics."
+            },
+            {
+              "text": " Humming exposes tile shapes, pipeline stage counts, warp specialization, TMA, MMA instructions, CTA concurrency, and Stream-K scheduling. Device-specific heuristics combine GEMM shapes with resource constraints to balance parallelism, data reuse, and pipeline overhead, selecting different execution strategies as input sizes change. Developers can use the default configurations directly or refine them for particular models and deployment scenarios."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Results",
+          "inlines": [
+            {
+              "text": "Results"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Broad Device Support",
+          "inlines": [
+            {
+              "text": "Broad Device Support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming's unified architecture enables broad GPU support. For NVIDIA GPUs, Humming fully supports every architecture from Turing onward, bringing a common quantized computing framework to multiple generations of hardware.",
+          "inlines": [
+            {
+              "text": "Humming's unified architecture enables broad GPU support. For NVIDIA GPUs, Humming fully supports every architecture from Turing onward, bringing a common quantized computing framework to multiple generations of hardware."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The unified JIT architecture also makes it straightforward to extend Humming to other GPUs compatible with CUDA programming. Humming already fully supports T-Head's Zhenwu 810E, bringing its shared kernels and tuning capabilities to more hardware platforms.",
+          "inlines": [
+            {
+              "text": "The unified JIT architecture also makes it straightforward to extend Humming to other GPUs compatible with CUDA programming. Humming already fully supports T-Head's Zhenwu 810E, bringing its shared kernels and tuning capabilities to more hardware platforms."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The figure below shows the high-performance activation types supported by Humming on each device: types that can take full advantage of the device's peak compute capabilities. Some types omitted from the figure can still run through other instruction paths. For example, UMMA instructions on the B300 (SM103) no longer support INT8 computation, but earlier MMA instructions can still execute INT8 GEMM, with substantially lower performance.",
+          "inlines": [
+            {
+              "text": "The figure below shows the high-performance activation types supported by Humming on each device: types that can take full advantage of the device's peak compute capabilities. Some types omitted from the figure can still run through other instruction paths. For example, UMMA instructions on the B300 (SM103) no longer support INT8 computation, but earlier MMA instructions can still execute INT8 GEMM, with substantially lower performance."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Quantization Support",
+          "inlines": [
+            {
+              "text": "Quantization Support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming's support for quantization types depends primarily on compatibility between activation and weight types. Its unified quantization representation and kernel architecture allow a wide range of integer and floating-point weight formats to work with activations at different precisions, providing flexible choices for model precision and deployment performance.",
+          "inlines": [
+            {
+              "text": "Humming's support for quantization types depends primarily on compatibility between activation and weight types. Its unified quantization representation and kernel architecture allow a wide range of integer and floating-point weight formats to work with activations at different precisions, providing flexible choices for model precision and deployment performance."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The figure below shows the weight and activation type combinations supported by Humming. Rows represent weight types, columns represent activation types, and checks indicate supported combinations. Together with the device support matrix above, it outlines the high-performance quantized computation paths available on each hardware architecture.",
+          "inlines": [
+            {
+              "text": "The figure below shows the weight and activation type combinations supported by Humming. Rows represent weight types, columns represent activation types, and checks indicate supported combinations. Together with the device support matrix above, it outlines the high-performance quantized computation paths available on each hardware architecture."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming also supports a special floating-point format with zero exponent bits, whose representable values match those of symmetric integers at the same bit width. For example, INT8 excluding -128 and float8e0m7 both represent integers from -127 to 127. Weights in this format have the same activation type compatibility as INT weights of the same bit width. Humming automatically converts eligible symmetric integer weights to this format for faster dequantization.",
+          "inlines": [
+            {
+              "text": "Humming also supports a special floating-point format with zero exponent bits, whose representable values match those of symmetric integers at the same bit width. For example, INT8 excluding "
+            },
+            {
+              "code": true,
+              "text": "-128"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "float8e0m7"
+            },
+            {
+              "text": " both represent integers from "
+            },
+            {
+              "code": true,
+              "text": "-127"
+            },
+            {
+              "text": " to "
+            },
+            {
+              "code": true,
+              "text": "127"
+            },
+            {
+              "text": ". Weights in this format have the same activation type compatibility as INT weights of the same bit width. Humming automatically converts eligible symmetric integer weights to this format for faster dequantization."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The community has also uncovered two hidden capabilities in Blackwell Tensor Cores: native support for float4e0m3 and float8e3m4, two special floating-point formats that are not exposed in the PTX type system. Humming supports these features across all Blackwell architectures, including datacenter SM100/SM103 and SM120/SM121 devices for workstations and personal computing. Both formats are integrated into its unified quantization and compute framework, providing more native compute options for low-precision inference. Rubin does not support these two hidden Tensor Core formats, so support for these native compute paths does not extend to Rubin.",
+          "inlines": [
+            {
+              "text": "The community has also uncovered "
+            },
+            {
+              "href": "https://zhuanlan.zhihu.com/p/2059376150565089368",
+              "text": "two hidden capabilities in Blackwell Tensor Cores"
+            },
+            {
+              "text": ": native support for "
+            },
+            {
+              "code": true,
+              "text": "float4e0m3"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "float8e3m4"
+            },
+            {
+              "text": ", two special floating-point formats that are not exposed in the PTX type system. Humming supports these features across all Blackwell architectures, including datacenter SM100/SM103 and SM120/SM121 devices for workstations and personal computing. Both formats are integrated into its unified quantization and compute framework, providing more native compute options for low-precision inference. Rubin does not support these two hidden Tensor Core formats, so support for these native compute paths does not extend to Rubin."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Performance",
+          "inlines": [
+            {
+              "text": "Performance"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The kernel microbenchmarks below, run by the vLLM community, measure GEMM performance with M covering every power of two from 1 to 8192. Kernels are fully warmed up and timed independently with a cold L2 cache, with a brief pause between samples. MoE speedups use the sum of Gateup and Down GEMM latencies. Each figure identifies its baseline, quantization formats, matrix dimensions, and software versions.",
+          "inlines": [
+            {
+              "text": "The kernel microbenchmarks below, run by the vLLM community, measure GEMM performance with M covering every power of two from 1 to 8192. Kernels are fully warmed up and timed independently with a cold L2 cache, with a brief pause between samples. MoE speedups use the sum of Gateup and Down GEMM latencies. Each figure identifies its baseline, quantization formats, matrix dimensions, and software versions."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "WnA16",
+          "inlines": [
+            {
+              "text": "WnA16"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "WnA16 is one of the most versatile and widely used approaches to quantized inference. It combines low-bit weights with FP16/BF16 activations, reducing weight storage and memory traffic while making use of widely available 16-bit compute capabilities. This makes it suitable for many GPU generations and model deployment scenarios. The W4A16 family has attracted particular interest from the community and is a major focus of Humming's optimization work.",
+          "inlines": [
+            {
+              "text": "WnA16 is one of the most versatile and widely used approaches to quantized inference. It combines low-bit weights with FP16/BF16 activations, reducing weight storage and memory traffic while making use of widely available 16-bit compute capabilities. This makes it suitable for many GPU generations and model deployment scenarios. The W4A16 family has attracted particular interest from the community and is a major focus of Humming's optimization work."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For dense W4A16, Humming matches or outperforms vLLM Marlin in most tested configurations, with substantial gains on several Hopper and Blackwell workloads. The figure below uses cuBLAS as a common baseline. At small batch sizes, Humming delivers roughly 3–4× speedups on several devices. As batch size grows, it continues to use the hardware efficiently, reaching approximately twice Marlin's performance on large-batch H200 workloads and more than three times its performance in some B300 cases.",
+          "inlines": [
+            {
+              "text": "For dense W4A16, Humming matches or outperforms vLLM Marlin in most tested configurations, with substantial gains on several Hopper and Blackwell workloads. The figure below uses cuBLAS as a common baseline. At small batch sizes, Humming delivers roughly 3–4× speedups on several devices. As batch size grows, it continues to use the hardware efficiently, reaching approximately twice Marlin's performance on large-batch H200 workloads and more than three times its performance in some B300 cases."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These gains extend to MoE. Humming provides efficient Indexed and Grouped paths for workloads where tokens are distributed across experts and the amount of work per expert changes with the load. In the figure below, MXFP4 W4A16 on H20 and H200 reaches roughly twice Marlin's performance in several medium-to-large batch cases. On B300, the MXINT4 and NVFP4 paths achieve even larger gains at large batch sizes, with the Grouped path reaching approximately 5×. Results on SM120 and SM121 also show Humming outperforming Marlin and the corresponding FlashInfer implementations across a range of workloads.",
+          "inlines": [
+            {
+              "text": "These gains extend to MoE. Humming provides efficient Indexed and Grouped paths for workloads where tokens are distributed across experts and the amount of work per expert changes with the load. In the figure below, MXFP4 W4A16 on H20 and H200 reaches roughly twice Marlin's performance in several medium-to-large batch cases. On B300, the MXINT4 and NVFP4 paths achieve even larger gains at large batch sizes, with the Grouped path reaching approximately 5×. Results on SM120 and SM121 also show Humming outperforming Marlin and the corresponding FlashInfer implementations across a range of workloads."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming's optimizations also extend beyond W4A16 to other WnA16 combinations. Its shared dequantization and compute paths deliver strong performance for integer and floating-point weights at different bit widths, including INT1, INT2, INT3, and FP4 through FP8. The following figure shows broad gains across these formats at small and medium batch sizes, with the lowest-bit configurations on SM120 exceeding 5× the performance of BF16 cuBLAS. At large batch sizes on H20, multiple bit widths maintain compute efficiency close to BF16 cuBLAS. This gives models finer-grained choices among precision, storage, and throughput.",
+          "inlines": [
+            {
+              "text": "Humming's optimizations also extend beyond W4A16 to other WnA16 combinations. Its shared dequantization and compute paths deliver strong performance for integer and floating-point weights at different bit widths, including INT1, INT2, INT3, and FP4 through FP8. The following figure shows broad gains across these formats at small and medium batch sizes, with the lowest-bit configurations on SM120 exceeding 5× the performance of BF16 cuBLAS. At large batch sizes on H20, multiple bit widths maintain compute efficiency close to BF16 cuBLAS. This gives models finer-grained choices among precision, storage, and throughput."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "W8A8 / W4A8 / W4A4",
+          "inlines": [
+            {
+              "text": "W8A8 / W4A8 / W4A4"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "With Hopper, FP8 W8A8 with blockwise scaling became a mainstream approach to high-performance quantized inference. Humming further improves this established compute path by optimizing data movement, scaling, and expert scheduling together. The left column below shows W8A8 results on H20 and H200. At small and medium batch sizes, Humming reaches approximately 2.6× and 2.5× the performance of DeepGEMM Contiguous, respectively, with competitive performance from both Indexed and Grouped layouts.",
+          "inlines": [
+            {
+              "text": "With Hopper, FP8 W8A8 with blockwise scaling became a mainstream approach to high-performance quantized inference. Humming further improves this established compute path by optimizing data movement, scaling, and expert scheduling together. The left column below shows W8A8 results on H20 and H200. At small and medium batch sizes, Humming reaches approximately 2.6× and 2.5× the performance of DeepGEMM Contiguous, respectively, with competitive performance from both Indexed and Grouped layouts."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As more models adopt native MXFP4 weight quantization, converting the smaller weight footprint into practical inference gains becomes increasingly valuable. Humming addresses this with an efficient W4A8 path that rapidly dequantizes MXFP4 weights as they are loaded and uses FP8 Tensor Cores for computation, enabling efficient W4A8-MXFP4 execution on Hopper. The right column above keeps DeepGEMM W8A8 as the baseline. At small and medium batch sizes, Humming's W4A8 reaches approximately 4.2× baseline performance on H20 and 4.5× on H200, also substantially outperforming Humming's W8A8 results in the same figure. Reduced weight traffic translates into lower GEMM latency. FlashInfer CUTLASS W4A8 is also an implementation based on Humming's approach, while Humming's current implementation achieves better performance in the benchmarks shown here.",
+          "inlines": [
+            {
+              "text": "As more models adopt native MXFP4 weight quantization, converting the smaller weight footprint into practical inference gains becomes increasingly valuable. Humming addresses this with an efficient W4A8 path that rapidly dequantizes MXFP4 weights as they are loaded and uses FP8 Tensor Cores for computation, enabling efficient W4A8-MXFP4 execution on Hopper. The right column above keeps DeepGEMM W8A8 as the baseline. At small and medium batch sizes, Humming's W4A8 reaches approximately 4.2× baseline performance on H20 and 4.5× on H200, also substantially outperforming Humming's W8A8 results in the same figure. Reduced weight traffic translates into lower GEMM latency. FlashInfer CUTLASS W4A8 is also an implementation based on Humming's approach, while Humming's current implementation achieves better performance in the benchmarks shown here."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Blackwell adds native Tensor Core support for microscaling formats such as MXFP8 and MXFP4. From datacenter SM100/SM103 devices to SM120/SM121 devices for workstations and personal computing, Humming uses each architecture's low-precision compute capabilities to support W8A8, W4A8, and W4A4 within one kernel and tuning framework.",
+          "inlines": [
+            {
+              "text": "Blackwell adds native Tensor Core support for microscaling formats such as MXFP8 and MXFP4. From datacenter SM100/SM103 devices to SM120/SM121 devices for workstations and personal computing, Humming uses each architecture's low-precision compute capabilities to support W8A8, W4A8, and W4A4 within one kernel and tuning framework."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On B300 (SM103), Humming demonstrates substantial performance gains across all three MX format combinations. Each panel below uses DeepGEMM Contiguous at the corresponding precision as its baseline. At small and medium batch sizes, W8A8, W4A8, and W4A4 reach approximately 1.25×, 1.6×, and 1.4× baseline performance, respectively, and outperform the corresponding FlashInfer implementations across many workloads. Both Indexed and Grouped paths benefit from native low-precision computation, providing efficient options for different expert layouts.",
+          "inlines": [
+            {
+              "text": "On B300 (SM103), Humming demonstrates substantial performance gains across all three MX format combinations. Each panel below uses DeepGEMM Contiguous at the corresponding precision as its baseline. At small and medium batch sizes, W8A8, W4A8, and W4A4 reach approximately 1.25×, 1.6×, and 1.4× baseline performance, respectively, and outperform the corresponding FlashInfer implementations across many workloads. Both Indexed and Grouped paths benefit from native low-precision computation, providing efficient options for different expert layouts."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These gains also extend to SM120 and SM121. In the results below, Humming's MXFP4 × MXFP8 W4A8 and NVFP4 × NVFP4 W4A4 outperform FlashInfer CUTLASS at most tested points. On SM121 at small batch sizes, performance gains reach approximately 19% for W4A8 and 9% for W4A4; on SM120, Humming also leads across most tested sizes. The unified architecture brings these low-precision inference optimizations to more devices, extending efficient quantized computation beyond the datacenter.",
+          "inlines": [
+            {
+              "text": "These gains also extend to SM120 and SM121. In the results below, Humming's MXFP4 × MXFP8 W4A8 and NVFP4 × NVFP4 W4A4 outperform FlashInfer CUTLASS at most tested points. On SM121 at small batch sizes, performance gains reach approximately 19% for W4A8 and 9% for W4A4; on SM120, Humming also leads across most tested sizes. The unified architecture brings these low-precision inference optimizations to more devices, extending efficient quantized computation beyond the datacenter."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "End-to-End Inference Performance",
+          "inlines": [
+            {
+              "text": "End-to-End Inference Performance"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming's W4A8 gains extend to model serving. In our DeepSeek-V4.1-Flash test on eight H20 GPUs with TP=8, keeping the model's MXFP4 weights unchanged and switching MoE execution from Marlin W4A16 (BF16 activations) to Humming W4A8 (tokenwise FP8 activations) improves end-to-end throughput by approximately 14%–43% and reduces mean time to first token (TTFT) by approximately 25%–32%. The throughput advantage grows with concurrency: at concurrency 64, output throughput rises from 442.37 to 633.94 tokens/s, while mean time per output token (TPOT) falls by approximately 31%.",
+          "inlines": [
+            {
+              "text": "Humming's W4A8 gains extend to model serving. In our DeepSeek-V4.1-Flash test on eight H20 GPUs with TP=8, keeping the model's MXFP4 weights unchanged and switching MoE execution from Marlin W4A16 (BF16 activations) to Humming W4A8 (tokenwise FP8 activations) improves end-to-end throughput by approximately "
+            },
+            {
+              "bold": true,
+              "text": "14%–43%"
+            },
+            {
+              "text": " and reduces mean time to first token (TTFT) by approximately "
+            },
+            {
+              "bold": true,
+              "text": "25%–32%"
+            },
+            {
+              "text": ". The throughput advantage grows with concurrency: at concurrency 64, output throughput rises from 442.37 to 633.94 tokens/s, while mean time per output token (TPOT) falls by approximately "
+            },
+            {
+              "bold": true,
+              "text": "31%"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Concurrency",
+          "inlines": [
+            {
+              "text": "Concurrency"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MoE backend",
+          "inlines": [
+            {
+              "text": "MoE backend"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Input throughput (tokens/s) ↑",
+          "inlines": [
+            {
+              "text": "Input throughput (tokens/s) ↑"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Output throughput (tokens/s) ↑",
+          "inlines": [
+            {
+              "text": "Output throughput (tokens/s) ↑"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TTFT (ms) ↓",
+          "inlines": [
+            {
+              "text": "TTFT (ms) ↓"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TPOT (ms) ↓",
+          "inlines": [
+            {
+              "text": "TPOT (ms) ↓"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2827.15",
+          "inlines": [
+            {
+              "text": "2827.15"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.30",
+          "inlines": [
+            {
+              "text": "88.30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "543.13",
+          "inlines": [
+            {
+              "text": "543.13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.24",
+          "inlines": [
+            {
+              "text": "9.24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3226.23 (+14.1%)",
+          "inlines": [
+            {
+              "text": "3226.23 (+14.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "100.77 (+14.1%)",
+          "inlines": [
+            {
+              "text": "100.77 (+14.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "383.80 (-29.3%)",
+          "inlines": [
+            {
+              "text": "383.80 (-29.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.46 (-8.5%)",
+          "inlines": [
+            {
+              "text": "8.46 (-8.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2",
+          "inlines": [
+            {
+              "text": "2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4781.06",
+          "inlines": [
+            {
+              "text": "4781.06"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "149.33",
+          "inlines": [
+            {
+              "text": "149.33"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "794.31",
+          "inlines": [
+            {
+              "text": "794.31"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.33",
+          "inlines": [
+            {
+              "text": "10.33"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2",
+          "inlines": [
+            {
+              "text": "2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5646.98 (+18.1%)",
+          "inlines": [
+            {
+              "text": "5646.98 (+18.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "176.38 (+18.1%)",
+          "inlines": [
+            {
+              "text": "176.38 (+18.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "555.66 (-30.0%)",
+          "inlines": [
+            {
+              "text": "555.66 (-30.0%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.20 (-10.9%)",
+          "inlines": [
+            {
+              "text": "9.20 (-10.9%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7427.64",
+          "inlines": [
+            {
+              "text": "7427.64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "231.99",
+          "inlines": [
+            {
+              "text": "231.99"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1422.32",
+          "inlines": [
+            {
+              "text": "1422.32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11.72",
+          "inlines": [
+            {
+              "text": "11.72"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9160.81 (+23.3%)",
+          "inlines": [
+            {
+              "text": "9160.81 (+23.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "286.12 (+23.3%)",
+          "inlines": [
+            {
+              "text": "286.12 (+23.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "971.74 (-31.7%)",
+          "inlines": [
+            {
+              "text": "971.74 (-31.7%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.22 (-12.9%)",
+          "inlines": [
+            {
+              "text": "10.22 (-12.9%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9190.03",
+          "inlines": [
+            {
+              "text": "9190.03"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "287.04",
+          "inlines": [
+            {
+              "text": "287.04"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2049.81",
+          "inlines": [
+            {
+              "text": "2049.81"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "19.90",
+          "inlines": [
+            {
+              "text": "19.90"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12263.89 (+33.4%)",
+          "inlines": [
+            {
+              "text": "12263.89 (+33.4%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "383.04 (+33.4%)",
+          "inlines": [
+            {
+              "text": "383.04 (+33.4%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1386.91 (-32.3%)",
+          "inlines": [
+            {
+              "text": "1386.91 (-32.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.49 (-22.2%)",
+          "inlines": [
+            {
+              "text": "15.49 (-22.2%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11124.67",
+          "inlines": [
+            {
+              "text": "11124.67"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "348.96",
+          "inlines": [
+            {
+              "text": "348.96"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2463.69",
+          "inlines": [
+            {
+              "text": "2463.69"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "36.28",
+          "inlines": [
+            {
+              "text": "36.28"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15171.00 (+36.4%)",
+          "inlines": [
+            {
+              "text": "15171.00 (+36.4%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "475.89 (+36.4%)",
+          "inlines": [
+            {
+              "text": "475.89 (+36.4%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1844.71 (-25.1%)",
+          "inlines": [
+            {
+              "text": "1844.71 (-25.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26.44 (-27.1%)",
+          "inlines": [
+            {
+              "text": "26.44 (-27.1%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12669.43",
+          "inlines": [
+            {
+              "text": "12669.43"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "398.83",
+          "inlines": [
+            {
+              "text": "398.83"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3546.74",
+          "inlines": [
+            {
+              "text": "3546.74"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "66.44",
+          "inlines": [
+            {
+              "text": "66.44"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17804.79 (+40.5%)",
+          "inlines": [
+            {
+              "text": "17804.79 (+40.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "560.49 (+40.5%)",
+          "inlines": [
+            {
+              "text": "560.49 (+40.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2465.47 (-30.5%)",
+          "inlines": [
+            {
+              "text": "2465.47 (-30.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "47.48 (-28.5%)",
+          "inlines": [
+            {
+              "text": "47.48 (-28.5%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "64",
+          "inlines": [
+            {
+              "text": "64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM Marlin W4A16",
+          "inlines": [
+            {
+              "text": "vLLM Marlin W4A16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13937.42",
+          "inlines": [
+            {
+              "text": "13937.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "442.37",
+          "inlines": [
+            {
+              "text": "442.37"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5467.35",
+          "inlines": [
+            {
+              "text": "5467.35"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "123.25",
+          "inlines": [
+            {
+              "text": "123.25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "64",
+          "inlines": [
+            {
+              "text": "64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming W4A8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Humming W4A8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "19973.00 (+43.3%)",
+          "inlines": [
+            {
+              "text": "19973.00 (+43.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "633.94 (+43.3%)",
+          "inlines": [
+            {
+              "text": "633.94 (+43.3%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3882.94 (-29.0%)",
+          "inlines": [
+            {
+              "text": "3882.94 (-29.0%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "85.70 (-30.5%)",
+          "inlines": [
+            {
+              "text": "85.70 (-30.5%)"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Usage",
+          "inlines": [
+            {
+              "text": "Usage"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Installation",
+          "inlines": [
+            {
+              "text": "Installation"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Install Humming with pip:",
+          "inlines": [
+            {
+              "text": "Install Humming with pip:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "pip install humming-kernels"
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming uses a CUDA compiler to generate kernels on demand. If no CUDA compiler is available on the system, choose one of the following installation options to include the compilation dependencies for your environment's CUDA major version:",
+          "inlines": [
+            {
+              "text": "Humming uses a CUDA compiler to generate kernels on demand. If no CUDA compiler is available on the system, choose one of the following installation options to include the compilation dependencies for your environment's CUDA major version:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "pip install \"humming-kernels[cu12]\"  # CUDA 12\npip install \"humming-kernels[cu13]\"  # CUDA 13"
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming itself is extremely lightweight, with simple dependencies and a wheel package of only about 500 KB. On-demand compilation avoids bundling a large collection of precompiled kernels. In principle, any environment capable of running PyTorch 2.7 can also run Humming, making it easy to integrate into existing inference environments.",
+          "inlines": [
+            {
+              "text": "Humming itself is extremely lightweight, with simple dependencies and a wheel package of only about 500 KB. On-demand compilation avoids bundling a large collection of precompiled kernels. In principle, any environment capable of running PyTorch 2.7 can also run Humming, making it easy to integrate into existing inference environments."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Using Humming in vLLM",
+          "inlines": [
+            {
+              "text": "Using Humming in vLLM"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming is deeply integrated into vLLM. Starting with vLLM 0.29.0, CUDA installations include Humming as a dependency, so no separate Humming installation is needed. Humming supports NVIDIA GPUs across all architectures from Turing onward (SM75 and above).",
+          "inlines": [
+            {
+              "text": "Humming is deeply integrated into vLLM. Starting with vLLM 0.29.0, CUDA installations include Humming as a dependency, so no separate Humming installation is needed. Humming supports NVIDIA GPUs across all architectures from Turing onward (SM75 and above)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The --linear-backend and --moe-backend options select Humming as the compute backend for dense GEMM and MoE GEMM, respectively. For example, enable Humming for both with tensor parallel size 8:",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "code": true,
+              "text": "--linear-backend"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "--moe-backend"
+            },
+            {
+              "text": " options select Humming as the compute backend for dense GEMM and MoE GEMM, respectively. For example, enable Humming for both with tensor parallel size 8:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve deepseek-ai/DeepSeek-V4.1-Flash-1017 \\\n    --tensor-parallel-size 8 \\\n    --linear-backend humming --moe-backend humming"
+        },
+        {
+          "type": "paragraph",
+          "text": "The --quantization humming option is intended only as a compatibility path for formats that Humming supports but vLLM no longer supports or does not yet support natively, such as GPTQ INT3. For example, load a GPTQ INT3 checkpoint through this compatibility path:",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "code": true,
+              "text": "--quantization humming"
+            },
+            {
+              "text": " option is intended only as a compatibility path for formats that Humming supports but vLLM no longer supports or does not yet support natively, such as GPTQ INT3. For example, load a GPTQ INT3 checkpoint through this compatibility path:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve hfl/Qwen2.5-VL-3B-Instruct-GPTQ-Int3 --quantization humming"
+        },
+        {
+          "type": "heading",
+          "text": "Selecting Activation Types",
+          "inlines": [
+            {
+              "text": "Selecting Activation Types"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "By default, Humming uses the activation type specified in the checkpoint and adapts execution to the device. If the GPU does not support that compute type, Humming falls back to a supported higher-precision type. For example, devices without native MXFP4 support can automatically use FP8, BF16, or FP16 compute paths, allowing the same quantized checkpoint to run across GPU generations.",
+          "inlines": [
+            {
+              "text": "By default, Humming uses the activation type specified in the checkpoint and adapts execution to the device. If the GPU does not support that compute type, Humming falls back to a supported higher-precision type. For example, devices without native MXFP4 support can automatically use FP8, BF16, or FP16 compute paths, allowing the same quantized checkpoint to run across GPU generations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Users can override the default through vLLM's quantization configuration interface to select an activation type for their deployment. The following example sets the activation type for MoE layers to MXFP8:",
+          "inlines": [
+            {
+              "text": "Users can override the default through vLLM's quantization configuration interface to select an activation type for their deployment. The following example sets the activation type for MoE layers to MXFP8:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve openai/gpt-oss-20b --moe-backend humming --quantization-config.moe.activation mxfp8"
+        },
+        {
+          "type": "heading",
+          "text": "Future Plans",
+          "inlines": [
+            {
+              "text": "Future Plans"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Broader and Deeper Device Support",
+          "inlines": [
+            {
+              "text": "Broader and Deeper Device Support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming will continue expanding hardware coverage while adapting to the compute and memory capabilities of new devices, helping more platforms realize the performance potential of quantized inference. Priorities include:",
+          "inlines": [
+            {
+              "text": "Humming will continue expanding hardware coverage while adapting to the compute and memory capabilities of new devices, helping more platforms realize the performance potential of quantized inference. Priorities include:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Supporting more Rubin architecture features, including Locality Domains, to further optimize task mapping and data access."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Extending support to more T-Head PPU devices, including the Zhenwu M890."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Supporting more devices compatible with CUDA programming, bringing existing quantization formats, kernel components, and tuning capabilities to additional hardware platforms."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Adding Autotune",
+          "inlines": [
+            {
+              "text": "Adding Autotune"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "With targeted tuning, Humming can already achieve state-of-the-art performance in most scenarios. However, the wide range of model shapes, quantization configurations, and device resources makes it difficult for heuristics to select the optimal configuration in every case.",
+          "inlines": [
+            {
+              "text": "With targeted tuning, Humming can already achieve state-of-the-art performance in most scenarios. However, the wide range of model shapes, quantization configurations, and device resources makes it difficult for heuristics to select the optimal configuration in every case."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming therefore plans to introduce autotune, benchmarking candidate configurations on the target device to find better execution parameters for each workload. Autotune will complement existing heuristics, reducing manual configuration search and helping more workloads approach the kernels' best achievable performance.",
+          "inlines": [
+            {
+              "text": "Humming therefore plans to introduce autotune, benchmarking candidate configurations on the target device to find better execution parameters for each workload. Autotune will complement existing heuristics, reducing manual configuration search and helping more workloads approach the kernels' best achievable performance."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Deeper Integration with Inference Frameworks",
+          "inlines": [
+            {
+              "text": "Deeper Integration with Inference Frameworks"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming will continue deepening its integration with inference frameworks such as vLLM, expanding support across quantized model loading, backend selection, parallel inference, runtime scheduling, and device adaptation. We aim to make more quantization methods work with the full range of framework capabilities, including optimizations such as quantized All-to-All (A2A) communication for expert parallelism (EP). These efforts will make high-performance quantized kernels easier to use across diverse deployment scenarios and help translate kernel performance gains into end-to-end inference benefits.",
+          "inlines": [
+            {
+              "text": "Humming will continue deepening its integration with inference frameworks such as vLLM, expanding support across quantized model loading, backend selection, parallel inference, runtime scheduling, and device adaptation. We aim to make more quantization methods work with the full range of framework capabilities, including optimizations such as quantized All-to-All (A2A) communication for expert parallelism (EP). These efforts will make high-performance quantized kernels easier to use across diverse deployment scenarios and help translate kernel performance gains into end-to-end inference benefits."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgments",
+          "inlines": [
+            {
+              "text": "Acknowledgments"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We thank Jinzhen Lin, Zekai Gu, and Zhilin Huang from Ant Group, as well as Michael Goin, Roberto L. Castro, Chauncey Jiang, and other members of the vLLM community, for their contributions and support throughout Humming's development.",
+          "inlines": [
+            {
+              "text": "We thank Jinzhen Lin, Zekai Gu, and Zhilin Huang from Ant Group, as well as Michael Goin, Roberto L. Castro, Chauncey Jiang, and other members of the vLLM community, for their contributions and support throughout Humming's development."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We also thank the vLLM community for providing development, testing, and CI resources that made it possible to validate and improve Humming across a wide range of hardware and workloads.",
+          "inlines": [
+            {
+              "text": "We also thank the vLLM community for providing development, testing, and CI resources that made it possible to validate and improve Humming across a wide range of hardware and workloads."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Humming's design and optimization draw inspiration from Marlin, vLLM Marlin, LMDeploy, DeepGEMM, FlashInfer, CUTLASS, and other open-source projects. We are grateful to their authors and contributors for sharing their ideas and implementations, helping advance high-performance quantized inference for the entire community.",
+          "inlines": [
+            {
+              "text": "Humming's design and optimization draw inspiration from Marlin, vLLM Marlin, LMDeploy, DeepGEMM, FlashInfer, CUTLASS, and other open-source projects. We are grateful to their authors and contributors for sharing their ideas and implementations, helping advance high-performance quantized inference for the entire community."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:18:00.403896Z",
+  "contentMode": "full"
+}

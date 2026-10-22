@@ -1,0 +1,2305 @@
+{
+  "schemaVersion": 1,
+  "id": "v26pyuir21k0m4r02acyz6v4g",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/v26pyuir21k0m4r02acyz6v4g",
+  "fetchedAt": "2026-10-22T13:18:24.946339Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Agent 智能体",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "Agent",
+    "RAG"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "AI 工具让智能体的 vibe 编程变得轻而易举。然而，在生产环境中构建和维护企业级智能体仍然要困难得多。尤其是，开发者往往被迫在质量（获得好的答案，尤其是在长尾任务上）和效率（在大规模下控制成本和延迟）之间做出取舍。通常，某些技术会以牺牲一个维度为代价来换取另一个维度的收益。",
+          "inlines": [
+            {
+              "text": "AI 工具让智能体的 vibe 编程变得轻而易举。然而，在生产环境中构建和维护企业级智能体仍然要困难得多。尤其是，开发者往往被迫在质量（获得好的答案，尤其是在长尾任务上）和效率（在大规模下控制成本和延迟）之间做出取舍。通常，某些技术会以牺牲一个维度为代价来换取另一个维度的收益。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "记忆是一种有望同时改善两者的方法。它可以帮助智能体跨任务携带有用的上下文，例如用户偏好、先前的纠正、指标定义和成功的工作流。原则上，这可以提高准确性、减少重复错误，并避免不必要的重复探索。但更多的历史记录并不一定意味着更好的记忆。提供每一次过去的交互成本高昂，并且可能引入过时、冲突或无关的上下文。核心挑战在于决定保留什么、如何维护它，以及如何衡量其有用性。",
+          "inlines": [
+            {
+              "text": "记忆是一种有望同时改善两者的方法。它可以帮助智能体跨任务携带有用的上下文，例如用户偏好、先前的纠正、指标定义和成功的工作流。原则上，这可以提高准确性、减少重复错误，并避免不必要的重复探索。但更多的历史记录并不一定意味着更好的记忆。提供每一次过去的交互成本高昂，并且可能引入过时、冲突或无关的上下文。核心挑战在于决定保留什么、如何维护它，以及如何衡量其有用性。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在这篇文章中，我们介绍 MemCurrent，一种面向生产智能体的持久记忆架构，它现在为新的 Agent Bricks Memory 和 Genie 提供支持。智能体在工作时读写记忆，一个离线的“dreaming”流水线会整合记忆，使其保持一致和新鲜。在我们基于真实企业任务构建的内部基准上，MemCurrent 将智能体的通过率提升至无记忆时的三倍，同时使用的 token 减少了 31%，运行速度提高了 26%。本文的其余部分将介绍我们如何设计和评估它，以及我们在此过程中学到了什么。",
+          "inlines": [
+            {
+              "text": "在这篇文章中，我们介绍 "
+            },
+            {
+              "bold": true,
+              "text": "MemCurrent"
+            },
+            {
+              "text": "，一种面向生产智能体的持久记忆架构，它现在为新的 "
+            },
+            {
+              "href": "https://docs.databricks.com/aws/en/agents/custom-agents/stateful-agents",
+              "text": "Agent Bricks Memory"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://docs.databricks.com/aws/en/genie-one/chat",
+              "text": "Genie"
+            },
+            {
+              "text": " 提供支持。智能体在工作时读写记忆，一个离线的“dreaming”流水线会整合记忆，使其保持一致和新鲜。在我们基于真实企业任务构建的内部基准上，MemCurrent 将智能体的通过率提升至无记忆时的三倍，同时使用的 token 减少了 31%，运行速度提高了 26%。本文的其余部分将介绍我们如何设计和评估它，以及我们在此过程中学到了什么。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/af6ce4cbdd8754ba38f97d47984a7121e79e722712d8ab26034f0599c6023cf4.webp",
+          "alt": "",
+          "width": 1945,
+          "height": 939
+        },
+        {
+          "type": "paragraph",
+          "text": "图 1. 在我们的内部记忆基准上，通过率与每任务 token 数的关系。MemCurrent 位于帕累托前沿，在两个维度上都优于 Mem0、PropMem 和 OpenClaw memory。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 1. 在我们的内部记忆基准上，通过率与每任务 token 数的关系。MemCurrent 位于帕累托前沿，在两个维度上都优于 Mem0、PropMem 和 OpenClaw memory。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们如何设计记忆",
+          "inlines": [
+            {
+              "text": "我们如何设计记忆"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "将记忆接入智能体有三种方式。作为插件（就像我们之前在 MemAlign 和 Memory Scaling 上的工作），记忆在会话中的固定点自动读写。作为工具，智能体决定读写什么以及何时读写。作为离线流水线，记忆按计划或触发条件在后台更新，并在后续会话中使用。每种方式都有其取舍：",
+          "inlines": [
+            {
+              "text": "将记忆接入智能体有三种方式。作为"
+            },
+            {
+              "bold": true,
+              "text": "插件"
+            },
+            {
+              "text": "（就像我们之前在 "
+            },
+            {
+              "href": "https://www.databricks.com/blog/memalign-building-better-llm-judges-human-feedback-scalable-memory",
+              "text": "MemAlign"
+            },
+            {
+              "text": " 和"
+            },
+            {
+              "href": "https://www.databricks.com/blog/memory-scaling-ai-agents",
+              "text": " Memory Scaling"
+            },
+            {
+              "text": " 上的工作），记忆在会话中的固定点自动读写。作为"
+            },
+            {
+              "bold": true,
+              "text": "工具"
+            },
+            {
+              "text": "，智能体决定读写什么以及何时读写。作为"
+            },
+            {
+              "bold": true,
+              "text": "离线流水线"
+            },
+            {
+              "text": "，记忆按计划或触发条件在后台更新，并在后续会话中使用。每种方式都有其取舍："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "记忆作为……",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "记忆作为……"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "触发方式",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "触发方式"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "计算时间",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "计算时间"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "优点",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "优点"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "缺点",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "缺点"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "插件",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "插件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "自动",
+          "inlines": [
+            {
+              "text": "自动"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在线",
+          "inlines": [
+            {
+              "text": "在线"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "更新立即生效"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "行为可预测"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "运行时成本和延迟更高"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "不灵活（例如，即使不需要记忆也会浪费 token）"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "工具",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "工具"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "智能体",
+          "inlines": [
+            {
+              "text": "智能体"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在线",
+          "inlines": [
+            {
+              "text": "在线"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "更新立即生效"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "智能体具有灵活性"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "运行时成本和延迟更高"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "质量受智能体能力限制"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "流水线",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "流水线"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "计划或触发",
+          "inlines": [
+            {
+              "text": "计划或触发"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "离线",
+          "inlines": [
+            {
+              "text": "离线"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "运行时成本和延迟更低（异步批处理）"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "更新会有延迟"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "表 1. 记忆的三种访问模式：插件、工具或离线流水线。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "表 1. 记忆的三种访问模式：插件、工具或离线流水线。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MemCurrent 三种方式都会用到，各取所长。",
+          "inlines": [
+            {
+              "text": "MemCurrent 三种方式都会用到，各取所长。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fd8e8265f3c23e4cebe1c6d832961e9315cb3a5d9bdd4c3db660978ddb392bd0.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 1333
+        },
+        {
+          "type": "paragraph",
+          "text": "图 2. MemCurrent 概览。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 2. MemCurrent 概览。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MemCurrent 有两种记忆：情景记忆， 存储原始会话轨迹；以及派生记忆，包含从这些轨迹中提炼出的经验，以文件形式存储在结构化知识库中。顶部有一个自动生成的 memory.md 索引，描述文件结构以及每个文件的内容。",
+          "inlines": [
+            {
+              "text": "MemCurrent 有两种记忆："
+            },
+            {
+              "bold": true,
+              "text": "情景记忆"
+            },
+            {
+              "text": "，"
+            },
+            {
+              "bold": true,
+              "text": " "
+            },
+            {
+              "text": "存储原始会话轨迹；以及"
+            },
+            {
+              "bold": true,
+              "text": "派生记忆"
+            },
+            {
+              "text": "，包含从这些轨迹中提炼出的经验，以文件形式存储在结构化知识库中。顶部有一个自动生成的 "
+            },
+            {
+              "code": true,
+              "text": "memory.md"
+            },
+            {
+              "text": " 索引，描述文件结构以及每个文件的内容。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "情景记忆和派生记忆都存放在生产级数据库中，可扩展到大量用户，同时提供低延迟响应。情景记忆是仅追加的，插件会在会话运行时记录每一步。派生记忆是一张模拟分层文件系统的可变表，写入有两种方式。Agent 工具（add_memory, update_memory, delete_memory）处理显式请求，例如“永远不要在 /tmp 目录下写脚本”。离线 dreaming 流水线负责其余部分，将每个新会话中的隐式经验提炼到相关文件中。它还会清理整个存储，拆分过大的文件、合并重复项并解决冲突。",
+          "inlines": [
+            {
+              "text": "情景记忆和派生记忆都存放在生产级数据库中，可扩展到大量用户，同时提供低延迟响应。情景记忆是仅追加的，插件会在会话运行时记录每一步。派生记忆是一张模拟分层文件系统的可变表，写入有两种方式。Agent 工具（"
+            },
+            {
+              "code": true,
+              "text": "add_memory, update_memory, delete_memory"
+            },
+            {
+              "text": "）处理显式请求，例如“永远不要在 /tmp 目录下写脚本”。离线 dreaming 流水线负责其余部分，将每个新会话中的隐式经验提炼到相关文件中。它还会清理整个存储，拆分过大的文件、合并重复项并解决冲突。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "读取是分层进行的。会话开始时，插件会注入记忆索引，让 agent 在开始前就知道自己掌握哪些知识。会话期间，agent 有两个可跨两种记忆类型使用的工具： search_memory 返回查询的最佳匹配项（过去轨迹中的某一步，或记忆文件中的某一行）， fetch_memory 按标识符（会话 ID 或文件路径）返回完整条目。",
+          "inlines": [
+            {
+              "text": "读取是分层进行的。会话开始时，插件会注入记忆索引，让 agent 在开始前就知道自己掌握哪些知识。会话期间，agent 有两个可跨两种记忆类型使用的工具： "
+            },
+            {
+              "code": true,
+              "text": "search_memory"
+            },
+            {
+              "text": " 返回查询的最佳匹配项（过去轨迹中的某一步，或记忆文件中的某一行）， "
+            },
+            {
+              "code": true,
+              "text": "fetch_memory"
+            },
+            {
+              "text": " 按标识符（会话 ID 或文件路径）返回完整条目。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们如何评估记忆",
+          "inlines": [
+            {
+              "text": "我们如何评估记忆"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "基准测试",
+          "inlines": [
+            {
+              "text": "基准测试"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们从三个流行的开源基准测试开始： LoCoMo、 LongMemEval 和 ConvoMem。这三者都测试 agent 能否回忆起开放式合成对话中早先陈述的事实。",
+          "inlines": [
+            {
+              "text": "我们从三个流行的开源基准测试开始： "
+            },
+            {
+              "href": "https://arxiv.org/abs/2402.17753",
+              "bold": true,
+              "text": "LoCoMo"
+            },
+            {
+              "text": "、 "
+            },
+            {
+              "href": "https://arxiv.org/abs/2410.10813",
+              "bold": true,
+              "text": "LongMemEval"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://arxiv.org/abs/2511.10523",
+              "bold": true,
+              "text": "ConvoMem"
+            },
+            {
+              "text": "。这三者都测试 agent 能否回忆起开放式合成对话中早先陈述的事实。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "此外，我们还基于真实的 Genie 对话构建了一个内部记忆基准测试，用户会在其中就自己的数据提出各种问题。如图 3 所示，我们从 12K+ 个会话出发，挖掘出 3K 个包含值得记忆信号的候选会话，并起草了一个带有评分标准的后续问题。同一用户的其余会话作为测试用例的填充内容。随后，一个对抗性评判器根据 7 项标准检查每个测试用例，例如知识是否确实存在、是否特定于该用户、是否为回答所必需、是否自然以及是否可验证。经过最终人工审核，该基准测试共有 114 个测试用例，涉及 29 个用户和 2,233 个历史会话。",
+          "inlines": [
+            {
+              "text": "此外，我们还基于真实的 "
+            },
+            {
+              "href": "https://docs.databricks.com/aws/en/genie-one/",
+              "text": "Genie"
+            },
+            {
+              "text": " 对话构建了一个内部记忆基准测试，用户会在其中就自己的数据提出各种问题。如图 3 所示，我们从 12K+ 个会话出发，挖掘出 3K 个包含值得记忆信号的候选会话，并起草了一个带有评分标准的后续问题。同一用户的其余会话作为测试用例的填充内容。随后，一个对抗性评判器根据 7 项标准检查每个测试用例，例如知识是否确实存在、是否特定于该用户、是否为回答所必需、是否自然以及是否可验证。经过最终人工审核，该基准测试共有 114 个测试用例，涉及 29 个用户和 2,233 个历史会话。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/527536fd0388ecb759c3b24e3247dc0d93c466d24a70be46683a1b8cd193ced1.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 1200
+        },
+        {
+          "type": "paragraph",
+          "text": "图 3. 我们如何构建内部记忆基准测试。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 3. 我们如何构建内部记忆基准测试。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下面是一个示例：",
+          "inlines": [
+            {
+              "text": "下面是一个示例："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5e57e2998856726c17bbea0f26b6df6c6a316cc3b09c56c5785bdfb76afbb736.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 693
+        },
+        {
+          "type": "paragraph",
+          "text": "图 4. 内部记忆基准测试中的一个示例测试用例。在过去的会话中，用户纠正了 agent 对表的选择，并告诉它排除后台请求。之后，agent 面对一个不同但相关的问题，必须在 100 多个其他会话中找到那个会话，并应用所学到的内容。输出由 LLM 评判器根据一系列评分标准进行评分（有些依赖记忆，有些是任务本身固有的）。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 4. 内部记忆基准测试中的一个示例测试用例。在过去的会话中，用户纠正了 agent 对表的选择，并告诉它排除后台请求。之后，agent 面对一个不同但相关的问题，必须在 100 多个其他会话中找到那个会话，并应用所学到的内容。输出由 LLM 评判器根据一系列评分标准进行评分（有些依赖记忆，有些是任务本身固有的）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的基准测试在三个方面与现有基准测试不同：",
+          "inlines": [
+            {
+              "text": "我们的基准测试在三个方面与现有基准测试不同："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "企业领域。现有基准测试是关于模拟人物生活的开放式聊天。我们的基准测试来自数据工作空间中的真实工作，涉及丰富的企业知识，例如表语义、指标定义和工作流。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "企业领域。"
+            },
+            {
+              "text": "现有基准测试是关于模拟人物生活的开放式聊天。我们的基准测试来自数据工作空间中的真实工作，涉及丰富的企业知识，例如表语义、指标定义和工作流。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "记忆驱动行动，而非答案。 在过往对话中找到正确的字符串还不够；智能体必须应用检索到的知识来完成多步任务。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "记忆驱动行动，而非答案。 "
+            },
+            {
+              "text": "在过往对话中找到正确的字符串还不够；智能体必须应用检索到的知识来完成多步任务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "多样性。 测试用例涵盖 5 种记忆类型（个人资料、偏好、领域知识、项目、工作流），并与 11 种场景交叉组合（直接指令、变化或过时的事实、多会话聚合、与记忆无关的问题等）。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "多样性。"
+            },
+            {
+              "italic": true,
+              "text": " "
+            },
+            {
+              "text": "测试用例涵盖 5 种记忆类型（个人资料、偏好、领域知识、项目、工作流），并与 11 种场景交叉组合（直接指令、变化或过时的事实、多会话聚合、与记忆无关的问题等）。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结果",
+          "inlines": [
+            {
+              "text": "结果"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们将 MemCurrent 与三个开源记忆后端 Mem0、 PropMem、 OpenClaw memory 进行比较，使用相同的底层 LLM。",
+          "inlines": [
+            {
+              "text": "我们将 MemCurrent 与三个开源记忆后端 "
+            },
+            {
+              "href": "https://github.com/mem0ai/mem0",
+              "text": "Mem0"
+            },
+            {
+              "text": "、 "
+            },
+            {
+              "href": "https://github.com/ProsusAI/MemEval",
+              "text": "PropMem"
+            },
+            {
+              "text": "、 "
+            },
+            {
+              "href": "https://docs.openclaw.ai/concepts/memory",
+              "text": "OpenClaw memory"
+            },
+            {
+              "text": " 进行比较，使用相同的底层 LLM。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "开源基准测试。 我们将每个记忆后端与一个简单的问答智能体配对，该智能体使用两种智能体框架（LangGraph 和 OpenAI Agents SDK）构建。我们还运行两个基线：下限为无记忆，上限为完整上下文，即每个过往会话都进入智能体的上下文。在所有三个基准测试中，MemCurrent 在所有记忆后端中得分最高，并且保持在成本-准确率帕累托前沿上。平均而言，MemCurrent（88.1%）的表现与完整上下文（87.8%）相当，而每个问题的输入 token 数约少 12 倍（8.4K 对 103K）。在历史最长的两个基准测试中，它甚至超过了完整上下文，因为把所有内容都塞进提示词反而会让智能体困惑。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "开源基准测试。 "
+            },
+            {
+              "text": "我们将每个记忆后端与一个简单的问答智能体配对，该智能体使用两种智能体框架（LangGraph 和 OpenAI Agents SDK）构建。我们还运行两个基线：下限为"
+            },
+            {
+              "bold": true,
+              "text": "无记忆"
+            },
+            {
+              "text": "，上限为"
+            },
+            {
+              "bold": true,
+              "text": "完整上下文"
+            },
+            {
+              "text": "，即每个过往会话都进入智能体的上下文。在所有三个基准测试中，"
+            },
+            {
+              "bold": true,
+              "text": "MemCurrent 在所有记忆后端中得分最高"
+            },
+            {
+              "text": "，并且"
+            },
+            {
+              "bold": true,
+              "text": "保持在成本-准确率帕累托前沿上"
+            },
+            {
+              "text": "。平均而言，MemCurrent（88.1%）的表现与完整上下文（87.8%）相当，"
+            },
+            {
+              "bold": true,
+              "text": "而每个问题的输入 token 数约少 12 倍"
+            },
+            {
+              "text": "（8.4K 对 103K）。在历史最长的两个基准测试中，它甚至超过了完整上下文，因为把所有内容都塞进提示词反而会让智能体困惑。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/07d927dec03fcc5ca37bb1500eeda4055aae5a6b1657edff34e3b5556d3d801d.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 673
+        },
+        {
+          "type": "paragraph",
+          "text": "图 5. 记忆后端在 (a) LoCoMo（每样本 19–32 个会话）、(b) LongMemEval（s 划分）（每样本 38–62 个会话）和 (c) ConvoMem（500 个样本的分层子集，每样本 100 个会话）上的成本-准确率1权衡。我们使用 GPT 5.6 luna 作为智能体和记忆模型。所有记忆后端都作为插件运行，该插件会自动搜索与问题相关的记忆，并在会话开始时将其注入智能体上下文。2 准确率是 LangGraph 和 OpenAI Agents SDK 两种框架及 3 次重复的平均值。成本是每个问题的平均输入 token 数（对数刻度）。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 5. 记忆后端在 (a) LoCoMo（每样本 19–32 个会话）、(b) LongMemEval（s 划分）（每样本 38–62 个会话）和 (c) ConvoMem（500 个样本的分层子集，每样本 100 个会话）上的成本-准确率1权衡。我们使用 GPT 5.6 luna 作为智能体和记忆模型。所有记忆后端都作为插件运行，该插件会自动搜索与问题相关的记忆，并在会话开始时将其注入智能体上下文。2 准确率是 LangGraph 和 OpenAI Agents SDK 两种框架及 3 次重复的平均值。成本是每个问题的平均输入 token 数（对数刻度）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "内部记忆基准测试。 在我们的基准测试中，差距进一步扩大。在这里，每个记忆后端都在我们内部的 Genie 中运行，该智能体与基准测试会话来自同一个智能体。历史记录太长，无法放入上下文，因此我们的上限是黄金注入：仅将黄金记忆注入智能体的上下文。在所有记忆后端中，MemCurrent 的通过率最高（68.4%），延迟最低（252s），token 使用量最低（418K），弥合了无记忆（22.3%）与黄金注入（78.6%）之间超过 80% 的差距。值得注意的是，虽然 Mem0 在较早的基准测试中也处于前沿，但在这里以 43.9% 落后，且延迟和成本更高。与无记忆相比，MemCurrent 使智能体的通过率提高到三倍（22.3% → 68.4%），同时速度提高 1.35 倍，成本降低 1.44 倍。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "内部记忆基准测试。"
+            },
+            {
+              "text": " 在我们的基准测试中，差距进一步扩大。在这里，每个记忆后端都在我们内部的 Genie 中运行，该智能体与基准测试会话来自同一个智能体。历史记录太长，无法放入上下文，因此我们的上限是黄金注入：仅将黄金记忆注入智能体的上下文。在所有记忆后端中，MemCurrent 的通过率最高（68.4%），延迟最低（252s），token 使用量最低（418K），弥合了无记忆（22.3%）与黄金注入（78.6%）之间超过 80% 的差距。值得注意的是，虽然 Mem0 在较早的基准测试中也处于前沿，但在这里以 43.9% 落后，且延迟和成本更高。与无记忆相比，"
+            },
+            {
+              "bold": true,
+              "text": "MemCurrent 使智能体的通过率提高到三倍"
+            },
+            {
+              "text": "（22.3% → 68.4%）"
+            },
+            {
+              "bold": true,
+              "text": "，同时速度提高 1.35 倍，成本降低 1.44 倍"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8e7281a8bd55f091fc150ece14c2648d665076d2f0f0c2112ff2106284d9ecf8.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 898
+        },
+        {
+          "type": "paragraph",
+          "text": "图 6。在我们的 Internal Memory Benchmark 上，每个任务在 3 次重复中的通过率、平均延迟和平均 token 用量。我们使用 Claude Opus 4.6 作为 agent 模型，GPT 5.6 sol 作为 memory 模型。所有 memory 后端都以 agent 工具和会话启动插件的形式提供。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 6。在我们的 Internal Memory Benchmark 上，每个任务在 3 次重复中的通过率、平均延迟和平均 token 用量。我们使用 Claude Opus 4.6 作为 agent 模型，GPT 5.6 sol 作为 memory 模型。所有 memory 后端都以 agent 工具和会话启动插件的形式提供。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MemCurrent 实战",
+          "inlines": [
+            {
+              "text": "MemCurrent 实战"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "除了基准测试数字之外，让我们从内部 Genie 会话中看两个例子，了解 MemCurrent 在实践中如何提供帮助。",
+          "inlines": [
+            {
+              "text": "除了基准测试数字之外，让我们从内部 Genie 会话中看两个例子，了解 MemCurrent 在实践中如何提供帮助。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "示例 1：记忆阻止了一次偶发的幻觉错误。在图 7 中，用户向 agent 询问过去两个月 Product X 的前 20 名用户。agent 写了一条正确的 SQL 查询，但从未读取保存到文件中的实际执行结果。它仍然自信地生成了一张包含幻觉内容的表格。在用户反馈后，agent 将这一教训保存到记忆中。下一次，查询运行后，agent 先读取结果，然后返回了正确的表格。一次记忆纠正阻止了一次性失误变成习惯。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "示例 1：记忆阻止了一次偶发的幻觉错误。"
+            },
+            {
+              "text": "在图 7 中，用户向 agent 询问过去两个月 Product X 的前 20 名用户。agent 写了一条正确的 SQL 查询，但从未读取保存到文件中的实际执行结果。它仍然自信地生成了一张包含幻觉内容的表格。在用户反馈后，agent 将这一教训保存到记忆中。下一次，查询运行后，agent 先读取结果，然后返回了正确的表格。一次记忆纠正阻止了一次性失误变成习惯。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fbdb87cc0806b37ceb906b623f53dc8f3880ce300c10023b0e8102f781b9eaf2.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 995
+        },
+        {
+          "type": "paragraph",
+          "text": "图 7。一个匿名化示例，展示记忆如何帮助 agent 避免重复的幻觉错误。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 7。一个匿名化示例，展示记忆如何帮助 agent 避免重复的幻觉错误。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "示例 2：记忆在相关任务上节省计算。在图 8 中，用户要求“前 5 名 SDP 客户”。agent 必须从头弄清楚一切：“SDP”代表什么、哪些表保存使用数据，以及如何连接和过滤它们。它花了 11 次工具调用、8 个子 agent 和近六分钟。agent 将这些步骤保存为记忆中的工作流文件，可以在相关任务上复用。后来，用户问了一个不同的问题：上个月有多少 SDP 客户的 pipeline 运行次数超过 5K。使用该工作流，agent 在 41 秒内用 2 次工具调用和 1 个子 agent 回答了问题。问题是新的，但通往答案的路径不是，记忆让 agent 跳过了不必要的探索。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "示例 2：记忆在相关任务上节省计算。"
+            },
+            {
+              "text": "在图 8 中，用户要求“前 5 名 SDP 客户”。agent 必须从头弄清楚一切：“SDP”代表什么、哪些表保存使用数据，以及如何连接和过滤它们。它花了 11 次工具调用、8 个子 agent 和近六分钟。agent 将这些步骤保存为记忆中的工作流文件，可以在相关任务上复用。后来，用户问了一个不同的问题：上个月有多少 SDP 客户的 pipeline 运行次数超过 5K。使用该工作流，agent 在 41 秒内用 2 次工具调用和 1 个子 agent 回答了问题。问题是新的，但通往答案的路径不是，记忆让 agent 跳过了不必要的探索。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3781bd8bfe84956555e79fd01dab92588d5674c6d1379cbda3d4af316c9b6d41.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 1057
+        },
+        {
+          "type": "paragraph",
+          "text": "图 8。一个匿名化示例，展示记忆如何将 6 分钟的任务变成 41 秒。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 8。一个匿名化示例，展示记忆如何将 6 分钟的任务变成 41 秒。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MemCurrent 为何有效",
+          "inlines": [
+            {
+              "text": "MemCurrent 为何有效"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "为了理解 MemCurrent 卓越表现的原因，我们在 Internal Memory Benchmark 上针对两个设计选择进行了消融实验：记忆类型和提取策略。",
+          "inlines": [
+            {
+              "text": "为了理解 MemCurrent 卓越表现的原因，我们在 Internal Memory Benchmark 上针对两个设计选择进行了消融实验：记忆类型和提取策略。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们需要两种记忆类型吗？ 仅情景记忆有中等帮助：35.8%，高于无记忆时的 22.3%。原始历史有用，但 agent 只在约三分之一的测试用例中搜索它，不过当它搜索时，其中 60% 能通过。派生记忆避免了这个问题，因为会话开始时注入的记忆索引让 agent 了解记忆中有什么以及何时查看，将通过率提升到 66.1%。在此基础上加入情景记忆可获得最佳结果，为 68.4%。增益很小，但它表明原始轨迹可以恢复蒸馏所丢弃的细节。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "我们需要两种记忆类型吗？ "
+            },
+            {
+              "text": "仅情景记忆有中等帮助：35.8%，高于无记忆时的 22.3%。原始历史有用，但 agent 只在约三分之一的测试用例中搜索它，不过当它搜索时，其中 60% 能通过。派生记忆避免了这个问题，因为会话开始时注入的记忆索引让 agent 了解记忆中有什么以及何时查看，将通过率提升到 66.1%。在此基础上加入情景记忆可获得最佳结果，为 68.4%。增益很小，但它表明原始轨迹可以恢复蒸馏所丢弃的细节。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/371b3624a038755ad4098b0fbcb2d6da1df265595dfe624198a8cbde334fbfd5.webp",
+          "alt": "",
+          "width": 1942,
+          "height": 1284
+        },
+        {
+          "type": "paragraph",
+          "text": "图 9。按记忆类型划分的通过率。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 9。按记忆类型划分的通过率。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "什么是好的记忆提取策略？ 如图 2 所示，两个通道提取派生记忆：在线工具和离线 dreaming。单独使用时，离线 dreaming（63.5%）比在线工具（53.9%）高出近 10 个百分点。它们的组合产生了最高的通过率，为 66.1%。这支持了职责分工：dreaming 处理后台提取和整合，而在线工具让显式请求立即生效。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "什么是好的记忆提取策略？ "
+            },
+            {
+              "text": "如图 2 所示，两个通道提取派生记忆：在线工具和离线 dreaming。单独使用时，离线 dreaming（63.5%）比在线工具（53.9%）高出近 10 个百分点。它们的组合产生了最高的通过率，为 66.1%。这支持了职责分工：dreaming 处理后台提取和整合，而在线工具让显式请求立即生效。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5078a892d428f4f94e8efefb4d2bb0ccba0ec4b90e81eef84588a4885c8a1e61.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 1292
+        },
+        {
+          "type": "paragraph",
+          "text": "图 10。按提取策略划分的通过率。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 10。按提取策略划分的通过率。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结论",
+          "inlines": [
+            {
+              "text": "结论"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "记忆是智能体不再从零开始的方式。在本文中，我们介绍了 MemCurrent，这是一种面向生产环境智能体的记忆架构，它结合了情景记忆和派生记忆，并提供三种访问模式：自动记录和加载上下文的插件、智能体按需调用的工具，以及在后台整合记忆的离线 dreaming 流水线。",
+          "inlines": [
+            {
+              "text": "记忆是智能体不再从零开始的方式。在本文中，我们介绍了 MemCurrent，这是一种面向生产环境智能体的记忆架构，它结合了情景记忆和派生记忆，并提供三种访问模式：自动记录和加载上下文的插件、智能体按需调用的工具，以及在后台整合记忆的离线 dreaming 流水线。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们运行的所有基准测试中，MemCurrent 同时提升了质量和效率，这正是我们想要打破的权衡。在开源基准测试上，它以约 12 倍的输入 token 减少量达到了完整上下文的性能。在我们基于真实数据工作构建的内部记忆基准测试上，它将智能体的通过率提升至无记忆时的三倍，同时还使其更快、更便宜。",
+          "inlines": [
+            {
+              "text": "在我们运行的所有基准测试中，MemCurrent 同时提升了质量和效率，这正是我们想要打破的权衡。在开源基准测试上，它以约 12 倍的输入 token 减少量达到了完整上下文的性能。在我们基于真实数据工作构建的内部记忆基准测试上，它将智能体的通过率提升至无记忆时的三倍，同时还使其更快、更便宜。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "消融实验指出了价值来源。派生记忆承担了大部分工作，而情景记忆通过恢复蒸馏过程中丢失的细节带来了较小的提升。将在线工具与离线 dreaming 相结合形成了最佳的提取策略：显式请求立即生效，而 dreaming 则在后台提炼隐式学习成果并整合存储。",
+          "inlines": [
+            {
+              "text": "消融实验指出了价值来源。派生记忆承担了大部分工作，而情景记忆通过恢复蒸馏过程中丢失的细节带来了较小的提升。将在线工具与离线 dreaming 相结合形成了最佳的提取策略：显式请求立即生效，而 dreaming 则在后台提炼隐式学习成果并整合存储。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "除了数字之外，记忆还提供了一个不绑定于单个智能体或 LLM 的知识库。它可以随用户迁移到新的智能体或 LLM，并可能为其组织内共享的知识提供种子，这是我们接下来要探索的方向。",
+          "inlines": [
+            {
+              "text": "除了数字之外，记忆还提供了一个不绑定于单个智能体或 LLM 的知识库。它可以随用户迁移到新的智能体或 LLM，并可能为其组织内共享的知识提供种子，这是我们接下来要探索的方向。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "开始使用",
+          "inlines": [
+            {
+              "text": "开始使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们正在将这些发现应用于推动 Databricks 各产品的改进：",
+          "inlines": [
+            {
+              "text": "我们正在将这些发现应用于推动 Databricks 各产品的改进："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "面向智能体开发者。 Agent Bricks 是 Databricks 用于构建自定义智能体的开发者平台。MemCurrent 已内置于 Agent Bricks 的 Memory 产品中，由 Lakebase 提供支持。该产品包括：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "面向智能体开发者。"
+            },
+            {
+              "text": " Agent Bricks 是 Databricks 用于构建自定义智能体的开发者平台。MemCurrent 已内置于 Agent Bricks 的 Memory 产品中，由 Lakebase 提供支持。该产品包括："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "用于情景记忆的会话存储"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "用于派生记忆的记忆存储"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "自动 dreaming 流水线"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "对智能体质量的追踪和评估，包括记忆的影响"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "一个 CLI，帮助你在 <10 分钟内快速上手一个包含上述所有功能的端到端示例智能体"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "立即开始 构建你的自定义智能体。",
+          "inlines": [
+            {
+              "href": "https://docs.databricks.com/aws/en/agents/custom-agents/stateful-agents",
+              "text": "立即开始"
+            },
+            {
+              "text": " 构建你的自定义智能体。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "面向 Databricks Genie 用户。 Genie 是一个界面，Databricks 用户可以通过自然语言与其数据对话。MemCurrent 已在幕后投入使用，帮助提高答案质量，同时降低响应延迟和成本。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "面向 Databricks Genie 用户。"
+            },
+            {
+              "text": " Genie 是一个界面，Databricks 用户可以通过自然语言与其数据对话。MemCurrent 已在幕后投入使用，帮助提高答案质量，同时降低响应延迟和成本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "立即开始 使用 Genie。",
+          "inlines": [
+            {
+              "href": "https://docs.databricks.com/aws/en/genie-one/chat",
+              "text": "立即开始"
+            },
+            {
+              "text": " 使用 Genie。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "作者：Veronica Lyu, Wenhao Zhan, Sam Havens, Ziyi Yang, Jenny Sun, Qinxin Wang, Nihit Desai, Sirui Sun, Ankit Mathur, Jane Zhang, Yi Liu, Jialu Liu, Michael Bendersky, Matei Zaharia, Xing Chen",
+          "inlines": [
+            {
+              "text": "作者：Veronica Lyu, Wenhao Zhan, Sam Havens, Ziyi Yang, Jenny Sun, Qinxin Wang, Nihit Desai, Sirui Sun, Ankit Mathur, Jane Zhang, Yi Liu, Jialu Liu, Michael Bendersky, Matei Zaharia, Xing Chen"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们感谢 Jonathan Li、Rishabh Singh、Andy Zhang、Kenneth Choi、Will Tipton、Cassie Cao、Siddharth Murching、Sue Ann Hong、Pranav Sukumar、Neo Ni、Shanshan Zheng、Chung Wu 以及我们的内部用户研究参与者在整个项目过程中提供的反馈和支持。",
+          "inlines": [
+            {
+              "text": "我们感谢 Jonathan Li、Rishabh Singh、Andy Zhang、Kenneth Choi、Will Tipton、Cassie Cao、Siddharth Murching、Sue Ann Hong、Pranav Sukumar、Neo Ni、Shanshan Zheng、Chung Wu 以及我们的内部用户研究参与者在整个项目过程中提供的反馈和支持。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1 所有记忆后端的延迟相似（4-7 秒/问题），因为大多数问题可以在单跳内回答。",
+          "inlines": [
+            {
+              "text": "1 所有记忆后端的延迟相似（4-7 秒/问题），因为大多数问题可以在单跳内回答。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2 我们发现基于插件的记忆足以应对现有基准测试。添加工具的结果严格劣于前者，因此省略。",
+          "inlines": [
+            {
+              "text": "2 我们发现基于插件的记忆足以应对现有基准测试。添加工具的结果严格劣于前者，因此省略。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "AI tools have made it easy to vibe code agents. Building and maintaining an enterprise agent in production, however, remains significantly more challenging. In particular, developers are often forced to make a trade-off between quality (getting good answers, especially on long-tail tasks) and efficiency (keeping cost and latency in check at scale). Oftentimes, techniques bring gains in one dimension at the cost of another.",
+          "inlines": [
+            {
+              "text": "AI tools have made it easy to vibe code agents. Building and maintaining an enterprise agent in production, however, remains significantly more challenging. In particular, developers are often forced to make a trade-off between quality (getting good answers, especially on long-tail tasks) and efficiency (keeping cost and latency in check at scale). Oftentimes, techniques bring gains in one dimension at the cost of another."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Memory is a promising way to improve both at the same time. It can help agents carry useful context across tasks, such as user preferences, prior corrections, metric definitions, and successful workflows. In principle, this can improve accuracy, reduce repeated errors, and avoid unnecessary rediscovery. But more history is not necessarily better memory. Supplying every past interaction is costly and can introduce stale, conflicting, or irrelevant context. The central challenge is deciding what to retain, how to maintain it, and how to measure usefulness.",
+          "inlines": [
+            {
+              "text": "Memory is a promising way to improve both at the same time. It can help agents carry useful context across tasks, such as user preferences, prior corrections, metric definitions, and successful workflows. In principle, this can improve accuracy, reduce repeated errors, and avoid unnecessary rediscovery. But more history is not necessarily better memory. Supplying every past interaction is costly and can introduce stale, conflicting, or irrelevant context. The central challenge is deciding what to retain, how to maintain it, and how to measure usefulness."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this post, we introduce MemCurrent, a persistent memory architecture for production agents, which now powers the new Agent Bricks Memory and Genie. Agents read and write memory as they work, and an offline “dreaming” pipeline consolidates memory to keep it consistent and fresh. On our internal benchmark, built from realistic enterprise tasks, MemCurrent triples the agent's pass rate over having no memory, while using 31% fewer tokens and running 26% faster. The rest of this post covers how we designed and evaluated it, and what we learned along the way.",
+          "inlines": [
+            {
+              "text": "In this post, we introduce "
+            },
+            {
+              "bold": true,
+              "text": "MemCurrent"
+            },
+            {
+              "text": ", a persistent memory architecture for production agents, which now powers the new "
+            },
+            {
+              "href": "https://docs.databricks.com/aws/en/agents/custom-agents/stateful-agents",
+              "text": "Agent Bricks Memory"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://docs.databricks.com/aws/en/genie-one/chat",
+              "text": "Genie"
+            },
+            {
+              "text": ". Agents read and write memory as they work, and an offline “dreaming” pipeline consolidates memory to keep it consistent and fresh. On our internal benchmark, built from realistic enterprise tasks, MemCurrent triples the agent's pass rate over having no memory, while using 31% fewer tokens and running 26% faster. The rest of this post covers how we designed and evaluated it, and what we learned along the way."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/af6ce4cbdd8754ba38f97d47984a7121e79e722712d8ab26034f0599c6023cf4.webp",
+          "alt": "",
+          "width": 1945,
+          "height": 939
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 1. Pass rate vs. tokens per task on our Internal Memory Benchmark. MemCurrent is on the Pareto frontier, outperforming Mem0, PropMem, and OpenClaw memory on both dimensions.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 1. Pass rate vs. tokens per task on our Internal Memory Benchmark. MemCurrent is on the Pareto frontier, outperforming Mem0, PropMem, and OpenClaw memory on both dimensions."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How We Designed Memory",
+          "inlines": [
+            {
+              "text": "How We Designed Memory"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "There are three ways to wire memory into an agent. As a plugin (like our earlier work on MemAlign and Memory Scaling), memory is read and written automatically at fixed points in a session. As tools, the agent decides what and when to read and write. As an offline pipeline, memory is updated in the background on a schedule or trigger, and used in later sessions. Each comes with trade-offs:",
+          "inlines": [
+            {
+              "text": "There are three ways to wire memory into an agent. As a "
+            },
+            {
+              "bold": true,
+              "text": "plugin"
+            },
+            {
+              "text": " (like our earlier work on "
+            },
+            {
+              "href": "https://www.databricks.com/blog/memalign-building-better-llm-judges-human-feedback-scalable-memory",
+              "text": "MemAlign"
+            },
+            {
+              "text": " and"
+            },
+            {
+              "href": "https://www.databricks.com/blog/memory-scaling-ai-agents",
+              "text": " Memory Scaling"
+            },
+            {
+              "text": "), memory is read and written automatically at fixed points in a session. As "
+            },
+            {
+              "bold": true,
+              "text": "tools"
+            },
+            {
+              "text": ", the agent decides what and when to read and write. As an "
+            },
+            {
+              "bold": true,
+              "text": "offline pipeline"
+            },
+            {
+              "text": ", memory is updated in the background on a schedule or trigger, and used in later sessions. Each comes with trade-offs:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Memory as a …",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Memory as a …"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Triggered by",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Triggered by"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Time of computation",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Time of computation"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pros",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Pros"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cons",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Cons"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Plugin",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Plugin"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Automatic",
+          "inlines": [
+            {
+              "text": "Automatic"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Online",
+          "inlines": [
+            {
+              "text": "Online"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Updates take effect immediately"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Predictable behavior"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Higher runtime cost and latency"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Inflexible (e.g., wasting tokens even when memory isn't needed)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Tool"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Agent",
+          "inlines": [
+            {
+              "text": "Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Online",
+          "inlines": [
+            {
+              "text": "Online"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Updates take effect immediately"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Agent has flexibility"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Higher runtime cost and latency"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Quality constrained by agent capability"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pipeline",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Pipeline"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Schedule or trigger",
+          "inlines": [
+            {
+              "text": "Schedule or trigger"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Offline",
+          "inlines": [
+            {
+              "text": "Offline"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Lower runtime cost and latency (async batched)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Updates arrive with a delay"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Table 1. Three access patterns of memory: plugin, tool, or offline pipeline.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Table 1. Three access patterns of memory: plugin, tool, or offline pipeline."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MemCurrent uses all three, each where it fits best.",
+          "inlines": [
+            {
+              "text": "MemCurrent uses all three, each where it fits best."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fd8e8265f3c23e4cebe1c6d832961e9315cb3a5d9bdd4c3db660978ddb392bd0.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 1333
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 2. Overview of MemCurrent.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 2. Overview of MemCurrent."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MemCurrent has two types of memory: episodic memory, which stores raw session traces; and derived memory, which has the distilled learnings from these traces, stored as files in a structured knowledge base. An auto-generated memory.md index sits at the top, describing the file structure and what each file contains.",
+          "inlines": [
+            {
+              "text": "MemCurrent has two types of memory: "
+            },
+            {
+              "bold": true,
+              "text": "episodic memory"
+            },
+            {
+              "text": ","
+            },
+            {
+              "bold": true,
+              "text": " "
+            },
+            {
+              "text": "which stores raw session traces; and "
+            },
+            {
+              "bold": true,
+              "text": "derived memory"
+            },
+            {
+              "text": ", which has the distilled learnings from these traces, stored as files in a structured knowledge base. An auto-generated "
+            },
+            {
+              "code": true,
+              "text": "memory.md"
+            },
+            {
+              "text": " index sits at the top, describing the file structure and what each file contains."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Both episodic and derived memory live in a production-grade database that can scale to many users while delivering low-latency responses. Episodic memory is append-only, where a plugin logs each step as the session runs. Derived memory is a mutable table simulating a hierarchical file system, where writing happens in two ways. Agent tools (add_memory, update_memory, delete_memory) handle explicit requests like “Never write scripts in the /tmp dir”. An offline dreaming pipeline captures the rest, distilling implicit learnings from each new session into the relevant files. It also cleans up the whole store, splitting oversized files, merging duplicates, and resolving conflicts.",
+          "inlines": [
+            {
+              "text": "Both episodic and derived memory live in a production-grade database that can scale to many users while delivering low-latency responses. Episodic memory is append-only, where a plugin logs each step as the session runs. Derived memory is a mutable table simulating a hierarchical file system, where writing happens in two ways. Agent tools ("
+            },
+            {
+              "code": true,
+              "text": "add_memory, update_memory, delete_memory"
+            },
+            {
+              "text": ") handle explicit requests like “Never write scripts in the /tmp dir”. An offline dreaming pipeline captures the rest, distilling implicit learnings from each new session into the relevant files. It also cleans up the whole store, splitting oversized files, merging duplicates, and resolving conflicts."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reading works in layers. At session start, a plugin injects the memory index, so the agent knows what it knows before it begins. During the session, the agent has two tools that work across both memory types: search_memory returns the top matches for a query (a step in a past trace, or a line in a memory file), and fetch_memory returns the full entry by identifier (session ID or file path).",
+          "inlines": [
+            {
+              "text": "Reading works in layers. At session start, a plugin injects the memory index, so the agent knows what it knows before it begins. During the session, the agent has two tools that work across both memory types: "
+            },
+            {
+              "code": true,
+              "text": "search_memory"
+            },
+            {
+              "text": " returns the top matches for a query (a step in a past trace, or a line in a memory file), and "
+            },
+            {
+              "code": true,
+              "text": "fetch_memory"
+            },
+            {
+              "text": " returns the full entry by identifier (session ID or file path)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How We Evaluated Memory",
+          "inlines": [
+            {
+              "text": "How We Evaluated Memory"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Benchmarks",
+          "inlines": [
+            {
+              "text": "Benchmarks"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We start with three popular open-source benchmarks: LoCoMo, LongMemEval, and ConvoMem. All three test whether an agent can recall facts stated earlier in open-ended synthetic conversations.",
+          "inlines": [
+            {
+              "text": "We start with three popular open-source benchmarks: "
+            },
+            {
+              "href": "https://arxiv.org/abs/2402.17753",
+              "bold": true,
+              "text": "LoCoMo"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://arxiv.org/abs/2410.10813",
+              "bold": true,
+              "text": "LongMemEval"
+            },
+            {
+              "text": ", and "
+            },
+            {
+              "href": "https://arxiv.org/abs/2511.10523",
+              "bold": true,
+              "text": "ConvoMem"
+            },
+            {
+              "text": ". All three test whether an agent can recall facts stated earlier in open-ended synthetic conversations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In addition, we built an Internal Memory Benchmark from real Genie conversations, where users ask all kinds of questions about their data. As in Figure 3, we started from 12K+ sessions, mined 3K candidates containing memory-worthy signals, and drafted a follow-up question with scoring rubrics. The other sessions from the same user serve as fillers for the test case. An adversarial judge then checked each test case against 7 criteria, such as whether the knowledge is actually present, specific to the user, required to answer, natural, and verifiable. After a final manual review, the benchmark has a total of 114 test cases, with 29 users and 2,233 history sessions.",
+          "inlines": [
+            {
+              "text": "In addition, we built an Internal Memory Benchmark from real "
+            },
+            {
+              "href": "https://docs.databricks.com/aws/en/genie-one/",
+              "text": "Genie"
+            },
+            {
+              "text": " conversations, where users ask all kinds of questions about their data. As in Figure 3, we started from 12K+ sessions, mined 3K candidates containing memory-worthy signals, and drafted a follow-up question with scoring rubrics. The other sessions from the same user serve as fillers for the test case. An adversarial judge then checked each test case against 7 criteria, such as whether the knowledge is actually present, specific to the user, required to answer, natural, and verifiable. After a final manual review, the benchmark has a total of 114 test cases, with 29 users and 2,233 history sessions."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/527536fd0388ecb759c3b24e3247dc0d93c466d24a70be46683a1b8cd193ced1.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 1200
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 3. How we built our Internal Memory Benchmark.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 3. How we built our Internal Memory Benchmark."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Here's an example:",
+          "inlines": [
+            {
+              "text": "Here's an example:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5e57e2998856726c17bbea0f26b6df6c6a316cc3b09c56c5785bdfb76afbb736.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 693
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 4. An example test case from our Internal Memory Benchmark. In a past session, the user corrects the agent's choice of table and tells it to exclude background requests. Later, the agent faces a different but related question, and has to find that session among 100+ others and apply what it learned. The output is scored by an LLM judge based on a list of rubrics (some memory-dependent, some task-intrinsic).",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 4. An example test case from our Internal Memory Benchmark. In a past session, the user corrects the agent's choice of table and tells it to exclude background requests. Later, the agent faces a different but related question, and has to find that session among 100+ others and apply what it learned. The output is scored by an LLM judge based on a list of rubrics (some memory-dependent, some task-intrinsic)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our benchmark differs from existing ones in three ways:",
+          "inlines": [
+            {
+              "text": "Our benchmark differs from existing ones in three ways:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Enterprise domain. Existing benchmarks are open-ended chats about the lives of simulated personas. Ours is from real work in a data workspace, involving rich enterprise knowledge like table semantics, metric definitions, and workflows.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Enterprise domain."
+            },
+            {
+              "text": " Existing benchmarks are open-ended chats about the lives of simulated personas. Ours is from real work in a data workspace, involving rich enterprise knowledge like table semantics, metric definitions, and workflows."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Memory feeds actions, not answers. Finding the right string in past conversations is not enough; agents must apply retrieved knowledge to complete multi-step tasks.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Memory feeds actions, not answers. "
+            },
+            {
+              "text": "Finding the right string in past conversations is not enough; agents must apply retrieved knowledge to complete multi-step tasks."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Diversity. Test cases span 5 memory types (profile, preferences, domain knowledge, projects, workflows) crossed with 11 scenarios (direct instruction, changing or outdated facts, multi-session aggregation, memory-independent questions, and more).",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Diversity."
+            },
+            {
+              "italic": true,
+              "text": " "
+            },
+            {
+              "text": "Test cases span 5 memory types (profile, preferences, domain knowledge, projects, workflows) crossed with 11 scenarios (direct instruction, changing or outdated facts, multi-session aggregation, memory-independent questions, and more)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Results",
+          "inlines": [
+            {
+              "text": "Results"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We compare MemCurrent with three open-source memory backends, Mem0, PropMem, OpenClaw memory, using the same underlying LLM.",
+          "inlines": [
+            {
+              "text": "We compare MemCurrent with three open-source memory backends, "
+            },
+            {
+              "href": "https://github.com/mem0ai/mem0",
+              "text": "Mem0"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://github.com/ProsusAI/MemEval",
+              "text": "PropMem"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://docs.openclaw.ai/concepts/memory",
+              "text": "OpenClaw memory"
+            },
+            {
+              "text": ", using the same underlying LLM."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Open-Source Benchmarks. We pair each memory backend with a simple question-answering agent, built with two agent harnesses (LangGraph and OpenAI Agents SDK). We also run two baselines: a floor with no memory, and a ceiling with full context, where every past session goes into the agent's context. Across all three benchmarks, MemCurrent scores highest among all memory backends and stays on the cost-accuracy Pareto frontier. On average, MemCurrent (88.1%) performs on par with full context (87.8%) at ~12x fewer input tokens per question (8.4K vs 103K). On the two benchmarks with the longest histories, it even beats full context, where dumping everything into the prompt ends up confusing the agent.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Open-Source Benchmarks. "
+            },
+            {
+              "text": "We pair each memory backend with a simple question-answering agent, built with two agent harnesses (LangGraph and OpenAI Agents SDK). We also run two baselines: a floor with "
+            },
+            {
+              "bold": true,
+              "text": "no memory"
+            },
+            {
+              "text": ", and a ceiling with "
+            },
+            {
+              "bold": true,
+              "text": "full context"
+            },
+            {
+              "text": ", where every past session goes into the agent's context. Across all three benchmarks, "
+            },
+            {
+              "bold": true,
+              "text": "MemCurrent scores highest among all memory backends "
+            },
+            {
+              "text": "and"
+            },
+            {
+              "bold": true,
+              "text": " stays on the cost-accuracy Pareto frontier"
+            },
+            {
+              "text": ". On average, MemCurrent (88.1%) performs on par with full context (87.8%) "
+            },
+            {
+              "bold": true,
+              "text": "at ~12x fewer input tokens per question"
+            },
+            {
+              "text": " (8.4K vs 103K). On the two benchmarks with the longest histories, it even beats full context, where dumping everything into the prompt ends up confusing the agent."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/07d927dec03fcc5ca37bb1500eeda4055aae5a6b1657edff34e3b5556d3d801d.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 673
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 5. Cost–accuracy1 trade-off of memory backends on (a) LoCoMo (19–32 sessions/sample), (b) LongMemEval (s split) (38–62 sessions/sample), and (c) ConvoMem (stratified subset of 500 samples, 100 sessions/sample). We use GPT 5.6 luna as the agent and memory model. All memory backends are run as a plugin, which automatically searches for related memories to the question and injects them into the agent context at session start.2 Accuracy is the mean over the LangGraph and OpenAI Agents SDK harnesses and 3 repeats. Cost is mean input tokens per question (log scale).",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 5. Cost–accuracy1 trade-off of memory backends on (a) LoCoMo (19–32 sessions/sample), (b) LongMemEval (s split) (38–62 sessions/sample), and (c) ConvoMem (stratified subset of 500 samples, 100 sessions/sample). We use GPT 5.6 luna as the agent and memory model. All memory backends are run as a plugin, which automatically searches for related memories to the question and injects them into the agent context at session start.2 Accuracy is the mean over the LangGraph and OpenAI Agents SDK harnesses and 3 repeats. Cost is mean input tokens per question (log scale)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Internal Memory Benchmark. On our benchmark, the gap widens. Here, each memory backend runs inside our internal Genie, the same agent the benchmark sessions came from. The histories are too long to fit in context, so our ceiling is gold injection: injecting only the gold memories into the agent's context. Among all memory backends, MemCurrent has the highest pass rate (68.4%) and the lowest latency (252s) and token usage (418K), closing over 80% of the gap between no memory (22.3%) and gold injection (78.6%). Notably, while Mem0 was also on frontier on earlier benchmarks, it trails at 43.9% here with higher latency and cost. Compared to no memory, MemCurrent triples the agent's pass rate (22.3% → 68.4%) while making it 1.35x faster and 1.44x cheaper.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Internal Memory Benchmark."
+            },
+            {
+              "text": " On our benchmark, the gap widens. Here, each memory backend runs inside our internal Genie, the same agent the benchmark sessions came from. The histories are too long to fit in context, so our ceiling is gold injection: injecting only the gold memories into the agent's context. Among all memory backends, MemCurrent has the highest pass rate (68.4%) and the lowest latency (252s) and token usage (418K), closing over 80% of the gap between no memory (22.3%) and gold injection (78.6%). Notably, while Mem0 was also on frontier on earlier benchmarks, it trails at 43.9% here with higher latency and cost. Compared to no memory, "
+            },
+            {
+              "bold": true,
+              "text": "MemCurrent triples the agent's pass rate "
+            },
+            {
+              "text": "(22.3% → 68.4%)"
+            },
+            {
+              "bold": true,
+              "text": " while making it 1.35x faster and 1.44x cheaper"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8e7281a8bd55f091fc150ece14c2648d665076d2f0f0c2112ff2106284d9ecf8.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 898
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 6. Pass rate, mean latency, and mean token usage per task on our Internal Memory Benchmark across 3 repeats. We use Claude Opus 4.6 as the agent model and GPT 5.6 sol as the memory model. All memory backends are provided as agent tools and a session-start plugin.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 6. Pass rate, mean latency, and mean token usage per task on our Internal Memory Benchmark across 3 repeats. We use Claude Opus 4.6 as the agent model and GPT 5.6 sol as the memory model. All memory backends are provided as agent tools and a session-start plugin."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MemCurrent in Action",
+          "inlines": [
+            {
+              "text": "MemCurrent in Action"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "In addition to benchmark numbers, let's examine two examples of how MemCurrent helps in practice, from internal Genie sessions.",
+          "inlines": [
+            {
+              "text": "In addition to benchmark numbers, let's examine two examples of how MemCurrent helps in practice, from internal Genie sessions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Example 1: Memory stops an occasional hallucination mistake. In Figure 7, a user asked the agent for the top 20 users of Product X over the past two months. The agent wrote a correct SQL query, but never read the actual execution results saved to a file. It still confidently produced a table with hallucinated content. Upon user feedback, the agent saved the lesson to memory. Next time, once the query ran, the agent read the results first and returned the right table. One memory correction kept a one-off slip from becoming a habit.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Example 1: Memory stops an occasional hallucination mistake."
+            },
+            {
+              "text": " In Figure 7, a user asked the agent for the top 20 users of Product X over the past two months. The agent wrote a correct SQL query, but never read the actual execution results saved to a file. It still confidently produced a table with hallucinated content. Upon user feedback, the agent saved the lesson to memory. Next time, once the query ran, the agent read the results first and returned the right table. One memory correction kept a one-off slip from becoming a habit."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fbdb87cc0806b37ceb906b623f53dc8f3880ce300c10023b0e8102f781b9eaf2.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 995
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 7. An anonymized example of how memory helps the agent avoid a repeated hallucination mistake.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 7. An anonymized example of how memory helps the agent avoid a repeated hallucination mistake."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Example 2: Memory saves computation on related tasks. In Figure 8, a user asked for “the top 5 SDP customers”. The agent had to figure everything out from scratch: what “SDP” stands for, which tables held usage data, and how to join and filter them. It took 11 tool calls, 8 subagents, and nearly six minutes. The agent saved these steps as a workflow file in memory, which it could reuse on related tasks. Later, the user asked a different question: how many SDP customers had more than 5K pipeline runs last month. Using the workflow, the agent answered with 2 tool calls and 1 subagent in 41 seconds. The question was new, but the path to the answer wasn't, and memory let the agent skip unnecessary exploration.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Example 2: Memory saves computation on related tasks."
+            },
+            {
+              "text": " In Figure 8, a user asked for “the top 5 SDP customers”. The agent had to figure everything out from scratch: what “SDP” stands for, which tables held usage data, and how to join and filter them. It took 11 tool calls, 8 subagents, and nearly six minutes. The agent saved these steps as a workflow file in memory, which it could reuse on related tasks. Later, the user asked a different question: how many SDP customers had more than 5K pipeline runs last month. Using the workflow, the agent answered with 2 tool calls and 1 subagent in 41 seconds. The question was new, but the path to the answer wasn't, and memory let the agent skip unnecessary exploration."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3781bd8bfe84956555e79fd01dab92588d5674c6d1379cbda3d4af316c9b6d41.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 1057
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 8. An anonymized example of how memory turns a 6 minute task into 41 seconds.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 8. An anonymized example of how memory turns a 6 minute task into 41 seconds."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What Makes MemCurrent Work",
+          "inlines": [
+            {
+              "text": "What Makes MemCurrent Work"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "To understand what accounts for MemCurrent's superior performance, we ran ablations on our Internal Memory Benchmark for two design choices: memory types and extraction strategy.",
+          "inlines": [
+            {
+              "text": "To understand what accounts for MemCurrent's superior performance, we ran ablations on our Internal Memory Benchmark for two design choices: memory types and extraction strategy."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Do we need both memory types? Episodic memory alone helps moderately: 35.8%, up from 22.3% with no memory. The raw history is useful, but the agent only searches it in about a third of test cases, though it passes 60% of those when it does. Derived memory avoids this issue, as the injected memory index at session start gives the agent information about what's available in memory and when to look, lifting pass rate to 66.1%. Adding episodic memory on top gives the best result, at 68.4%. The gain is small, but it suggests raw traces can recover details that distillation drops.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Do we need both memory types? "
+            },
+            {
+              "text": "Episodic memory alone helps moderately: 35.8%, up from 22.3% with no memory. The raw history is useful, but the agent only searches it in about a third of test cases, though it passes 60% of those when it does. Derived memory avoids this issue, as the injected memory index at session start gives the agent information about what's available in memory and when to look, lifting pass rate to 66.1%. Adding episodic memory on top gives the best result, at 68.4%. The gain is small, but it suggests raw traces can recover details that distillation drops."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/371b3624a038755ad4098b0fbcb2d6da1df265595dfe624198a8cbde334fbfd5.webp",
+          "alt": "",
+          "width": 1942,
+          "height": 1284
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 9. Pass rate by memory type.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 9. Pass rate by memory type."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What's a good memory extraction strategy? As shown in Figure 2, two channels extract derived memory: online tools and offline dreaming. When isolated, offline dreaming (63.5%) beats online tools (53.9%) by nearly 10 points. Their combination produces the highest pass rate at 66.1%. That supports a split of duties: dreaming handles background extraction and consolidation, while online tools make explicit requests take effect right away.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What's a good memory extraction strategy? "
+            },
+            {
+              "text": "As shown in Figure 2, two channels extract derived memory: online tools and offline dreaming. When isolated, offline dreaming (63.5%) beats online tools (53.9%) by nearly 10 points. Their combination produces the highest pass rate at 66.1%. That supports a split of duties: dreaming handles background extraction and consolidation, while online tools make explicit requests take effect right away."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5078a892d428f4f94e8efefb4d2bb0ccba0ec4b90e81eef84588a4885c8a1e61.webp",
+          "alt": "",
+          "width": 1999,
+          "height": 1292
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 10. Pass rate by extraction strategy.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 10. Pass rate by extraction strategy."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Conclusion",
+          "inlines": [
+            {
+              "text": "Conclusion"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Memory is how an agent stops starting from zero. In this post, we introduced MemCurrent, a memory architecture for production agents that combines episodic memory and derived memory, with three access patterns: plugins to log and load context automatically, tools the agent calls on demand, and an offline dreaming pipeline that consolidates memory in the background.",
+          "inlines": [
+            {
+              "text": "Memory is how an agent stops starting from zero. In this post, we introduced MemCurrent, a memory architecture for production agents that combines episodic memory and derived memory, with three access patterns: plugins to log and load context automatically, tools the agent calls on demand, and an offline dreaming pipeline that consolidates memory in the background."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Across all benchmarks we ran, MemCurrent improves quality and efficiency at the same time, the trade-off we set out to break. On open-source benchmarks, it matches full context performance at about 12x fewer input tokens. On our Internal Memory Benchmark, built from real data work, it triples the agent's pass rate over no memory while also making it faster and cheaper.",
+          "inlines": [
+            {
+              "text": "Across all benchmarks we ran, MemCurrent improves quality and efficiency at the same time, the trade-off we set out to break. On open-source benchmarks, it matches full context performance at about 12x fewer input tokens. On our Internal Memory Benchmark, built from real data work, it triples the agent's pass rate over no memory while also making it faster and cheaper."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The ablations point to where the value comes from. Derived memory does most of the work, and episodic memory adds a smaller boost by recovering details that distillation drops. Combining online tools with offline dreaming makes the best extraction strategy: explicit requests take effect immediately, while dreaming distills implicit learnings and consolidates the store in the background.",
+          "inlines": [
+            {
+              "text": "The ablations point to where the value comes from. Derived memory does most of the work, and episodic memory adds a smaller boost by recovering details that distillation drops. Combining online tools with offline dreaming makes the best extraction strategy: explicit requests take effect immediately, while dreaming distills implicit learnings and consolidates the store in the background."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beyond the numbers, memory provides a knowledge base that isn't tied to a single agent or LLM. It can move with users to new agents or LLMs, and could seed knowledge shared across their organization, a direction we are exploring next.",
+          "inlines": [
+            {
+              "text": "Beyond the numbers, memory provides a knowledge base that isn't tied to a single agent or LLM. It can move with users to new agents or LLMs, and could seed knowledge shared across their organization, a direction we are exploring next."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Getting Started",
+          "inlines": [
+            {
+              "text": "Getting Started"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We're bringing these findings to drive improvements across Databricks products:",
+          "inlines": [
+            {
+              "text": "We're bringing these findings to drive improvements across Databricks products:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For agent developers. Agent Bricks is Databricks' developer platform for building custom agents. MemCurrent is built into Agent Bricks' Memory offering, powered by Lakebase. The offering includes:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "For agent developers."
+            },
+            {
+              "text": " Agent Bricks is Databricks' developer platform for building custom agents. MemCurrent is built into Agent Bricks' Memory offering, powered by Lakebase. The offering includes:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Session store for episodic memory"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Memory store for derived memory"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "An automatic dreaming pipeline"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Tracing and evaluation of agent quality, including the impact of memory"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A CLI which helps you quickly get started with an end-to-end sample agent with all of the above in <10 minutes"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Get started building your custom agent today.",
+          "inlines": [
+            {
+              "href": "https://docs.databricks.com/aws/en/agents/custom-agents/stateful-agents",
+              "text": "Get started"
+            },
+            {
+              "text": " building your custom agent today."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For Databricks Genie users. Genie is an interface where Databricks users can converse with their data in natural language. MemCurrent is already in action behind the scenes, helping to improve answer quality while reducing response latency and cost.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "For Databricks Genie users."
+            },
+            {
+              "text": " Genie is an interface where Databricks users can converse with their data in natural language. MemCurrent is already in action behind the scenes, helping to improve answer quality while reducing response latency and cost."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Get started with Genie.",
+          "inlines": [
+            {
+              "href": "https://docs.databricks.com/aws/en/genie-one/chat",
+              "text": "Get started"
+            },
+            {
+              "text": " with Genie."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Authors: Veronica Lyu, Wenhao Zhan, Sam Havens, Ziyi Yang, Jenny Sun, Qinxin Wang, Nihit Desai, Sirui Sun, Ankit Mathur, Jane Zhang, Yi Liu, Jialu Liu, Michael Bendersky, Matei Zaharia, Xing Chen",
+          "inlines": [
+            {
+              "text": "Authors: Veronica Lyu, Wenhao Zhan, Sam Havens, Ziyi Yang, Jenny Sun, Qinxin Wang, Nihit Desai, Sirui Sun, Ankit Mathur, Jane Zhang, Yi Liu, Jialu Liu, Michael Bendersky, Matei Zaharia, Xing Chen"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We thank Jonathan Li, Rishabh Singh, Andy Zhang, Kenneth Choi, Will Tipton, Cassie Cao, Siddharth Murching, Sue Ann Hong, Pranav Sukumar, Neo Ni, Shanshan Zheng, Chung Wu, and our internal user study participants for their feedback and support throughout this project.",
+          "inlines": [
+            {
+              "text": "We thank Jonathan Li, Rishabh Singh, Andy Zhang, Kenneth Choi, Will Tipton, Cassie Cao, Siddharth Murching, Sue Ann Hong, Pranav Sukumar, Neo Ni, Shanshan Zheng, Chung Wu, and our internal user study participants for their feedback and support throughout this project."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1 The latency is similar (4-7s/question) across all memory backends, as most questions are answerable within a single hop.",
+          "inlines": [
+            {
+              "text": "1 The latency is similar (4-7s/question) across all memory backends, as most questions are answerable within a single hop."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2 We find plugin-based memory sufficient for the existing benchmarks. Results from adding tools are strictly dominated and thus omitted.",
+          "inlines": [
+            {
+              "text": "2 We find plugin-based memory sufficient for the existing benchmarks. Results from adding tools are strictly dominated and thus omitted."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:18:35.628982Z",
+  "contentMode": "full"
+}

@@ -1,0 +1,2516 @@
+{
+  "schemaVersion": 1,
+  "id": "ojpe4mr67tjbrt5atyi6hyapl",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/ojpe4mr67tjbrt5atyi6hyapl",
+  "fetchedAt": "2026-10-22T13:26:10.078362Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Google / Gemini",
+    "Agent 智能体",
+    "评测基准",
+    "教程实践"
+  ],
+  "tags": [
+    "教程/实践",
+    "Agent",
+    "评测/基准",
+    "Google"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "2026年10月15日",
+          "inlines": [
+            {
+              "text": "2026年10月15日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hugo Selbie 客户与合作伙伴解决方案工程师",
+          "inlines": [
+            {
+              "href": "https://developers.googleblog.com/search/?author=Hugo+Selbie",
+              "text": "Hugo Selbie"
+            },
+            {
+              "text": " 客户与合作伙伴解决方案工程师"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "内容摘要",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "内容摘要"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "你的智能体可能会陷入循环、消耗大量 token，或者给出完全虚构的答案，但表面上看起来一切正常。凭感觉检查是发现不了这些问题的。本文是我们 AI Agent Clinic 节目 How to Actually Evaluate (Any) AI Agent: Beyond the Vibe Check 背后的实战手册，在节目中我们用 60 分钟为一个 LangGraph 智能体搭建了一套评估流水线。以下是其中的内容：",
+          "inlines": [
+            {
+              "text": "你的智能体可能会陷入循环、消耗大量 token，或者给出完全虚构的答案，但表面上看起来一切正常。凭感觉检查是发现不了这些问题的。本文是我们 AI Agent Clinic 节目 "
+            },
+            {
+              "href": "https://youtu.be/wPdoZRbvaF4",
+              "italic": true,
+              "text": "How to Actually Evaluate (Any) AI Agent: Beyond the Vibe Check"
+            },
+            {
+              "text": " 背后的实战手册，在节目中我们用 60 分钟为一个 LangGraph 智能体搭建了一套评估流水线。以下是其中的内容："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3aa953b50825e399b89a61a51dcfcc8bed4843a12901274efc05446130920d0d.webp",
+          "alt": "00-tldr-at-a-glance"
+        },
+        {
+          "type": "heading",
+          "text": "评估 AI 智能体：超越凭感觉检查",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "评估 AI 智能体：超越凭感觉检查"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "当团队开始构建 AI 智能体时，测试方式通常如出一辙。你接上一个模型，给它几个工具，在终端里跑三四个提示词，然后凭肉眼看看输出。如果答案看起来还算合理，就直接发布了。",
+          "inlines": [
+            {
+              "text": "当团队开始构建 AI 智能体时，测试方式通常如出一辙。你接上一个模型，给它几个工具，在终端里跑三四个提示词，然后凭肉眼看看输出。如果答案看起来还算合理，就直接发布了。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "但在实践中，这种做法很快就会崩溃。你调整系统提示词来修复某个工作流中的边缘情况，结果智能体在另一个工作流中突然不再调用必需的工具了。",
+          "inlines": [
+            {
+              "text": "但在实践中，这种做法很快就会崩溃。你调整系统提示词来修复某个工作流中的边缘情况，结果智能体在另一个工作流中突然不再调用必需的工具了。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "更糟的是，智能体的失败方式与标准软件不同。智能体可能卡在重试循环中，触发多次工具调用，却仍然返回一个礼貌、听起来合理的最终答案。",
+          "inlines": [
+            {
+              "text": "更糟的是，智能体的失败方式与标准软件不同。智能体可能卡在重试循环中，触发多次工具调用，却仍然返回一个礼貌、听起来合理的最终答案。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在生产环境中，这种隐藏的失败代价高昂：",
+          "inlines": [
+            {
+              "text": "在生产环境中，这种隐藏的失败代价高昂："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "它会悄无声息地推高你的云账单和 token 用量。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "它会耗尽下游 API 的速率限制和配额。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "它会让用户盯着加载转圈干等。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "它可能在外部系统中触发重复的副作用，而表面上看起来一切“正常”。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "它会侵蚀用户信任，而第一印象一旦失去就很难挽回。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在开发生命周期中集成一套可靠的评估套件，在最初的原型阶段看起来像是额外的负担，直到你修改系统提示词引发了意料之外的破坏性变更，才会改变看法。关键在于要认识到评估是一个循序渐进的过程：任何可重复的评估系统（无论多么简单）都比依赖临时的抽查或完全没有系统要好。你不需要在第 0 天就搭建一套精心设计的自动化评分架构。相反，从简单、可重复的检查开始，随着智能体能力和生产需求的增长，再将评估演进为更复杂、自动化的框架。",
+          "inlines": [
+            {
+              "text": "在开发生命周期中集成一套可靠的评估套件，在最初的原型阶段看起来像是额外的负担，直到你修改系统提示词引发了意料之外的破坏性变更，才会改变看法。关键在于要认识到评估是一个循序渐进的过程：任何可重复的评估系统（无论多么简单）都比依赖临时的抽查或完全没有系统要好。你不需要在第 0 天就搭建一套精心设计的自动化评分架构。相反，从简单、可重复的检查开始，随着智能体能力和生产需求的增长，再将评估演进为更复杂、自动化的框架。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "将这些决策集成到评估框架中，会大大简化建立可重复评估系统的过程。要超越简单的主观检查，需要依靠两大核心支柱：人工监督和针对性工具。在本文中，我们探讨如何使用开源工具包 agent-eval 搭建评估框架。我们将演示如何将人工审查的追踪记录与自动化验证相结合，从而在开发早期发现悄无声息的回归问题，并在智能体投入生产时无缝扩展。",
+          "inlines": [
+            {
+              "text": "将这些决策集成到评估框架中，会大大简化建立可重复评估系统的过程。要超越简单的主观检查，需要依靠两大核心支柱：人工监督和针对性工具。在本文中，我们探讨如何使用开源工具包 "
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "text": "agent-eval"
+            },
+            {
+              "text": " 搭建评估框架。我们将演示如何将人工审查的追踪记录与自动化验证相结合，从而在开发早期发现悄无声息的回归问题，并在智能体投入生产时无缝扩展。"
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "heading",
+          "text": "入门：高层构建模块",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "入门：高层构建模块"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "1. 用关键用户旅程定义成功",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "1. 用关键用户旅程定义成功"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在编写测试代码之前，你需要对什么才算好的结果有一个共同的愿景。将测试锚定在关键用户旅程（CUJ）上，而不是抽象的基准测试。",
+          "inlines": [
+            {
+              "text": "在编写测试代码之前，你需要对什么才算好的结果有一个共同的愿景。将测试锚定在"
+            },
+            {
+              "bold": true,
+              "text": "关键用户旅程（CUJ）"
+            },
+            {
+              "text": "上，而不是抽象的基准测试。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CUJ 定义了用户期望系统实现的目标，围绕用户的角色、目标、约束条件和验证条件来构建：",
+          "inlines": [
+            {
+              "text": "CUJ 定义了用户期望系统实现的目标，围绕用户的角色、目标、约束条件和验证条件来构建："
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "“作为一名运营分析师，我希望智能体能够接收交易对手的交易差异邮件，识别有争议的交易，在 30 秒内对照我们的内部账本核实交易经济条款，并在无需人工干预的情况下起草一封回复，将我们的内部交易 ID 反向翻译回经纪商的命名体系。”"
+        },
+        {
+          "type": "paragraph",
+          "text": "该声明中的每一条款都成为一个评估点：智能体是否解析了正确的事务 ID？它在起草前是否检查了账本？它是否将内部 ID 映射回外部命名体系？",
+          "inlines": [
+            {
+              "text": "该声明中的每一条款都成为一个评估点：智能体是否解析了正确的事务 ID？它在起草前是否检查了账本？它是否将内部 ID 映射回外部命名体系？"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c78314f76df7f1af2bd4a818b92880003833b7166aacfb22c430d5805608c91a.webp",
+          "alt": "01-cuj-evaluation-points"
+        },
+        {
+          "type": "paragraph",
+          "text": "CUJ 的每一条款都成为一个评估点。",
+          "inlines": [
+            {
+              "text": "CUJ 的每一条款都成为一个评估点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "预先定义这些期望，会促使产品相关方、下游用户和工程师就如何衡量“成功”达成一致。",
+          "inlines": [
+            {
+              "text": "预先定义这些期望，会促使产品相关方、下游用户和工程师就如何衡量“成功”达成一致。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2. 从模拟用户开始，逐步过渡到真实流量",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "2. 从模拟用户开始，逐步过渡到真实流量"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "你不需要六个月的线上日志来构建初始的黄金数据集。相反，将每个 CUJ 拆解为具体的场景（包括正常路径和边缘情况），并将它们输入到用户模拟器 LLM中（我们喜欢 ADK 用户模拟）。在设定好人物角色和行为约束（例如，一个不耐烦的分析师给出不完整的工单号，或一个开发者提出多部分的调试问题）后，模拟器会模仿真实用户混乱的措辞、拼写错误和多轮对话的复杂性。",
+          "inlines": [
+            {
+              "text": "你不需要六个月的线上日志来构建初始的黄金数据集。相反，将每个 CUJ 拆解为具体的"
+            },
+            {
+              "bold": true,
+              "text": "场景"
+            },
+            {
+              "text": "（包括正常路径和边缘情况），并将它们输入到"
+            },
+            {
+              "bold": true,
+              "text": "用户模拟器 LLM"
+            },
+            {
+              "text": "中（我们喜欢 "
+            },
+            {
+              "href": "https://adk.dev/evaluate/user-sim/",
+              "text": "ADK 用户模拟"
+            },
+            {
+              "text": "）。在设定好人物角色和行为约束（例如，一个不耐烦的分析师给出不完整的工单号，或一个开发者提出多部分的调试问题）后，模拟器会模仿真实用户混乱的措辞、拼写错误和多轮对话的复杂性。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d391eb05b839b880e647dc0958bd70baac36282a04b22a5407fa568710201dea.webp",
+          "alt": "02-adk-user-simulation-scenarios"
+        },
+        {
+          "type": "paragraph",
+          "text": "ADK 用户模拟的示例场景。",
+          "inlines": [
+            {
+              "text": "ADK 用户模拟的示例场景。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "通过用合成用户和真实场景测试你的智能体，你可以在用户交互之前记录全面的执行轨迹（包括工具日志）。这使你能够针对发布标准，精准定位并解决任何性能差距。随着真实流量开始涌入，你可以逐步用真实的生产轨迹替换这些合成设置。",
+          "inlines": [
+            {
+              "text": "通过用合成用户和真实场景测试你的智能体，你可以在用户交互之前记录全面的执行轨迹（包括工具日志）。这使你能够针对发布标准，精准定位并解决任何性能差距。随着真实流量开始涌入，你可以逐步用真实的生产轨迹替换这些合成设置。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "3. 在全栈范围内进行衡量",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "3. 在全栈范围内进行衡量"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "单一的总分永远无法告诉你智能体为什么失败。为了定位根本原因，需要分层设置四类检查：单元测试、确定性指标、LLM 作为评判者的评分标准，以及集成测试。",
+          "inlines": [
+            {
+              "text": "单一的总分永远无法告诉你智能体"
+            },
+            {
+              "italic": true,
+              "text": "为什么"
+            },
+            {
+              "text": "失败。为了定位根本原因，需要分层设置四类检查：单元测试、确定性指标、LLM 作为评判者的评分标准，以及集成测试。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5aba3fc8de15be6e66d1ef520cf58a98a7ad5481be28fd89190f600a30f2810e.webp",
+          "alt": "03-four-layers-of-checks"
+        },
+        {
+          "type": "paragraph",
+          "text": "四层检查，从单元测试到集成测试。",
+          "inlines": [
+            {
+              "text": "四层检查，从单元测试到集成测试。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "需要避免的四个常见陷阱",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "需要避免的四个常见陷阱"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "陷阱 1：丢弃测试并破坏你的基线",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "陷阱 1：丢弃测试并破坏你的基线"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "设置评估指标涉及反复试验，人们很容易删除一个有噪声的测试，或在两次运行之间更换样本查询。然而，每次添加或删除测试，都会使你的基线失效：你无法判断分数变化是因为智能体变好了，还是因为测试套件变了。在调整某个功能时，保持黄金数据集冻结，一次只改变一个变量，并且只有在确定底层需求已经改变时，才淘汰某个测试。",
+          "inlines": [
+            {
+              "text": "设置评估指标涉及反复试验，人们很容易删除一个有噪声的测试，或在两次运行之间更换样本查询。然而，每次添加或删除测试，都会使你的基线失效：你无法判断分数变化是因为智能体变好了，还是因为测试套件变了。在调整某个功能时，保持黄金数据集冻结，一次只改变一个变量，并且只有在确定底层需求已经改变时，才淘汰某个测试。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9f1b2856611869f916321087e27c46e9b095170785dfabb8d8480358917a5249.webp",
+          "alt": "07-trap1-the-suite-moved"
+        },
+        {
+          "type": "paragraph",
+          "text": "删除测试移动的是基线，而不是智能体。",
+          "inlines": [
+            {
+              "text": "删除测试移动的是基线，而不是智能体。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "陷阱 2：依赖模糊的 1 到 5 分评判分数，而不是布尔检查",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "陷阱 2：依赖模糊的 1 到 5 分评判分数，而不是布尔检查"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "LLM 在对定性的 1 到 5 分制进行评分时出了名地不一致；“3”和“4”之间的界限很模糊，而且常常在每次运行之间发生变化。",
+          "inlines": [
+            {
+              "text": "LLM 在对定性的 1 到 5 分制进行评分时出了名地不一致；“3”和“4”之间的界限很模糊，而且常常在每次运行之间发生变化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "只要有可能，就把你的评判标准转化为布尔（通过/失败）问题，而不是开放式的评分量表。与其问“这个回答从 1 到 5 分有多大帮助？”，不如问“智能体在调用退款工具之前是否验证了账户 ID？（是/否）”。（我们喜欢 自适应评分标准）",
+          "inlines": [
+            {
+              "text": "只要有可能，就把你的评判标准转化为"
+            },
+            {
+              "bold": true,
+              "text": "布尔（通过/失败）问题"
+            },
+            {
+              "text": "，而不是开放式的评分量表。与其问"
+            },
+            {
+              "italic": true,
+              "text": "“这个回答从 1 到 5 分有多大帮助？”"
+            },
+            {
+              "text": "，不如问"
+            },
+            {
+              "italic": true,
+              "text": "“智能体在调用退款工具之前是否验证了账户 ID？（是/否）”"
+            },
+            {
+              "text": "。（我们喜欢 "
+            },
+            {
+              "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview#adaptive-rubrics",
+              "text": "自适应评分标准"
+            },
+            {
+              "italic": true,
+              "text": "）"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "陷阱 3：评估了文字表述，却忽略了运营成本",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "陷阱 3：评估了文字表述，却忽略了运营成本"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "一个通过了所有质量检查的回答，如果耗时 40 秒、进行了十二次冗余的工具调用，并且每次查询花费六十美分，那它仍然是生产环境中的失败。",
+          "inlines": [
+            {
+              "text": "一个通过了所有质量检查的回答，如果耗时 40 秒、进行了十二次冗余的工具调用，并且每次查询花费六十美分，那它仍然是生产环境中的失败。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "始终评估整个系统，而不仅仅是最终文本。在关注答案质量的同时，跟踪延迟、token 消耗（提示词、推理和补全 token）、API 成本和工具调用次数。",
+          "inlines": [
+            {
+              "text": "始终评估整个系统，而不仅仅是最终文本。在关注答案质量的同时，跟踪"
+            },
+            {
+              "bold": true,
+              "text": "延迟、token 消耗（提示词、推理和补全 token）、API 成本和工具调用次数"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "陷阱 4：为不同的智能体框架构建不同的评估流水线",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "陷阱 4：为不同的智能体框架构建不同的评估流水线"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "切换编排框架往往迫使团队废弃并重写整个测试套件。虽然大多数框架都会发出 OpenTelemetry 追踪，但它们在工具调用、步骤和 token 上并不使用相同的语义约定。围绕 OpenInference 等开放规范来标准化你的追踪，可以通过将评估与编排框架解耦来解决这个问题。agent-eval toolkit 等工具原生支持这一点，且只需极少的设置。",
+          "inlines": [
+            {
+              "text": "切换编排框架往往迫使团队废弃并重写整个测试套件。虽然大多数框架都会发出 OpenTelemetry 追踪，但它们在工具调用、步骤和 token 上并不使用相同的语义约定。围绕 "
+            },
+            {
+              "href": "https://arize.com/glossary/openinference/",
+              "text": "OpenInference"
+            },
+            {
+              "text": " 等开放规范来标准化你的追踪，可以通过将评估与编排框架解耦来解决这个问题。"
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "bold": true,
+              "text": "agent-eval toolkit"
+            },
+            {
+              "text": " 等工具原生支持这一点，且只需极少的设置。"
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "heading",
+          "text": "从 Day 0 到 Day 2 的实用上线流程",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "从 Day 0 到 Day 2 的实用上线流程"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "你不需要从零开始构建可观测性平台。你可以使用 agent-eval toolkit 等开源工具，在几个小时内搭建起评估流水线，它将 OpenTelemetry 追踪捕获与 Gemini 平台上的 Agent Evaluation 服务（原 Vertex AI Evaluation）配对使用。但构建实际的评估策略需要更多思考。",
+          "inlines": [
+            {
+              "text": "你不需要从零开始构建可观测性平台。你可以使用 "
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "bold": true,
+              "text": "agent-eval toolkit"
+            },
+            {
+              "text": " 等开源工具，在几个小时内搭建起评估流水线，它将 OpenTelemetry 追踪捕获与 Gemini 平台上的 Agent Evaluation 服务（原 Vertex AI Evaluation）配对使用。但构建实际的评估策略需要更多思考。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Day 0：场景、模拟和“红笔”",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Day 0：场景、模拟和“红笔”"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "从小处着手，贴近原始数据：",
+          "inlines": [
+            {
+              "text": "从小处着手，贴近原始数据："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "起草覆盖你主要 CUJ 的场景，并通过你的智能体运行模拟。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "忽略聚合分数，从头到尾阅读实际的执行追踪：提示词、中间推理步骤、工具参数和最终输出。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "用"
+                },
+                {
+                  "bold": true,
+                  "text": "红笔"
+                },
+                {
+                  "text": "给这些追踪打分，标记出智能体每一次犹豫、幻觉出参数、选错工具或啰嗦的地方。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9f8fb055045ce6e7b976dcddce8641d7f615a41b5f7bae6cb3b603240824c26d.webp",
+          "alt": "04-red-pen-trace-review"
+        },
+        {
+          "type": "paragraph",
+          "text": "一条智能体追踪，用红笔打分。",
+          "inlines": [
+            {
+              "text": "一条智能体追踪，用红笔打分。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为什么红笔很重要：与自动生成图表相比，手动阅读二十条追踪显得很慢，但它能节省数天的无用功。与其猜测假设的失败模式并编写偏离目标的通用评分标准，不如花一小时用红笔标注，看清你的系统在现实中究竟如何出错。汇总这些笔记，你就能得到一份高信号清单，列出接下来需要构建的确切确定性断言和布尔评判检查。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "为什么红笔很重要："
+            },
+            {
+              "text": "与自动生成图表相比，手动阅读二十条追踪显得很慢，但它能节省数天的无用功。与其猜测假设的失败模式并编写偏离目标的通用评分标准，不如花一小时用红笔标注，看清你的系统在现实中究竟如何出错。汇总这些笔记，你就能得到一份高信号清单，列出接下来需要构建的确切确定性断言和布尔评判检查。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Day 1：节奏、信号和测试框架",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Day 1：节奏、信号和测试框架"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "一旦你有了这份初步的检查清单，agent-eval toolkit 等工具就会接手繁重的工作并标准化执行。在以下方面为你提供帮助：",
+          "inlines": [
+            {
+              "text": "一旦你有了这份初步的检查清单，"
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "bold": true,
+              "text": "agent-eval toolkit"
+            },
+            {
+              "text": " 等工具就会接手繁重的工作并标准化执行。在以下方面为你提供帮助："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "脚手架与执行："
+                },
+                {
+                  "text": "搭建你的黄金数据集，并通过 HTTP（--"
+                },
+                {
+                  "code": true,
+                  "text": "base-url"
+                },
+                {
+                  "text": "）或离线方式针对你的智能体执行多轮场景。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "框架无关的追踪摄取："
+                },
+                {
+                  "text": "无论你是用 Google ADK、LangGraph 还是自定义运行时构建，都能获得符合 OpenInference 约定的结构化 OpenTelemetry 追踪。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Agent Evaluation 集成："
+                },
+                {
+                  "text": "将这些追踪路由到 Gemini 平台上的 Agent Evaluation 服务，无需编写定制 API 代码即可运行你的确定性检查和布尔评判评分标准。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用你的评估流水线建立规律的运行节奏：",
+          "inlines": [
+            {
+              "text": "用你的评估流水线建立规律的运行节奏："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "每次变更都运行："
+                },
+                {
+                  "text": "每当你调整提示词、更换模型或编辑工具文档字符串时，执行完全相同的测试组合，并将差异与你的基线进行比较。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f29003f075bc4ba325d072946e609baffb3d3e52ca6f260e367503a51b4eae29.webp",
+          "alt": "05-agent-eval-report-metrics-over-time"
+        },
+        {
+          "type": "paragraph",
+          "text": "agent-eval HTML 报告中的指标随时间变化。",
+          "inlines": [
+            {
+              "text": "agent-eval HTML 报告中的指标随时间变化。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "用你的 trace 验证 judge："
+                },
+                {
+                  "text": " 永远不要盲目信任一个新的 LLM-as-a-judge 指标。把自动评分与你在 Day 0 手工评分的 trace 进行对比。如果 judge 给一条你标了红笔的 trace 打了通过分，就收紧评分 prompt，直到自动信号与你的工程判断一致。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "调优循环：50 到 60 次拧旋钮，而不是重写",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "调优循环：50 到 60 次拧旋钮，而不是重写"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "一旦你的 Day 1 框架开始运行，优化就变成一个有条不紊、机械化的循环：",
+          "inlines": [
+            {
+              "text": "一旦你的 Day 1 框架开始运行，优化就变成一个有条不紊、机械化的循环："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/669bd601307606218354726eb044a9fc5c14a7a4630fd43295e4b35f9319c6dd.webp",
+          "alt": "06-tuning-loop-iteration"
+        },
+        {
+          "type": "paragraph",
+          "text": "在一个示例 agent 上进行一轮调优循环。",
+          "inlines": [
+            {
+              "text": "在一个示例 agent 上进行一轮调优循环。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在真实部署中，达到生产质量通常需要 50 到 60 次小迭代。你不是每天早上重写整个系统 prompt，而是在逐步拧动一个个旋钮。一次微调澄清一个工具参数描述。下一次添加一条负面约束。再下一次调整 JSON 输出 schema。",
+          "inlines": [
+            {
+              "text": "在真实部署中，达到生产质量通常需要 50 到 60 次小迭代。你不是每天早上重写整个系统 prompt，而是在逐步拧动一个个旋钮。一次微调澄清一个工具参数描述。下一次添加一条负面约束。再下一次调整 JSON 输出 schema。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "例如，每次评估运行完成后，agent-eval 框架会构建一份交互式、一体化的 HTML 报告。这份报告将通过/失败的布尔指标与关键运营指标并列呈现，包括延迟、token 用量、API 支出、缓存利用率以及详细的工具调用执行路径。此外，它还集成了针对失败对话轮次的自动化 Gemini 根因分析，精确定位触发失败的具体 prompt 指令或参数设置，以指导你的下一次调整。",
+          "inlines": [
+            {
+              "text": "例如，每次评估运行完成后，"
+            },
+            {
+              "code": true,
+              "text": "agent-eval"
+            },
+            {
+              "text": " 框架会构建一份"
+            },
+            {
+              "bold": true,
+              "text": "交互式、一体化的 HTML 报告"
+            },
+            {
+              "text": "。这份报告将通过/失败的布尔指标与关键运营指标并列呈现，包括延迟、token 用量、API 支出、缓存利用率以及详细的工具调用执行路径。此外，它还集成了针对失败对话轮次的自动化 Gemini 根因分析，精确定位触发失败的具体 prompt 指令或参数设置，以指导你的下一次调整。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些数据取代了直觉。一次 prompt 改动在人工抽查时可能感觉聪明得多，结果测试集却显示延迟翻倍，工具调用幻觉上升了 15%。",
+          "inlines": [
+            {
+              "text": "这些数据取代了直觉。一次 prompt 改动在人工抽查时可能感觉聪明得多，结果测试集却显示延迟翻倍，工具调用幻觉上升了 15%。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "构建 agent 的团队应吸取的教训：小而可度量的改动每次都胜过大规模重写。",
+          "inlines": [
+            {
+              "text": "构建 agent 的团队应吸取的教训："
+            },
+            {
+              "bold": true,
+              "text": "小而可度量的改动每次都胜过大规模重写。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一旦你信任评估流水线输出的信号，就把它变成永久的回归安全网：",
+          "inlines": [
+            {
+              "text": "一旦你信任评估流水线输出的信号，就把它变成永久的回归安全网："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/db08eda98054fa5d6dd6b577c703918022d8ed6f61dcfbccb03a9c4ab6761f97.webp",
+          "alt": "08-merge-gate"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "使用无头 CLI 的 CI/CD 拉取请求门禁："
+                },
+                {
+                  "text": " 在你的构建流水线（如 Cloud Build 或 GitHub Actions）中以无头方式执行 agent-eval 之类的工具。在每个拉取请求上，它都会运行你的黄金数据集并强制执行两条合并规则："
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "italic": true,
+                  "text": "全局通过阈值："
+                },
+                {
+                  "text": " 测试套件必须达到最低通过标准（例如 95% 布尔成功率）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "italic": true,
+                  "text": "核心评估指标零回归："
+                },
+                {
+                  "text": " 即使总分保持稳定，只要任何此前通过的指标出现回归，构建就会失败。这可以防止开发者意外地用一个关键能力去换取某个边缘场景的小改进。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "共享仪表盘与集中式存储："
+                },
+                {
+                  "text": " 配置你的评估流程，将运行产物——包括原始 trace JSONL、prompt 哈希、模型版本、延迟画像和评分卡摘要——导出到 BigQuery 或 Cloud Storage 之类的中央数据仓库。把这些指标发布到团队共享仪表盘，让每个人都能看到各版本的准确率、延迟百分位和 token 预算。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/11d1b6bcc45684ad3d0249dd48e276a54c4d912cab6799a33e034878f649a775.webp",
+          "alt": "09-after-launch-loop"
+        },
+        {
+          "type": "paragraph",
+          "text": "上线后，真实生产 trace 会回流到黄金数据集。",
+          "inlines": [
+            {
+              "text": "上线后，真实生产 trace 会回流到黄金数据集。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "实际效果演示",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "实际效果演示"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/afc453ba0889fee5bb2fc0a561ccff0e75164a8ab6e80bcb552f57096637ecdd.webp",
+          "alt": "10-companion-episode-card"
+        },
+        {
+          "type": "paragraph",
+          "text": "配套的 AI Agent Clinic 节目。制作团队：在此处嵌入 YouTube 播放器，并使用此卡片作为缩略图或回退内容。",
+          "inlines": [
+            {
+              "text": "配套的 AI Agent Clinic 节目。制作团队：在此处嵌入 YouTube 播放器，并使用此卡片作为缩略图或回退内容。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "观看演示："
+                },
+                {
+                  "text": " 查看我们的配套视频 "
+                },
+                {
+                  "href": "https://youtu.be/wPdoZRbvaF4",
+                  "text": "How to Actually Evaluate (Any) AI Agent: Beyond the Vibe Check"
+                },
+                {
+                  "text": "，我们在其中用 60 分钟在一个真实的 LangGraph agent 上现场构建整套流水线。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "获取代码："
+                },
+                {
+                  "text": "克隆 GitHub 上的开源 "
+                },
+                {
+                  "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+                  "text": "agent-eval 工具包"
+                },
+                {
+                  "text": "，即可开箱即用地搭建数据集、收集追踪记录并生成诊断 HTML 报告。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://developers.googleblog.com/the-outer-loop-insights-first-an-ambient-quality-agent-that-diagnoses-your-production-agent/",
+                  "text": "外循环，洞察优先：一个能诊断你生产环境智能体的环境质量智能体。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "heading",
+          "text": "常见问题",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "常见问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "对 AI 智能体进行人工“感觉检查”存在哪些问题？",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "对 AI 智能体进行人工“感觉检查”存在哪些问题？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在终端里跑三四个提示词，只能看到最终的文本回复。智能体可能在重试上循环、编造工具参数、烧掉 token 预算，或触发重复的副作用，却仍然返回一个礼貌的答复。自动化追踪评估会连同答案质量一起检查中间工具调用、状态转换、延迟百分位数和 API 成本，从而避免无声的回归被发布出去。",
+          "inlines": [
+            {
+              "text": "在终端里跑三四个提示词，只能看到最终的文本回复。智能体可能在重试上循环、编造工具参数、烧掉 token 预算，或触发重复的副作用，却仍然返回一个礼貌的答复。自动化追踪评估会连同答案质量一起检查中间工具调用、状态转换、延迟百分位数和 API 成本，从而避免无声的回归被发布出去。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "如何从零开始评估一个 AI 智能体？",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "如何从零开始评估一个 AI 智能体？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "把评估视为从 Day 0 到 Day 2 的渐进式推进，而不是全有或全无的一步跳跃。在 Day 0，把你的关键用户旅程（CUJ）拆解成少量测试场景，并通过 ADK 用户模拟运行它们。用“红笔”阅读最初的 5 到 20 条执行追踪，看看智能体在哪里犹豫、选错工具或啰嗦。",
+          "inlines": [
+            {
+              "text": "把评估视为从 Day 0 到 Day 2 的渐进式推进，而不是全有或全无的一步跳跃。在 "
+            },
+            {
+              "bold": true,
+              "text": "Day 0"
+            },
+            {
+              "text": "，把你的关键用户旅程（CUJ）拆解成少量测试场景，并通过 "
+            },
+            {
+              "href": "https://adk.dev/evaluate/user-sim/",
+              "text": "ADK 用户模拟"
+            },
+            {
+              "text": "运行它们。用“红笔”阅读最初的 5 到 20 条执行追踪，看看智能体在哪里犹豫、选错工具或啰嗦。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Day 1，把这些红笔批注转化为自动化检查，这样你就能一次调整一个变量。一旦通过率稳定下来，就把这些检查锁定为 Day 2 的 CI/CD 拉取请求门禁。",
+          "inlines": [
+            {
+              "text": "在 "
+            },
+            {
+              "bold": true,
+              "text": "Day 1"
+            },
+            {
+              "text": "，把这些红笔批注转化为自动化检查，这样你就能一次调整一个变量。一旦通过率稳定下来，就把这些检查锁定为 "
+            },
+            {
+              "bold": true,
+              "text": "Day 2"
+            },
+            {
+              "text": " 的 CI/CD 拉取请求门禁。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么在 LLM 作为评判者时使用布尔（通过/失败）检查，而不是 1 到 5 分的评分量表？",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "为什么在 LLM 作为评判者时使用布尔（通过/失败）检查，而不是 1 到 5 分的评分量表？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "LLM 评判者无法一致地给出 1 到 5 分的评分，因为“3”和“4”之间的边界每次运行都会变化。借助 自适应评分标准，你可以把宽泛的质量目标拆分成严格的“是/否”问题，比如“智能体在退款前是否验证了账户 ID？”把这些布尔评分标准与针对工具参数和引用检查的确定性 计算指标，以及针对延迟和 token 预算的追踪断言搭配使用。",
+          "inlines": [
+            {
+              "text": "LLM 评判者无法一致地给出 1 到 5 分的评分，因为“3”和“4”之间的边界每次运行都会变化。借助 "
+            },
+            {
+              "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview#adaptive-rubrics",
+              "text": "自适应评分标准"
+            },
+            {
+              "text": "，你可以把宽泛的质量目标拆分成严格的“是/否”问题，比如"
+            },
+            {
+              "italic": true,
+              "text": "“智能体在退款前是否验证了账户 ID？”"
+            },
+            {
+              "text": "把这些布尔评分标准与针对工具参数和引用检查的确定性 "
+            },
+            {
+              "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/determine-eval#computation-metrics",
+              "text": "计算指标"
+            },
+            {
+              "text": "，以及针对延迟和 token 预算的追踪断言搭配使用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我可以在 LangGraph、Google ADK 和自定义智能体框架之间使用同一套评估流水线吗？",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "我可以在 LangGraph、Google ADK 和自定义智能体框架之间使用同一套评估流水线吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "可以，只要你通过将 OpenTelemetry 追踪标准化为 OpenInference 语义约定，把评估流水线与智能体框架解耦。开源 agent-eval 工具包会把这些追踪直接路由到 Gemini 平台上的 Agent Evaluation 服务（原 Vertex AI Evaluation）。切换编排框架时，你不必重写评分代码。",
+          "inlines": [
+            {
+              "text": "可以，只要你通过将 OpenTelemetry 追踪标准化为 "
+            },
+            {
+              "href": "https://arize.com/glossary/openinference/",
+              "text": "OpenInference"
+            },
+            {
+              "text": " 语义约定，把评估流水线与智能体框架解耦。开源 "
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "text": "agent-eval 工具包"
+            },
+            {
+              "text": "会把这些追踪直接路由到 Gemini 平台上的 Agent Evaluation 服务（原 Vertex AI Evaluation）。切换编排框架时，你不必重写评分代码。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我的智能体部署到生产环境后会发生什么？",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "我的智能体部署到生产环境后会发生什么？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "一旦你的 Day 2 流水线将追踪和记分卡导出到 BigQuery 或 Cloud Storage，你就可以把线上流量与生产前的基线进行比较。当用户遇到你初始场景遗漏的边缘情况时，像 The Outer Loop 这样的环境质量智能体可以帮助你诊断那些失败的生产追踪。然后你可以把这些真实追踪直接提升到你的 Day 0 黄金数据集中，让你的测试套件随实际使用而演进。",
+          "inlines": [
+            {
+              "text": "一旦你的 Day 2 流水线将追踪和记分卡导出到 BigQuery 或 Cloud Storage，你就可以把线上流量与生产前的基线进行比较。当用户遇到你初始场景遗漏的边缘情况时，"
+            },
+            {
+              "href": "https://developers.googleblog.com/the-outer-loop-insights-first-an-ambient-quality-agent-that-diagnoses-your-production-agent/",
+              "text": "像 The Outer Loop 这样的环境质量智能体"
+            },
+            {
+              "text": "可以帮助你诊断那些失败的生产追踪。然后你可以把这些真实追踪直接提升到你的 Day 0 黄金数据集中，让你的测试套件随实际使用而演进。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "上一页",
+          "inlines": [
+            {
+              "text": "上一页"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下一页",
+          "inlines": [
+            {
+              "text": "下一页"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "OCT. 15, 2026",
+          "inlines": [
+            {
+              "text": "OCT. 15, 2026"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hugo Selbie Customer & Partner Solutions Engineer",
+          "inlines": [
+            {
+              "href": "https://developers.googleblog.com/search/?author=Hugo+Selbie",
+              "text": "Hugo Selbie"
+            },
+            {
+              "text": " Customer & Partner Solutions Engineer"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TL;DR",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "TL;DR"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Your agent can loop, burn tokens, or give a completely hallucinated answer and still look fine. A vibe check won't catch that. This post is the playbook behind our AI Agent Clinic episode How to Actually Evaluate (Any) AI Agent: Beyond the Vibe Check, where we build an eval pipeline for a LangGraph agent in 60 minutes. Here's what's inside:",
+          "inlines": [
+            {
+              "text": "Your agent can loop, burn tokens, or give a completely hallucinated answer and still look fine. A vibe check won't catch that. This post is the playbook behind our AI Agent Clinic episode "
+            },
+            {
+              "href": "https://youtu.be/wPdoZRbvaF4",
+              "italic": true,
+              "text": "How to Actually Evaluate (Any) AI Agent: Beyond the Vibe Check"
+            },
+            {
+              "text": ", where we build an eval pipeline for a LangGraph agent in 60 minutes. Here's what's inside:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3aa953b50825e399b89a61a51dcfcc8bed4843a12901274efc05446130920d0d.webp",
+          "alt": "00-tldr-at-a-glance"
+        },
+        {
+          "type": "heading",
+          "text": "Evaluating AI agents: moving past the vibe check",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Evaluating AI agents: moving past the vibe check"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "When teams start building an AI agent, testing usually looks the same. You wire up a model, hand it a few tools, run three or four prompts in a terminal, and eyeball the output. If the answer looks reasonable, you ship it.",
+          "inlines": [
+            {
+              "text": "When teams start building an AI agent, testing usually looks the same. You wire up a model, hand it a few tools, run three or four prompts in a terminal, and eyeball the output. If the answer looks reasonable, you ship it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In practice, this breaks down fast. You tweak a system prompt to fix an edge case in one workflow, and suddenly the agent stops calling a required tool in another.",
+          "inlines": [
+            {
+              "text": "In practice, this breaks down fast. You tweak a system prompt to fix an edge case in one workflow, and suddenly the agent stops calling a required tool in another."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Worse, agents fail differently than standard software. An agent can get stuck in a retry loop, fire off multiple tool calls, yet still return a polite, plausible-sounding final answer.",
+          "inlines": [
+            {
+              "text": "Worse, agents fail differently than standard software. An agent can get stuck in a retry loop, fire off multiple tool calls, yet still return a polite, plausible-sounding final answer."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In production, that hidden failure is costly:",
+          "inlines": [
+            {
+              "text": "In production, that hidden failure is costly:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "It quietly spikes your cloud bill and token usage."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "It exhausts downstream API rate limits and quotas."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "It leaves users staring at a loading spinner."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "It can trigger duplicate side effects in external systems, all while looking \"fine\" on the surface."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "It erodes user trust, and first impressions are hard to win back."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Integrating a reliable evaluation suite into your development lifecycle can seem like extra overhead during initial prototyping, right up until modifying your system prompt causes unexpected breaking changes. The key is recognizing that evaluation is a progressive journey: any repeatable evaluation system (no matter how simple) is better than relying on ad-hoc spot checks or no system at all. You don't need an elaborate automated grading architecture on Day 0. Instead, start with simple, repeatable checks and evolve your evaluation into a more complex, automated framework as your agent's capabilities and production demands grow.",
+          "inlines": [
+            {
+              "text": "Integrating a reliable evaluation suite into your development lifecycle can seem like extra overhead during initial prototyping, right up until modifying your system prompt causes unexpected breaking changes. The key is recognizing that evaluation is a progressive journey: any repeatable evaluation system (no matter how simple) is better than relying on ad-hoc spot checks or no system at all. You don't need an elaborate automated grading architecture on Day 0. Instead, start with simple, repeatable checks and evolve your evaluation into a more complex, automated framework as your agent's capabilities and production demands grow."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Establishing a repeatable evaluation system is made substantially easier by integrating these decisions into an evaluation framework. Transitioning beyond simple subjective checks relies on two core pillars: human oversight and targeted tools. In this article, we explore how to set up an evaluation framework using the open-source agent-eval toolkit. We'll demonstrate how combining manually reviewed traces with automated verification helps detect silent regressions early in development and scales seamlessly as your agent transitions to production.",
+          "inlines": [
+            {
+              "text": "Establishing a repeatable evaluation system is made substantially easier by integrating these decisions into an evaluation framework. Transitioning beyond simple subjective checks relies on two core pillars: human oversight and targeted tools. In this article, we explore how to set up an evaluation framework using the open-source "
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "text": "agent-eval"
+            },
+            {
+              "text": " toolkit. We'll demonstrate how combining manually reviewed traces with automated verification helps detect silent regressions early in development and scales seamlessly as your agent transitions to production."
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "heading",
+          "text": "Getting started: the high-level building blocks",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Getting started: the high-level building blocks"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "1. Define success with critical user journeys",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "1. Define success with critical user journeys"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Before writing test code, you need a shared vision of what a good outcome actually looks like. Anchor your tests in critical user journeys (CUJs) rather than abstract benchmarks.",
+          "inlines": [
+            {
+              "text": "Before writing test code, you need a shared vision of what a good outcome actually looks like. Anchor your tests in "
+            },
+            {
+              "bold": true,
+              "text": "critical user journeys (CUJs)"
+            },
+            {
+              "text": " rather than abstract benchmarks."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A CUJ defines what a user expects the system to achieve, structured around their persona, goals, constraints, and verification conditions:",
+          "inlines": [
+            {
+              "text": "A CUJ defines what a user expects the system to achieve, structured around their persona, goals, constraints, and verification conditions:"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "\"As an operations analyst, I expect the agent to ingest a counterparty trade discrepancy email, identify the disputed transaction, verify the trade economics against our internal ledger within 30 seconds, and draft a response reverse-translating our internal trade IDs back into the broker's nomenclature without human intervention.\""
+        },
+        {
+          "type": "paragraph",
+          "text": "Every clause in that statement becomes an evaluation point: Did the agent resolve the correct transaction ID? Did it check the ledger before drafting? Did it map internal IDs back to the external nomenclature?",
+          "inlines": [
+            {
+              "text": "Every clause in that statement becomes an evaluation point: Did the agent resolve the correct transaction ID? Did it check the ledger before drafting? Did it map internal IDs back to the external nomenclature?"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c78314f76df7f1af2bd4a818b92880003833b7166aacfb22c430d5805608c91a.webp",
+          "alt": "01-cuj-evaluation-points"
+        },
+        {
+          "type": "paragraph",
+          "text": "Every clause of a CUJ becomes an evaluation point.",
+          "inlines": [
+            {
+              "text": "Every clause of a CUJ becomes an evaluation point."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Defining these expectations upfront forces product stakeholders, downstream users, and engineers to agree on defining how “success” is measured.",
+          "inlines": [
+            {
+              "text": "Defining these expectations upfront forces product stakeholders, downstream users, and engineers to agree on defining how “success” is measured."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2. Start with simulated users, graduate to real traffic",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "2. Start with simulated users, graduate to real traffic"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "You do not need six months of production logs to build your initial golden dataset. Instead, break each CUJ down into concrete scenarios (both happy paths and edge cases) and feed them into a user simulator LLM (we like ADK user simulations). Primed with a persona and behavioral constraints (for example, an impatient analyst giving incomplete ticket numbers, or a developer asking a multi-part debugging question), the simulator mirrors the messy phrasing, typos, and multi-turn complexity of real users.",
+          "inlines": [
+            {
+              "text": "You do not need six months of production logs to build your initial golden dataset. Instead, break each CUJ down into concrete "
+            },
+            {
+              "bold": true,
+              "text": "scenarios"
+            },
+            {
+              "text": " (both happy paths and edge cases) and feed them into a "
+            },
+            {
+              "bold": true,
+              "text": "user simulator LLM"
+            },
+            {
+              "text": " (we like "
+            },
+            {
+              "href": "https://adk.dev/evaluate/user-sim/",
+              "text": "ADK user simulations"
+            },
+            {
+              "text": "). Primed with a persona and behavioral constraints (for example, an impatient analyst giving incomplete ticket numbers, or a developer asking a multi-part debugging question), the simulator mirrors the messy phrasing, typos, and multi-turn complexity of real users."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d391eb05b839b880e647dc0958bd70baac36282a04b22a5407fa568710201dea.webp",
+          "alt": "02-adk-user-simulation-scenarios"
+        },
+        {
+          "type": "paragraph",
+          "text": "Example scenarios for ADK user simulations.",
+          "inlines": [
+            {
+              "text": "Example scenarios for ADK user simulations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "By testing your agent against a synthetic user and realistic scenarios, you can record comprehensive execution traces (including tool logs) prior to user interaction. This enables you to pinpoint and resolve any performance gaps against your release standards. As live traffic begins to flow, you can progressively replace these synthetic setups with real production traces.",
+          "inlines": [
+            {
+              "text": "By testing your agent against a synthetic user and realistic scenarios, you can record comprehensive execution traces (including tool logs) prior to user interaction. This enables you to pinpoint and resolve any performance gaps against your release standards. As live traffic begins to flow, you can progressively replace these synthetic setups with real production traces."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "3. Measure across the full stack",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "3. Measure across the full stack"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "A single top-line score will never tell you why an agent failed. To isolate root causes, layer four types of checks: unit tests, deterministic metrics, LLM-as-a-judge rubrics, and integration tests.",
+          "inlines": [
+            {
+              "text": "A single top-line score will never tell you "
+            },
+            {
+              "italic": true,
+              "text": "why"
+            },
+            {
+              "text": " an agent failed. To isolate root causes, layer four types of checks: unit tests, deterministic metrics, LLM-as-a-judge rubrics, and integration tests."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5aba3fc8de15be6e66d1ef520cf58a98a7ad5481be28fd89190f600a30f2810e.webp",
+          "alt": "03-four-layers-of-checks"
+        },
+        {
+          "type": "paragraph",
+          "text": "Four layers of checks, from unit tests to integration tests.",
+          "inlines": [
+            {
+              "text": "Four layers of checks, from unit tests to integration tests."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Four common traps to avoid",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Four common traps to avoid"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Trap 1: Throwing tests out and breaking your baseline",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Trap 1: Throwing tests out and breaking your baseline"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Setting up evaluation metrics involves trial and error, and it is tempting to delete a noisy test or swap out sample queries between runs. Every time you add or remove a test, though, you invalidate your baseline: you cannot tell if a score changed because the agent got better or because the test suite moved. Keep your golden dataset frozen while you tune a feature, change one variable at a time, and only retire a test when you are certain the underlying requirement has changed.",
+          "inlines": [
+            {
+              "text": "Setting up evaluation metrics involves trial and error, and it is tempting to delete a noisy test or swap out sample queries between runs. Every time you add or remove a test, though, you invalidate your baseline: you cannot tell if a score changed because the agent got better or because the test suite moved. Keep your golden dataset frozen while you tune a feature, change one variable at a time, and only retire a test when you are certain the underlying requirement has changed."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9f1b2856611869f916321087e27c46e9b095170785dfabb8d8480358917a5249.webp",
+          "alt": "07-trap1-the-suite-moved"
+        },
+        {
+          "type": "paragraph",
+          "text": "Deleting tests moves the baseline, not the agent.",
+          "inlines": [
+            {
+              "text": "Deleting tests moves the baseline, not the agent."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Trap 2: Relying on fuzzy 1-to-5 judge scores instead of boolean checks",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Trap 2: Relying on fuzzy 1-to-5 judge scores instead of boolean checks"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "LLMs are notoriously inconsistent at grading qualitative 1-to-5 scales; the boundary between a \"3\" and a \"4\" is fuzzy and often shifts from run to run.",
+          "inlines": [
+            {
+              "text": "LLMs are notoriously inconsistent at grading qualitative 1-to-5 scales; the boundary between a \"3\" and a \"4\" is fuzzy and often shifts from run to run."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Whenever possible, turn your judge rubrics into boolean (pass/fail) questions rather than open-ended rating scales. Rather than asking \"How helpful was this answer from 1 to 5?\", ask \"Did the agent verify the account ID before calling the refund tool? (Yes/No)\". (We like Adaptive Rubrics)",
+          "inlines": [
+            {
+              "text": "Whenever possible, turn your judge rubrics into "
+            },
+            {
+              "bold": true,
+              "text": "boolean (pass/fail) questions"
+            },
+            {
+              "text": " rather than open-ended rating scales. Rather than asking "
+            },
+            {
+              "italic": true,
+              "text": "\"How helpful was this answer from 1 to 5?\""
+            },
+            {
+              "text": ", ask "
+            },
+            {
+              "italic": true,
+              "text": "\"Did the agent verify the account ID before calling the refund tool? (Yes/No)\""
+            },
+            {
+              "text": ". (We like "
+            },
+            {
+              "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview#adaptive-rubrics",
+              "text": "Adaptive Rubrics"
+            },
+            {
+              "italic": true,
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Trap 3: Evaluating the prose while ignoring the operational bill",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Trap 3: Evaluating the prose while ignoring the operational bill"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "A response that passes every quality check is still a production failure if it took 40 seconds, made twelve redundant tool calls, and cost sixty cents per query.",
+          "inlines": [
+            {
+              "text": "A response that passes every quality check is still a production failure if it took 40 seconds, made twelve redundant tool calls, and cost sixty cents per query."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Always evaluate the whole system rather than just the final text. Track latency, token consumption (prompt, reasoning, and completion tokens), API cost, and tool-call counts right alongside answer quality.",
+          "inlines": [
+            {
+              "text": "Always evaluate the whole system rather than just the final text. Track "
+            },
+            {
+              "bold": true,
+              "text": "latency, token consumption (prompt, reasoning, and completion tokens), API cost, and tool-call counts"
+            },
+            {
+              "text": " right alongside answer quality."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Trap 4: Building a different eval pipeline for a different agentic framework",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Trap 4: Building a different eval pipeline for a different agentic framework"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Switching orchestration frameworks often forces teams to scrap and rewrite their entire testing suite. While most frameworks emit OpenTelemetry traces, they don’t use the same semantic conventions for tool calls, steps, and tokens. Standardizing your traces around open specifications like OpenInference solves this by decoupling evaluation from your orchestration framework. Tools like the agent-eval toolkit support this natively, with minimal setup.",
+          "inlines": [
+            {
+              "text": "Switching orchestration frameworks often forces teams to scrap and rewrite their entire testing suite. While most frameworks emit OpenTelemetry traces, they don’t use the same semantic conventions for tool calls, steps, and tokens. Standardizing your traces around open specifications like "
+            },
+            {
+              "href": "https://arize.com/glossary/openinference/",
+              "text": "OpenInference"
+            },
+            {
+              "text": " solves this by decoupling evaluation from your orchestration framework. Tools like the "
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "bold": true,
+              "text": "agent-eval toolkit"
+            },
+            {
+              "text": " support this natively, with minimal setup."
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "heading",
+          "text": "A practical Day 0 to Day 2 rollout",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "A practical Day 0 to Day 2 rollout"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "You do not need to build an observability platform from scratch. You can stand up the evaluation pipeline in a couple of hours using open-source utilities like the agent-eval toolkit which pairs OpenTelemetry trace capture with the Agent Evaluation service on the Gemini platform (formerly Vertex AI Evaluation). But building your actual evaluation strategy requires more thought.",
+          "inlines": [
+            {
+              "text": "You do not need to build an observability platform from scratch. You can stand up the evaluation pipeline in a couple of hours using open-source utilities like the "
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "bold": true,
+              "text": "agent-eval toolkit"
+            },
+            {
+              "text": " which pairs OpenTelemetry trace capture with the Agent Evaluation service on the Gemini platform (formerly Vertex AI Evaluation). But building your actual evaluation strategy requires more thought."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Day 0: Scenarios, simulations, and the \"red pen\"",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Day 0: Scenarios, simulations, and the \"red pen\""
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Start small and stay close to the raw data:",
+          "inlines": [
+            {
+              "text": "Start small and stay close to the raw data:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Draft scenarios covering your main CUJs and run simulations through your agent."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Ignore aggregate scores and read the actual execution traces from top to bottom: the prompts, intermediate reasoning steps, tool arguments, and final outputs."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Grade the traces with a "
+                },
+                {
+                  "bold": true,
+                  "text": "red pen"
+                },
+                {
+                  "text": ", marking every spot where the agent hesitated, hallucinated a parameter, picked the wrong tool, or rambled."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9f8fb055045ce6e7b976dcddce8641d7f615a41b5f7bae6cb3b603240824c26d.webp",
+          "alt": "04-red-pen-trace-review"
+        },
+        {
+          "type": "paragraph",
+          "text": "One agent trace, graded with a red pen.",
+          "inlines": [
+            {
+              "text": "One agent trace, graded with a red pen."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Why the red pen matters: Manually reading twenty traces feels slow compared to auto-generating a chart, but it saves days of wasted effort. Instead of guessing at hypothetical failure modes and writing generic rubrics that miss the mark, an hour with a red pen shows you how your system actually breaks in reality. Aggregating those notes gives you a high-signal list of the exact deterministic assertions and boolean judge checks you need to build next.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Why the red pen matters:"
+            },
+            {
+              "text": " Manually reading twenty traces feels slow compared to auto-generating a chart, but it saves days of wasted effort. Instead of guessing at hypothetical failure modes and writing generic rubrics that miss the mark, an hour with a red pen shows you how your system actually breaks in reality. Aggregating those notes gives you a high-signal list of the exact deterministic assertions and boolean judge checks you need to build next."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Day 1: Cadence, signal, and the testing framework",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Day 1: Cadence, signal, and the testing framework"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Once you have that initial list of checks, tools like agent-eval toolkit takes over the heavy lifting and standardizes execution. Helping you with things like:",
+          "inlines": [
+            {
+              "text": "Once you have that initial list of checks, tools like "
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "bold": true,
+              "text": "agent-eval toolkit"
+            },
+            {
+              "text": " takes over the heavy lifting and standardizes execution. Helping you with things like:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Scaffolding and execution:"
+                },
+                {
+                  "text": " Scaffold your golden dataset and execute multi-turn scenarios against your agent over HTTP (--"
+                },
+                {
+                  "code": true,
+                  "text": "base-url"
+                },
+                {
+                  "text": ") or offline."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Framework-agnostic trace ingestion:"
+                },
+                {
+                  "text": " Get structured OpenTelemetry traces with OpenInference conventions, whether you build with Google ADK, LangGraph, or a custom runtime."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Agent Evaluation integration:"
+                },
+                {
+                  "text": " Routes those traces into the Agent Evaluation service on Gemini platform to run your deterministic checks and boolean judge rubrics without bespoke API code."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Establish a regular cadence of runs with your eval pipeline:",
+          "inlines": [
+            {
+              "text": "Establish a regular cadence of runs with your eval pipeline:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Run on every change:"
+                },
+                {
+                  "text": " Whenever you adjust a prompt, swap a model, or edit a tool docstring, execute the exact same test battery and compare the delta against your baseline."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f29003f075bc4ba325d072946e609baffb3d3e52ca6f260e367503a51b4eae29.webp",
+          "alt": "05-agent-eval-report-metrics-over-time"
+        },
+        {
+          "type": "paragraph",
+          "text": "Metrics over time in the agent-eval HTML report.",
+          "inlines": [
+            {
+              "text": "Metrics over time in the agent-eval HTML report."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Validate the judge against your traces:"
+                },
+                {
+                  "text": " Never trust a new LLM-as-a-judge metric blindly. Compare the automated scores against the traces you graded by hand on Day 0. If the judge gives a passing score to a trace you marked up with red ink, tighten the grading prompt until the automated signal matches your engineering judgment."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The tuning loop: 50 to 60 iterations of turning knobs, not rewrites",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The tuning loop: 50 to 60 iterations of turning knobs, not rewrites"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Once your Day 1 framework is active, optimization becomes a disciplined, mechanical loop:",
+          "inlines": [
+            {
+              "text": "Once your Day 1 framework is active, optimization becomes a disciplined, mechanical loop:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/669bd601307606218354726eb044a9fc5c14a7a4630fd43295e4b35f9319c6dd.webp",
+          "alt": "06-tuning-loop-iteration"
+        },
+        {
+          "type": "paragraph",
+          "text": "One turn of the tuning loop on a sample agent.",
+          "inlines": [
+            {
+              "text": "One turn of the tuning loop on a sample agent."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In a real deployment, reaching production quality often takes 50 to 60 small iterations. You are not rewriting the entire system prompt every morning; you are gradually turning individual knobs. One tweak clarifies a tool parameter description. The next adds a negative constraint. The next adjusts the JSON output schema.",
+          "inlines": [
+            {
+              "text": "In a real deployment, reaching production quality often takes 50 to 60 small iterations. You are not rewriting the entire system prompt every morning; you are gradually turning individual knobs. One tweak clarifies a tool parameter description. The next adds a negative constraint. The next adjusts the JSON output schema."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For instance, upon completion of each evaluation run, the agent-eval framework constructs an interactive, all-in-one HTML report. This report aligns pass/fail boolean metrics alongside key operational metrics, including latency, token usage, API expenditure, cache utilization, and detailed tool-call execution paths. Additionally, it incorporates automated Gemini root-cause analyses for failed conversational turns, pinpointing the exact prompt directive or parameter setting that triggered the failure to guide your next adjustment.",
+          "inlines": [
+            {
+              "text": "For instance, upon completion of each evaluation run, the "
+            },
+            {
+              "code": true,
+              "text": "agent-eval"
+            },
+            {
+              "text": " framework constructs an "
+            },
+            {
+              "bold": true,
+              "text": "interactive, all-in-one HTML report"
+            },
+            {
+              "text": ". This report aligns pass/fail boolean metrics alongside key operational metrics, including latency, token usage, API expenditure, cache utilization, and detailed tool-call execution paths. Additionally, it incorporates automated Gemini root-cause analyses for failed conversational turns, pinpointing the exact prompt directive or parameter setting that triggered the failure to guide your next adjustment."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That data replaces hunches. A prompt change might feel much smarter in manual spot-checking, only for the test battery to reveal that latency doubled and tool-call hallucinations ticked up by 15%.",
+          "inlines": [
+            {
+              "text": "That data replaces hunches. A prompt change might feel much smarter in manual spot-checking, only for the test battery to reveal that latency doubled and tool-call hallucinations ticked up by 15%."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The lesson for teams building agents: small, measured changes beat big rewrites every time.",
+          "inlines": [
+            {
+              "text": "The lesson for teams building agents: "
+            },
+            {
+              "bold": true,
+              "text": "small, measured changes beat big rewrites every time."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Once you trust the signal coming out of your eval pipeline, turn it into a permanent regression safety net:",
+          "inlines": [
+            {
+              "text": "Once you trust the signal coming out of your eval pipeline, turn it into a permanent regression safety net:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/db08eda98054fa5d6dd6b577c703918022d8ed6f61dcfbccb03a9c4ab6761f97.webp",
+          "alt": "08-merge-gate"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "CI/CD pull request gates with headless CLI:"
+                },
+                {
+                  "text": " Execute tools like agent-eval headlessly in your build pipeline (such as Cloud Build or GitHub Actions). On every pull request, it runs your golden dataset and enforces two merge rules:"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "italic": true,
+                  "text": "A global pass threshold:"
+                },
+                {
+                  "text": " The suite must meet a minimum pass bar (for example, 95% boolean success)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "italic": true,
+                  "text": "Zero regressions on core evaluation metrics:"
+                },
+                {
+                  "text": " Even if the overall score holds steady, the build fails if any previously passing metric regresses. This prevents developers from accidentally trading a critical capability for a minor edge-case improvement."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Shared dashboards and centralized storage:"
+                },
+                {
+                  "text": " Configure your eval processes to export run artifacts—including raw trace JSONL, prompt hashes, model versions, latency profiles, and scorecard summaries—into a central data warehouse like BigQuery or Cloud Storage. Publishing these metrics to a shared team dashboard gives everyone visibility into accuracy, latency percentiles, and token budgets across releases."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/11d1b6bcc45684ad3d0249dd48e276a54c4d912cab6799a33e034878f649a775.webp",
+          "alt": "09-after-launch-loop"
+        },
+        {
+          "type": "paragraph",
+          "text": "After launch, real production traces flow back into the golden dataset.",
+          "inlines": [
+            {
+              "text": "After launch, real production traces flow back into the golden dataset."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "See it in action",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "See it in action"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/afc453ba0889fee5bb2fc0a561ccff0e75164a8ab6e80bcb552f57096637ecdd.webp",
+          "alt": "10-companion-episode-card"
+        },
+        {
+          "type": "paragraph",
+          "text": "The companion AI Agent Clinic episode. Production team: embed the YouTube player here and use this card as the thumbnail or fallback.",
+          "inlines": [
+            {
+              "text": "The companion AI Agent Clinic episode. Production team: embed the YouTube player here and use this card as the thumbnail or fallback."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Watch the walkthrough:"
+                },
+                {
+                  "text": " Check out our companion video, "
+                },
+                {
+                  "href": "https://youtu.be/wPdoZRbvaF4",
+                  "text": "How to Actually Evaluate (Any) AI Agent: Beyond the Vibe Check"
+                },
+                {
+                  "text": ", where we build this whole pipeline live on a real LangGraph agent, in 60 minutes."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Grab the code:"
+                },
+                {
+                  "text": " Clone the open-source "
+                },
+                {
+                  "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+                  "text": "agent-eval toolkit on GitHub"
+                },
+                {
+                  "text": " to scaffold datasets, collect traces, and generate diagnostic HTML reports out of the box."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://developers.googleblog.com/the-outer-loop-insights-first-an-ambient-quality-agent-that-diagnoses-your-production-agent/",
+                  "text": "The Outer Loop, Insights First: An Ambient Quality Agent That Diagnoses Your Production Agent."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "heading",
+          "text": "Frequently asked questions",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Frequently asked questions"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "What are the issues with manual \"vibe checks\" for AI agents?",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What are the issues with manual \"vibe checks\" for AI agents?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Running three or four prompts in a terminal only shows you the final text response. An agent can loop on retries, hallucinate tool parameters, burn token budgets, or trigger duplicate side effects while still returning a polite answer. Automated trace evaluation checks intermediate tool calls, state transitions, latency percentiles, and API cost alongside answer quality so silent regressions don't ship.",
+          "inlines": [
+            {
+              "text": "Running three or four prompts in a terminal only shows you the final text response. An agent can loop on retries, hallucinate tool parameters, burn token budgets, or trigger duplicate side effects while still returning a polite answer. Automated trace evaluation checks intermediate tool calls, state transitions, latency percentiles, and API cost alongside answer quality so silent regressions don't ship."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How do I evaluate an AI agent from scratch?",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "How do I evaluate an AI agent from scratch?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Treat evaluation as a progressive rollout from Day 0 to Day 2 rather than an all-or-nothing jump. On Day 0, break your critical user journeys (CUJs) into a handful of test scenarios and run them through ADK user simulations. Read those first 5 to 20 execution traces with a \"red pen\" to see where the agent hesitates, picks the wrong tool, or rambles.",
+          "inlines": [
+            {
+              "text": "Treat evaluation as a progressive rollout from Day 0 to Day 2 rather than an all-or-nothing jump. On "
+            },
+            {
+              "bold": true,
+              "text": "Day 0"
+            },
+            {
+              "text": ", break your critical user journeys (CUJs) into a handful of test scenarios and run them through "
+            },
+            {
+              "href": "https://adk.dev/evaluate/user-sim/",
+              "text": "ADK user simulations"
+            },
+            {
+              "text": ". Read those first 5 to 20 execution traces with a \"red pen\" to see where the agent hesitates, picks the wrong tool, or rambles."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On Day 1, turn those red-pen notes into automated checks so you can tune one variable at a time. Once your pass rates stabilize, lock those checks into Day 2 CI/CD pull request gates.",
+          "inlines": [
+            {
+              "text": "On "
+            },
+            {
+              "bold": true,
+              "text": "Day 1"
+            },
+            {
+              "text": ", turn those red-pen notes into automated checks so you can tune one variable at a time. Once your pass rates stabilize, lock those checks into "
+            },
+            {
+              "bold": true,
+              "text": "Day 2"
+            },
+            {
+              "text": " CI/CD pull request gates."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why use boolean (pass/fail) checks instead of 1-to-5 rating scales for LLM-as-a-judge?",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Why use boolean (pass/fail) checks instead of 1-to-5 rating scales for LLM-as-a-judge?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "LLM judges don't grade 1-to-5 scales consistently because the boundary between a \"3\" and a \"4\" shifts from run to run. With Adaptive Rubrics, you split broad quality goals into strict Yes/No questions like \"Did the agent verify the account ID before refunding?\" Pair those boolean rubrics with deterministic computation metrics for tool parameters and reference checks, plus trace assertions for latency and token budgets.",
+          "inlines": [
+            {
+              "text": "LLM judges don't grade 1-to-5 scales consistently because the boundary between a \"3\" and a \"4\" shifts from run to run. With "
+            },
+            {
+              "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview#adaptive-rubrics",
+              "text": "Adaptive Rubrics"
+            },
+            {
+              "text": ", you split broad quality goals into strict Yes/No questions like "
+            },
+            {
+              "italic": true,
+              "text": "\"Did the agent verify the account ID before refunding?\""
+            },
+            {
+              "text": " Pair those boolean rubrics with deterministic "
+            },
+            {
+              "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/determine-eval#computation-metrics",
+              "text": "computation metrics"
+            },
+            {
+              "text": " for tool parameters and reference checks, plus trace assertions for latency and token budgets."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Can I use the same evaluation pipeline across LangGraph, Google ADK, and custom agent frameworks?",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Can I use the same evaluation pipeline across LangGraph, Google ADK, and custom agent frameworks?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Yes, if you decouple your evaluation pipeline from your agent framework by standardizing OpenTelemetry traces on OpenInference semantic conventions. The open-source agent-eval toolkit routes those traces straight to the Agent Evaluation service on the Gemini platform (formerly Vertex AI Evaluation). You don't have to rewrite grading code when switching orchestration frameworks.",
+          "inlines": [
+            {
+              "text": "Yes, if you decouple your evaluation pipeline from your agent framework by standardizing OpenTelemetry traces on "
+            },
+            {
+              "href": "https://arize.com/glossary/openinference/",
+              "text": "OpenInference"
+            },
+            {
+              "text": " semantic conventions. The open-source "
+            },
+            {
+              "href": "https://github.com/GoogleCloudPlatform/professional-services/tree/main/tools/agent-eval",
+              "text": "agent-eval toolkit"
+            },
+            {
+              "text": " routes those traces straight to the Agent Evaluation service on the Gemini platform (formerly Vertex AI Evaluation). You don't have to rewrite grading code when switching orchestration frameworks."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What happens after my agent is deployed to production?",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What happens after my agent is deployed to production?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Once your Day 2 pipeline exports traces and scorecards to BigQuery or Cloud Storage, you can compare live traffic against your pre-production baseline. When users hit edge cases your initial scenarios missed, ambient quality agents like The Outer Loop help you diagnose those failing production traces. You can then promote those real traces straight into your Day 0 golden dataset so your test suite evolves with live usage.",
+          "inlines": [
+            {
+              "text": "Once your Day 2 pipeline exports traces and scorecards to BigQuery or Cloud Storage, you can compare live traffic against your pre-production baseline. When users hit edge cases your initial scenarios missed, "
+            },
+            {
+              "href": "https://developers.googleblog.com/the-outer-loop-insights-first-an-ambient-quality-agent-that-diagnoses-your-production-agent/",
+              "text": "ambient quality agents like The Outer Loop"
+            },
+            {
+              "text": " help you diagnose those failing production traces. You can then promote those real traces straight into your Day 0 golden dataset so your test suite evolves with live usage."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Previous",
+          "inlines": [
+            {
+              "text": "Previous"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Next",
+          "inlines": [
+            {
+              "text": "Next"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:26:23.025370Z",
+  "contentMode": "full"
+}

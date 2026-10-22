@@ -1,0 +1,2209 @@
+{
+  "schemaVersion": 1,
+  "id": "emuxoxo4dpkovprjlldl4ugqt",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/emuxoxo4dpkovprjlldl4ugqt",
+  "fetchedAt": "2026-10-22T13:20:19.720935Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Google / Gemini",
+    "Agent 智能体",
+    "语音与音频",
+    "教程实践"
+  ],
+  "tags": [
+    "教程/实践",
+    "语音",
+    "Agent",
+    "Google"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "2026年10月19日",
+          "inlines": [
+            {
+              "text": "2026年10月19日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stephen Allen 解决方案架构师 AI 应用与平台",
+          "inlines": [
+            {
+              "href": "https://developers.googleblog.com/search/?author=Stephen+Allen",
+              "text": "Stephen Allen"
+            },
+            {
+              "text": " 解决方案架构师 AI 应用与平台"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kaz Sato Staff Developer Advocate",
+          "inlines": [
+            {
+              "href": "https://developers.googleblog.com/search/?author=Kaz+Sato",
+              "text": "Kaz Sato"
+            },
+            {
+              "text": " Staff Developer Advocate"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "使用 ADK 和 Gemini 3.8 Live 构建永不沉默的语音代理",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "使用 ADK 和 Gemini 3.8 Live 构建永不沉默的语音代理"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "一份关于 流式工具、非阻塞函数调用以及 Agent Development Kit (ADK) Gemini Live API Toolkit 中响应调度的指南。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "一份关于"
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://adk.dev/live/streaming-tools/",
+              "italic": true,
+              "text": "流式工具"
+            },
+            {
+              "italic": true,
+              "text": "、非阻塞函数调用以及"
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://adk.dev/live/",
+              "italic": true,
+              "text": "Agent Development Kit (ADK) Gemini Live API Toolkit"
+            },
+            {
+              "italic": true,
+              "text": " 中响应调度的指南。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在文本聊天中，一次耗时 13 秒的数据库查询或 RAG 流水线只会显示一个加载转圈。而在实时语音对话中，13 秒的阻塞式工具执行会产生 13 秒的静默，导致用户以为通话已断开而挂断。",
+          "inlines": [
+            {
+              "text": "在文本聊天中，一次耗时 13 秒的数据库查询或 RAG 流水线只会显示一个加载转圈。而在实时语音对话中，13 秒的阻塞式工具执行会产生 13 秒的静默，导致用户以为通话已断开而挂断。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你无法总是让后端查询在亚秒级完成，因此修复方案必须从架构层面入手：在慢速工具于后台运行的同时，让代理保持对话。开源 ADK 和 gemini-3.8-live 让你无需自行编写客户端 WebSocket 事件循环来管理异步工具状态，即可用 Python 原生实现非阻塞语音工具。在我们基于 gemini-3.8-live 的基准销售报告工作流中，从阻塞式工具切换为流式工具后，代理说出第一句话的时间从 14.4 秒缩短到了 1.2 秒。",
+          "inlines": [
+            {
+              "text": "你无法总是让后端查询在亚秒级完成，因此修复方案必须从架构层面入手：在慢速工具于后台运行的同时，让代理保持对话。开源 ADK 和 gemini-3.8-live 让你无需自行编写客户端 WebSocket 事件循环来管理异步工具状态，即可用 Python 原生实现非阻塞语音工具。在我们基于 gemini-3.8-live 的基准销售报告工作流中，从阻塞式工具切换为流式工具后，代理说出第一句话的时间从 14.4 秒缩短到了 1.2 秒。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本指南介绍如何使用流式工具、非阻塞 FunctionTool 定义以及 response_scheduling 来构建响应迅速、自然的语音代理。",
+          "inlines": [
+            {
+              "text": "本指南介绍如何使用流式工具、非阻塞 FunctionTool 定义以及 response_scheduling 来构建响应迅速、自然的语音代理。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "观看这段 1 分钟的 ADK Live AI Concierge 演示视频，亲耳听听调度响应是如何工作的：",
+          "inlines": [
+            {
+              "text": "观看这段 1 分钟的 ADK Live AI Concierge 演示视频，亲耳听听调度响应是如何工作的："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "抱歉，你的浏览器不支持播放此视频",
+          "inlines": [
+            {
+              "text": "抱歉，你的浏览器不支持播放此视频"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ADK Live AI Concierge 演示视频解释了调度响应的工作原理",
+          "inlines": [
+            {
+              "text": "ADK Live AI Concierge 演示视频解释了调度响应的工作原理"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "非阻塞工具能带来什么",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "非阻塞工具能带来什么"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在 ADK 中实现非阻塞工具调用可带来多项立竿见影的用户体验优势：",
+          "inlines": [
+            {
+              "text": "在 ADK 中实现非阻塞工具调用可带来多项立竿见影的用户体验优势："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "零静默："
+                },
+                {
+                  "text": "代理不会在对话中途卡住，而是可以立即确认请求（“正在查看这些数字……”），让对话保持活跃。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "可听见的进度更新："
+                },
+                {
+                  "text": "对于多阶段工作流（例如连接、查询和对账），代理可以播报中间里程碑，让等待听起来像是正在积极推进。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "多任务与并行对话："
+                },
+                {
+                  "text": "用户可以在长时间查询于后台执行时提出后续问题或无关问题，并及时获得回答，而不会让会话停滞。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "细粒度交付控制："
+                },
+                {
+                  "text": "你可以决定最终结果何时以及如何进入对话：等待自然的说话停顿、为关键警报立即打断，或静默更新对话上下文。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "基线：为什么标准工具会阻塞对话",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "基线：为什么标准工具会阻塞对话"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在标准代理开发中，工具被定义为一个 async def 函数，它完成工作并返回单个值：",
+          "inlines": [
+            {
+              "text": "在标准代理开发中，工具被定义为一个 async def 函数，它完成工作并返回单个值："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from typing import Any\n\n\nasync def query_sales_database(region: str) -> dict[str, Any]:\n    \"\"\"Runs the quarterly sales report query for a region.\n\n\n    Args:\n      region: Sales region to report on, e.g. \"EMEA\" or \"APAC\".\n\n\n    Returns:\n      A dict containing report metrics upon completion.\n    \"\"\"\n    report = await run_expensive_query(region)       # e.g., 13 seconds of work\n    return {\"status\": \"success\", \"report\": report}   # Single return at the end"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当直接传给 ADK 中的 Agent 时，该函数会创建一个阻塞式工具调用。在 Gemini Live API 双向语音会话（run_live）中，执行循环会等待工具返回，然后才生成后续的模型轮次。",
+          "inlines": [
+            {
+              "text": "当直接传给 ADK 中的 "
+            },
+            {
+              "code": true,
+              "text": "Agent"
+            },
+            {
+              "text": " 时，该函数会创建一个阻塞式工具调用。在 Gemini Live API 双向语音会话（"
+            },
+            {
+              "code": true,
+              "text": "run_live"
+            },
+            {
+              "text": "）中，执行循环会等待工具返回，然后才生成后续的模型轮次。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果 query_sales_database 耗时 13 秒，代理就会产生 13 秒的完全沉默。诸如“告诉用户你正在处理”之类的提示指令无法解决这个问题，因为模型的轮次被阻塞，正在等待函数响应负载。",
+          "inlines": [
+            {
+              "text": "如果 "
+            },
+            {
+              "code": true,
+              "text": "query_sales_database"
+            },
+            {
+              "text": " 耗时 13 秒，代理就会产生 13 秒的完全沉默。诸如“告诉用户你正在处理”之类的提示指令无法解决这个问题，因为模型的轮次被阻塞，正在等待函数响应负载。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了让对话保持流畅，你可以根据期望的用户体验，在两种主要的非阻塞模式之间进行选择。",
+          "inlines": [
+            {
+              "text": "为了让对话保持流畅，你可以根据期望的用户体验，在两种主要的非阻塞模式之间进行选择。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "模式 1：流式工具（当进度本身有故事可讲时）",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "模式 1：流式工具（当进度本身有故事可讲时）"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "当一个操作由多个有意义的阶段组成（例如连接数据库、聚合记录、格式化结果）时，流式工具可以让智能体在进度发生时进行叙述。",
+          "inlines": [
+            {
+              "text": "当一个操作由多个有意义的阶段组成（例如连接数据库、聚合记录、格式化结果）时，"
+            },
+            {
+              "bold": true,
+              "text": "流式工具"
+            },
+            {
+              "text": "可以让智能体在进度发生时进行叙述。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 ADK 中，将标准工具转换为流式工具只需把 return 改为 yield。通过将函数定义为 AsyncGenerator，ADK 会自动将该工具声明标记为 NON_BLOCKING，并向模型返回一个即时的状态确认。",
+          "inlines": [
+            {
+              "text": "在 ADK 中，将标准工具转换为流式工具只需把 "
+            },
+            {
+              "code": true,
+              "text": "return"
+            },
+            {
+              "text": " 改为 "
+            },
+            {
+              "code": true,
+              "text": "yield"
+            },
+            {
+              "text": "。通过将函数定义为 "
+            },
+            {
+              "code": true,
+              "text": "AsyncGenerator"
+            },
+            {
+              "text": "，ADK 会自动将该工具声明标记为 "
+            },
+            {
+              "code": true,
+              "text": "NON_BLOCKING"
+            },
+            {
+              "text": "，并向模型返回一个即时的状态确认。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import asyncio\nfrom typing import AsyncGenerator\nfrom google.adk.agents import Agent\n\n\nasync def query_sales_database(region: str) -> AsyncGenerator[str, None]:\n    \"\"\"Runs the quarterly sales report. Call this ONCE; it pushes updates automatically.\n\n\n    Args:\n      region: Sales region to report on, e.g. \"EMEA\" or \"APAC\".\n\n\n    Yields:\n      Progress updates while the query runs, followed by the final summary.\n    \"\"\"\n    stages = [\n        (\"Connecting to the sales warehouse...\", 1.5),\n        (\"Scanning order records...\", 3.5),\n        (\"Aggregating revenue by product line...\", 3.5),\n        (\"Formatting the report...\", 1.5),\n    ]\n    for message, delay in stages:\n        yield f\"PROGRESS: {message}\"\n        await asyncio.sleep(delay)\n\n\n    yield f\"DONE: {region} Q2 revenue reached $4.81M, up 12.4% year over year.\"\n\n\nagent = Agent(\n    name=\"sales_analyst\",\n    model=\"gemini-3.8-live\",\n    tools=[query_sales_database],\n    instruction=(\n        \"You are a helpful sales assistant. When the user asks about sales data, \"\n        \"call query_sales_database once. Acknowledge the request immediately, \"\n        \"briefly paraphrase each progress update, and present the final figures \"\n        \"when completed. Keep answers conversational and concise.\"\n    ),\n)"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "实际运作方式",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "实际运作方式"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "即时确认："
+                },
+                {
+                  "text": "当模型触发 "
+                },
+                {
+                  "code": true,
+                  "text": "query_sales_database"
+                },
+                {
+                  "text": " 时，ADK 会立即向模型派发一个异步状态事件。智能体会立刻开口（“正在为您查看 EMEA 的数据……”）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "部分更新："
+                },
+                {
+                  "text": "每次 "
+                },
+                {
+                  "code": true,
+                  "text": "yield"
+                },
+                {
+                  "text": " 都会向上游发送一个部分函数响应。模型会在每个更新到达时对其进行转述（“正在连接数据仓库……”“正在聚合产品线数据……”），不过叙述可能会比工具滞后数秒。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "无缝多线程："
+                },
+                {
+                  "text": "如果用户在查询运行期间提出一个无关的问题，智能体可以回答该问题，而不会取消或中断后台任务。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "流式工具的生产环境注意事项",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "流式工具的生产环境注意事项"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "单次飞行工具调用："
+                },
+                {
+                  "text": "由于流式工具会跨多个轮次推送更新，如果被反复提示，模型偶尔可能会尝试再次调用该工具。请在 docstring 中保留明确的“仅调用一次”指令，并考虑在工具实现中加入内存闩锁或幂等键，以确保生产环境安全。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "使用 `stop_streaming` 实现用户取消："
+                },
+                {
+                  "text": "ADK 为长时间运行的流式工具提供了内置的应急出口。通过在智能体的工具列表中包含一个名为 "
+                },
+                {
+                  "code": true,
+                  "text": "stop_streaming(function_name: str)"
+                },
+                {
+                  "text": " 的函数，ADK 会拦截该调用并取消生成器底层的 "
+                },
+                {
+                  "code": true,
+                  "text": "asyncio.Task"
+                },
+                {
+                  "text": "，在你的函数中抛出 "
+                },
+                {
+                  "code": true,
+                  "text": "asyncio.CancelledError"
+                },
+                {
+                  "text": "，以便你可以干净地关闭数据库连接或文件句柄。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "用户插话不会取消工具："
+                },
+                {
+                  "text": "当用户打断智能体时，Live API 会停止模型的输出，ADK 会发出一个带有 "
+                },
+                {
+                  "code": true,
+                  "text": "interrupted=True"
+                },
+                {
+                  "text": " 的事件，以便你的客户端停止音频播放。正在运行的流式工具或后台工具不会被取消，其结果仍会被传递。要停止某个工具，模型必须调用 "
+                },
+                {
+                  "code": true,
+                  "text": "stop_streaming"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "模式 2：后台执行（当等待就只是等待时）",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "模式 2：后台执行（当等待就只是等待时）"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "持续不断的进度解说并不总是合适的。如果用户要求生成一份报告，然后立即转向另一个话题，那么一个不断用状态更新打断的智能体会让人感到烦扰。",
+          "inlines": [
+            {
+              "text": "持续不断的进度解说并不总是合适的。如果用户要求生成一份报告，然后立即转向另一个话题，那么一个不断用状态更新打断的智能体会让人感到烦扰。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当等待过程中没有故事可讲时，就让任务在后台安静地运行。",
+          "inlines": [
+            {
+              "text": "当等待过程中没有故事可讲时，就让任务在后台安静地运行。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "方法 A：单次产出生成器（最快设置）",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "方法 A：单次产出生成器（最快设置）"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "要在没有持续进度絮叨的情况下获得即时的口头确认，一个有效的方法是使用一个仅在完成时产出一次的异步生成器：",
+          "inlines": [
+            {
+              "text": "要在没有持续进度絮叨的情况下获得即时的口头确认，一个有效的方法是使用一个仅在完成时产出一次的异步生成器："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "async def query_sales_database(region: str) -> AsyncGenerator[dict, None]:\n    \"\"\"Runs the quarterly sales report. Call this ONCE; results arrive when ready.\"\"\"\n    report = await run_expensive_query(region)   # Background execution (~13s)\n    yield report                                 # Single yield upon completion"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "由于这是一个异步生成器，ADK 会立即发出一个待处理响应。智能体会迅速确认请求（“我正在为您整理那份报告”），在计算期间保持沉默，并在数据准备好后或用户说完话时呈现这些数据。",
+          "inlines": [
+            {
+              "text": "由于这是一个异步生成器，ADK 会立即发出一个待处理响应。智能体会迅速确认请求（“我正在为您整理那份报告”），在计算期间保持沉默，并在数据准备好后或用户说完话时呈现这些数据。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "方法 B：使用 `response_scheduling` 的 `FunctionTool`",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "方法 B：使用 `response_scheduling` 的 `FunctionTool`"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你希望保留标准协程（async def ... -> dict），请将函数包装在 FunctionTool 中并配置 response_scheduling：",
+          "inlines": [
+            {
+              "text": "如果你希望保留标准协程（"
+            },
+            {
+              "code": true,
+              "text": "async def ... -> dict"
+            },
+            {
+              "text": "），请将函数包装在 "
+            },
+            {
+              "code": true,
+              "text": "FunctionTool"
+            },
+            {
+              "text": " 中并配置 "
+            },
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from google.adk.tools import FunctionTool\nfrom google.genai import types\n\n\nsales_tool = FunctionTool(query_sales_database)\nsales_tool.response_scheduling = types.FunctionResponseScheduling.WHEN_IDLE\n(Note: In ADK 2.10+, you can also set `sales_tool.behavior = types.Behavior.NON_BLOCKING` to run a tool in the background without modifying scheduling mode.)"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "理解权衡： 当使用 response_scheduling 搭配仅返回一次结果的协程时，模型在整个函数完成之前不会收到任何数据。因此，除非用户继续说话，模型通常不会给出最初的口头确认。当用户立即继续提出其他问题，而你希望结果在下一个自然停顿处融入对话时，这种模式最为理想。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "理解权衡："
+            },
+            {
+              "text": " 当使用 "
+            },
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": " 搭配仅返回一次结果的协程时，模型在整个函数完成之前不会收到任何数据。因此，除非用户继续说话，模型通常不会给出最初的口头确认。当用户立即继续提出其他问题，而你希望结果在下一个自然停顿处融入对话时，这种模式最为理想。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "使用 `response_scheduling` 控制结果投递",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "使用 `response_scheduling` 控制结果投递"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "response_scheduling 属性控制模型何时对传入的工具响应做出反应。WHEN_IDLE 绝不会打断正在进行的轮次：如果模型仍在说话或用户仍在讲话，结果会等到该轮次结束后再处理，模型会在下一个自然停顿处做出响应。ADK 支持三种调度行为：",
+          "inlines": [
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": " 属性控制模型"
+            },
+            {
+              "italic": true,
+              "text": "何时"
+            },
+            {
+              "text": "对传入的工具响应做出反应。"
+            },
+            {
+              "code": true,
+              "text": "WHEN_IDLE"
+            },
+            {
+              "text": " 绝不会打断正在进行的轮次：如果模型仍在说话或用户仍在讲话，结果会等到该轮次结束后再处理，模型会在下一个自然停顿处做出响应。ADK 支持三种调度行为："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2ae12e1ae05e3e84f731879f3a364f9d32b5eb40e3601100a98aa23b4492cacb.jpg",
+          "alt": "table1_response_scheduling_16x9"
+        },
+        {
+          "type": "paragraph",
+          "text": "在启用 gemini-3.8-live 的基准测试会话中：",
+          "inlines": [
+            {
+              "text": "在启用 "
+            },
+            {
+              "code": true,
+              "text": "gemini-3.8"
+            },
+            {
+              "text": "-live 的基准测试会话中："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "在 "
+                },
+                {
+                  "code": true,
+                  "text": "WHEN_IDLE"
+                },
+                {
+                  "text": " 下，传入的销售报告礼貌地等待模型完成回答另一个 20 秒的问题，然后无缝地提供数据。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在 "
+                },
+                {
+                  "code": true,
+                  "text": "INTERRUPT"
+                },
+                {
+                  "text": " 下，传入的结果在句子中间打断了当前语音；随后模型完成了回答并追加了数据。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在 "
+                },
+                {
+                  "code": true,
+                  "text": "SILENT"
+                },
+                {
+                  "text": " 下，结果被添加到对话历史中，可供后续轮次使用，而不会触发未经请求的播报。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结合流式传输与调度",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "结合流式传输与调度"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "执行形态（流式传输与单次返回）和投递时机（response_scheduling）相互独立，可以组合使用。在流式工具上设置 response_scheduling 会为每个部分更新打上该行为标记。",
+          "inlines": [
+            {
+              "text": "执行形态（流式传输与单次返回）和投递时机（"
+            },
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": "）相互独立，可以组合使用。在流式工具上设置 "
+            },
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": " 会为每个部分更新打上该行为标记。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "此外，在 ADK 2.8 及更新版本中，流式工具可以通过产出 types.FunctionResponse 为每次更新动态指定调度：",
+          "inlines": [
+            {
+              "text": "此外，在 ADK 2.8 及更新版本中，流式工具可以通过产出 "
+            },
+            {
+              "code": true,
+              "text": "types.FunctionResponse"
+            },
+            {
+              "text": " 为每次更新动态指定调度："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# Acknowledge and keep intermediate progress quiet:\nyield types.FunctionResponse(\n    response={\"stage\": \"aggregating\"},\n    scheduling=types.FunctionResponseScheduling.SILENT,\n)\n\n\n# Deliver the final result when the speaker finishes:\nyield types.FunctionResponse(\n    response={\"report\": final_data},\n    scheduling=types.FunctionResponseScheduling.WHEN_IDLE,\n)"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "架构总结：选择合适的工具模式",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "架构总结：选择合适的工具模式"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7baaf6444842e558923326947e889e7b8b6e74c5d5d6d3c8f093ae146b1a26a0.jpg",
+          "alt": "table2_architecture_summary_4x3"
+        },
+        {
+          "type": "paragraph",
+          "text": "经验法则：如果等待有故事可讲，就流式传输。如果等待只是等待，就在后台运行，让结果在空闲时落地。",
+          "inlines": [
+            {
+              "text": "经验法则："
+            },
+            {
+              "bold": true,
+              "text": "如果等待有故事可讲，就流式传输。如果等待只是等待，就在后台运行，让结果在空闲时落地。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结论",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "结论"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "非阻塞工具不会减少后端执行时间：一个 13 秒的查询仍然需要 13 秒。改变的是你的智能体在对话中的存在感。",
+          "inlines": [
+            {
+              "text": "非阻塞工具不会减少后端执行时间：一个 13 秒的查询仍然需要 13 秒。改变的是你的智能体在对话中的存在感。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一个需要十秒才能加载的 Web 应用会被认为很慢；一个沉默十秒的对话式语音智能体则会被认为出了故障。通过将 ADK 的流式工具和灵活的响应调度与 gemini-3.8-live 的实时能力相结合，你可以构建在复杂操作全程中保持专注、自然且在场的语音助手。",
+          "inlines": [
+            {
+              "text": "一个需要十秒才能加载的 Web 应用会被认为很慢；一个沉默十秒的对话式语音智能体则会被认为出了故障。通过将 ADK 的流式工具和灵活的响应调度与 "
+            },
+            {
+              "code": true,
+              "text": "gemini-3.8-live"
+            },
+            {
+              "text": " 的实时能力相结合，你可以构建在复杂操作全程中保持专注、自然且在场的语音助手。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "亲自尝试： 交互式演示 在 gemini-3.8-live 上通过每种工具模式和 response_scheduling 模式运行同一个 13 秒查询，让你能听出差异。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "亲自尝试："
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://adk-streaming-tools-761793285222.us-central1.run.app/demo",
+              "text": "交互式演示"
+            },
+            {
+              "text": " 在 gemini-3.8-live 上通过每种工具模式和 response_scheduling 模式运行同一个 13 秒查询，让你能听出差异。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "要求与后续步骤",
+          "inlines": [
+            {
+              "text": "要求与后续步骤"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "框架："
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "google-adk >= 2.10.0"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "模型："
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/google-models",
+                  "text": "Gemini Enterprise"
+                },
+                {
+                  "text": " 上的 "
+                },
+                {
+                  "code": true,
+                  "text": "gemini-3.8-live"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "API 环境："
+                },
+                {
+                  "text": " 流式工具和实时调度需要双向实时会话（"
+                },
+                {
+                  "code": true,
+                  "text": "run_live"
+                },
+                {
+                  "text": "）。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "参考资料",
+          "inlines": [
+            {
+              "text": "参考资料"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://adk.dev/live/streaming-tools/",
+                  "text": "流式工具"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://adk.dev/live/",
+                  "text": "ADK Gemini Live API 工具包"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://adk.dev/tools-custom/function-tools/",
+                  "text": "函数工具"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "上一页",
+          "inlines": [
+            {
+              "text": "上一页"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下一页",
+          "inlines": [
+            {
+              "text": "下一页"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "OCT. 19, 2026",
+          "inlines": [
+            {
+              "text": "OCT. 19, 2026"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stephen Allen Solutions Architect AI Apps and Platforms",
+          "inlines": [
+            {
+              "href": "https://developers.googleblog.com/search/?author=Stephen+Allen",
+              "text": "Stephen Allen"
+            },
+            {
+              "text": " Solutions Architect AI Apps and Platforms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kaz Sato Staff Developer Advocate",
+          "inlines": [
+            {
+              "href": "https://developers.googleblog.com/search/?author=Kaz+Sato",
+              "text": "Kaz Sato"
+            },
+            {
+              "text": " Staff Developer Advocate"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Building a Voice Agent That Never Goes Silent with ADK and Gemini 3.8 Live",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Building a Voice Agent That Never Goes Silent with ADK and Gemini 3.8 Live"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "A guide to streaming tools, non-blocking function calls, and response scheduling in the Agent Development Kit (ADK) Gemini Live API Toolkit.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "A guide to"
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://adk.dev/live/streaming-tools/",
+              "italic": true,
+              "text": "streaming tools"
+            },
+            {
+              "italic": true,
+              "text": ", non-blocking function calls, and response scheduling in the"
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://adk.dev/live/",
+              "italic": true,
+              "text": "Agent Development Kit (ADK) Gemini Live API Toolkit"
+            },
+            {
+              "italic": true,
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In text chat, a 13-second database query or RAG pipeline shows a loading spinner. In a live voice conversation, 13 seconds of blocking tool execution produces 13 seconds of dead air, causing users to assume the call dropped and hang up.",
+          "inlines": [
+            {
+              "text": "In text chat, a 13-second database query or RAG pipeline shows a loading spinner. In a live voice conversation, 13 seconds of blocking tool execution produces 13 seconds of dead air, causing users to assume the call dropped and hang up."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You cannot always make backend queries sub-second, so the fix must be architectural: keep the agent conversational while slow tools run in the background. Rather than forcing you to wire up custom client-side WebSocket event loops to manage asynchronous tool state, the open-source ADK and gemini-3.8-live let you implement non-blocking voice tools natively in Python. In our benchmark sales-report workflow on gemini-3.8-live, switching from a blocking tool to a streaming tool cut the time to the agent's first words from 14.4 seconds to 1.2 seconds.",
+          "inlines": [
+            {
+              "text": "You cannot always make backend queries sub-second, so the fix must be architectural: keep the agent conversational while slow tools run in the background. Rather than forcing you to wire up custom client-side WebSocket event loops to manage asynchronous tool state, the open-source ADK and gemini-3.8-live let you implement non-blocking voice tools natively in Python. In our benchmark sales-report workflow on gemini-3.8-live, switching from a blocking tool to a streaming tool cut the time to the agent's first words from 14.4 seconds to 1.2 seconds."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This guide covers how to use streaming tools, non-blocking FunctionTool definitions, and response_scheduling to build responsive, natural voice agents.",
+          "inlines": [
+            {
+              "text": "This guide covers how to use streaming tools, non-blocking FunctionTool definitions, and response_scheduling to build responsive, natural voice agents."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Watch the 1-minute ADK Live AI Concierge demo video to hear scheduled responses in action:",
+          "inlines": [
+            {
+              "text": "Watch the 1-minute ADK Live AI Concierge demo video to hear scheduled responses in action:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sorry, your browser doesn't support playback for this video",
+          "inlines": [
+            {
+              "text": "Sorry, your browser doesn't support playback for this video"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ADK Live AI Concierge demo video explains how scheduled responses work",
+          "inlines": [
+            {
+              "text": "ADK Live AI Concierge demo video explains how scheduled responses work"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What Non-Blocking Tools Enable",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What Non-Blocking Tools Enable"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Implementing non-blocking tool calls in ADK provides several immediate user experience benefits:",
+          "inlines": [
+            {
+              "text": "Implementing non-blocking tool calls in ADK provides several immediate user experience benefits:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Zero Dead Air:"
+                },
+                {
+                  "text": " Instead of freezing mid-conversation, the agent can acknowledge requests immediately (\"Looking into those numbers now...\") and keep the dialogue alive."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Audible Progress Updates:"
+                },
+                {
+                  "text": " For multi-stage workflows (such as connecting, querying, and reconciling), the agent can narrate interim milestones so the wait sounds like active progress."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Multitasking and Parallel Dialogue:"
+                },
+                {
+                  "text": " Users can ask follow-up or unrelated questions while a long-running query executes in the background, and receive timely answers without stalling the session."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Granular Delivery Control:"
+                },
+                {
+                  "text": " You determine when and how the final result enters the conversation: waiting for a natural speaking pause, interrupting immediately for critical alerts, or silently updating conversation context."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The Baseline: Why Standard Tools Block Conversation",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The Baseline: Why Standard Tools Block Conversation"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "In standard agent development, a tool is defined as an async def function that completes its work and returns a single value:",
+          "inlines": [
+            {
+              "text": "In standard agent development, a tool is defined as an async def function that completes its work and returns a single value:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from typing import Any\n\n\nasync def query_sales_database(region: str) -> dict[str, Any]:\n    \"\"\"Runs the quarterly sales report query for a region.\n\n\n    Args:\n      region: Sales region to report on, e.g. \"EMEA\" or \"APAC\".\n\n\n    Returns:\n      A dict containing report metrics upon completion.\n    \"\"\"\n    report = await run_expensive_query(region)       # e.g., 13 seconds of work\n    return {\"status\": \"success\", \"report\": report}   # Single return at the end"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When passed directly to an Agent in ADK, this function creates a blocking tool call. During a Gemini Live API bidirectional voice session (run_live), the execution loop awaits the tool's return before generating further model turns.",
+          "inlines": [
+            {
+              "text": "When passed directly to an "
+            },
+            {
+              "code": true,
+              "text": "Agent"
+            },
+            {
+              "text": " in ADK, this function creates a blocking tool call. During a Gemini Live API bidirectional voice session ("
+            },
+            {
+              "code": true,
+              "text": "run_live"
+            },
+            {
+              "text": "), the execution loop awaits the tool's return before generating further model turns."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If query_sales_database takes 13 seconds, the agent produces 13 seconds of complete silence. Prompting instructions such as \"tell the user you are working on it\" cannot resolve this, because the model's turn is blocked waiting for the function response payload.",
+          "inlines": [
+            {
+              "text": "If "
+            },
+            {
+              "code": true,
+              "text": "query_sales_database"
+            },
+            {
+              "text": " takes 13 seconds, the agent produces 13 seconds of complete silence. Prompting instructions such as \"tell the user you are working on it\" cannot resolve this, because the model's turn is blocked waiting for the function response payload."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To keep the conversation fluid, you can choose between two main non-blocking patterns depending on the desired user experience.",
+          "inlines": [
+            {
+              "text": "To keep the conversation fluid, you can choose between two main non-blocking patterns depending on the desired user experience."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Pattern 1: Streaming Tools (When Progress Has a Story)",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Pattern 1: Streaming Tools (When Progress Has a Story)"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "When an operation consists of meaningful stages (such as connecting to a database, aggregating records, and formatting results), a streaming tool lets the agent narrate progress as it happens.",
+          "inlines": [
+            {
+              "text": "When an operation consists of meaningful stages (such as connecting to a database, aggregating records, and formatting results), a "
+            },
+            {
+              "bold": true,
+              "text": "streaming tool"
+            },
+            {
+              "text": " lets the agent narrate progress as it happens."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In ADK, turning a standard tool into a streaming tool requires changing only return to yield. By defining the function as an AsyncGenerator, ADK automatically marks the tool declaration as NON_BLOCKING and returns an immediate status acknowledgement to the model.",
+          "inlines": [
+            {
+              "text": "In ADK, turning a standard tool into a streaming tool requires changing only "
+            },
+            {
+              "code": true,
+              "text": "return"
+            },
+            {
+              "text": " to "
+            },
+            {
+              "code": true,
+              "text": "yield"
+            },
+            {
+              "text": ". By defining the function as an "
+            },
+            {
+              "code": true,
+              "text": "AsyncGenerator"
+            },
+            {
+              "text": ", ADK automatically marks the tool declaration as "
+            },
+            {
+              "code": true,
+              "text": "NON_BLOCKING"
+            },
+            {
+              "text": " and returns an immediate status acknowledgement to the model."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import asyncio\nfrom typing import AsyncGenerator\nfrom google.adk.agents import Agent\n\n\nasync def query_sales_database(region: str) -> AsyncGenerator[str, None]:\n    \"\"\"Runs the quarterly sales report. Call this ONCE; it pushes updates automatically.\n\n\n    Args:\n      region: Sales region to report on, e.g. \"EMEA\" or \"APAC\".\n\n\n    Yields:\n      Progress updates while the query runs, followed by the final summary.\n    \"\"\"\n    stages = [\n        (\"Connecting to the sales warehouse...\", 1.5),\n        (\"Scanning order records...\", 3.5),\n        (\"Aggregating revenue by product line...\", 3.5),\n        (\"Formatting the report...\", 1.5),\n    ]\n    for message, delay in stages:\n        yield f\"PROGRESS: {message}\"\n        await asyncio.sleep(delay)\n\n\n    yield f\"DONE: {region} Q2 revenue reached $4.81M, up 12.4% year over year.\"\n\n\nagent = Agent(\n    name=\"sales_analyst\",\n    model=\"gemini-3.8-live\",\n    tools=[query_sales_database],\n    instruction=(\n        \"You are a helpful sales assistant. When the user asks about sales data, \"\n        \"call query_sales_database once. Acknowledge the request immediately, \"\n        \"briefly paraphrase each progress update, and present the final figures \"\n        \"when completed. Keep answers conversational and concise.\"\n    ),\n)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How It Works in Practice",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "How It Works in Practice"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Immediate Acknowledgment:"
+                },
+                {
+                  "text": " When the model triggers "
+                },
+                {
+                  "code": true,
+                  "text": "query_sales_database"
+                },
+                {
+                  "text": ", ADK immediately dispatches an asynchronous status event to the model. The agent speaks right away (\"Looking into the EMEA figures for you now...\")."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Partial Updates:"
+                },
+                {
+                  "text": " Each "
+                },
+                {
+                  "code": true,
+                  "text": "yield"
+                },
+                {
+                  "text": " sends a partial function response upstream. The model paraphrases each update as it arrives (\"Connecting to the warehouse...\", \"Aggregating product line data...\"), though narration can trail the tool by several seconds."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Seamless Multi-Threading:"
+                },
+                {
+                  "text": " If the user asks an unrelated question while the query is running, the agent can answer it without canceling or interrupting the background task."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Production Considerations for Streaming Tools",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Production Considerations for Streaming Tools"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Single-Flight Tool Calls:"
+                },
+                {
+                  "text": " Because streaming tools push updates across multiple turns, models may occasionally attempt to call the tool again if prompted repeatedly. Keep a clear \"Call this ONCE\" directive in your docstring, and consider implementing an in-memory latch or idempotency key in your tool implementation for production safety."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "User Cancellation with `stop_streaming`:"
+                },
+                {
+                  "text": " ADK provides a built-in escape hatch for long-running streaming tools. By including a function named "
+                },
+                {
+                  "code": true,
+                  "text": "stop_streaming(function_name: str)"
+                },
+                {
+                  "text": " in the agent's tools list, ADK intercepts the call and cancels the generator's underlying "
+                },
+                {
+                  "code": true,
+                  "text": "asyncio.Task"
+                },
+                {
+                  "text": ", raising "
+                },
+                {
+                  "code": true,
+                  "text": "asyncio.CancelledError"
+                },
+                {
+                  "text": " within your function so you can cleanly close database connections or file handles."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "User Barge-In Does Not Cancel Tools:"
+                },
+                {
+                  "text": " When the user talks over the agent, the Live API stops the model's output and ADK emits an event with "
+                },
+                {
+                  "code": true,
+                  "text": "interrupted=True"
+                },
+                {
+                  "text": " so your client can stop audio playback. Running streaming or background tools are not cancelled, and their results are still delivered. To stop a tool, the model must call "
+                },
+                {
+                  "code": true,
+                  "text": "stop_streaming"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Pattern 2: Background Execution (When Waiting Is Just Waiting)",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Pattern 2: Background Execution (When Waiting Is Just Waiting)"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Continuous progress commentary is not always appropriate. If a user asks for a report and immediately pivots to another topic, an agent that continually interrupts with status updates can feel intrusive.",
+          "inlines": [
+            {
+              "text": "Continuous progress commentary is not always appropriate. If a user asks for a report and immediately pivots to another topic, an agent that continually interrupts with status updates can feel intrusive."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When the wait has no story to narrate, run the task quietly in the background.",
+          "inlines": [
+            {
+              "text": "When the wait has no story to narrate, run the task quietly in the background."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Approach A: The Single-Yield Generator (Fastest Setup)",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Approach A: The Single-Yield Generator (Fastest Setup)"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "An effective way to get an immediate verbal acknowledgment without ongoing progress chatter is an async generator that yields only once, upon completion:",
+          "inlines": [
+            {
+              "text": "An effective way to get an immediate verbal acknowledgment without ongoing progress chatter is an async generator that yields only once, upon completion:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "async def query_sales_database(region: str) -> AsyncGenerator[dict, None]:\n    \"\"\"Runs the quarterly sales report. Call this ONCE; results arrive when ready.\"\"\"\n    report = await run_expensive_query(region)   # Background execution (~13s)\n    yield report                                 # Single yield upon completion"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Because this is an async generator, ADK issues an immediate pending response. The agent promptly acknowledges the request (\"I'm pulling that report together for you now\"), remains silent during computation, and presents the figures once ready or when the user finishes speaking.",
+          "inlines": [
+            {
+              "text": "Because this is an async generator, ADK issues an immediate pending response. The agent promptly acknowledges the request (\"I'm pulling that report together for you now\"), remains silent during computation, and presents the figures once ready or when the user finishes speaking."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Approach B: `FunctionTool` with `response_scheduling`",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Approach B: `FunctionTool` with `response_scheduling`"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "If you prefer to keep standard coroutines (async def ... -> dict), wrap the function in a FunctionTool and configure response_scheduling:",
+          "inlines": [
+            {
+              "text": "If you prefer to keep standard coroutines ("
+            },
+            {
+              "code": true,
+              "text": "async def ... -> dict"
+            },
+            {
+              "text": "), wrap the function in a "
+            },
+            {
+              "code": true,
+              "text": "FunctionTool"
+            },
+            {
+              "text": " and configure "
+            },
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from google.adk.tools import FunctionTool\nfrom google.genai import types\n\n\nsales_tool = FunctionTool(query_sales_database)\nsales_tool.response_scheduling = types.FunctionResponseScheduling.WHEN_IDLE\n(Note: In ADK 2.10+, you can also set `sales_tool.behavior = types.Behavior.NON_BLOCKING` to run a tool in the background without modifying scheduling mode.)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Understanding the Trade-Off: When using response_scheduling with a return-once coroutine, the model receives no payload until the entire function completes. As a result, the model typically does not utter an initial verbal acknowledgment unless the user continues speaking. This pattern is ideal when the user immediately continues with other questions and you want the result woven into the dialogue at the next natural pause.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Understanding the Trade-Off:"
+            },
+            {
+              "text": " When using "
+            },
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": " with a return-once coroutine, the model receives no payload until the entire function completes. As a result, the model typically does not utter an initial verbal acknowledgment unless the user continues speaking. This pattern is ideal when the user immediately continues with other questions and you want the result woven into the dialogue at the next natural pause."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Controlling Result Delivery with `response_scheduling`",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Controlling Result Delivery with `response_scheduling`"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The response_scheduling attribute controls when the model reacts to an incoming tool response. WHEN_IDLE never cuts into a turn in progress: if the model is still speaking or the user is still talking, the result waits until that turn ends, and the model responds at the next natural pause. ADK supports three scheduling behaviors:",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": " attribute controls "
+            },
+            {
+              "italic": true,
+              "text": "when"
+            },
+            {
+              "text": " the model reacts to an incoming tool response. "
+            },
+            {
+              "code": true,
+              "text": "WHEN_IDLE"
+            },
+            {
+              "text": " never cuts into a turn in progress: if the model is still speaking or the user is still talking, the result waits until that turn ends, and the model responds at the next natural pause. ADK supports three scheduling behaviors:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2ae12e1ae05e3e84f731879f3a364f9d32b5eb40e3601100a98aa23b4492cacb.jpg",
+          "alt": "table1_response_scheduling_16x9"
+        },
+        {
+          "type": "paragraph",
+          "text": "In benchmark sessions with gemini-3.8-live:",
+          "inlines": [
+            {
+              "text": "In benchmark sessions with "
+            },
+            {
+              "code": true,
+              "text": "gemini-3.8"
+            },
+            {
+              "text": "-live:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Under "
+                },
+                {
+                  "code": true,
+                  "text": "WHEN_IDLE"
+                },
+                {
+                  "text": ", an incoming sales report waited politely while the model finished answering a separate 20-second question, then delivered the figures seamlessly."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Under "
+                },
+                {
+                  "code": true,
+                  "text": "INTERRUPT"
+                },
+                {
+                  "text": ", the incoming result cut off current speech mid-sentence; the model then finished its answer and appended the figures."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Under "
+                },
+                {
+                  "code": true,
+                  "text": "SILENT"
+                },
+                {
+                  "text": ", the result was added to the conversation history, available for subsequent turns without prompting an unrequested announcement."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Combining Streaming and Scheduling",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Combining Streaming and Scheduling"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Execution shape (streaming vs. single-return) and delivery timing (response_scheduling) are independent and can be composed. Setting response_scheduling on a streaming tool stamps every partial update with that behavior.",
+          "inlines": [
+            {
+              "text": "Execution shape (streaming vs. single-return) and delivery timing ("
+            },
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": ") are independent and can be composed. Setting "
+            },
+            {
+              "code": true,
+              "text": "response_scheduling"
+            },
+            {
+              "text": " on a streaming tool stamps every partial update with that behavior."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Furthermore, in ADK 2.8 and newer, streaming tools can dynamically specify scheduling per update by yielding types.FunctionResponse:",
+          "inlines": [
+            {
+              "text": "Furthermore, in ADK 2.8 and newer, streaming tools can dynamically specify scheduling per update by yielding "
+            },
+            {
+              "code": true,
+              "text": "types.FunctionResponse"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# Acknowledge and keep intermediate progress quiet:\nyield types.FunctionResponse(\n    response={\"stage\": \"aggregating\"},\n    scheduling=types.FunctionResponseScheduling.SILENT,\n)\n\n\n# Deliver the final result when the speaker finishes:\nyield types.FunctionResponse(\n    response={\"report\": final_data},\n    scheduling=types.FunctionResponseScheduling.WHEN_IDLE,\n)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Architecture Summary: Choosing the Right Tool Pattern",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Architecture Summary: Choosing the Right Tool Pattern"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7baaf6444842e558923326947e889e7b8b6e74c5d5d6d3c8f093ae146b1a26a0.jpg",
+          "alt": "table2_architecture_summary_4x3"
+        },
+        {
+          "type": "paragraph",
+          "text": "The rule of thumb: If the wait has a story, stream it. If the wait is just a wait, run it in the background and let the result land when idle.",
+          "inlines": [
+            {
+              "text": "The rule of thumb: "
+            },
+            {
+              "bold": true,
+              "text": "If the wait has a story, stream it. If the wait is just a wait, run it in the background and let the result land when idle."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Conclusion",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Conclusion"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Non-blocking tools do not reduce backend execution time: a 13-second query still takes 13 seconds. What changes is the conversational presence of your agent.",
+          "inlines": [
+            {
+              "text": "Non-blocking tools do not reduce backend execution time: a 13-second query still takes 13 seconds. What changes is the conversational presence of your agent."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A web application that takes ten seconds to load is perceived as slow; a conversational voice agent that goes silent for ten seconds is perceived as broken. By pairing ADK's streaming tools and flexible response scheduling with the real-time capabilities of gemini-3.8-live, you can build voice assistants that remain attentive, natural, and present throughout complex operations.",
+          "inlines": [
+            {
+              "text": "A web application that takes ten seconds to load is perceived as slow; a conversational voice agent that goes silent for ten seconds is perceived as broken. By pairing ADK's streaming tools and flexible response scheduling with the real-time capabilities of "
+            },
+            {
+              "code": true,
+              "text": "gemini-3.8-live"
+            },
+            {
+              "text": ", you can build voice assistants that remain attentive, natural, and present throughout complex operations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Try it yourself: the interactive demo runs the same 13-second query through every tool pattern and response_scheduling mode on gemini-3.8-live, so you can hear the difference.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Try it yourself:"
+            },
+            {
+              "text": " the "
+            },
+            {
+              "href": "https://adk-streaming-tools-761793285222.us-central1.run.app/demo",
+              "text": "interactive demo"
+            },
+            {
+              "text": " runs the same 13-second query through every tool pattern and response_scheduling mode on gemini-3.8-live, so you can hear the difference."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Requirements & Next Steps",
+          "inlines": [
+            {
+              "text": "Requirements & Next Steps"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Framework:"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "google-adk >= 2.10.0"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Model:"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "gemini-3.8-live"
+                },
+                {
+                  "text": " on "
+                },
+                {
+                  "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/google-models",
+                  "text": "Gemini Enterprise"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "API Environment:"
+                },
+                {
+                  "text": " Streaming tools and live scheduling require bidirectional live sessions ("
+                },
+                {
+                  "code": true,
+                  "text": "run_live"
+                },
+                {
+                  "text": ")."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "References",
+          "inlines": [
+            {
+              "text": "References"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://adk.dev/live/streaming-tools/",
+                  "text": "Streaming Tools"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://adk.dev/live/",
+                  "text": "ADK Gemini Live API Toolkit"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://adk.dev/tools-custom/function-tools/",
+                  "text": "Function tools"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Previous",
+          "inlines": [
+            {
+              "text": "Previous"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Next",
+          "inlines": [
+            {
+              "text": "Next"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:20:21.708610Z",
+  "contentMode": "full"
+}

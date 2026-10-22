@@ -1,0 +1,1161 @@
+{
+  "schemaVersion": 1,
+  "id": "s1spqur4ws02avzig36blr8of",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/s1spqur4ws02avzig36blr8of",
+  "fetchedAt": "2026-10-22T13:18:05.028910Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "部署工程",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "部署/工程"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "在 Modal，我们的无服务器计算为实时推理、训练和批处理任务提供支持，并随需求自动扩缩容。Sandboxes 提供了另一种模式，即由你显式控制其生命周期的容器。越来越多的负载需要介于两者之间的方案：在请求之间保持连续性的自动扩缩容无服务器计算。试想一个带有解码器状态、用于音频流的语音转文字模型，一个进行对话的语音代理，或者一个多人游戏。对于这些负载，用户在整个会话期间每次重连时都必须回到同一个容器。",
+          "inlines": [
+            {
+              "text": "在 Modal，我们的无服务器计算为实时推理、训练和批处理任务提供支持，并随需求自动扩缩容。"
+            },
+            {
+              "href": "https://modal.com/docs/guide/sandboxes",
+              "text": "Sandboxes"
+            },
+            {
+              "text": " 提供了另一种模式，即由你显式控制其生命周期的容器。越来越多的负载需要介于两者之间的方案：在请求之间保持连续性的自动扩缩容无服务器计算。试想一个带有解码器状态、用于音频流的"
+            },
+            {
+              "href": "https://modal.com/docs/examples/streaming_kyutai_stt",
+              "text": "语音转文字模型"
+            },
+            {
+              "text": "，一个进行对话的"
+            },
+            {
+              "href": "https://github.com/modal-projects/modal-phonon-voice-bot",
+              "text": "语音代理"
+            },
+            {
+              "text": "，或者一个"
+            },
+            {
+              "href": "http://curvytron.modal.dev/",
+              "text": "多人游戏"
+            },
+            {
+              "text": "。对于这些负载，用户在整个会话期间每次重连时都必须回到同一个容器。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们最近推出了Sticky Sessions，它构建在我们低延迟的Modal Servers 之上。每个会话的请求都会落到同一个容器上。要使用 Sticky Sessions，只需用 @modal.sessioned() 装饰器创建一个 Modal Server，并通过 SDK 或 HTTP API 启动会话：",
+          "inlines": [
+            {
+              "text": "我们最近推出了"
+            },
+            {
+              "href": "https://modal.com/docs/guide/sticky-sessions#sticky-sessions",
+              "text": "Sticky Sessions"
+            },
+            {
+              "text": "，它构建在我们低延迟的"
+            },
+            {
+              "href": "https://modal.com/blog/serverless-servers",
+              "text": "Modal Servers"
+            },
+            {
+              "text": " 之上。每个会话的请求都会落到同一个容器上。要使用 Sticky Sessions，只需用 "
+            },
+            {
+              "code": true,
+              "text": "@modal.sessioned()"
+            },
+            {
+              "text": " 装饰器创建一个 Modal Server，并通过 "
+            },
+            {
+              "href": "https://modal.com/docs/sdk/py/latest/Server#sessions",
+              "text": "SDK"
+            },
+            {
+              "text": " 或 "
+            },
+            {
+              "href": "https://modal.com/docs/guide/sticky-sessions#starting-and-using-a-sticky-session",
+              "text": "HTTP API"
+            },
+            {
+              "text": " 启动会话："
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "具有强亲和性的无服务器计算",
+          "inlines": [
+            {
+              "text": "具有强亲和性的无服务器计算"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Modal 支持通过 Web Functions 使用 WebSockets 已有一段时间。然而，WebSocket 连接绑定的是 Function 的“输入”，而不是容器——如果连接断开，重连时会创建一个新的输入，并可能落到不同的容器上。",
+          "inlines": [
+            {
+              "text": "Modal 支持"
+            },
+            {
+              "href": "https://modal.com/blog/websocket-launch",
+              "text": "通过 Web Functions 使用 WebSockets"
+            },
+            {
+              "text": " 已有一段时间。然而，WebSocket 连接绑定的是 Function 的“输入”，而不是容器——如果连接断开，重连时会创建一个新的输入，并可能落到不同的容器上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "诸如 Gradio 和 Streamlit 这类有状态的 Web UI 属于需要在请求与后端容器之间提供强亲和性保证的负载。每个请求都必须到达持有用户状态的进程。一种反模式的做法是设置 max_containers=1，它通过完全放弃扩缩容来保证粘性。",
+          "inlines": [
+            {
+              "text": "诸如 "
+            },
+            {
+              "href": "https://gradio.app/guides/deploying-gradio-with-modal#sticky-sessions",
+              "text": "Gradio"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://modal.com/docs/examples/serve_streamlit",
+              "text": "Streamlit"
+            },
+            {
+              "text": " 这类有状态的 Web UI 属于需要在请求与后端容器之间提供强亲和性保证的负载。每个请求都必须到达持有用户状态的进程。一种反模式的做法是设置 "
+            },
+            {
+              "code": true,
+              "text": "max_containers=1"
+            },
+            {
+              "text": "，它通过完全放弃扩缩容来保证粘性。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Modal Servers 已经提供了一种较弱的亲和性形式；共享相同 Modal-Affinity-Routing-Key 请求头的请求会以尽力而为的方式路由到同一个容器。该容器仍可能随时被缩容或替换，从而将后续请求路由到不同的容器。",
+          "inlines": [
+            {
+              "text": "Modal Servers 已经提供了一种"
+            },
+            {
+              "href": "https://modal.com/docs/examples/server_affinity",
+              "text": "较弱的亲和性形式"
+            },
+            {
+              "text": "；共享相同 "
+            },
+            {
+              "code": true,
+              "text": "Modal-Affinity-Routing-Key"
+            },
+            {
+              "text": " 请求头的请求会以尽力而为的方式路由到同一个容器。该容器仍可能随时被缩容或替换，从而将后续请求路由到不同的容器。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sticky Sessions 通过确保同一会话中的所有请求都落到同一个容器上，提供了更强的路由保证。",
+          "inlines": [
+            {
+              "text": "Sticky Sessions 通过确保同一会话中的所有请求都落到同一个容器上，提供了更强的路由保证。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Modal Servers 为我们奠定了基础",
+          "inlines": [
+            {
+              "text": "Modal Servers 为我们奠定了基础"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Sticky Sessions 构建在我们为 Modal Servers 开发的基础设施之上。该基础设施的核心是我们自研的无状态代理（fprs）。该代理使用从持久存储协调而来的内存缓存路由状态，提供低延迟的路由和负载均衡。Servers 已经为我们提供了一种将 HTTP 流量路由到容器、管理容器生命周期以及根据需求扩缩容容器集群的方式。",
+          "inlines": [
+            {
+              "text": "Sticky Sessions 构建在我们为 "
+            },
+            {
+              "href": "https://modal.com/blog/serverless-servers",
+              "text": "Modal Servers"
+            },
+            {
+              "text": " 开发的基础设施之上。该基础设施的核心是我们自研的无状态代理（fprs）。该代理使用从持久存储协调而来的内存缓存路由状态，提供低延迟的路由和负载均衡。Servers 已经为我们提供了一种将 HTTP 流量路由到容器、管理容器生命周期以及根据需求扩缩容容器集群的方式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sticky Sessions 需要三项当前请求级路由无法提供的能力：",
+          "inlines": [
+            {
+              "text": "Sticky Sessions 需要三项当前请求级路由无法提供的能力："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "固定路由："
+                },
+                {
+                  "text": "会话中的每个请求都到达同一个容器。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "会话生命周期："
+                },
+                {
+                  "text": "容器的主机跟踪哪些请求属于哪些会话，并确定每个会话何时变为空闲。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "基于会话的自动扩缩容："
+                },
+                {
+                  "text": "容器集群根据活跃会话数而非请求数进行扩缩容。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "让无服务器基础设施具备会话感知能力",
+          "inlines": [
+            {
+              "text": "让无服务器基础设施具备会话感知能力"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "从客户端的角度来看，Sticky Session 就像一根管道。一旦客户端创建了会话，该会话的所有后续请求都将被定向到同一个容器。",
+          "inlines": [
+            {
+              "text": "从客户端的角度来看，Sticky Session 就像一根管道。一旦客户端创建了会话，该会话的所有后续请求都将被定向到同一个容器。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这看起来可能很简单，但 Modal 的无服务器基础设施是围绕相反的理念构建和优化的：即各个请求是相互独立的。在从会话（而不仅仅是请求）的角度审视 Modal Servers 时，我们必须从第一性原理出发来思考授权、负载均衡和自动扩缩容。",
+          "inlines": [
+            {
+              "text": "这看起来可能很简单，但 Modal 的无服务器基础设施是围绕相反的理念构建和优化的：即各个请求是相互独立的。在从会话（而不仅仅是请求）的角度审视 Modal Servers 时，我们必须从第一性原理出发来思考授权、负载均衡和自动扩缩容。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/009b2f7bdd6cf29145df9b3678283f68ae05dda314afff7ef400a600a150bfc5.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "text": "授权",
+          "inlines": [
+            {
+              "text": "授权"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "默认情况下，Modal Servers 需要 Proxy Tokens。要共享 Sticky Sessions，你不应需要关闭身份验证或传递你的 Proxy Token。",
+          "inlines": [
+            {
+              "text": "默认情况下，Modal Servers 需要 "
+            },
+            {
+              "href": "https://modal.com/docs/guide/webhook-proxy-auth",
+              "text": "Proxy Tokens"
+            },
+            {
+              "text": "。要共享 Sticky Sessions，你不应需要关闭身份验证或传递你的 Proxy Token。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "相反，每个 sessions.start() 请求都会返回一个签名的会话令牌，用于授予对该会话的访问权限。在客户端之间共享此令牌，可让多个参与者访问房间、游戏或协作应用中的同一状态。",
+          "inlines": [
+            {
+              "text": "相反，每个 "
+            },
+            {
+              "href": "https://modal.com/docs/sdk/py/latest/Server#sessionsstart",
+              "code": true,
+              "text": "sessions.start()"
+            },
+            {
+              "text": " 请求都会返回一个签名的会话令牌，用于授予对该会话的访问权限。在客户端之间共享此令牌，可让多个参与者访问房间、游戏或协作应用中的同一状态。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在代理中维护会话到容器的映射，需要确保该映射在重启后以及跨多个副本保持一致。为避免这一点，我们直接将路由元数据编码到令牌中。我们的代理会验证令牌，并将请求路由到持有该会话的容器。",
+          "inlines": [
+            {
+              "text": "在代理中维护会话到容器的映射，需要确保该映射在重启后以及跨多个副本保持一致。为避免这一点，我们直接将路由元数据编码到令牌中。我们的代理会验证令牌，并将请求路由到持有该会话的容器。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "负载均衡",
+          "inlines": [
+            {
+              "text": "负载均衡"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "由于我们不在代理中存储会话状态，会话状态的权威视图仅存在于拥有该会话的主机上。这意味着负载均衡器无法即时获得可用容量的全局视图。",
+          "inlines": [
+            {
+              "text": "由于我们不在代理中存储会话状态，会话状态的权威视图仅存在于拥有该会话的主机上。这意味着负载均衡器无法即时获得可用容量的全局视图。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了发现可用容量，我们的负载均衡器会定期探测容器，以获取其可用并发数的快照。然后，负载均衡器结合最近的路由决策和探测到的快照来选择容器。这会将会话均匀分布到可用容器上，同时尽量减少向容量不足的容器发送浪费的往返请求。",
+          "inlines": [
+            {
+              "text": "为了发现可用容量，我们的负载均衡器会定期探测容器，以获取其可用并发数的快照。然后，负载均衡器结合最近的路由决策和探测到的快照来选择容器。这会将会话均匀分布到可用容器上，同时尽量减少向容量不足的容器发送浪费的往返请求。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "自动扩缩容",
+          "inlines": [
+            {
+              "text": "自动扩缩容"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Modal Servers 根据请求量自动扩缩容，目标是达到每个容器的请求并发目标。请求驱动的自动扩缩器假设请求流量可以在服务容器集群中均匀重新平衡。这种模型适用于无状态 Servers。然而，Sticky Sessions 的行为不同，因为会话流量是不可移动的。即使各会话的流量不同，每个会话的流量也必须落到同一个容器上。",
+          "inlines": [
+            {
+              "text": "Modal Servers 根据请求量自动扩缩容，目标是达到每个容器的请求并发目标。请求驱动的自动扩缩器假设请求流量可以在服务容器集群中均匀重新平衡。这种模型适用于无状态 Servers。然而，Sticky Sessions 的行为不同，因为会话流量是"
+            },
+            {
+              "italic": true,
+              "text": "不可移动的"
+            },
+            {
+              "text": "。即使各会话的流量不同，每个会话的流量也必须落到同一个容器上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这促使我们将会话作为并发单位，类似于带输入的 Modal Functions。一个容器可以配置为并发运行 1 个或多个会话。当并发数耗尽时，新会话会在队列中等待现有会话结束或新容器准备就绪。自动扩缩器会持续监控活动会话数和排队需求，以做出适当调整计算集群规模的扩缩容决策。",
+          "inlines": [
+            {
+              "text": "这促使我们将会话作为并发单位，类似于带输入的 Modal Functions。一个容器可以配置为并发运行 1 个或多个会话。当并发数耗尽时，新会话会在队列中等待现有会话结束或新容器准备就绪。自动扩缩器会持续监控活动会话数和排队需求，以做出适当调整计算集群规模的扩缩容决策。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Sticky Sessions 带来了什么",
+          "inlines": [
+            {
+              "text": "Sticky Sessions 带来了什么"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Sticky Sessions 在 Servers 之上提供强大的路由和生命周期保证，使 Modal 能够为一套新的应用提供一流支持：",
+          "inlines": [
+            {
+              "text": "Sticky Sessions 在 Servers 之上提供强大的路由和生命周期保证，使 Modal 能够为一套新的应用提供一流支持："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "低延迟语音代理：Modal Phonon Voice Bot 通过 WebRTC 运行一个 Pipecat 代理，并使用 Gradium Phonon 文本转语音。每个通话都是一个 Sticky Session，被固定到一个容器，因此 WebRTC 信令会到达持有对等连接的容器。在音频通过 WebRTC 传输期间，该会话会保持容器处于活动状态。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "低延迟语音代理："
+            },
+            {
+              "href": "https://github.com/modal-projects/modal-phonon-voice-bot",
+              "text": "Modal Phonon Voice Bot"
+            },
+            {
+              "text": " 通过 WebRTC 运行一个 "
+            },
+            {
+              "href": "https://docs.pipecat.ai/",
+              "text": "Pipecat"
+            },
+            {
+              "text": " 代理，并使用 "
+            },
+            {
+              "href": "https://huggingface.co/gradium/phonon-31m-en",
+              "text": "Gradium Phonon"
+            },
+            {
+              "text": " 文本转语音。每个通话都是一个 Sticky Session，被固定到一个容器，因此 WebRTC 信令会到达持有对等连接的容器。在音频通过 WebRTC 传输期间，该会话会保持容器处于活动状态。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "共享房间：我们的会话聊天室示例为每个聊天室提供一个 Sticky Session 作为后端。每个使用会话令牌连接的客户端都会被路由到同一个容器。每个房间的消息都会广播给房间内的所有人。在聊天室会话的生命周期内，客户端可以断开并重新连接到同一个房间。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "共享房间"
+            },
+            {
+              "text": "：我们的"
+            },
+            {
+              "href": "https://modal.com/docs/examples/sessioned_chatroom",
+              "text": "会话聊天室示例"
+            },
+            {
+              "text": "为每个聊天室提供一个 Sticky Session 作为后端。每个使用会话令牌连接的客户端都会被路由到同一个容器。每个房间的消息都会广播给房间内的所有人。在聊天室会话的生命周期内，客户端可以断开并重新连接到同一个房间。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "游戏：游戏应用将状态保存在内存中以保持连续性并减少延迟。Sticky Sessions 既支持保留进度，也支持托管多个并发玩家房间。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "游戏："
+            },
+            {
+              "text": "游戏应用将状态保存在内存中以保持连续性并减少延迟。Sticky Sessions 既支持保留进度，也支持托管多个并发玩家房间。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "一个勇敢的、粘性的世界",
+          "inlines": [
+            {
+              "text": "一个勇敢的、粘性的世界"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Modal，我们喜欢使用 Modal。在追求无限规模和前沿性能的过程中，我们发现自己（大量地）在玩Curvytron。当然，我们在 Modal Servers 上基于 Sticky Sessions 托管了自己快速的（不再有输入延迟的借口！）us-east 部署。",
+          "inlines": [
+            {
+              "text": "在 Modal，我们喜欢使用 Modal。在追求"
+            },
+            {
+              "href": "https://modal.com/blog/scaling-to-1-million-concurrent-sandboxes-in-seconds",
+              "text": "无限规模"
+            },
+            {
+              "text": "和"
+            },
+            {
+              "href": "https://modal.com/blog/trillion-tokens-trillion-parameters",
+              "text": "前沿性能"
+            },
+            {
+              "text": "的过程中，我们发现自己（大量地）在玩"
+            },
+            {
+              "href": "https://www.curvytron.com/",
+              "text": "Curvytron"
+            },
+            {
+              "text": "。当然，我们在 Modal Servers 上基于 Sticky Sessions 托管了自己快速的（不再有输入延迟的借口！）us-east 部署。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0ae8abf356170d67c7e7192749124b4090aacafe87926446406cf10812dbf899.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "和许多多人游戏一样，Curvytron 让玩家在同一个房间里实时互相竞争。借助 Sticky Sessions，玩家可以创建房间、分享游戏链接，并与其他玩家一起游玩！Modal 会根据活跃房间数量自动扩缩容。",
+          "inlines": [
+            {
+              "text": "和许多多人游戏一样，Curvytron 让玩家在同一个房间里实时互相竞争。借助 Sticky Sessions，玩家可以创建房间、分享游戏链接，并与其他玩家一起游玩！Modal 会根据活跃房间数量自动扩缩容。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在这里试试吧！",
+          "inlines": [
+            {
+              "href": "http://curvytron.modal.dev/",
+              "text": "在这里试试吧！"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "特别感谢 Claudia Zhu、Richard Gong、Akshat Bubna、Michael Waskom 和 Ben Shababo 帮助塑造了这一功能！",
+          "inlines": [
+            {
+              "text": "特别感谢 Claudia Zhu、Richard Gong、Akshat Bubna、Michael Waskom 和 Ben Shababo 帮助塑造了这一功能！"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你有兴趣为下一代软件构建基础基础设施，我们正在招聘。",
+          "inlines": [
+            {
+              "text": "如果你有兴趣为下一代软件构建基础基础设施，我们正在"
+            },
+            {
+              "href": "https://modal.com/company#careers",
+              "text": "招聘"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "At Modal, our serverless compute powers real-time inference, training, and batch jobs, scaling automatically with demand. Sandboxes offer a different model, containers whose lifecycles you explicitly control. A growing number of workloads require something in-between; autoscaling serverless compute that maintains continuity between requests. Consider a speech-to-text model with decoder state for an audio stream, a voice agent that holds a conversation, or a multiplayer game. For these workloads, users must come back to the same container on every reconnect for the entirety of their session.",
+          "inlines": [
+            {
+              "text": "At Modal, our serverless compute powers real-time inference, training, and batch jobs, scaling automatically with demand. "
+            },
+            {
+              "href": "https://modal.com/docs/guide/sandboxes",
+              "text": "Sandboxes"
+            },
+            {
+              "text": " offer a different model, containers whose lifecycles you explicitly control. A growing number of workloads require something in-between; autoscaling serverless compute that maintains continuity between requests. Consider a "
+            },
+            {
+              "href": "https://modal.com/docs/examples/streaming_kyutai_stt",
+              "text": "speech-to-text model"
+            },
+            {
+              "text": " with decoder state for an audio stream, a "
+            },
+            {
+              "href": "https://github.com/modal-projects/modal-phonon-voice-bot",
+              "text": "voice agent"
+            },
+            {
+              "text": " that holds a conversation, or a "
+            },
+            {
+              "href": "http://curvytron.modal.dev/",
+              "text": "multiplayer game"
+            },
+            {
+              "text": ". For these workloads, users must come back to the same container on every reconnect for the entirety of their session."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We recently launched Sticky Sessions, built on top of our low-latency Modal Servers. Every session’s requests land on the same container. To use Sticky Sessions, just create a Modal Server with the @modal.sessioned() decorator and start the sessions with the SDK or the HTTP API:",
+          "inlines": [
+            {
+              "text": "We recently launched "
+            },
+            {
+              "href": "https://modal.com/docs/guide/sticky-sessions#sticky-sessions",
+              "text": "Sticky Sessions"
+            },
+            {
+              "text": ", built on top of our low-latency "
+            },
+            {
+              "href": "https://modal.com/blog/serverless-servers",
+              "text": "Modal Servers"
+            },
+            {
+              "text": ". Every session’s requests land on the same container. To use Sticky Sessions, just create a Modal Server with the "
+            },
+            {
+              "code": true,
+              "text": "@modal.sessioned()"
+            },
+            {
+              "text": " decorator and start the sessions with the "
+            },
+            {
+              "href": "https://modal.com/docs/sdk/py/latest/Server#sessions",
+              "text": "SDK"
+            },
+            {
+              "text": " or the "
+            },
+            {
+              "href": "https://modal.com/docs/guide/sticky-sessions#starting-and-using-a-sticky-session",
+              "text": "HTTP API"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Serverless with strong affinity",
+          "inlines": [
+            {
+              "text": "Serverless with strong affinity"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Modal has supported WebSockets via Web Functions for some time. However, a WebSocket connection is tied to a Function “input”, not a container—if the connection drops, a new input is created on reconnect and can land on a different container.",
+          "inlines": [
+            {
+              "text": "Modal has supported "
+            },
+            {
+              "href": "https://modal.com/blog/websocket-launch",
+              "text": "WebSockets via Web Functions"
+            },
+            {
+              "text": " for some time. However, a WebSocket connection is tied to a Function “input”, not a container—if the connection drops, a new input is created on reconnect and can land on a different container."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stateful web UIs such as Gradio and Streamlit are workloads that need strong affinity guarantees between requests and backend containers. Every request has to reach the process that holds the user’s state. One anti-pattern workaround is setting max_containers=1, which guarantees stickiness by giving up scaling entirely.",
+          "inlines": [
+            {
+              "text": "Stateful web UIs such as "
+            },
+            {
+              "href": "https://gradio.app/guides/deploying-gradio-with-modal#sticky-sessions",
+              "text": "Gradio"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://modal.com/docs/examples/serve_streamlit",
+              "text": "Streamlit"
+            },
+            {
+              "text": " are workloads that need strong affinity guarantees between requests and backend containers. Every request has to reach the process that holds the user’s state. One anti-pattern workaround is setting "
+            },
+            {
+              "code": true,
+              "text": "max_containers=1"
+            },
+            {
+              "text": ", which guarantees stickiness by giving up scaling entirely."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Modal Servers already provide a softer form of affinity; requests that share the same Modal-Affinity-Routing-Key header are routed to the same container in a best-effort manner. The container can still be scaled down or replaced at any time, routing future requests to a different container.",
+          "inlines": [
+            {
+              "text": "Modal Servers already provide a "
+            },
+            {
+              "href": "https://modal.com/docs/examples/server_affinity",
+              "text": "softer form of affinity"
+            },
+            {
+              "text": "; requests that share the same "
+            },
+            {
+              "code": true,
+              "text": "Modal-Affinity-Routing-Key"
+            },
+            {
+              "text": " header are routed to the same container in a best-effort manner. The container can still be scaled down or replaced at any time, routing future requests to a different container."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sticky Sessions provide stronger routing guarantees by ensuring all requests in the same session land on the same container.",
+          "inlines": [
+            {
+              "text": "Sticky Sessions provide stronger routing guarantees by ensuring all requests in the same session land on the same container."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Modal Servers gave us the foundation",
+          "inlines": [
+            {
+              "text": "Modal Servers gave us the foundation"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Sticky Sessions build on the infrastructure we developed for Modal Servers. At the core of this infrastructure is our in-house stateless proxy (fprs). The proxy provides low-latency routing and load balancing using in-memory cached routing state reconciled from durable storage. Servers already give us a way to route HTTP traffic to a container, manage container lifecycles, and scale the fleet based on demand.",
+          "inlines": [
+            {
+              "text": "Sticky Sessions build on the infrastructure we developed for "
+            },
+            {
+              "href": "https://modal.com/blog/serverless-servers",
+              "text": "Modal Servers"
+            },
+            {
+              "text": ". At the core of this infrastructure is our in-house stateless proxy (fprs). The proxy provides low-latency routing and load balancing using in-memory cached routing state reconciled from durable storage. Servers already give us a way to route HTTP traffic to a container, manage container lifecycles, and scale the fleet based on demand."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sticky Sessions needed three things that the current request-level routing didn’t provide:",
+          "inlines": [
+            {
+              "text": "Sticky Sessions needed three things that the current request-level routing didn’t provide:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fixed routing: "
+                },
+                {
+                  "text": "Every request in a session reaches the same container."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Session lifecycle: "
+                },
+                {
+                  "text": "The container’s host tracks which requests belong to which sessions and determines when each session becomes idle."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Session-based autoscaling:"
+                },
+                {
+                  "text": " The container fleet scales with the number of active sessions rather than requests."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Making serverless infrastructure session-aware",
+          "inlines": [
+            {
+              "text": "Making serverless infrastructure session-aware"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "From the client’s perspective, a Sticky Session works like a pipe. Once the client creates a session, every future request for that session will be directed to the same container.",
+          "inlines": [
+            {
+              "text": "From the client’s perspective, a Sticky Session works like a pipe. Once the client creates a session, every future request for that session will be directed to the same container."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This may seem simple, but Modal’s serverless infrastructure was built and optimized for the opposite idea; that individual requests are independent. In viewing Modal Servers from the perspective of sessions (rather than just requests), we had to reason about authorization, load balancing, and autoscaling from first principles.",
+          "inlines": [
+            {
+              "text": "This may seem simple, but Modal’s serverless infrastructure was built and optimized for the opposite idea; that individual requests are independent. In viewing Modal Servers from the perspective of sessions (rather than just requests), we had to reason about authorization, load balancing, and autoscaling from first principles."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/009b2f7bdd6cf29145df9b3678283f68ae05dda314afff7ef400a600a150bfc5.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "text": "Authorization",
+          "inlines": [
+            {
+              "text": "Authorization"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Modal Servers require Proxy Tokens by default. To share Sticky Sessions, you shouldn’t need to turn off authentication or pass your Proxy Token around.",
+          "inlines": [
+            {
+              "text": "Modal Servers require "
+            },
+            {
+              "href": "https://modal.com/docs/guide/webhook-proxy-auth",
+              "text": "Proxy Tokens"
+            },
+            {
+              "text": " by default. To share Sticky Sessions, you shouldn’t need to turn off authentication or pass your Proxy Token around."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Instead, each sessions.start() request returns a signed session token to grant access to that session. Sharing this token among clients lets multiple participants access the same state in a room, game, or collaborative app.",
+          "inlines": [
+            {
+              "text": "Instead, each "
+            },
+            {
+              "href": "https://modal.com/docs/sdk/py/latest/Server#sessionsstart",
+              "code": true,
+              "text": "sessions.start()"
+            },
+            {
+              "text": " request returns a signed session token to grant access to that session. Sharing this token among clients lets multiple participants access the same state in a room, game, or collaborative app."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Maintaining the session-to-container mapping in the proxy would require keeping that mapping consistent through restarts and across multiple replicas. To avoid this, we encode routing metadata directly into the token. Our proxies validate the token and route requests to the container holding the session.",
+          "inlines": [
+            {
+              "text": "Maintaining the session-to-container mapping in the proxy would require keeping that mapping consistent through restarts and across multiple replicas. To avoid this, we encode routing metadata directly into the token. Our proxies validate the token and route requests to the container holding the session."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Load Balancing",
+          "inlines": [
+            {
+              "text": "Load Balancing"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Since we’re not storing session state in the proxy, the authoritative view of session state lives only on the host that owns the session. This means the load balancer cannot have an instantaneous global view of available capacity.",
+          "inlines": [
+            {
+              "text": "Since we’re not storing session state in the proxy, the authoritative view of session state lives only on the host that owns the session. This means the load balancer cannot have an instantaneous global view of available capacity."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To discover available capacity, our load balancers periodically probe containers for a snapshot of their available concurrency. The load balancers then use a combination of recent routing decisions and the probed snapshots to inform container selection. This evenly distributes sessions across available containers while minimizing wasted roundtrips to containers that are out of capacity.",
+          "inlines": [
+            {
+              "text": "To discover available capacity, our load balancers periodically probe containers for a snapshot of their available concurrency. The load balancers then use a combination of recent routing decisions and the probed snapshots to inform container selection. This evenly distributes sessions across available containers while minimizing wasted roundtrips to containers that are out of capacity."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Autoscaling",
+          "inlines": [
+            {
+              "text": "Autoscaling"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Modal Servers autoscale on request volume, aiming to achieve a per-container request concurrency target. The request-driven autoscaler assumes that request traffic can be rebalanced evenly across the serving fleet of containers. This model works well for stateless Servers. However, Sticky Sessions behave differently in that session traffic is not movable. Each session’s traffic has to land on the same container even if traffic volume varies across sessions.",
+          "inlines": [
+            {
+              "text": "Modal Servers autoscale on request volume, aiming to achieve a per-container request concurrency target. The request-driven autoscaler assumes that request traffic can be rebalanced evenly across the serving fleet of containers. This model works well for stateless Servers. However, Sticky Sessions behave differently in that session traffic is not "
+            },
+            {
+              "italic": true,
+              "text": "movable"
+            },
+            {
+              "text": ". Each session’s traffic has to land on the same container even if traffic volume varies across sessions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This motivated having sessions be the unit of concurrency, akin to Modal Functions with inputs. A container can be configured to run 1 or more sessions concurrently. When concurrency runs out, new sessions wait in a queue for existing sessions to end or a new container to become ready. The autoscaler continuously monitors active session counts and queued demand to make scaling decisions that appropriately size the compute fleet.",
+          "inlines": [
+            {
+              "text": "This motivated having sessions be the unit of concurrency, akin to Modal Functions with inputs. A container can be configured to run 1 or more sessions concurrently. When concurrency runs out, new sessions wait in a queue for existing sessions to end or a new container to become ready. The autoscaler continuously monitors active session counts and queued demand to make scaling decisions that appropriately size the compute fleet."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What Sticky Sessions unlock",
+          "inlines": [
+            {
+              "text": "What Sticky Sessions unlock"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Sticky Sessions’ strong routing and lifecycle guarantees on top of Servers enable first-class support for a new suite of applications on Modal:",
+          "inlines": [
+            {
+              "text": "Sticky Sessions’ strong routing and lifecycle guarantees on top of Servers enable first-class support for a new suite of applications on Modal:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Low-latency voice agents: The Modal Phonon Voice Bot runs a Pipecat agent with Gradium Phonon text-to-speech over WebRTC. Each call is a Sticky Session that is pinned to a container, so WebRTC signaling reaches the container that holds the peer connection. The session keeps the container active while the audio flows through WebRTC.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Low-latency voice agents:"
+            },
+            {
+              "text": " The "
+            },
+            {
+              "href": "https://github.com/modal-projects/modal-phonon-voice-bot",
+              "text": "Modal Phonon Voice Bot"
+            },
+            {
+              "text": " runs a "
+            },
+            {
+              "href": "https://docs.pipecat.ai/",
+              "text": "Pipecat"
+            },
+            {
+              "text": " agent with "
+            },
+            {
+              "href": "https://huggingface.co/gradium/phonon-31m-en",
+              "text": "Gradium Phonon"
+            },
+            {
+              "text": " text-to-speech over WebRTC. Each call is a Sticky Session that is pinned to a container, so WebRTC signaling reaches the container that holds the peer connection. The session keeps the container active while the audio flows through WebRTC."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Shared rooms: Our sessioned chat room example backs each chat room with a Sticky Session. Every client that connects with the session token is routed to the same container. Each room’s messages are broadcasted to everyone in the room. Clients can drop and reconnect to the same room for the lifetime of the chat room session.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Shared rooms"
+            },
+            {
+              "text": ": Our "
+            },
+            {
+              "href": "https://modal.com/docs/examples/sessioned_chatroom",
+              "text": "sessioned chat room example"
+            },
+            {
+              "text": " backs each chat room with a Sticky Session. Every client that connects with the session token is routed to the same container. Each room’s messages are broadcasted to everyone in the room. Clients can drop and reconnect to the same room for the lifetime of the chat room session."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gaming: Gaming applications keep state in memory to maintain continuity and reduce lag. Sticky Sessions support both preserving progress and hosting concurrent rooms of players.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Gaming:"
+            },
+            {
+              "text": " Gaming applications keep state in memory to maintain continuity and reduce lag. Sticky Sessions support both preserving progress and hosting concurrent rooms of players."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A brave, sticky world",
+          "inlines": [
+            {
+              "text": "A brave, sticky world"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "At Modal, we love using Modal. Amidst our quest for infinite scale and frontier performance, we find ourselves playing (a lot of) Curvytron. And of course, we host our own speedy (no more input lag excuses!) us-east deployment on Modal Servers atop Sticky Sessions.",
+          "inlines": [
+            {
+              "text": "At Modal, we love using Modal. Amidst our quest for "
+            },
+            {
+              "href": "https://modal.com/blog/scaling-to-1-million-concurrent-sandboxes-in-seconds",
+              "text": "infinite scale"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://modal.com/blog/trillion-tokens-trillion-parameters",
+              "text": "frontier performance"
+            },
+            {
+              "text": ", we find ourselves playing (a lot of) "
+            },
+            {
+              "href": "https://www.curvytron.com/",
+              "text": "Curvytron"
+            },
+            {
+              "text": ". And of course, we host our own speedy (no more input lag excuses!) us-east deployment on Modal Servers atop Sticky Sessions."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0ae8abf356170d67c7e7192749124b4090aacafe87926446406cf10812dbf899.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Like many multiplayer games, Curvytron has players in a shared room competing against one another in real-time. With Sticky Sessions, players can create a room, share the game link, and play with others! Modal scales based on active room count automatically.",
+          "inlines": [
+            {
+              "text": "Like many multiplayer games, Curvytron has players in a shared room competing against one another in real-time. With Sticky Sessions, players can create a room, share the game link, and play with others! Modal scales based on active room count automatically."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Try it out here!",
+          "inlines": [
+            {
+              "href": "http://curvytron.modal.dev/",
+              "text": "Try it out here!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Special thanks to Claudia Zhu, Richard Gong, Akshat Bubna, Michael Waskom, and Ben Shababo for helping shape this feature!",
+          "inlines": [
+            {
+              "text": "Special thanks to Claudia Zhu, Richard Gong, Akshat Bubna, Michael Waskom, and Ben Shababo for helping shape this feature!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you’re interested in building foundational infrastructure for the next generation of software, we’re hiring.",
+          "inlines": [
+            {
+              "text": "If you’re interested in building foundational infrastructure for the next generation of software, we’re "
+            },
+            {
+              "href": "https://modal.com/company#careers",
+              "text": "hiring"
+            },
+            {
+              "text": "."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:18:07.114233Z",
+  "contentMode": "full"
+}

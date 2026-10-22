@@ -1,0 +1,5345 @@
+{
+  "schemaVersion": 1,
+  "id": "uszbj5nmdutp2pw789lr42hhj",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/uszbj5nmdutp2pw789lr42hhj",
+  "fetchedAt": "2026-10-22T13:24:24.175520Z",
+  "label": "正文",
+  "notice": "来源未返回支持的图片。；来源未返回支持的图片。；来源未返回支持的图片。；来源未返回支持的图片。；来源未返回支持的图片。",
+  "topics": [
+    "Meta / Llama",
+    "多模态",
+    "部署工程",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "部署/工程",
+    "多模态",
+    "Meta"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "亮点",
+          "inlines": [
+            {
+              "text": "亮点"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "模型："
+                },
+                {
+                  "text": "Muse Spark Open 是一个开放权重的多模态混合专家模型。它采用 "
+                },
+                {
+                  "bold": true,
+                  "text": "816B 参数的文本 Transformer 主干"
+                },
+                {
+                  "text": "，每个 token 约有 "
+                },
+                {
+                  "bold": true,
+                  "text": "420 亿激活参数"
+                },
+                {
+                  "text": "。它接受"
+                },
+                {
+                  "bold": true,
+                  "text": "文本、图像、视频和音频输入"
+                },
+                {
+                  "text": "，并支持 "
+                },
+                {
+                  "bold": true,
+                  "text": "1M token 上下文窗口"
+                },
+                {
+                  "text": "。检查点提供 "
+                },
+                {
+                  "bold": true,
+                  "text": "NVFP4 和 BF16"
+                },
+                {
+                  "text": " 格式。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "性能："
+                },
+                {
+                  "text": "在 "
+                },
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-15-meta-muse-spark-open#openhands-agentic-coding-sweep",
+                  "text": "OpenHands 多轮智能体编码回放"
+                },
+                {
+                  "text": "中，使用 NVFP4 检查点、运行于 "
+                },
+                {
+                  "bold": true,
+                  "text": "8 块 NVIDIA B300 GPU"
+                },
+                {
+                  "text": " 上，SGLang 在并发为 1 时达到"
+                },
+                {
+                  "bold": true,
+                  "text": "每 GPU 每秒 14.8K 总 token，每用户每秒 543 token（p50）"
+                },
+                {
+                  "text": "，在并发为 128 时达到"
+                },
+                {
+                  "bold": true,
+                  "text": "每 GPU 每秒 80.3K 总 token，每用户每秒 61 token（p50）"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "硬件："
+                },
+                {
+                  "text": "目标部署平台包括 NVIDIA Blackwell GPU（"
+                },
+                {
+                  "bold": true,
+                  "text": "GB300、B300、GB200、B200"
+                },
+                {
+                  "text": "）、"
+                },
+                {
+                  "bold": true,
+                  "text": "NVIDIA H200"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "bold": true,
+                  "text": "AMD MI350X、MI355X"
+                },
+                {
+                  "text": "，以及"
+                },
+                {
+                  "bold": true,
+                  "text": "搭载 P-core 的 Intel® Xeon® 6"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "特性：序列并行 + NVFP4 MegaMoE"
+                },
+                {
+                  "text": " 加速预填充，"
+                },
+                {
+                  "bold": true,
+                  "text": "多模态预处理优化"
+                },
+                {
+                  "text": "，以及 "
+                },
+                {
+                  "bold": true,
+                  "text": "DFlash V2 投机解码"
+                },
+                {
+                  "text": "提升交互性。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Muse Spark Open 架构",
+          "inlines": [
+            {
+              "text": "Muse Spark Open 架构"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open 将稀疏语言解码器与视觉和音频编码器相结合，把多模态输入引入共享的 token 生成流水线。",
+          "inlines": [
+            {
+              "text": "Muse Spark Open 将稀疏语言解码器与视觉和音频编码器相结合，把多模态输入引入共享的 token 生成流水线。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "多模态编码器为共享语言解码器提供输入。展开的 MoE 模块展示了聚合前的特征宽度压缩和逐专家归一化。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "多模态编码器为共享语言解码器提供输入。展开的 MoE 模块展示了聚合前的特征宽度压缩和逐专家归一化。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "GQA 与滑动窗口注意力",
+          "inlines": [
+            {
+              "text": "GQA 与滑动窗口注意力"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "针对其 1M token 上下文窗口，Muse Spark Open 将分组查询注意力（GQA）与滑动窗口和全局注意力的混合机制相结合。GQA 在查询头分组之间共享键/值头，从而减少 KV 缓存占用。滑动窗口层关注有界的近期上下文，而周期性的全局层则保留对完整序列的访问。这在无需每一层都维持全上下文注意力的前提下，平衡了局部注意力效率与长距离信息流动。",
+          "inlines": [
+            {
+              "text": "针对其 1M token 上下文窗口，Muse Spark Open 将"
+            },
+            {
+              "bold": true,
+              "text": "分组查询注意力（GQA）"
+            },
+            {
+              "text": "与"
+            },
+            {
+              "bold": true,
+              "text": "滑动窗口和全局注意力的混合机制"
+            },
+            {
+              "text": "相结合。GQA 在查询头分组之间共享键/值头，从而减少 KV 缓存占用。滑动窗口层关注有界的近期上下文，而周期性的全局层则保留对完整序列的访问。这在无需每一层都维持全上下文注意力的前提下，平衡了局部注意力效率与长距离信息流动。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "文本、音频、图像和视频",
+          "inlines": [
+            {
+              "text": "文本、音频、图像和视频"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open 将文本、音频、图像和视频作为输入处理并送入其语言解码器。图像和视频帧共享一个 NaViT 视觉编码器，而波形音频则通过专用的音频编码器。它们的输出被投影到解码器的隐藏维度，并与文本嵌入并列放置，使语言模型能够生成基于多种模态的响应。",
+          "inlines": [
+            {
+              "text": "Muse Spark Open 将"
+            },
+            {
+              "bold": true,
+              "text": "文本、音频、图像和视频作为输入"
+            },
+            {
+              "text": "处理并送入其语言解码器。图像和视频帧共享一个 NaViT 视觉编码器，而波形音频则通过专用的音频编码器。它们的输出被投影到解码器的隐藏维度，并与文本嵌入并列放置，使语言模型能够生成基于多种模态的响应。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "带池化器、反池化器和逐专家归一化的 MoE",
+          "inlines": [
+            {
+              "text": "带池化器、反池化器和逐专家归一化的 MoE"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "MoE 模块在其路由的 SwiGLU 专家周围加入了学习得到的池化器和反池化器投影。池化器将每个 token 的隐藏向量从模型宽度压缩到较小的专家宽度；反池化器在专家聚合后恢复模型宽度。这些投影在改变特征宽度的同时保持 token 数量不变。路由器从全宽度表示中选择专家，池化后的专家输入在执行专家前进行归一化。",
+          "inlines": [
+            {
+              "text": "MoE 模块在其路由的 SwiGLU 专家周围加入了学习得到的"
+            },
+            {
+              "bold": true,
+              "text": "池化器和反池化器投影"
+            },
+            {
+              "text": "。池化器将每个 token 的隐藏向量从模型宽度压缩到较小的专家宽度；反池化器在专家聚合后恢复模型宽度。这些投影在改变特征宽度的同时保持 token 数量不变。路由器从全宽度表示中选择专家，池化后的专家输入在执行专家前进行归一化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一个关键细节是逐专家 RMSNorm：每个被选中专家的输出在乘以路由权重并与其他专家求和之前先进行归一化。随后对合并后的向量进行 unpool 操作。这一顺序很重要，因为对合并后的输出进行归一化会改变模型的计算。",
+          "inlines": [
+            {
+              "text": "一个关键细节是"
+            },
+            {
+              "bold": true,
+              "text": "逐专家 RMSNorm"
+            },
+            {
+              "text": "：每个被选中专家的输出在乘以路由权重并与其他专家求和"
+            },
+            {
+              "bold": true,
+              "text": "之前"
+            },
+            {
+              "text": "先进行归一化。随后对合并后的向量进行 unpool 操作。这一顺序很重要，因为对合并后的输出进行归一化会改变模型的计算。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "功能支持",
+          "inlines": [
+            {
+              "text": "功能支持"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "运行时优化",
+          "inlines": [
+            {
+              "text": "运行时优化"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "heading",
+          "text": "序列并行",
+          "inlines": [
+            {
+              "text": "序列并行"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "序列并行（SP）沿 token 维度将激活值划分到各个张量并行（TP）rank 上，因此每个 rank 只对序列中属于自己的部分执行 token 本地操作。我们将 Korthikanti 等人，Reducing Activation Recomputation in Large Transformer Models 中描述的方法适配到 Muse Spark Open prefill。",
+          "inlines": [
+            {
+              "text": "序列并行（SP）沿 token 维度将激活值划分到各个张量并行（TP）rank 上，因此每个 rank 只对序列中属于自己的部分执行 token 本地操作。我们将 "
+            },
+            {
+              "href": "https://arxiv.org/abs/2205.05198",
+              "text": "Korthikanti 等人，"
+            },
+            {
+              "href": "https://arxiv.org/abs/2205.05198",
+              "italic": true,
+              "text": "Reducing Activation Recomputation in Large Transformer Models"
+            },
+            {
+              "text": " 中描述的方法适配到 Muse Spark Open prefill。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这一点很重要，因为仅靠张量并行会让 Muse Spark Open 的 pooler、unpooler 和边界层归一化在每个 rank 上处理相同的完整 token 批次。使用 SP 后，这 P 个 rank 中的每一个在这些区域处理约 S/P 个 token，同时保留每个 token 的完整隐藏向量。这将投影和归一化工作分散到各个 rank 上，并减少长提示 prefill 期间冗余的激活存储。",
+          "inlines": [
+            {
+              "text": "这一点很重要，因为仅靠张量并行会让 Muse Spark Open 的 pooler、unpooler 和边界层归一化在每个 rank 上处理相同的完整 token 批次。使用 SP 后，这 "
+            },
+            {
+              "code": true,
+              "text": "P"
+            },
+            {
+              "text": " 个 rank 中的每一个在这些区域处理约 "
+            },
+            {
+              "code": true,
+              "text": "S/P"
+            },
+            {
+              "text": " 个 token，同时保留每个 token 的完整隐藏向量。这将投影和归一化工作分散到各个 rank 上，并减少长提示 prefill 期间冗余的激活存储。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在注意力输出处，reduce-scatter 生成 token 分片。归一化、路由和池化在这些分片上本地执行。NVFP4 MegaMoE 随后通过其集成的 all-to-all dispatch 和 combine 将序列并行与专家并行连接起来：dispatch 将每个 token 发送到持有其被选中专家的 rank；专家计算其输出，并在路由加权之前应用逐专家 RMSNorm；combine 将完整的加权结果返回到该 token 的原始 rank。Unpool 及随后的归一化/残差操作保持序列分片状态，直到为下一个 QKV 投影提供输入的 all-gather。",
+          "inlines": [
+            {
+              "text": "在注意力输出处，"
+            },
+            {
+              "bold": true,
+              "text": "reduce-scatter"
+            },
+            {
+              "text": " 生成 token 分片。归一化、路由和池化在这些分片上本地执行。"
+            },
+            {
+              "bold": true,
+              "text": "NVFP4 MegaMoE"
+            },
+            {
+              "text": " 随后通过其集成的 all-to-all dispatch 和 combine 将序列并行与专家并行连接起来：dispatch 将每个 token 发送到持有其被选中专家的 rank；专家计算其输出，并在"
+            },
+            {
+              "bold": true,
+              "text": "路由加权之前应用逐专家 RMSNorm"
+            },
+            {
+              "text": "；combine 将完整的加权结果返回到该 token 的原始 rank。Unpool 及随后的归一化/残差操作保持序列分片状态，直到"
+            },
+            {
+              "bold": true,
+              "text": "为下一个 QKV 投影提供输入的 all-gather"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在四块 GB300 GPU 上测量了三种配置，使用 NVFP4 目标模型、DFlash V2 草稿模型、TP4/EP4 拓扑、FP8 KV 缓存和 16K prefill 分块。在每个测试点，我们发送八个请求组，每组包含八个请求，名义输入 token 数为 80K，输出 token 数为 20。同一组内的请求共享一个 73,360 token 的生成前缀；不同组使用独立生成的前缀。最大客户端并发数从 1 变化到 64。",
+          "inlines": [
+            {
+              "text": "我们在四块 GB300 GPU 上测量了三种配置，使用 NVFP4 目标模型、DFlash V2 草稿模型、TP4/EP4 拓扑、FP8 KV 缓存和 16K prefill 分块。在每个测试点，我们发送八个请求组，每组包含八个请求，名义输入 token 数为 80K，输出 token 数为 20。同一组内的请求共享一个 73,360 token 的生成前缀；不同组使用独立生成的前缀。最大客户端并发数从 1 变化到 64。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在此次扫描中，SP + MegaMoE 在所有七个并发级别下将 p90 TTFT 相比 TP4 降低了 28.3–41.9%。在并发数为 64 时，p90 TTFT 从 29.03 秒降至 19.47 秒，降低了 32.9%。",
+          "inlines": [
+            {
+              "text": "在此次扫描中，SP + MegaMoE 在所有七个并发级别下将 p90 TTFT 相比 TP4 降低了 28.3–41.9%。在并发数为 64 时，p90 TTFT 从 29.03 秒降至 19.47 秒，降低了 32.9%。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "多模态优化",
+          "inlines": [
+            {
+              "text": "多模态优化"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open 的多模态流水线在 CPU 上使用 Rust 或 Pillow 缩放对图像和视频帧进行预处理，随后使用 SGLang 优化的注意力后端进行视觉编码。当相同图像在对话轮次中重复出现时，会复用缓存结果，避免重复计算。",
+          "inlines": [
+            {
+              "text": "Muse Spark Open 的多模态流水线在 CPU 上使用 Rust 或 Pillow 缩放对图像和视频帧进行预处理，随后使用 SGLang 优化的注意力后端进行视觉编码。当相同图像在对话轮次中重复出现时，会复用缓存结果，避免重复计算。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang 为 Muse Spark Open 支持独立的编码器、prefill 和解码 worker（EPD Disaggregation）。编码器处理图像和视频，然后将生成的特征传递给 prefill worker。解码 worker 接收 KV 缓存并生成响应。分离这些阶段使部署能够根据工作负载将资源分配给媒体处理、提示处理和生成。",
+          "inlines": [
+            {
+              "text": "SGLang 为 Muse Spark Open 支持独立的编码器、prefill 和解码 worker（"
+            },
+            {
+              "href": "https://docs.sglang.io/docs/advanced_features/epd_disaggregation",
+              "text": "EPD Disaggregation"
+            },
+            {
+              "text": "）。编码器处理图像和视频，然后将生成的特征传递给 prefill worker。解码 worker 接收 KV 缓存并生成响应。分离这些阶段使部署能够根据工作负载将资源分配给媒体处理、提示处理和生成。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "使用 DFlash V2 的投机解码",
+          "inlines": [
+            {
+              "text": "使用 DFlash V2 的投机解码"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang 为 Muse Spark Open 支持使用 DFlash V2 的推测解码，构建在 DFlash 的并行草稿架构之上。独立的草稿模型使用 Muse Spark Open 的隐藏状态来填充自己的 KV 缓存，然后在单次前向传播中提出一个未来 token 块。它共享目标的 token 嵌入和 LM head，Muse Spark Open 在一次前向传播中验证所提出的块，允许多个被接受的 token 一起推进。",
+          "inlines": [
+            {
+              "text": "SGLang 为 Muse Spark Open 支持使用 DFlash V2 的推测解码，构建在 "
+            },
+            {
+              "href": "https://lmsys.org/blog/2026-06-15-next-generation-speculative-decoding-dflash-v2/",
+              "text": "DFlash 的并行草稿架构"
+            },
+            {
+              "text": "之上。独立的草稿模型使用 Muse Spark Open 的隐藏状态来填充自己的 KV 缓存，然后在单次前向传播中提出一个未来 token 块。它共享目标的 token 嵌入和 LM head，Muse Spark Open 在一次前向传播中验证所提出的块，允许多个被接受的 token 一起推进。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DFlash V2 增加了动态卷积，在草稿块内跨相邻位置混合信息，并加入了一个轻量级候选选择器，考虑所提出 token 之间的依赖关系。SGLang 将草稿和候选选择集成到同一个 CUDA graph 中，并支持重叠调度以减少 GPU 操作之间的 CPU 调度开销。此路径可通过 --speculative-algorithm DFLASH 使用兼容的 Muse Spark Open DFlash V2 检查点。",
+          "inlines": [
+            {
+              "text": "DFlash V2 增加了动态卷积，在草稿块内跨相邻位置混合信息，并加入了一个轻量级候选选择器，考虑所提出 token 之间的依赖关系。SGLang 将草稿和候选选择集成到同一个 CUDA graph 中，并支持重叠调度以减少 GPU 操作之间的 CPU 调度开销。此路径可通过 "
+            },
+            {
+              "code": true,
+              "text": "--speculative-algorithm DFLASH"
+            },
+            {
+              "text": " 使用兼容的 Muse Spark Open DFlash V2 检查点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对于采样的 DFlash V2 提议，SGLang 还支持 块验证，通过 --speculative-use-block-verification 启用。它使用目标和草稿概率联合评估草稿前缀，可以接受比逐 token 验证更长的前缀。验证器保留最长被接受的前缀，并在部分接受后采样一个修正 token，或在完全接受后采样一个目标模型奖励 token，从而保持目标采样分布。",
+          "inlines": [
+            {
+              "text": "对于采样的 DFlash V2 提议，SGLang 还支持 "
+            },
+            {
+              "href": "https://arxiv.org/abs/2403.10444",
+              "text": "块验证"
+            },
+            {
+              "text": "，通过 "
+            },
+            {
+              "code": true,
+              "text": "--speculative-use-block-verification"
+            },
+            {
+              "text": " 启用。它使用目标和草稿概率联合评估草稿前缀，可以接受比逐 token 验证更长的前缀。验证器保留最长被接受的前缀，并在部分接受后采样一个修正 token，或在完全接受后采样一个目标模型奖励 token，从而保持目标采样分布。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "兼容性",
+          "inlines": [
+            {
+              "text": "兼容性"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "为了提升真实服务场景中的性能，我们还支持 Muse Spark Open 配合以下 SGLang 服务特性：",
+          "inlines": [
+            {
+              "text": "为了提升真实服务场景中的性能，我们还支持 Muse Spark Open 配合以下 SGLang 服务特性："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "href": "https://docs.sglang.io/docs/advanced_features/pd_disaggregation",
+                  "text": "预填充/解码分离（PD 分离）"
+                },
+                {
+                  "bold": true,
+                  "text": "："
+                },
+                {
+                  "text": " 将预填充和解码工作进程分离，并在它们之间传输 KV 状态，可减少两个阶段之间的干扰，有助于满足首 token 时间（TTFT）和每输出 token 时间（TPOT）的服务级别目标（SLO）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "href": "https://docs.sglang.io/docs/advanced_features/hicache",
+                  "text": "HiCache"
+                },
+                {
+                  "bold": true,
+                  "text": "："
+                },
+                {
+                  "text": " GPU/主机 KV 缓存层次结构通过更高的前缀缓存命中率提升服务性能，复用缓存的全注意力和滑动窗口状态，避免重复的预填充计算。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "href": "https://docs.sglang.io/docs/advanced_features/breakable_cuda_graph",
+                  "text": "可中断 CUDA graph"
+                },
+                {
+                  "bold": true,
+                  "text": "："
+                },
+                {
+                  "text": " 捕获的预填充计算在 eager 注意力调用周围重放，减少 CPU 启动开销，同时保持注意力边界的灵活性。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "内核优化",
+          "inlines": [
+            {
+              "text": "内核优化"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们减少了内核启动和内存流量，替换了 BF16 专家循环，将复制的投影分布到多个 GPU 上，并重叠独立工作。该图显示了这些更改在 TP4/EP4、8K 输入 token、1K 输出 token 且无推测解码时的累积效果。",
+          "inlines": [
+            {
+              "text": "我们减少了内核启动和内存流量，替换了 BF16 专家循环，将复制的投影分布到多个 GPU 上，并重叠独立工作。该图显示了这些更改在 TP4/EP4、8K 输入 token、1K 输出 token 且无推测解码时的累积效果。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "融合逐元素链。"
+                },
+                {
+                  "text": " 我们将 FFN 后归一化、门控残差加法和注意力前归一化合并为一个内核。Q/K 归一化通过行步长直接读取融合后的 QKV 张量，避免布局复制，同时查询缩放被折叠到注意力 softmax 缩放中。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "分两步替换 BF16 专家循环。"
+                },
+                {
+                  "text": " 第 0 层和第 61 层使用 BF16 专家权重。我们首先将 64 个本地专家批处理为分组 GEMM，将主要中间结果限制在 64 MiB。然后我们切换到 FlashInfer 的 "
+                },
+                {
+                  "code": true,
+                  "text": "trtllm_bf16_routed_moe"
+                },
+                {
+                  "text": "，仅计算被路由的专家工作，并在加载时将专家后归一化绑定到 finalize 操作。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "融合归一化并移除路由转换。"
+                },
+                {
+                  "text": " CUDA 边界内核在两次 RMS 归约过程中将每一行保留在寄存器中。专家前归一化被折叠进 NVFP4 量化，复用量化器的行访问，避免单独的读/写遍历。路由还以专家内核所消费的格式输出打包的 ID 和权重。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "融合 RoPE 和 KV 缓存更新。"
+                },
+                {
+                  "text": " Q/K 归一化同时应用 RoPE 并写入解码 KV 缓存，消除独立内核和重复的内存遍历。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "将路由和 norm/gate 移至 CUDA。"
+                },
+                {
+                  "text": " CUDA 内核处理 top-k 路由，并将逐头归一化与门控结合，包括快速倒数实现。此步骤还启用了共享图流。Verify-KV 融合有利于推测验证路径；在此无推测基准测试中它处于非活动状态。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "在行内并行化 RMS 归一化。"
+                },
+                {
+                  "text": " 一组 CTA 通过分布式共享内存协作，比每行单个 CTA 暴露更多并行性。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "先分片 unpooler，再分片 pooler。"
+                },
+                {
+                  "text": " 这些投影最初在每个张量并行 rank 上重复完整的矩阵计算。现在每个都使用 BF16 调度器计算输出的一部分，随后通过 all-gather 组装完整结果。我们对 pooler 分片使用 TGV，通过双流重叠改进了最终配置。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "重叠独立的 MoE 工作。"
+                },
+                {
+                  "text": " 路由器 GEMM 和 top-k 选择可以独立于 pooler 和激活准备运行。我们将路由放在侧流上，并在专家执行之前立即汇合两个分支。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "调优 BF16 投影调度。"
+                },
+                {
+                  "text": " 我们为解码期间使用的小 token 数量和矩阵形状选择调优过的 GEMM 实现。Warp split-K 内核通过将归约维度拆分到多个 warp 来加速投影。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "更早启动依赖内核。"
+                },
+                {
+                  "text": " 我们通过将启动触发点移到小内核最后一次输入加载之后，为它们调优 PDL。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MegaMoE 功能与优化",
+          "inlines": [
+            {
+              "text": "MegaMoE 功能与优化"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "DeepGEMM 的 MegaMoE 将调度、两个专家 GEMM、激活和合并融合为一个持久内核。跨 rank 传输使用对称内存，使通信能够与计算重叠，而无需单独的 all-to-all 启动。",
+          "inlines": [
+            {
+              "text": "DeepGEMM 的 MegaMoE 将调度、两个专家 GEMM、激活和合并融合为一个持久内核。跨 rank 传输使用对称内存，使通信能够与计算重叠，而无需单独的 all-to-all 启动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "支持 Muse Spark Open 需要 60 层中的 NVFP4 专家权重和激活、两层中的 BF16 专家，以及在路由加权求和之前进行逐专家 RMS 归一化。MegaMoE 还必须读取 TensorRT-LLM 的常驻权重布局，以便两个后端可以共享权重。",
+          "inlines": [
+            {
+              "text": "支持 Muse Spark Open 需要 60 层中的 NVFP4 专家权重和激活、两层中的 BF16 专家，以及在路由加权求和之前进行逐专家 RMS 归一化。MegaMoE 还必须读取 TensorRT-LLM 的常驻权重布局，以便两个后端可以共享权重。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "NVFP4 作为第三种 MMA 类型",
+          "inlines": [
+            {
+              "text": "NVFP4 作为第三种 MMA 类型"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 路径在 fp8xfp4 和 mxfp4xmxfp4 之外增加了 nvfp4xnvfp4。它保留稠密 FP4 操作数，但使用每 16 个元素的 UE4M3 块缩放，而不是 MXFP4 的每 32 个元素的 UE8M0 缩放。逐 token 的 FP32 输入缩放应用于第一个 GEMM 的累加器，并且预调度支持 BF16 到 NVFP4 的量化。",
+          "inlines": [
+            {
+              "text": "NVFP4 路径在 "
+            },
+            {
+              "code": true,
+              "text": "fp8xfp4"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "mxfp4xmxfp4"
+            },
+            {
+              "text": " 之外增加了 "
+            },
+            {
+              "code": true,
+              "text": "nvfp4xnvfp4"
+            },
+            {
+              "text": "。它保留稠密 FP4 操作数，但使用每 16 个元素的 UE4M3 块缩放，而不是 MXFP4 的每 32 个元素的 UE8M0 缩放。逐 token 的 FP32 输入缩放应用于第一个 GEMM 的累加器，并且预调度支持 BF16 到 NVFP4 的量化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "此外，作为此扩展的一部分，我们重构了该类。现在 MMA 类型在对称缓冲区分配时显式指定，并在整个执行路径中传递，使格式选择更易于理解。",
+          "inlines": [
+            {
+              "text": "此外，作为此扩展的一部分，我们重构了该类。现在 MMA 类型在对称缓冲区分配时显式指定，并在整个执行路径中传递，使格式选择更易于理解。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "融合的逐专家后归一化",
+          "inlines": [
+            {
+              "text": "融合的逐专家后归一化"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "每个专家输出必须在应用其路由权重之前进行归一化。由于第二个 GEMM 将隐藏行分布到多个 CTA，其尾声无法独立计算整行 RMS。因此归一化在合并阶段运行，此时对等写入在 NVLink Barrier 之后可见。",
+          "inlines": [
+            {
+              "text": "每个专家输出必须在应用其路由权重之前进行归一化。由于第二个 GEMM 将隐藏行分布到多个 CTA，其尾声无法独立计算整行 RMS。因此归一化在合并阶段运行，此时对等写入在 NVLink Barrier 之后可见。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "后归一化部分和：为了避免仅仅为了在 combine 中计算其 RMS 而重新读取完整的专家输出行，每个第二个 GEMM 分块会从它已保存在寄存器中的 BF16 值累加平方和的部分和。这些部分和在 token 的原始 rank 上原子累加；随后 combine 为每个选中的专家读取一个标量。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "后归一化部分和："
+            },
+            {
+              "text": "为了避免仅仅为了在 combine 中计算其 RMS 而重新读取完整的专家输出行，每个第二个 GEMM 分块会从它已保存在寄存器中的 BF16 值累加平方和的部分和。这些部分和在 token 的原始 rank 上原子累加；随后 combine 为每个选中的专家读取一个标量。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "读取 TensorRT-LLM 的权重",
+          "inlines": [
+            {
+              "text": "读取 TensorRT-LLM 的权重"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "共享 TensorRT-LLM 的常驻缓冲区可避免重复的权重和缩放因子，同时保留在解码时使用其 MoE 内核的选项。每种布局需要不同的处理方式：",
+          "inlines": [
+            {
+              "text": "共享 TensorRT-LLM 的常驻缓冲区可避免重复的权重和缩放因子，同时保留在解码时使用其 MoE 内核的选项。每种布局需要不同的处理方式："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "NVFP4 权重"
+                },
+                {
+                  "text": "：第一个 GEMM 的 "
+                },
+                {
+                  "code": true,
+                  "text": "row ^ 8"
+                },
+                {
+                  "text": " shuffle 会在每个 16 行组内交换 gate 和 up 两半。MegaMoE 按存储原样加载分块，并在 SwiGLU 尾声中选择对应的寄存器槽位，用一次加载取代了每个 K 原子十六次小型 TMA 加载的朴素方式。第二个 GEMM 的行置换由其 tensor-map 描述符处理。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "NVFP4 块缩放因子："
+                },
+                {
+                  "text": "一个 3D tensor map 直接读取第一个 GEMM 的缩放因子；一个 5D map 还会撤销第二个 GEMM 的组内置换。调整共享内存源偏移量以保留现有的 "
+                },
+                {
+                  "code": true,
+                  "text": "UTCCP 4×32"
+                },
+                {
+                  "text": " 转置。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "BF16 权重："
+                },
+                {
+                  "text": "TensorRT-LLM 使用 "
+                },
+                {
+                  "code": true,
+                  "text": "BlockMajorK"
+                },
+                {
+                  "text": " 存储，物理布局为 [E, K/64, N, 64]。一个 5D tensor map 通过每个 32 行块一次 TMA 加载来处理第一个 GEMM 的组反转，而 SwiGLU 吸收剩余的 gate/up 交换。第二个 GEMM 使用一个 4D map。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TRT-LLM 与 MegaMoE 的权重和缩放因子布局。TMA 寻址和 SwiGLU 寄存器选择在不复制常驻缓冲区的情况下协调了这些布局。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "TRT-LLM 与 MegaMoE 的权重和缩放因子布局。TMA 寻址和 SwiGLU 寄存器选择在不复制常驻缓冲区的情况下协调了这些布局。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "NVFP4 重新量化倒数表",
+          "inlines": [
+            {
+              "text": "NVFP4 重新量化倒数表"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "在两个 GEMM 之间，SwiGLU 输出被重新量化为 NVFP4。此前，每个 16 元素组使用 __frcp_rn 计算块缩放因子的倒数。__frcp_rn 并不便宜：它是 IEEE 就近舍入，因此包含一个 MUFU 种子、一个牛顿精化链以及特殊情况处理。由于缩放因子字节只有 256 种编码，共享内存中的一张 256 项 FP32 表用查表取代了重复的转换和倒数计算。在孤立的 B300 微基准测试中，共享内存表将缩放因子到倒数的计算在分散访问下加速约 2.9 倍，在 warp 一致访问下加速 4.8 倍。",
+          "inlines": [
+            {
+              "text": "在两个 GEMM 之间，SwiGLU 输出被重新量化为 NVFP4。此前，每个 16 元素组使用 "
+            },
+            {
+              "code": true,
+              "text": "__frcp_rn"
+            },
+            {
+              "text": " 计算块缩放因子的倒数。"
+            },
+            {
+              "code": true,
+              "text": "__frcp_rn"
+            },
+            {
+              "text": " 并不便宜：它是 IEEE 就近舍入，因此包含一个 MUFU 种子、一个牛顿精化链以及特殊情况处理。由于缩放因子字节只有 256 种编码，共享内存中的一张 256 项 FP32 表用查表取代了重复的转换和倒数计算。在孤立的 B300 微基准测试中，共享内存表将缩放因子到倒数的计算在分散访问下加速约 2.9 倍，在 warp 一致访问下加速 4.8 倍。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "性能结果",
+          "inlines": [
+            {
+              "text": "性能结果"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "OpenHands 智能体编码扫描",
+          "inlines": [
+            {
+              "text": "OpenHands 智能体编码扫描"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在八块 B300 GPU 上以 TP8/EP8 配置，使用 OpenHands 多轮智能体编码工作负载，收集了 Muse Spark Open NVFP4 的性能结果。每段对话以一个约 74K token 的提示开始，每轮输出约 220 个 token，共 13 轮。连续轮次复用前缀，总体缓存命中率约 92%。我们将并发从 1 扫描到 128 段对话，并绘制每 GPU token 吞吐量（tok/s/GPU）与 p50 交互性（tok/s/user）的关系。",
+          "inlines": [
+            {
+              "text": "我们在八块 B300 GPU 上以 TP8/EP8 配置，使用 OpenHands 多轮智能体编码工作负载，收集了 Muse Spark Open NVFP4 的性能结果。每段对话以一个约 74K token 的提示开始，每轮输出约 220 个 token，共 13 轮。连续轮次复用前缀，总体缓存命中率约 92%。我们将并发从 1 扫描到 128 段对话，并绘制每 GPU token 吞吐量（tok/s/GPU）与 p50 交互性（tok/s/user）的关系。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "AgentX 智能体编码扫描",
+          "inlines": [
+            {
+              "text": "AgentX 智能体编码扫描"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在八块 B300 GPU 上以 TP8/EP8 配置，使用 AgentX——SemiAnalysis 用于回放记录的多轮智能体编码轨迹的工具——收集了 Muse Spark Open NVFP4 的性能结果。AgentX 复现了真实编码智能体会话的提示大小、前缀共享、子智能体扇出和轮次间时序，因此结果反映了“真实的智能体负载”。会话中的请求共享一个长前缀，因此 96.9% 到 98.0% 的输入 token 命中前缀缓存。我们将并发从 1 扫描到 48 个会话，并绘制每 GPU token 吞吐量（tok/s/GPU）与 p90 交互性（tok/s/user）的关系。在并发 48 时，吞吐量达到 34,509 tok/s/GPU，交互性为 73.0 tok/s/user；单个会话运行速度为 457.8 tok/s/user。",
+          "inlines": [
+            {
+              "text": "我们在八块 B300 GPU 上以 TP8/EP8 配置，使用 "
+            },
+            {
+              "href": "https://github.com/SemiAnalysisAI/agentx-harness",
+              "text": "AgentX"
+            },
+            {
+              "text": "——SemiAnalysis 用于回放记录的多轮智能体编码轨迹的工具——收集了 Muse Spark Open NVFP4 的性能结果。AgentX 复现了真实编码智能体会话的提示大小、前缀共享、子智能体扇出和轮次间时序，因此结果反映了“真实的智能体负载”。会话中的请求共享一个长前缀，因此 96.9% 到 98.0% 的输入 token 命中前缀缓存。我们将并发从 1 扫描到 48 个会话，并绘制每 GPU token 吞吐量（tok/s/GPU）与 p90 交互性（tok/s/user）的关系。在并发 48 时，吞吐量达到 34,509 tok/s/GPU，交互性为 73.0 tok/s/user；单个会话运行速度为 457.8 tok/s/user。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "多平台支持",
+          "inlines": [
+            {
+              "text": "多平台支持"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "AMD 支持",
+          "inlines": [
+            {
+              "text": "AMD 支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "heading",
+          "text": "Day-0 启用",
+          "inlines": [
+            {
+              "text": "Day-0 启用"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "平台："
+                },
+                {
+                  "text": "MI350X、MI355X Instinct GPU"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "两个 Meta 模型 ckpt 均受支持："
+                },
+                {
+                  "code": true,
+                  "text": "meta-models/Muse-Spark-Open-816B-A42B"
+                },
+                {
+                  "text": "（BF16）和 "
+                },
+                {
+                  "code": true,
+                  "text": "meta-models/Muse-Spark-Open-816B-A42B-NVFP4"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "支持 AMD/Quark aot 量化 MXFP4 模型："
+                },
+                {
+                  "code": true,
+                  "text": "amd/Muse-Spark-Open-816B-A42B-Quark-MXFP4"
+                },
+                {
+                  "text": "——一个与 Meta NVFP4 模型逐项对应的 MXFP4 量化模型。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "注意力内核"
+                },
+                {
+                  "text": "：用于 decode 的 aiter unified-attention 3D，配合 page-16 CK batch-prefill。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "FlyDSL MoE："
+                },
+                {
+                  "text": "expert GEMM 加上一个 finalize，在单个内核中完成 unpermute、per-expert RMSNorm 和加权求和。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "内核融合"
+                },
+                {
+                  "text": "在 decode 路径上：跨层 FFN 边界、融合 Q/K RMSNorm、split-K router GEMV、用于 pooler/unpooler 的 aiter 调优 GEMM。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Prefill 优化："
+                },
+                {
+                  "text": "将 atomic-add expert sort 替换为 LDS 内核。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "需要 aiter 补丁"
+                },
+                {
+                  "text": "：page-scatter VM fault 修复、unified-attention 3D 以及 FlyDSL Muse MoE 内核。"
+                },
+                {
+                  "code": true,
+                  "text": "docker/muse_spark/muse-spark-rocm.Dockerfile"
+                },
+                {
+                  "text": " 会在 aiter 内核预构建之前应用它们，因此由它构建的镜像无需运行时打补丁。仅在基于纯 ROCm 镜像构建的容器中使用 "
+                },
+                {
+                  "code": true,
+                  "text": "3rdparty/amd/muse_spark/apply_aiter_patches.sh"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Day-0 性能（MI355X | MI350X）",
+          "inlines": [
+            {
+              "text": "Day-0 性能（MI355X | MI350X）"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "amd/Muse-Spark-Open-816B-A42B-Quark-MXFP4，8x MI355X TP8/EP8，IL8192/OL1024，随机范围比例 0.8，每点 4x 实测请求，radix cache 开启（带预热运行）。",
+          "inlines": [
+            {
+              "code": true,
+              "text": "amd/Muse-Spark-Open-816B-A42B-Quark-MXFP4"
+            },
+            {
+              "text": "，8x MI355X TP8/EP8，IL8192/OL1024，随机范围比例 0.8，每点 4x 实测请求，radix cache 开启（"
+            },
+            {
+              "bold": true,
+              "text": "带预热运行"
+            },
+            {
+              "text": "）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "triton attn + triton moe（基线）：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "triton attn + triton moe"
+            },
+            {
+              "text": "（基线）："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "并发数",
+          "inlines": [
+            {
+              "text": "并发数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "平均 ITL（ms）",
+          "inlines": [
+            {
+              "text": "平均 ITL（ms）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "平均 TPOT（ms）",
+          "inlines": [
+            {
+              "text": "平均 TPOT（ms）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "总吞吐量（tok/s）",
+          "inlines": [
+            {
+              "text": "总吞吐量（tok/s）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14.55",
+          "inlines": [
+            {
+              "text": "14.55"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14.55",
+          "inlines": [
+            {
+              "text": "14.55"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2,384.71",
+          "inlines": [
+            {
+              "text": "2,384.71"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.43",
+          "inlines": [
+            {
+              "text": "15.43"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.42",
+          "inlines": [
+            {
+              "text": "15.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,317.23",
+          "inlines": [
+            {
+              "text": "4,317.23"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17.84",
+          "inlines": [
+            {
+              "text": "17.84"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17.84",
+          "inlines": [
+            {
+              "text": "17.84"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7,460.37",
+          "inlines": [
+            {
+              "text": "7,460.37"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22.14",
+          "inlines": [
+            {
+              "text": "22.14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22.13",
+          "inlines": [
+            {
+              "text": "22.13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12,396.21",
+          "inlines": [
+            {
+              "text": "12,396.21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "aiter attn + flydsl moe：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "aiter attn + flydsl moe"
+            },
+            {
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "并发数",
+          "inlines": [
+            {
+              "text": "并发数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "平均 ITL（ms）",
+          "inlines": [
+            {
+              "text": "平均 ITL（ms）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "平均 TPOT（ms）",
+          "inlines": [
+            {
+              "text": "平均 TPOT（ms）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "总吞吐量（tok/s）",
+          "inlines": [
+            {
+              "text": "总吞吐量（tok/s）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.29",
+          "inlines": [
+            {
+              "text": "12.29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.29",
+          "inlines": [
+            {
+              "text": "12.29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2,812.75",
+          "inlines": [
+            {
+              "text": "2,812.75"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.88",
+          "inlines": [
+            {
+              "text": "13.88"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.87",
+          "inlines": [
+            {
+              "text": "13.87"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,777.36",
+          "inlines": [
+            {
+              "text": "4,777.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16.04",
+          "inlines": [
+            {
+              "text": "16.04"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16.03",
+          "inlines": [
+            {
+              "text": "16.03"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8,311.38",
+          "inlines": [
+            {
+              "text": "8,311.38"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "19.76",
+          "inlines": [
+            {
+              "text": "19.76"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "19.75",
+          "inlines": [
+            {
+              "text": "19.75"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13,880.93",
+          "inlines": [
+            {
+              "text": "13,880.93"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "aiter attn + flydsl moe + DFlash V2（真实接受率；ITL：每验证步）：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "aiter attn + flydsl moe + DFlash V2"
+            },
+            {
+              "text": "（真实接受率；ITL：每验证步）："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "并发数",
+          "inlines": [
+            {
+              "text": "并发数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "平均 ITL（ms）",
+          "inlines": [
+            {
+              "text": "平均 ITL（ms）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "平均 TPOT（ms）",
+          "inlines": [
+            {
+              "text": "平均 TPOT（ms）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "总吞吐量（tok/s）",
+          "inlines": [
+            {
+              "text": "总吞吐量（tok/s）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22.16",
+          "inlines": [
+            {
+              "text": "22.16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.19",
+          "inlines": [
+            {
+              "text": "7.19"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,544.71",
+          "inlines": [
+            {
+              "text": "4,544.71"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "27.11",
+          "inlines": [
+            {
+              "text": "27.11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.46",
+          "inlines": [
+            {
+              "text": "8.46"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7,542.14",
+          "inlines": [
+            {
+              "text": "7,542.14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32.42",
+          "inlines": [
+            {
+              "text": "32.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.62",
+          "inlines": [
+            {
+              "text": "10.62"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12,056.10",
+          "inlines": [
+            {
+              "text": "12,056.10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "45.42",
+          "inlines": [
+            {
+              "text": "45.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.11",
+          "inlines": [
+            {
+              "text": "15.11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17,081.46",
+          "inlines": [
+            {
+              "text": "17,081.46"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "准确率",
+          "inlines": [
+            {
+              "text": "准确率"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "基准测试",
+          "inlines": [
+            {
+              "text": "基准测试"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MXFP4（TP4）",
+          "inlines": [
+            {
+              "text": "MXFP4（TP4）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MXFP4（TP8）",
+          "inlines": [
+            {
+              "text": "MXFP4（TP8）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 Requant（TP4）",
+          "inlines": [
+            {
+              "text": "NVFP4 Requant（TP4）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "BF16（TP8）",
+          "inlines": [
+            {
+              "text": "BF16（TP8）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 参考（GB300）",
+          "inlines": [
+            {
+              "text": "NVFP4 参考（GB300）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GSM8K",
+          "inlines": [
+            {
+              "text": "GSM8K"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.42%",
+          "inlines": [
+            {
+              "text": "97.42%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.57%",
+          "inlines": [
+            {
+              "text": "97.57%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.95%",
+          "inlines": [
+            {
+              "text": "97.95%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.73%",
+          "inlines": [
+            {
+              "text": "97.73%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.80%",
+          "inlines": [
+            {
+              "text": "97.80%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AIME26（30×8）",
+          "inlines": [
+            {
+              "text": "AIME26（30×8）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.83%，pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.83%，pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.83%，pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.83%，pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.42%，pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.42%，pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.83%，pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.83%，pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.83%，pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.83%，pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPQA Diamond",
+          "inlines": [
+            {
+              "text": "GPQA Diamond"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.90%",
+          "inlines": [
+            {
+              "text": "89.90%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.90%",
+          "inlines": [
+            {
+              "text": "89.90%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.38%",
+          "inlines": [
+            {
+              "text": "88.38%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.89%",
+          "inlines": [
+            {
+              "text": "88.89%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "90.04%",
+          "inlines": [
+            {
+              "text": "90.04%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MindCube tinybench",
+          "inlines": [
+            {
+              "text": "MindCube tinybench"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "81.33%",
+          "inlines": [
+            {
+              "text": "81.33%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "80.19%",
+          "inlines": [
+            {
+              "text": "80.19%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "81.24%",
+          "inlines": [
+            {
+              "text": "81.24%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "82.86%",
+          "inlines": [
+            {
+              "text": "82.86%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "81.62%",
+          "inlines": [
+            {
+              "text": "81.62%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Video-MME short",
+          "inlines": [
+            {
+              "text": "Video-MME short"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.67%",
+          "inlines": [
+            {
+              "text": "89.67%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.89%",
+          "inlines": [
+            {
+              "text": "88.89%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.11%",
+          "inlines": [
+            {
+              "text": "89.11%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.78%",
+          "inlines": [
+            {
+              "text": "88.78%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.78%",
+          "inlines": [
+            {
+              "text": "89.78%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "参考来源为 GPQA Diamond 和 Video-MME 的模型卡、MindCube 已发布的 SGLang 测试结果，以及 GSM8K 的接受门槛。MindCube 使用了 SGLang 测试配置：ff_rsn、reasoning_effort=high、300k token 预算。一段 24 kHz 波形通过 input_audio 和 audio_url 均被正确转录，且无音频对照组正确拒绝。",
+          "inlines": [
+            {
+              "text": "参考来源为 GPQA Diamond 和 Video-MME 的模型卡、MindCube 已发布的 SGLang 测试结果，以及 GSM8K 的接受门槛。MindCube 使用了 SGLang 测试配置："
+            },
+            {
+              "code": true,
+              "text": "ff_rsn"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "reasoning_effort=high"
+            },
+            {
+              "text": "、300k token 预算。一段 24 kHz 波形通过 "
+            },
+            {
+              "code": true,
+              "text": "input_audio"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "audio_url"
+            },
+            {
+              "text": " 均被正确转录，且无音频对照组正确拒绝。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "所有模态均已确认可用：文本、图像、视频、音频和长上下文。",
+          "inlines": [
+            {
+              "text": "所有模态均已确认可用：文本、图像、视频、音频和长上下文。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "服务器脚本",
+          "inlines": [
+            {
+              "text": "服务器脚本"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "code",
+          "text": "export SGLANG_USE_AITER=1\nexport SGLANG_USE_AITER_UNIFIED_ATTN=1\nexport MUSE_MOE_BACKEND=flydsl\n\n# BF16 model:  meta-models/Muse-Spark-Open-816B-A42B\n# MXFP4 model: amd/Muse-Spark-Open-816B-A42B-Quark-MXFP4\npython3 -m sglang.launch_server \\\n  --model-path {MODEL_PATH} \\\n  --tp-size 8 --ep-size 8 \\\n  --attention-backend aiter --page-size 16 \\\n  --kv-cache-dtype fp8_e4m3 \\\n  --mem-fraction-static 0.85 \\\n  --max-running-requests 128 \\\n  --speculative-algorithm DFLASH \\\n  --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n  --speculative-draft-attention-backend triton \\\n  --speculative-num-draft-tokens 8 \\\n  --reasoning-parser muse --tool-call-parser muse \\\n  --host 0.0.0.0 --port {PORT}\n\n# NVFP4 model: meta-models/Muse-Spark-Open-816B-A42B-NVFP4\npython3 -m sglang.launch_server \\\n  --model-path {MODEL_PATH} \\\n  --quantization quark_mxfp4 \\\n  --tp-size 4 --ep-size 4 \\\n  --attention-backend aiter --page-size 16 \\\n  --kv-cache-dtype fp8_e4m3 \\\n  --mem-fraction-static 0.85 \\\n  --max-running-requests 128 \\\n  --speculative-algorithm DFLASH \\\n  --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n  --speculative-draft-attention-backend triton \\\n  --speculative-num-draft-tokens 8 \\\n  --reasoning-parser muse --tool-call-parser muse \\\n  --host 0.0.0.0 --port {PORT}\n"
+        },
+        {
+          "type": "heading",
+          "text": "Intel Xeon 平台支持",
+          "inlines": [
+            {
+              "text": "Intel Xeon 平台支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang 在 Intel® Xeon® CPU 平台上支持高效的 INT4 Weight-Only Quantization（WOQ）推理，显著降低模型内存需求，同时利用 Intel® Advanced Matrix Extensions（Intel® AMX）加速 AI 计算。为在不影响模型质量的前提下最大化效率，Intel 使用 Intel AutoRound 量化算法直接从 Muse Spark Open 的原始 BF16 检查点生成 INT4 变体，该算法已在 SGLang 中得到良好支持。",
+          "inlines": [
+            {
+              "text": "SGLang 在 Intel® Xeon® CPU 平台上支持高效的 INT4 Weight-Only Quantization（WOQ）推理，显著降低模型内存需求，同时利用 Intel® Advanced Matrix Extensions（Intel® AMX）加速 AI 计算。为在不影响模型质量的前提下最大化效率，Intel 使用 "
+            },
+            {
+              "href": "https://github.com/intel/auto-round",
+              "text": "Intel AutoRound 量化算法"
+            },
+            {
+              "text": "直接从 Muse Spark Open 的原始 BF16 检查点生成 INT4 变体，该算法已在 SGLang 中得到良好支持。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为充分实现 Muse Spark Open 的 INT4 推理优势，SGLang CPU 利用 Intel AMX 加速 Attention（滑动窗口）、BF16 GEMM 和 INT4 WOQ FusedMoE 计算。此外，针对其他一些组件的融合优化，包括所有归一化、RoPE、MoE 路由和 finalizing 操作等，进一步提高了吞吐量并降低了推理开销。",
+          "inlines": [
+            {
+              "text": "为充分实现 Muse Spark Open 的 INT4 推理优势，SGLang CPU 利用 Intel AMX 加速 Attention（滑动窗口）、BF16 GEMM 和 INT4 WOQ FusedMoE 计算。此外，针对其他一些组件的融合优化，包括所有归一化、RoPE、MoE 路由和 finalizing 操作等，进一步提高了吞吐量并降低了推理开销。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "鉴于 Muse Spark Open 模型的规模，SGLang CPU 为在 Intel Xeon 平台上进行离线推理提供了一条实用的部署路径，尤其是在配备 P-core 的 Intel® Xeon® 6 上。借助 Intel Xeon 平台可用的大容量内存，组织可以高效地运行私有离线推理，并在现有数据中心基础设施上扩展部署。",
+          "inlines": [
+            {
+              "text": "鉴于 Muse Spark Open 模型的规模，SGLang CPU 为在 Intel Xeon 平台上进行离线推理提供了一条实用的部署路径，尤其是在配备 P-core 的 Intel® Xeon® 6 上。借助 Intel Xeon 平台可用的大容量内存，组织可以高效地运行私有离线推理，并在现有数据中心基础设施上扩展部署。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TPU 支持",
+          "inlines": [
+            {
+              "text": "TPU 支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们首次通过 SGLang-TorchTPU 为开放权重模型带来第 0 天 TPU 支持，这是一个原生 PyTorch 后端，用于在 TPU 上进行 LLM、VLM 和扩散模型推理。它将 TPU 加速与 SGLang 的 RadixAttention 和 HiCache 等特性相结合，为智能体工作负载实现高性价比、生产就绪的服务。",
+          "inlines": [
+            {
+              "text": "我们首次通过 SGLang-TorchTPU 为开放权重模型带来第 0 天 TPU 支持，这是一个原生 PyTorch 后端，用于在 TPU 上进行 LLM、VLM 和扩散模型推理。它将 TPU 加速与 SGLang 的 RadixAttention 和 HiCache 等特性相结合，为智能体工作负载实现高性价比、生产就绪的服务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open 的 TPU 配方以及 SGLang-TorchTPU 的访问权限即将推出。通过此 Google Form 注册以获取最新更新。",
+          "inlines": [
+            {
+              "text": "Muse Spark Open 的 TPU 配方以及 SGLang-TorchTPU 的访问权限即将推出。通过此 "
+            },
+            {
+              "href": "https://docs.google.com/forms/d/e/1FAIpQLSe2Y8hzyU3KGB2StA-0huulrVsq79A0tSxcBQwjj8vlhLhYuQ/viewform?usp=publish-editor",
+              "text": "Google Form"
+            },
+            {
+              "text": " 注册以获取最新更新。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "强化学习",
+          "inlines": [
+            {
+              "text": "强化学习"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "可训练的 Muse Spark Open 后端",
+          "inlines": [
+            {
+              "text": "可训练的 Muse Spark Open 后端"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Miles 通过 Megatron-Core 为 Muse Spark Open 提供分布式训练支持，涵盖该模型的压缩 MoE、归一化和残差门控。每个专家输出独立归一化，然后以 FP32 按路由加权求和进行组合。训练后端保留此计算顺序和这些精度边界，并支持全参数更新的反向传播。",
+          "inlines": [
+            {
+              "text": "Miles 通过 Megatron-Core 为 Muse Spark Open 提供分布式训练支持，涵盖该模型的压缩 MoE、归一化和残差门控。每个专家输出独立归一化，然后以 FP32 按路由加权求和进行组合。训练后端保留此计算顺序和这些精度边界，并支持全参数更新的反向传播。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open 复用 Miles 现有的 Muon 和 Adam 支持进行全参数 RL。Miles 的分布式 Muon 和 Adam 实现支持分块 GPU 更新以及 CPU 或 NVMe 优化器状态卸载，以管理大模型的 CPU 内存使用。",
+          "inlines": [
+            {
+              "text": "Muse Spark Open 复用 Miles 现有的 Muon 和 Adam 支持进行全参数 RL。Miles 的分布式 Muon 和 Adam 实现支持分块 GPU 更新以及 CPU 或 NVMe 优化器状态卸载，以管理大模型的 CPU 内存使用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Token 一致的多轮 Rollout",
+          "inlines": [
+            {
+              "text": "Token 一致的多轮 Rollout"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "多轮 RL 必须保留模型实际采样的 token 序列。当追加工具结果或后续消息时，重新渲染聊天模板可能会改变现有前缀，导致训练序列偏离原始轨迹。我们将 Muse Spark Open 与 TITO 集成，并修复了一个会追溯更改较早消息结束标记的模板行为。",
+          "inlines": [
+            {
+              "text": "多轮 RL 必须保留模型实际采样的 token 序列。当追加工具结果或后续消息时，重新渲染聊天模板可能会改变现有前缀，导致训练序列偏离原始轨迹。我们将 Muse Spark Open 与 TITO 集成，并修复了一个会追溯更改较早消息结束标记的模板行为。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "训练结果",
+          "inlines": [
+            {
+              "text": "训练结果"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 64 块 H200 GPU 和 32 块 NVIDIA B300 GPU 上，使用 GRPO 在 DAPO-Math-17K 上训练了完整的 Muse Spark Open 语言模型，采用 CPU 卸载的 Muon 或 Adam，并将优化器状态流式写入磁盘。每一步为 32 个提示各采样 16 个响应，共 512 个响应的批次，响应上限为 4,096 个 token，推理强度为 xhigh。Rollout 在 H200 和 B300 上均使用 BF16 检查点。Rollout 路由重放（R3）在训练中复用 rollout 的专家路由，大幅降低了训练与 rollout 之间的对数概率差异：使用 R3 的运行中为 0.0044–0.0071，而未使用时为 0.015–0.020。每次权重同步后，所有 rollout 引擎都持有逐位相同的权重。",
+          "inlines": [
+            {
+              "text": "我们在 64 块 H200 GPU 和 32 块 NVIDIA B300 GPU 上，使用 GRPO 在 DAPO-Math-17K 上训练了完整的 Muse Spark Open 语言模型，采用 CPU 卸载的 Muon 或 Adam，并将优化器状态流式写入磁盘。每一步为 32 个提示各采样 16 个响应，共 512 个响应的批次，响应上限为 4,096 个 token，推理强度为 "
+            },
+            {
+              "code": true,
+              "text": "xhigh"
+            },
+            {
+              "text": "。Rollout 在 H200 和 B300 上均使用 BF16 检查点。Rollout 路由重放（R3）在训练中复用 rollout 的专家路由，大幅降低了训练与 rollout 之间的对数概率差异：使用 R3 的运行中为 0.0044–0.0071，而未使用时为 0.015–0.020。每次权重同步后，所有 rollout 引擎都持有逐位相同的权重。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 DAPO-Math-17K 上进行全语言模型 RL：训练奖励、训练–rollout KL 以及平均绝对 token 对数概率差异。所有曲线均显示每步原始值。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "在 DAPO-Math-17K 上进行全语言模型 RL：训练奖励、训练–rollout KL 以及平均绝对 token 对数概率差异。所有曲线均显示每步原始值。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还训练了一个视觉语言任务 Geometry3K，冻结 ViT，使用相同的 Adam 设置和 medium 推理强度。测试准确率在 30 次更新中从 88.2% 上升到 94.9%。",
+          "inlines": [
+            {
+              "text": "我们还训练了一个视觉语言任务 Geometry3K，冻结 ViT，使用相同的 Adam 设置和 "
+            },
+            {
+              "code": true,
+              "text": "medium"
+            },
+            {
+              "text": " 推理强度。测试准确率在 30 次更新中从 88.2% 上升到 94.9%。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "冻结 ViT 的 Geometry3K RL：每五次更新的测试准确率（601 个问题，每个四个样本），以及每步原始训练–rollout KL 和平均绝对 token 对数概率差异。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "冻结 ViT 的 Geometry3K RL：每五次更新的测试准确率（601 个问题，每个四个样本），以及每步原始训练–rollout KL 和平均绝对 token 对数概率差异。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "致谢",
+          "inlines": [
+            {
+              "text": "致谢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "这项工作由 SGLang 社区、Meta、AMD、Nvidia 和 Intel 合作完成。",
+          "inlines": [
+            {
+              "text": "这项工作由 SGLang 社区、Meta、AMD、Nvidia 和 Intel 合作完成。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang 社区：Baizhou Zhang、Chunan Zeng、Jimmy Shong、Mao Cheng、Jiajun Li、Yuhao Yang、Alex Nails、Zijie Xia、Liangsheng Yin、Ziang Li",
+          "inlines": [
+            {
+              "text": "SGLang 社区：Baizhou Zhang、Chunan Zeng、Jimmy Shong、Mao Cheng、Jiajun Li、Yuhao Yang、Alex Nails、Zijie Xia、Liangsheng Yin、Ziang Li"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Meta：Sidhartha Reddy Potu、Clement Anthonioz Blanc、Ethan Che、Beto de Paola、Varun Vontimitta",
+          "inlines": [
+            {
+              "text": "Meta：Sidhartha Reddy Potu、Clement Anthonioz Blanc、Ethan Che、Beto de Paola、Varun Vontimitta"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AMD：Thomas Wang、Zijie Chen、Jacky Cheng、Wun-guo Huang、Hai Xiao",
+          "inlines": [
+            {
+              "text": "AMD：Thomas Wang、Zijie Chen、Jacky Cheng、Wun-guo Huang、Hai Xiao"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nvidia：Wookje Han、Andrew Briand、Anik Afibuzzaman",
+          "inlines": [
+            {
+              "text": "Nvidia：Wookje Han、Andrew Briand、Anik Afibuzzaman"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Intel：Guobing Chen、Jianan Gu、Fan Zhao",
+          "inlines": [
+            {
+              "text": "Intel：Guobing Chen、Jianan Gu、Fan Zhao"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "附录",
+          "inlines": [
+            {
+              "text": "附录"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "复现",
+          "inlines": [
+            {
+              "text": "复现"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenHands 扫描背后的脚本位于 bench-openhands-b300-sweep 分支的 benchmark/muse_spark_openhands 中。一个脚本使用 docker/muse_spark 补丁从 dev 分支构建服务环境，安装客户端，构建数据集，并在一个 8 x B300 节点上运行从 128 降至 1 的并发阶梯。",
+          "inlines": [
+            {
+              "text": "OpenHands 扫描背后的脚本位于 "
+            },
+            {
+              "code": true,
+              "text": "bench-openhands-b300-sweep"
+            },
+            {
+              "text": " 分支的 "
+            },
+            {
+              "href": "https://github.com/radixark/sglang-muse-spark/tree/bench-openhands-b300-sweep/benchmark/muse_spark_openhands",
+              "code": true,
+              "text": "benchmark/muse_spark_openhands"
+            },
+            {
+              "text": " 中。一个脚本使用 "
+            },
+            {
+              "code": true,
+              "text": "docker/muse_spark"
+            },
+            {
+              "text": " 补丁从 "
+            },
+            {
+              "code": true,
+              "text": "dev"
+            },
+            {
+              "text": " 分支构建服务环境，安装客户端，构建数据集，并在一个 8 x B300 节点上运行从 128 降至 1 的并发阶梯。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "服务器是该分支的 SGLang。客户端是提交 acd09b44 处的 evalscope，使用其 swe_smith 多轮插件。",
+          "inlines": [
+            {
+              "text": "服务器是该分支的 SGLang。客户端是提交 "
+            },
+            {
+              "code": true,
+              "text": "acd09b44"
+            },
+            {
+              "text": " 处的 "
+            },
+            {
+              "href": "https://github.com/modelscope/evalscope",
+              "text": "evalscope"
+            },
+            {
+              "text": "，使用其 "
+            },
+            {
+              "code": true,
+              "text": "swe_smith"
+            },
+            {
+              "text": " 多轮插件。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "工作负载是基于 nebius/SWE-rebench-openhands-trajectories 构建并用 nvidia/OpenScienceReasoning-2 文本填充的 OpenHands 多轮智能体回放：每段对话 13 轮，首轮 74,160 个 token，之后每轮 753 个 token（每个请求约 80k 提示 token），每轮输出 220 个 token，聚合前缀缓存命中率约 92%。DFlash 接受长度通过 SGLANG_SIMULATE_ACC_LEN 固定为 4.5，因此解码成本反映的是该接受长度，而非草稿模型实测质量。",
+          "inlines": [
+            {
+              "text": "工作负载是基于 "
+            },
+            {
+              "code": true,
+              "text": "nebius/SWE-rebench-openhands-trajectories"
+            },
+            {
+              "text": " 构建并用 "
+            },
+            {
+              "code": true,
+              "text": "nvidia/OpenScienceReasoning-2"
+            },
+            {
+              "text": " 文本填充的 OpenHands 多轮智能体回放：每段对话 13 轮，首轮 74,160 个 token，之后每轮 753 个 token（每个请求约 80k 提示 token），每轮输出 220 个 token，聚合前缀缓存命中率约 92%。DFlash 接受长度通过 "
+            },
+            {
+              "code": true,
+              "text": "SGLANG_SIMULATE_ACC_LEN"
+            },
+            {
+              "text": " 固定为 4.5，因此解码成本反映的是该接受长度，而非草稿模型实测质量。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "服务器启动命令如下，其中 <cc> 设置为该档位的并发数：",
+          "inlines": [
+            {
+              "text": "服务器启动命令如下，其中 "
+            },
+            {
+              "code": true,
+              "text": "<cc>"
+            },
+            {
+              "text": " 设置为该档位的并发数："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "export SGLANG_SIMULATE_ACC_LEN=4.5 SGLANG_SIMULATE_ACC_METHOD=match-expected SGLANG_SIMULATE_ACC_TOKEN_MODE=real-draft-token\nexport SGLANG_TIMEOUT_KEEP_ALIVE=600 SPT_NOENV=1\nexport OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 PYTHONNOUSERSITE=1 TZ=UTC\nexport SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1 SGLANG_OPT_DEEPGEMM_MEGA_MOE_NUM_MAX_TOKENS_PER_RANK=8192\n\n# concurrency 16 and above: HiCache 160 GB per rank\npython3 -m sglang.launch_server \\\n    --model-path meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --served-model-name meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --quantization modelopt_fp4 \\\n    --moe-runner-backend flashinfer_trtllm \\\n    --tp-size 8 \\\n    --ep-size 8 \\\n    --attention-backend trtllm_mha \\\n    --kv-cache-dtype fp8_e4m3 \\\n    --page-size 128 \\\n    --mem-fraction-static 0.9 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --enable-layernorm-sp \\\n    --enable-megamoe-for-layernorm-sp \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n    --speculative-draft-attention-backend fa4 \\\n    --speculative-num-draft-tokens 8 \\\n    --enable-hierarchical-cache \\\n    --hicache-size 160 \\\n    --max-running-requests <cc> \\\n    --cuda-graph-max-bs-decode <cc> \\\n    --context-length 131072 \\\n    --enable-cache-report \\\n    --tokenizer-worker-num 4 \\\n    --enable-http2 \\\n    --host 0.0.0.0 \\\n    --port 30100\n\n# concurrency 8 and below: no HiCache\npython3 -m sglang.launch_server \\\n    --model-path meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --served-model-name meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --quantization modelopt_fp4 \\\n    --moe-runner-backend flashinfer_trtllm \\\n    --tp-size 8 \\\n    --ep-size 8 \\\n    --attention-backend trtllm_mha \\\n    --kv-cache-dtype fp8_e4m3 \\\n    --page-size 128 \\\n    --mem-fraction-static 0.9 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --enable-layernorm-sp \\\n    --enable-megamoe-for-layernorm-sp \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n    --speculative-draft-attention-backend fa4 \\\n    --speculative-num-draft-tokens 8 \\\n    --max-running-requests <cc> \\\n    --cuda-graph-max-bs-decode <cc> \\\n    --context-length 131072 \\\n    --enable-cache-report \\\n    --tokenizer-worker-num 4 \\\n    --enable-http2 \\\n    --host 0.0.0.0 \\\n    --port 30100\n"
+        },
+        {
+          "type": "heading",
+          "text": "AgentX 复现",
+          "inlines": [
+            {
+              "text": "AgentX 复现"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "AgentX 扫描使用提交 89b21867 处的 AgentX，采用固定 token 模式下的 semianalysis_cc_traces_weka_062126 轨迹，温度 1、top-p 0.95。每个并发级别发送请求一小时，且为单次运行。总吞吐量统计输入 token（包括前缀缓存命中）加上输出 token，p90 交互性为 1000 除以请求级 p90 的毫秒级 token 间延迟。AgentX 保留所记录轨迹的 token 数量和前缀结构，但生成合成提示文本，因此草稿模型在回放上的接受情况无法反映真实文本。因此我们通过 SGLANG_SIMULATE_ACC_LEN 将 DFlash 接受长度固定为 4.16。该值是实测而非选定的：它是 AgentX 的 token 加权接受长度，1 + 接受的草稿 token 数 / 验证步数 = 1 + 96,198 / 30,415，来自 DFlash v2 草稿模型在 80 个真实编码首轮提示（输入 token 数为 158 至 1,581）上的结果。",
+          "inlines": [
+            {
+              "text": "AgentX 扫描使用提交 "
+            },
+            {
+              "code": true,
+              "text": "89b21867"
+            },
+            {
+              "text": " 处的 AgentX，采用固定 token 模式下的 "
+            },
+            {
+              "code": true,
+              "text": "semianalysis_cc_traces_weka_062126"
+            },
+            {
+              "text": " 轨迹，温度 1、top-p 0.95。每个并发级别发送请求一小时，且为单次运行。总吞吐量统计输入 token（包括前缀缓存命中）加上输出 token，p90 交互性为 1000 除以请求级 p90 的毫秒级 token 间延迟。AgentX 保留所记录轨迹的 token 数量和前缀结构，但生成合成提示文本，因此草稿模型在回放上的接受情况无法反映真实文本。因此我们通过 "
+            },
+            {
+              "code": true,
+              "text": "SGLANG_SIMULATE_ACC_LEN"
+            },
+            {
+              "text": " 将 DFlash 接受长度固定为 4.16。该值是实测而非选定的：它是 AgentX 的 token 加权接受长度，1 + 接受的草稿 token 数 / 验证步数 = 1 + 96,198 / 30,415，来自 DFlash v2 草稿模型在 80 个真实编码首轮提示（输入 token 数为 158 至 1,581）上的结果。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "服务器启动命令如下。并发 16 及以上启用序列并行、MegaMoE 和 HiCache；在并发 16 时将 <hicache_gb> 设为 120，在并发 32 和 48 时设为 216。",
+          "inlines": [
+            {
+              "text": "服务器启动命令如下。并发 16 及以上启用序列并行、MegaMoE 和 HiCache；在并发 16 时将 "
+            },
+            {
+              "code": true,
+              "text": "<hicache_gb>"
+            },
+            {
+              "text": " 设为 120，在并发 32 和 48 时设为 216。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "export SGLANG_SIMULATE_ACC_LEN=4.16 SGLANG_SIMULATE_ACC_METHOD=match-expected SGLANG_SIMULATE_ACC_TOKEN_MODE=fixed\nexport SGLANG_TIMEOUT_KEEP_ALIVE=1800 OMP_NUM_THREADS=8 TVM_FFI_CUDA_ARCH_LIST=10.3a\nexport SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1 SGLANG_UNIFIED_RADIX_TREE_CORE_BACKEND=python\n\n# concurrency 16 and above: sequence parallelism, MegaMoE and HiCache\nexport SGLANG_OPT_DEEPGEMM_MEGA_MOE_NUM_MAX_TOKENS_PER_RANK=8192\npython3 -m sglang.launch_server \\\n    --model-path meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --served-model-name meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --quantization modelopt_fp4 \\\n    --kv-cache-dtype fp8_e4m3 \\\n    --moe-runner-backend flashinfer_trtllm \\\n    --tp-size 8 \\\n    --ep-size 8 \\\n    --attention-backend trtllm_mha \\\n    --page-size 128 \\\n    --mem-fraction-static 0.9 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --enable-layernorm-sp \\\n    --enable-megamoe-for-layernorm-sp \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n    --speculative-draft-attention-backend fa4 \\\n    --speculative-num-draft-tokens 8 \\\n    --speculative-use-block-verification \\\n    --enable-hierarchical-cache \\\n    --hicache-size <hicache_gb> \\\n    --max-running-requests 192 \\\n    --cuda-graph-max-bs-decode 128 \\\n    --cuda-graph-backend-prefill breakable \\\n    --swa-full-tokens-ratio 0.4 \\\n    --enable-cache-report \\\n    --enable-metrics \\\n    --tokenizer-worker-num 4 \\\n    --enable-http2 \\\n    --host 0.0.0.0 \\\n    --port 30100\n\n# concurrency 8 and below: no sequence parallelism, MegaMoE or HiCache\npython3 -m sglang.launch_server \\\n    --model-path meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --served-model-name meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --quantization modelopt_fp4 \\\n    --kv-cache-dtype fp8_e4m3 \\\n    --moe-runner-backend flashinfer_trtllm \\\n    --tp-size 8 \\\n    --ep-size 8 \\\n    --attention-backend trtllm_mha \\\n    --page-size 128 \\\n    --mem-fraction-static 0.9 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n    --speculative-draft-attention-backend fa4 \\\n    --speculative-num-draft-tokens 8 \\\n    --speculative-use-block-verification \\\n    --max-running-requests 192 \\\n    --cuda-graph-max-bs-decode 128 \\\n    --cuda-graph-backend-prefill breakable \\\n    --swa-full-tokens-ratio 0.4 \\\n    --enable-cache-report \\\n    --enable-metrics \\\n    --tokenizer-worker-num 4 \\\n    --enable-http2 \\\n    --host 0.0.0.0 \\\n    --port 30100\n"
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Highlights",
+          "inlines": [
+            {
+              "text": "Highlights"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Model:"
+                },
+                {
+                  "text": " Muse Spark Open is an open-weight multimodal mixture-of-experts model. It uses an "
+                },
+                {
+                  "bold": true,
+                  "text": "816B-parameter text transformer backbone"
+                },
+                {
+                  "text": ", with approximately "
+                },
+                {
+                  "bold": true,
+                  "text": "42 billion active parameters per token"
+                },
+                {
+                  "text": ". It accepts "
+                },
+                {
+                  "bold": true,
+                  "text": "text, image, video, and audio inputs"
+                },
+                {
+                  "text": " and supports a "
+                },
+                {
+                  "bold": true,
+                  "text": "1M-token context window"
+                },
+                {
+                  "text": ". Checkpoints are available in "
+                },
+                {
+                  "bold": true,
+                  "text": "NVFP4 and BF16"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Performance:"
+                },
+                {
+                  "text": " On an "
+                },
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-15-meta-muse-spark-open#openhands-agentic-coding-sweep",
+                  "text": "OpenHands multi-turn agentic coding replay"
+                },
+                {
+                  "text": " with the NVFP4 checkpoint on "
+                },
+                {
+                  "bold": true,
+                  "text": "8 NVIDIA B300 GPUs"
+                },
+                {
+                  "text": ", SGLang reaches "
+                },
+                {
+                  "bold": true,
+                  "text": "14.8K total tokens/sec per GPU at 543 tokens/sec per user (p50) with concurrency 1"
+                },
+                {
+                  "text": ", and "
+                },
+                {
+                  "bold": true,
+                  "text": "80.3K total tokens/sec per GPU at 61 tokens/sec per user (p50) with concurrency 128"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Hardware:"
+                },
+                {
+                  "text": " Target deployment platforms include NVIDIA Blackwell GPUs ("
+                },
+                {
+                  "bold": true,
+                  "text": "GB300, B300, GB200, B200"
+                },
+                {
+                  "text": "), "
+                },
+                {
+                  "bold": true,
+                  "text": "NVIDIA H200"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "bold": true,
+                  "text": "AMD MI350X, MI355X"
+                },
+                {
+                  "text": ", and the "
+                },
+                {
+                  "bold": true,
+                  "text": "Intel® Xeon® 6 with P-core"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Features:"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "bold": true,
+                  "text": "Sequence parallelism + NVFP4 MegaMoE"
+                },
+                {
+                  "text": " for faster prefill, "
+                },
+                {
+                  "bold": true,
+                  "text": "multimodal preprocessing optimizations"
+                },
+                {
+                  "text": ", and "
+                },
+                {
+                  "bold": true,
+                  "text": "DFlash V2 speculative decoding"
+                },
+                {
+                  "text": " for higher interactivity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Muse Spark Open Architecture",
+          "inlines": [
+            {
+              "text": "Muse Spark Open Architecture"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open combines a sparse language decoder with visual and audio encoders, bringing multimodal inputs into a shared token-generation pipeline.",
+          "inlines": [
+            {
+              "text": "Muse Spark Open combines a sparse language decoder with visual and audio encoders, bringing multimodal inputs into a shared token-generation pipeline."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Multimodal encoders feed a shared language decoder. The expanded MoE block shows feature-width compression and per-expert normalization before aggregation.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Multimodal encoders feed a shared language decoder. The expanded MoE block shows feature-width compression and per-expert normalization before aggregation."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "GQA and Sliding-Window Attention",
+          "inlines": [
+            {
+              "text": "GQA and Sliding-Window Attention"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "For its 1M-token context window, Muse Spark Open combines grouped-query attention (GQA) with a hybrid of sliding-window and global attention. GQA shares key/value heads among groups of query heads, reducing the KV-cache footprint. Sliding-window layers attend to a bounded recent context, while periodic global layers retain access to the full sequence. This balances local attention efficiency with long-range information flow, without requiring every layer to maintain full-context attention.",
+          "inlines": [
+            {
+              "text": "For its 1M-token context window, Muse Spark Open combines "
+            },
+            {
+              "bold": true,
+              "text": "grouped-query attention (GQA)"
+            },
+            {
+              "text": " with a hybrid of "
+            },
+            {
+              "bold": true,
+              "text": "sliding-window and global attention"
+            },
+            {
+              "text": ". GQA shares key/value heads among groups of query heads, reducing the KV-cache footprint. Sliding-window layers attend to a bounded recent context, while periodic global layers retain access to the full sequence. This balances local attention efficiency with long-range information flow, without requiring every layer to maintain full-context attention."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Text, Audio, Images and Video",
+          "inlines": [
+            {
+              "text": "Text, Audio, Images and Video"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open processes text, audio, images and video as inputs to its language decoder. Images and video frames share a NaViT visual encoder, while waveform audio passes through a dedicated audio encoder. Their outputs are projected into the decoder's hidden dimension and placed alongside text embeddings, allowing the language model to generate responses grounded in multiple modalities.",
+          "inlines": [
+            {
+              "text": "Muse Spark Open processes "
+            },
+            {
+              "bold": true,
+              "text": "text, audio, images and video as inputs"
+            },
+            {
+              "text": " to its language decoder. Images and video frames share a NaViT visual encoder, while waveform audio passes through a dedicated audio encoder. Their outputs are projected into the decoder's hidden dimension and placed alongside text embeddings, allowing the language model to generate responses grounded in multiple modalities."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MoE with Pooler, Unpooler and Per-Expert Normalization",
+          "inlines": [
+            {
+              "text": "MoE with Pooler, Unpooler and Per-Expert Normalization"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The MoE block surrounds its routed SwiGLU experts with learned pooler and unpooler projections. The pooler compresses each token's hidden vector from the model width to a smaller expert width; the unpooler restores the model width after expert aggregation. These projections change feature width while preserving the number of tokens. The router selects experts from the full-width representation, and the pooled expert input is normalized before expert execution.",
+          "inlines": [
+            {
+              "text": "The MoE block surrounds its routed SwiGLU experts with learned "
+            },
+            {
+              "bold": true,
+              "text": "pooler and unpooler projections"
+            },
+            {
+              "text": ". The pooler compresses each token's hidden vector from the model width to a smaller expert width; the unpooler restores the model width after expert aggregation. These projections change feature width while preserving the number of tokens. The router selects experts from the full-width representation, and the pooled expert input is normalized before expert execution."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A key detail is per-expert RMSNorm: each selected expert's output is normalized before multiplication by its routing weight and summation with other experts. The resulting combined vector is then unpooled. This order matters because normalizing the combined output would change the model's computation.",
+          "inlines": [
+            {
+              "text": "A key detail is "
+            },
+            {
+              "bold": true,
+              "text": "per-expert RMSNorm"
+            },
+            {
+              "text": ": each selected expert's output is normalized "
+            },
+            {
+              "bold": true,
+              "text": "before"
+            },
+            {
+              "text": " multiplication by its routing weight and summation with other experts. The resulting combined vector is then unpooled. This order matters because normalizing the combined output would change the model's computation."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Feature Support",
+          "inlines": [
+            {
+              "text": "Feature Support"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Runtime Optimization",
+          "inlines": [
+            {
+              "text": "Runtime Optimization"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "heading",
+          "text": "Sequence Parallel",
+          "inlines": [
+            {
+              "text": "Sequence Parallel"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Sequence parallelism (SP) partitions activations along the token dimension across tensor-parallel (TP) ranks, so each rank performs token-local operations on its own part of the sequence. We adapt the approach described by Korthikanti et al., Reducing Activation Recomputation in Large Transformer Models to Muse Spark Open prefill.",
+          "inlines": [
+            {
+              "text": "Sequence parallelism (SP) partitions activations along the token dimension across tensor-parallel (TP) ranks, so each rank performs token-local operations on its own part of the sequence. We adapt the approach described by "
+            },
+            {
+              "href": "https://arxiv.org/abs/2205.05198",
+              "text": "Korthikanti et al., "
+            },
+            {
+              "href": "https://arxiv.org/abs/2205.05198",
+              "italic": true,
+              "text": "Reducing Activation Recomputation in Large Transformer Models"
+            },
+            {
+              "text": " to Muse Spark Open prefill."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This matters because tensor parallelism alone leaves Muse Spark Open's pooler, unpooler and boundary layer normalization processing the same full token batch on every rank. With SP, each of the P ranks handles approximately S/P tokens in these regions, while retaining each token's full hidden vector. This distributes the projection and normalization work across ranks and reduces redundant activation storage during long-prompt prefill.",
+          "inlines": [
+            {
+              "text": "This matters because tensor parallelism alone leaves Muse Spark Open's pooler, unpooler and boundary layer normalization processing the same full token batch on every rank. With SP, each of the "
+            },
+            {
+              "code": true,
+              "text": "P"
+            },
+            {
+              "text": " ranks handles approximately "
+            },
+            {
+              "code": true,
+              "text": "S/P"
+            },
+            {
+              "text": " tokens in these regions, while retaining each token's full hidden vector. This distributes the projection and normalization work across ranks and reduces redundant activation storage during long-prompt prefill."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At the attention output, reduce-scatter produces the token shards. Normalization, routing and pooling operate locally on those shards. NVFP4 MegaMoE then connects sequence parallelism to expert parallelism through its integrated all-to-all dispatch and combine: dispatch sends each token to the ranks holding its selected experts; the experts compute their outputs and apply per-expert RMSNorm before route weighting; combine returns the complete weighted result to the token's original rank. Unpooling and the following normalization/residual operations stay sequence-sharded until the all-gather feeding the next QKV projection.",
+          "inlines": [
+            {
+              "text": "At the attention output, "
+            },
+            {
+              "bold": true,
+              "text": "reduce-scatter"
+            },
+            {
+              "text": " produces the token shards. Normalization, routing and pooling operate locally on those shards. "
+            },
+            {
+              "bold": true,
+              "text": "NVFP4 MegaMoE"
+            },
+            {
+              "text": " then connects sequence parallelism to expert parallelism through its integrated all-to-all dispatch and combine: dispatch sends each token to the ranks holding its selected experts; the experts compute their outputs and apply "
+            },
+            {
+              "bold": true,
+              "text": "per-expert RMSNorm before route weighting"
+            },
+            {
+              "text": "; combine returns the complete weighted result to the token's original rank. Unpooling and the following normalization/residual operations stay sequence-sharded until the "
+            },
+            {
+              "bold": true,
+              "text": "all-gather feeding the next QKV projection"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We measured three configurations on four GB300 GPUs with an NVFP4 target model, a DFlash V2 draft model, TP4/EP4 topology, FP8 KV cache and 16K prefill chunks. At each point, we send eight request groups, each containing eight requests with nominal 80K input tokens and 20 output tokens. Requests in the same group share a 73,360-token generated prefix; different groups use independently generated prefixes. Maximum client concurrency varies from 1 to 64.",
+          "inlines": [
+            {
+              "text": "We measured three configurations on four GB300 GPUs with an NVFP4 target model, a DFlash V2 draft model, TP4/EP4 topology, FP8 KV cache and 16K prefill chunks. At each point, we send eight request groups, each containing eight requests with nominal 80K input tokens and 20 output tokens. Requests in the same group share a 73,360-token generated prefix; different groups use independently generated prefixes. Maximum client concurrency varies from 1 to 64."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this sweep, SP + MegaMoE reduces p90 TTFT by 28.3–41.9% compared with TP4 across all seven concurrency levels. At concurrency 64, p90 TTFT drops from 29.03 s to 19.47 s, a 32.9% reduction.",
+          "inlines": [
+            {
+              "text": "In this sweep, SP + MegaMoE reduces p90 TTFT by 28.3–41.9% compared with TP4 across all seven concurrency levels. At concurrency 64, p90 TTFT drops from 29.03 s to 19.47 s, a 32.9% reduction."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Multimodal Optimization",
+          "inlines": [
+            {
+              "text": "Multimodal Optimization"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open's multimodal pipeline preprocesses images and video frames on the CPU with Rust or Pillow resizing, followed by vision encoding with SGLang's optimized attention backends. Cached results are reused when the same images appear across conversation turns, avoiding repeated computation.",
+          "inlines": [
+            {
+              "text": "Muse Spark Open's multimodal pipeline preprocesses images and video frames on the CPU with Rust or Pillow resizing, followed by vision encoding with SGLang's optimized attention backends. Cached results are reused when the same images appear across conversation turns, avoiding repeated computation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang supports separate encoder, prefill and decode workers (EPD Disaggregation) for Muse Spark Open. The encoder processes images and video, then passes the resulting features to prefill workers. Decode workers receive the KV cache and generate the response. Separating these stages allows deployments to allocate resources to media processing, prompt processing and generation according to the workload.",
+          "inlines": [
+            {
+              "text": "SGLang supports separate encoder, prefill and decode workers ("
+            },
+            {
+              "href": "https://docs.sglang.io/docs/advanced_features/epd_disaggregation",
+              "text": "EPD Disaggregation"
+            },
+            {
+              "text": ") for Muse Spark Open. The encoder processes images and video, then passes the resulting features to prefill workers. Decode workers receive the KV cache and generate the response. Separating these stages allows deployments to allocate resources to media processing, prompt processing and generation according to the workload."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Speculative Decoding with DFlash V2",
+          "inlines": [
+            {
+              "text": "Speculative Decoding with DFlash V2"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang supports speculative decoding for Muse Spark Open with DFlash V2, building on DFlash’s parallel drafting architecture. A standalone draft model uses hidden states from Muse Spark Open to populate its own KV cache, then proposes a block of future tokens in a single forward pass. It shares the target’s token embeddings and LM head, and Muse Spark Open verifies the proposed block in one forward pass, allowing multiple accepted tokens to advance together.",
+          "inlines": [
+            {
+              "text": "SGLang supports speculative decoding for Muse Spark Open with DFlash V2, building on "
+            },
+            {
+              "href": "https://lmsys.org/blog/2026-06-15-next-generation-speculative-decoding-dflash-v2/",
+              "text": "DFlash’s parallel drafting architecture"
+            },
+            {
+              "text": ". A standalone draft model uses hidden states from Muse Spark Open to populate its own KV cache, then proposes a block of future tokens in a single forward pass. It shares the target’s token embeddings and LM head, and Muse Spark Open verifies the proposed block in one forward pass, allowing multiple accepted tokens to advance together."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DFlash V2 adds dynamic convolutions that mix information across neighboring positions within the draft block, along with a lightweight candidate selector that accounts for dependencies between proposed tokens. SGLang integrates drafting and candidate selection into the same CUDA graph and supports overlap scheduling to reduce CPU scheduling overhead between GPU operations. This path is available through --speculative-algorithm DFLASH with a compatible Muse Spark Open DFlash V2 checkpoint.",
+          "inlines": [
+            {
+              "text": "DFlash V2 adds dynamic convolutions that mix information across neighboring positions within the draft block, along with a lightweight candidate selector that accounts for dependencies between proposed tokens. SGLang integrates drafting and candidate selection into the same CUDA graph and supports overlap scheduling to reduce CPU scheduling overhead between GPU operations. This path is available through "
+            },
+            {
+              "code": true,
+              "text": "--speculative-algorithm DFLASH"
+            },
+            {
+              "text": " with a compatible Muse Spark Open DFlash V2 checkpoint."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For sampled DFlash V2 proposals, SGLang also supports block verification, enabled with --speculative-use-block-verification. It evaluates draft prefixes jointly using target and draft probabilities, which can accept longer prefixes than token-wise verification. The verifier keeps the longest accepted prefix and samples a correction token after partial acceptance, or a target-model bonus token after full acceptance, preserving the target sampling distribution.",
+          "inlines": [
+            {
+              "text": "For sampled DFlash V2 proposals, SGLang also supports "
+            },
+            {
+              "href": "https://arxiv.org/abs/2403.10444",
+              "text": "block verification"
+            },
+            {
+              "text": ", enabled with "
+            },
+            {
+              "code": true,
+              "text": "--speculative-use-block-verification"
+            },
+            {
+              "text": ". It evaluates draft prefixes jointly using target and draft probabilities, which can accept longer prefixes than token-wise verification. The verifier keeps the longest accepted prefix and samples a correction token after partial acceptance, or a target-model bonus token after full acceptance, preserving the target sampling distribution."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Compatibility",
+          "inlines": [
+            {
+              "text": "Compatibility"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "To enhance the performance at real serving scenarios, we also support Muse Spark Open with the following SGLang serving features:",
+          "inlines": [
+            {
+              "text": "To enhance the performance at real serving scenarios, we also support Muse Spark Open with the following SGLang serving features:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "href": "https://docs.sglang.io/docs/advanced_features/pd_disaggregation",
+                  "text": "Prefill/decode disaggregation (PD disaggregation)"
+                },
+                {
+                  "bold": true,
+                  "text": ":"
+                },
+                {
+                  "text": " Separating prefill and decode workers and transferring KV state between them reduces interference between the two stages, helping meet service-level objectives (SLOs) for time to first token (TTFT) and time per output token (TPOT)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "href": "https://docs.sglang.io/docs/advanced_features/hicache",
+                  "text": "HiCache"
+                },
+                {
+                  "bold": true,
+                  "text": ":"
+                },
+                {
+                  "text": " A GPU/host KV-cache hierarchy improves serving performance through higher prefix-cache hit rates, reusing cached full-attention and sliding-window state to avoid repeated prefill computation."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "href": "https://docs.sglang.io/docs/advanced_features/breakable_cuda_graph",
+                  "text": "Breakable CUDA graphs"
+                },
+                {
+                  "bold": true,
+                  "text": ":"
+                },
+                {
+                  "text": " Captured prefill computation replays around eager attention calls, reducing CPU launch overhead while preserving flexibility at the attention boundary."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Kernel Optimizations",
+          "inlines": [
+            {
+              "text": "Kernel Optimizations"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We reduced kernel launches and memory traffic, replaced the BF16 expert loop, distributed replicated projections across GPUs, and overlapped independent work. The figure shows the cumulative effect of these changes at TP4/EP4 with 8K input tokens, 1K output tokens, and no speculative decoding.",
+          "inlines": [
+            {
+              "text": "We reduced kernel launches and memory traffic, replaced the BF16 expert loop, distributed replicated projections across GPUs, and overlapped independent work. The figure shows the cumulative effect of these changes at TP4/EP4 with 8K input tokens, 1K output tokens, and no speculative decoding."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fuse the elementwise chain."
+                },
+                {
+                  "text": " We combined the post-FFN norm, gated residual add, and pre-attention norm into one kernel. Q/K normalization reads the fused QKV tensor directly through row strides, avoiding layout copies, while query scaling is folded into the attention softmax scale."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Replace the BF16 expert loop in two steps."
+                },
+                {
+                  "text": " Layers 0 and 61 use BF16 expert weights. We first batched the 64 local experts into grouped GEMMs, capping the main intermediate at 64 MiB. We then switched to FlashInfer’s "
+                },
+                {
+                  "code": true,
+                  "text": "trtllm_bf16_routed_moe"
+                },
+                {
+                  "text": " to compute only the routed expert work, with post-expert normalization bound to the finalize operation at load time."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fuse normalization and remove routing conversions."
+                },
+                {
+                  "text": " The CUDA boundary kernel keeps each row in registers across both RMS reductions. Pre-expert normalization is folded into NVFP4 quantization, reusing the quantizer’s row access and avoiding a separate read/write pass. Routing also emits packed IDs and weights in the format the expert kernel consumes."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fuse RoPE and KV-cache updates."
+                },
+                {
+                  "text": " Q/K normalization also applies RoPE and writes the decode KV cache, eliminating standalone kernels and repeated memory passes."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Move routing and norm/gate to CUDA."
+                },
+                {
+                  "text": " CUDA kernels handle top-k routing and combine per-head normalization with gating, including a fast reciprocal implementation. This step also enables a shared graph stream. Verify-KV fusion benefits the speculative verification path; it is inactive in this no-speculation benchmark."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Parallelize RMS normalization within a row."
+                },
+                {
+                  "text": " A cluster of CTAs cooperates through distributed shared memory, exposing more parallelism than a single CTA per row."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Shard the unpooler, then the pooler."
+                },
+                {
+                  "text": " These projections originally repeated the full matrix computation on every tensor-parallel rank. Each now uses the BF16 dispatcher to compute a slice of the output, followed by an all-gather to assemble the full result. We use TGV for the pooler shards, which improves the final configuration with two-stream overlap."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Overlap independent MoE work."
+                },
+                {
+                  "text": " The router GEMM and top-k selection can run independently of pooler and activation preparation. We place routing on a side stream and join the two branches immediately before expert execution."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Tune BF16 projection dispatch."
+                },
+                {
+                  "text": " We select tuned GEMM implementations for the small token counts and matrix shapes used during decode. Warp split-K kernels accelerate projections by splitting the reduction dimension across warps."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Launch dependent kernels earlier."
+                },
+                {
+                  "text": " We tune PDL for small kernels by moving the launch trigger after their last input load."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MegaMoE Functionalities and Optimizations",
+          "inlines": [
+            {
+              "text": "MegaMoE Functionalities and Optimizations"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "DeepGEMM’s MegaMoE fuses dispatch, both expert GEMMs, activation, and combine into one persistent kernel. Cross-rank transfers use symmetric memory, allowing communication to overlap with computation without separate all-to-all launches.",
+          "inlines": [
+            {
+              "text": "DeepGEMM’s MegaMoE fuses dispatch, both expert GEMMs, activation, and combine into one persistent kernel. Cross-rank transfers use symmetric memory, allowing communication to overlap with computation without separate all-to-all launches."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Supporting Muse Spark Open requires NVFP4 expert weights and activations in 60 layers, BF16 experts in two layers, and per-expert RMS normalization before the route-weighted sum. MegaMoE must also read TensorRT-LLM’s resident weight layout so both backends can share weights.",
+          "inlines": [
+            {
+              "text": "Supporting Muse Spark Open requires NVFP4 expert weights and activations in 60 layers, BF16 experts in two layers, and per-expert RMS normalization before the route-weighted sum. MegaMoE must also read TensorRT-LLM’s resident weight layout so both backends can share weights."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "NVFP4 as a third MMA kind",
+          "inlines": [
+            {
+              "text": "NVFP4 as a third MMA kind"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "The NVFP4 path adds nvfp4xnvfp4 alongside fp8xfp4 and mxfp4xmxfp4. It retains dense FP4 operands but uses UE4M3 block scales per 16 elements instead of MXFP4’s UE8M0 scales per 32. Per-token FP32 input scales are applied to the first GEMM’s accumulators, and pre-dispatch supports BF16-to-NVFP4 quantization.",
+          "inlines": [
+            {
+              "text": "The NVFP4 path adds "
+            },
+            {
+              "code": true,
+              "text": "nvfp4xnvfp4"
+            },
+            {
+              "text": " alongside "
+            },
+            {
+              "code": true,
+              "text": "fp8xfp4"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "mxfp4xmxfp4"
+            },
+            {
+              "text": ". It retains dense FP4 operands but uses UE4M3 block scales per 16 elements instead of MXFP4’s UE8M0 scales per 32. Per-token FP32 input scales are applied to the first GEMM’s accumulators, and pre-dispatch supports BF16-to-NVFP4 quantization."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Moreover we refactored the class as part of this extension. Now the MMA kind is explicit at symmetric-buffer allocation and carried through the execution path, making format selection easier to follow.",
+          "inlines": [
+            {
+              "text": "Moreover we refactored the class as part of this extension. Now the MMA kind is explicit at symmetric-buffer allocation and carried through the execution path, making format selection easier to follow."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The Fused Post-per-expert Norm",
+          "inlines": [
+            {
+              "text": "The Fused Post-per-expert Norm"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Each expert output must be normalized before applying its routing weight. Because the second GEMM distributes a hidden row across CTAs, its epilogue cannot independently compute the full-row RMS. Normalization therefore runs in the combine stage, after peer writes are visible after the NVLink Barrier.",
+          "inlines": [
+            {
+              "text": "Each expert output must be normalized before applying its routing weight. Because the second GEMM distributes a hidden row across CTAs, its epilogue cannot independently compute the full-row RMS. Normalization therefore runs in the combine stage, after peer writes are visible after the NVLink Barrier."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Post norm partials: To avoid rereading full expert-output rows solely to compute their RMS in combine, each second-GEMM tile accumulates a partial sum of squares from the BF16 values it already holds in registers. These partials are atomically accumulated on the token’s originating rank; combine then reads one scalar per selected expert.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Post norm partials:"
+            },
+            {
+              "text": " To avoid rereading full expert-output rows solely to compute their RMS in combine, each second-GEMM tile accumulates a partial sum of squares from the BF16 values it already holds in registers. These partials are atomically accumulated on the token’s originating rank; combine then reads one scalar per selected expert."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Reading TensorRT-LLM's weights",
+          "inlines": [
+            {
+              "text": "Reading TensorRT-LLM's weights"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Sharing TensorRT-LLM’s resident buffers avoids duplicate weights and scales while preserving the option to use its MoE kernels for decode. Each layout needs a different treatment:",
+          "inlines": [
+            {
+              "text": "Sharing TensorRT-LLM’s resident buffers avoids duplicate weights and scales while preserving the option to use its MoE kernels for decode. Each layout needs a different treatment:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "NVFP4 weights"
+                },
+                {
+                  "text": ": The first GEMM’s "
+                },
+                {
+                  "code": true,
+                  "text": "row ^ 8"
+                },
+                {
+                  "text": " shuffle swaps the gate and up halves within each 16-row group. MegaMoE loads the tile as stored and selects the corresponding register slots in the SwiGLU epilogue, replacing a naive way of sixteen small TMA loads per K atom with one. The second GEMM’s row permutation is handled by its tensor-map descriptor."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "NVFP4 block scales:"
+                },
+                {
+                  "text": " A 3D tensor map reads first-GEMM scales directly; a 5D map also undoes the second GEMM’s within-group permutation. Adjust shared-memory source offsets to preserve the existing "
+                },
+                {
+                  "code": true,
+                  "text": "UTCCP 4×32"
+                },
+                {
+                  "text": " transpose."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "BF16 weights:"
+                },
+                {
+                  "text": " TensorRT-LLM uses "
+                },
+                {
+                  "code": true,
+                  "text": "BlockMajorK"
+                },
+                {
+                  "text": " storage, physically [E, K/64, N, 64]. A 5D tensor map handles the first GEMM’s group reversal with one TMA load per 32-row block, while SwiGLU absorbs the remaining gate/up swap. The second GEMM uses a 4D map."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TRT-LLM and MegaMoE weight and scale layouts. TMA addressing and SwiGLU register selection reconcile the layouts without duplicating resident buffers.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "TRT-LLM and MegaMoE weight and scale layouts. TMA addressing and SwiGLU register selection reconcile the layouts without duplicating resident buffers."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The NVFP4 requantization reciprocal table",
+          "inlines": [
+            {
+              "text": "The NVFP4 requantization reciprocal table"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Between the two GEMMs, SwiGLU output is requantized to NVFP4. Previously, each 16-element group computed the block scale’s reciprocal with __frcp_rn. __frcp_rn isn't cheap: it is IEEE round-to-nearest so it has a MUFU seed plus a Newton refinement chain plus special-case handling. Because the scale byte has only 256 encodings, a 256-entry FP32 table in shared memory replaces the repeated conversion and reciprocal calculation with a lookup. In an isolated B300 microbenchmark, the shared-memory table accelerated scale-to-reciprocal computation by approximately 2.9× with scattered accesses and 4.8× with warp-uniform accesses.",
+          "inlines": [
+            {
+              "text": "Between the two GEMMs, SwiGLU output is requantized to NVFP4. Previously, each 16-element group computed the block scale’s reciprocal with "
+            },
+            {
+              "code": true,
+              "text": "__frcp_rn"
+            },
+            {
+              "text": ". "
+            },
+            {
+              "code": true,
+              "text": "__frcp_rn"
+            },
+            {
+              "text": " isn't cheap: it is IEEE round-to-nearest so it has a MUFU seed plus a Newton refinement chain plus special-case handling. Because the scale byte has only 256 encodings, a 256-entry FP32 table in shared memory replaces the repeated conversion and reciprocal calculation with a lookup. In an isolated B300 microbenchmark, the shared-memory table accelerated scale-to-reciprocal computation by approximately 2.9× with scattered accesses and 4.8× with warp-uniform accesses."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Performance Results",
+          "inlines": [
+            {
+              "text": "Performance Results"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "OpenHands Agentic Coding Sweep",
+          "inlines": [
+            {
+              "text": "OpenHands Agentic Coding Sweep"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We collected performance results for Muse Spark Open NVFP4 on eight B300 GPUs with TP8/EP8 using an OpenHands multi-turn agentic coding workload. Each conversation starts with an around 74K token prompt and outputs around 220 tokens each turn, for a total of 13 turns. Successive turns reuse the prefix for a ~92% aggregate cache hit rate. We sweep concurrency from 1 to 128 conversations and plot per-GPU token throughput (tok/s/GPU) against p50 interactivity (tok/s/user).",
+          "inlines": [
+            {
+              "text": "We collected performance results for Muse Spark Open NVFP4 on eight B300 GPUs with TP8/EP8 using an OpenHands multi-turn agentic coding workload. Each conversation starts with an around 74K token prompt and outputs around 220 tokens each turn, for a total of 13 turns. Successive turns reuse the prefix for a ~92% aggregate cache hit rate. We sweep concurrency from 1 to 128 conversations and plot per-GPU token throughput (tok/s/GPU) against p50 interactivity (tok/s/user)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "AgentX Agentic Coding Sweep",
+          "inlines": [
+            {
+              "text": "AgentX Agentic Coding Sweep"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We collected performance results for Muse Spark Open NVFP4 on eight B300 GPUs with TP8/EP8 using AgentX, SemiAnalysis's replayer for recorded multi-turn agentic coding traces. AgentX reproduces the prompt sizes, prefix sharing, subagent fan-out and inter-turn timing of real coding-agent sessions, so the results reflect \"realistic agentic load\". Requests in a session share a long prefix, so 96.9% to 98.0% of input tokens hit the prefix cache. We sweep concurrency from 1 to 48 sessions and plot per-GPU token throughput (tok/s/GPU) against p90 interactivity (tok/s/user). At concurrency 48, throughput reaches 34,509 tok/s/GPU at 73.0 tok/s/user; a single session runs at 457.8 tok/s/user.",
+          "inlines": [
+            {
+              "text": "We collected performance results for Muse Spark Open NVFP4 on eight B300 GPUs with TP8/EP8 using "
+            },
+            {
+              "href": "https://github.com/SemiAnalysisAI/agentx-harness",
+              "text": "AgentX"
+            },
+            {
+              "text": ", SemiAnalysis's replayer for recorded multi-turn agentic coding traces. AgentX reproduces the prompt sizes, prefix sharing, subagent fan-out and inter-turn timing of real coding-agent sessions, so the results reflect \"realistic agentic load\". Requests in a session share a long prefix, so 96.9% to 98.0% of input tokens hit the prefix cache. We sweep concurrency from 1 to 48 sessions and plot per-GPU token throughput (tok/s/GPU) against p90 interactivity (tok/s/user). At concurrency 48, throughput reaches 34,509 tok/s/GPU at 73.0 tok/s/user; a single session runs at 457.8 tok/s/user."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Multi-Platform Support",
+          "inlines": [
+            {
+              "text": "Multi-Platform Support"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "AMD Support",
+          "inlines": [
+            {
+              "text": "AMD Support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "heading",
+          "text": "Day-0 Enablement",
+          "inlines": [
+            {
+              "text": "Day-0 Enablement"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Platforms:"
+                },
+                {
+                  "text": " MI350X, MI355X Instinct GPUs"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Both Meta model ckpts are supported:"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "meta-models/Muse-Spark-Open-816B-A42B"
+                },
+                {
+                  "text": " (BF16) and "
+                },
+                {
+                  "code": true,
+                  "text": "meta-models/Muse-Spark-Open-816B-A42B-NVFP4"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "AMD/Quark aot quantized MXFP4 model is supported:"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "amd/Muse-Spark-Open-816B-A42B-Quark-MXFP4"
+                },
+                {
+                  "text": " - an apple-to-apple MXFP4 quantized model from Meta NVFP4 model."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Attention Kernel"
+                },
+                {
+                  "text": ": aiter unified-attention 3D for decode, with page-16 CK batch-prefill."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "FlyDSL MoE:"
+                },
+                {
+                  "text": " expert GEMM plus a finalize that does unpermute, per-expert RMSNorm and the weighted sum in one kernel."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Kernel fusion"
+                },
+                {
+                  "text": " on the decode path: cross-layer FFN boundary, fused Q/K RMSNorm, split-K router GEMV, aiter tuned GEMM for pooler/unpooler."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Prefill optimization:"
+                },
+                {
+                  "text": " replaced the atomic-add expert sort with an LDS kernel."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "aiter patches"
+                },
+                {
+                  "text": " required: page-scatter VM fault fix, unified-attention 3D, and the FlyDSL Muse MoE kernels. "
+                },
+                {
+                  "code": true,
+                  "text": "docker/muse_spark/muse-spark-rocm.Dockerfile"
+                },
+                {
+                  "text": " applies them before the aiter kernels are prebuilt, so an image built from it needs no runtime patching. Use "
+                },
+                {
+                  "code": true,
+                  "text": "3rdparty/amd/muse_spark/apply_aiter_patches.sh"
+                },
+                {
+                  "text": " only in a container built from the plain ROCm image."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Day-0 Performance (MI355X | MI350X)",
+          "inlines": [
+            {
+              "text": "Day-0 Performance (MI355X | MI350X)"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "amd/Muse-Spark-Open-816B-A42B-Quark-MXFP4, 8x MI355X TP8/EP8, IL8192/OL1024, random range ratio 0.8, 4x measured requests per point, radix cache on (run with warmup).",
+          "inlines": [
+            {
+              "code": true,
+              "text": "amd/Muse-Spark-Open-816B-A42B-Quark-MXFP4"
+            },
+            {
+              "text": ", 8x MI355X TP8/EP8, IL8192/OL1024, random range ratio 0.8, 4x measured requests per point, radix cache on ("
+            },
+            {
+              "bold": true,
+              "text": "run with warmup"
+            },
+            {
+              "text": ")."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "triton attn + triton moe (baseline):",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "triton attn + triton moe"
+            },
+            {
+              "text": " (baseline):"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Concurrency",
+          "inlines": [
+            {
+              "text": "Concurrency"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mean ITL (ms)",
+          "inlines": [
+            {
+              "text": "Mean ITL (ms)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mean TPOT (ms)",
+          "inlines": [
+            {
+              "text": "Mean TPOT (ms)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Total throughput (tok/s)",
+          "inlines": [
+            {
+              "text": "Total throughput (tok/s)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14.55",
+          "inlines": [
+            {
+              "text": "14.55"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14.55",
+          "inlines": [
+            {
+              "text": "14.55"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2,384.71",
+          "inlines": [
+            {
+              "text": "2,384.71"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.43",
+          "inlines": [
+            {
+              "text": "15.43"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.42",
+          "inlines": [
+            {
+              "text": "15.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,317.23",
+          "inlines": [
+            {
+              "text": "4,317.23"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17.84",
+          "inlines": [
+            {
+              "text": "17.84"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17.84",
+          "inlines": [
+            {
+              "text": "17.84"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7,460.37",
+          "inlines": [
+            {
+              "text": "7,460.37"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22.14",
+          "inlines": [
+            {
+              "text": "22.14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22.13",
+          "inlines": [
+            {
+              "text": "22.13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12,396.21",
+          "inlines": [
+            {
+              "text": "12,396.21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "aiter attn + flydsl moe:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "aiter attn + flydsl moe"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Concurrency",
+          "inlines": [
+            {
+              "text": "Concurrency"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mean ITL (ms)",
+          "inlines": [
+            {
+              "text": "Mean ITL (ms)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mean TPOT (ms)",
+          "inlines": [
+            {
+              "text": "Mean TPOT (ms)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Total throughput (tok/s)",
+          "inlines": [
+            {
+              "text": "Total throughput (tok/s)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.29",
+          "inlines": [
+            {
+              "text": "12.29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.29",
+          "inlines": [
+            {
+              "text": "12.29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2,812.75",
+          "inlines": [
+            {
+              "text": "2,812.75"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.88",
+          "inlines": [
+            {
+              "text": "13.88"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.87",
+          "inlines": [
+            {
+              "text": "13.87"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,777.36",
+          "inlines": [
+            {
+              "text": "4,777.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16.04",
+          "inlines": [
+            {
+              "text": "16.04"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16.03",
+          "inlines": [
+            {
+              "text": "16.03"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8,311.38",
+          "inlines": [
+            {
+              "text": "8,311.38"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "19.76",
+          "inlines": [
+            {
+              "text": "19.76"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "19.75",
+          "inlines": [
+            {
+              "text": "19.75"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13,880.93",
+          "inlines": [
+            {
+              "text": "13,880.93"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "aiter attn + flydsl moe + DFlash V2 (real acceptance; ITL: per verify step):",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "aiter attn + flydsl moe + DFlash V2"
+            },
+            {
+              "text": " (real acceptance; ITL: per verify step):"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Concurrency",
+          "inlines": [
+            {
+              "text": "Concurrency"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mean ITL (ms)",
+          "inlines": [
+            {
+              "text": "Mean ITL (ms)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mean TPOT (ms)",
+          "inlines": [
+            {
+              "text": "Mean TPOT (ms)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Total throughput (tok/s)",
+          "inlines": [
+            {
+              "text": "Total throughput (tok/s)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22.16",
+          "inlines": [
+            {
+              "text": "22.16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.19",
+          "inlines": [
+            {
+              "text": "7.19"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,544.71",
+          "inlines": [
+            {
+              "text": "4,544.71"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "27.11",
+          "inlines": [
+            {
+              "text": "27.11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.46",
+          "inlines": [
+            {
+              "text": "8.46"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7,542.14",
+          "inlines": [
+            {
+              "text": "7,542.14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32.42",
+          "inlines": [
+            {
+              "text": "32.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.62",
+          "inlines": [
+            {
+              "text": "10.62"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12,056.10",
+          "inlines": [
+            {
+              "text": "12,056.10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "45.42",
+          "inlines": [
+            {
+              "text": "45.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.11",
+          "inlines": [
+            {
+              "text": "15.11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17,081.46",
+          "inlines": [
+            {
+              "text": "17,081.46"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Accuracies",
+          "inlines": [
+            {
+              "text": "Accuracies"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Benchmark",
+          "inlines": [
+            {
+              "text": "Benchmark"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MXFP4 (TP4)",
+          "inlines": [
+            {
+              "text": "MXFP4 (TP4)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MXFP4 (TP8)",
+          "inlines": [
+            {
+              "text": "MXFP4 (TP8)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 Requant (TP4)",
+          "inlines": [
+            {
+              "text": "NVFP4 Requant (TP4)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "BF16 (TP8)",
+          "inlines": [
+            {
+              "text": "BF16 (TP8)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 Reference (GB300)",
+          "inlines": [
+            {
+              "text": "NVFP4 Reference (GB300)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GSM8K",
+          "inlines": [
+            {
+              "text": "GSM8K"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.42%",
+          "inlines": [
+            {
+              "text": "97.42%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.57%",
+          "inlines": [
+            {
+              "text": "97.57%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.95%",
+          "inlines": [
+            {
+              "text": "97.95%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.73%",
+          "inlines": [
+            {
+              "text": "97.73%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97.80%",
+          "inlines": [
+            {
+              "text": "97.80%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AIME26 (30×8)",
+          "inlines": [
+            {
+              "text": "AIME26 (30×8)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.83%, pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.83%, pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.83%, pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.83%, pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.42%, pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.42%, pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.83%, pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.83%, pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "pass@1 95.83%, pass@8 100%",
+          "inlines": [
+            {
+              "text": "pass@1 95.83%, pass@8 100%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPQA Diamond",
+          "inlines": [
+            {
+              "text": "GPQA Diamond"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.90%",
+          "inlines": [
+            {
+              "text": "89.90%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.90%",
+          "inlines": [
+            {
+              "text": "89.90%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.38%",
+          "inlines": [
+            {
+              "text": "88.38%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.89%",
+          "inlines": [
+            {
+              "text": "88.89%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "90.04%",
+          "inlines": [
+            {
+              "text": "90.04%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MindCube tinybench",
+          "inlines": [
+            {
+              "text": "MindCube tinybench"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "81.33%",
+          "inlines": [
+            {
+              "text": "81.33%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "80.19%",
+          "inlines": [
+            {
+              "text": "80.19%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "81.24%",
+          "inlines": [
+            {
+              "text": "81.24%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "82.86%",
+          "inlines": [
+            {
+              "text": "82.86%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "81.62%",
+          "inlines": [
+            {
+              "text": "81.62%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Video-MME short",
+          "inlines": [
+            {
+              "text": "Video-MME short"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.67%",
+          "inlines": [
+            {
+              "text": "89.67%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.89%",
+          "inlines": [
+            {
+              "text": "88.89%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.11%",
+          "inlines": [
+            {
+              "text": "89.11%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.78%",
+          "inlines": [
+            {
+              "text": "88.78%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.78%",
+          "inlines": [
+            {
+              "text": "89.78%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "References are the model card for GPQA Diamond and Video-MME, published SGLang test results for MindCube, and the acceptance gate for GSM8K. MindCube used the SGLang test configuration: ff_rsn, reasoning_effort=high, 300k token budget. A 24 kHz waveform transcribed correctly through both input_audio and audio_url, and the no-audio control correctly declines.",
+          "inlines": [
+            {
+              "text": "References are the model card for GPQA Diamond and Video-MME, published SGLang test results for MindCube, and the acceptance gate for GSM8K. MindCube used the SGLang test configuration: "
+            },
+            {
+              "code": true,
+              "text": "ff_rsn"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "reasoning_effort=high"
+            },
+            {
+              "text": ", 300k token budget. A 24 kHz waveform transcribed correctly through both "
+            },
+            {
+              "code": true,
+              "text": "input_audio"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "audio_url"
+            },
+            {
+              "text": ", and the no-audio control correctly declines."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "All modalities confirmed working: text, image, video, audio and long context.",
+          "inlines": [
+            {
+              "text": "All modalities confirmed working: text, image, video, audio and long context."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Server Script",
+          "inlines": [
+            {
+              "text": "Server Script"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "code",
+          "text": "export SGLANG_USE_AITER=1\nexport SGLANG_USE_AITER_UNIFIED_ATTN=1\nexport MUSE_MOE_BACKEND=flydsl\n\n# BF16 model:  meta-models/Muse-Spark-Open-816B-A42B\n# MXFP4 model: amd/Muse-Spark-Open-816B-A42B-Quark-MXFP4\npython3 -m sglang.launch_server \\\n  --model-path {MODEL_PATH} \\\n  --tp-size 8 --ep-size 8 \\\n  --attention-backend aiter --page-size 16 \\\n  --kv-cache-dtype fp8_e4m3 \\\n  --mem-fraction-static 0.85 \\\n  --max-running-requests 128 \\\n  --speculative-algorithm DFLASH \\\n  --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n  --speculative-draft-attention-backend triton \\\n  --speculative-num-draft-tokens 8 \\\n  --reasoning-parser muse --tool-call-parser muse \\\n  --host 0.0.0.0 --port {PORT}\n\n# NVFP4 model: meta-models/Muse-Spark-Open-816B-A42B-NVFP4\npython3 -m sglang.launch_server \\\n  --model-path {MODEL_PATH} \\\n  --quantization quark_mxfp4 \\\n  --tp-size 4 --ep-size 4 \\\n  --attention-backend aiter --page-size 16 \\\n  --kv-cache-dtype fp8_e4m3 \\\n  --mem-fraction-static 0.85 \\\n  --max-running-requests 128 \\\n  --speculative-algorithm DFLASH \\\n  --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n  --speculative-draft-attention-backend triton \\\n  --speculative-num-draft-tokens 8 \\\n  --reasoning-parser muse --tool-call-parser muse \\\n  --host 0.0.0.0 --port {PORT}\n"
+        },
+        {
+          "type": "heading",
+          "text": "Intel Xeon Platform Support",
+          "inlines": [
+            {
+              "text": "Intel Xeon Platform Support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang supports efficient INT4 Weight-Only Quantization (WOQ) inference on Intel® Xeon® CPU platforms, significantly reducing model memory requirements while leveraging Intel® Advanced Matrix Extensions (Intel® AMX) for accelerated AI computation. To maximize efficiency without compromising model quality, Intel generated INT4 variants directly from Muse Spark Open’s original BF16 checkpoints using the Intel AutoRound quantization algorithm, which has been well supported in SGLang.",
+          "inlines": [
+            {
+              "text": "SGLang supports efficient INT4 Weight-Only Quantization (WOQ) inference on Intel® Xeon® CPU platforms, significantly reducing model memory requirements while leveraging Intel® Advanced Matrix Extensions (Intel® AMX) for accelerated AI computation. To maximize efficiency without compromising model quality, Intel generated INT4 variants directly from Muse Spark Open’s original BF16 checkpoints using the "
+            },
+            {
+              "href": "https://github.com/intel/auto-round",
+              "text": "Intel AutoRound quantization algorithm"
+            },
+            {
+              "text": ", which has been well supported in SGLang."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To fully realize the benefits of INT4 inference for Muse Spark Open, SGLang CPU leverages Intel AMX acceleration for Attention (sliding window), BF16 GEMM and INT4 WOQ FusedMoE computations. In addition, fused optimizations for some other components, including all normalizations, RoPE, MoE routing and finalizing operations, etc., further improve throughput and reduce inference overhead.",
+          "inlines": [
+            {
+              "text": "To fully realize the benefits of INT4 inference for Muse Spark Open, SGLang CPU leverages Intel AMX acceleration for Attention (sliding window), BF16 GEMM and INT4 WOQ FusedMoE computations. In addition, fused optimizations for some other components, including all normalizations, RoPE, MoE routing and finalizing operations, etc., further improve throughput and reduce inference overhead."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Given the size of the Muse Spark Open model, SGLang CPU provides a practical deployment path for offline inference on Intel Xeon platforms, particularly on Intel® Xeon® 6 with P-core. By leveraging the large memory capacities available on Intel Xeon platforms, organizations can run private offline inference efficiently and scale deployments across existing data center infrastructure.",
+          "inlines": [
+            {
+              "text": "Given the size of the Muse Spark Open model, SGLang CPU provides a practical deployment path for offline inference on Intel Xeon platforms, particularly on Intel® Xeon® 6 with P-core. By leveraging the large memory capacities available on Intel Xeon platforms, organizations can run private offline inference efficiently and scale deployments across existing data center infrastructure."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TPU Support",
+          "inlines": [
+            {
+              "text": "TPU Support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "For the first time, we’re bringing day-0 TPU support to an open-weights model through SGLang-TorchTPU, a native PyTorch backend for LLM, VLM, and diffusion model inference on TPUs. It combines TPU acceleration with SGLang features such as RadixAttention and HiCache to enable cost-efficient, production-ready serving for agentic workloads.",
+          "inlines": [
+            {
+              "text": "For the first time, we’re bringing day-0 TPU support to an open-weights model through SGLang-TorchTPU, a native PyTorch backend for LLM, VLM, and diffusion model inference on TPUs. It combines TPU acceleration with SGLang features such as RadixAttention and HiCache to enable cost-efficient, production-ready serving for agentic workloads."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TPU recipes for Muse Spark Open and access to SGLang-TorchTPU will be available soon. Sign up through this Google Form to receive the latest updates.",
+          "inlines": [
+            {
+              "text": "TPU recipes for Muse Spark Open and access to SGLang-TorchTPU will be available soon. Sign up through this "
+            },
+            {
+              "href": "https://docs.google.com/forms/d/e/1FAIpQLSe2Y8hzyU3KGB2StA-0huulrVsq79A0tSxcBQwjj8vlhLhYuQ/viewform?usp=publish-editor",
+              "text": "Google Form"
+            },
+            {
+              "text": " to receive the latest updates."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Reinforcement Learning",
+          "inlines": [
+            {
+              "text": "Reinforcement Learning"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Trainable Muse Spark Open Backend",
+          "inlines": [
+            {
+              "text": "Trainable Muse Spark Open Backend"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Miles provides distributed training support for Muse Spark Open through Megatron-Core, covering the model's compressed MoE, normalization, and residual gating. Each expert output is normalized independently, then combined as a routing-weighted sum in FP32. The training backend preserves this computation order and these precision boundaries, with backward support for full-parameter updates.",
+          "inlines": [
+            {
+              "text": "Miles provides distributed training support for Muse Spark Open through Megatron-Core, covering the model's compressed MoE, normalization, and residual gating. Each expert output is normalized independently, then combined as a routing-weighted sum in FP32. The training backend preserves this computation order and these precision boundaries, with backward support for full-parameter updates."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open reuses Miles' existing Muon and Adam support for full-parameter RL. Miles' distributed Muon and Adam implementations support chunked GPU updates and CPU or NVMe optimizer-state offload to manage CPU memory usage for large models.",
+          "inlines": [
+            {
+              "text": "Muse Spark Open reuses Miles' existing Muon and Adam support for full-parameter RL. Miles' distributed Muon and Adam implementations support chunked GPU updates and CPU or NVMe optimizer-state offload to manage CPU memory usage for large models."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Token-Consistent Multi-Turn Rollouts",
+          "inlines": [
+            {
+              "text": "Token-Consistent Multi-Turn Rollouts"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Multi-turn RL must preserve the token sequence actually sampled by the model. When tool results or follow-up messages are appended, re-rendering the chat template can change the existing prefix, causing the training sequence to diverge from the original trajectory. We integrated Muse Spark Open with TITO and fixed a template behavior that retroactively changed an earlier message's end marker.",
+          "inlines": [
+            {
+              "text": "Multi-turn RL must preserve the token sequence actually sampled by the model. When tool results or follow-up messages are appended, re-rendering the chat template can change the existing prefix, causing the training sequence to diverge from the original trajectory. We integrated Muse Spark Open with TITO and fixed a template behavior that retroactively changed an earlier message's end marker."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Training Results",
+          "inlines": [
+            {
+              "text": "Training Results"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We trained the full Muse Spark Open language model on DAPO-Math-17K using GRPO on 64 H200 GPUs and on 32 NVIDIA B300 GPUs, with CPU-offloaded Muon or Adam with optimizer states streamed to disk. Each step samples 16 responses for each of 32 prompts, for a batch of 512 responses, with a 4,096-token response cap and xhigh reasoning effort. Rollout uses the BF16 checkpoint on both H200 and B300. Rollout routing replay (R3), which reuses the rollout's expert routing in training, substantially lowers the train–rollout log-probability difference: 0.0044–0.0071 in the runs with R3, against 0.015–0.020 in the run without it. After every weight sync, all rollout engines hold bit-identical weights.",
+          "inlines": [
+            {
+              "text": "We trained the full Muse Spark Open language model on DAPO-Math-17K using GRPO on 64 H200 GPUs and on 32 NVIDIA B300 GPUs, with CPU-offloaded Muon or Adam with optimizer states streamed to disk. Each step samples 16 responses for each of 32 prompts, for a batch of 512 responses, with a 4,096-token response cap and "
+            },
+            {
+              "code": true,
+              "text": "xhigh"
+            },
+            {
+              "text": " reasoning effort. Rollout uses the BF16 checkpoint on both H200 and B300. Rollout routing replay (R3), which reuses the rollout's expert routing in training, substantially lowers the train–rollout log-probability difference: 0.0044–0.0071 in the runs with R3, against 0.015–0.020 in the run without it. After every weight sync, all rollout engines hold bit-identical weights."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Full-language-model RL on DAPO-Math-17K: training reward, train–rollout KL, and mean absolute token log-probability difference. All curves show raw per-step values.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Full-language-model RL on DAPO-Math-17K: training reward, train–rollout KL, and mean absolute token log-probability difference. All curves show raw per-step values."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We also trained a vision-language task, Geometry3K, with the ViT frozen, using the same Adam setup and medium reasoning effort. Test accuracy rose from 88.2% to 94.9% over 30 updates.",
+          "inlines": [
+            {
+              "text": "We also trained a vision-language task, Geometry3K, with the ViT frozen, using the same Adam setup and "
+            },
+            {
+              "code": true,
+              "text": "medium"
+            },
+            {
+              "text": " reasoning effort. Test accuracy rose from 88.2% to 94.9% over 30 updates."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Geometry3K RL with the ViT frozen: test accuracy every five updates (601 problems, four samples each), and raw per-step train–rollout KL and mean absolute token log-probability difference.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Geometry3K RL with the ViT frozen: test accuracy every five updates (601 problems, four samples each), and raw per-step train–rollout KL and mean absolute token log-probability difference."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgements",
+          "inlines": [
+            {
+              "text": "Acknowledgements"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "This work was a collaboration among the SGLang community, Meta, AMD, Nvidia and Intel.",
+          "inlines": [
+            {
+              "text": "This work was a collaboration among the SGLang community, Meta, AMD, Nvidia and Intel."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang Community: Baizhou Zhang, Chunan Zeng, Jimmy Shong, Mao Cheng, Jiajun Li, Yuhao Yang, Alex Nails, Zijie Xia, Liangsheng Yin, Ziang Li",
+          "inlines": [
+            {
+              "text": "SGLang Community: Baizhou Zhang, Chunan Zeng, Jimmy Shong, Mao Cheng, Jiajun Li, Yuhao Yang, Alex Nails, Zijie Xia, Liangsheng Yin, Ziang Li"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Meta: Sidhartha Reddy Potu, Clement Anthonioz Blanc, Ethan Che, Beto de Paola, Varun Vontimitta",
+          "inlines": [
+            {
+              "text": "Meta: Sidhartha Reddy Potu, Clement Anthonioz Blanc, Ethan Che, Beto de Paola, Varun Vontimitta"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AMD: Thomas Wang, Zijie Chen, Jacky Cheng, Wun-guo Huang, Hai Xiao",
+          "inlines": [
+            {
+              "text": "AMD: Thomas Wang, Zijie Chen, Jacky Cheng, Wun-guo Huang, Hai Xiao"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nvidia: Wookje Han, Andrew Briand, Anik Afibuzzaman",
+          "inlines": [
+            {
+              "text": "Nvidia: Wookje Han, Andrew Briand, Anik Afibuzzaman"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Intel: Guobing Chen, Jianan Gu, Fan Zhao",
+          "inlines": [
+            {
+              "text": "Intel: Guobing Chen, Jianan Gu, Fan Zhao"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Appendix",
+          "inlines": [
+            {
+              "text": "Appendix"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Reproduction",
+          "inlines": [
+            {
+              "text": "Reproduction"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The scripts behind the OpenHands sweep are in benchmark/muse_spark_openhands of the bench-openhands-b300-sweep branch. One script builds the serving environment from the dev branch with the docker/muse_spark patches, installs the client, builds the dataset and runs the concurrency ladder from 128 down to 1 on one 8 x B300 node.",
+          "inlines": [
+            {
+              "text": "The scripts behind the OpenHands sweep are in "
+            },
+            {
+              "href": "https://github.com/radixark/sglang-muse-spark/tree/bench-openhands-b300-sweep/benchmark/muse_spark_openhands",
+              "code": true,
+              "text": "benchmark/muse_spark_openhands"
+            },
+            {
+              "text": " of the "
+            },
+            {
+              "code": true,
+              "text": "bench-openhands-b300-sweep"
+            },
+            {
+              "text": " branch. One script builds the serving environment from the "
+            },
+            {
+              "code": true,
+              "text": "dev"
+            },
+            {
+              "text": " branch with the "
+            },
+            {
+              "code": true,
+              "text": "docker/muse_spark"
+            },
+            {
+              "text": " patches, installs the client, builds the dataset and runs the concurrency ladder from 128 down to 1 on one 8 x B300 node."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The server is SGLang from that branch. The client is evalscope at commit acd09b44, using its swe_smith multi-turn plugin.",
+          "inlines": [
+            {
+              "text": "The server is SGLang from that branch. The client is "
+            },
+            {
+              "href": "https://github.com/modelscope/evalscope",
+              "text": "evalscope"
+            },
+            {
+              "text": " at commit "
+            },
+            {
+              "code": true,
+              "text": "acd09b44"
+            },
+            {
+              "text": ", using its "
+            },
+            {
+              "code": true,
+              "text": "swe_smith"
+            },
+            {
+              "text": " multi-turn plugin."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The workload is an OpenHands multi-turn agentic replay built from nebius/SWE-rebench-openhands-trajectories and padded with nvidia/OpenScienceReasoning-2 text: 13 turns per conversation, a 74,160-token first turn and 753 tokens on each later turn (about 80k prompt tokens per request), 220 output tokens per turn, and a ~92% aggregate prefix-cache hit rate. The DFlash acceptance length is fixed at 4.5 through SGLANG_SIMULATE_ACC_LEN, so decode cost reflects that acceptance length rather than the draft's measured quality.",
+          "inlines": [
+            {
+              "text": "The workload is an OpenHands multi-turn agentic replay built from "
+            },
+            {
+              "code": true,
+              "text": "nebius/SWE-rebench-openhands-trajectories"
+            },
+            {
+              "text": " and padded with "
+            },
+            {
+              "code": true,
+              "text": "nvidia/OpenScienceReasoning-2"
+            },
+            {
+              "text": " text: 13 turns per conversation, a 74,160-token first turn and 753 tokens on each later turn (about 80k prompt tokens per request), 220 output tokens per turn, and a ~92% aggregate prefix-cache hit rate. The DFlash acceptance length is fixed at 4.5 through "
+            },
+            {
+              "code": true,
+              "text": "SGLANG_SIMULATE_ACC_LEN"
+            },
+            {
+              "text": ", so decode cost reflects that acceptance length rather than the draft's measured quality."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The server launch commands are as follows, with <cc> set to the rung's concurrency:",
+          "inlines": [
+            {
+              "text": "The server launch commands are as follows, with "
+            },
+            {
+              "code": true,
+              "text": "<cc>"
+            },
+            {
+              "text": " set to the rung's concurrency:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "export SGLANG_SIMULATE_ACC_LEN=4.5 SGLANG_SIMULATE_ACC_METHOD=match-expected SGLANG_SIMULATE_ACC_TOKEN_MODE=real-draft-token\nexport SGLANG_TIMEOUT_KEEP_ALIVE=600 SPT_NOENV=1\nexport OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 PYTHONNOUSERSITE=1 TZ=UTC\nexport SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1 SGLANG_OPT_DEEPGEMM_MEGA_MOE_NUM_MAX_TOKENS_PER_RANK=8192\n\n# concurrency 16 and above: HiCache 160 GB per rank\npython3 -m sglang.launch_server \\\n    --model-path meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --served-model-name meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --quantization modelopt_fp4 \\\n    --moe-runner-backend flashinfer_trtllm \\\n    --tp-size 8 \\\n    --ep-size 8 \\\n    --attention-backend trtllm_mha \\\n    --kv-cache-dtype fp8_e4m3 \\\n    --page-size 128 \\\n    --mem-fraction-static 0.9 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --enable-layernorm-sp \\\n    --enable-megamoe-for-layernorm-sp \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n    --speculative-draft-attention-backend fa4 \\\n    --speculative-num-draft-tokens 8 \\\n    --enable-hierarchical-cache \\\n    --hicache-size 160 \\\n    --max-running-requests <cc> \\\n    --cuda-graph-max-bs-decode <cc> \\\n    --context-length 131072 \\\n    --enable-cache-report \\\n    --tokenizer-worker-num 4 \\\n    --enable-http2 \\\n    --host 0.0.0.0 \\\n    --port 30100\n\n# concurrency 8 and below: no HiCache\npython3 -m sglang.launch_server \\\n    --model-path meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --served-model-name meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --quantization modelopt_fp4 \\\n    --moe-runner-backend flashinfer_trtllm \\\n    --tp-size 8 \\\n    --ep-size 8 \\\n    --attention-backend trtllm_mha \\\n    --kv-cache-dtype fp8_e4m3 \\\n    --page-size 128 \\\n    --mem-fraction-static 0.9 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --enable-layernorm-sp \\\n    --enable-megamoe-for-layernorm-sp \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n    --speculative-draft-attention-backend fa4 \\\n    --speculative-num-draft-tokens 8 \\\n    --max-running-requests <cc> \\\n    --cuda-graph-max-bs-decode <cc> \\\n    --context-length 131072 \\\n    --enable-cache-report \\\n    --tokenizer-worker-num 4 \\\n    --enable-http2 \\\n    --host 0.0.0.0 \\\n    --port 30100\n"
+        },
+        {
+          "type": "heading",
+          "text": "AgentX Reproduction",
+          "inlines": [
+            {
+              "text": "AgentX Reproduction"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The AgentX sweep uses AgentX at commit 89b21867 with the semianalysis_cc_traces_weka_062126 trace in fixed-token mode, temperature 1 and top-p 0.95. Each concurrency level sends requests for one hour and is a single run. Total throughput counts input tokens, including prefix-cache hits, plus output tokens, and p90 interactivity is 1000 divided by the request-level p90 inter-token latency in milliseconds. AgentX keeps the token counts and prefix structure of the recorded traces but generates synthetic prompt text, so the draft's acceptance on the replay would not reflect real text. We therefore fix the DFlash acceptance length at 4.16 through SGLANG_SIMULATE_ACC_LEN. The value is measured, not chosen: it is AgentX's token-weighted acceptance length, 1 + accepted draft tokens / verify steps = 1 + 96,198 / 30,415, from the DFlash v2 draft on 80 real coding first-turn prompts of 158 to 1,581 input tokens.",
+          "inlines": [
+            {
+              "text": "The AgentX sweep uses AgentX at commit "
+            },
+            {
+              "code": true,
+              "text": "89b21867"
+            },
+            {
+              "text": " with the "
+            },
+            {
+              "code": true,
+              "text": "semianalysis_cc_traces_weka_062126"
+            },
+            {
+              "text": " trace in fixed-token mode, temperature 1 and top-p 0.95. Each concurrency level sends requests for one hour and is a single run. Total throughput counts input tokens, including prefix-cache hits, plus output tokens, and p90 interactivity is 1000 divided by the request-level p90 inter-token latency in milliseconds. AgentX keeps the token counts and prefix structure of the recorded traces but generates synthetic prompt text, so the draft's acceptance on the replay would not reflect real text. We therefore fix the DFlash acceptance length at 4.16 through "
+            },
+            {
+              "code": true,
+              "text": "SGLANG_SIMULATE_ACC_LEN"
+            },
+            {
+              "text": ". The value is measured, not chosen: it is AgentX's token-weighted acceptance length, 1 + accepted draft tokens / verify steps = 1 + 96,198 / 30,415, from the DFlash v2 draft on 80 real coding first-turn prompts of 158 to 1,581 input tokens."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The server launch commands are as follows. Concurrency 16 and above enables sequence parallelism, MegaMoE and HiCache; set <hicache_gb> to 120 at concurrency 16 and to 216 at concurrency 32 and 48.",
+          "inlines": [
+            {
+              "text": "The server launch commands are as follows. Concurrency 16 and above enables sequence parallelism, MegaMoE and HiCache; set "
+            },
+            {
+              "code": true,
+              "text": "<hicache_gb>"
+            },
+            {
+              "text": " to 120 at concurrency 16 and to 216 at concurrency 32 and 48."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "export SGLANG_SIMULATE_ACC_LEN=4.16 SGLANG_SIMULATE_ACC_METHOD=match-expected SGLANG_SIMULATE_ACC_TOKEN_MODE=fixed\nexport SGLANG_TIMEOUT_KEEP_ALIVE=1800 OMP_NUM_THREADS=8 TVM_FFI_CUDA_ARCH_LIST=10.3a\nexport SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1 SGLANG_UNIFIED_RADIX_TREE_CORE_BACKEND=python\n\n# concurrency 16 and above: sequence parallelism, MegaMoE and HiCache\nexport SGLANG_OPT_DEEPGEMM_MEGA_MOE_NUM_MAX_TOKENS_PER_RANK=8192\npython3 -m sglang.launch_server \\\n    --model-path meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --served-model-name meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --quantization modelopt_fp4 \\\n    --kv-cache-dtype fp8_e4m3 \\\n    --moe-runner-backend flashinfer_trtllm \\\n    --tp-size 8 \\\n    --ep-size 8 \\\n    --attention-backend trtllm_mha \\\n    --page-size 128 \\\n    --mem-fraction-static 0.9 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --enable-layernorm-sp \\\n    --enable-megamoe-for-layernorm-sp \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n    --speculative-draft-attention-backend fa4 \\\n    --speculative-num-draft-tokens 8 \\\n    --speculative-use-block-verification \\\n    --enable-hierarchical-cache \\\n    --hicache-size <hicache_gb> \\\n    --max-running-requests 192 \\\n    --cuda-graph-max-bs-decode 128 \\\n    --cuda-graph-backend-prefill breakable \\\n    --swa-full-tokens-ratio 0.4 \\\n    --enable-cache-report \\\n    --enable-metrics \\\n    --tokenizer-worker-num 4 \\\n    --enable-http2 \\\n    --host 0.0.0.0 \\\n    --port 30100\n\n# concurrency 8 and below: no sequence parallelism, MegaMoE or HiCache\npython3 -m sglang.launch_server \\\n    --model-path meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --served-model-name meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --quantization modelopt_fp4 \\\n    --kv-cache-dtype fp8_e4m3 \\\n    --moe-runner-backend flashinfer_trtllm \\\n    --tp-size 8 \\\n    --ep-size 8 \\\n    --attention-backend trtllm_mha \\\n    --page-size 128 \\\n    --mem-fraction-static 0.9 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path RadixArk/Muse-Spark-Open-DFlash2 \\\n    --speculative-draft-attention-backend fa4 \\\n    --speculative-num-draft-tokens 8 \\\n    --speculative-use-block-verification \\\n    --max-running-requests 192 \\\n    --cuda-graph-max-bs-decode 128 \\\n    --cuda-graph-backend-prefill breakable \\\n    --swa-full-tokens-ratio 0.4 \\\n    --enable-cache-report \\\n    --enable-metrics \\\n    --tokenizer-worker-num 4 \\\n    --enable-http2 \\\n    --host 0.0.0.0 \\\n    --port 30100\n"
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:24:46.209338Z",
+  "contentMode": "full"
+}

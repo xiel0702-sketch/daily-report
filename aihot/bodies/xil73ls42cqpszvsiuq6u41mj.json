@@ -1,0 +1,788 @@
+{
+  "schemaVersion": 1,
+  "id": "xil73ls42cqpszvsiuq6u41mj",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/xil73ls42cqpszvsiuq6u41mj",
+  "fetchedAt": "2026-10-22T13:18:45.811547Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Agent 智能体",
+    "AI 编码",
+    "教程实践"
+  ],
+  "tags": [
+    "教程/实践",
+    "编码",
+    "Agent"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "作者：Ankit Jain，为 AI Native DevCon 撰写",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "作者：Ankit Jain，为 AI Native DevCon 撰写"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当你的团队合并的拉取请求数量是一年前的四倍，而且几乎没有任何代码是由人类敲出来的，你会怎么做？",
+          "inlines": [
+            {
+              "text": "当你的团队合并的拉取请求数量是一年前的四倍，而且几乎没有任何代码是由人类敲出来的，你会怎么做？"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这就是我的团队如今的处境。我们交付的几乎所有内容都是 AI 生成、人类辅助的，而且数量还在不断攀升。我们最先做了显而易见的事。我们尝试通过使用 AI 审查工具或增加更严格的检查清单来扩展代码审查。这些都没有奏效。\n真正奏效的是彻底放弃逐行阅读代码，转而围绕意图构建一个验证层。",
+          "inlines": [
+            {
+              "text": "这就是我的团队如今的处境。我们交付的几乎所有内容都是 AI 生成、人类辅助的，而且数量还在不断攀升。我们最先做了显而易见的事。我们尝试通过使用 AI 审查工具或增加更严格的检查清单来扩展代码审查。这些都没有奏效。\n真正奏效的是彻底放弃逐行阅读代码，转而围绕意图构建一个验证层。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么为 AI 生成的代码扩展代码审查没有奏效",
+          "inlines": [
+            {
+              "text": "为什么为 AI 生成的代码扩展代码审查没有奏效"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "今年早些时候，我为 Latent Space 写了如何终结代码审查。它火了，而从那以后我就一直在谈论 AI 代码审查的瓶颈。",
+          "inlines": [
+            {
+              "text": "今年早些时候，我为 Latent Space 写了"
+            },
+            {
+              "href": "https://latent.space/p/reviews-dead",
+              "text": "如何终结代码审查"
+            },
+            {
+              "text": "。它火了，而从那以后我就一直在谈论 AI 代码审查的瓶颈。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这个问题反复出现，因为它的成因不会消失。在四倍的数量下，审查成了交付中最慢的一步。",
+          "inlines": [
+            {
+              "text": "这个问题反复出现，因为它的成因不会消失。在四倍的数量下，审查成了交付中最慢的一步。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "大多数使用 AI 编码工具的团队都会遇到代码审查瓶颈，并试图通过增加审查人员、添加 AI 代码审查工具或对代码生成施加更严格规则等组合手段来解决它。但真正的问题在于被审查的内容是什么。一份 diff 告诉你改了什么，但它不会告诉你这个改动本应做什么。",
+          "inlines": [
+            {
+              "text": "大多数使用 AI 编码工具的团队都会遇到代码审查瓶颈，并试图通过增加审查人员、添加 AI 代码审查工具或对代码生成施加更严格规则等组合手段来解决它。但真正的问题在于被审查的内容是什么。一份 diff 告诉你改了什么，但它不会告诉你这个改动本应做什么。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本文涵盖了对我们影响最大的两项实践，以及它们最终契合的框架。",
+          "inlines": [
+            {
+              "text": "本文涵盖了对我们影响最大的两项实践，以及它们最终契合的框架。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "作为基线，我们现在维护一项共享技能，我们称之为“offer-skill”，以发起它的那位工程师命名。它变成了所有人用来理解代码改动的技能。",
+          "inlines": [
+            {
+              "text": "作为基线，我们现在维护一项共享技能，我们称之为“offer-skill”，以发起它的那位工程师命名。它变成了所有人用来理解代码改动的技能。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "审查意图，而非 diff",
+          "inlines": [
+            {
+              "text": "审查意图，而非 diff"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "传统观点认为，人的判断应放在最后。有人阅读代码并判断它看起来是否正确。",
+          "inlines": [
+            {
+              "text": "传统观点认为，人的判断应放在最后。有人阅读代码并判断它看起来是否正确。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对于 AI 生成的代码，这会让审查者陷入困境。他们阅读 400 行代码，试图逆向推断这个改动本应做什么。工单描述只有在团队有维护良好工单的纪律时才有帮助。现实是，大多数工单起草得很糟糕，实际的意图和行为会偏离工单。",
+          "inlines": [
+            {
+              "text": "对于 AI 生成的代码，这会让审查者陷入困境。他们阅读 400 行代码，试图逆向推断这个改动本应做什么。工单描述只有在团队有维护良好工单的纪律时才有帮助。现实是，大多数工单起草得很糟糕，实际的意图和行为会偏离工单。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "所以我们把人的判断移到了前端。在生成任何一行代码之前，我们先审查意图：验收标准、约束条件和边界情况。这正是资深工程师的注意力最有价值的地方，因为在那时修正一个错误的想法几乎不费成本。\n然后我们把该意图当作一份可以验证的契约。每条标准都会得到一个确定性的判定，并附上证据。",
+          "inlines": [
+            {
+              "text": "所以我们把人的判断移到了前端。在生成任何一行代码之前，我们先审查意图：验收标准、约束条件和边界情况。这正是资深工程师的注意力最有价值的地方，因为在那时修正一个错误的想法几乎不费成本。\n然后我们把该意图当作一份可以验证的契约。每条标准都会得到一个确定性的判定，并附上证据。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "现在一次审查看起来不一样了。审查者不再滚动浏览 500 行 AI 生成的 diff。他们看到的是五条标准的判定，以及展示实际发生情况的截图和请求追踪。",
+          "inlines": [
+            {
+              "text": "现在一次审查看起来不一样了。审查者不再滚动浏览 500 行 AI 生成的 diff。他们看到的是五条标准的判定，以及展示实际发生情况的截图和请求追踪。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这对开发者意味着什么？作者和审查者在合并之前都知道代码应该做什么。而如果你无法在一个改动存在之前说清它应该做什么，事后阅读它也不会告诉你。",
+          "inlines": [
+            {
+              "text": "这对开发者意味着什么？作者和审查者在合并之前都知道代码应该做什么。而如果你无法在一个改动存在之前说清它应该做什么，事后阅读它也不会告诉你。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个团队都有一些存在于资深工程师头脑中的标准。它们通过一条又一条审查评论被强制执行。",
+          "inlines": [
+            {
+              "text": "每个团队都有一些存在于资深工程师头脑中的标准。它们通过一条又一条审查评论被强制执行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "翻看你的审查历史，你会看到同样的评论被一遍又一遍地写出来。那些就是藏在纯文本里的团队标准。在四倍的 PR 数量下，手工重复它们本身就成了一种瓶颈。",
+          "inlines": [
+            {
+              "text": "翻看你的审查历史，你会看到同样的评论被一遍又一遍地写出来。那些就是藏在纯文本里的团队标准。在四倍的 PR 数量下，手工重复它们本身就成了一种瓶颈。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "所以我们回溯了 X 中我们反复出现的审查评论，把它们转化为不变量：机器在每次改动时强制执行的可复用规则。",
+          "inlines": [
+            {
+              "text": "所以我们回溯了 X 中我们反复出现的审查评论，把它们转化为不变量：机器在每次改动时强制执行的可复用规则。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一个好的不变量是乏味且具体的。例如：",
+          "inlines": [
+            {
+              "text": "一个好的不变量是乏味且具体的。例如："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "任何带货币的内容都使用 Money 类型。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "不要直接写入 users 表。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "仅使用结构化日志记录器，不要使用 print 语句。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "并非每条评论都符合条件。",
+          "inlines": [
+            {
+              "text": "并非每条评论都符合条件。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你想尝试这一点，先从你最近 1,000 条评审评论开始。你重复最多的 20 条就是你的第一批不变量。你不是在发明规则，你是在写下你已经拥有的规则。\n一旦某项标准成为不变量，就再也不需要有人去标记它了。",
+          "inlines": [
+            {
+              "text": "如果你想尝试这一点，先从你最近 1,000 条评审评论开始。你重复最多的 20 条就是你的第一批不变量。你不是在发明规则，你是在写下你已经拥有的规则。\n一旦某项标准成为不变量，就再也不需要有人去标记它了。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "请记住，这种转变不会一夜之间发生。第一个月很可能感觉团队在做双倍工作：评审代码和构建不变量。与团队设定明确的预期：登记册的建立需要时间。到了第二个月，登记册能捕获足够多的问题，评审量随之减少。到了第三个月，评审者读的是意图，而不是代码。",
+          "inlines": [
+            {
+              "text": "请记住，这种转变不会一夜之间发生。第一个月很可能感觉团队在做双倍工作：评审代码和构建不变量。与团队设定明确的预期：登记册的建立需要时间。到了第二个月，登记册能捕获足够多的问题，评审量随之减少。到了第三个月，评审者读的是意图，而不是代码。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "代码评审没有消失，它改变了形态",
+          "inlines": [
+            {
+              "text": "代码评审没有消失，它改变了形态"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们仍然在做评审。改变的是评审的目的。上面这两项实践，是我现在用来描述它的五步形态中的一部分：",
+          "inlines": [
+            {
+              "text": "我们仍然在做评审。改变的是评审的目的。上面这两项实践，是我现在用来描述它的五步形态中的一部分："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "争论。"
+                },
+                {
+                  "text": "让智能体在拉取请求存在之前就互相挑战对方的方案，此时改变方向成本最低。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "捕获。"
+                },
+                {
+                  "text": "记录意图和验收标准，并把它们放到拉取请求上。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "固化。"
+                },
+                {
+                  "text": "把团队反复重复的评论转化为不变量。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "辩论。"
+                },
+                {
+                  "text": "把人工评审时间花在决策上，而不是 diff 上。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "归属。"
+                },
+                {
+                  "text": "确定谁拥有验证代码的规则。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对我们来说，结果是代码评审不再是瓶颈。资深工程师不再阅读 500 行的 AI 生成 diff。",
+          "inlines": [
+            {
+              "text": "对我们来说，结果是代码评审不再是瓶颈。资深工程师不再阅读 500 行的 AI 生成 diff。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "tl;dr",
+          "inlines": [
+            {
+              "text": "tl;dr"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "把 diff 评审扩展到匹配 AI 产出是行不通的。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在代码生成之前评审意图，并用证据验证每一条标准。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "把你反复出现的评审评论转化为不变量。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "让人类专注于决策以及规则的所有权。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当 AI 编写了你大部分代码时，人类的评审最好花在这次变更应该做什么上。我将在 AI Native DevCon 上完整讲解这套工作流，并附上不变量定义的实时示例和前后对比指标。",
+          "inlines": [
+            {
+              "text": "当 AI 编写了你大部分代码时，人类的评审最好花在这次变更应该做什么上。我将在 AI Native DevCon 上完整讲解这套工作流，并附上不变量定义的实时示例和前后对比指标。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "By Ankit Jain, for AI Native DevCon",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "By Ankit Jain, for AI Native DevCon"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What do you do when your team merges four times more pull requests than it did a year ago, and almost none of that code was typed by a human?",
+          "inlines": [
+            {
+              "text": "What do you do when your team merges four times more pull requests than it did a year ago, and almost none of that code was typed by a human?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That's where my team is today. Almost everything we ship is AI-generated and human-assisted, and the volume keeps climbing. We did the obvious thing first. We tried to scale code review by using AI review tools or adding stricter checklists. None of it worked.\nWhat worked was giving up reading code line-by-line entirely and building a verification layer around intent.",
+          "inlines": [
+            {
+              "text": "That's where my team is today. Almost everything we ship is AI-generated and human-assisted, and the volume keeps climbing. We did the obvious thing first. We tried to scale code review by using AI review tools or adding stricter checklists. None of it worked.\nWhat worked was giving up reading code line-by-line entirely and building a verification layer around intent."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why scaling code review for AI-generated code didn't work",
+          "inlines": [
+            {
+              "text": "Why scaling code review for AI-generated code didn't work"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Earlier this year I wrote How to Kill the Code Review for Latent Space. It went viral, and I haven't stopped talking about the AI code review bottleneck since.",
+          "inlines": [
+            {
+              "text": "Earlier this year I wrote "
+            },
+            {
+              "href": "https://latent.space/p/reviews-dead",
+              "text": "How to Kill the Code Review"
+            },
+            {
+              "text": " for Latent Space. It went viral, and I haven't stopped talking about the AI code review bottleneck since."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The problem keeps coming up because its cause isn't going away. At four times the volume, review became the slowest step in shipping.",
+          "inlines": [
+            {
+              "text": "The problem keeps coming up because its cause isn't going away. At four times the volume, review became the slowest step in shipping."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Most teams that use AI coding tools run into the code review bottleneck and try to solve it with some combination of more reviewers, adding AI code review tools, or stricter rules for code generation. But the real problem is what's being reviewed. A diff tells you what changed, but it doesn't tell you what the change was supposed to do.",
+          "inlines": [
+            {
+              "text": "Most teams that use AI coding tools run into the code review bottleneck and try to solve it with some combination of more reviewers, adding AI code review tools, or stricter rules for code generation. But the real problem is what's being reviewed. A diff tells you what changed, but it doesn't tell you what the change was supposed to do."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This post covers the two practices that made the most significant difference for us, and the framework they ended up fitting into.",
+          "inlines": [
+            {
+              "text": "This post covers the two practices that made the most significant difference for us, and the framework they ended up fitting into."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As a baseline, we now maintain a shared skill that we call \"offer-skill,\" named after our engineer who started it. It turned into the skill that everyone uses to understand the code change.",
+          "inlines": [
+            {
+              "text": "As a baseline, we now maintain a shared skill that we call \"offer-skill,\" named after our engineer who started it. It turned into the skill that everyone uses to understand the code change."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Review the intent, not the diff",
+          "inlines": [
+            {
+              "text": "Review the intent, not the diff"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The conventional wisdom says human judgment belongs at the end. Someone reads the code and decides whether it looks right.",
+          "inlines": [
+            {
+              "text": "The conventional wisdom says human judgment belongs at the end. Someone reads the code and decides whether it looks right."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With AI-generated code, that puts the reviewer in a bad spot. They read 400 lines and try to reverse-engineer what the change was meant to do. The ticket description only helps if there is a team discipline of maintaining good tickets. The reality is that most tickets are poorly drafted, and the actual intent and behavior drift from the ticket.",
+          "inlines": [
+            {
+              "text": "With AI-generated code, that puts the reviewer in a bad spot. They read 400 lines and try to reverse-engineer what the change was meant to do. The ticket description only helps if there is a team discipline of maintaining good tickets. The reality is that most tickets are poorly drafted, and the actual intent and behavior drift from the ticket."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So we moved human judgment to the front. Before a single line is generated, we review the intent: the acceptance criteria, the constraints, and the edge cases. That's where a senior engineer's attention is worth the most, because a wrong idea costs almost nothing to fix at that point.\nThen we treat that intent as a contract we can verify. Each criterion gets a deterministic verdict, with evidence attached.",
+          "inlines": [
+            {
+              "text": "So we moved human judgment to the front. Before a single line is generated, we review the intent: the acceptance criteria, the constraints, and the edge cases. That's where a senior engineer's attention is worth the most, because a wrong idea costs almost nothing to fix at that point.\nThen we treat that intent as a contract we can verify. Each criterion gets a deterministic verdict, with evidence attached."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A review looks different now. The reviewer isn't scrolling through a 500-line AI-generated diff. They're looking at five criteria verdicts, with screenshots and request traces that show what happened.",
+          "inlines": [
+            {
+              "text": "A review looks different now. The reviewer isn't scrolling through a 500-line AI-generated diff. They're looking at five criteria verdicts, with screenshots and request traces that show what happened."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What does this mean for devs? The author and the reviewer both know what the code is supposed to do before it's merged. And if you can't say what a change should do before it exists, reading it afterward won't tell you.",
+          "inlines": [
+            {
+              "text": "What does this mean for devs? The author and the reviewer both know what the code is supposed to do before it's merged. And if you can't say what a change should do before it exists, reading it afterward won't tell you."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Every team has standards that live in senior engineers' heads. They get enforced one review comment at a time.",
+          "inlines": [
+            {
+              "text": "Every team has standards that live in senior engineers' heads. They get enforced one review comment at a time."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Look through your review history, and you'll see the same comments written over and over. Those are team standards hiding in plain text. At four times the PR volume, repeating them by hand becomes a bottleneck of its own.",
+          "inlines": [
+            {
+              "text": "Look through your review history, and you'll see the same comments written over and over. Those are team standards hiding in plain text. At four times the PR volume, repeating them by hand becomes a bottleneck of its own."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So we went back through X our recurring review comments and turned them into invariants: reusable rules that a machine enforces on every change.",
+          "inlines": [
+            {
+              "text": "So we went back through X our recurring review comments and turned them into invariants: reusable rules that a machine enforces on every change."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A good invariant is boring and specific. For example:",
+          "inlines": [
+            {
+              "text": "A good invariant is boring and specific. For example:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Use the Money type for anything with a currency."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "No direct writes to the users table."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Structured logger only, no print statements."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Not every comment qualifies.",
+          "inlines": [
+            {
+              "text": "Not every comment qualifies."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you want to try this, start with your last 1,000 review comments. The 20 you repeat most are your first invariants. You aren't inventing rules. You're writing down the ones you already have.\nOnce a standard is an invariant, nobody has to flag it again.",
+          "inlines": [
+            {
+              "text": "If you want to try this, start with your last 1,000 review comments. The 20 you repeat most are your first invariants. You aren't inventing rules. You're writing down the ones you already have.\nOnce a standard is an invariant, nobody has to flag it again."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Have in mind that the transition will not happen overnight. Month one will most likely feel like the team is doing double work: reviewing code and building invariants. Set clear expectations with the team: the register takes time to build. During month two, the register catches enough that reviews shrink. In month three, the reviewer reads intent, not code.",
+          "inlines": [
+            {
+              "text": "Have in mind that the transition will not happen overnight. Month one will most likely feel like the team is doing double work: reviewing code and building invariants. Set clear expectations with the team: the register takes time to build. During month two, the register catches enough that reviews shrink. In month three, the reviewer reads intent, not code."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Code review didn't disappear, it changed shape",
+          "inlines": [
+            {
+              "text": "Code review didn't disappear, it changed shape"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We still review. What changed is what the review is for. The two practices above are part of a five-step shape I now use to describe it:",
+          "inlines": [
+            {
+              "text": "We still review. What changed is what the review is for. The two practices above are part of a five-step shape I now use to describe it:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Argue."
+                },
+                {
+                  "text": " Let agents challenge each other's solutions before the pull request exists, when changing course is cheapest."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Capture."
+                },
+                {
+                  "text": " Record the intent and acceptance criteria, and put them on the pull request."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Codify."
+                },
+                {
+                  "text": " Turn the comments your team keeps repeating into invariants."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Debate."
+                },
+                {
+                  "text": " Spend human review time on the decisions, not the diff."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Own."
+                },
+                {
+                  "text": " Decide who owns the rules that verify the code."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For us, the result is that code review is no longer the bottleneck. Senior engineers stopped reading 500-line AI-generated diffs.",
+          "inlines": [
+            {
+              "text": "For us, the result is that code review is no longer the bottleneck. Senior engineers stopped reading 500-line AI-generated diffs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "tl;dr",
+          "inlines": [
+            {
+              "text": "tl;dr"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Scaling diff review to match AI output doesn't work."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Review the intent before the code is generated, and verify each criterion with evidence."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Turn your recurring review comments into invariants."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Keep humans on the decisions and on ownership of the rules."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When AI writes most of your code, a human's review is best spent on what the change should do. I'll walk through the full workflow at AI Native DevCon, with live examples of invariant definitions and before/after metrics.",
+          "inlines": [
+            {
+              "text": "When AI writes most of your code, a human's review is best spent on what the change should do. I'll walk through the full workflow at AI Native DevCon, with live examples of invariant definitions and before/after metrics."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:18:45.813178Z",
+  "contentMode": "full"
+}

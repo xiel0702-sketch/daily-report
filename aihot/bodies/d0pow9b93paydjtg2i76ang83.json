@@ -1,0 +1,2491 @@
+{
+  "schemaVersion": 1,
+  "id": "d0pow9b93paydjtg2i76ang83",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/d0pow9b93paydjtg2i76ang83",
+  "fetchedAt": "2026-10-22T13:22:50.089528Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "NVIDIA 英伟达",
+    "推理能力",
+    "部署工程",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "部署/工程",
+    "推理"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/ceb3a4913e880a246dc427e3f3e2c18c0bb73a3826af57e7987b93ec34185492.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "TL;DR：Reflection 的 Beam 是一个 501B 参数的 MoE，每个 token 激活 23B 参数。vLLM 从第 0 天起就支持它，并在 NVIDIA Blackwell 上对其进行了优化：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "TL;DR："
+            },
+            {
+              "text": "Reflection 的 Beam 是一个 501B 参数的 MoE，每个 token 激活 23B 参数。vLLM 从第 0 天起就支持它，并在 NVIDIA Blackwell 上对其进行了优化："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "完整功能支持。"
+                },
+                {
+                  "text": "推理、工具调用和结构化输出开箱即用，你可以用张量并行、数据并行或专家并行来运行该模型。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "智能体驱动的优化。"
+                },
+                {
+                  "text": "编码智能体自主优化了该模型，使 batch-1 解码比我们的首个实现快 2.71 倍，预填充快 1.87 倍。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "带自适应验证的 DFlash2。"
+                },
+                {
+                  "text": "借助 Beam 的 DFlash2 草稿模型，单个请求在 TP8 上达到 "
+                },
+                {
+                  "bold": true,
+                  "text": "708 tokens/s"
+                },
+                {
+                  "text": "，接受长度为 3.7。自适应验证会在每一步决定有多少草稿 token 值得验证，在高并发下额外带来 "
+                },
+                {
+                  "bold": true,
+                  "text": "10% 的吞吐量提升"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要试用它，请使用我们的 Docker 镜像 vllm/vllm-openai:reflection-beam：",
+          "inlines": [
+            {
+              "text": "要试用它，请使用我们的 Docker 镜像 "
+            },
+            {
+              "code": true,
+              "text": "vllm/vllm-openai:reflection-beam"
+            },
+            {
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "docker run --gpus all --ipc=host -p 8000:8000 \\\n  -v ~/.cache/huggingface:/root/.cache/huggingface \\\n  vllm/vllm-openai:reflection-beam \\\n  reflection/Beam-1.0-501B-A23B-NVFP4 \\\n  -tp 4 \\\n  --max-num-seqs 128 \\\n  --reasoning-parser beam \\\n  --tool-call-parser beam --enable-auto-tool-choice \\\n  --kv-cache-dtype fp8 \\\n  --attention-config '{\"backend\":\"FLASHINFER\"}' \\\n  --kernel-config '{\"enable_flashinfer_autotune\":false}' \\\n  --speculative-config '{\n    \"method\": \"dflash\",\n    \"model\": \"reflection/Beam-1.0-501B-A23B-DFlash2\",\n    \"num_speculative_tokens\": 7,\n    \"attention_backend\": \"FLASH_ATTN\"\n  }'"
+        },
+        {
+          "type": "heading",
+          "text": "模型架构",
+          "inlines": [
+            {
+              "text": "模型架构"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 是一个 52 层的 MoE 解码器，隐藏维度为 5120。MoE 路由遵循 DeepSeek-V3。主要区别在于注意力层以及残差流的归一化方式。",
+          "inlines": [
+            {
+              "text": "Beam 是一个 52 层的 MoE 解码器，隐藏维度为 5120。MoE 路由遵循 DeepSeek-V3。主要区别在于注意力层以及残差流的归一化方式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "图 1：Beam 的层堆叠和一个稀疏解码器层。金色标记的是与标准 pre-norm MoE 不同的部分。全屏打开。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 1：Beam 的层堆叠和一个稀疏解码器层。金色标记的是与标准 pre-norm MoE 不同的部分。"
+            },
+            {
+              "italic": true,
+              "href": "https://vllm.ai/blog-assets/interactive_pages/beam-arch.html",
+              "text": "全屏打开"
+            },
+            {
+              "italic": true,
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "注意力",
+          "inlines": [
+            {
+              "text": "注意力"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "混合滑动窗口和 NoPE 层。"
+                },
+                {
+                  "text": "43 层使用带 RoPE 的滑动窗口注意力，窗口为最近 512 个 token。其余 9 层（每第六层，加上最后一层）在完整上下文上做注意力，且"
+                },
+                {
+                  "bold": true,
+                  "text": "不使用位置编码（NoPE）"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "NoPE 层上的 SSMax。"
+                },
+                {
+                  "text": "没有 RoPE 时，注意力会随着键数量增长而变得平坦。SSMax 将每个 query 乘以 "
+                },
+                {
+                  "code": true,
+                  "text": "(1 + p/2048)^0.1"
+                },
+                {
+                  "text": "，其中 "
+                },
+                {
+                  "code": true,
+                  "text": "p"
+                },
+                {
+                  "text": " 是从 1 开始的位置，因此 softmax 会随着上下文增长而变得更锐利。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "带逐头 Q/K 归一化的 GQA。"
+                },
+                {
+                  "text": "48 个 query 头，8 个 KV 头，头维度 128。Q 和 K 在 RoPE 或 SSMax 之前按头进行 RMS 归一化。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Sigmoid 输出门。"
+                },
+                {
+                  "text": "在 "
+                },
+                {
+                  "code": true,
+                  "text": "o_proj"
+                },
+                {
+                  "text": " 之前，每个头的输出乘以 σ(gate + bias)，其中 gate 来自其自身的全宽投影，并带有一个学习到的逐头 bias。一个头可以逐 token 被调低或关闭。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Small KV cache."
+                },
+                {
+                  "text": " Only the 9 full-attention layers keep KV for the whole sequence:"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "每个 token 有 9 × 2 × 8 × 128 个值，即 BF16 下 36 KiB，FP8 下 18 KiB。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "在分片之前，完整 1M token 上下文约需 18 GiB 的 FP8 KV。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MoE 与残差流",
+          "inlines": [
+            {
+              "text": "MoE 与残差流"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "DeepSeek-V3 风格 MoE。"
+                },
+                {
+                  "text": "256 个路由专家（d_ff 2,560，NVFP4），路由方式与 DeepSeek-V3 相同：sigmoid 分数加校正 bias 从 8 个专家组中选出最好的 4 个，然后选出前 8 个专家，重新归一化后的权重再乘以 2.5。与 DeepSeek-V3 不同，这里没有共享专家。第 0–2 层改用稠密 SwiGLU MLP（d_ff 20,480）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "FP32 路由器。"
+                },
+                {
+                  "text": "5120 × 256 的路由器权重、累加和 logits 全部为 FP32。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "三明治归一化。"
+                },
+                {
+                  "text": "每个子层之前有一个 RMSNorm，之后还有一个。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "深度缩放残差。"
+                },
+                {
+                  "text": "第 "
+                },
+                {
+                  "italic": true,
+                  "text": "n"
+                },
+                {
+                  "text": " 次残差相加计算的是 "
+                },
+                {
+                  "code": true,
+                  "text": "h ← √((n−1)/n)·h + x/√n"
+                },
+                {
+                  "text": " 而不是 "
+                },
+                {
+                  "code": true,
+                  "text": "h + x"
+                },
+                {
+                  "text": "。在子层输出为单位方差的情况下，残差流在每个深度都保持单位方差，而不是随之增长。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "智能体驱动的优化",
+          "inlines": [
+            {
+              "text": "智能体驱动的优化"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们最初的实现版本是一个未优化、几乎纯 PyTorch 的模型版本。随后我们用编码智能体自主优化它：它们对模型进行性能分析、编写 kernel，并对每项改动进行基准测试。在 TP8 上，以下七项改动将 batch-1 解码从每步 8.95 ms 降至 3.30 ms，并将 8 × 2K 预填充从 328 ms 降至 176 ms。",
+          "inlines": [
+            {
+              "text": "我们最初的实现版本是一个未优化、几乎纯 PyTorch 的模型版本。随后我们用编码智能体自主优化它：它们对模型进行性能分析、编写 kernel，并对每项改动进行基准测试。在 TP8 上，以下七项改动将 batch-1 解码从每步 8.95 ms 降至 3.30 ms，并将 8 × 2K 预填充从 328 ms 降至 176 ms。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "图 2：每次更改后 GB200 上的 TP8 模型前向延迟，针对 batch-1 解码和约 100K 上下文下的 8 × 2,048 token 预填充。两个面板使用不同的刻度。查看表格以获取精确值，或 全屏打开。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 2：每次更改后 GB200 上的 TP8 模型前向延迟，针对 batch-1 解码和约 100K 上下文下的 8 × 2,048 token 预填充。两个面板使用不同的刻度。查看表格以获取精确值，或 "
+            },
+            {
+              "italic": true,
+              "href": "https://vllm.ai/blog-assets/interactive_pages/beam-opt-chart.html",
+              "text": "全屏打开"
+            },
+            {
+              "italic": true,
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "融合 norm → residual → norm"
+                },
+                {
+                  "text": "（解码 −40%）。每个 104 个子层边界处的 post-norm、缩放残差加法和下一个 pre-norm 现在作为一个 Triton kernel 运行，使用 FP32 数学和参考实现的 BF16 舍入点。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "融合 Q/K norm、RoPE/SSMax 和输出门。"
+                },
+                {
+                  "text": " 每头的 Q/K RMSNorm 和 RoPE（或 SSMax）作为一个 kernel 运行，sigmoid 门作为另一个。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "将 all-reduce 融合进 norm。"
+                },
+                {
+                  "text": " 每层中的两个 TP all-reduce 都在 norm kernel 内运行，基于 FlashInfer 的 multicast all-reduce。在 MoE 之后，同一个 kernel 还会合并 top-8 专家输出。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "为 FP32 router 专用 GEMM kernel。"
+                },
+                {
+                  "text": " router 过去会回退到通用路径。vLLM 的小批量 FP32 router kernel 现在支持 Beam 的 5120 × 256 形状，保持 FP32 权重、累加和 logits。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "合并 QKV + gate 投影，使用低延迟 GEMM。"
+                },
+                {
+                  "text": " Q、K、V 和 gate 权重在加载时打包成一个矩阵，因此四个投影作为一个 GEMM 运行。对于小批量，它使用低延迟 CuTe DSL GEMM 或 FlashInfer 的 TinyGEMM。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "融合 KV-cache 更新。"
+                },
+                {
+                  "text": " Q/K norm 和 RoPE kernel 现在还会将 K 和 V 写入 KV cache，因此没有单独的 cache-write kernel。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "在一个 kernel 中完成 Dense-MLP 激活"
+                },
+                {
+                  "text": "，用于三个 dense 层。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "融合图",
+          "inlines": [
+            {
+              "text": "融合图"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在这些更改之后，一个 MoE 层在 TP8 上的 batch-1 解码中作为 13 个 kernel 运行。",
+          "inlines": [
+            {
+              "text": "在这些更改之后，一个 MoE 层在 TP8 上的 batch-1 解码中作为 "
+            },
+            {
+              "bold": true,
+              "text": "13 个 kernel"
+            },
+            {
+              "text": " 运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "图 3：一个 MoE 层的 kernel 启动顺序，来自 batch-1 TP8 解码的 rank-0 trace。金色 kernel 是为 Beam 编写、融合或扩展的。每个 kernel 列出它计算的操作。全屏打开。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 3：一个 MoE 层的 kernel 启动顺序，来自 batch-1 TP8 解码的 rank-0 trace。金色 kernel 是为 Beam 编写、融合或扩展的。每个 kernel 列出它计算的操作。"
+            },
+            {
+              "italic": true,
+              "href": "https://vllm.ai/blog-assets/interactive_pages/beam-fused-graph.html",
+              "text": "全屏打开"
+            },
+            {
+              "italic": true,
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "为 Beam 编写、融合或扩展了 6 个 kernel。"
+                },
+                {
+                  "text": " 每个小的 Beam 特定操作都合并到相邻操作中，两个 all-reduce 都位于 norm kernel 内。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "7 个 kernel 来自库："
+                },
+                {
+                  "text": " TRTLLM-gen attention、cuBLAS 输出投影和 TRTLLM NVFP4 MoE 路径（量化、两个路由 kernel、两个分组 GEMM）。剩余时间的大部分在这里，所以它们是下一步。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Attention DP + MegaMoE",
+          "inlines": [
+            {
+              "text": "Attention DP + MegaMoE"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/a824edeaf6d34ecf5f2571aadd86a82f0526597db4694638ef06f968da08120f.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "图 4：FlashInfer CuteDSL NVFP4 MegaMoE 可以将通信与专家计算融合。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 4：FlashInfer CuteDSL NVFP4 MegaMoE 可以将通信与专家计算融合。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在高并发区域，Beam 的性能可以通过将 Attention DP 与 MegaMoE 结合来进一步提升，由 FlashInfer 的 CuTe DSL NVFP4 MegaMoE kernel 提供支持。Finalize + norm 边界融合仍然适用。",
+          "inlines": [
+            {
+              "text": "在高并发区域，Beam 的性能可以通过将 Attention DP 与 MegaMoE 结合来进一步提升，由 FlashInfer 的 CuTe DSL NVFP4 MegaMoE kernel 提供支持。Finalize + norm 边界融合仍然适用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "配置",
+          "inlines": [
+            {
+              "text": "配置"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "峰值输入 token 吞吐量",
+          "inlines": [
+            {
+              "text": "峰值输入 token 吞吐量"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attention DP + MegaMoE",
+          "inlines": [
+            {
+              "text": "Attention DP + MegaMoE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "168.8K tokens / second",
+          "inlines": [
+            {
+              "text": "168.8K tokens / second"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TP (flashinfer_trtllm, flashinfer_nvlink_one_sided)",
+          "inlines": [
+            {
+              "text": "TP ("
+            },
+            {
+              "code": true,
+              "text": "flashinfer_trtllm"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "flashinfer_nvlink_one_sided"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.7K tokens / second",
+          "inlines": [
+            {
+              "text": "98.7K tokens / second"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attention DP 与 MegaMoE 结合实现了比 TP4 高 1.71 倍的峰值预填充吞吐量。基准设置：4×GB300，输入序列长度为 32K token，输出序列长度为 1 token，以隔离预填充性能。",
+          "inlines": [
+            {
+              "text": "Attention DP 与 MegaMoE 结合实现了比 TP4 高 1.71 倍的峰值预填充吞吐量。基准设置：4×GB300，输入序列长度为 32K token，输出序列长度为 1 token，以隔离预填充性能。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要启用 Attention DP + MegaMoE，请将 MoE 和并行设置替换为：",
+          "inlines": [
+            {
+              "text": "要启用 Attention DP + MegaMoE，请将 MoE 和并行设置替换为："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  --moe-backend flashinfer_moe_ep_cutedsl \\\n  --data-parallel-size 4 \\\n  --enable-expert-parallel"
+        },
+        {
+          "type": "heading",
+          "text": "DFlash2 推测解码",
+          "inlines": [
+            {
+              "text": "DFlash2 推测解码"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 附带一个 DFlash2 草稿头，vLLM 从第 0 天起就支持。它不是一次草拟一个 token，而是从目标模型的隐藏状态中在单次前向传递中预测整个 token 块。",
+          "inlines": [
+            {
+              "text": "Beam 附带一个 "
+            },
+            {
+              "bold": true,
+              "text": "DFlash2"
+            },
+            {
+              "text": " 草稿头，vLLM 从第 0 天起就支持。它不是一次草拟一个 token，而是从目标模型的隐藏状态中在单次前向传递中预测整个 token 块。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Drafter。"
+                },
+                {
+                  "text": " 5 个滑动窗口层，从 5 个目标层读取隐藏状态，并共享目标的 embedding 和 LM head。一个分组卷积和一个小型候选选择器恢复了并行 drafter 失去的部分从左到右依赖关系。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "自适应验证。"
+                },
+                {
+                  "text": " 借助 "
+                },
+                {
+                  "code": true,
+                  "text": "\"enable_adaptive_verification\": true"
+                },
+                {
+                  "text": "，vLLM 预测每个 draft token 被接受的可能性，只验证那些值得其成本的 token，而不是每步固定数量。DFlash2 没有置信度头，因此接受估计来自 drafter 自身的 logits（参见我们"
+                },
+                {
+                  "href": "https://vllm.ai/blog/2026-10-14-adaptive-verification-online-estimator",
+                  "text": "关于自适应验证的近期文章"
+                },
+                {
+                  "text": "）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "内核。"
+                },
+                {
+                  "text": " drafter 的卷积、归一化和 KV 写入被融合，整个 draft 步骤在 CUDA graph 中运行。FP8 KV cache 也适用于 drafter，且接受率不变。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 TP8 上的服务结果，包含和不包含自适应验证，在 SPEED-Bench 的 throughput_1k 分割的低熵类别上：约 1K token 的提示，主要是代码补全和文本排序，使用贪心解码，最多 4K 输出 token。低熵文本更容易预测，因此在开放式聊天中预期接受率会更低。",
+          "inlines": [
+            {
+              "text": "在 TP8 上的服务结果，包含和不包含自适应验证，在 "
+            },
+            {
+              "href": "https://huggingface.co/datasets/nvidia/SPEED-Bench",
+              "text": "SPEED-Bench"
+            },
+            {
+              "text": " 的 "
+            },
+            {
+              "code": true,
+              "text": "throughput_1k"
+            },
+            {
+              "text": " 分割的低熵类别上：约 1K token 的提示，主要是代码补全和文本排序，使用贪心解码，最多 4K 输出 token。低熵文本更容易预测，因此在开放式聊天中预期接受率会更低。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "并发数",
+          "inlines": [
+            {
+              "text": "并发数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "固定 draft (tok/s)",
+          "inlines": [
+            {
+              "text": "固定 draft (tok/s)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "自适应 (tok/s)",
+          "inlines": [
+            {
+              "text": "自适应 (tok/s)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "变化",
+          "inlines": [
+            {
+              "text": "变化"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "接受长度",
+          "inlines": [
+            {
+              "text": "接受长度"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "708",
+          "inlines": [
+            {
+              "text": "708"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "707",
+          "inlines": [
+            {
+              "text": "707"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−0.1%",
+          "inlines": [
+            {
+              "text": "−0.1%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.71 → 3.61",
+          "inlines": [
+            {
+              "text": "3.71 → 3.61"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,232",
+          "inlines": [
+            {
+              "text": "3,232"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,221",
+          "inlines": [
+            {
+              "text": "3,221"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−0.3%",
+          "inlines": [
+            {
+              "text": "−0.3%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.67 → 3.57",
+          "inlines": [
+            {
+              "text": "3.67 → 3.57"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7,744",
+          "inlines": [
+            {
+              "text": "7,744"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8,275",
+          "inlines": [
+            {
+              "text": "8,275"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+6.9%",
+          "inlines": [
+            {
+              "text": "+6.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.68 → 3.29",
+          "inlines": [
+            {
+              "text": "3.68 → 3.29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "128",
+          "inlines": [
+            {
+              "text": "128"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15,012",
+          "inlines": [
+            {
+              "text": "15,012"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16,632",
+          "inlines": [
+            {
+              "text": "16,632"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+10.8%",
+          "inlines": [
+            {
+              "text": "+10.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.68 → 3.23",
+          "inlines": [
+            {
+              "text": "3.68 → 3.23"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "自适应验证在负载下带来收益。在并发数 128 时，它将输出吞吐量提高 10.8%，并将 p99 TPOT 降低 9%，同时每步验证更少的 draft token，这略微降低了接受长度，但节省的计算量超过损失。在低并发下，额外 draft token 几乎免费，因此它是中性的。",
+          "inlines": [
+            {
+              "text": "自适应验证在负载下带来收益。在并发数 128 时，它将输出吞吐量提高 10.8%，并将 p99 TPOT 降低 9%，同时每步验证更少的 draft token，这略微降低了接受长度，但节省的计算量超过损失。在低并发下，额外 draft token 几乎免费，因此它是中性的。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "快速开始",
+          "inlines": [
+            {
+              "text": "快速开始"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "本文顶部的命令是一个不错的默认值：在单个 GB300 节点上使用 TP4，搭配 DFlash2 和 FP8 KV cache。要启用自适应验证，请将 \"enable_adaptive_verification\": true 添加到 --speculative-config。上述其他优化默认开启。",
+          "inlines": [
+            {
+              "text": "本文顶部的命令是一个不错的默认值：在单个 GB300 节点上使用 TP4，搭配 DFlash2 和 FP8 KV cache。要启用自适应验证，请将 "
+            },
+            {
+              "code": true,
+              "text": "\"enable_adaptive_verification\": true"
+            },
+            {
+              "text": " 添加到 "
+            },
+            {
+              "code": true,
+              "text": "--speculative-config"
+            },
+            {
+              "text": "。上述其他优化默认开启。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Choosing a parallel setup."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "要获得最低延迟，请使用 TP4 或 TP8。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "要获得更高吞吐量，请使用数据并行注意力与专家并行，例如 "
+                },
+                {
+                  "code": true,
+                  "text": "-dp 4 --enable-expert-parallel"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "推理和工具调用。"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "beam"
+                },
+                {
+                  "text": " 解析器读取随 checkpoint 一起提供的响应模板。默认情况下，vLLM 还会将每个响应约束到该模板，因此工具调用始终能解析并匹配每个工具的 JSON schema。"
+                },
+                {
+                  "code": true,
+                  "text": "response_format"
+                },
+                {
+                  "text": " 和 "
+                },
+                {
+                  "code": true,
+                  "text": "thinking_token_budget"
+                },
+                {
+                  "text": " 照常工作。要关闭默认约束，请设置 "
+                },
+                {
+                  "code": true,
+                  "text": "VLLM_BEAM_ALWAYS_CONSTRAIN_OUTPUT=0"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "SkyRL 强化学习的 Day 0 支持",
+          "inlines": [
+            {
+              "text": "SkyRL 强化学习的 Day 0 支持"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还与 SkyRL 团队合作，为 Beam 上的 RL 提供 Day 0 支持。开箱即支持 LoRA、BF16 全量微调和 MXFP8 RL，并为 500B 规模升级了 RL 栈。",
+          "inlines": [
+            {
+              "text": "我们还与 SkyRL 团队合作，为 Beam 上的 RL 提供 Day 0 支持。开箱即支持 LoRA、BF16 全量微调和 MXFP8 RL，并为 500B 规模升级了 RL 栈。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SkyRL 团队使用 DAPO 配方对 Beam 模型进行了后训练，推理使用 vLLM，训练使用 Megatron。LoRA、全量微调和 MXFP8 RL 在 50 个训练步骤（即 100 次优化器更新，推理 minimal）中取得了相似的性能提升，在 AIME25 上的平均准确率（avg@8）从约 61% 跃升至约 79%。在 LoRA 和 BF16 全量微调启用 Rollout Routing Replay (R3) 的情况下，Megatron 与 vLLM 之间的平均绝对 log 概率差保持在 0.01 以下，MXFP8 RL 则保持在 0.03 以下。",
+          "inlines": [
+            {
+              "text": "SkyRL 团队使用 DAPO 配方对 Beam 模型进行了后训练，推理使用 vLLM，训练使用 Megatron。LoRA、全量微调和 MXFP8 RL 在 50 个训练步骤（即 100 次优化器更新，推理 "
+            },
+            {
+              "code": true,
+              "text": "minimal"
+            },
+            {
+              "text": "）中取得了相似的性能提升，在 AIME25 上的平均准确率（avg@8）从约 61% 跃升至约 79%。在 LoRA 和 BF16 全量微调启用 Rollout Routing Replay (R3) 的情况下，Megatron 与 vLLM 之间的平均绝对 log 概率差保持在 0.01 以下，MXFP8 RL 则保持在 0.03 以下。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/10eacd99645a6354065af8b211789fbf5fdb2473e1980a74af08a14c511d6bfd.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "查看 SkyRL 博客了解更多详情！",
+          "inlines": [
+            {
+              "text": "查看 SkyRL "
+            },
+            {
+              "href": "https://blog.skyrl.ai/day-0-beam",
+              "text": "博客"
+            },
+            {
+              "text": "了解更多详情！"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "致谢",
+          "inlines": [
+            {
+              "text": "致谢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "这项工作由 Inferact、Reflection 和 Nvidia 团队紧密合作完成：",
+          "inlines": [
+            {
+              "text": "这项工作由 Inferact、Reflection 和 Nvidia 团队紧密合作完成："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Inferact："
+                },
+                {
+                  "text": " Woosuk Kwon、Ziqi Zhao、Ao Shen、Tiezhen Wang"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Reflection："
+                },
+                {
+                  "text": " Kaixing Wu、Yoni Gozlan、Neil Gollapudi、Thibaut Barroyer、Aymen Kallala、Matthias Reso、Florent Gbelidji"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Nvidia："
+                },
+                {
+                  "text": " Siyuan Fu"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/ceb3a4913e880a246dc427e3f3e2c18c0bb73a3826af57e7987b93ec34185492.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "TL;DR: Reflection's Beam is a 501B-parameter MoE with 23B active parameters per token. vLLM supports it from day 0 and optimizes it on NVIDIA Blackwell:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "TL;DR:"
+            },
+            {
+              "text": " Reflection's Beam is a 501B-parameter MoE with 23B active parameters per token. vLLM supports it from day 0 and optimizes it on NVIDIA Blackwell:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Full feature support."
+                },
+                {
+                  "text": " Reasoning, tool calling, and structured outputs work out of the box, and you can run the model with tensor, data, or expert parallelism."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Agent-driven optimization."
+                },
+                {
+                  "text": " Coding agents optimized the model autonomously, making batch-1 decode 2.71× faster and prefill 1.87× faster than our first implementation."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "DFlash2 with adaptive verification."
+                },
+                {
+                  "text": " With Beam's DFlash2 drafter, a single request reaches "
+                },
+                {
+                  "bold": true,
+                  "text": "708 tokens/s"
+                },
+                {
+                  "text": " on TP8, with an acceptance length of 3.7. Adaptive verification, which decides each step how many draft tokens are worth verifying, adds "
+                },
+                {
+                  "bold": true,
+                  "text": "10% more throughput"
+                },
+                {
+                  "text": " at high concurrency."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To try it, use our Docker image vllm/vllm-openai:reflection-beam:",
+          "inlines": [
+            {
+              "text": "To try it, use our Docker image "
+            },
+            {
+              "code": true,
+              "text": "vllm/vllm-openai:reflection-beam"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "docker run --gpus all --ipc=host -p 8000:8000 \\\n  -v ~/.cache/huggingface:/root/.cache/huggingface \\\n  vllm/vllm-openai:reflection-beam \\\n  reflection/Beam-1.0-501B-A23B-NVFP4 \\\n  -tp 4 \\\n  --max-num-seqs 128 \\\n  --reasoning-parser beam \\\n  --tool-call-parser beam --enable-auto-tool-choice \\\n  --kv-cache-dtype fp8 \\\n  --attention-config '{\"backend\":\"FLASHINFER\"}' \\\n  --kernel-config '{\"enable_flashinfer_autotune\":false}' \\\n  --speculative-config '{\n    \"method\": \"dflash\",\n    \"model\": \"reflection/Beam-1.0-501B-A23B-DFlash2\",\n    \"num_speculative_tokens\": 7,\n    \"attention_backend\": \"FLASH_ATTN\"\n  }'"
+        },
+        {
+          "type": "heading",
+          "text": "Model architecture",
+          "inlines": [
+            {
+              "text": "Model architecture"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam is a 52-layer MoE decoder with hidden size 5120. The MoE routing follows DeepSeek-V3. The main differences are in the attention layers and in how the residual stream is normalized.",
+          "inlines": [
+            {
+              "text": "Beam is a 52-layer MoE decoder with hidden size 5120. The MoE routing follows DeepSeek-V3. The main differences are in the attention layers and in how the residual stream is normalized."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 1: Beam's layer stack and one sparse decoder layer. Gold marks the parts that differ from a standard pre-norm MoE. Open it full-screen.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 1: Beam's layer stack and one sparse decoder layer. Gold marks the parts that differ from a standard pre-norm MoE. "
+            },
+            {
+              "italic": true,
+              "href": "https://vllm.ai/blog-assets/interactive_pages/beam-arch.html",
+              "text": "Open it full-screen"
+            },
+            {
+              "italic": true,
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Attention",
+          "inlines": [
+            {
+              "text": "Attention"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Hybrid sliding-window and NoPE layers."
+                },
+                {
+                  "text": " 43 layers use sliding-window attention over the last 512 tokens, with RoPE. The other 9 (every sixth layer, plus the last) attend over the full context with "
+                },
+                {
+                  "bold": true,
+                  "text": "no positional encoding (NoPE)"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "SSMax on NoPE layers."
+                },
+                {
+                  "text": " Without RoPE, attention flattens as the number of keys grows. SSMax scales each query by "
+                },
+                {
+                  "code": true,
+                  "text": "(1 + p/2048)^0.1"
+                },
+                {
+                  "text": ", where "
+                },
+                {
+                  "code": true,
+                  "text": "p"
+                },
+                {
+                  "text": " is the 1-based position, so the softmax sharpens as the context grows."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "GQA with per-head Q/K norm."
+                },
+                {
+                  "text": " 48 query heads, 8 KV heads, head dim 128. Q and K are RMS-normalized per head before RoPE or SSMax."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Sigmoid output gate."
+                },
+                {
+                  "text": " Before "
+                },
+                {
+                  "code": true,
+                  "text": "o_proj"
+                },
+                {
+                  "text": ", each head's output is multiplied by σ(gate + bias), where the gate comes from its own full-width projection with a learned per-head bias. A head can be turned down or off token by token."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Small KV cache."
+                },
+                {
+                  "text": " Only the 9 full-attention layers keep KV for the whole sequence:"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "9 × 2 × 8 × 128 values per token, or 36 KiB in BF16 and 18 KiB in FP8."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "About 18 GiB of FP8 KV for a full 1M-token context, before sharding."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MoE and residual stream",
+          "inlines": [
+            {
+              "text": "MoE and residual stream"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "DeepSeek-V3-style MoE."
+                },
+                {
+                  "text": " 256 routed experts (d_ff 2,560, NVFP4), routed the same way as DeepSeek-V3: sigmoid scores plus a correction bias pick the best 4 of 8 expert groups, then the top 8 experts, and the renormalized weights are scaled by 2.5. Unlike DeepSeek-V3, there is no shared expert. Layers 0–2 use a dense SwiGLU MLP (d_ff 20,480) instead."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "FP32 router."
+                },
+                {
+                  "text": " The 5120 × 256 router weights, accumulation, and logits are all FP32."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Sandwich norm."
+                },
+                {
+                  "text": " Every sublayer has an RMSNorm before it and another after it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Depth-scaled residuals."
+                },
+                {
+                  "text": " The "
+                },
+                {
+                  "italic": true,
+                  "text": "n"
+                },
+                {
+                  "text": "-th residual add computes "
+                },
+                {
+                  "code": true,
+                  "text": "h ← √((n−1)/n)·h + x/√n"
+                },
+                {
+                  "text": " instead of "
+                },
+                {
+                  "code": true,
+                  "text": "h + x"
+                },
+                {
+                  "text": ". With unit-variance sublayer outputs, the residual stream keeps unit variance at every depth instead of growing with it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Agent-driven optimization",
+          "inlines": [
+            {
+              "text": "Agent-driven optimization"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Our initial version of implementation was an unoptimized, almost pure PyTorch version of the model. We then optimized it autonomously with coding agents: they profiled the model, wrote the kernels, and benchmarked each change. On TP8, the seven changes below brought batch-1 decode from 8.95 ms to 3.30 ms per step, and an 8 × 2K prefill from 328 ms to 176 ms.",
+          "inlines": [
+            {
+              "text": "Our initial version of implementation was an unoptimized, almost pure PyTorch version of the model. We then optimized it autonomously with coding agents: they profiled the model, wrote the kernels, and benchmarked each change. On TP8, the seven changes below brought batch-1 decode from 8.95 ms to 3.30 ms per step, and an 8 × 2K prefill from 328 ms to 176 ms."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 2: TP8 model-forward latency on GB200 after each change, for batch-1 decode and an 8 × 2,048-token prefill at ~100K context. The two panels use different scales. Show the table for exact values, or open it full-screen.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 2: TP8 model-forward latency on GB200 after each change, for batch-1 decode and an 8 × 2,048-token prefill at ~100K context. The two panels use different scales. Show the table for exact values, or "
+            },
+            {
+              "italic": true,
+              "href": "https://vllm.ai/blog-assets/interactive_pages/beam-opt-chart.html",
+              "text": "open it full-screen"
+            },
+            {
+              "italic": true,
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fused norm → residual → norm"
+                },
+                {
+                  "text": " (−40% decode). The post-norm, scaled residual add, and next pre-norm at each of the 104 sublayer boundaries now run as one Triton kernel, with FP32 math and the reference's BF16 rounding points."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fused Q/K norm, RoPE/SSMax, and output gate."
+                },
+                {
+                  "text": " Per-head Q/K RMSNorm and RoPE (or SSMax) run as one kernel, and the sigmoid gate as another."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "All-reduce fused into the norms."
+                },
+                {
+                  "text": " Both TP all-reduces in each layer run inside the norm kernel, built on FlashInfer's multicast all-reduce. After the MoE, the same kernel also combines the top-8 expert outputs."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Specialized GEMM kernel for the FP32 router."
+                },
+                {
+                  "text": " The router used to fall back to a generic path. vLLM's small-batch FP32 router kernel now supports Beam's 5120 × 256 shape, keeping FP32 weights, accumulation, and logits."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Merged QKV + gate projection with a low-latency GEMM."
+                },
+                {
+                  "text": " The Q, K, V, and gate weights are packed into one matrix at load time, so the four projections run as one GEMM. For small batches it uses a low-latency CuTe DSL GEMM or FlashInfer's TinyGEMM."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fused KV-cache update."
+                },
+                {
+                  "text": " The Q/K norm and RoPE kernel now also writes K and V into the KV cache, so there is no separate cache-write kernel."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Dense-MLP activation in one kernel"
+                },
+                {
+                  "text": " for the three dense layers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The fused graph",
+          "inlines": [
+            {
+              "text": "The fused graph"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "After these changes, one MoE layer runs as 13 kernels in batch-1 decode on TP8.",
+          "inlines": [
+            {
+              "text": "After these changes, one MoE layer runs as "
+            },
+            {
+              "bold": true,
+              "text": "13 kernels"
+            },
+            {
+              "text": " in batch-1 decode on TP8."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 3: Kernels in launch order for one MoE layer, from a rank-0 trace of batch-1 TP8 decode. Gold kernels were written, fused, or extended for Beam. Each kernel lists the operations it computes. Open it full-screen.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 3: Kernels in launch order for one MoE layer, from a rank-0 trace of batch-1 TP8 decode. Gold kernels were written, fused, or extended for Beam. Each kernel lists the operations it computes. "
+            },
+            {
+              "italic": true,
+              "href": "https://vllm.ai/blog-assets/interactive_pages/beam-fused-graph.html",
+              "text": "Open it full-screen"
+            },
+            {
+              "italic": true,
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "6 kernels were written, fused, or extended for Beam."
+                },
+                {
+                  "text": " Every small Beam-specific op is merged into a neighbor, and both all-reduces live inside norm kernels."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "7 kernels come from libraries:"
+                },
+                {
+                  "text": " TRTLLM-gen attention, the cuBLAS output projection, and the TRTLLM NVFP4 MoE path (quantization, two routing kernels, two grouped GEMMs). Most of the remaining time is here, so they are next."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Attention DP + MegaMoE",
+          "inlines": [
+            {
+              "text": "Attention DP + MegaMoE"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/a824edeaf6d34ecf5f2571aadd86a82f0526597db4694638ef06f968da08120f.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 4: FlashInfer CuteDSL NVFP4 MegaMoE can fuse the communications with expert computation.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 4: FlashInfer CuteDSL NVFP4 MegaMoE can fuse the communications with expert computation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the high concurrency region, Beam's performance can be further improved by combining Attention DP with MegaMoE, powered by FlashInfer's CuTe DSL NVFP4 MegaMoE kernel. The Finalize + norm boundary fusion remains applicable.",
+          "inlines": [
+            {
+              "text": "In the high concurrency region, Beam's performance can be further improved by combining Attention DP with MegaMoE, powered by FlashInfer's CuTe DSL NVFP4 MegaMoE kernel. The Finalize + norm boundary fusion remains applicable."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Configuration",
+          "inlines": [
+            {
+              "text": "Configuration"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Peak input token throughput",
+          "inlines": [
+            {
+              "text": "Peak input token throughput"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attention DP + MegaMoE",
+          "inlines": [
+            {
+              "text": "Attention DP + MegaMoE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "168.8K tokens / second",
+          "inlines": [
+            {
+              "text": "168.8K tokens / second"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TP (flashinfer_trtllm, flashinfer_nvlink_one_sided)",
+          "inlines": [
+            {
+              "text": "TP ("
+            },
+            {
+              "code": true,
+              "text": "flashinfer_trtllm"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "flashinfer_nvlink_one_sided"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.7K tokens / second",
+          "inlines": [
+            {
+              "text": "98.7K tokens / second"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attention DP with MegaMoE delivered 1.71× higher peak prefill throughput than TP4. Benchmark setup: 4×GB300, with an input sequence length of 32K tokens and an output sequence length of 1 token to isolate prefill performance.",
+          "inlines": [
+            {
+              "text": "Attention DP with MegaMoE delivered 1.71× higher peak prefill throughput than TP4. Benchmark setup: 4×GB300, with an input sequence length of 32K tokens and an output sequence length of 1 token to isolate prefill performance."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To enable Attention DP + MegaMoE, replace the MoE and parallel settings with:",
+          "inlines": [
+            {
+              "text": "To enable Attention DP + MegaMoE, replace the MoE and parallel settings with:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  --moe-backend flashinfer_moe_ep_cutedsl \\\n  --data-parallel-size 4 \\\n  --enable-expert-parallel"
+        },
+        {
+          "type": "heading",
+          "text": "DFlash2 speculative decoding",
+          "inlines": [
+            {
+              "text": "DFlash2 speculative decoding"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam ships with a DFlash2 draft head, which vLLM supports from day 0. Instead of drafting one token at a time, it predicts a whole block of tokens in a single forward pass from the target model's hidden states.",
+          "inlines": [
+            {
+              "text": "Beam ships with a "
+            },
+            {
+              "bold": true,
+              "text": "DFlash2"
+            },
+            {
+              "text": " draft head, which vLLM supports from day 0. Instead of drafting one token at a time, it predicts a whole block of tokens in a single forward pass from the target model's hidden states."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Drafter."
+                },
+                {
+                  "text": " 5 sliding-window layers that read hidden states from 5 target layers and share the target's embedding and LM head. A grouped convolution and a small candidate selector restore some of the left-to-right dependency a parallel drafter loses."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Adaptive verification."
+                },
+                {
+                  "text": " With "
+                },
+                {
+                  "code": true,
+                  "text": "\"enable_adaptive_verification\": true"
+                },
+                {
+                  "text": ", vLLM predicts how likely each draft token is to be accepted and verifies only the ones worth their cost, instead of a fixed number per step. DFlash2 has no confidence head, so the acceptance estimate comes from the drafter's own logits (see our "
+                },
+                {
+                  "href": "https://vllm.ai/blog/2026-10-14-adaptive-verification-online-estimator",
+                  "text": "recent post on adaptive verification"
+                },
+                {
+                  "text": ")."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Kernels."
+                },
+                {
+                  "text": " The drafter's convolution, norms, and KV writes are fused, and the whole draft step runs in a CUDA graph. FP8 KV cache works for the drafter too, with no change in acceptance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Serving results on TP8, with and without adaptive verification, on the low-entropy category of SPEED-Bench's throughput_1k split: ~1K-token prompts, mostly code completion and text sorting, with greedy decoding and up to 4K output tokens. Low-entropy text is easier to predict, so expect lower acceptance on open-ended chat.",
+          "inlines": [
+            {
+              "text": "Serving results on TP8, with and without adaptive verification, on the low-entropy category of "
+            },
+            {
+              "href": "https://huggingface.co/datasets/nvidia/SPEED-Bench",
+              "text": "SPEED-Bench"
+            },
+            {
+              "text": "'s "
+            },
+            {
+              "code": true,
+              "text": "throughput_1k"
+            },
+            {
+              "text": " split: ~1K-token prompts, mostly code completion and text sorting, with greedy decoding and up to 4K output tokens. Low-entropy text is easier to predict, so expect lower acceptance on open-ended chat."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Concurrency",
+          "inlines": [
+            {
+              "text": "Concurrency"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fixed draft (tok/s)",
+          "inlines": [
+            {
+              "text": "Fixed draft (tok/s)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Adaptive (tok/s)",
+          "inlines": [
+            {
+              "text": "Adaptive (tok/s)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Change",
+          "inlines": [
+            {
+              "text": "Change"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Acceptance length",
+          "inlines": [
+            {
+              "text": "Acceptance length"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "708",
+          "inlines": [
+            {
+              "text": "708"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "707",
+          "inlines": [
+            {
+              "text": "707"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−0.1%",
+          "inlines": [
+            {
+              "text": "−0.1%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.71 → 3.61",
+          "inlines": [
+            {
+              "text": "3.71 → 3.61"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,232",
+          "inlines": [
+            {
+              "text": "3,232"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,221",
+          "inlines": [
+            {
+              "text": "3,221"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−0.3%",
+          "inlines": [
+            {
+              "text": "−0.3%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.67 → 3.57",
+          "inlines": [
+            {
+              "text": "3.67 → 3.57"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7,744",
+          "inlines": [
+            {
+              "text": "7,744"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8,275",
+          "inlines": [
+            {
+              "text": "8,275"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+6.9%",
+          "inlines": [
+            {
+              "text": "+6.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.68 → 3.29",
+          "inlines": [
+            {
+              "text": "3.68 → 3.29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "128",
+          "inlines": [
+            {
+              "text": "128"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15,012",
+          "inlines": [
+            {
+              "text": "15,012"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16,632",
+          "inlines": [
+            {
+              "text": "16,632"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+10.8%",
+          "inlines": [
+            {
+              "text": "+10.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.68 → 3.23",
+          "inlines": [
+            {
+              "text": "3.68 → 3.23"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Adaptive verification pays off under load. At concurrency 128 it raises output throughput by 10.8% and cuts p99 TPOT by 9%, while verifying fewer draft tokens per step, which lowers acceptance length slightly but saves more compute than it loses. At low concurrency, where extra draft tokens are nearly free, it is neutral.",
+          "inlines": [
+            {
+              "text": "Adaptive verification pays off under load. At concurrency 128 it raises output throughput by 10.8% and cuts p99 TPOT by 9%, while verifying fewer draft tokens per step, which lowers acceptance length slightly but saves more compute than it loses. At low concurrency, where extra draft tokens are nearly free, it is neutral."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Getting started",
+          "inlines": [
+            {
+              "text": "Getting started"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The command at the top of this post is a good default: TP4 on a single GB300 node, with DFlash2 and FP8 KV cache. To enable adaptive verification, add \"enable_adaptive_verification\": true to the --speculative-config. Other optimizations above are on by default.",
+          "inlines": [
+            {
+              "text": "The command at the top of this post is a good default: TP4 on a single GB300 node, with DFlash2 and FP8 KV cache. To enable adaptive verification, add "
+            },
+            {
+              "code": true,
+              "text": "\"enable_adaptive_verification\": true"
+            },
+            {
+              "text": " to the "
+            },
+            {
+              "code": true,
+              "text": "--speculative-config"
+            },
+            {
+              "text": ". Other optimizations above are on by default."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Choosing a parallel setup."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "For the lowest latency, use TP4 or TP8."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "For higher throughput, use data-parallel attention with expert parallelism, e.g. "
+                },
+                {
+                  "code": true,
+                  "text": "-dp 4 --enable-expert-parallel"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Reasoning and tool calling."
+                },
+                {
+                  "text": " The "
+                },
+                {
+                  "code": true,
+                  "text": "beam"
+                },
+                {
+                  "text": " parsers read the response template that ships with the checkpoint. By default, vLLM also constrains every response to that template, so tool calls always parse and match each tool's JSON schema. "
+                },
+                {
+                  "code": true,
+                  "text": "response_format"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "thinking_token_budget"
+                },
+                {
+                  "text": " work as usual. To turn the default constraint off, set "
+                },
+                {
+                  "code": true,
+                  "text": "VLLM_BEAM_ALWAYS_CONSTRAIN_OUTPUT=0"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Day 0 Support for RL with SkyRL",
+          "inlines": [
+            {
+              "text": "Day 0 Support for RL with SkyRL"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We also collaborated with the SkyRL team to enable Day 0 support for RL on Beam. LoRA, BF16 full fine-tuning and MXFP8 RL are supported out of the box, with an upgraded RL stack for the 500B scale.",
+          "inlines": [
+            {
+              "text": "We also collaborated with the SkyRL team to enable Day 0 support for RL on Beam. LoRA, BF16 full fine-tuning and MXFP8 RL are supported out of the box, with an upgraded RL stack for the 500B scale."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The SkyRL team post-trained the Beam model on the DAPO recipe with vLLM for inference and Megatron for training. LoRA, full fine-tuning and MXFP8 RL achieve similar gains in performance in 50 training steps, or 100 optimizer updates (reasoning minimal), with an average accuracy (avg@8) jump from ~61% to ~79% on AIME25. Average absolute log-probability difference between Megatron and vLLM stays under 0.01 with Rollout Routing Replay (R3) enabled for LoRA and BF16 full fine-tuning, and under 0.03 for MXFP8 RL.",
+          "inlines": [
+            {
+              "text": "The SkyRL team post-trained the Beam model on the DAPO recipe with vLLM for inference and Megatron for training. LoRA, full fine-tuning and MXFP8 RL achieve similar gains in performance in 50 training steps, or 100 optimizer updates (reasoning "
+            },
+            {
+              "code": true,
+              "text": "minimal"
+            },
+            {
+              "text": "), with an average accuracy (avg@8) jump from ~61% to ~79% on AIME25. Average absolute log-probability difference between Megatron and vLLM stays under 0.01 with Rollout Routing Replay (R3) enabled for LoRA and BF16 full fine-tuning, and under 0.03 for MXFP8 RL."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/10eacd99645a6354065af8b211789fbf5fdb2473e1980a74af08a14c511d6bfd.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Check out the SkyRL blog for more details!",
+          "inlines": [
+            {
+              "text": "Check out the SkyRL "
+            },
+            {
+              "href": "https://blog.skyrl.ai/day-0-beam",
+              "text": "blog"
+            },
+            {
+              "text": " for more details!"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgements",
+          "inlines": [
+            {
+              "text": "Acknowledgements"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "This work was a close collaboration between the Inferact, Reflection, and Nvidia teams:",
+          "inlines": [
+            {
+              "text": "This work was a close collaboration between the Inferact, Reflection, and Nvidia teams:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Inferact:"
+                },
+                {
+                  "text": " Woosuk Kwon, Ziqi Zhao, Ao Shen, Tiezhen Wang"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Reflection:"
+                },
+                {
+                  "text": " Kaixing Wu, Yoni Gozlan, Neil Gollapudi, Thibaut Barroyer, Aymen Kallala, Matthias Reso, Florent Gbelidji"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Nvidia:"
+                },
+                {
+                  "text": " Siyuan Fu"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:22:53.308383Z",
+  "contentMode": "full"
+}

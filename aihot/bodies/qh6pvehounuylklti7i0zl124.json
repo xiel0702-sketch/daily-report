@@ -1,0 +1,1506 @@
+{
+  "schemaVersion": 1,
+  "id": "qh6pvehounuylklti7i0zl124",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/qh6pvehounuylklti7i0zl124",
+  "fetchedAt": "2026-10-22T13:20:33.037805Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Meta / Llama",
+    "Agent 智能体",
+    "教程实践"
+  ],
+  "tags": [
+    "教程/实践",
+    "Agent",
+    "Meta"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "有时，把 AI 智能体所需的所有知识都交给它，反而是错误的做法。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在 Meta，我们通过刻意保持数据管道智能体编排层的精简，在效率和准确性上看到了显著提升：它负责路由工作并执行可靠性检查，而由专业智能体负责领域推理。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们分享自己的流程和见解，以及任何团队如何将其应用到自己的生产级 AI 智能体中。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们构建了一个 1,300 行的编排器，将 20 多个工作流路由到 14 个专业 AI 智能体。它本身不执行任何领域工作。这正是关键所在。",
+          "inlines": [
+            {
+              "text": "我们构建了一个 1,300 行的编排器，将 20 多个工作流路由到 14 个专业 AI 智能体。它本身不执行任何领域工作。这正是关键所在。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当我们首次部署 AI 智能体，在 Meta 的推荐系统中自动化数据列接入时——这一流程横跨三个代码仓库、三种编程语言，以及最多六个必须保持同步的管道阶段——我们做了大多数团队都会做的事：构建一个无所不知的智能体。",
+          "inlines": [
+            {
+              "text": "当我们首次部署 AI 智能体，在 Meta 的推荐系统中自动化数据列接入时——这一流程横跨三个代码仓库、三种编程语言，以及最多六个必须保持同步的管道阶段——我们做了大多数团队都会做的事：构建一个无所不知的智能体。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "它在演示中表现良好。在生产环境中，它开始产生幻觉。",
+          "inlines": [
+            {
+              "text": "它在演示中表现良好。在生产环境中，它开始产生幻觉。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "解决办法不是更好的提示词或更大的上下文窗口，而是让中央智能体承担更少的任务。我们称之为薄编排器模式：一个负责排序和可靠性检查的路由器，把所有领域决策都留给专业智能体。",
+          "inlines": [
+            {
+              "text": "解决办法不是更好的提示词或更大的上下文窗口，而是让中央智能体承担更少的任务。我们称之为薄编排器模式：一个负责排序和可靠性检查的路由器，把所有领域决策都留给专业智能体。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "问题：上下文越多，结果越差",
+          "inlines": [
+            {
+              "text": "问题：上下文越多，结果越差"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的管道采用配置即代码的方式：Python 配置驱动 C++ 代码生成，C++ 代码生成再供给数据处理服务，数据处理服务再填充分析系统。接入单个数据列需要跨配置注册表、后端服务和数据管道进行协调变更，每个数据列在数据到达之前要经过最多六个阶段。",
+          "inlines": [
+            {
+              "text": "我们的管道采用配置即代码的方式：Python 配置驱动 C++ 代码生成，C++ 代码生成再供给数据处理服务，数据处理服务再填充分析系统。接入单个数据列需要跨配置注册表、后端服务和数据管道进行协调变更，每个数据列在数据到达之前要经过最多六个阶段。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的第一种方法是使用一个单一的 AI 智能体，为它加载所有领域知识、配置模式、代码生成规则、管道路由逻辑、验证要求，以及 10 多个数据源的填充模式。",
+          "inlines": [
+            {
+              "text": "我们的第一种方法是使用一个单一的 AI 智能体，为它加载所有领域知识、配置模式、代码生成规则、管道路由逻辑、验证要求，以及 10 多个数据源的填充模式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这个智能体拥有它所需的一切。问题恰恰就在这里。",
+          "inlines": [
+            {
+              "text": "这个智能体拥有它所需的一切。问题恰恰就在这里。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "超过某个上下文阈值后，额外的知识会降低而非提升性能。智能体会交叉污染概念，把一个子系统的字段命名约定应用到另一个子系统，或者在从不同数据源填充时使用本应属于某个数据源的代码生成模式。西奈山 Windreich 人工智能与人类健康系的一篇预印本发现，在 80 个任务的批次中，编排式多智能体系统保持了 65.3% 的准确率，而单智能体则降至 16.6%，同时令牌使用量最多减少 65 倍。作者将此归因于该设计对任务的隔离，从而防止了上下文干扰。我们经历的恰恰相反：单个智能体淹没在自己的知识中。",
+          "inlines": [
+            {
+              "text": "超过某个上下文阈值后，额外的知识会"
+            },
+            {
+              "italic": true,
+              "text": "降低"
+            },
+            {
+              "text": "而非提升性能。智能体会交叉污染概念，把一个子系统的字段命名约定应用到另一个子系统，或者在从不同数据源填充时使用本应属于某个数据源的代码生成模式。西奈山 Windreich 人工智能与人类健康系的一篇"
+            },
+            {
+              "href": "https://www.nature.com/articles/s44401-026-00077-0",
+              "text": "预印本"
+            },
+            {
+              "text": "发现，在 80 个任务的批次中，编排式多智能体系统保持了 65.3% 的准确率，而单智能体则降至 16.6%，同时令牌使用量最多减少 65 倍。作者将此归因于该设计对任务的隔离，从而防止了上下文干扰。我们经历的恰恰相反：单个智能体淹没在自己的知识中。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还评估了另一种单智能体方案。在为每个任务手动进行提示词工程的情况下，其成功率为 70-80%：工程师必须为每个具体任务精心编写自定义系统提示词。没有这种人工辅助，成功率降至 10-20%。这不是提示词工程的问题，而是架构的问题。",
+          "inlines": [
+            {
+              "text": "我们还评估了另一种单智能体方案。在"
+            },
+            {
+              "italic": true,
+              "text": "为"
+            },
+            {
+              "text": "每个任务手动进行提示词工程的情况下，其成功率为 70-80%：工程师必须为每个具体任务精心编写自定义系统提示词。没有这种人工辅助，成功率降至 10-20%。这不是提示词工程的问题，而是架构的问题。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "方法：薄路由器与专业工作者",
+          "inlines": [
+            {
+              "text": "方法：薄路由器与专业工作者"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们将系统拆分为两层：",
+          "inlines": [
+            {
+              "text": "我们将系统拆分为两层："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "确定性编排器"
+                },
+                {
+                  "text": "，不执行任何领域工作。它负责对意图进行分类、收集必填字段、运行可靠性检查，并委派给合适的专家。它从不对代码进行推理，从不生成配置，也从不接触代码库。它就是一个路由器。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "十四个专业子代理"
+                },
+                {
+                  "text": "，每个都是拥有隔离上下文的完整领域专家。模式管理代理了解配置注册表。数据填充代理知道如何为 10 个数据源分别生成代码。验证代理了解构建系统和质量检查。没有任何代理能看到全貌。这是特性，不是缺陷。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "编排器对每个请求都遵循固定的 7 步协议：",
+          "inlines": [
+            {
+              "text": "编排器对每个请求都遵循固定的 7 步协议："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "读取"
+                },
+                {
+                  "text": "相关子代理的指令文件。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "检查"
+                },
+                {
+                  "text": "目标是否已存在（防止重复）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "收集"
+                },
+                {
+                  "text": "向用户获取必填字段。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "自动发现"
+                },
+                {
+                  "text": "可推断的信息（仓库类型、现有配置）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "可靠性门禁"
+                },
+                {
+                  "text": "检查是否存在活跃警告或必需的审核人。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "委派"
+                },
+                {
+                  "text": "将完整上下文交给子代理。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "处理"
+                },
+                {
+                  "text": "结果并暴露错误，确认成功。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "第 1–5 步和第 7 步是确定性的。只有第 6 步涉及大语言模型（LLM）推理，而且它发生在仅加载了自身领域知识的隔离子代理内部。",
+          "inlines": [
+            {
+              "text": "第 1–5 步和第 7 步是确定性的。只有第 6 步涉及大语言模型（LLM）推理，而且它发生在仅加载了自身领域知识的隔离子代理内部。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们构建了什么：工作流模板，而非新代理",
+          "inlines": [
+            {
+              "text": "我们构建了什么：工作流模板，而非新代理"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/50aa952fdf2524423ac0f74b88ddbcc873eaa05e23988766184c538cb1255209.webp",
+          "alt": "",
+          "width": 1200,
+          "height": 896
+        },
+        {
+          "type": "paragraph",
+          "text": "一个架构洞见是将需要发生什么与每一步如何执行分离。编排器通过工作流模板定义阶段顺序——这些确定性状态机约束了 LLM 的决策空间：",
+          "inlines": [
+            {
+              "text": "一个架构洞见是将"
+            },
+            {
+              "italic": true,
+              "text": "需要发生什么"
+            },
+            {
+              "text": "与"
+            },
+            {
+              "italic": true,
+              "text": "每一步如何执行"
+            },
+            {
+              "text": "分离。编排器通过工作流模板定义阶段顺序——这些确定性状态机约束了 LLM 的决策空间："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "列接入："
+                },
+                {
+                  "text": "模式 → 验证 → 填充 → 测试"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "事件接入："
+                },
+                {
+                  "text": "模式 → 填充 → 验证 → 测试 → 事件处理"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "管道迁移："
+                },
+                {
+                  "text": "评估 → 规划 → 填充 → 验证 → 监控"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个工作流模板都以不同顺序复用同一组 14 个子代理。当我们需要支持管道迁移这一全新用例时，我们没有构建新代理。我们编写了一个新的工作流模板，以不同方式排列现有代理。零新增代理代码。完整的生产级能力。",
+          "inlines": [
+            {
+              "text": "每个工作流模板都以不同顺序复用同一组 14 个子代理。当我们需要支持管道迁移这一全新用例时，我们没有构建新代理。我们编写了一个新的工作流模板，以不同方式排列现有代理。零新增代理代码。完整的生产级能力。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个子代理都遵循标准化结构：",
+          "inlines": [
+            {
+              "text": "每个子代理都遵循标准化结构："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "知识来源："
+                },
+                {
+                  "text": "运行时加载哪些领域文件（通常每个几千 token）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "预收集清单："
+                },
+                {
+                  "text": "编排器在委派前必须收集的内容。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "分步工作流："
+                },
+                {
+                  "text": "领域特定的执行计划。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "发现模式："
+                },
+                {
+                  "text": "如何在 monorepo 中找到相关代码模式。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "故障排查："
+                },
+                {
+                  "text": "常见故障的错误到解决方案映射。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种统一性意味着添加新子代理是模板化工作，而非从零开始的工程。第 15 个子代理在结构上与第一个完全相同。",
+          "inlines": [
+            {
+              "text": "这种统一性意味着添加新子代理是模板化工作，而非从零开始的工程。第 15 个子代理在结构上与第一个完全相同。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "知识文件在子代理执行时按需加载，而不是嵌入到编排器中。我们按工作流领域维护了 25+ 个知识文件。当知识文件更新时，下一个会话会自动使用最新版本——无需更改编排器。相同的知识文件服务于我们代理的多个平台实现。",
+          "inlines": [
+            {
+              "text": "知识文件在子代理执行时按需加载，而不是嵌入到编排器中。我们按工作流领域维护了 25+ 个知识文件。当知识文件更新时，下一个会话会自动使用最新版本——无需更改编排器。相同的知识文件服务于我们代理的多个平台实现。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结果",
+          "inlines": [
+            {
+              "text": "结果"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fe4779fca766bc195d27af27ebba21ccf8301b4aaba7182cd4a349bbf9e951fb.webp",
+          "alt": "",
+          "width": 1672,
+          "height": 640
+        },
+        {
+          "type": "paragraph",
+          "text": "为新列准备配置，手工需要三到四天，用我们早期的配置驱动系统大约需要一天。瘦编排器系统在不到一小时内完成。",
+          "inlines": [
+            {
+              "text": "为新列准备配置，手工需要三到四天，用我们早期的配置驱动系统大约需要一天。瘦编排器系统在不到一小时内完成。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "更广泛的背景：系统约三分之二的变更无需大量人工编辑即可落地。它通过用通用性换取深度领域知识来实现这一点，这是一种刻意的架构选择。编排器是通用的；子代理是专家。",
+          "inlines": [
+            {
+              "text": "更广泛的背景：系统约三分之二的变更无需大量人工编辑即可落地。它通过用通用性换取深度领域知识来实现这一点，这是一种刻意的架构选择。编排器是通用的；子代理是专家。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么这有效（以及为什么重量级编排器不行）",
+          "inlines": [
+            {
+              "text": "为什么这有效（以及为什么重量级编排器不行）"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "传统方法是让编排器成为最聪明的组件——给它所有上下文，让它推理该做什么以及如何做。这在失效之前一直有效，而它恰好在最需要它的时候失效——在规模化、复杂多步工作流、跨异构子系统时。",
+          "inlines": [
+            {
+              "text": "传统方法是让编排器成为最聪明的组件——给它所有上下文，让它推理该做什么以及如何做。这在失效之前一直有效，而它恰好在最需要它的时候失效——在规模化、复杂多步工作流、跨异构子系统时。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "瘦编排器之所以有效，是因为它将架构边界与计算边界对齐：",
+          "inlines": [
+            {
+              "text": "瘦编排器之所以有效，是因为它将架构边界与计算边界对齐："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "确定性决策保持确定性。"
+                },
+                {
+                  "text": "“哪个子代理处理这个？”是路由决策，不是推理任务。不要用 LLM 来做这件事。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "上下文隔离防止交叉污染。"
+                },
+                {
+                  "text": "数据源 A 的群体代理永远不会看到数据源 B 的模式。它不可能幻觉出错误的那个。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "故障被隔离。"
+                },
+                {
+                  "text": "如果子代理失败，编排器会重试或升级。故障不会破坏编排器的状态或其他子代理的上下文。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "系统在每一层独立改进。"
+                },
+                {
+                  "text": "更好的模型会同时改进所有 14 个子代理。知识文件更新立即生效。新的工作流模板无需触碰代理即可解锁新能力。没有单个组件承担全部重量。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "如何将此应用于你的 AI 代理",
+          "inlines": [
+            {
+              "text": "如何将此应用于你的 AI 代理"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "这种模式并非数据管道特有。任何构建生产 AI 代理的团队都能受益：",
+          "inlines": [
+            {
+              "text": "这种模式并非数据管道特有。任何构建生产 AI 代理的团队都能受益："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "将路由与推理分离。"
+                },
+                {
+                  "text": "如果你的编排器在做领域决策，那它做得太多了。路由应该是确定性的：关键词匹配、意图分类、字段收集。将所有领域推理推入隔离的子代理。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "将子代理设计为结构统一的专家。"
+                },
+                {
+                  "text": "每个子代理都应具有相同的结构：知识源、必需输入、执行步骤、错误处理。这使得添加新能力成为模板化工作，而不是架构变更。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "使用工作流模板而非新代理来扩展。"
+                },
+                {
+                  "text": "当你需要新的用例时，首先问：我能否以不同方式排列现有代理？如果你无法跨工作流复用代理，你的代理就与特定用例耦合得太紧了。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "在运行时加载知识，而不是在构建时。"
+                },
+                {
+                  "text": "将知识嵌入编排器，每次更新都需要重新部署。按需加载，更新会立即在所有平台上生效。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "明确划出确定性/概率性的边界。"
+                },
+                {
+                  "text": "对每个组件都要做出判断：这是一个路由决策（确定性），还是一个推理任务（概率性）？编排器应位于一侧，子代理位于另一侧。不要将它们混在一起。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "支持薄编排器的最有力论据，是另一种方案的失败模式。当重量级编排器产生幻觉时，错误会向下游一切扩散：它会路由到错误的代理、收集错误的字段，或跳过可靠性检查。薄编排器几乎没有产生幻觉的空间，因为它的路由和可靠性步骤不依赖 LLM 推理。它遵循固定协议。创造力发生在下游，在隔离的、领域受限的上下文中，那里幻觉风险被最小化，失败也被限制在局部。",
+          "inlines": [
+            {
+              "text": "支持薄编排器的最有力论据，是另一种方案的失败模式。当重量级编排器产生幻觉时，错误会向下游一切扩散：它会路由到错误的代理、收集错误的字段，或跳过可靠性检查。薄编排器几乎没有产生幻觉的空间，因为它的路由和可靠性步骤不依赖 LLM 推理。它遵循固定协议。创造力发生在下游，在隔离的、领域受限的上下文中，那里幻觉风险被最小化，失败也被限制在局部。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "下一步",
+          "inlines": [
+            {
+              "text": "下一步"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们正在扩展这一架构，以应对新流水线领域中数据列的增加。组合式论点预测这会奏效，因为扩展意味着添加工作流模板和知识文件，而不是重建代理。我们还在探索系统如何从生产使用中持续改进，利用自动化反馈循环识别失败模式，并对子代理知识提出有针对性的改进建议，同时始终由人工审核把关任何变更。",
+          "inlines": [
+            {
+              "text": "我们正在扩展这一架构，以应对新流水线领域中数据列的增加。组合式论点预测这会奏效，因为扩展意味着添加工作流模板和知识文件，而不是重建代理。我们还在探索系统如何从生产使用中持续改进，利用自动化反馈循环识别失败模式，并对子代理知识提出有针对性的改进建议，同时始终由人工审核把关任何变更。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "反直觉的教训：我们 AI 代理系统中最重要的组件，是干活最少的那个。让编排器保持薄、让专家保持深，整个系统就会变得更可靠。",
+          "inlines": [
+            {
+              "text": "反直觉的教训：我们 AI 代理系统中最重要的组件，是干活最少的那个。让编排器保持薄、让专家保持深，整个系统就会变得更可靠。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "致谢",
+          "inlines": [
+            {
+              "text": "致谢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "这项工作是一次团队努力。其他为此做出贡献的人包括： Mani Bhushan、Rahul Maliakkal、Jae Ha、Chakrapani Kumar、Vivek Tiwari 和 Amanda Yin。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "这项工作是一次团队努力。其他为此做出贡献的人包括： Mani Bhushan、Rahul Maliakkal、Jae Ha、Chakrapani Kumar、Vivek Tiwari 和 Amanda Yin。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "文章 薄编排器：我们如何通过减少路由器的职责让 AI 代理更可靠 首次发表于 Engineering at Meta。",
+          "inlines": [
+            {
+              "text": "文章 "
+            },
+            {
+              "href": "https://engineering.fb.com/2026/10/19/ml-applications/thin-orchestrator-ai-agent-architecture/",
+              "text": "薄编排器：我们如何通过减少路由器的职责让 AI 代理更可靠"
+            },
+            {
+              "text": " 首次发表于 "
+            },
+            {
+              "href": "https://engineering.fb.com/",
+              "text": "Engineering at Meta"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Sometimes, giving an AI agent all of the knowledge it needs is the wrong approach."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "At Meta, we’ve seen notable improvements in efficiency and accuracy by keeping the orchestration layer of our data pipeline agents deliberately thin: It routes work and enforces reliability checks, while specialized agents do the domain reasoning."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We’re sharing our own process and insights, plus how any team can apply this to their production AI agents."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We built a 1,300-line orchestrator that routes 20+ workflows to 14 specialized AI agents. It performs zero domain work itself. That’s the point.",
+          "inlines": [
+            {
+              "text": "We built a 1,300-line orchestrator that routes 20+ workflows to 14 specialized AI agents. It performs zero domain work itself. That’s the point."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When we first deployed AI agents to automate data column onboarding across Meta’s recommendation systems — a process spanning three code repositories, three programming languages, and up to six pipeline stages that must stay in sync — we did what most teams do: We built one smart agent that knew everything.",
+          "inlines": [
+            {
+              "text": "When we first deployed AI agents to automate data column onboarding across Meta’s recommendation systems — a process spanning three code repositories, three programming languages, and up to six pipeline stages that must stay in sync — we did what most teams do: We built one smart agent that knew everything."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "It worked in demos. In production, it started hallucinating.",
+          "inlines": [
+            {
+              "text": "It worked in demos. In production, it started hallucinating."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The fix wasn’t better prompts or a bigger context window. It was giving the central agent less to do. We call this the thin orchestrator pattern: a router that owns sequencing and reliability checks, and leaves every domain decision to specialists.",
+          "inlines": [
+            {
+              "text": "The fix wasn’t better prompts or a bigger context window. It was giving the central agent less to do. We call this the thin orchestrator pattern: a router that owns sequencing and reliability checks, and leaves every domain decision to specialists."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The Problem: More Context, Worse Results",
+          "inlines": [
+            {
+              "text": "The Problem: More Context, Worse Results"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Our pipeline is config-as-code: Python configurations drive C++ code generation, which feeds data processing services, which populate analytics systems. Onboarding a single data column requires coordinated changes across configuration registries, backend services, and data pipelines, and each column moves through up to six stages before its data arrives.",
+          "inlines": [
+            {
+              "text": "Our pipeline is config-as-code: Python configurations drive C++ code generation, which feeds data processing services, which populate analytics systems. Onboarding a single data column requires coordinated changes across configuration registries, backend services, and data pipelines, and each column moves through up to six stages before its data arrives."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our first approach was a single AI agent loaded with all domain knowledge, configuration schemas, code generation rules, pipeline routing logic, validation requirements, and population patterns for 10+ data sources.",
+          "inlines": [
+            {
+              "text": "Our first approach was a single AI agent loaded with all domain knowledge, configuration schemas, code generation rules, pipeline routing logic, validation requirements, and population patterns for 10+ data sources."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The agent had everything it needed. That was the problem.",
+          "inlines": [
+            {
+              "text": "The agent had everything it needed. That was the problem."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Past a certain context threshold, additional knowledge degraded rather than improved performance. The agent would cross-contaminate concepts, applying field naming conventions from one subsystem to another, or using a code generation pattern meant for one data source when populating from a different one. A preprint from the Windreich Department of Artificial Intelligence and Human Health at Mount Sinai found that orchestrated multiagent systems held 65.3% accuracy at 80-task batches where single agents fell to 16.6%, while reducing token usage up to 65-fold. The authors attribute this to the design’s isolation of tasks, which prevented context interference. We were experiencing the inverse, a single agent drowning in its own knowledge.",
+          "inlines": [
+            {
+              "text": "Past a certain context threshold, additional knowledge "
+            },
+            {
+              "italic": true,
+              "text": "degraded"
+            },
+            {
+              "text": " rather than improved performance. The agent would cross-contaminate concepts, applying field naming conventions from one subsystem to another, or using a code generation pattern meant for one data source when populating from a different one. A "
+            },
+            {
+              "href": "https://www.nature.com/articles/s44401-026-00077-0",
+              "text": "preprint from the Windreich Department of Artificial Intelligence"
+            },
+            {
+              "text": " and Human Health at Mount Sinai found that orchestrated multiagent systems held 65.3% accuracy at 80-task batches where single agents fell to 16.6%, while reducing token usage up to 65-fold. The authors attribute this to the design’s isolation of tasks, which prevented context interference. We were experiencing the inverse, a single agent drowning in its own knowledge."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We also evaluated an alternative single-agent approach. Its success rate was 70-80% with manual prompt engineering per task: An engineer had to craft a custom system prompt for each specific job. Without that handholding, success dropped to 10-20%. This wasn’t a prompt engineering problem. It was an architectural one.",
+          "inlines": [
+            {
+              "text": "We also evaluated an alternative single-agent approach. Its success rate was 70-80% "
+            },
+            {
+              "italic": true,
+              "text": "with"
+            },
+            {
+              "text": " manual prompt engineering per task: An engineer had to craft a custom system prompt for each specific job. Without that handholding, success dropped to 10-20%. This wasn’t a prompt engineering problem. It was an architectural one."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The Approach: A Thin Router With Specialist Workers",
+          "inlines": [
+            {
+              "text": "The Approach: A Thin Router With Specialist Workers"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We split the system into two layers:",
+          "inlines": [
+            {
+              "text": "We split the system into two layers:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "A deterministic orchestrator"
+                },
+                {
+                  "text": " that performs zero domain work. It classifies intent, gathers required fields, runs reliability checks, and delegates to the right specialist. It never reasons about code, never generates configurations, and never touches the codebase. It’s a router."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fourteen specialized subagents"
+                },
+                {
+                  "text": ", each a complete domain expert with isolated context. A schema management agent knows configuration registries. A population agent knows how to generate code for each of 10 data sources. A validation agent knows build systems and quality checks. No agent sees the full picture. That’s the feature, not the bug."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The orchestrator follows a fixed 7-step protocol for every request:",
+          "inlines": [
+            {
+              "text": "The orchestrator follows a fixed 7-step protocol for every request:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Read"
+                },
+                {
+                  "text": " the relevant subagent’s instruction file."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Check"
+                },
+                {
+                  "text": " if the target already exists (prevent duplicates)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Gather"
+                },
+                {
+                  "text": " required fields from the user."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Auto-discover"
+                },
+                {
+                  "text": " what can be inferred (repository type, existing configurations)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Reliability gate"
+                },
+                {
+                  "text": " check for active warnings or required reviewers."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Delegate"
+                },
+                {
+                  "text": " to the subagent with full context."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Handle"
+                },
+                {
+                  "text": " results and surface errors, confirm success."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Steps 1–5 and 7 are deterministic. Only step 6 involves large language model (LLM) reasoning, and it happens inside an isolated subagent with only its domain knowledge loaded.",
+          "inlines": [
+            {
+              "text": "Steps 1–5 and 7 are deterministic. Only step 6 involves large language model (LLM) reasoning, and it happens inside an isolated subagent with only its domain knowledge loaded."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What We Built: Workflow Templates, Not New Agents",
+          "inlines": [
+            {
+              "text": "What We Built: Workflow Templates, Not New Agents"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/50aa952fdf2524423ac0f74b88ddbcc873eaa05e23988766184c538cb1255209.webp",
+          "alt": "",
+          "width": 1200,
+          "height": 896
+        },
+        {
+          "type": "paragraph",
+          "text": "One architectural insight was separating what needs to happen from how each step is performed. The orchestrator defines phase ordering through workflow templates — deterministic state machines that constrain the LLM’s decision space:",
+          "inlines": [
+            {
+              "text": "One architectural insight was separating "
+            },
+            {
+              "italic": true,
+              "text": "what"
+            },
+            {
+              "text": " needs to happen from "
+            },
+            {
+              "italic": true,
+              "text": "how"
+            },
+            {
+              "text": " each step is performed. The orchestrator defines phase ordering through workflow templates — deterministic state machines that constrain the LLM’s decision space:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Column Onboarding:"
+                },
+                {
+                  "text": " Schema → Validation → Population → Testing"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Event Onboarding:"
+                },
+                {
+                  "text": " Schema → Population → Validation → Testing → Event Processing"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Pipeline Migration:"
+                },
+                {
+                  "text": " Assessment → Planning → Population → Validation → Monitoring"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each workflow template reuses the same pool of 14 subagents in different sequences. When we needed to support pipeline migration, a completely new use case, we didn’t build new agents. We wrote a new workflow template that sequenced existing agents differently. Zero new agent code. Full production capability.",
+          "inlines": [
+            {
+              "text": "Each workflow template reuses the same pool of 14 subagents in different sequences. When we needed to support pipeline migration, a completely new use case, we didn’t build new agents. We wrote a new workflow template that sequenced existing agents differently. Zero new agent code. Full production capability."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each subagent follows a standardized structure:",
+          "inlines": [
+            {
+              "text": "Each subagent follows a standardized structure:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Knowledge sources:"
+                },
+                {
+                  "text": " which domain files to load at runtime (typically a few thousand tokens each)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Pre-gathering checklist:"
+                },
+                {
+                  "text": " what the orchestrator must collect before delegation."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Step-by-step workflow:"
+                },
+                {
+                  "text": " the domain-specific execution plan."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Discovery patterns:"
+                },
+                {
+                  "text": " how to find relevant code patterns in the monorepo."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Troubleshooting:"
+                },
+                {
+                  "text": " error-to-resolution mappings for common failures."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This uniformity means adding a new subagent is templated work, not greenfield engineering. The 15th subagent looks structurally identical to the first.",
+          "inlines": [
+            {
+              "text": "This uniformity means adding a new subagent is templated work, not greenfield engineering. The 15th subagent looks structurally identical to the first."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Knowledge files are loaded on demand at subagent execution time, not embedded in the orchestrator. We maintain 25+ knowledge files organized by workflow domain. When a knowledge file is updated, the next session automatically uses the latest version — no orchestrator changes required. The same knowledge files serve multiple platform implementations of our agent.",
+          "inlines": [
+            {
+              "text": "Knowledge files are loaded on demand at subagent execution time, not embedded in the orchestrator. We maintain 25+ knowledge files organized by workflow domain. When a knowledge file is updated, the next session automatically uses the latest version — no orchestrator changes required. The same knowledge files serve multiple platform implementations of our agent."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Results",
+          "inlines": [
+            {
+              "text": "Results"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fe4779fca766bc195d27af27ebba21ccf8301b4aaba7182cd4a349bbf9e951fb.webp",
+          "alt": "",
+          "width": 1672,
+          "height": 640
+        },
+        {
+          "type": "paragraph",
+          "text": "Configuration prep for a new column took three to four days by hand and about a day with our earlier config-driven system. The thin orchestrator system does it in under an hour.",
+          "inlines": [
+            {
+              "text": "Configuration prep for a new column took three to four days by hand and about a day with our earlier config-driven system. The thin orchestrator system does it in under an hour."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For broader context: About two-thirds of the system’s changes land without significant human edits. It gets there by trading generality for deep domain knowledge, a deliberate architectural choice. The orchestrator is general; the subagents are specialists.",
+          "inlines": [
+            {
+              "text": "For broader context: About two-thirds of the system’s changes land without significant human edits. It gets there by trading generality for deep domain knowledge, a deliberate architectural choice. The orchestrator is general; the subagents are specialists."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why This Works (And Why Heavyweight Orchestrators Don’t)",
+          "inlines": [
+            {
+              "text": "Why This Works (And Why Heavyweight Orchestrators Don’t)"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The conventional approach is to make the orchestrator the smartest component — give it all the context and let it reason about what to do and how to do it. This works until it doesn’t, and it stops working exactly when you need it most — at scale, with complex multi-step workflows, across heterogeneous subsystems.",
+          "inlines": [
+            {
+              "text": "The conventional approach is to make the orchestrator the smartest component — give it all the context and let it reason about what to do and how to do it. This works until it doesn’t, and it stops working exactly when you need it most — at scale, with complex multi-step workflows, across heterogeneous subsystems."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The thin orchestrator works because it aligns architectural boundaries with computational boundaries:",
+          "inlines": [
+            {
+              "text": "The thin orchestrator works because it aligns architectural boundaries with computational boundaries:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Deterministic decisions stay deterministic."
+                },
+                {
+                  "text": " “Which subagent handles this?” is a routing decision, not a reasoning task. Don’t use an LLM for it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Context isolation prevents cross-contamination."
+                },
+                {
+                  "text": " The population agent for data source A never sees data source B’s patterns. It can’t hallucinate the wrong one."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Failures are contained."
+                },
+                {
+                  "text": " If a subagent fails, the orchestrator retries or escalates. The failure doesn’t corrupt the orchestrator’s state or other subagents’ contexts."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "The system improves at every layer independently."
+                },
+                {
+                  "text": " A better model improves all 14 subagents simultaneously. A knowledge file update takes effect immediately. A new workflow template unlocks new capabilities without touching agents. No single component carries the full weight."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How to Apply This to Your AI Agents",
+          "inlines": [
+            {
+              "text": "How to Apply This to Your AI Agents"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "This pattern isn’t specific to data pipelines. Any team building production AI agents can benefit:",
+          "inlines": [
+            {
+              "text": "This pattern isn’t specific to data pipelines. Any team building production AI agents can benefit:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Separate routing from reasoning."
+                },
+                {
+                  "text": " If your orchestrator is making domain decisions, it’s doing too much. Routing should be deterministic: keyword matching, intent classification, field gathering. Push all domain reasoning into isolated subagents."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Design subagents as structurally uniform specialists."
+                },
+                {
+                  "text": " Every subagent should have the same structure: knowledge sources, required inputs, execution steps, error handling. This makes adding new capabilities templated work rather than architecture changes."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Use workflow templates, not new agents, to scale."
+                },
+                {
+                  "text": " When you need a new use case, first ask: Can I sequence existing agents differently? If you can’t reuse agents across workflows, your agents are too coupled to specific use cases."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Load knowledge at runtime, not at build time."
+                },
+                {
+                  "text": " Embed knowledge in the orchestrator and every update requires redeployment. Load it on demand and updates take effect immediately, across all platforms."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Draw the deterministic/probabilistic boundary explicitly."
+                },
+                {
+                  "text": " For every component, decide: Is this a routing decision (deterministic) or a reasoning task (probabilistic)? The orchestrator should be on one side, the subagents on the other. Don’t mix them."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The strongest argument for a thin orchestrator is the failure mode of the alternative. When a heavyweight orchestrator hallucinates, the error spreads to everything downstream: it routes to the wrong agent, gathers the wrong fields, or skips reliability checks. A thin orchestrator leaves little room for hallucination because its routing and reliability steps don’t rely on LLM reasoning. It follows a fixed protocol. The creativity happens downstream, in isolated, domain-scoped contexts where hallucination risk is minimized and failures are contained.",
+          "inlines": [
+            {
+              "text": "The strongest argument for a thin orchestrator is the failure mode of the alternative. When a heavyweight orchestrator hallucinates, the error spreads to everything downstream: it routes to the wrong agent, gathers the wrong fields, or skips reliability checks. A thin orchestrator leaves little room for hallucination because its routing and reliability steps don’t rely on LLM reasoning. It follows a fixed protocol. The creativity happens downstream, in isolated, domain-scoped contexts where hallucination risk is minimized and failures are contained."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What’s Next",
+          "inlines": [
+            {
+              "text": "What’s Next"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We’re scaling this architecture to handle an increase in data columns across new pipeline domains. The compositional thesis predicts this will work because scaling means adding workflow templates and knowledge files, not rebuilding agents. We’re also exploring how the system can continuously improve from production usage, using automated feedback loops to identify failure patterns and propose targeted improvements to subagent knowledge, with human review always gating any changes.",
+          "inlines": [
+            {
+              "text": "We’re scaling this architecture to handle an increase in data columns across new pipeline domains. The compositional thesis predicts this will work because scaling means adding workflow templates and knowledge files, not rebuilding agents. We’re also exploring how the system can continuously improve from production usage, using automated feedback loops to identify failure patterns and propose targeted improvements to subagent knowledge, with human review always gating any changes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The counterintuitive lesson: the most important component in our AI agent system is the one that does the least work. Keep your orchestrator thin and your specialists deep, and the whole system becomes more reliable.",
+          "inlines": [
+            {
+              "text": "The counterintuitive lesson: the most important component in our AI agent system is the one that does the least work. Keep your orchestrator thin and your specialists deep, and the whole system becomes more reliable."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgements",
+          "inlines": [
+            {
+              "text": "Acknowledgements"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "This work was a team effort. Some other people who contributed to this effort include: Mani Bhushan, Rahul Maliakkal, Jae Ha, Chakrapani Kumar, Vivek Tiwari, and Amanda Yin.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "This work was a team effort. Some other people who contributed to this effort include: Mani Bhushan, Rahul Maliakkal, Jae Ha, Chakrapani Kumar, Vivek Tiwari, and Amanda Yin."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The post The Thin Orchestrator: How We Made Our AI Agents More Reliable by Giving the Router Less to Do appeared first on Engineering at Meta.",
+          "inlines": [
+            {
+              "text": "The post "
+            },
+            {
+              "href": "https://engineering.fb.com/2026/10/19/ml-applications/thin-orchestrator-ai-agent-architecture/",
+              "text": "The Thin Orchestrator: How We Made Our AI Agents More Reliable by Giving the Router Less to Do"
+            },
+            {
+              "text": " appeared first on "
+            },
+            {
+              "href": "https://engineering.fb.com/",
+              "text": "Engineering at Meta"
+            },
+            {
+              "text": "."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:20:35.242896Z",
+  "contentMode": "full"
+}

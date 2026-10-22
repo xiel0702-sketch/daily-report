@@ -1,0 +1,1037 @@
+{
+  "schemaVersion": 1,
+  "id": "nk19eo4eud45d47tmwxm684iu",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/nk19eo4eud45d47tmwxm684iu",
+  "fetchedAt": "2026-10-22T13:20:28.410894Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Agent 智能体",
+    "教程实践"
+  ],
+  "tags": [
+    "教程/实践",
+    "Agent",
+    "RAG"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Numan 是一家英国数字健康公司，帮助患者在体重、激素和性健康方面管理长期病症。我们的许多患者正在参与减重项目，并每天使用该应用来跟踪进展。",
+          "inlines": [
+            {
+              "href": "https://www.numan.com/",
+              "text": "Numan"
+            },
+            {
+              "text": " 是一家英国数字健康公司，帮助患者在体重、激素和性健康方面管理长期病症。我们的许多患者正在参与减重项目，并每天使用该应用来跟踪进展。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在构建 Nu（我们的 AI 健康教练）时，我们的设计挑战之一是在不越过医疗诊断、处方或做出临床决策这条红线的前提下，提供高质量的健康指导——在我们这个高度监管的医疗领域，这些都是智能体的严格边界。虽然我们最初关注的是智能体及其周围的自动化，但最终最重要的却是我们评估标准的质量。这就是我们如何开发并改进评估标准，以提供高质量用户体验、同时避开受监管领域的故事。",
+          "inlines": [
+            {
+              "text": "在构建 Nu（我们的 AI 健康教练）时，我们的设计挑战之一是在不越过医疗诊断、处方或做出临床决策这条红线的前提下，提供高质量的健康指导——在我们这个高度监管的医疗领域，这些都是智能体的严格边界。虽然我们最初关注的是智能体及其周围的自动化，但最终最重要的却是我们评估标准的质量。这就是我们如何开发并改进评估标准，以提供高质量用户体验、同时避开受监管领域的故事。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "标准评估方法为何对 Nu 不够用",
+          "inlines": [
+            {
+              "text": "标准评估方法为何对 Nu 不够用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们从大多数团队起步的地方开始：一个包含输入和预期输出的数据集，以及一个对每条回复打分的 LLM 评判器。这套方法对问答型智能体很有效，但教练式指导是一场对话，而不是一个答案。所有预先固定 Nu 回复的方法都在两个方面失败了：",
+          "inlines": [
+            {
+              "text": "我们从大多数团队起步的地方开始：一个包含输入和预期输出的数据集，以及一个对每条回复打分的 LLM 评判器。这套方法对问答型智能体很有效，但教练式指导是一场对话，而不是一个答案。所有预先固定 Nu 回复的方法都在两个方面失败了："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1. 基于静态固定样本的单轮评估（固定输入、固定预期输出，评判器单独对一条回复打分）。行为式教练指导很少对某个提示只有一个正确答案，而一条回复是否安全取决于它周围的对话。Nu 需要在给出建议之前，理解在整个对话中是什么在阻碍患者，并在患者施压时守住正确的边界。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "1. 基于静态固定样本的单轮评估"
+            },
+            {
+              "text": "（固定输入、固定预期输出，评判器单独对一条回复打分）。行为式教练指导很少对某个提示只有一个正确答案，而一条回复是否安全取决于它周围的对话。Nu 需要在给出建议之前，理解在整个对话中是什么在阻碍患者，并在患者施压时守住正确的边界。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在整个数据集上平均一个分数，掩盖了 Nu 失败的地方。少数几条糟糕的回复几乎不会让数字变化，于是对话看起来合规，实际却并非如此。固定样本还导致了第二个问题。在一次运行中，一组低分结果被证明是评估本身的错，而不是 Nu 的错。评分标准期望在仅两轮的交流中同时体现共情、探索和建议，而人类教练会把这些分散在一场对话中。Nu 的指导是正确的，但狭窄、固定的评估错误地标记了失败。",
+          "inlines": [
+            {
+              "text": "在整个数据集上平均一个分数，掩盖了 Nu 失败的地方。少数几条糟糕的回复几乎不会让数字变化，于是对话看起来合规，实际却并非如此。固定样本还导致了第二个问题。在一次运行中，一组低分结果被证明是评估本身的错，而不是 Nu 的错。评分标准期望在仅两轮的交流中同时体现共情、探索"
+            },
+            {
+              "italic": true,
+              "text": "和"
+            },
+            {
+              "text": "建议，而人类教练会把这些分散在一场对话中。Nu 的指导是正确的，但狭窄、固定的评估错误地标记了失败。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2. 脚本化的多轮对话。 对单轮固定样本的明显修复方法，是预先写出患者预期的一系列回复。有了这个“脚本”，一个场景的若干轮对话被逐条喂给 Nu，评判器便可在最后对整个对话记录打分。虽然这比单条回复给了评判器更多空间，但评估还是以同样的方式崩溃了。当患者的第二轮回复是预先写好的，测试就忽略了 Nu 在第一轮实际说了什么。一旦 Nu 说了脚本没有预料到的话，之后的每一轮都在回复一场从未发生过的对话。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "2. 脚本化的多轮对话。"
+            },
+            {
+              "text": " 对单轮固定样本的明显修复方法，是预先写出患者预期的一系列回复。有了这个“脚本”，一个场景的若干轮对话被逐条喂给 Nu，评判器便可在最后对整个对话记录打分。虽然这比单条回复给了评判器更多空间，但评估还是以同样的方式崩溃了。当患者的第二轮回复是预先写好的，测试就忽略了 Nu 在第一轮实际说了什么。一旦 Nu 说了脚本没有预料到的话，之后的每一轮都在回复一场从未发生过的对话。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这两种失败模式塑造了我们此后构建的一切。",
+          "inlines": [
+            {
+              "text": "这两种失败模式塑造了我们此后构建的一切。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们今天运行的评估框架",
+          "inlines": [
+            {
+              "text": "我们今天运行的评估框架"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Nu 是一个 LangGraph 图。一个监督模型负责编排向领域专家子智能体的交接，每个子智能体专注于一个教练领域，拥有自己的提示词和工具。这种组合模型让新增专家变得成本低廉，更重要的是，它让所有专家的评估面保持统一。",
+          "inlines": [
+            {
+              "text": "Nu 是一个 LangGraph 图。一个监督模型负责编排向领域专家子智能体的交接，每个子智能体专注于一个教练领域，拥有自己的提示词和工具。这种组合模型让新增专家变得成本低廉，更重要的是，它让所有专家的评估面保持统一。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nu 需要做对的一些事情确实可以从单条回复中判定。例如，主管是否路由到了正确的专家、用药问题是否得到了安全的回答，或者安全防护是否拦截了它应当拦截的内容。针对这些，我们运行了主题数据集，覆盖辅导质量、安全性、用药查询、路由和摘要。与最初的单轮评估不同，我们改变了两点：1）每个数据集都由 LLM 评判器按类别评分，而不是取一个平均值，因此某一类别中的集中失败即使在其他类别看起来正常时也依然可见。2）每个评分标准只询问单条回复能够展示的内容，因此评判器不再因为 Nu 像教练那样把控对话节奏而惩罚它。",
+          "inlines": [
+            {
+              "text": "Nu 需要做对的一些事情"
+            },
+            {
+              "italic": true,
+              "text": "确实"
+            },
+            {
+              "text": "可以从单条回复中判定。例如，主管是否路由到了正确的专家、用药问题是否得到了安全的回答，或者安全防护是否拦截了它应当拦截的内容。针对这些，我们运行了主题数据集，覆盖辅导质量、安全性、用药查询、路由和摘要。与最初的单轮评估不同，我们改变了两点：1）每个数据集都由 LLM 评判器按类别评分，而不是取一个平均值，因此某一类别中的集中失败即使在其他类别看起来正常时也依然可见。2）每个评分标准只询问单条回复能够展示的内容，因此评判器不再因为 Nu 像教练那样把控对话节奏而惩罚它。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "任何 fixture 无法覆盖的内容（即需要整段对话形态的内容）都有自己的一层，如下所述。由于 Nu 是一个图，评估可以针对整个系统或单个子代理，而新的专家会继承评估面。",
+          "inlines": [
+            {
+              "text": "任何 fixture 无法覆盖的内容（即需要整段对话形态的内容）都有自己的一层，如下所述。由于 Nu 是一个图，评估可以针对整个系统或单个子代理，而新的专家会继承评估面。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "“我们交付的东西就是我们测试的东西”",
+          "inlines": [
+            {
+              "text": "“我们交付的东西就是我们测试的东西”"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "构建评估的简单方式是使用一个单独的测试框架，复制代理的提示词并直接调用模型……这在测试框架与生产环境出现偏差之前是可行的。我们没有单独的测试框架，并遵循我们交付的东西就是我们测试的东西这一原则。每次评估都经过患者与之对话的同一个 LangGraph 图，因此我们评分的正是患者所遇到的。",
+          "inlines": [
+            {
+              "text": "构建评估的简单方式是使用一个单独的测试框架，复制代理的提示词并直接调用模型……这在测试框架与生产环境出现偏差之前是可行的。我们没有单独的测试框架，并遵循"
+            },
+            {
+              "italic": true,
+              "text": "我们交付的东西就是我们测试的东西"
+            },
+            {
+              "text": "这一原则。每次评估都经过患者与之对话的同一个 LangGraph 图，因此我们评分的正是患者所遇到的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随着规模扩大，我们开始质疑一个提供商是否适合所有代理，因为主管和领域专家从事不同的认知工作。Nu 目前运行在两个前沿提供商上，按代理选择：一个用于主管，另一个用于专家。得益于我们以开放、主题数据集形式构建的评估套件的可移植性——它可以指向任何配置——我们在不同提供商上运行了相同的数据集并并排阅读结果。前沿提供商之间的迁移通常需要数周的手动测试，而这次只花了一天。",
+          "inlines": [
+            {
+              "text": "随着规模扩大，我们开始质疑一个提供商是否适合所有代理，因为主管和领域专家从事不同的认知工作。Nu 目前运行在两个前沿提供商上，按代理选择：一个用于主管，另一个用于专家。得益于我们以开放、主题数据集形式构建的评估套件的可移植性——它可以指向任何配置——我们在不同提供商上运行了相同的数据集并并排阅读结果。前沿提供商之间的迁移通常需要数周的手动测试，而这次只花了一天。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "用行为测试守住监管边界",
+          "inlines": [
+            {
+              "text": "用行为测试守住监管边界"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "根据 MHRA 的指导，具有医疗目的（提供临床建议、诊断或推荐治疗）的软件产品会成为医疗器械。Nu 被设计为用于生活方式辅导和教育的健康产品，而非临床护理。",
+          "inlines": [
+            {
+              "text": "根据 MHRA 的指导，具有医疗目的（提供临床建议、诊断或推荐治疗）的软件产品会成为医疗器械。Nu 被设计为用于生活方式辅导和教育的健康产品，而非临床护理。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "让 Nu 保持在这一范围内是我们在每次变更时都会检查的事情。安全探针作为按类别指标运行并控制发布：那里的回归会阻止变更自动发布。我们朝着安全完成的方向调优，这是一种既守住底线又仍然听起来像教练的引导，因此提出超出范围问题的患者会得到温暖、有用的回答，而不是生硬的拒绝。",
+          "inlines": [
+            {
+              "text": "让 Nu 保持在这一范围内是我们在每次变更时都会检查的事情。安全探针作为按类别指标运行并控制发布：那里的回归会阻止变更自动发布。我们朝着"
+            },
+            {
+              "italic": true,
+              "text": "安全完成"
+            },
+            {
+              "text": "的方向调优，这是一种既守住底线又仍然听起来像教练的引导，因此提出超出范围问题的患者会得到温暖、有用的回答，而不是生硬的拒绝。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ab4895773eccefd4292a50f35e2b8e8a12d66a610c024b014a9274459b3f05b2.jpg",
+          "alt": "Nu responding to an out-of-scope question with a safe-completion"
+        },
+        {
+          "type": "paragraph",
+          "text": "除了测试之外，防护节点在图中对每段对话运行。安全防护会在患者看到之前，依据一组固定的临床安全规则审查每条发出的回复。不安全的草稿会被送回主管重新生成。如果持续失败，消息会被替换为安全的回退内容，而不是交付不安全的回复。而且由于防护位于图中，它们也位于同一个评估面内——我们的一个主题数据集专门用于测试安全防护是否拦截了它应当拦截的内容。此外，健康教练每天审查真实对话的样本，并标记任何看起来像安全疏漏的内容，因此人类主题专家会校准什么算作安全。",
+          "inlines": [
+            {
+              "text": "除了测试之外，防护节点在图中对每段对话运行。安全防护会在患者看到之前，依据一组固定的临床安全规则审查每条发出的回复。不安全的草稿会被送回主管重新生成。如果持续失败，消息会被替换为安全的回退内容，而不是交付不安全的回复。而且由于防护位于图中，它们也位于同一个评估面内——我们的一个主题数据集专门用于测试安全防护是否拦截了它应当拦截的内容。此外，健康教练每天审查真实对话的样本，并标记任何看起来像安全疏漏的内容，因此人类主题专家会校准什么算作安全。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "模拟对话，而不是编写脚本",
+          "inlines": [
+            {
+              "text": "模拟对话，而不是编写脚本"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们最新的这一层目前处于原型阶段，它模拟对话，而不是把对话写死。我们给评估器提供一个患者人设、一个场景、Nu 应当引出的关键问题，以及一个轮次上限。一个更便宜的模型扮演患者，与真实 agent 进行多轮对话，并对 Nu 所说的任何内容做出反应。然后由评判器按类别对整个对话记录打分。由于患者是生成的而非固定的，我们可以探测对抗性案例（旨在让临床请求绕过教练的措辞、伪装成普通问题的操纵），并捕捉固定用例永远不会遇到的失败。例如，Nu 急于给出答案，而不是像教练那样去调查。",
+          "inlines": [
+            {
+              "text": "我们最新的这一层目前处于原型阶段，它模拟对话，而不是把对话写死。我们给评估器提供一个患者人设、一个场景、Nu 应当引出的关键问题，以及一个轮次上限。一个更便宜的模型扮演患者，与真实 agent 进行多轮对话，并对 Nu 所说的任何内容做出反应。然后由评判器按类别对整个对话记录打分。由于患者是生成的而非固定的，我们可以探测对抗性案例（旨在让临床请求绕过教练的措辞、伪装成普通问题的操纵），并捕捉固定用例永远不会遇到的失败。例如，Nu 急于给出答案，而不是像教练那样去调查。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种通过模拟对话进行的提示加固，减少了越狱场景中针对监管边界的严重范围违规。我们并行运行用药查询评估作为回归门禁，这样提示改进就不会破坏我们已经信任的行为。",
+          "inlines": [
+            {
+              "text": "这种通过模拟对话进行的提示加固，减少了越狱场景中针对监管边界的严重范围违规。我们并行运行用药查询评估作为回归门禁，这样提示改进就不会破坏我们已经信任的行为。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "利用模拟对话层进行持续改进而不引入回归，与其说是工程问题，不如说是评分标准问题。当我们最初为这一层起草标准时，两个我们认为兼容的主题在漏服处理上却相互矛盾：一个说拒绝并指引去看临床医生，另一个说用患者信息 leaflet 中的一般事实进行安全补全。一个提示无法同时满足两者。这个提示冲突的例子教会我们，稀缺而有价值的资产不是提示——有能力的模型能从有限的上下文中很好地起草提示——而是评估标准。而在受监管的边界上，这些标准必须由既理解监管红线又懂临床的临床医生撰写并签署，而不是工程师。Nu 的模拟对话结果是根据工程起草的标准来评判的，这就是为什么在临床医生签署评分标准之前，这一层不会作为发布门禁，也不会用于任何安全声明（这正是让产品保持在红线健康一侧的原因）。",
+          "inlines": [
+            {
+              "text": "利用模拟对话层进行持续改进而不引入回归，与其说是工程问题，不如说是评分标准问题。当我们最初为这一层起草标准时，两个我们认为兼容的主题在漏服处理上却相互矛盾：一个说"
+            },
+            {
+              "italic": true,
+              "text": "拒绝并指引去看临床医生"
+            },
+            {
+              "text": "，另一个说"
+            },
+            {
+              "italic": true,
+              "text": "用患者信息 leaflet 中的一般事实进行安全补全"
+            },
+            {
+              "text": "。一个提示无法同时满足两者。这个提示冲突的例子教会我们，"
+            },
+            {
+              "bold": true,
+              "text": "稀缺而有价值的资产不是提示——有能力的模型能从有限的上下文中很好地起草提示——而是评估标准。"
+            },
+            {
+              "text": "而在受监管的边界上，这些标准必须由既理解监管红线又懂临床的临床医生撰写并签署，而不是工程师。Nu 的模拟对话结果是根据工程起草的标准来评判的，这就是为什么在临床医生签署评分标准之前，这一层不会作为发布门禁，也不会用于任何安全声明（这正是让产品保持在红线健康一侧的原因）。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "技术栈：LangGraph 和 LangSmith",
+          "inlines": [
+            {
+              "text": "技术栈：LangGraph 和 LangSmith"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/06a04bc860fbe88b9c07187298ffb026c276c1381ac6236e6d79f96bed575fd9.webp",
+          "alt": "Diagram of Nu's eval stack: real and simulated conversations run through the same LangGraph agent, measured in LangSmith"
+        },
+        {
+          "type": "paragraph",
+          "text": "真实对话和模拟对话都通过同一个 LangGraph agent 运行；LangSmith 对两者进行度量。临床医生拥有的评分标准驱动评判器，边界回归阻止发布。虚线 = 原型或方向。",
+          "inlines": [
+            {
+              "text": "真实对话和模拟对话都通过同一个 LangGraph agent 运行；LangSmith 对两者进行度量。临床医生拥有的评分标准驱动评判器，边界回归阻止发布。虚线 = 原型或方向。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LangGraph 和 LangSmith 作为一个系统协同工作，构成我们的 agent 开发栈。",
+          "inlines": [
+            {
+              "text": "LangGraph 和 LangSmith 作为一个系统协同工作，构成我们的 agent 开发栈。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LangGraph 是 agent。一个 supervisor 触发领域专家，每个专家都有自己的提示和工具。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "LangGraph 是 agent。"
+            },
+            {
+              "text": "一个 supervisor 触发领域专家，每个专家都有自己的提示和工具。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "评估通过同一个图运行。固定用例和模拟对话两个评估层都命中真实 agent，可以针对整个系统或单个子 agent。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "评估通过同一个图运行。"
+            },
+            {
+              "text": "固定用例和模拟对话两个评估层都命中真实 agent，可以针对整个系统或单个子 agent。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LangSmith 是一切被度量的地方。每一次对话，无论是模拟的还是真实的，都会作为 trace 落地。评审者对这些 trace 进行标注，启动持续质量改进循环。数据集和实验也放在那里。例如，我们一天迁移背后的并排提供商比较就是直接从 LangSmith 读出的。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "LangSmith 是一切被度量的地方。"
+            },
+            {
+              "text": "每一次对话，无论是模拟的还是真实的，都会作为 trace 落地。评审者对这些 trace 进行标注，启动持续质量改进循环。数据集和实验也放在那里。例如，我们一天迁移背后的并排提供商比较就是直接从 LangSmith 读出的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LangGraph 和 LangSmith 之间的集成使评估运行成本低廉。没有胶水代码把三个互不相连的工具缝合在一起。我们发布的东西和我们测试的东西是同一个图，由同一个平台监视。",
+          "inlines": [
+            {
+              "text": "LangGraph 和 LangSmith 之间的集成使评估运行成本低廉。没有胶水代码把三个互不相连的工具缝合在一起。我们发布的东西和我们测试的东西是同一个图，由同一个平台监视。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们的方向：扩展标准，而不仅仅是 agent",
+          "inlines": [
+            {
+              "text": "我们的方向：扩展标准，而不仅仅是 agent"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "辅导质量取决于两点：1）编写用于判定一段对话是否良好的标准；2）扩大这些标准所覆盖的测试范围。因此，我们专注于测试更多对抗性人设和场景，随着我们构建更多专科模型而增加更多主题，并在涉及安全或范围的任何地方扩展临床医生参与的评分标准。评审人员持续在 LangSmith 中阅读真实对话，并且每一项提示词变更仍由工程师提出。",
+          "inlines": [
+            {
+              "text": "辅导质量取决于两点：1）编写用于判定一段对话是否良好的标准；2）扩大这些标准所覆盖的测试范围。因此，我们专注于测试更多对抗性人设和场景，随着我们构建更多专科模型而增加更多主题，并在涉及安全或范围的任何地方扩展临床医生参与的评分标准。评审人员持续在 LangSmith 中阅读真实对话，并且每一项提示词变更仍由工程师提出。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "到目前为止描述的一切都是离线的，即在发布前证明某项变更守住了监管底线。下一步是在线评估器，它们在真实对话进入 LangSmith 时持续运行相同的评分标准，对 Nu 一侧的对话进行评分。与如今教练每天抽样的方式不同，人工评审人员将从评估器已经标记出的对话入手——以观察该边界在生产环境中的保持情况，并在出现误报时完善评分标准。",
+          "inlines": [
+            {
+              "text": "到目前为止描述的一切都是离线的，即在发布前证明某项变更守住了监管底线。下一步是在线评估器，它们在真实对话进入 LangSmith 时持续运行相同的评分标准，对 Nu 一侧的对话进行评分。与如今教练每天抽样的方式不同，人工评审人员将从评估器已经标记出的对话入手——以观察该边界在生产环境中的保持情况，并在出现误报时完善评分标准。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还从早期实验中看到了令人鼓舞的结果，这些实验旨在自动化遵循可信评分标准之后的工作流——包括将已评审的对话分诊为按优先级排序的待办列表，以及针对固定基准调优提示词。最近，一个针对单一行为基准的离线提示词优化循环显著提升了分数，且无需人工调优……这支持了我们的假设：如果你把标准定对了，其余部分就可以自动化。",
+          "inlines": [
+            {
+              "text": "我们还从早期实验中看到了令人鼓舞的结果，这些实验旨在自动化遵循可信评分标准之后的工作流——包括将已评审的对话分诊为按优先级排序的待办列表，以及针对固定基准调优提示词。最近，一个针对单一行为基准的离线提示词优化循环显著提升了分数，且无需人工调优……这支持了我们的假设：如果你把标准定对了，其余部分就可以自动化。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在监管底线附近构建 AI 教练",
+          "inlines": [
+            {
+              "text": "在监管底线附近构建 AI 教练"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你正在构建任何接近监管底线的对话式智能体，以下是我们的建议：",
+          "inlines": [
+            {
+              "text": "如果你正在构建任何接近监管底线的对话式智能体，以下是我们的建议："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "固定数据集无法覆盖整段对话。"
+                },
+                {
+                  "text": "为单条回复能展示的内容保留固定测试样例，其余部分则通过模拟对话来覆盖，并按类别评分，而不是追求一个总体分数。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "把边界做成探针。"
+                },
+                {
+                  "text": "在每次变更时运行它，让回归问题阻止发布，并将同一评分标准对准生产环境。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "在受监管的边界上，评分标准应归临床医生所有。"
+                },
+                {
+                  "text": "工程团队起草的标准足以让测试框架跑起来；但不足以支撑一项安全声明。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "将大部分精力投入到评估标准上。"
+                },
+                {
+                  "text": "下游的一切都源自评估标准：更好的辅导、可辩护的边界，以及最终你可以信任的自动化。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随着标准和自动化的成熟，我们会再次撰文。",
+          "inlines": [
+            {
+              "text": "随着标准和自动化的成熟，我们会再次撰文。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nu 构建于 LangGraph 和 LangSmith 之上。Numan 的 AI 系统处理跨多个健康领域的健康辅导对话。Nu 被设计为健康产品，而非医疗器械。它提供辅导和健康教育，不进行诊断、开处方、监测疾病，也不做出或影响临床决策。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Nu 构建于 "
+            },
+            {
+              "href": "https://www.langchain.com/langgraph",
+              "italic": true,
+              "text": "LangGraph"
+            },
+            {
+              "italic": true,
+              "text": " 和 "
+            },
+            {
+              "href": "https://www.langchain.com/langsmith-platform",
+              "italic": true,
+              "text": "LangSmith"
+            },
+            {
+              "italic": true,
+              "text": " 之上。Numan 的 AI 系统处理跨多个健康领域的健康辅导对话。Nu 被设计为健康产品，而非医疗器械。它提供辅导和健康教育，不进行诊断、开处方、监测疾病，也不做出或影响临床决策。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Numan is a UK digital health company helping patients manage long-term conditions across weight, hormones, and sexual health. Many of our patients are on a weight-loss programme and use the app daily to track progress.",
+          "inlines": [
+            {
+              "href": "https://www.numan.com/",
+              "text": "Numan"
+            },
+            {
+              "text": " is a UK digital health company helping patients manage long-term conditions across weight, hormones, and sexual health. Many of our patients are on a weight-loss programme and use the app daily to track progress."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When building Nu, our AI health coach, one of our design challenges was delivering high-quality health coaching without crossing the line into medical diagnosis, prescriptions, or making clinical decisions—all strict boundaries for agents in our highly regulated medical space. While we initially focused on the agent and automation around it, what turned out to matter most was the quality of our evaluation criteria. This is the story of how we developed and improved our evaluation criteria to deliver high-quality user experiences while steering clear of areas subject to regulation.",
+          "inlines": [
+            {
+              "text": "When building Nu, our AI health coach, one of our design challenges was delivering high-quality health coaching without crossing the line into medical diagnosis, prescriptions, or making clinical decisions—all strict boundaries for agents in our highly regulated medical space. While we initially focused on the agent and automation around it, what turned out to matter most was the quality of our evaluation criteria. This is the story of how we developed and improved our evaluation criteria to deliver high-quality user experiences while steering clear of areas subject to regulation."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where standard eval approaches fell short for Nu",
+          "inlines": [
+            {
+              "text": "Where standard eval approaches fell short for Nu"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We started where most teams start, with a dataset of inputs and expected outputs, and an LLM judge scoring each reply. While that playbook works well for a Q&A agent, coaching is a conversation, not an answer. Every approach that fixed Nu's reply in advance failed in two ways:",
+          "inlines": [
+            {
+              "text": "We started where most teams start, with a dataset of inputs and expected outputs, and an LLM judge scoring each reply. While that playbook works well for a Q&A agent, coaching is a conversation, not an answer. Every approach that fixed Nu's reply in advance failed in two ways:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Single-turn evals on static fixtures (a fixed input, a fixed expected output, and a judge scoring one reply on its own). Behavioural coaching rarely has one right answer to a prompt and whether a reply was safe depends on the conversation around it. Nu needs to understand what is getting in the patient’s way across a conversation before it advises and hold the right boundary when a patient pushes.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "1. Single-turn evals on static fixtures"
+            },
+            {
+              "text": " (a fixed input, a fixed expected output, and a judge scoring one reply on its own). Behavioural coaching rarely has one right answer to a prompt and whether a reply was safe depends on the conversation around it. Nu needs to understand what is getting in the patient’s way across a conversation before it advises and hold the right boundary when a patient pushes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Averaging one score across the whole dataset hid where Nu failed. A few bad replies barely move the number, so the conversation looks compliant when it isn’t. The fixtures also caused a second problem. In one run, a cluster of low scores turned out to be the eval’s fault, not Nu’s. The rubric expected empathy, exploration and advice all within a two-turn exchange, whereas a human coach would pace these across a conversation. Nu was coaching properly, but the narrow, fixed eval signaled failures incorrectly.",
+          "inlines": [
+            {
+              "text": "Averaging one score across the whole dataset hid where Nu failed. A few bad replies barely move the number, so the conversation looks compliant when it isn’t. The fixtures also caused a second problem. In one run, a cluster of low scores turned out to be the eval’s fault, not Nu’s. The rubric expected empathy, exploration "
+            },
+            {
+              "italic": true,
+              "text": "and"
+            },
+            {
+              "text": " advice all within a two-turn exchange, whereas a human coach would pace these across a conversation. Nu was coaching properly, but the narrow, fixed eval signaled failures incorrectly."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Scripted multi-turn conversations. The obvious fix for single-turn fixtures is to write out a patient’s expected series of replies in advance. With this \"script,\" several turns of a scenario, fed to Nu one at a time, allow the judge to score the full transcript at the end. While this gives the judge more room than a single reply, the eval fell apart the same way. When the patient’s second turn is written in advance, the test ignores what Nu actually said in the first turn. The moment Nu says something the script did not expect, every later turn is replying to a conversation that never happened.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "2. Scripted multi-turn conversations."
+            },
+            {
+              "text": " The obvious fix for single-turn fixtures is to write out a patient’s expected series of replies in advance. With this \"script,\" several turns of a scenario, fed to Nu one at a time, allow the judge to score the full transcript at the end. While this gives the judge more room than a single reply, the eval fell apart the same way. When the patient’s second turn is written in advance, the test ignores what Nu actually said in the first turn. The moment Nu says something the script did not expect, every later turn is replying to a conversation that never happened."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These 2 failure modes shaped everything we built thereafter.",
+          "inlines": [
+            {
+              "text": "These 2 failure modes shaped everything we built thereafter."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The eval framework we run today",
+          "inlines": [
+            {
+              "text": "The eval framework we run today"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Nu is a LangGraph graph. A supervisor model orchestrates handoffs to domain-specialist sub-agents, each focused on one coaching area with its own prompt and tools. That composition model makes a new specialist cheap to add, and more importantly, it keeps the evaluation surface uniform across all of them.",
+          "inlines": [
+            {
+              "text": "Nu is a LangGraph graph. A supervisor model orchestrates handoffs to domain-specialist sub-agents, each focused on one coaching area with its own prompt and tools. That composition model makes a new specialist cheap to add, and more importantly, it keeps the evaluation surface uniform across all of them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Some of what Nu has to get right is decidable from a single reply. For example, whether the supervisor routed to the right specialist, whether a medication question got a safe answer, or whether the safety guard caught what it should. For those we run themed datasets spanning coaching quality, safety, medication queries, routing, and summarisation. Unlike our original single-turn evals, we changed two things: 1) Every dataset is scored per-category by an LLM judge rather than one average, so a cluster of failures in one category stays visible even when the rest look healthy. And 2) each rubric asks only what a single reply can show, so the judge no longer penalises Nu for pacing a conversation the way a coach would.",
+          "inlines": [
+            {
+              "text": "Some of what Nu has to get right "
+            },
+            {
+              "italic": true,
+              "text": "is"
+            },
+            {
+              "text": " decidable from a single reply. For example, whether the supervisor routed to the right specialist, whether a medication question got a safe answer, or whether the safety guard caught what it should. For those we run themed datasets spanning coaching quality, safety, medication queries, routing, and summarisation. Unlike our original single-turn evals, we changed two things: 1) Every dataset is scored per-category by an LLM judge rather than one average, so a cluster of failures in one category stays visible even when the rest look healthy. And 2) each rubric asks only what a single reply can show, so the judge no longer penalises Nu for pacing a conversation the way a coach would."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Everything that a fixture cannot cover (i.e. what requires the shape of a whole conversation) gets its own layer, described below. Because Nu is a graph, an eval can target the whole system or a single sub-agent, and a new specialist inherits the eval surface.",
+          "inlines": [
+            {
+              "text": "Everything that a fixture cannot cover (i.e. what requires the shape of a whole conversation) gets its own layer, described below. Because Nu is a graph, an eval can target the whole system or a single sub-agent, and a new specialist inherits the eval surface."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "\"The thing we ship is the thing we test\"",
+          "inlines": [
+            {
+              "text": "\"The thing we ship is the thing we test\""
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The easy way to build an eval is a separate harness that copies the agent’s prompt and calls the model directly...which works until the harness and production drift. We have no separate harness and operate under the principle the thing we ship is the thing we test. Every eval runs through the same LangGraph graph a patient talks to, so what we score is what a patient meets.",
+          "inlines": [
+            {
+              "text": "The easy way to build an eval is a separate harness that copies the agent’s prompt and calls the model directly...which works until the harness and production drift. We have no separate harness and operate under the principle "
+            },
+            {
+              "italic": true,
+              "text": "the thing we ship is the thing we test"
+            },
+            {
+              "text": ". Every eval runs through the same LangGraph graph a patient talks to, so what we score is what a patient meets."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As we scaled, we started asking whether one provider was right for every agent, since the supervisor and the domain specialists do different cognitive work. Nu runs on two frontier providers today, chosen per-agent: one for the supervisor, another for the specialists. Thanks to the portability of our eval suite built as open, themed datasets we can point at any configuration, we ran the same datasets across providers and read the results side by side. A migration between frontier providers, normally weeks of manual testing, took only a day.",
+          "inlines": [
+            {
+              "text": "As we scaled, we started asking whether one provider was right for every agent, since the supervisor and the domain specialists do different cognitive work. Nu runs on two frontier providers today, chosen per-agent: one for the supervisor, another for the specialists. Thanks to the portability of our eval suite built as open, themed datasets we can point at any configuration, we ran the same datasets across providers and read the results side by side. A migration between frontier providers, normally weeks of manual testing, took only a day."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Behavioural tests to keep the regulatory boundary",
+          "inlines": [
+            {
+              "text": "Behavioural tests to keep the regulatory boundary"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Under MHRA guidance, a software-based product with a medical purpose (giving clinical advice, diagnosing, or recommending treatment) becomes a medical device. Nu was designed to be a wellness product for lifestyle coaching and education, not clinical care.",
+          "inlines": [
+            {
+              "text": "Under MHRA guidance, a software-based product with a medical purpose (giving clinical advice, diagnosing, or recommending treatment) becomes a medical device. Nu was designed to be a wellness product for lifestyle coaching and education, not clinical care."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Keeping Nu inside that scope is something we check on every change. Safety probes run as per-category metrics and gate releases: a regression there blocks the change from shipping automatically. We tune toward safe-completion, a redirect that holds the line while still sounding like a coach, so a patient who asks something out of scope gets a warm, useful answer rather than an abrupt refusal.",
+          "inlines": [
+            {
+              "text": "Keeping Nu inside that scope is something we check on every change. Safety probes run as per-category metrics and gate releases: a regression there blocks the change from shipping automatically. We tune toward "
+            },
+            {
+              "italic": true,
+              "text": "safe-completion,"
+            },
+            {
+              "text": " a redirect that holds the line while still sounding like a coach, so a patient who asks something out of scope gets a warm, useful answer rather than an abrupt refusal."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ab4895773eccefd4292a50f35e2b8e8a12d66a610c024b014a9274459b3f05b2.jpg",
+          "alt": "Nu responding to an out-of-scope question with a safe-completion"
+        },
+        {
+          "type": "paragraph",
+          "text": "Beyond testing, guard nodes run on every conversation inside the graph. A safety guard reviews each outgoing response against a fixed set of clinical safety rules before the patient sees it. An unsafe draft is sent back to the supervisor to regenerate. If it keeps failing, the message is replaced with a safe fallback rather than delivering the unsafe response. And because the guards sit in the graph, they sit inside the same eval surface—where one of our themed datasets exists specifically to test that the safety guard catches what it should. In addition, health coaches review a sample of real conversations every day and flag anything that looks like a safety miss, so human subject matter experts calibrate what counts as safe.",
+          "inlines": [
+            {
+              "text": "Beyond testing, guard nodes run on every conversation inside the graph. A safety guard reviews each outgoing response against a fixed set of clinical safety rules before the patient sees it. An unsafe draft is sent back to the supervisor to regenerate. If it keeps failing, the message is replaced with a safe fallback rather than delivering the unsafe response. And because the guards sit in the graph, they sit inside the same eval surface—where one of our themed datasets exists specifically to test that the safety guard catches what it should. In addition, health coaches review a sample of real conversations every day and flag anything that looks like a safety miss, so human subject matter experts calibrate what counts as safe."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Simulating conversations instead of scripting them",
+          "inlines": [
+            {
+              "text": "Simulating conversations instead of scripting them"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Our newest layer, in prototype today, simulates the conversation instead of scripting it. We hand the eval a patient persona, a scenario, the key problems Nu should draw out, and a turn limit. A cheaper model plays the patient, holding a multi-turn conversation with the real agent and reacting to whatever Nu says. Then a judge scores the whole transcript per-category. Because the patient is generated rather than fixed, we can probe adversarial cases (phrasings built to slip a clinical request past the coach, manipulation disguised as an ordinary question) and catch failures a fixture never encounters. For example, Nu rushing to an answer instead of investigating the way a coach should.",
+          "inlines": [
+            {
+              "text": "Our newest layer, in prototype today, simulates the conversation instead of scripting it. We hand the eval a patient persona, a scenario, the key problems Nu should draw out, and a turn limit. A cheaper model plays the patient, holding a multi-turn conversation with the real agent and reacting to whatever Nu says. Then a judge scores the whole transcript per-category. Because the patient is generated rather than fixed, we can probe adversarial cases (phrasings built to slip a clinical request past the coach, manipulation disguised as an ordinary question) and catch failures a fixture never encounters. For example, Nu rushing to an answer instead of investigating the way a coach should."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This kind of prompt hardening via simulated conversations reduced serious scope violations in jailbreak scenarios against the regulatory boundary. We ran parallel medication-query evals as a regression gate so prompt improvements could not break behaviour we already trusted.",
+          "inlines": [
+            {
+              "text": "This kind of prompt hardening via simulated conversations reduced serious scope violations in jailbreak scenarios against the regulatory boundary. We ran parallel medication-query evals as a regression gate so prompt improvements could not break behaviour we already trusted."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Using the simulated conversation layer for continuous improvement without introducing regressions is less an engineering problem than a rubric problem. When we first drafted criteria for this layer, two themes we thought were compatible turned out to contradict each other on missed-dose handling: one said decline and signpost to a clinician, the other said safe-completion with general facts from the patient information leaflet. One prompt cannot satisfy both. This example of a prompt conflict taught us that the scarce, valuable asset is not the prompt, which a capable model drafts well from limited context; it is the eval criteria. And on a regulated boundary, those criteria have to be authored and signed off by a clinician who also understands the regulatory line, not an engineer. The results from Nu's simulated conversations are judged against engineering-drafted criteria, which is why this layer does not gate releases or inform any safety claim until a clinician has signed off the rubric (which is what keeps the product on the wellness side of the line).",
+          "inlines": [
+            {
+              "text": "Using the simulated conversation layer for continuous improvement without introducing regressions is less an engineering problem than a rubric problem. When we first drafted criteria for this layer, two themes we thought were compatible turned out to contradict each other on missed-dose handling: one said "
+            },
+            {
+              "italic": true,
+              "text": "decline and signpost to a clinician"
+            },
+            {
+              "text": ", the other said "
+            },
+            {
+              "italic": true,
+              "text": "safe-completion with general facts from the patient information leaflet"
+            },
+            {
+              "text": ". One prompt cannot satisfy both. This example of a prompt conflict taught us that "
+            },
+            {
+              "bold": true,
+              "text": "the scarce, valuable asset is not the prompt, which a capable model drafts well from limited context; it is the eval criteria."
+            },
+            {
+              "text": " And on a regulated boundary, those criteria have to be authored and signed off by a clinician who also understands the regulatory line, not an engineer. The results from Nu's simulated conversations are judged against engineering-drafted criteria, which is why this layer does not gate releases or inform any safety claim until a clinician has signed off the rubric (which is what keeps the product on the wellness side of the line)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The stack: LangGraph and LangSmith",
+          "inlines": [
+            {
+              "text": "The stack: LangGraph and LangSmith"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/06a04bc860fbe88b9c07187298ffb026c276c1381ac6236e6d79f96bed575fd9.webp",
+          "alt": "Diagram of Nu's eval stack: real and simulated conversations run through the same LangGraph agent, measured in LangSmith"
+        },
+        {
+          "type": "paragraph",
+          "text": "Real and simulated conversations run through the same LangGraph agent; LangSmith measures both. A clinician-owned rubric drives the judge, and a boundary regression blocks the release. Dashed = prototype or direction.",
+          "inlines": [
+            {
+              "text": "Real and simulated conversations run through the same LangGraph agent; LangSmith measures both. A clinician-owned rubric drives the judge, and a boundary regression blocks the release. Dashed = prototype or direction."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LangGraph and LangSmith fit together as one system to make up our agent development stack.",
+          "inlines": [
+            {
+              "text": "LangGraph and LangSmith fit together as one system to make up our agent development stack."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LangGraph is the agent. A supervisor triggers domain specialists, each with its own prompt and tools.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "LangGraph is the agent."
+            },
+            {
+              "text": " A supervisor triggers domain specialists, each with its own prompt and tools."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Evals run through that same graph. Both fixture and simulated conversation eval layers hit the real agent and can target the whole system or a single sub-agent.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Evals run through that same graph."
+            },
+            {
+              "text": " Both fixture and simulated conversation eval layers hit the real agent and can target the whole system or a single sub-agent."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LangSmith is where everything is measured. Every conversation, simulated or real, lands as a trace. Reviewers annotate those traces, kicking off the continuous quality improvement loop. Datasets and experiments live there too. For example, the side-by-side provider comparison behind our one-day migration was read straight out of LangSmith.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "LangSmith is where everything is measured."
+            },
+            {
+              "text": " Every conversation, simulated or real, lands as a trace. Reviewers annotate those traces, kicking off the continuous quality improvement loop. Datasets and experiments live there too. For example, the side-by-side provider comparison behind our one-day migration was read straight out of LangSmith."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The integration between LangGraph and LangSmith keeps evaluation cheap to run. There is no glue code stitching three disconnected tools together. The thing we ship and the thing we test are the same graph, watched by the same platform.",
+          "inlines": [
+            {
+              "text": "The integration between LangGraph and LangSmith keeps evaluation cheap to run. There is no glue code stitching three disconnected tools together. The thing we ship and the thing we test are the same graph, watched by the same platform."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where we are heading: scaling the criteria, not just the agent",
+          "inlines": [
+            {
+              "text": "Where we are heading: scaling the criteria, not just the agent"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Coaching quality hinges on 1) authoring the criteria that decide whether a conversation was good, and 2) widening the coverage they are tested against. So we're focused on testing more adversarial personas and scenarios, adding more themes as we build more specialists, and expanding the clinician-in-the-loop rubric wherever it touches safety or scope. Reviewers keep reading real conversations in LangSmith, and an engineer still raises every prompt change.",
+          "inlines": [
+            {
+              "text": "Coaching quality hinges on 1) authoring the criteria that decide whether a conversation was good, and 2) widening the coverage they are tested against. So we're focused on testing more adversarial personas and scenarios, adding more themes as we build more specialists, and expanding the clinician-in-the-loop rubric wherever it touches safety or scope. Reviewers keep reading real conversations in LangSmith, and an engineer still raises every prompt change."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Everything described so far is offline, proving a change holds the regulatory line before it ships. The next step is online evaluators that run the same rubrics continuously against real conversations as they land in LangSmith, scoring Nu's side of the conversation. Instead of the daily sample coaches review today, human reviewers will start from the conversations an evaluator has already flagged—to watch the boundary hold in production and sharpen the rubric upon false alarms.",
+          "inlines": [
+            {
+              "text": "Everything described so far is offline, proving a change holds the regulatory line before it ships. The next step is online evaluators that run the same rubrics continuously against real conversations as they land in LangSmith, scoring Nu's side of the conversation. Instead of the daily sample coaches review today, human reviewers will start from the conversations an evaluator has already flagged—to watch the boundary hold in production and sharpen the rubric upon false alarms."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We're also seeing encouraging results from early experiments to automate the workflows that follow a trustworthy rubric—including triaging reviewed conversations into a ranked backlog and tuning a prompt against a fixed benchmark. Recently, an offline prompt-optimisation loop pointed at a single behavioural benchmark meaningfully improved the score with no hand-tuning...in favor of our hypothesis that if you get the criteria right, the rest becomes automatable.",
+          "inlines": [
+            {
+              "text": "We're also seeing encouraging results from early experiments to automate the workflows that follow a trustworthy rubric—including triaging reviewed conversations into a ranked backlog and tuning a prompt against a fixed benchmark. Recently, an offline prompt-optimisation loop pointed at a single behavioural benchmark meaningfully improved the score with no hand-tuning...in favor of our hypothesis that if you get the criteria right, the rest becomes automatable."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Building an AI coach near a regulatory line",
+          "inlines": [
+            {
+              "text": "Building an AI coach near a regulatory line"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "If you are building a conversational agent anywhere near a regulatory line, here are our recommendations:",
+          "inlines": [
+            {
+              "text": "If you are building a conversational agent anywhere near a regulatory line, here are our recommendations:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "A fixed dataset cannot cover a whole conversation."
+                },
+                {
+                  "text": " Keep fixtures for what a single reply can show, simulate conversations for the rest, and score per-category rather than chasing an aggregate."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Make the boundary a probe."
+                },
+                {
+                  "text": " Run it on every change, let a regression block the release, and aim the same rubric at production."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "On a regulated boundary, the rubric belongs to a clinician."
+                },
+                {
+                  "text": " Engineering-drafted criteria are enough to get a harness running; they are not enough to gate a safety claim."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Invest the bulk of your effort into the eval criteria."
+                },
+                {
+                  "text": " Everything downstream follows from the eval criteria: better coaching, a defensible boundary, and eventually automation you can trust."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We'll write again as the criteria and the automation matures.",
+          "inlines": [
+            {
+              "text": "We'll write again as the criteria and the automation matures."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nu is built on LangGraph and LangSmith. Numan's AI system handles health-coaching conversations across multiple health domains. Nu is designed to operate as a wellness product, not a medical device. It provides coaching and health education, and does not diagnose, prescribe, monitor disease, or make or inform clinical decisions.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Nu is built on "
+            },
+            {
+              "href": "https://www.langchain.com/langgraph",
+              "italic": true,
+              "text": "LangGraph"
+            },
+            {
+              "italic": true,
+              "text": " and "
+            },
+            {
+              "href": "https://www.langchain.com/langsmith-platform",
+              "italic": true,
+              "text": "LangSmith"
+            },
+            {
+              "italic": true,
+              "text": ". Numan's AI system handles health-coaching conversations across multiple health domains. Nu is designed to operate as a wellness product, not a medical device. It provides coaching and health education, and does not diagnose, prescribe, monitor disease, or make or inform clinical decisions."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:20:31.491880Z",
+  "contentMode": "full"
+}

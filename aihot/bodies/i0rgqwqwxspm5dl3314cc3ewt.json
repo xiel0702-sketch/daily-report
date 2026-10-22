@@ -1,0 +1,2646 @@
+{
+  "schemaVersion": 1,
+  "id": "i0rgqwqwxspm5dl3314cc3ewt",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/i0rgqwqwxspm5dl3314cc3ewt",
+  "fetchedAt": "2026-10-22T13:25:37.384898Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Google / Gemini",
+    "Agent 智能体",
+    "开源生态",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "Agent",
+    "开源生态",
+    "Google"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "2026年10月15日",
+          "inlines": [
+            {
+              "text": "2026年10月15日"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为 Google Cloud 的 Agents CLI、Agent Garden 和 Gemini Enterprise 应用提供支持的精选 ADK recipes 库。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "为 Google Cloud 的 Agents CLI、Agent Garden 和 Gemini Enterprise 应用提供支持的精选 ADK recipes 库。"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "heading",
+          "text": "引言",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "引言"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "如今，在 Google Cloud 上构建应用的开发者可以从终端搭建一个长时程记忆智能体，用一行命令将零售垂直技能安装到编码助手中，并将一个完整接线的生产服务部署到 Cloud Run、Agent Runtime、Agent Garden 或 Gemini Enterprise 应用——所有这些都来自同一个精选源码树。这个源码树就是 google/adk-recipes，它是 google/adk-samples 重构后的继任者，如今从单一事实来源为 Agent Platform 提供服务。",
+          "inlines": [
+            {
+              "text": "如今，在 Google Cloud 上构建应用的开发者可以从终端搭建一个长时程记忆智能体，用一行命令将零售垂直技能安装到编码助手中，并将一个完整接线的生产服务部署到 Cloud Run、Agent Runtime、Agent Garden 或 Gemini Enterprise 应用——所有这些都来自同一个精选源码树。这个源码树就是 "
+            },
+            {
+              "code": true,
+              "text": "google/adk-recipes"
+            },
+            {
+              "text": "，它是 "
+            },
+            {
+              "code": true,
+              "text": "google/adk-samples"
+            },
+            {
+              "text": " 重构后的继任者，如今从单一事实来源为 Agent Platform 提供服务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ADK recipes 对智能体友好：我们让智能体可以轻松地 1) 发现适用于各种智能体用例的相关 recipes，以及 2) 从你喜欢的 harness 中自动安装并使用它们。",
+          "inlines": [
+            {
+              "text": "ADK recipes 对智能体友好：我们让智能体可以轻松地 1) 发现适用于各种智能体用例的相关 recipes，以及 2) 从你喜欢的 harness 中自动安装并使用它们。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "google/adk-recipes 将其内容分为三个顶层文件夹：core/ 用于由 Agents CLI 和 DevRel 团队精选的参考模式，plugins/ 用于以 Plugin Recipes 形式打包、符合 Agent Plugins v1.0.0 规范的可安装垂直技能，contrib/ 用于跨五种语言的端到端可部署服务。每一部分都以机器可读性为首要考虑进行设计。",
+          "inlines": [
+            {
+              "code": true,
+              "text": "google/adk-recipes"
+            },
+            {
+              "text": " 将其内容分为三个顶层文件夹："
+            },
+            {
+              "code": true,
+              "text": "core/"
+            },
+            {
+              "text": " 用于由 Agents CLI 和 DevRel 团队精选的参考模式，plugins/ 用于以 Plugin Recipes 形式打包、符合 Agent Plugins v1.0.0 规范的可安装垂直技能，contrib/ 用于跨五种语言的端到端可部署服务。每一部分都以机器可读性为首要考虑进行设计。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "接下来将介绍该仓库的结构、三个完整示例（每层一个），以及对新结构所带来能力的思考。",
+          "inlines": [
+            {
+              "text": "接下来将介绍该"
+            },
+            {
+              "href": "https://github.com/google/adk-recipes/tree/main/",
+              "text": "仓库"
+            },
+            {
+              "text": "的结构、三个完整示例（每层一个），以及对新结构所带来能力的思考。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "仓库里有什么",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "仓库里有什么"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9aec66ca08b9886aa39d188d02c0d2a3c6e81769776467dd1752357ee6deea0e.webp",
+          "alt": "2 (1)"
+        },
+        {
+          "type": "paragraph",
+          "text": "三个顶层根目录，每个都锚定一种读者操作：",
+          "inlines": [
+            {
+              "text": "三个顶层根目录，每个都锚定一种读者操作："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/1c8952159df685401501da9ca07ec5b93638ac92037526f434d72762394e7c58.jpg",
+          "alt": "Gemini_Generated_Image_6297en6297en6297"
+        },
+        {
+          "type": "paragraph",
+          "text": "每个 recipe 都附带一个经过验证的 manifest.yaml、一个 AGENTS.md（用于告诉打开它的编码助手该 recipe 是什么以及如何使用），以及（对于 contrib/ 和 plugins/）一个 Dockerfile 加一个可运行性测试。CI 会在每个 PR 上强制执行这些标准，而仓库中的一套编码助手技能（prepare-python-recipe、generate-manifest、github-pr-review 等）会完成大部分准备工作，因此你的智能体可以端到端地搭建、验证并提交一个 recipe。",
+          "inlines": [
+            {
+              "text": "每个 recipe 都附带一个经过验证的 "
+            },
+            {
+              "code": true,
+              "text": "manifest.yaml"
+            },
+            {
+              "text": "、一个 "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": "（用于告诉打开它的编码助手该 recipe 是什么以及如何使用），以及（对于 "
+            },
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "plugins/"
+            },
+            {
+              "text": "）一个 "
+            },
+            {
+              "code": true,
+              "text": "Dockerfile"
+            },
+            {
+              "text": " 加一个可运行性测试。CI 会在每个 PR 上强制执行这些标准，而仓库中的一套编码助手技能（"
+            },
+            {
+              "code": true,
+              "text": "prepare-python-recipe"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "generate-manifest"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "github-pr-review"
+            },
+            {
+              "text": " 等）会完成大部分准备工作，因此你的智能体可以端到端地搭建、验证并提交一个 recipe。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为编码助手而构建，而不仅仅是为开发者",
+          "inlines": [
+            {
+              "text": "为编码助手而构建，而不仅仅是为开发者"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "每个 AGENTS.md、每个 manifest.yaml、每个 SKILL.md 都主要面向将代表你打开该仓库的 AI 编码助手编写；README.md 文件才是人类仍然会阅读的内容。手册词汇表捕捉了这种双重定位：“Recipe——位于 core/、 contrib/ 或 plugins/ 下的可运行智能体示例（或可导入的智能体模块），供 ADK 开发者和编码智能体共同使用。”",
+          "inlines": [
+            {
+              "text": "每个 "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": "、每个 "
+            },
+            {
+              "code": true,
+              "text": "manifest.yaml"
+            },
+            {
+              "text": "、每个 "
+            },
+            {
+              "code": true,
+              "text": "SKILL.md"
+            },
+            {
+              "text": " 都主要面向将代表你打开该仓库的 AI 编码助手编写；"
+            },
+            {
+              "code": true,
+              "text": "README.md"
+            },
+            {
+              "text": " 文件才是人类仍然会阅读的内容。手册词汇表捕捉了这种双重定位："
+            },
+            {
+              "italic": true,
+              "text": "“Recipe——位于"
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "italic": true,
+              "text": "core/"
+            },
+            {
+              "italic": true,
+              "text": "、"
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "italic": true,
+              "text": "contrib/"
+            },
+            {
+              "italic": true,
+              "text": " 或"
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "italic": true,
+              "text": "plugins/"
+            },
+            {
+              "italic": true,
+              "text": " 下的可运行智能体示例（或可导入的智能体模块），供 ADK 开发者和编码智能体共同使用。”"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "它在整个 Agent Platform 中提供什么支持",
+          "inlines": [
+            {
+              "text": "它在整个 Agent Platform 中提供什么支持"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "adk-recipes 是 ADK 内容在三个消费它的 Agent Platform 界面中的单一事实来源。每个界面都通过自己的协议读取该仓库。",
+          "inlines": [
+            {
+              "code": true,
+              "text": "adk-recipes"
+            },
+            {
+              "text": " 是 ADK 内容在三个消费它的 Agent Platform 界面中的单一事实来源。每个界面都通过自己的协议读取该仓库。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Agents CLI 读取 core/。当开发者运行 uvx --from google-agents-cli agents-cli create my-agent 时，Agents CLI 可以按需搭建一个 core/ recipe。该 CLI 于今年早些时候在 Google Cloud Next 上推出，暴露了完整的搭建 → 部署 → 评估 → 发布生命周期；它提供的基础内容来自我们的 recipes。Horizon 是我们下面要考察的参考 harness，就是一个被 Agents CLI 视为生产模板的示例模式。",
+          "inlines": [
+            {
+              "text": "Agents CLI 读取 "
+            },
+            {
+              "code": true,
+              "text": "core/"
+            },
+            {
+              "text": "。当开发者运行 "
+            },
+            {
+              "code": true,
+              "text": "uvx --from google-agents-cli agents-cli create my-agent"
+            },
+            {
+              "text": " 时，Agents CLI 可以按需搭建一个 "
+            },
+            {
+              "code": true,
+              "text": "core/"
+            },
+            {
+              "text": " recipe。该 CLI 于今年早些时候在 Google Cloud Next 上推出，暴露了完整的搭建 → 部署 → 评估 → 发布生命周期；它提供的基础内容来自我们的 recipes。Horizon 是我们下面要考察的参考 harness，就是一个被 Agents CLI 视为生产模板的示例模式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Agent Garden 提供精选内容。面向开发者的进入该仓库的路径是向 contrib/ 提交拉取请求：一个 recipe 进入 GitHub，成为公共 ADK 生态系统的一部分，从那一刻起就可被其他开发者和读取该仓库的编码助手发现。出现在 Agent Garden 图库中则是 Agent Garden 团队做出的另一项编辑决定，该团队会精选一部分 recipes，并按自己的节奏将其推广到公共目录。一旦某个智能体进入图库，Google Cloud 项目中的任何开发者都可以一键安装。",
+          "inlines": [
+            {
+              "text": "Agent Garden 提供精选内容。面向开发者的进入该仓库的路径是向 "
+            },
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": " 提交拉取请求：一个 recipe 进入 GitHub，成为公共 ADK 生态系统的一部分，从那一刻起就可被其他开发者和读取该仓库的编码助手发现。出现在 Agent Garden 图库中则是 Agent Garden 团队做出的另一项编辑决定，该团队会精选一部分 recipes，并按自己的节奏将其推广到公共目录。一旦某个智能体进入图库，Google Cloud 项目中的任何开发者都可以一键安装。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/1f8369e41cffd93e287fc32822e350d5ec1bdc47d85066d3de4351a405090740.webp",
+          "alt": "3"
+        },
+        {
+          "type": "paragraph",
+          "text": "除了这些主要界面之外，Google Cloud 自身的基础设施组件也作为构建模块出现在这些配方之中。Horizon 使用 Agent Platform Sandboxes 实现按用户隔离的沙箱环境，使用 Memory Bank 实现持久记忆，并使用 Agent Platform Sessions 管理会话状态。零售产品搜索 Plugin Recipe 在 Gemini Enterprise Agent Platform 上使用 Vector Search 2.0，并与 BigQuery 搭配。零售虚拟试穿 Plugin Recipe 使用 Gemini 图像模型生成静态合成图，并使用 Veo 3.1 Reference-to-Video 生成动画输出。这些配方并非只是与 Agent Platform 并存；它们记录了 Agent Platform 的实际使用方式。",
+          "inlines": [
+            {
+              "text": "除了这些主要界面之外，Google Cloud 自身的基础设施组件也作为构建模块出现在这些配方之中。Horizon 使用 Agent Platform Sandboxes 实现按用户隔离的沙箱环境，使用 Memory Bank 实现持久记忆，并使用 Agent Platform Sessions 管理会话状态。零售产品搜索 Plugin Recipe 在 Gemini Enterprise Agent Platform 上使用 Vector Search 2.0，并与 BigQuery 搭配。零售虚拟试穿 Plugin Recipe 使用 Gemini 图像模型生成静态合成图，并使用 Veo 3.1 Reference-to-Video 生成动画输出。这些配方并非只是与 Agent Platform 并存；它们记录了 Agent Platform 的实际使用方式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对于使用 Google Cloud 工具链之外的编码助手（Claude Code、Antigravity、Cursor、Windsurf、Zed 等）的开发者，Plugin Recipes 还可以通过由 vercel-labs 维护的开源 npx skills CLI 进行安装。",
+          "inlines": [
+            {
+              "text": "对于使用 Google Cloud 工具链之外的编码助手（Claude Code、Antigravity、Cursor、Windsurf、Zed 等）的开发者，Plugin Recipes 还可以通过由 vercel-labs 维护的开源 "
+            },
+            {
+              "code": true,
+              "text": "npx skills"
+            },
+            {
+              "text": " CLI 进行安装。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Horizon：一个参考模式，用于 core/",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Horizon：一个参考模式，用于"
+            },
+            {
+              "text": " "
+            },
+            {
+              "bold": true,
+              "code": true,
+              "text": "core/"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c16624304562f16a806eb2e7519edd45774d62f2e1d8b5099297001128eecdb5.webp",
+          "alt": "4"
+        },
+        {
+          "type": "paragraph",
+          "text": "构建一个能够处理单次对话的智能体是一个已被充分理解的问题。构建一个能够在多天的交互中保持自身状态、记住用户昨天做了什么并规划明天任务的智能体，则是一项本质上不同的工作。这类长时程系统的难点，无论智能体被构建来做什么，都是相同的：跨会话记忆、工具执行的按用户沙箱隔离、密钥管理、防止失控行为的护栏，以及使多步骤任务可恢复的编排原语。Horizon 位于 core/python/long-horizon-harness，是我们构建的参考测试框架，用于将这些原语汇集在一处。",
+          "inlines": [
+            {
+              "text": "构建一个能够处理单次对话的智能体是一个已被充分理解的问题。构建一个能够在多天的交互中保持自身状态、记住用户昨天做了什么并规划明天任务的智能体，则是一项本质上不同的工作。这类长时程系统的难点，无论智能体被构建来做什么，都是相同的：跨会话记忆、工具执行的按用户沙箱隔离、密钥管理、防止失控行为的护栏，以及使多步骤任务可恢复的编排原语。Horizon 位于 "
+            },
+            {
+              "code": true,
+              "text": "core/python/long-horizon-harness"
+            },
+            {
+              "text": "，是我们构建的参考测试框架，用于将这些原语汇集在一处。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "从全新克隆到运行中的 Horizon 实例的最短路径：",
+          "inlines": [
+            {
+              "text": "从全新克隆到运行中的 Horizon 实例的最短路径："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "uvx google-agents-cli setup\ngcloud auth application-default login\ngcloud config set project YOUR_PROJECT_ID\ngcloud services enable aiplatform.googleapis.com\n\ngit clone --depth 1 --filter=blob:none --sparse https://github.com/google/adk-recipes.git\ncd adk-recipes\ngit sparse-checkout set core/python/long-horizon-harness\ncd core/python/long-horizon-harness\n\n# Default: LHA_ENVIRONMENT_BACKEND=local, in-memory sessions, no cloud deploys needed\nmake dev-local"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "make deploy 通过 Terraform 将后端部署到 Cloud Run；make destroy 会将其拆除。Horizon 的评估套件位于 tests/eval/evalsets/，包含十八个具名行为评分标准，涵盖记忆召回、基于注入的数据外泄尝试、对抗性输入下的护栏中止、工具选择纪律，以及旅程级情节产物评估。这些评分标准通过 uv run pytest tests/eval 执行。",
+          "inlines": [
+            {
+              "code": true,
+              "text": "make deploy"
+            },
+            {
+              "text": " 通过 Terraform 将后端部署到 Cloud Run；make destroy 会将其拆除。Horizon 的评估套件位于 "
+            },
+            {
+              "code": true,
+              "text": "tests/eval/evalsets/"
+            },
+            {
+              "text": "，包含十八个具名行为评分标准，涵盖记忆召回、基于注入的数据外泄尝试、对抗性输入下的护栏中止、工具选择纪律，以及旅程级情节产物评估。这些评分标准通过 "
+            },
+            {
+              "code": true,
+              "text": "uv run pytest tests/eval"
+            },
+            {
+              "text": " 执行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "针对运行中后端的第一轮聊天确认记忆层已正确接通：",
+          "inlines": [
+            {
+              "text": "针对运行中后端的第一轮聊天确认记忆层已正确接通："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/59d54212ca93a8790d76ee3b362b20dba836953411ff247c43bf52ee744b51d6.webp",
+          "alt": "5"
+        },
+        {
+          "type": "paragraph",
+          "text": "Horizon 是我们提供给编码助手的测试框架，供其在构建更困难的东西之前进行研究。当开发者要求其助手构建一个必须在多天交互中运行的智能体时，正确的下一步是以 Horizon 作为脚手架使用 uvx google-agents-cli create，其余测试框架便会各就各位。",
+          "inlines": [
+            {
+              "text": "Horizon 是我们提供给编码助手的测试框架，供其在构建更困难的东西之前进行研究。当开发者要求其助手构建一个必须在多天交互中运行的智能体时，正确的下一步是以 Horizon 作为脚手架使用 "
+            },
+            {
+              "code": true,
+              "text": "uvx google-agents-cli create"
+            },
+            {
+              "text": "，其余测试框架便会各就各位。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "零售 Plugin Recipe",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "零售 Plugin Recipe"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Horizon 编码了一种参考模式。它并不编码某个垂直领域。为此，仓库的第二层存放了 Plugin Recipes，每个都针对特定的行业领域。本次发布中首个完整覆盖的垂直领域是零售，位于 plugins/retail/ 下。",
+          "inlines": [
+            {
+              "text": "Horizon 编码了一种参考模式。它并不编码某个垂直领域。为此，仓库的第二层存放了 Plugin Recipes，每个都针对特定的行业领域。本次发布中首个完整覆盖的垂直领域是零售，位于 "
+            },
+            {
+              "code": true,
+              "text": "plugins/retail/"
+            },
+            {
+              "text": " 下。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Plugin Recipe 格式建立在发布于 agent-plugins.org 的 Agent Plugins v1.0.0 规范之上，这是一个用于跨编码助手打包可安装 AI 技能的开源标准。该规范将插件定义为一个或多个技能的捆绑包，并带有一个顶层 plugin.json 清单，声明名称、版本、许可证和所有权。每个技能都是一个自包含的文件夹，包含一个 SKILL.md 对话式安装器、一个 README.md、一个由质量门禁组成的 EVAL.yaml，以及该技能完成工作所需的脚本和资源。零售插件的布局如下：",
+          "inlines": [
+            {
+              "text": "Plugin Recipe 格式建立在发布于"
+            },
+            {
+              "href": "https://agent-plugins.org/specification",
+              "text": " agent-plugins.org"
+            },
+            {
+              "text": " 的 Agent Plugins v1.0.0 规范之上，这是一个用于跨编码助手打包可安装 AI 技能的开源标准。该规范将插件定义为一个或多个技能的捆绑包，并带有一个顶层 "
+            },
+            {
+              "code": true,
+              "text": "plugin.json"
+            },
+            {
+              "text": " 清单，声明名称、版本、许可证和所有权。每个技能都是一个自包含的文件夹，包含一个 "
+            },
+            {
+              "code": true,
+              "text": "SKILL.md"
+            },
+            {
+              "text": " 对话式安装器、一个 "
+            },
+            {
+              "code": true,
+              "text": "README.md"
+            },
+            {
+              "text": "、一个由质量门禁组成的 "
+            },
+            {
+              "code": true,
+              "text": "EVAL.yaml"
+            },
+            {
+              "text": "，以及该技能完成工作所需的脚本和资源。零售插件的布局如下："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "plugins/retail/\n├── plugin.json\n└── skills/\n    ├── product-search/\n    │   ├── SKILL.md       # Q-MODE conversational installer\n    │   ├── README.md\n    │   ├── EVAL.yaml      # LLM-as-judge rubrics + deterministic assertions\n    │   ├── scripts/\n    │   ├── references/\n    │   └── assets/\n    └── virtual-tryon/\n        └── ..."
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这个插件目前提供两项技能。第一项，retail-product-search，构建一个 ADK 智能体，配备一个由 Gemini Enterprise Agent Platform 上的 Vector Search 2.0 和 BigQuery 目录支持的向量搜索检索工具。该技能处理整个流程：将 CSV 或 JSON 目录导入 BigQuery，使用 Vertex AI Embeddings 生成多模态和文本嵌入，构建 Vector Search 集合，用 retrieve_docs 工具搭建 ADK 智能体脚手架，并部署到 Cloud Run。该智能体刻意设计为单智能体：一个 root_agent 配一个检索工具，没有协调层。语义复杂性存在于检索流程和评估标准中，而非智能体之间的通信；添加编排层会掩盖这一模式，而不是阐明它。",
+          "inlines": [
+            {
+              "text": "这个插件目前提供两项技能。第一项，"
+            },
+            {
+              "code": true,
+              "text": "retail-product-search"
+            },
+            {
+              "text": "，构建一个 ADK 智能体，配备一个由 Gemini Enterprise Agent Platform 上的 Vector Search 2.0 和 BigQuery 目录支持的向量搜索检索工具。该技能处理整个流程：将 CSV 或 JSON 目录导入 BigQuery，使用 Vertex AI Embeddings 生成多模态和文本嵌入，构建 Vector Search 集合，用 "
+            },
+            {
+              "code": true,
+              "text": "retrieve_docs"
+            },
+            {
+              "text": " 工具搭建 ADK 智能体脚手架，并部署到 Cloud Run。该智能体刻意设计为单智能体：一个 "
+            },
+            {
+              "code": true,
+              "text": "root_agent"
+            },
+            {
+              "text": " 配一个检索工具，没有协调层。语义复杂性存在于检索流程和评估标准中，而非智能体之间的通信；添加编排层会掩盖这一模式，而不是阐明它。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "第二项技能，retail-virtual-tryon，生成一个模特穿戴或手持产品的逼真合成图，并可选叠加一段八秒的影棚走秀视频。它默认使用 gemini-2.5-flash-image，当编辑质量比延迟更重要时回退到 gemini-2.5-pro-image。对于视频，它使用 veo-3.1-generate-001 的 Reference-to-Video 模式，以图像流程生成的静态图作为生成动作的条件。该技能附带一个预检产品抠图分类器和可配置的安全级别，这些操作细节在第三次真实生产部署后就会变得显而易见。",
+          "inlines": [
+            {
+              "text": "第二项技能，"
+            },
+            {
+              "code": true,
+              "text": "retail-virtual-tryon"
+            },
+            {
+              "text": "，生成一个模特穿戴或手持产品的逼真合成图，并可选叠加一段八秒的影棚走秀视频。它默认使用 "
+            },
+            {
+              "code": true,
+              "text": "gemini-2.5-flash-image"
+            },
+            {
+              "text": "，当编辑质量比延迟更重要时回退到 "
+            },
+            {
+              "code": true,
+              "text": "gemini-2.5-pro-image"
+            },
+            {
+              "text": "。对于视频，它使用 "
+            },
+            {
+              "code": true,
+              "text": "veo-3.1-generate-001"
+            },
+            {
+              "text": " 的 Reference-to-Video 模式，以图像流程生成的静态图作为生成动作的条件。该技能附带一个预检产品抠图分类器和可配置的安全级别，这些操作细节在第三次真实生产部署后就会变得显而易见。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这两项技能都可以通过一条命令安装到任何读取技能的编码助手中：",
+          "inlines": [
+            {
+              "text": "这两项技能都可以通过一条命令安装到任何读取技能的编码助手中："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# From Antigravity, Claude Code, Codex, Cursor …\nnpx skills add google/adk-recipes --skill retail-product-search --full-depth\nnpx skills add google/adk-recipes --skill retail-virtual-tryon --full-depth"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "--full-depth 标志指示 CLI 跳过其默认的顶层查找，发现嵌套的 plugins/retail/skills/ 结构。安装落在 ~/.agents/skills/<skill-name>/ 中，并符号链接到本地机器上检测到的每个编码助手中：",
+          "inlines": [
+            {
+              "code": true,
+              "text": "--full-depth"
+            },
+            {
+              "text": " 标志指示 CLI 跳过其默认的顶层查找，发现嵌套的 "
+            },
+            {
+              "code": true,
+              "text": "plugins/retail/skills/"
+            },
+            {
+              "text": " 结构。安装落在 "
+            },
+            {
+              "code": true,
+              "text": "~/.agents/skills/<skill-name>/"
+            },
+            {
+              "text": " 中，并符号链接到本地机器上检测到的每个编码助手中："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$ npx skills add google/adk-recipes --skill retail-product-search --full-depth -g\n\n●  claude-code_2-1-288_agent  Agent detected — installing non-interactively\n◇  Source: https://github.com/google/adk-recipes.git\n◇  Repository cloned\n◇  Found 11 skills\n\n●  Installing to: Antigravity CLI, Augment, IBM Bob, Claude Code, OpenClaw,\n   CodeBuddy, Continue, Crush, Droid, Goose, Junie, iFlow CLI,\n   Kilo Code, Kiro CLI, Kode, MCPJam, Mux, OpenHands, Qoder, Qwen Code,\n   Roo Code, Trae, Windsurf, Zencoder, …\n\n◇  Installation Summary ──────────────────────────────────────────────────╮\n│  ~/.agents/skills/retail-product-search                                │\n│    universal: Antigravity CLI, Droid, Kilo Code, Amp +15   │\n│    symlink → Augment, IBM Bob, Claude Code, OpenClaw, CodeBuddy +25    │\n├────────────────────────────────────────────────────────────────────────╯\n\n◇  Installed 1 skill\n└  Done!  Review skills before use; they run with full agent permissions."
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该技能生态系统被设计为可组合的。retail-product-search SKILL.md 指示宿主编码助手从 google/skills 拉取两个配套技能（如果尚未安装），将 BigQuery 基础和 Gemini API 使用等横切关注点集中在一处，供多个垂直插件复用。",
+          "inlines": [
+            {
+              "text": "该技能生态系统被设计为可组合的。"
+            },
+            {
+              "code": true,
+              "text": "retail-product-search SKILL.md"
+            },
+            {
+              "text": " 指示宿主编码助手从 "
+            },
+            {
+              "code": true,
+              "text": "google/skills"
+            },
+            {
+              "text": " 拉取两个配套技能（如果尚未安装），将 BigQuery 基础和 Gemini API 使用等横切关注点集中在一处，供多个垂直插件复用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "安装完成后，编码助手读取 SKILL.md 并启动 Q-MODE 访谈。对于 retail-product-search，快速开始是两个问题（GCP 项目 ID 和产品数据路径，两者都有合理的默认值）；完整设置再增加两个问题，涵盖产品字段级别和 GCP 区域。访谈结束时，该技能已写入一个反映项目实际形态的 ./design-spec.md，并执行 scripts/setup.py 将目录导入 BigQuery、生成嵌入、构建 Vector Search 集合，并对结果运行 EVAL.yaml。如果评估标准和断言检查低于 80% 的通过目标，该技能会停止并显示具体的失败项。",
+          "inlines": [
+            {
+              "text": "安装完成后，编码助手读取 "
+            },
+            {
+              "code": true,
+              "text": "SKILL.md"
+            },
+            {
+              "text": " 并启动 Q-MODE 访谈。对于 "
+            },
+            {
+              "code": true,
+              "text": "retail-product-search"
+            },
+            {
+              "text": "，快速开始是两个问题（GCP 项目 ID 和产品数据路径，两者都有合理的默认值）；完整设置再增加两个问题，涵盖产品字段级别和 GCP 区域。访谈结束时，该技能已写入一个反映项目实际形态的 "
+            },
+            {
+              "code": true,
+              "text": "./design-spec.md"
+            },
+            {
+              "text": "，并执行 "
+            },
+            {
+              "code": true,
+              "text": "scripts/setup.py"
+            },
+            {
+              "text": " 将目录导入 BigQuery、生成嵌入、构建 Vector Search 集合，并对结果运行 "
+            },
+            {
+              "code": true,
+              "text": "EVAL.yaml"
+            },
+            {
+              "text": "。如果评估标准和断言检查低于 80% 的通过目标，该技能会停止并显示具体的失败项。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在捆绑的五产品演示目录上运行端到端设置会产生：",
+          "inlines": [
+            {
+              "text": "在捆绑的五产品演示目录上运行端到端设置会产生："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$ .venv/bin/python scripts/setup.py --config ./design-spec.md\n\nINFO:__main__: SETUP PIPELINE (driven by design-spec.md)\nINFO:__main__:   Project:      testproject-425813\nINFO:__main__:   Region:       us-central1\nINFO:__main__:   Validating sample data... Validated 5 records.\nINFO:__main__:   Ingesting into BigQuery...\nINFO:ingest_bigquery: Creating dataset testproject-425813.retail_skill_products\nINFO:ingest_bigquery: Loaded 5 valid products\nINFO:__main__:   Creating Vector Search collection...\nINFO:ingest_vertex_search: Collection created successfully\nINFO:ingest_vertex_search: Ingestion complete: 5 created, 0 skipped, 0 errors\nINFO:__main__: SETUP COMPLETE"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对该技能刚刚配置的集合进行实时检索会返回：",
+          "inlines": [
+            {
+              "text": "对该技能刚刚配置的集合进行实时检索会返回："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": ">>> from app.agent import retrieve_docs\n>>> retrieve_docs(\"wireless headphones under 200\")"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "Product 1: Wireless Headphones  $199.99  by Sony      (Audio)       rated 4.5/5\n          Premium noise-cancelling over-ear headphones with 30-hour battery\nProduct 2: Laptop Stand         $49.99   by Generic   (Accessories) rated 4.2/5\nProduct 3: Mechanical Keyboard  $129.99  by Keychron  (Peripherals) rated 4.6/5\nProduct 4: USB-C Cable          $19.99   by Anker     (Cables)      rated 4.7/5\nProduct 5: Monitor Light Bar    $59.99   by BenQ      (Lighting)    rated 4.4/5"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "虚拟试穿技能在交互式演示中更快。直接调用 generate_tryon_image 并传入用户肖像和产品图像，大约十秒即可生成本节顶部所示的逼真合成图。将相同的输入通过 generate_tryon_video 和 Veo Reference-to-Video 管道处理，可将该静态图变成一段八秒的影棚走秀动画，展示合成图在运动中的效果。",
+          "inlines": [
+            {
+              "text": "虚拟试穿技能在交互式演示中更快。直接调用 "
+            },
+            {
+              "code": true,
+              "text": "generate_tryon_image"
+            },
+            {
+              "text": " 并传入用户肖像和产品图像，大约十秒即可生成本节顶部所示的逼真合成图。将相同的输入通过 "
+            },
+            {
+              "code": true,
+              "text": "generate_tryon_video"
+            },
+            {
+              "text": " 和 Veo Reference-to-Video 管道处理，可将该静态图变成一段八秒的影棚走秀动画，展示合成图在运动中的效果。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该流水线与品类无关。把产品图片换成一副太阳镜，配合product_category='eyewear'，会调用同一个generate_tryon_image调用，并在无需任何额外配置的情况下生成正确品类的合成图：",
+          "inlines": [
+            {
+              "text": "该流水线与品类无关。把产品图片换成一副太阳镜，配合"
+            },
+            {
+              "code": true,
+              "text": "product_category='eyewear'"
+            },
+            {
+              "text": "，会调用同一个"
+            },
+            {
+              "code": true,
+              "text": "generate_tryon_image"
+            },
+            {
+              "text": "调用，并在无需任何额外配置的情况下生成正确品类的合成图："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/dda9f79781bc3d7876783d1ad8ec48069b9d33d1fe00a31a0a0bab9c3901d0ba.jpg",
+          "alt": "6"
+        },
+        {
+          "type": "paragraph",
+          "text": "零售是首个以这种格式实现完整覆盖的垂直领域。其他垂直领域将作为plugins/下各自的文件夹落地，遵循相同的结构和相同的 Agent Plugins 规范，因此开发者可以期待跨行业一致的安装体验。",
+          "inlines": [
+            {
+              "text": "零售是首个以这种格式实现完整覆盖的垂直领域。其他垂直领域将作为"
+            },
+            {
+              "code": true,
+              "text": "plugins/"
+            },
+            {
+              "text": "下各自的文件夹落地，遵循相同的结构和相同的 Agent Plugins 规范，因此开发者可以期待跨行业一致的安装体验。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在contrib/:中，一个基于该插件构建的零售智能体",
+          "inlines": [
+            {
+              "text": "在"
+            },
+            {
+              "code": true,
+              "text": "contrib/:"
+            },
+            {
+              "text": "中，一个基于该插件构建的零售智能体"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "contrib/层是 ADK 配方变为可端到端部署的服务的地方。目前那里有十二个 Python 智能体，涵盖了 ADK 在实践中通常用于构建的各类应用：金融（财务顾问、小微企业贷款处理）、评估（LLM 审计器）、文档与知识流水线（高吞吐文档分析器、多格式混合 RAG）、内容与品牌（品牌一致的演示文稿、品牌搜索优化、符合品牌调性的生成媒体）、零售（产品搜索、虚拟试穿），以及框架示例（智能体技能教程、分阶段 UI 组件）。Java、Go、TypeScript 和 Kotlin 各自带有较小的集合。contrib/中的每个条目都是一个实例，展示core/模式或plugins/技能如何变成可运行的服务。",
+          "inlines": [
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": "层是 ADK 配方变为可端到端部署的服务的地方。目前那里有十二个 Python 智能体，涵盖了 ADK 在实践中通常用于构建的各类应用：金融（财务顾问、小微企业贷款处理）、评估（LLM 审计器）、文档与知识流水线（高吞吐文档分析器、多格式混合 RAG）、内容与品牌（品牌一致的演示文稿、品牌搜索优化、符合品牌调性的生成媒体）、零售（产品搜索、虚拟试穿），以及框架示例（智能体技能教程、分阶段 UI 组件）。Java、Go、TypeScript 和 Kotlin 各自带有较小的集合。"
+            },
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": "中的每个条目都是一个实例，展示"
+            },
+            {
+              "code": true,
+              "text": "core/"
+            },
+            {
+              "text": "模式或"
+            },
+            {
+              "code": true,
+              "text": "plugins/"
+            },
+            {
+              "text": "技能如何变成可运行的服务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了让插件与其可部署对应物之间的关系更具体，以contrib/python/retail-product-search为例。上一节中的零售插件引导开发者完成了一次对话式安装，配置了 Vector Search 集合、BigQuery 目录和嵌入。contrib 智能体是可部署的对应物：一个长期运行的服务，从该集合读取数据，并基于它回答自然语言购物查询。插件负责一次性设置；contrib 智能体负责服务形态。两者由同一团队维护以保持同步，智能体的 README 引导新用户先运行插件的设置：",
+          "inlines": [
+            {
+              "text": "为了让插件与其可部署对应物之间的关系更具体，以"
+            },
+            {
+              "code": true,
+              "text": "contrib/python/retail-product-search"
+            },
+            {
+              "text": "为例。上一节中的零售插件引导开发者完成了一次对话式安装，配置了 Vector Search 集合、BigQuery 目录和嵌入。contrib 智能体是可部署的对应物：一个长期运行的服务，从该集合读取数据，并基于它回答自然语言购物查询。插件负责一次性设置；contrib 智能体负责服务形态。两者由同一团队维护以保持同步，智能体的 README 引导新用户先运行插件的设置："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "make -C plugins/retail/skills/product-search setup PROJECT_ID=your-project"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一旦集合（retail-skill-products-collection）填充完毕，就从contrib/python/retail-product-search克隆出该智能体，将其指向一个 GCP 项目，并通过.env中的布尔标志在五种部署角色之一上呈现。",
+          "inlines": [
+            {
+              "text": "一旦集合（"
+            },
+            {
+              "code": true,
+              "text": "retail-skill-products-collection"
+            },
+            {
+              "text": "）填充完毕，就从"
+            },
+            {
+              "code": true,
+              "text": "contrib/python/retail-product-search"
+            },
+            {
+              "text": "克隆出该智能体，将其指向一个 GCP 项目，并通过"
+            },
+            {
+              "code": true,
+              "text": ".env"
+            },
+            {
+              "text": "中的布尔标志在五种部署角色之一上呈现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "部署上线后，该智能体暴露一个托管的购物助手端点。我们之前直接从 Python 调用的同一个retrieve_docs工具，现在位于聊天界面之后，可通过已部署的 Reasoning Engine 访问，或在开发期间通过 ADK Web UI 访问。完全相同的智能体代码回答完全相同的购物查询，在本地运行以供检查：",
+          "inlines": [
+            {
+              "text": "部署上线后，该智能体暴露一个托管的购物助手端点。我们之前直接从 Python 调用的同一个"
+            },
+            {
+              "code": true,
+              "text": "retrieve_docs"
+            },
+            {
+              "text": "工具，现在位于聊天界面之后，可通过已部署的 Reasoning Engine 访问，或在开发期间通过 ADK Web UI 访问。完全相同的智能体代码回答完全相同的购物查询，在本地运行以供检查："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5841d40cddc5d7266555e997dcb7393bf12882be802c1f58405459c79325299e.webp",
+          "alt": "7"
+        },
+        {
+          "type": "paragraph",
+          "text": "UI 左侧的智能体图确认了单智能体架构（product_search_agent → retrieve_docs）。右侧面板追踪每次工具调用。响应基于 Vector Search 中真实的目录行：\"Sony 无线耳机 · 价格：$199.99 · 品牌：Sony · 评分：4.5/5（库存 50 件）· 高端降噪头戴式耳机，拥有令人印象深刻的 30 小时电池续航。\" 没有产品被幻觉出来；BigQuery 之上的 Vector Search 集合是事实来源。",
+          "inlines": [
+            {
+              "text": "UI 左侧的智能体图确认了单智能体架构（"
+            },
+            {
+              "code": true,
+              "text": "product_search_agent → retrieve_docs"
+            },
+            {
+              "text": "）。右侧面板追踪每次工具调用。响应基于 Vector Search 中真实的目录行："
+            },
+            {
+              "italic": true,
+              "text": "\"Sony 无线耳机 · 价格：$199.99 · 品牌：Sony · 评分：4.5/5（库存 50 件）· 高端降噪头戴式耳机，拥有令人印象深刻的 30 小时电池续航。\""
+            },
+            {
+              "text": " 没有产品被幻觉出来；BigQuery 之上的 Vector Search 集合是事实来源。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这就是零售插件为团队带来的价值。该插件通过任何编码助手都能执行的对话式安装，将数据管道设置一次性编码完成。contrib agent 是运行中的服务，可以以五种形态部署，任何组织都可以将其作为起点，并替换为自己的目录。contrib/python/retail-virtual-tryon 中的虚拟试穿对应实现遵循同样的模式：一个更小的根 agent 编排 try_on_product_image 和 try_on_product_video 工具，可以以同样的五种形态部署，构建在虚拟试穿插件的一次性设置之上。",
+          "inlines": [
+            {
+              "text": "这就是零售插件为团队带来的价值。该插件通过任何编码助手都能执行的对话式安装，将数据管道设置一次性编码完成。contrib agent 是运行中的服务，可以以五种形态部署，任何组织都可以将其作为起点，并替换为自己的目录。"
+            },
+            {
+              "code": true,
+              "text": "contrib/python/retail-virtual-tryon"
+            },
+            {
+              "text": " 中的虚拟试穿对应实现遵循同样的模式：一个更小的根 agent 编排 "
+            },
+            {
+              "code": true,
+              "text": "try_on_product_image"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "try_on_product_video"
+            },
+            {
+              "text": " 工具，可以以同样的五种形态部署，构建在虚拟试穿插件的一次性设置之上。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么这很重要",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "为什么这很重要"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "没有垂直场景的参考框架只是玩具；没有可部署产物的垂直技能只是一张幻灯片；没有参考模式的可部署 agent 只是一个无人能复现的原型。将这三者放在同一个仓库中，使用共享的 manifest schema 和治理管道，让开发者或编码助手可以沿任一方向走通整个技术栈，每个 Agent Platform 界面都从同一个事实来源读取。",
+          "inlines": [
+            {
+              "text": "没有垂直场景的参考框架只是玩具；没有可部署产物的垂直技能只是一张幻灯片；没有参考模式的可部署 agent 只是一个无人能复现的原型。将这三者放在同一个仓库中，使用共享的 manifest schema 和治理管道，让开发者或编码助手可以沿任一方向走通整个技术栈，每个 Agent Platform 界面都从同一个事实来源读取。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "实际结果是，从“我需要一个能做 X 的 agent”到运行中的生产服务，门槛更低了：编码助手可以搭建一个 Horizon 形态的 agent，安装一个垂直 Plugin Recipe，并直接使用 contrib/ 中的部署记录，而无需在仓库之间转换或协调 manifest 格式。对于构建垂直解决方案的团队，Plugin Recipes 将领域专业知识一次性打包，并以相同的安装流程和质量门禁分发给市场上的每一个编码助手。",
+          "inlines": [
+            {
+              "text": "实际结果是，从“我需要一个能做 X 的 agent”到运行中的生产服务，门槛更低了：编码助手可以搭建一个 Horizon 形态的 agent，安装一个垂直 Plugin Recipe，并直接使用 "
+            },
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": " 中的部署记录，而无需在仓库之间转换或协调 manifest 格式。对于构建垂直解决方案的团队，Plugin Recipes 将领域专业知识一次性打包，并以相同的安装流程和质量门禁分发给市场上的每一个编码助手。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "开始使用",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "开始使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "code",
+          "text": "# Install Agents CLI\nuvx --from google-agents-cli agents-cli setup\n\n# Scaffold a Horizon-shaped agent\nuvx --from google-agents-cli agents-cli create my-agent\n\n# Install a retail skill into your coding assistant\nnpx skills add google/adk-recipes --skill retail-product-search --full-depth\n\n# Launch the deployable retail agent as a managed artifact\nuvx --from google-agents-cli agents-cli create retail-product-search"
+        },
+        {
+          "type": "paragraph",
+          "text": "纯文本",
+          "inlines": [
+            {
+              "text": "纯文本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "已复制",
+          "inlines": [
+            {
+              "text": "已复制"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "仓库："
+                },
+                {
+                  "href": "https://github.com/google/adk-recipes",
+                  "text": " github.com/google/adk-recipes"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Recipe 手册："
+                },
+                {
+                  "href": "https://github.com/google/adk-recipes/tree/main/docs/recipe-handbook",
+                  "text": " github.com/google/adk-recipes/tree/main/docs/recipe-handbook"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Agents CLI 文档：uvx --from google-agents-cli agents-cli --help"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Agent Plugins v1.0.0 规范："
+                },
+                {
+                  "href": "https://agent-plugins.org/specification",
+                  "text": " agent-plugins.org/specification"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "并非 Google 官方支持的产品。Recipes 仅用于演示和作为起点，不适用于生产环境。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "并非 Google 官方支持的产品。Recipes 仅用于演示和作为起点，不适用于生产环境。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "上一页",
+          "inlines": [
+            {
+              "text": "上一页"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下一页",
+          "inlines": [
+            {
+              "text": "下一页"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "OCT. 15, 2026",
+          "inlines": [
+            {
+              "text": "OCT. 15, 2026"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The curated library of ADK recipes powering Google Cloud's Agents CLI, Agent Garden, and Gemini Enterprise app.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The curated library of ADK recipes powering Google Cloud's Agents CLI, Agent Garden, and Gemini Enterprise app."
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "heading",
+          "text": "Introduction",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Introduction"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "A developer building on Google Cloud today can scaffold a long-horizon memory agent from the terminal, install a retail vertical skill into a coding assistant with one line, and deploy a fully-wired production service to Cloud Run, Agent Runtime, Agent Garden, or Gemini Enterprise app — all from the same curated source tree. That tree is google/adk-recipes, the restructured successor to google/adk-samples that now serves Agent Platform from a single source of truth.",
+          "inlines": [
+            {
+              "text": "A developer building on Google Cloud today can scaffold a long-horizon memory agent from the terminal, install a retail vertical skill into a coding assistant with one line, and deploy a fully-wired production service to Cloud Run, Agent Runtime, Agent Garden, or Gemini Enterprise app — all from the same curated source tree. That tree is "
+            },
+            {
+              "code": true,
+              "text": "google/adk-recipes"
+            },
+            {
+              "text": ", the restructured successor to "
+            },
+            {
+              "code": true,
+              "text": "google/adk-samples"
+            },
+            {
+              "text": " that now serves Agent Platform from a single source of truth."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ADK recipes are agent-friendly: we've made it easy for your agents to 1) discover relevant recipes for various agent use cases, and 2) install and use them automatically from your favorite harness.",
+          "inlines": [
+            {
+              "text": "ADK recipes are agent-friendly: we've made it easy for your agents to 1) discover relevant recipes for various agent use cases, and 2) install and use them automatically from your favorite harness."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "google/adk-recipes splits its content into three top-level folders: core/ for reference patterns curated by the Agents CLI and DevRel teams, plugins/ for installable vertical skills packaged as Plugin Recipes conforming to the Agent Plugins v1.0.0 spec, and contrib/ for end-to-end deployable services across five languages. Every piece has been designed with machine readability as the primary consideration.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "google/adk-recipes"
+            },
+            {
+              "text": " splits its content into three top-level folders: "
+            },
+            {
+              "code": true,
+              "text": "core/"
+            },
+            {
+              "text": " for reference patterns curated by the Agents CLI and DevRel teams, plugins/ for installable vertical skills packaged as Plugin Recipes conforming to the Agent Plugins v1.0.0 spec, and contrib/ for end-to-end deployable services across five languages. Every piece has been designed with machine readability as the primary consideration."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What follows is a walkthrough of the repository's shape, three worked examples (one per layer), and a reflection on what the new structure enables.",
+          "inlines": [
+            {
+              "text": "What follows is a walkthrough of the "
+            },
+            {
+              "href": "https://github.com/google/adk-recipes/tree/main/",
+              "text": "repository"
+            },
+            {
+              "text": "'s shape, three worked examples (one per layer), and a reflection on what the new structure enables."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What's in the repo",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What's in the repo"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9aec66ca08b9886aa39d188d02c0d2a3c6e81769776467dd1752357ee6deea0e.webp",
+          "alt": "2 (1)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Three top-level roots, each anchored on one reader action:",
+          "inlines": [
+            {
+              "text": "Three top-level roots, each anchored on one reader action:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/1c8952159df685401501da9ca07ec5b93638ac92037526f434d72762394e7c58.jpg",
+          "alt": "Gemini_Generated_Image_6297en6297en6297"
+        },
+        {
+          "type": "paragraph",
+          "text": "Every recipe ships a validated manifest.yaml, an AGENTS.md that tells the coding assistant opening it what the recipe is and how to use it, and (for contrib/ and plugins/) a Dockerfile plus a runnability test. CI enforces the standards on every PR, and a suite of coding-assistant skills in the repo (prepare-python-recipe, generate-manifest, github-pr-review, and others) does most of the preparation, so your agent can scaffold, validate, and submit a recipe end-to-end.",
+          "inlines": [
+            {
+              "text": "Every recipe ships a validated "
+            },
+            {
+              "code": true,
+              "text": "manifest.yaml"
+            },
+            {
+              "text": ", an "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": " that tells the coding assistant opening it what the recipe is and how to use it, and (for "
+            },
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "plugins/"
+            },
+            {
+              "text": ") a "
+            },
+            {
+              "code": true,
+              "text": "Dockerfile"
+            },
+            {
+              "text": " plus a runnability test. CI enforces the standards on every PR, and a suite of coding-assistant skills in the repo ("
+            },
+            {
+              "code": true,
+              "text": "prepare-python-recipe"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "generate-manifest"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "github-pr-review"
+            },
+            {
+              "text": ", and others) does most of the preparation, so your agent can scaffold, validate, and submit a recipe end-to-end."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Built for coding assistants, not just developers",
+          "inlines": [
+            {
+              "text": "Built for coding assistants, not just developers"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Every AGENTS.md, every manifest.yaml, every SKILL.md is written primarily for the AI coding assistant that will open the repo on your behalf; README.md files are what humans still read. The handbook glossary captures the dual framing: \"Recipe — a runnable agent example (or importable agent module) under core/, contrib/, or plugins/, consumed by ADK developers and coding agents alike.\"",
+          "inlines": [
+            {
+              "text": "Every "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": ", every "
+            },
+            {
+              "code": true,
+              "text": "manifest.yaml"
+            },
+            {
+              "text": ", every "
+            },
+            {
+              "code": true,
+              "text": "SKILL.md"
+            },
+            {
+              "text": " is written primarily for the AI coding assistant that will open the repo on your behalf; "
+            },
+            {
+              "code": true,
+              "text": "README.md"
+            },
+            {
+              "text": " files are what humans still read. The handbook glossary captures the dual framing: "
+            },
+            {
+              "italic": true,
+              "text": "\"Recipe — a runnable agent example (or importable agent module) under"
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "italic": true,
+              "text": "core/"
+            },
+            {
+              "italic": true,
+              "text": ","
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "italic": true,
+              "text": "contrib/"
+            },
+            {
+              "italic": true,
+              "text": ", or"
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "italic": true,
+              "text": "plugins/"
+            },
+            {
+              "italic": true,
+              "text": ", consumed by ADK developers and coding agents alike.\""
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What it powers across the Agent Platform",
+          "inlines": [
+            {
+              "text": "What it powers across the Agent Platform"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "adk-recipes serves as the single source of truth for ADK content across the three Agent Platform surfaces that consume it. Each reads the repository through its own protocol.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "adk-recipes"
+            },
+            {
+              "text": " serves as the single source of truth for ADK content across the three Agent Platform surfaces that consume it. Each reads the repository through its own protocol."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Agents CLI reads core/. When a developer runs uvx --from google-agents-cli agents-cli create my-agent, Agents CLI can scaffold on demand a core/ recipe. The CLI, launched earlier this year at Google Cloud Next, exposes the full scaffold → deploy → evaluate → publish lifecycle; the base content it serves comes from our recipes. Horizon, the reference harness we examine below, is an example pattern Agents CLI treats as a production template.",
+          "inlines": [
+            {
+              "text": "Agents CLI reads "
+            },
+            {
+              "code": true,
+              "text": "core/"
+            },
+            {
+              "text": ". When a developer runs "
+            },
+            {
+              "code": true,
+              "text": "uvx --from google-agents-cli agents-cli create my-agent"
+            },
+            {
+              "text": ", Agents CLI can scaffold on demand a "
+            },
+            {
+              "code": true,
+              "text": "core/"
+            },
+            {
+              "text": " recipe. The CLI, launched earlier this year at Google Cloud Next, exposes the full scaffold → deploy → evaluate → publish lifecycle; the base content it serves comes from our recipes. Horizon, the reference harness we examine below, is an example pattern Agents CLI treats as a production template."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Agent Garden features a curated selection. The developer-facing path into the repository is a pull request to contrib/: a recipe lands in GitHub, becomes part of the public ADK ecosystem, and from that moment is discoverable by other developers and by coding assistants reading the repository. Appearing in the Agent Garden gallery is a separate editorial decision made by the Agent Garden team, which curates a subset of recipes and promotes them to the public catalog on their own cadence. Once an agent is in the gallery, any developer in a Google Cloud project gets a one-click install.",
+          "inlines": [
+            {
+              "text": "Agent Garden features a curated selection. The developer-facing path into the repository is a pull request to "
+            },
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": ": a recipe lands in GitHub, becomes part of the public ADK ecosystem, and from that moment is discoverable by other developers and by coding assistants reading the repository. Appearing in the Agent Garden gallery is a separate editorial decision made by the Agent Garden team, which curates a subset of recipes and promotes them to the public catalog on their own cadence. Once an agent is in the gallery, any developer in a Google Cloud project gets a one-click install."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/1f8369e41cffd93e287fc32822e350d5ec1bdc47d85066d3de4351a405090740.webp",
+          "alt": "3"
+        },
+        {
+          "type": "paragraph",
+          "text": "Beyond these primary surfaces, Google Cloud's own infrastructure components appear as building blocks inside the recipes themselves. Horizon uses Agent Platform Sandboxes for per-user sandboxing, Memory Bank for durable memory, and Agent Platform Sessions for session state. The retail product-search Plugin Recipe uses Vector Search 2.0 on Gemini Enterprise Agent Platform paired with BigQuery. The retail virtual-tryon Plugin Recipe uses Gemini image models for still composites and Veo 3.1 Reference-to-Video for animated outputs. The recipes do not just live alongside Agent Platform; they document it in use.",
+          "inlines": [
+            {
+              "text": "Beyond these primary surfaces, Google Cloud's own infrastructure components appear as building blocks inside the recipes themselves. Horizon uses Agent Platform Sandboxes for per-user sandboxing, Memory Bank for durable memory, and Agent Platform Sessions for session state. The retail product-search Plugin Recipe uses Vector Search 2.0 on Gemini Enterprise Agent Platform paired with BigQuery. The retail virtual-tryon Plugin Recipe uses Gemini image models for still composites and Veo 3.1 Reference-to-Video for animated outputs. The recipes do not just live alongside Agent Platform; they document it in use."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For developers working with coding assistants outside Google Cloud's tooling (Claude Code, Antigravity, Cursor, Windsurf, Zed, and others), Plugin Recipes additionally install through the open npx skills CLI maintained by vercel-labs.",
+          "inlines": [
+            {
+              "text": "For developers working with coding assistants outside Google Cloud's tooling (Claude Code, Antigravity, Cursor, Windsurf, Zed, and others), Plugin Recipes additionally install through the open "
+            },
+            {
+              "code": true,
+              "text": "npx skills"
+            },
+            {
+              "text": " CLI maintained by vercel-labs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Horizon: a reference pattern for core/",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Horizon: a reference pattern for"
+            },
+            {
+              "text": " "
+            },
+            {
+              "bold": true,
+              "code": true,
+              "text": "core/"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c16624304562f16a806eb2e7519edd45774d62f2e1d8b5099297001128eecdb5.webp",
+          "alt": "4"
+        },
+        {
+          "type": "paragraph",
+          "text": "Building an agent that can handle a single conversation is a well-understood problem. Building one that holds its own across days of interaction, remembering what the user did yesterday and planning tasks for tomorrow, is a materially different undertaking. The hard parts of such a long-horizon system are the same regardless of what the agent is being built to do: cross-session memory, per-user sandboxing of tool execution, secrets management, guardrails against runaway behaviour, and the orchestration primitives that make multi-step tasks resumable. Horizon, which lives at core/python/long-horizon-harness, is the reference harness we built to collect these primitives in one place.",
+          "inlines": [
+            {
+              "text": "Building an agent that can handle a single conversation is a well-understood problem. Building one that holds its own across days of interaction, remembering what the user did yesterday and planning tasks for tomorrow, is a materially different undertaking. The hard parts of such a long-horizon system are the same regardless of what the agent is being built to do: cross-session memory, per-user sandboxing of tool execution, secrets management, guardrails against runaway behaviour, and the orchestration primitives that make multi-step tasks resumable. Horizon, which lives at "
+            },
+            {
+              "code": true,
+              "text": "core/python/long-horizon-harness"
+            },
+            {
+              "text": ", is the reference harness we built to collect these primitives in one place."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The shortest path from a fresh clone to a running Horizon instance:",
+          "inlines": [
+            {
+              "text": "The shortest path from a fresh clone to a running Horizon instance:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "uvx google-agents-cli setup\ngcloud auth application-default login\ngcloud config set project YOUR_PROJECT_ID\ngcloud services enable aiplatform.googleapis.com\n\ngit clone --depth 1 --filter=blob:none --sparse https://github.com/google/adk-recipes.git\ncd adk-recipes\ngit sparse-checkout set core/python/long-horizon-harness\ncd core/python/long-horizon-harness\n\n# Default: LHA_ENVIRONMENT_BACKEND=local, in-memory sessions, no cloud deploys needed\nmake dev-local"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "make deploy rolls the backend to Cloud Run through Terraform; make destroy tears it back down. Horizon's evaluation suite lives in tests/eval/evalsets/ as eighteen named behavioural rubrics covering memory recall, injection-based exfiltration attempts, guardrail halting under adversarial input, tool-selection discipline, and a journey-level plot-artifact evaluation. The rubrics are executed with uv run pytest tests/eval.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "make deploy"
+            },
+            {
+              "text": " rolls the backend to Cloud Run through Terraform; make destroy tears it back down. Horizon's evaluation suite lives in "
+            },
+            {
+              "code": true,
+              "text": "tests/eval/evalsets/"
+            },
+            {
+              "text": " as eighteen named behavioural rubrics covering memory recall, injection-based exfiltration attempts, guardrail halting under adversarial input, tool-selection discipline, and a journey-level plot-artifact evaluation. The rubrics are executed with "
+            },
+            {
+              "code": true,
+              "text": "uv run pytest tests/eval"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A first chat turn against the running backend confirms the memory layer is wired correctly:",
+          "inlines": [
+            {
+              "text": "A first chat turn against the running backend confirms the memory layer is wired correctly:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/59d54212ca93a8790d76ee3b362b20dba836953411ff247c43bf52ee744b51d6.webp",
+          "alt": "5"
+        },
+        {
+          "type": "paragraph",
+          "text": "Horizon is the harness we give coding assistants to study before building something harder. When a developer asks their assistant to build an agent that must run across days of interaction, the right next step is uvx google-agents-cli create with Horizon as the scaffold, and the rest of the harness falls into place.",
+          "inlines": [
+            {
+              "text": "Horizon is the harness we give coding assistants to study before building something harder. When a developer asks their assistant to build an agent that must run across days of interaction, the right next step is "
+            },
+            {
+              "code": true,
+              "text": "uvx google-agents-cli create"
+            },
+            {
+              "text": " with Horizon as the scaffold, and the rest of the harness falls into place."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The retail Plugin Recipe",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The retail Plugin Recipe"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Horizon encodes a reference pattern. It does not encode a vertical. For that, the second layer of the repository holds Plugin Recipes, each addressing a specific industry domain. The first vertical fully covered in this launch is retail, available under plugins/retail/.",
+          "inlines": [
+            {
+              "text": "Horizon encodes a reference pattern. It does not encode a vertical. For that, the second layer of the repository holds Plugin Recipes, each addressing a specific industry domain. The first vertical fully covered in this launch is retail, available under "
+            },
+            {
+              "code": true,
+              "text": "plugins/retail/"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The Plugin Recipe format sits on top of the Agent Plugins v1.0.0 specification published at agent-plugins.org, an open standard for packaging installable AI skills across coding assistants. The specification defines a plugin as a bundle of one or more skills with a top-level plugin.json manifest declaring name, version, license, and ownership. Each skill is a self-contained folder with a SKILL.md conversational installer, a README.md, an EVAL.yaml of quality gates, and the scripts and assets the skill needs to do its work. The retail plugin's layout is:",
+          "inlines": [
+            {
+              "text": "The Plugin Recipe format sits on top of the Agent Plugins v1.0.0 specification published at"
+            },
+            {
+              "href": "https://agent-plugins.org/specification",
+              "text": " agent-plugins.org"
+            },
+            {
+              "text": ", an open standard for packaging installable AI skills across coding assistants. The specification defines a plugin as a bundle of one or more skills with a top-level "
+            },
+            {
+              "code": true,
+              "text": "plugin.json"
+            },
+            {
+              "text": " manifest declaring name, version, license, and ownership. Each skill is a self-contained folder with a "
+            },
+            {
+              "code": true,
+              "text": "SKILL.md"
+            },
+            {
+              "text": " conversational installer, a "
+            },
+            {
+              "code": true,
+              "text": "README.md"
+            },
+            {
+              "text": ", an "
+            },
+            {
+              "code": true,
+              "text": "EVAL.yaml"
+            },
+            {
+              "text": " of quality gates, and the scripts and assets the skill needs to do its work. The retail plugin's layout is:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "plugins/retail/\n├── plugin.json\n└── skills/\n    ├── product-search/\n    │   ├── SKILL.md       # Q-MODE conversational installer\n    │   ├── README.md\n    │   ├── EVAL.yaml      # LLM-as-judge rubrics + deterministic assertions\n    │   ├── scripts/\n    │   ├── references/\n    │   └── assets/\n    └── virtual-tryon/\n        └── ..."
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Two skills ship in this plugin today. The first, retail-product-search, builds an ADK agent with a vector-search retrieval tool backed by Vector Search 2.0 on the Gemini Enterprise Agent Platform and a BigQuery catalog. The skill handles the entire pipeline: ingesting a CSV or JSON catalog into BigQuery, generating multimodal and text embeddings with Vertex AI Embeddings, building the Vector Search collection, scaffolding the ADK agent with a retrieve_docs tool, and deploying to Cloud Run. The agent is deliberately single-agent: one root_agent with one retrieval tool and no coordinator layer. The semantic complexity sits in the retrieval pipeline and the evaluator rubric, not in agent-to-agent communication; adding orchestration layers would obscure the pattern rather than clarify it.",
+          "inlines": [
+            {
+              "text": "Two skills ship in this plugin today. The first, "
+            },
+            {
+              "code": true,
+              "text": "retail-product-search"
+            },
+            {
+              "text": ", builds an ADK agent with a vector-search retrieval tool backed by Vector Search 2.0 on the Gemini Enterprise Agent Platform and a BigQuery catalog. The skill handles the entire pipeline: ingesting a CSV or JSON catalog into BigQuery, generating multimodal and text embeddings with Vertex AI Embeddings, building the Vector Search collection, scaffolding the ADK agent with a "
+            },
+            {
+              "code": true,
+              "text": "retrieve_docs"
+            },
+            {
+              "text": " tool, and deploying to Cloud Run. The agent is deliberately single-agent: one "
+            },
+            {
+              "code": true,
+              "text": "root_agent"
+            },
+            {
+              "text": " with one retrieval tool and no coordinator layer. The semantic complexity sits in the retrieval pipeline and the evaluator rubric, not in agent-to-agent communication; adding orchestration layers would obscure the pattern rather than clarify it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The second skill, retail-virtual-tryon, generates a photorealistic composite of a model wearing or holding a product, with an optional eight-second studio catwalk video on top. It uses gemini-2.5-flash-image by default, falling back to gemini-2.5-pro-image when editorial quality matters more than latency. For video it uses veo-3.1-generate-001 in Reference-to-Video mode, conditioning the generated motion on the still produced by the image pipeline. The skill ships a pre-flight product-cutout classifier and configurable safety levels, operational details that become obvious after the third real production deployment.",
+          "inlines": [
+            {
+              "text": "The second skill, "
+            },
+            {
+              "code": true,
+              "text": "retail-virtual-tryon"
+            },
+            {
+              "text": ", generates a photorealistic composite of a model wearing or holding a product, with an optional eight-second studio catwalk video on top. It uses "
+            },
+            {
+              "code": true,
+              "text": "gemini-2.5-flash-image"
+            },
+            {
+              "text": " by default, falling back to "
+            },
+            {
+              "code": true,
+              "text": "gemini-2.5-pro-image"
+            },
+            {
+              "text": " when editorial quality matters more than latency. For video it uses "
+            },
+            {
+              "code": true,
+              "text": "veo-3.1-generate-001"
+            },
+            {
+              "text": " in Reference-to-Video mode, conditioning the generated motion on the still produced by the image pipeline. The skill ships a pre-flight product-cutout classifier and configurable safety levels, operational details that become obvious after the third real production deployment."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Both skills install into any coding assistant that reads skills with a single command:",
+          "inlines": [
+            {
+              "text": "Both skills install into any coding assistant that reads skills with a single command:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# From Antigravity, Claude Code, Codex, Cursor …\nnpx skills add google/adk-recipes --skill retail-product-search --full-depth\nnpx skills add google/adk-recipes --skill retail-virtual-tryon --full-depth"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The --full-depth flag instructs the CLI to walk past its default top-level lookup and discover the nested plugins/retail/skills/ structure. The install lands in ~/.agents/skills/<skill-name>/ and is symlinked into every detected coding assistant on the local machine:",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "code": true,
+              "text": "--full-depth"
+            },
+            {
+              "text": " flag instructs the CLI to walk past its default top-level lookup and discover the nested "
+            },
+            {
+              "code": true,
+              "text": "plugins/retail/skills/"
+            },
+            {
+              "text": " structure. The install lands in "
+            },
+            {
+              "code": true,
+              "text": "~/.agents/skills/<skill-name>/"
+            },
+            {
+              "text": " and is symlinked into every detected coding assistant on the local machine:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$ npx skills add google/adk-recipes --skill retail-product-search --full-depth -g\n\n●  claude-code_2-1-288_agent  Agent detected — installing non-interactively\n◇  Source: https://github.com/google/adk-recipes.git\n◇  Repository cloned\n◇  Found 11 skills\n\n●  Installing to: Antigravity CLI, Augment, IBM Bob, Claude Code, OpenClaw,\n   CodeBuddy, Continue, Crush, Droid, Goose, Junie, iFlow CLI,\n   Kilo Code, Kiro CLI, Kode, MCPJam, Mux, OpenHands, Qoder, Qwen Code,\n   Roo Code, Trae, Windsurf, Zencoder, …\n\n◇  Installation Summary ──────────────────────────────────────────────────╮\n│  ~/.agents/skills/retail-product-search                                │\n│    universal: Antigravity CLI, Droid, Kilo Code, Amp +15   │\n│    symlink → Augment, IBM Bob, Claude Code, OpenClaw, CodeBuddy +25    │\n├────────────────────────────────────────────────────────────────────────╯\n\n◇  Installed 1 skill\n└  Done!  Review skills before use; they run with full agent permissions."
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The skill ecosystem is designed to compose. The retail-product-search SKILL.md instructs the host coding assistant to pull two companion skills from google/skills if they are not already installed, keeping cross-cutting concerns like BigQuery basics and Gemini API usage in one place and reusable by multiple vertical plugins.",
+          "inlines": [
+            {
+              "text": "The skill ecosystem is designed to compose. The "
+            },
+            {
+              "code": true,
+              "text": "retail-product-search SKILL.md"
+            },
+            {
+              "text": " instructs the host coding assistant to pull two companion skills from "
+            },
+            {
+              "code": true,
+              "text": "google/skills"
+            },
+            {
+              "text": " if they are not already installed, keeping cross-cutting concerns like BigQuery basics and Gemini API usage in one place and reusable by multiple vertical plugins."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Once installed, the coding assistant reads SKILL.md and initiates a Q-MODE interview. For retail-product-search, Quick Start is two questions (GCP project ID and the path to product data, with sensible defaults for both); Full Setup adds two more covering product-fields level and GCP region. By the end of the interview the skill has written a ./design-spec.md reflecting the project's actual shape and executed scripts/setup.py to land the catalog in BigQuery, generate the embeddings, build the Vector Search collection, and run EVAL.yaml against the result. If the rubric and assertion checks fall below the 80 percent passing target, the skill halts and surfaces the specific failures.",
+          "inlines": [
+            {
+              "text": "Once installed, the coding assistant reads "
+            },
+            {
+              "code": true,
+              "text": "SKILL.md"
+            },
+            {
+              "text": " and initiates a Q-MODE interview. For "
+            },
+            {
+              "code": true,
+              "text": "retail-product-search"
+            },
+            {
+              "text": ", Quick Start is two questions (GCP project ID and the path to product data, with sensible defaults for both); Full Setup adds two more covering product-fields level and GCP region. By the end of the interview the skill has written a "
+            },
+            {
+              "code": true,
+              "text": "./design-spec.md"
+            },
+            {
+              "text": " reflecting the project's actual shape and executed "
+            },
+            {
+              "code": true,
+              "text": "scripts/setup.py"
+            },
+            {
+              "text": " to land the catalog in BigQuery, generate the embeddings, build the Vector Search collection, and run "
+            },
+            {
+              "code": true,
+              "text": "EVAL.yaml"
+            },
+            {
+              "text": " against the result. If the rubric and assertion checks fall below the 80 percent passing target, the skill halts and surfaces the specific failures."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "An end-to-end setup run on the bundled five-product demo catalog produces:",
+          "inlines": [
+            {
+              "text": "An end-to-end setup run on the bundled five-product demo catalog produces:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$ .venv/bin/python scripts/setup.py --config ./design-spec.md\n\nINFO:__main__: SETUP PIPELINE (driven by design-spec.md)\nINFO:__main__:   Project:      testproject-425813\nINFO:__main__:   Region:       us-central1\nINFO:__main__:   Validating sample data... Validated 5 records.\nINFO:__main__:   Ingesting into BigQuery...\nINFO:ingest_bigquery: Creating dataset testproject-425813.retail_skill_products\nINFO:ingest_bigquery: Loaded 5 valid products\nINFO:__main__:   Creating Vector Search collection...\nINFO:ingest_vertex_search: Collection created successfully\nINFO:ingest_vertex_search: Ingestion complete: 5 created, 0 skipped, 0 errors\nINFO:__main__: SETUP COMPLETE"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A live retrieval against the collection the skill has just provisioned returns:",
+          "inlines": [
+            {
+              "text": "A live retrieval against the collection the skill has just provisioned returns:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": ">>> from app.agent import retrieve_docs\n>>> retrieve_docs(\"wireless headphones under 200\")"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "Product 1: Wireless Headphones  $199.99  by Sony      (Audio)       rated 4.5/5\n          Premium noise-cancelling over-ear headphones with 30-hour battery\nProduct 2: Laptop Stand         $49.99   by Generic   (Accessories) rated 4.2/5\nProduct 3: Mechanical Keyboard  $129.99  by Keychron  (Peripherals) rated 4.6/5\nProduct 4: USB-C Cable          $19.99   by Anker     (Cables)      rated 4.7/5\nProduct 5: Monitor Light Bar    $59.99   by BenQ      (Lighting)    rated 4.4/5"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The virtual-tryon skill is faster to demonstrate interactively. A direct call to generate_tryon_image with a user portrait and a product image produces the photorealistic composite shown at the top of this section in roughly ten seconds. The same inputs piped through generate_tryon_video and Veo Reference-to-Video turn that still into an eight-second studio catwalk animation of the composite in motion.",
+          "inlines": [
+            {
+              "text": "The virtual-tryon skill is faster to demonstrate interactively. A direct call to "
+            },
+            {
+              "code": true,
+              "text": "generate_tryon_image"
+            },
+            {
+              "text": " with a user portrait and a product image produces the photorealistic composite shown at the top of this section in roughly ten seconds. The same inputs piped through "
+            },
+            {
+              "code": true,
+              "text": "generate_tryon_video"
+            },
+            {
+              "text": " and Veo Reference-to-Video turn that still into an eight-second studio catwalk animation of the composite in motion."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The pipeline is category-agnostic. Swapping the product image for a pair of sunglasses, with product_category='eyewear', invokes the same generate_tryon_image call and produces a composite in the correct category without any further configuration:",
+          "inlines": [
+            {
+              "text": "The pipeline is category-agnostic. Swapping the product image for a pair of sunglasses, with "
+            },
+            {
+              "code": true,
+              "text": "product_category='eyewear'"
+            },
+            {
+              "text": ", invokes the same "
+            },
+            {
+              "code": true,
+              "text": "generate_tryon_image"
+            },
+            {
+              "text": " call and produces a composite in the correct category without any further configuration:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/dda9f79781bc3d7876783d1ad8ec48069b9d33d1fe00a31a0a0bab9c3901d0ba.jpg",
+          "alt": "6"
+        },
+        {
+          "type": "paragraph",
+          "text": "Retail is the first vertical fully covered in this format. Additional verticals will land as their own folders under plugins/, following the same anatomy and the same Agent Plugins specification, so developers can expect a consistent install experience across industries.",
+          "inlines": [
+            {
+              "text": "Retail is the first vertical fully covered in this format. Additional verticals will land as their own folders under "
+            },
+            {
+              "code": true,
+              "text": "plugins/"
+            },
+            {
+              "text": ", following the same anatomy and the same Agent Plugins specification, so developers can expect a consistent install experience across industries."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "In contrib/: a retail agent built on the plugin",
+          "inlines": [
+            {
+              "text": "In "
+            },
+            {
+              "code": true,
+              "text": "contrib/:"
+            },
+            {
+              "text": " a retail agent built on the plugin"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The contrib/ layer is where ADK recipes become end-to-end deployable services. Twelve Python agents live there today, spanning the kinds of applications ADK is typically used to build in practice: finance (financial advisor, small-business loan processor), evaluation (LLM auditor), document and knowledge pipelines (high-volume document analyzer, multiformat hybrid RAG), content and brand (brand-aligned presentations, brand-search optimization, on-brand genmedia), retail (product search, virtual try-on), and framework examples (agent-skills tutorial, staged UI widgets). Java, Go, TypeScript, and Kotlin each carry smaller sets. Every entry in contrib/ is a worked example of how a core/ pattern or a plugins/ skill becomes a running service.",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": " layer is where ADK recipes become end-to-end deployable services. Twelve Python agents live there today, spanning the kinds of applications ADK is typically used to build in practice: finance (financial advisor, small-business loan processor), evaluation (LLM auditor), document and knowledge pipelines (high-volume document analyzer, multiformat hybrid RAG), content and brand (brand-aligned presentations, brand-search optimization, on-brand genmedia), retail (product search, virtual try-on), and framework examples (agent-skills tutorial, staged UI widgets). Java, Go, TypeScript, and Kotlin each carry smaller sets. Every entry in "
+            },
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": " is a worked example of how a "
+            },
+            {
+              "code": true,
+              "text": "core/"
+            },
+            {
+              "text": " pattern or a "
+            },
+            {
+              "code": true,
+              "text": "plugins/"
+            },
+            {
+              "text": " skill becomes a running service."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To make the relationship between a plugin and its deployable counterpart concrete, take contrib/python/retail-product-search as the example. The retail plugin from the previous section walked a developer through a conversational install that provisioned the Vector Search collection, the BigQuery catalog, and the embeddings. The contrib agent is the deployable counterpart: a long-running service that reads from that collection and answers natural-language shopping queries over it. The plugin owns the one-shot setup; the contrib agent owns the service shape. Both are maintained by the same team to stay synchronised, and the agent's README directs new users to run the plugin's setup first:",
+          "inlines": [
+            {
+              "text": "To make the relationship between a plugin and its deployable counterpart concrete, take "
+            },
+            {
+              "code": true,
+              "text": "contrib/python/retail-product-search"
+            },
+            {
+              "text": " as the example. The retail plugin from the previous section walked a developer through a conversational install that provisioned the Vector Search collection, the BigQuery catalog, and the embeddings. The contrib agent is the deployable counterpart: a long-running service that reads from that collection and answers natural-language shopping queries over it. The plugin owns the one-shot setup; the contrib agent owns the service shape. Both are maintained by the same team to stay synchronised, and the agent's README directs new users to run the plugin's setup first:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "make -C plugins/retail/skills/product-search setup PROJECT_ID=your-project"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Once the collection (retail-skill-products-collection) is populated, the agent is cloned out of contrib/python/retail-product-search, pointed at a GCP project, and surfaced on one of five deployment personas controlled by boolean flags in .env.",
+          "inlines": [
+            {
+              "text": "Once the collection ("
+            },
+            {
+              "code": true,
+              "text": "retail-skill-products-collection"
+            },
+            {
+              "text": ") is populated, the agent is cloned out of "
+            },
+            {
+              "code": true,
+              "text": "contrib/python/retail-product-search"
+            },
+            {
+              "text": ", pointed at a GCP project, and surfaced on one of five deployment personas controlled by boolean flags in "
+            },
+            {
+              "code": true,
+              "text": ".env"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Once the deployment is live, the agent exposes a hosted shopping-assistant endpoint. The same retrieve_docs tool we called directly from Python now sits behind a chat interface, reachable through the deployed Reasoning Engine or, during development, through the ADK Web UI. The exact same agent code answering the exact same shopping query, run locally for inspection:",
+          "inlines": [
+            {
+              "text": "Once the deployment is live, the agent exposes a hosted shopping-assistant endpoint. The same "
+            },
+            {
+              "code": true,
+              "text": "retrieve_docs"
+            },
+            {
+              "text": " tool we called directly from Python now sits behind a chat interface, reachable through the deployed Reasoning Engine or, during development, through the ADK Web UI. The exact same agent code answering the exact same shopping query, run locally for inspection:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5841d40cddc5d7266555e997dcb7393bf12882be802c1f58405459c79325299e.webp",
+          "alt": "7"
+        },
+        {
+          "type": "paragraph",
+          "text": "The agent graph on the left of the UI confirms the single-agent architecture (product_search_agent → retrieve_docs). The right panel traces each tool invocation. The response grounds in a real catalog row from Vector Search: \"Sony Wireless Headphones · Price: $199.99 · Brand: Sony · Rating: 4.5/5 (50 in stock) · Premium noise-cancelling over-ear headphones featuring an impressive 30-hour battery life.\" No products are hallucinated; the Vector Search collection on top of BigQuery is the source of truth.",
+          "inlines": [
+            {
+              "text": "The agent graph on the left of the UI confirms the single-agent architecture ("
+            },
+            {
+              "code": true,
+              "text": "product_search_agent → retrieve_docs"
+            },
+            {
+              "text": "). The right panel traces each tool invocation. The response grounds in a real catalog row from Vector Search: "
+            },
+            {
+              "italic": true,
+              "text": "\"Sony Wireless Headphones · Price: $199.99 · Brand: Sony · Rating: 4.5/5 (50 in stock) · Premium noise-cancelling over-ear headphones featuring an impressive 30-hour battery life.\""
+            },
+            {
+              "text": " No products are hallucinated; the Vector Search collection on top of BigQuery is the source of truth."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That is what the retail plugin gives a team. The plugin encodes the data-pipeline setup once, through a conversational install any coding assistant can execute. The contrib agent is the running service, deployable in five shapes, that any organisation can take as a starting point and swap in its own catalog. The virtual-tryon counterpart in contrib/python/retail-virtual-tryon follows the same pattern: a smaller root agent that orchestrates try_on_product_image and try_on_product_video tools, deployable in the same five shapes, built on the virtual-tryon plugin's one-shot setup.",
+          "inlines": [
+            {
+              "text": "That is what the retail plugin gives a team. The plugin encodes the data-pipeline setup once, through a conversational install any coding assistant can execute. The contrib agent is the running service, deployable in five shapes, that any organisation can take as a starting point and swap in its own catalog. The virtual-tryon counterpart in "
+            },
+            {
+              "code": true,
+              "text": "contrib/python/retail-virtual-tryon"
+            },
+            {
+              "text": " follows the same pattern: a smaller root agent that orchestrates "
+            },
+            {
+              "code": true,
+              "text": "try_on_product_image"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "try_on_product_video"
+            },
+            {
+              "text": " tools, deployable in the same five shapes, built on the virtual-tryon plugin's one-shot setup."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why this matters",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Why this matters"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "A reference harness without a vertical is a toy; a vertical skill without a deployable artifact is a slide; a deployable agent without a reference pattern is a prototype no one can repeat. Shipping all three in one repository, under a shared manifest schema and governance pipeline, lets a developer or a coding assistant walk the stack in either direction, with every Agent Platform surface reading from the same source of truth.",
+          "inlines": [
+            {
+              "text": "A reference harness without a vertical is a toy; a vertical skill without a deployable artifact is a slide; a deployable agent without a reference pattern is a prototype no one can repeat. Shipping all three in one repository, under a shared manifest schema and governance pipeline, lets a developer or a coding assistant walk the stack in either direction, with every Agent Platform surface reading from the same source of truth."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The practical result is a lower barrier from \"I need an agent that does X\" to a running production service: a coding assistant can scaffold a Horizon-shaped agent, install a vertical Plugin Recipe, and reach the deployment transcripts in contrib/ without translating between repositories or reconciling manifest formats. For teams building vertical solutions, Plugin Recipes package domain expertise once and distribute it to every coding assistant on the market with the same install flow and quality gates.",
+          "inlines": [
+            {
+              "text": "The practical result is a lower barrier from \"I need an agent that does X\" to a running production service: a coding assistant can scaffold a Horizon-shaped agent, install a vertical Plugin Recipe, and reach the deployment transcripts in "
+            },
+            {
+              "code": true,
+              "text": "contrib/"
+            },
+            {
+              "text": " without translating between repositories or reconciling manifest formats. For teams building vertical solutions, Plugin Recipes package domain expertise once and distribute it to every coding assistant on the market with the same install flow and quality gates."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Get started",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Get started"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "code",
+          "text": "# Install Agents CLI\nuvx --from google-agents-cli agents-cli setup\n\n# Scaffold a Horizon-shaped agent\nuvx --from google-agents-cli agents-cli create my-agent\n\n# Install a retail skill into your coding assistant\nnpx skills add google/adk-recipes --skill retail-product-search --full-depth\n\n# Launch the deployable retail agent as a managed artifact\nuvx --from google-agents-cli agents-cli create retail-product-search"
+        },
+        {
+          "type": "paragraph",
+          "text": "Plain text",
+          "inlines": [
+            {
+              "text": "Plain text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copied",
+          "inlines": [
+            {
+              "text": "Copied"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Repository:"
+                },
+                {
+                  "href": "https://github.com/google/adk-recipes",
+                  "text": " github.com/google/adk-recipes"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Recipe handbook:"
+                },
+                {
+                  "href": "https://github.com/google/adk-recipes/tree/main/docs/recipe-handbook",
+                  "text": " github.com/google/adk-recipes/tree/main/docs/recipe-handbook"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Agents CLI documentation: uvx --from google-agents-cli agents-cli --help"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Agent Plugins v1.0.0 spec:"
+                },
+                {
+                  "href": "https://agent-plugins.org/specification",
+                  "text": " agent-plugins.org/specification"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Not an officially supported Google product. Recipes are for demonstration and as starting points, not production use.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Not an officially supported Google product. Recipes are for demonstration and as starting points, not production use."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Previous",
+          "inlines": [
+            {
+              "text": "Previous"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Next",
+          "inlines": [
+            {
+              "text": "Next"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:25:45.823922Z",
+  "contentMode": "full"
+}

@@ -1,0 +1,1660 @@
+{
+  "schemaVersion": 1,
+  "id": "a1dez7azk8nkmj0mgeb9pep03",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/a1dez7azk8nkmj0mgeb9pep03",
+  "fetchedAt": "2026-10-22T13:21:20.018383Z",
+  "label": "正文",
+  "notice": "来源未返回支持的图片。；来源未返回支持的图片。；来源未返回支持的图片。；来源未返回支持的图片。；来源未返回支持的图片。",
+  "topics": [
+    "NVIDIA 英伟达",
+    "部署工程",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "部署/工程",
+    "DeepSeek"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "低延迟推理为针对特定模型、硬件和工作负载的优化提供了许多机会。这些优化通常需要大量的内核融合以及跨实现复制代码，使其难以维护。为支持这种特化，我们推出SGLang 低延迟模式。它通过插件框架将专用内核引入 SGLang，并在 NVIDIA 和 AMD GPU 上大幅降低延迟。在四块 NVIDIA GB300 GPU 上的 AgentX 轨迹回放中，单并发会话下 P90 每用户 token 生成速度从671.2 提升至 928.4 tokens/s（1.38×）。在四块 AMD MI355X GPU 上，四并发会话下从331.6 提升至 516.0 tokens/s（1.56×）。每项结果均为同一硬件上低延迟模式与 SGLang 基线的对比。",
+          "inlines": [
+            {
+              "text": "低延迟推理为针对特定模型、硬件和工作负载的优化提供了许多机会。这些优化通常需要大量的内核融合以及跨实现复制代码，使其难以维护。为支持这种特化，我们推出"
+            },
+            {
+              "bold": true,
+              "text": "SGLang 低延迟模式"
+            },
+            {
+              "text": "。它通过插件框架将专用内核引入 SGLang，并在 NVIDIA 和 AMD GPU 上大幅降低延迟。在四块 NVIDIA GB300 GPU 上的 AgentX 轨迹回放中，单并发会话下 P90 每用户 token 生成速度从"
+            },
+            {
+              "bold": true,
+              "text": "671.2 提升至 928.4 tokens/s（1.38×）"
+            },
+            {
+              "text": "。在四块 AMD MI355X GPU 上，四并发会话下从"
+            },
+            {
+              "bold": true,
+              "text": "331.6 提升至 516.0 tokens/s（1.56×）"
+            },
+            {
+              "text": "。每项结果均为同一硬件上低延迟模式与 SGLang 基线的对比。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AgentX · DeepSeek-V4.1-Flash with DSpark · NVIDIA GB300 与 AMD MI355X。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "AgentX · DeepSeek-V4.1-Flash with DSpark · NVIDIA GB300 与 AMD MI355X。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "目录",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "目录"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#kernels-for-low-latency-inference",
+                  "text": "Kernels for Low-Latency Inference"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#nvidia-low-latency-kernels",
+                  "text": "NVIDIA 低延迟内核"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#amd-low-latency-kernels",
+                  "text": "AMD 低延迟内核"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#plugin-system-design-and-integration",
+                  "text": "插件系统：设计与集成"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#future-plans",
+                  "text": "未来计划"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "面向低延迟推理的内核",
+          "inlines": [
+            {
+              "text": "面向低延迟推理的内核"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "NVIDIA 低延迟内核",
+          "inlines": [
+            {
+              "text": "NVIDIA 低延迟内核"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在 NVIDIA GPU 上，我们通过重叠相互依赖的内核与通信，并针对小批量特化注意力、MoE 和草稿采样来降低延迟。这些内核位于 sgl-nvidia-mega 中，在 NVIDIA GB300 GPU 上为 DeepSeek-V4.1-Flash with DSpark 加速目标验证和草稿执行。",
+          "inlines": [
+            {
+              "text": "在 NVIDIA GPU 上，我们通过重叠相互依赖的内核与通信，并针对小批量特化注意力、MoE 和草稿采样来降低延迟。这些内核位于 "
+            },
+            {
+              "href": "https://github.com/sgl-project/sgl-nvidia-mega",
+              "text": "sgl-nvidia-mega"
+            },
+            {
+              "text": " 中，在 NVIDIA GB300 GPU 上为 DeepSeek-V4.1-Flash with DSpark 加速目标验证和草稿执行。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "时间花在哪里",
+          "inlines": [
+            {
+              "text": "时间花在哪里"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "在单请求下，DSpark 每步验证六行 token，每个内核的工作量很少，而依赖关系和跨 GPU 通信会增加延迟。在预热后的 CUDA-graph 性能分析中，该插件将验证图从 1,205 个内核减少到 1,189 个，但将解码器层延迟中位数从 96.8 µs 降至 68.4 µs。收益主要来自减少等待和重叠工作，其中注意力区域的降幅最大。下表列出了这些变化，随后我们将逐一介绍主要优化。",
+          "inlines": [
+            {
+              "text": "在单请求下，DSpark 每步验证六行 token，每个内核的工作量很少，而依赖关系和跨 GPU 通信会增加延迟。在预热后的 CUDA-graph 性能分析中，该插件将验证图从 1,205 个内核减少到 1,189 个，但将解码器层延迟中位数从 96.8 µs 降至 68.4 µs。收益主要来自减少等待和重叠工作，其中注意力区域的降幅最大。下表列出了这些变化，随后我们将逐一介绍主要优化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "单个解码器层的一个区域，单请求（中位数）",
+          "inlines": [
+            {
+              "text": "单个解码器层的一个区域，单请求（中位数）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang",
+          "inlines": [
+            {
+              "text": "SGLang"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "使用插件",
+          "inlines": [
+            {
+              "text": "使用插件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "注意力，从上一 MoE 输出到输出投影",
+          "inlines": [
+            {
+              "text": "注意力，从上一 MoE 输出到输出投影"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "33.4 µs",
+          "inlines": [
+            {
+              "text": "33.4 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "18.3 µs",
+          "inlines": [
+            {
+              "text": "18.3 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "注意力输出投影与张量并行归约",
+          "inlines": [
+            {
+              "text": "注意力输出投影与张量并行归约"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.9 µs",
+          "inlines": [
+            {
+              "text": "10.9 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.4 µs",
+          "inlines": [
+            {
+              "text": "9.4 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MoE，从路由到归约后的输出",
+          "inlines": [
+            {
+              "text": "MoE，从路由到归约后的输出"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "44.4 µs",
+          "inlines": [
+            {
+              "text": "44.4 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "36.5 µs",
+          "inlines": [
+            {
+              "text": "36.5 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "整层，从一次路由步骤到下一次",
+          "inlines": [
+            {
+              "text": "整层，从一次路由步骤到下一次"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "96.8 µs",
+          "inlines": [
+            {
+              "text": "96.8 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "68.4 µs",
+          "inlines": [
+            {
+              "text": "68.4 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "四块 GPU 上每组 780–800 个实例的中位数。各区域中位数之和不等于整层中位数。性能分析会影响计时；这些测量用于解释机制，而非报告服务性能。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "四块 GPU 上每组 780–800 个实例的中位数。各区域中位数之和不等于整层中位数。性能分析会影响计时；这些测量用于解释机制，而非报告服务性能。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "低延迟专用优化",
+          "inlines": [
+            {
+              "text": "低延迟专用优化"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "1. 在其输入存在之前启动下一个内核。 程序化依赖启动（PDL）允许内核在前驱内核仍在运行时启动。它可以在等待所需输入之前准备屏障、设置张量内存并加载权重。SGLang 已使用 PDL。该插件将依赖释放提前，使更多此类准备工作与正在进行的计算重叠。例如，MoE 归约在开始轮询对等结果时，就释放下一层的第一个投影。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "1. 在其输入存在之前启动下一个内核。"
+            },
+            {
+              "text": " 程序化依赖启动（PDL）允许内核在前驱内核仍在运行时启动。它可以在等待所需输入之前准备屏障、设置张量内存并加载权重。SGLang 已使用 PDL。该插件将依赖释放提前，使更多此类准备工作与正在进行的计算重叠。例如，MoE 归约在开始轮询对等结果时，就释放下一层的第一个投影。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "注意力路径还使用了针对小批量专门优化的投影 GEMM，并在加载 query 时应用 RoPE，从而省去一个单独的内核。在依赖关系允许的情况下，注意力会在等待 query 之前就开始收集 KV 数据。在单个请求下，该插件还会在步骤开始时将独立的 Engram 查找和投影移到侧流上。它们的 all-reduce 仍留在主流上，以保持跨 GPU 的通信顺序。",
+          "inlines": [
+            {
+              "text": "注意力路径还使用了针对小批量专门优化的投影 GEMM，并在加载 query 时应用 RoPE，从而省去一个单独的内核。在依赖关系允许的情况下，注意力会在等待 query 之前就开始收集 KV 数据。在单个请求下，该插件还会在步骤开始时将独立的 Engram 查找和投影移到侧流上。它们的 all-reduce 仍留在主流上，以保持跨 GPU 的通信顺序。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2. 从 GEMM epilogue 发布投影输出。 在注意力输出投影之后，每个 GPU 持有一个部分结果，该结果必须跨 GPU 进行归约。SGLang 的标准路径使用两个内核：GEMM 写出其输出，然后一个融合内核将其读回，发送给对等节点，并执行归约、mHC 更新和归一化。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "2. 从 GEMM epilogue 发布投影输出。"
+            },
+            {
+              "text": " 在注意力输出投影之后，每个 GPU 持有一个部分结果，该结果必须跨 GPU 进行归约。SGLang 的标准路径使用两个内核：GEMM 写出其输出，然后一个融合内核将其读回，发送给对等节点，并执行归约、mHC 更新和归一化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该插件保留两个内核，但将发送移入 GEMM 的 epilogue。每个 CTA 在其他 tile 仍在计算时，直接通过 NVLink 多播存储将已完成的 tile 从寄存器发布到对等 GPU。消费者通过 PDL 启动，并在归约之前等待已发布的结果。这更早地启动通信，并避免仅为发送而重新读取部分输出。消费者的计算保持不变。",
+          "inlines": [
+            {
+              "text": "该插件保留两个内核，但将发送移入 GEMM 的 epilogue。每个 CTA 在其他 tile 仍在计算时，直接通过 NVLink 多播存储将已完成的 tile 从寄存器发布到对等 GPU。消费者通过 PDL 启动，并在归约之前等待已发布的结果。这更早地启动通信，并避免仅为发送而重新读取部分输出。消费者的计算保持不变。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该插件将跨 GPU 发送移入 GEMM epilogue。两条路径都使用两个内核；方框大小不代表持续时间。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "该插件将跨 GPU 发送移入 GEMM epilogue。两条路径都使用两个内核；方框大小不代表持续时间。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3. 在路由完成之前启动专家 GEMM。 在低并发下，路由可能占据 MoE 路径的相当大一部分。在最多八行的情况下，每个专家选中的 token 可容纳在一个八行 tile 中。该插件使用位图和种群计数来放置这些 tile，无需扫描或排序，同时保留 SGLang 的 top-k 选择。它提前启动第一个专家 GEMM，使设置与路由重叠，并跳过填充权重中的全零 tile。标准内核已经使用八行 tile；收益来自更简单的路由、更早的执行和更少的浪费工作。在性能分析运行中，MoE 窗口中位数从 44.4 µs 降至 36.5 µs，而第二个 GEMM 或归约几乎没有变化。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "3. 在路由完成之前启动专家 GEMM。"
+            },
+            {
+              "text": " 在低并发下，路由可能占据 MoE 路径的相当大一部分。在最多八行的情况下，每个专家选中的 token 可容纳在一个八行 tile 中。该插件使用位图和种群计数来放置这些 tile，无需扫描或排序，同时保留 SGLang 的 top-k 选择。它提前启动第一个专家 GEMM，使设置与路由重叠，并跳过填充权重中的全零 tile。标准内核已经使用八行 tile；收益来自更简单的路由、更早的执行和更少的浪费工作。在性能分析运行中，MoE 窗口中位数从 44.4 µs 降至 36.5 µs，而第二个 GEMM 或归约几乎没有变化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "来自同一 GPU、层和重放的一对匹配跟踪。GEMM1 的条形包含其对路由的等待，因此更早的开始可能产生更长的条形，同时缩短整体 MoE 窗口。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "来自同一 GPU、层和重放的一对匹配跟踪。GEMM1 的条形包含其对路由的等待，因此更早的开始可能产生更长的条形，同时缩短整体 MoE 窗口。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4. 将顺序草稿采样保留在一个内核中。 DSpark 的 Markov head 顺序提出 token。该插件将全部五个提议合并为每个 GPU 一次内核启动，并在跨 GPU 协调 token 选择时将 head 权重保留在寄存器中。这将性能分析中的提议跨度从 85.1 µs 降至 34.2 µs，而不改变 SGLang 的推测 worker 或接受逻辑。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "4. 将顺序草稿采样保留在一个内核中。"
+            },
+            {
+              "text": " DSpark 的 Markov head 顺序提出 token。该插件将全部五个提议合并为每个 GPU 一次内核启动，并在跨 GPU 协调 token 选择时将 head 权重保留在寄存器中。这将性能分析中的提议跨度从 85.1 µs 降至 34.2 µs，而不改变 SGLang 的推测 worker 或接受逻辑。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "服务结果",
+          "inlines": [
+            {
+              "text": "服务结果"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "在 8K 输入 / 1K 输出的工作负载上，NVIDIA 插件在四块 GB300 GPU 上、1–8 个并发请求时将每用户解码速度提升 12–38%。两次运行使用相同的设置和模拟平均接受长度 3.51，仅更改插件标志。",
+          "inlines": [
+            {
+              "text": "在 8K 输入 / 1K 输出的工作负载上，NVIDIA 插件在四块 GB300 GPU 上、1–8 个并发请求时将每用户解码速度提升 12–38%。两次运行使用相同的设置和模拟平均接受长度 3.51，仅更改插件标志。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DeepSeek-V4.1-Flash 搭配 DSpark · 4 × GB300 · 8K 输入 / 1K 输出。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "DeepSeek-V4.1-Flash 搭配 DSpark · 4 × GB300 · 8K 输入 / 1K 输出。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "AMD 低延迟内核",
+          "inlines": [
+            {
+              "text": "AMD 低延迟内核"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在 AMD GPU 上，我们通过将解码器层的大部分计算和通信合并到少数持久内核中来降低延迟。这些内核位于 sgl-amd-mono 中，在 AMD Instinct MI355X 和 MI350X GPU 上为 DeepSeek-V4.1-Flash 搭配 DSpark 加速目标验证和草稿执行。",
+          "inlines": [
+            {
+              "text": "在 AMD GPU 上，我们通过将解码器层的大部分计算和通信合并到少数持久内核中来降低延迟。这些内核位于 "
+            },
+            {
+              "href": "https://github.com/sgl-project/sgl-amd-mono",
+              "text": "sgl-amd-mono"
+            },
+            {
+              "text": " 中，在 AMD Instinct MI355X 和 MI350X GPU 上为 DeepSeek-V4.1-Flash 搭配 DSpark 加速目标验证和草稿执行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在低并发下，每个解码器层会运行数十个小内核和两次张量并行 all-reduce。三项成本占主导：",
+          "inlines": [
+            {
+              "text": "在低并发下，每个解码器层会运行数十个小内核和两次张量并行 all-reduce。三项成本占主导："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "启动开销："
+                },
+                {
+                  "text": "HIP graph 消除了 CPU 的启动工作，但每个小内核在 GPU 上仍需 2-4 µs。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "空闲边界："
+                },
+                {
+                  "text": "每个内核必须完成后下一个才能开始，因此当一个内核排空、下一个内核启动时，计算单元处于空闲状态，权重加载也会暂停。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "通信停顿："
+                },
+                {
+                  "text": "每一层都要等待两次跨 GPU 的 all-reduce，期间没有计算在运行。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该插件用两次持久化启动替代数十个小内核，提前加载权重，并将跨 GPU 求和与计算重叠。方框大小不代表时长。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "该插件用两次持久化启动替代数十个小内核，提前加载权重，并将跨 GPU 求和与计算重叠。方框大小不代表时长。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "每层两次持久化启动",
+          "inlines": [
+            {
+              "text": "每层两次持久化启动"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "持久化 FlyDSL 内核将每层的大部分工作合并为两次启动。K1 处理 mHC 更新、query 和 KV 投影以及 KV-cache 写入。K2 处理 attention、输出投影、剩余的 mHC 更新、MoE 以及两次 all-reduce。索引层在两者之间加入压缩、K2i 打分和 top-k。启动边界使 K1 的 KV 写入在 K2 读取之前对整个 GPU 可见。",
+          "inlines": [
+            {
+              "text": "持久化 FlyDSL 内核将每层的大部分工作合并为两次启动。"
+            },
+            {
+              "bold": true,
+              "text": "K1"
+            },
+            {
+              "text": " 处理 mHC 更新、query 和 KV 投影以及 KV-cache 写入。"
+            },
+            {
+              "bold": true,
+              "text": "K2"
+            },
+            {
+              "text": " 处理 attention、输出投影、剩余的 mHC 更新、MoE 以及两次 all-reduce。索引层在两者之间加入压缩、"
+            },
+            {
+              "bold": true,
+              "text": "K2i"
+            },
+            {
+              "text": " 打分和 top-k。启动边界使 K1 的 KV 写入在 K2 读取之前对整个 GPU 可见。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "启动内部各阶段的重叠",
+          "inlines": [
+            {
+              "text": "启动内部各阶段的重叠"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "每个阶段产生的值都会与当前解码步的标签一起存储，因此下一个阶段（无论在同一 GPU 还是另一 GPU 上）只要标签匹配就会立即开始处理该值。步与步之间无需单独的标志或重置。不依赖路由的权重会在其输入到达之前加载：K1 的投影权重在 norm 完成前加载，K2 中 mHC 混合权重和共享专家的权重在它们要相乘的数据之前加载。路由专家权重在路由器选定专家后加载。",
+          "inlines": [
+            {
+              "text": "每个阶段产生的值都会与当前解码步的标签一起存储，因此下一个阶段（无论在同一 GPU 还是另一 GPU 上）只要标签匹配就会立即开始处理该值。步与步之间无需单独的标志或重置。不依赖路由的权重会在其输入到达之前加载：K1 的投影权重在 norm 完成前加载，K2 中 mHC 混合权重和共享专家的权重在它们要相乘的数据之前加载。路由专家权重在路由器选定专家后加载。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "将 all-reduce 引入内核",
+          "inlines": [
+            {
+              "text": "将 all-reduce 引入内核"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "每个输出投影 tile 计算完成后，K2 将其推送到每个 GPU 的内存，每个 GPU 按 rank 顺序对各部分求和，同时其他工作组仍在生成 tile（推送与归约阶段）。MoE 输出以相同方式归约。每次跨 GPU 等待都有低于 SGLang 看门狗超时的截止时间；错过截止时间会在每个 GPU 上停止启动，而不是让服务器挂起。",
+          "inlines": [
+            {
+              "text": "每个输出投影 tile 计算完成后，K2 将其推送到每个 GPU 的内存，每个 GPU 按 rank 顺序对各部分求和，同时其他工作组仍在生成 tile（"
+            },
+            {
+              "href": "https://github.com/sgl-project/sgl-amd-mono/blob/e952b221aafc05ef5adb84d2caf942f7283c1f0b/sgl_amd_mono/deepseek_v41/gfx950/stages/seam.py",
+              "text": "推送与归约阶段"
+            },
+            {
+              "text": "）。MoE 输出以相同方式归约。每次跨 GPU 等待都有低于 SGLang 看门狗超时的截止时间；错过截止时间会在每个 GPU 上停止启动，而不是让服务器挂起。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AMD 实现与 decode graph 兼容，并直接集成到 SGLang 的 graph runner 中。内核在初始化期间编译，缓冲区在初始化期间准备。随后 SGLang 为每种支持的形状捕获专用执行路径，并通过现有的服务流程重放。",
+          "inlines": [
+            {
+              "text": "AMD 实现与 decode graph 兼容，并直接集成到 SGLang 的 graph runner 中。内核在初始化期间编译，缓冲区在初始化期间准备。随后 SGLang 为每种支持的形状捕获专用执行路径，并通过现有的服务流程重放。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "服务结果",
+          "inlines": [
+            {
+              "text": "服务结果"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "在 AgentX trace 回放中，AMD 插件在四块 MI355X GPU 上、1、4 和 8 个并发会话时，将 P90 每用户 token 生成速度提升了 45–56%，如概览图所示。两次运行均使用相同的 AgentX 配方，配备 DSpark 推测解码和 TP4。",
+          "inlines": [
+            {
+              "text": "在 AgentX trace 回放中，AMD 插件在四块 MI355X GPU 上、1、4 和 8 个并发会话时，将 P90 每用户 token 生成速度提升了 45–56%，如概览图所示。两次运行均使用相同的 AgentX 配方，配备 DSpark 推测解码和 TP4。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "插件系统：设计与集成",
+          "inlines": [
+            {
+              "text": "插件系统：设计与集成"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "专用内核可能需要大量代码。硬件、模型架构和并行配置的每种组合都可能需要自己的实现。不同的工作负载还会带来进一步的专门化。更多组合意味着更多需要审查、测试和维护的代码。将每个实现都引入 SGLang 会使核心代码库越来越难以维护，并给审查者和维护者带来越来越多的工作量。",
+          "inlines": [
+            {
+              "text": "专用内核可能需要大量代码。硬件、模型架构和并行配置的每种组合都可能需要自己的实现。不同的工作负载还会带来进一步的专门化。更多组合意味着更多需要审查、测试和维护的代码。将每个实现都引入 SGLang 会使核心代码库越来越难以维护，并给审查者和维护者带来越来越多的工作量。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "外部内核库通过注册、验证、构建和运行时调度连接到 SGLang。该图展示了共享设计；AMD 和 NVIDIA 接口仍在演进中。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "外部内核库通过注册、验证、构建和运行时调度连接到 SGLang。该图展示了共享设计；AMD 和 NVIDIA 接口仍在演进中。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "插件系统通过声明其需求和支持配置的模型规范，将这些外部库连接到 SGLang。内核团队可以独立开发其实现，同时复用 SGLang 的调度和运行时资源。",
+          "inlines": [
+            {
+              "text": "插件系统通过声明其需求和支持配置的模型规范，将这些外部库连接到 SGLang。内核团队可以独立开发其实现，同时复用 SGLang 的调度和运行时资源。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该集成将启动准备与执行分离：",
+          "inlines": [
+            {
+              "text": "该集成将启动准备与执行分离："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "注册："
+                },
+                {
+                  "text": "插件为其支持的每种模型架构注册一个规范。该规范描述实现的需求，并提供构建它的入口点。这为 SGLang 提供了一种发现外部实现的方式，同时将模型支持的细节保留在拥有内核的库中。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "守卫："
+                },
+                {
+                  "text": "专用内核会对硬件、精度、并行性和服务特性做出假设。SGLang 在加载权重之前检查声明的需求，以便不兼容的配置尽早失败。在构建插件之前，对已加载模型运行额外检查。这些检查区分不支持的服务器配置与受支持的服务器遇到插件覆盖范围之外的步骤。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "构建："
+                },
+                {
+                  "text": "权重准备和执行资源在初始化期间设置，以便请求可以复用它们。该集成适应每种实现的需求：AMD 可以在权重转换之前保留检查点张量，而 NVIDIA 接收一个绑定，通过它可以在运行时状态可用时访问该状态。SGLang 在确定 KV 缓存大小之前构建插件，以便其分配被计入，然后在模型的前向路径中安装调度。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "运行时："
+                },
+                {
+                  "text": "专用执行和通用执行共存，因为插件可能只覆盖某些步骤类型和 token 数量。安装的调度器使用插件的支持条件来选择其前向或 SGLang 的原始前向。张量并行 rank 必须在覆盖范围上达成一致，以避免进入不兼容的集合通信。此选择适合 ModelRunner 的现有执行流程。在图捕获期间，为相应形状记录所选路径；服务随后可以重放该图，而无需重复 Python 调度。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种设计让内核团队能够交付专注的优化，而无需将每个专用实现添加到 SGLang 的核心代码库中。它将集成工作集中在显式接口上，并允许每个库逐步扩展其覆盖范围。专用内核可以服务它们优化的场景，而 SGLang 的通用前向处理受支持配置内的剩余步骤。",
+          "inlines": [
+            {
+              "text": "这种设计让内核团队能够交付专注的优化，而无需将每个专用实现添加到 SGLang 的核心代码库中。它将集成工作集中在显式接口上，并允许每个库逐步扩展其覆盖范围。专用内核可以服务它们优化的场景，而 SGLang 的通用前向处理受支持配置内的剩余步骤。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "未来计划",
+          "inlines": [
+            {
+              "text": "未来计划"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "更广泛的模型支持",
+          "inlines": [
+            {
+              "text": "更广泛的模型支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Megakernel/Monokernel 的开发正在针对 GLM-5.3、K3、MiniMax M3 以及其他模型在 NVIDIA 和 AMD GPU 上进行。我们计划在这些实现准备就绪后将其集成到插件框架中。这些低延迟内核显示出进一步提升性能的潜力。",
+          "inlines": [
+            {
+              "text": "Megakernel/Monokernel 的开发正在针对 GLM-5.3、K3、MiniMax M3 以及其他模型在 NVIDIA 和 AMD GPU 上进行。我们计划在这些实现准备就绪后将其集成到插件框架中。这些低延迟内核显示出进一步提升性能的潜力。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "CI 与性能验证",
+          "inlines": [
+            {
+              "text": "CI 与性能验证"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "外部内核实现位于 SGLang 常规代码审查流程之外。因此，插件接口处的强大 CI 覆盖对于验证这些实现满足 SGLang 的正确性和运行时要求至关重要。我们计划测试兼容性检查、权重绑定、前向输出和状态更新，包括 KV 缓存写入。随着 SGLang 和外部库的发展，端到端测试还将覆盖图执行、回退行为和性能回归。",
+          "inlines": [
+            {
+              "text": "外部内核实现位于 SGLang 常规代码审查流程之外。因此，插件接口处的强大 CI 覆盖对于验证这些实现满足 SGLang 的正确性和运行时要求至关重要。我们计划测试兼容性检查、权重绑定、前向输出和状态更新，包括 KV 缓存写入。随着 SGLang 和外部库的发展，端到端测试还将覆盖图执行、回退行为和性能回归。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "演进中的共享插件接口",
+          "inlines": [
+            {
+              "text": "演进中的共享插件接口"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "尽管插件框架现已就位，但仍处于早期阶段。我们预计将通过长期迭代来完善其接口和设计，同时集成更多内核，并从生产环境的使用中学习经验。",
+          "inlines": [
+            {
+              "text": "尽管插件框架现已就位，但仍处于早期阶段。我们预计将通过长期迭代来完善其接口和设计，同时集成更多内核，并从生产环境的使用中学习经验。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Low-latency inference offers many opportunities for optimizations tailored to specific models, hardware and workloads. These optimizations often require extensive kernel fusion and duplicate code across implementations, making them difficult to maintain. To support this specialization, we introduce SGLang Low-Latency Mode. It brings specialized kernels into SGLang through a plugin framework and delivers substantial latency reductions on both NVIDIA and AMD GPUs. In AgentX trace replay on four NVIDIA GB300 GPUs, P90 per-user token generation speed increases from 671.2 to 928.4 tokens/s (1.38×) at one concurrent session. On four AMD MI355X GPUs, it increases from 331.6 to 516.0 tokens/s (1.56×) at four concurrent sessions. Each result compares low-latency mode with the SGLang baseline on the same hardware.",
+          "inlines": [
+            {
+              "text": "Low-latency inference offers many opportunities for optimizations tailored to specific models, hardware and workloads. These optimizations often require extensive kernel fusion and duplicate code across implementations, making them difficult to maintain. To support this specialization, we introduce "
+            },
+            {
+              "bold": true,
+              "text": "SGLang Low-Latency Mode"
+            },
+            {
+              "text": ". It brings specialized kernels into SGLang through a plugin framework and delivers substantial latency reductions on both NVIDIA and AMD GPUs. In AgentX trace replay on four NVIDIA GB300 GPUs, P90 per-user token generation speed increases from "
+            },
+            {
+              "bold": true,
+              "text": "671.2 to 928.4 tokens/s (1.38×)"
+            },
+            {
+              "text": " at one concurrent session. On four AMD MI355X GPUs, it increases from "
+            },
+            {
+              "bold": true,
+              "text": "331.6 to 516.0 tokens/s (1.56×)"
+            },
+            {
+              "text": " at four concurrent sessions. Each result compares low-latency mode with the SGLang baseline on the same hardware."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AgentX · DeepSeek-V4.1-Flash with DSpark · NVIDIA GB300 and AMD MI355X.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "AgentX · DeepSeek-V4.1-Flash with DSpark · NVIDIA GB300 and AMD MI355X."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Table of Contents",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Table of Contents"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#kernels-for-low-latency-inference",
+                  "text": "Kernels for Low-Latency Inference"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#nvidia-low-latency-kernels",
+                  "text": "NVIDIA Low-Latency Kernels"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#amd-low-latency-kernels",
+                  "text": "AMD Low-Latency Kernels"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#plugin-system-design-and-integration",
+                  "text": "Plugin System: Design and Integration"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://www.lmsys.org/blog/2026-10-18-sglang-low-latency-mode#future-plans",
+                  "text": "Future Plans"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Kernels for Low-Latency Inference",
+          "inlines": [
+            {
+              "text": "Kernels for Low-Latency Inference"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "NVIDIA Low-Latency Kernels",
+          "inlines": [
+            {
+              "text": "NVIDIA Low-Latency Kernels"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "On NVIDIA GPUs, we reduce latency by overlapping dependent kernels and communication while specializing attention, MoE and draft sampling for small batches. These kernels live in sgl-nvidia-mega which accelerates both target verification and draft execution for DeepSeek-V4.1-Flash with DSpark on NVIDIA GB300 GPUs.",
+          "inlines": [
+            {
+              "text": "On NVIDIA GPUs, we reduce latency by overlapping dependent kernels and communication while specializing attention, MoE and draft sampling for small batches. These kernels live in "
+            },
+            {
+              "href": "https://github.com/sgl-project/sgl-nvidia-mega",
+              "text": "sgl-nvidia-mega"
+            },
+            {
+              "text": " which accelerates both target verification and draft execution for DeepSeek-V4.1-Flash with DSpark on NVIDIA GB300 GPUs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where the Time Goes",
+          "inlines": [
+            {
+              "text": "Where the Time Goes"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "At one request, DSpark verifies six token rows per step, leaving little work for each kernel while dependencies and cross-GPU communication add latency. In warmed CUDA-graph profiles, the plugin reduces the verify graph from 1,205 kernels to 1,189 but cuts the median decoder-layer latency from 96.8 µs to 68.4 µs. The gains come largely from reducing waits and overlapping work, with the largest reduction in the attention region. The table breaks down these changes before we walk through the main optimizations.",
+          "inlines": [
+            {
+              "text": "At one request, DSpark verifies six token rows per step, leaving little work for each kernel while dependencies and cross-GPU communication add latency. In warmed CUDA-graph profiles, the plugin reduces the verify graph from 1,205 kernels to 1,189 but cuts the median decoder-layer latency from 96.8 µs to 68.4 µs. The gains come largely from reducing waits and overlapping work, with the largest reduction in the attention region. The table breaks down these changes before we walk through the main optimizations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Region of one decoder layer, one request (median)",
+          "inlines": [
+            {
+              "text": "Region of one decoder layer, one request (median)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang",
+          "inlines": [
+            {
+              "text": "SGLang"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With plugin",
+          "inlines": [
+            {
+              "text": "With plugin"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attention, from the previous MoE output to the output projection",
+          "inlines": [
+            {
+              "text": "Attention, from the previous MoE output to the output projection"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "33.4 µs",
+          "inlines": [
+            {
+              "text": "33.4 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "18.3 µs",
+          "inlines": [
+            {
+              "text": "18.3 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attention output projection and tensor-parallel reduction",
+          "inlines": [
+            {
+              "text": "Attention output projection and tensor-parallel reduction"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.9 µs",
+          "inlines": [
+            {
+              "text": "10.9 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.4 µs",
+          "inlines": [
+            {
+              "text": "9.4 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MoE, from routing to the reduced output",
+          "inlines": [
+            {
+              "text": "MoE, from routing to the reduced output"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "44.4 µs",
+          "inlines": [
+            {
+              "text": "44.4 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "36.5 µs",
+          "inlines": [
+            {
+              "text": "36.5 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Whole layer, from one routing step to the next",
+          "inlines": [
+            {
+              "text": "Whole layer, from one routing step to the next"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "96.8 µs",
+          "inlines": [
+            {
+              "text": "96.8 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "68.4 µs",
+          "inlines": [
+            {
+              "text": "68.4 µs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Medians over 780–800 instances per arm on four GPUs. Region medians do not add up to the whole-layer median. Profiling affects timings; these measurements explain the mechanisms rather than report serving performance.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Medians over 780–800 instances per arm on four GPUs. Region medians do not add up to the whole-layer median. Profiling affects timings; these measurements explain the mechanisms rather than report serving performance."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Low-Latency-Specific Optimizations",
+          "inlines": [
+            {
+              "text": "Low-Latency-Specific Optimizations"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Launch the next kernel before its input exists. Programmatic dependent launch (PDL) lets a kernel start while its predecessor is still running. It can prepare barriers, set up tensor memory and load weights before waiting for the input it needs. SGLang already uses PDL. The plugin moves dependency releases earlier so more of this preparation overlaps with ongoing computation. For example, the MoE reduction releases the next layer’s first projection as soon as it starts polling for peer results.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "1. Launch the next kernel before its input exists."
+            },
+            {
+              "text": " Programmatic dependent launch (PDL) lets a kernel start while its predecessor is still running. It can prepare barriers, set up tensor memory and load weights before waiting for the input it needs. SGLang already uses PDL. The plugin moves dependency releases earlier so more of this preparation overlaps with ongoing computation. For example, the MoE reduction releases the next layer’s first projection as soon as it starts polling for peer results."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The attention path also uses projection GEMMs specialized for small batches and applies RoPE while loading the query to remove a separate kernel. Where dependencies allow it, attention begins gathering KV data before waiting for the query. At one request, the plugin also moves independent Engram lookups and projections onto a side stream at the start of the step. Their all-reduces stay on the main stream to preserve communication order across GPUs.",
+          "inlines": [
+            {
+              "text": "The attention path also uses projection GEMMs specialized for small batches and applies RoPE while loading the query to remove a separate kernel. Where dependencies allow it, attention begins gathering KV data before waiting for the query. At one request, the plugin also moves independent Engram lookups and projections onto a side stream at the start of the step. Their all-reduces stay on the main stream to preserve communication order across GPUs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Publish the projection output from the GEMM epilogue. After the attention output projection, each GPU holds a partial result that must be reduced across GPUs. SGLang’s standard path uses two kernels: the GEMM writes its output, then a fused kernel reads it back, sends it to peers and performs the reduction, mHC update and normalization.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "2. Publish the projection output from the GEMM epilogue."
+            },
+            {
+              "text": " After the attention output projection, each GPU holds a partial result that must be reduced across GPUs. SGLang’s standard path uses two kernels: the GEMM writes its output, then a fused kernel reads it back, sends it to peers and performs the reduction, mHC update and normalization."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The plugin keeps two kernels but moves the send into the GEMM’s epilogue. Each CTA publishes its completed tile directly from registers to peer GPUs through NVLink multicast stores while other tiles are still being computed. The consumer starts through PDL and waits for the published results before reducing them. This starts communication earlier and avoids rereading the partial output just to send it. The consumer’s computation remains unchanged.",
+          "inlines": [
+            {
+              "text": "The plugin keeps two kernels but moves the send into the GEMM’s epilogue. Each CTA publishes its completed tile directly from registers to peer GPUs through NVLink multicast stores while other tiles are still being computed. The consumer starts through PDL and waits for the published results before reducing them. This starts communication earlier and avoids rereading the partial output just to send it. The consumer’s computation remains unchanged."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The plugin moves the cross-GPU send into the GEMM epilogue. Both paths use two kernels; box sizes do not represent durations.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "The plugin moves the cross-GPU send into the GEMM epilogue. Both paths use two kernels; box sizes do not represent durations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Start the expert GEMMs before routing finishes. At low concurrency, routing can take a substantial share of the MoE path. With at most eight rows, each expert’s selected tokens fit in one eight-row tile. The plugin uses a bitmap and population counts to place these tiles without scanning or sorting while preserving SGLang’s top-k selections. It launches the first expert GEMM early to overlap setup with routing and skips an all-zero tile in the padded weights. The standard kernels already use eight-row tiles; the gains come from simpler routing, earlier execution and less wasted work. In the profiled runs, the median MoE window falls from 44.4 µs to 36.5 µs with little change in the second GEMM or reduction.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "3. Start the expert GEMMs before routing finishes."
+            },
+            {
+              "text": " At low concurrency, routing can take a substantial share of the MoE path. With at most eight rows, each expert’s selected tokens fit in one eight-row tile. The plugin uses a bitmap and population counts to place these tiles without scanning or sorting while preserving SGLang’s top-k selections. It launches the first expert GEMM early to overlap setup with routing and skips an all-zero tile in the padded weights. The standard kernels already use eight-row tiles; the gains come from simpler routing, earlier execution and less wasted work. In the profiled runs, the median MoE window falls from 44.4 µs to 36.5 µs with little change in the second GEMM or reduction."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One matched trace pair from the same GPU, layer and replay. GEMM1’s bar includes its wait for routing, so an earlier start can produce a longer bar while shortening the overall MoE window.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "One matched trace pair from the same GPU, layer and replay. GEMM1’s bar includes its wait for routing, so an earlier start can produce a longer bar while shortening the overall MoE window."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Keep sequential draft sampling in one kernel. DSpark’s Markov head proposes tokens sequentially. The plugin combines all five proposals into one kernel launch per GPU and keeps head weights in registers while coordinating token selection across GPUs. This reduces the profiled proposal span from 85.1 µs to 34.2 µs without changing SGLang’s speculative worker or acceptance logic.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "4. Keep sequential draft sampling in one kernel."
+            },
+            {
+              "text": " DSpark’s Markov head proposes tokens sequentially. The plugin combines all five proposals into one kernel launch per GPU and keeps head weights in registers while coordinating token selection across GPUs. This reduces the profiled proposal span from 85.1 µs to 34.2 µs without changing SGLang’s speculative worker or acceptance logic."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Serving results",
+          "inlines": [
+            {
+              "text": "Serving results"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "On an 8K-input / 1K-output workload, the NVIDIA plugin improves per-user decode speed by 12–38% at 1–8 concurrent requests on four GB300 GPUs. Both runs use the same setup and simulated mean acceptance length of 3.51, changing only the plugin flag.",
+          "inlines": [
+            {
+              "text": "On an 8K-input / 1K-output workload, the NVIDIA plugin improves per-user decode speed by 12–38% at 1–8 concurrent requests on four GB300 GPUs. Both runs use the same setup and simulated mean acceptance length of 3.51, changing only the plugin flag."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DeepSeek-V4.1-Flash with DSpark · 4 × GB300 · 8K input / 1K output.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "DeepSeek-V4.1-Flash with DSpark · 4 × GB300 · 8K input / 1K output."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "AMD Low-Latency Kernels",
+          "inlines": [
+            {
+              "text": "AMD Low-Latency Kernels"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "On AMD GPUs, we reduce latency by combining much of a decoder layer’s computation and communication into a few persistent kernels. These kernels live in sgl-amd-mono which accelerates both target verification and draft execution for DeepSeek-V4.1-Flash with DSpark on AMD Instinct MI355X and MI350X GPUs.",
+          "inlines": [
+            {
+              "text": "On AMD GPUs, we reduce latency by combining much of a decoder layer’s computation and communication into a few persistent kernels. These kernels live in "
+            },
+            {
+              "href": "https://github.com/sgl-project/sgl-amd-mono",
+              "text": "sgl-amd-mono"
+            },
+            {
+              "text": " which accelerates both target verification and draft execution for DeepSeek-V4.1-Flash with DSpark on AMD Instinct MI355X and MI350X GPUs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At low concurrency, each decoder layer runs dozens of small kernels and two tensor-parallel all-reduces. Three costs dominate:",
+          "inlines": [
+            {
+              "text": "At low concurrency, each decoder layer runs dozens of small kernels and two tensor-parallel all-reduces. Three costs dominate:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Launch overhead:"
+                },
+                {
+                  "text": " HIP graphs remove the CPU's launch work, but each small kernel still costs 2-4 µs on the GPU."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Idle boundaries:"
+                },
+                {
+                  "text": " Each kernel must finish before the next starts, so compute units idle while one kernel drains and the next ramps up, and weight loading pauses."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Communication stops:"
+                },
+                {
+                  "text": " Each layer waits twice for an all-reduce across GPUs, with no computation running."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The plugin replaces dozens of small kernels with two persistent launches, loads weights early and overlaps the cross-GPU sums with computation. Box sizes do not represent durations.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "The plugin replaces dozens of small kernels with two persistent launches, loads weights early and overlaps the cross-GPU sums with computation. Box sizes do not represent durations."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Two persistent launches per layer",
+          "inlines": [
+            {
+              "text": "Two persistent launches per layer"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Persistent FlyDSL kernels combine most of each layer into two launches. K1 handles the mHC update, query and KV projections and KV-cache writes. K2 handles attention, output projections, the remaining mHC update, MoE and both all-reduces. Index layers add compression, K2i scoring and top-k between them. The launch boundary makes K1’s KV writes visible across the GPU before K2 reads them.",
+          "inlines": [
+            {
+              "text": "Persistent FlyDSL kernels combine most of each layer into two launches. "
+            },
+            {
+              "bold": true,
+              "text": "K1"
+            },
+            {
+              "text": " handles the mHC update, query and KV projections and KV-cache writes. "
+            },
+            {
+              "bold": true,
+              "text": "K2"
+            },
+            {
+              "text": " handles attention, output projections, the remaining mHC update, MoE and both all-reduces. Index layers add compression, "
+            },
+            {
+              "bold": true,
+              "text": "K2i"
+            },
+            {
+              "text": " scoring and top-k between them. The launch boundary makes K1’s KV writes visible across the GPU before K2 reads them."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Overlapping stages inside a launch",
+          "inlines": [
+            {
+              "text": "Overlapping stages inside a launch"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Each value a stage produces is stored together with a tag for the current decode step, so the next stage, on the same GPU or another one, starts on a value as soon as its tag matches. No separate flag or reset between steps is needed. Weights that do not depend on routing load before their inputs arrive: K1's projection weights before the norm finishes, and in K2 the mHC mix weights and the shared expert's weights before the data they multiply. Routed-expert weights load once the router has chosen the experts.",
+          "inlines": [
+            {
+              "text": "Each value a stage produces is stored together with a tag for the current decode step, so the next stage, on the same GPU or another one, starts on a value as soon as its tag matches. No separate flag or reset between steps is needed. Weights that do not depend on routing load before their inputs arrive: K1's projection weights before the norm finishes, and in K2 the mHC mix weights and the shared expert's weights before the data they multiply. Routed-expert weights load once the router has chosen the experts."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Bringing the all-reduce into the kernel",
+          "inlines": [
+            {
+              "text": "Bringing the all-reduce into the kernel"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "As each output-projection tile is computed, K2 pushes it to every GPU's memory, and each GPU sums the pieces in rank order while other workgroups are still producing tiles (push and reduce stages). The MoE output is reduced the same way. Every cross-GPU wait has a deadline below SGLang's watchdog timeout; a missed deadline stops the launch on every GPU instead of hanging the server.",
+          "inlines": [
+            {
+              "text": "As each output-projection tile is computed, K2 pushes it to every GPU's memory, and each GPU sums the pieces in rank order while other workgroups are still producing tiles ("
+            },
+            {
+              "href": "https://github.com/sgl-project/sgl-amd-mono/blob/e952b221aafc05ef5adb84d2caf942f7283c1f0b/sgl_amd_mono/deepseek_v41/gfx950/stages/seam.py",
+              "text": "push and reduce stages"
+            },
+            {
+              "text": "). The MoE output is reduced the same way. Every cross-GPU wait has a deadline below SGLang's watchdog timeout; a missed deadline stops the launch on every GPU instead of hanging the server."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The AMD implementation is compatible with decode graphs and integrates directly with SGLang’s graph runner. Kernels are compiled and buffers are prepared during initialization. SGLang then captures the specialized execution path for each supported shape and replays it through the existing serving flow.",
+          "inlines": [
+            {
+              "text": "The AMD implementation is compatible with decode graphs and integrates directly with SGLang’s graph runner. Kernels are compiled and buffers are prepared during initialization. SGLang then captures the specialized execution path for each supported shape and replays it through the existing serving flow."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Serving results",
+          "inlines": [
+            {
+              "text": "Serving results"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "In AgentX trace replay, the AMD plugin improves P90 per-user token generation speed by 45–56% at 1, 4 and 8 concurrent sessions on four MI355X GPUs, as shown in the overview figure. Both runs use the same AgentX recipe with DSpark speculative decoding and TP4.",
+          "inlines": [
+            {
+              "text": "In AgentX trace replay, the AMD plugin improves P90 per-user token generation speed by 45–56% at 1, 4 and 8 concurrent sessions on four MI355X GPUs, as shown in the overview figure. Both runs use the same AgentX recipe with DSpark speculative decoding and TP4."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Plugin System: Design and Integration",
+          "inlines": [
+            {
+              "text": "Plugin System: Design and Integration"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Specialized kernels can require substantial amounts of code. Each combination of hardware, model architecture and parallel configuration may need its own implementation. Different workloads add further specialization. More combinations mean more code to review, test and maintain. Bringing every implementation into SGLang would make the core codebase increasingly difficult to maintain and place a growing workload on its reviewers and maintainers.",
+          "inlines": [
+            {
+              "text": "Specialized kernels can require substantial amounts of code. Each combination of hardware, model architecture and parallel configuration may need its own implementation. Different workloads add further specialization. More combinations mean more code to review, test and maintain. Bringing every implementation into SGLang would make the core codebase increasingly difficult to maintain and place a growing workload on its reviewers and maintainers."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "External kernel libraries connect to SGLang through registration, validation, build and runtime dispatch. The diagram shows the shared design; the AMD and NVIDIA interfaces are still evolving.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "External kernel libraries connect to SGLang through registration, validation, build and runtime dispatch. The diagram shows the shared design; the AMD and NVIDIA interfaces are still evolving."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The plugin system connects these external libraries to SGLang through model specifications that declare their requirements and supported configurations. Kernel teams can develop their implementations independently while reusing SGLang’s scheduling and runtime resources.",
+          "inlines": [
+            {
+              "text": "The plugin system connects these external libraries to SGLang through model specifications that declare their requirements and supported configurations. Kernel teams can develop their implementations independently while reusing SGLang’s scheduling and runtime resources."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The integration separates startup preparation from execution:",
+          "inlines": [
+            {
+              "text": "The integration separates startup preparation from execution:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Register:"
+                },
+                {
+                  "text": " A plugin registers a specification for each model architecture it supports. The specification describes the implementation's requirements and provides the entry point for building it. This gives SGLang a way to discover external implementations while keeping the details of model support in the library that owns the kernels."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Guard:"
+                },
+                {
+                  "text": " Specialized kernels make assumptions about hardware, precision, parallelism and serving features. SGLang checks the declared requirements before loading weights so an incompatible configuration fails early. Additional checks on the loaded model run before the plugin is built. These checks distinguish an unsupported server configuration from a supported server encountering a step outside the plugin's coverage."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Build:"
+                },
+                {
+                  "text": " Weight preparation and execution resources are set up during initialization so requests can reuse them. The integration accommodates the needs of each implementation: AMD can retain checkpoint tensors before weight conversion, while NVIDIA receives a binding through which it can access runtime state as that state becomes available. SGLang builds the plugin before sizing the KV cache so its allocations are accounted for, then installs dispatch in the model's forward path."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Runtime:"
+                },
+                {
+                  "text": " Specialized and general execution coexist because a plugin may cover only certain step types and token counts. The installed dispatcher uses the plugin's support conditions to select its forward or SGLang's original forward. Tensor-parallel ranks must agree on coverage to avoid entering incompatible collectives. This selection fits into ModelRunner's existing execution flow. During graph capture, the chosen path is recorded for that shape; serving can then replay the graph without repeating Python dispatch."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This design lets kernel teams ship focused optimizations without adding every specialized implementation to SGLang's core codebase. It concentrates integration work at explicit interfaces and allows each library to expand its coverage incrementally. Specialized kernels can serve the cases they optimize while SGLang's general forward handles the remaining steps within a supported configuration.",
+          "inlines": [
+            {
+              "text": "This design lets kernel teams ship focused optimizations without adding every specialized implementation to SGLang's core codebase. It concentrates integration work at explicit interfaces and allows each library to expand its coverage incrementally. Specialized kernels can serve the cases they optimize while SGLang's general forward handles the remaining steps within a supported configuration."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Future Plans",
+          "inlines": [
+            {
+              "text": "Future Plans"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Broader Model Support",
+          "inlines": [
+            {
+              "text": "Broader Model Support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Megakernel/Monokernel development is underway for GLM-5.3, K3, MiniMax M3 and other models on both NVIDIA and AMD GPUs. We plan to integrate these implementations into the plugin framework as they become ready. These low-latency kernels show promising potential for further performance improvements.",
+          "inlines": [
+            {
+              "text": "Megakernel/Monokernel development is underway for GLM-5.3, K3, MiniMax M3 and other models on both NVIDIA and AMD GPUs. We plan to integrate these implementations into the plugin framework as they become ready. These low-latency kernels show promising potential for further performance improvements."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "CI and Performance Validation",
+          "inlines": [
+            {
+              "text": "CI and Performance Validation"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "External kernel implementations sit outside SGLang's regular code review process. Strong CI coverage at the plugin interface is therefore essential to verify that these implementations meet SGLang's correctness and runtime requirements. We plan to test compatibility checks, weight binding, forward outputs and state updates, including KV-cache writes. End-to-end tests will also cover graph execution, fallback behavior and performance regressions as SGLang and the external libraries evolve.",
+          "inlines": [
+            {
+              "text": "External kernel implementations sit outside SGLang's regular code review process. Strong CI coverage at the plugin interface is therefore essential to verify that these implementations meet SGLang's correctness and runtime requirements. We plan to test compatibility checks, weight binding, forward outputs and state updates, including KV-cache writes. End-to-end tests will also cover graph execution, fallback behavior and performance regressions as SGLang and the external libraries evolve."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Evolving Shared Plugin Interfaces",
+          "inlines": [
+            {
+              "text": "Evolving Shared Plugin Interfaces"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Although the plugin framework is now in place, it is still at an early stage. We expect to refine its interfaces and design through long-term iteration as we integrate more kernels and learn from their use in production.",
+          "inlines": [
+            {
+              "text": "Although the plugin framework is now in place, it is still at an early stage. We expect to refine its interfaces and design through long-term iteration as we integrate more kernels and learn from their use in production."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:21:33.431318Z",
+  "contentMode": "full"
+}

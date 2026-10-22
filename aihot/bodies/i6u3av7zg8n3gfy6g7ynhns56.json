@@ -1,0 +1,2261 @@
+{
+  "schemaVersion": 1,
+  "id": "i6u3av7zg8n3gfy6g7ynhns56",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/i6u3av7zg8n3gfy6g7ynhns56",
+  "fetchedAt": "2026-10-22T13:23:04.462846Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "NVIDIA 英伟达",
+    "Agent 智能体",
+    "推理能力",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "推理",
+    "Agent"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Reflection 的 Beam 是一个 501B 参数的混合专家模型，每个 token 激活 23B 参数，专为软件工程和长周期智能体任务打造。Beam 计划以 Apache 2.0 许可发布，旨在让开发者能够在他们已经在使用的运行时、框架和编码工具链上部署和构建。",
+          "inlines": [
+            {
+              "text": "Reflection 的 Beam 是一个 501B 参数的混合专家模型，每个 token 激活 23B 参数，专为软件工程和长周期智能体任务打造。Beam 计划以 Apache 2.0 许可发布，旨在让开发者能够在他们已经在使用的运行时、框架和编码工具链上部署和构建。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang 现已原生支持 Beam，并为 Reflection 的生产 API 提供支持。它帮助开发者将 Beam 的推理效率转化为经过生产验证的实用服务性能。BF16、NVFP4 和动态 FP8 支持在精度和内存需求方面提供了灵活性；DFlash2 投机解码加速生成；前缀缓存与混合注意力内存管理相结合，实现了智能体交互间上下文的高效复用。在这些服务能力之下，我们优化了 Beam 的投影、归一化和通信，以提升吞吐量。",
+          "inlines": [
+            {
+              "text": "SGLang 现已原生支持 Beam，并为 Reflection 的生产 API 提供支持。它帮助开发者将 Beam 的推理效率转化为经过生产验证的实用服务性能。BF16、NVFP4 和动态 FP8 支持在精度和内存需求方面提供了灵活性；DFlash2 投机解码加速生成；前缀缓存与混合注意力内存管理相结合，实现了智能体交互间上下文的高效复用。在这些服务能力之下，我们优化了 Beam 的投影、归一化和通信，以提升吞吐量。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本文介绍 Beam 在 SGLang 上的集成、优化和性能结果。要部署该模型，请从我们的 Beam 服务指南 开始，获取经过验证的配置和启动说明。",
+          "inlines": [
+            {
+              "text": "本文介绍 Beam 在 SGLang 上的集成、优化和性能结果。要部署该模型，请从我们的 "
+            },
+            {
+              "href": "https://docs.sglang.io/cookbook/autoregressive/Reflection/Beam-1_0",
+              "text": "Beam 服务指南"
+            },
+            {
+              "text": " 开始，获取经过验证的配置和启动说明。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "亮点",
+          "inlines": [
+            {
+              "text": "亮点"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Beam 1.0 501B-A23B："
+                },
+                {
+                  "text": " 一个仅解码器 MoE，采用滑动窗口和全注意力，256 个路由专家和 top-8 选择，以及原生 1M token 上下文窗口。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "检查点支持："
+                },
+                {
+                  "text": " BF16、ModelOpt NVFP4 和 compressed-tensors 动态 FP8。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "服务特性："
+                },
+                {
+                  "text": " DFlash2 投机解码、基数缓存和 HiCache、分块预填充、CUDA graphs、TP/EP/PP 和注意力数据并行。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "内核优化："
+                },
+                {
+                  "text": " 投影打包、跨注意力和残差边界的融合、用于 FP32 路由器的专用 BF16x3 GEMM，以及 GB300 MoE 调优。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "性能："
+                },
+                {
+                  "text": " 在 4 块 NVIDIA GB300 GPU 上使用 NVFP4 检查点进行 OpenHands 多轮智能体编码回放时，SGLang 在并发 32 下达到每 GPU 127.6K 总 token/秒，每用户 185.87 token/秒（p50）。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "模型架构",
+          "inlines": [
+            {
+              "text": "模型架构"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 将分组查询注意力与滑动窗口和全注意力层的混合结构相结合。其前馈堆栈从密集 SwiGLU 层开始，然后切换到路由 MoE。Beam 在投影前对注意力输出进行门控，并在两个分支周围放置三明治归一化。深度缩放残差控制每个分支如何加入隐藏状态流。",
+          "inlines": [
+            {
+              "text": "Beam 将分组查询注意力与滑动窗口和全注意力层的混合结构相结合。其前馈堆栈从密集 SwiGLU 层开始，然后切换到路由 MoE。Beam 在投影前对注意力输出进行门控，并在两个分支周围放置三明治归一化。深度缩放残差控制每个分支如何加入隐藏状态流。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/426e891a7de75d85477d957a33633296d7808804fd1cbb23c74dbd2c5e1039c4.webp",
+          "alt": "Beam's embedding and decoder stack, with an expanded decoder layer showing attention, feed-forward work, sandwich normalization and depth-scaled residual paths."
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 的解码器以及单层内的操作。注意力和前馈分支都以输出归一化和深度缩放残差加法结束。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Beam 的解码器以及单层内的操作。注意力和前馈分支都以输出归一化和深度缩放残差加法结束。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "组件",
+          "inlines": [
+            {
+              "text": "组件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "原生配置",
+          "inlines": [
+            {
+              "text": "原生配置"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "解码器层",
+          "inlines": [
+            {
+              "text": "解码器层"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "52",
+          "inlines": [
+            {
+              "text": "52"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "隐藏维度",
+          "inlines": [
+            {
+              "text": "隐藏维度"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5,120",
+          "inlines": [
+            {
+              "text": "5,120"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "注意力头",
+          "inlines": [
+            {
+              "text": "注意力头"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48 个查询头和 8 个 KV 头",
+          "inlines": [
+            {
+              "text": "48 个查询头和 8 个 KV 头"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "头维度",
+          "inlines": [
+            {
+              "text": "头维度"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "128",
+          "inlines": [
+            {
+              "text": "128"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "滑动窗口",
+          "inlines": [
+            {
+              "text": "滑动窗口"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "512 个 token",
+          "inlines": [
+            {
+              "text": "512 个 token"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "前馈调度",
+          "inlines": [
+            {
+              "text": "前馈调度"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "三个初始密集层，随后是路由 MoE 层",
+          "inlines": [
+            {
+              "text": "三个初始密集层，随后是路由 MoE 层"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "路由专家",
+          "inlines": [
+            {
+              "text": "路由专家"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "256 个专家，每个 token 选择 8 个",
+          "inlines": [
+            {
+              "text": "256 个专家，每个 token 选择 8 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "上下文限制",
+          "inlines": [
+            {
+              "text": "上下文限制"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,048,576 个 token",
+          "inlines": [
+            {
+              "text": "1,048,576 个 token"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "检查点指定了注意力和前馈调度。原生注意力调度在滑动窗口层组之后放置全注意力，并以全注意力结束。这为服务栈提供了两种需要管理的 KV 生命周期：全注意力的完整历史，以及滑动注意力的近期窗口。",
+          "inlines": [
+            {
+              "text": "检查点指定了注意力和前馈调度。原生注意力调度在滑动窗口层组之后放置全注意力，并以全注意力结束。这为服务栈提供了两种需要管理的 KV 生命周期：全注意力的完整历史，以及滑动注意力的近期窗口。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "混合注意力和输出门控",
+          "inlines": [
+            {
+              "text": "混合注意力和输出门控"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "GQA 在 48 个查询头之间共享八个 KV 头，从而减少 SGLang 为每个 token 存储的 KV 缓存。滑动窗口层也将其活跃历史限制在最近的窗口内，并使用 RoPE。全注意力层使用 NoPE，并采用位置相关的 SSMax 查询缩放。两者都在注意力之前对 Q 和 K 进行归一化。",
+          "inlines": [
+            {
+              "text": "GQA 在 48 个查询头之间共享八个 KV 头，从而减少 SGLang 为每个 token 存储的 KV 缓存。滑动窗口层也将其活跃历史限制在最近的窗口内，并使用 RoPE。全注意力层使用 NoPE，并采用位置相关的 SSMax 查询缩放。两者都在注意力之前对 Q 和 K 进行归一化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 在输出投影之前对注意力结果进行门控。第二个投影从归一化后的隐藏状态生成门激活；模型添加一个学习到的逐头偏置，应用 sigmoid，并将注意力输出与逐元素门相乘。QKV 和门投影共享一个输入，这让我们可以在符合条件的布局中将它们打包成一个 BF16 投影。",
+          "inlines": [
+            {
+              "text": "Beam 在输出投影之前对注意力结果进行门控。第二个投影从归一化后的隐藏状态生成门激活；模型添加一个学习到的逐头偏置，应用 sigmoid，并将注意力输出与逐元素门相乘。QKV 和门投影共享一个输入，这让我们可以在符合条件的布局中将它们打包成一个 BF16 投影。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "稠密层与分组 MoE 路由",
+          "inlines": [
+            {
+              "text": "稠密层与分组 MoE 路由"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "前三个前馈层使用稠密 SwiGLU。后续层从 256 个专家中选出八个专家，并组合它们的 SwiGLU 输出。",
+          "inlines": [
+            {
+              "text": "前三个前馈层使用稠密 SwiGLU。后续层从 256 个专家中选出八个专家，并组合它们的 SwiGLU 输出。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "路由器计算 FP32 logits。分组 top-k 选择使用 sigmoid 分数和专家校正偏置来选择专家。后端保留 FP32 路由系数，并在专家组合期间应用 Beam 的路由缩放因子，或者在该内核需要时将其携带在路由权重中。",
+          "inlines": [
+            {
+              "text": "路由器计算 FP32 logits。分组 top-k 选择使用 sigmoid 分数和专家校正偏置来选择专家。后端保留 FP32 路由系数，并在专家组合期间应用 Beam 的路由缩放因子，或者在该内核需要时将其携带在路由权重中。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "SSMax",
+          "inlines": [
+            {
+              "text": "SSMax"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 的全注意力层使用可扩展 Softmax（SSMax），以在上下文增长时保持注意力聚焦。在 Q/K 归一化之后，位于从零开始的位置 p 的每个查询按 (1+(p+1)/2048)0.1 缩放。这会逐渐锐化注意力分布，抵消 softmax 权重在长上下文中倾向于分散到更多 token 的趋势。",
+          "inlines": [
+            {
+              "text": "Beam 的全注意力层使用可扩展 Softmax（SSMax），以在上下文增长时保持注意力聚焦。在 Q/K 归一化之后，位于从零开始的位置 p 的每个查询按 (1+(p+1)/2048)0.1 缩放。这会逐渐锐化注意力分布，抵消 softmax 权重在长上下文中倾向于分散到更多 token 的趋势。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "三明治归一化与深度缩放残差",
+          "inlines": [
+            {
+              "text": "三明治归一化与深度缩放残差"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "每个注意力和前馈分支都有输入和输出 RMS 归一化。Beam 按从层深度推导出的系数缩放分支和残差，然后将它们相加。两个缩放后的操作数在相加之前都会舍入到激活数据类型。",
+          "inlines": [
+            {
+              "text": "每个注意力和前馈分支都有输入和输出 RMS 归一化。Beam 按从层深度推导出的系数缩放分支和残差，然后将它们相加。两个缩放后的操作数在相加之前都会舍入到激活数据类型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "未融合的过渡会写入归一化后的分支，读取它进行残差组合，并读取组合结果用于下一个输入归一化。这些内存传递在解码器中重复进行，因此我们在保持 Beam 舍入边界的同时融合该过渡。最终解码器归一化和语言模型头馈入 FP32 logit softcapping。",
+          "inlines": [
+            {
+              "text": "未融合的过渡会写入归一化后的分支，读取它进行残差组合，并读取组合结果用于下一个输入归一化。这些内存传递在解码器中重复进行，因此我们在保持 Beam 舍入边界的同时融合该过渡。最终解码器归一化和语言模型头馈入 FP32 logit softcapping。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "功能支持",
+          "inlines": [
+            {
+              "text": "功能支持"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "带数据并行注意力的 Dflash2 推测解码",
+          "inlines": [
+            {
+              "text": "带数据并行注意力的 Dflash2 推测解码"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 通过 SGLang 的 DFLASH 运行时支持 DFlash2。目标模型在最终归一化之前捕获所选解码器层的层后残差。草稿模型使用这些特征来提议一个 token 块，Beam 在一次目标前向中验证该块。",
+          "inlines": [
+            {
+              "text": "Beam 通过 SGLang 的 "
+            },
+            {
+              "href": "https://docs.sglang.io/docs/advanced_features/speculative_decoding#dflash-decoding",
+              "text": "DFLASH 运行时"
+            },
+            {
+              "text": "支持 DFlash2。目标模型在最终归一化之前捕获所选解码器层的层后残差。草稿模型使用这些特征来提议一个 token 块，Beam 在一次目标前向中验证该块。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 的集成添加了一条新的 CUDA 服务路径，将 DFlash2 与注意力数据并行相结合。借助 --attn-dp-size N 和 --enable-dp-lm-head，运行时使注意力和草稿头工作与 DP 布局保持一致。SGLang 在 DP 填充确定最终 token 形状之后初始化目标验证元数据，包括存在空闲对等方的批次。",
+          "inlines": [
+            {
+              "text": "Beam 的集成添加了一条新的 CUDA 服务路径，将 DFlash2 与注意力数据并行相结合。借助 "
+            },
+            {
+              "code": true,
+              "text": "--attn-dp-size N"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "--enable-dp-lm-head"
+            },
+            {
+              "text": "，运行时使注意力和草稿头工作与 DP 布局保持一致。SGLang 在 DP 填充确定最终 token 形状之后初始化目标验证元数据，包括存在空闲对等方的批次。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们将草稿 KV 内存纳入混合池预算，以便目标缓存分配为草稿模型留出空间。草稿捕获要求 PP=1，并且服务上下文必须同时容纳目标模型和所选的草稿模型。",
+          "inlines": [
+            {
+              "text": "我们将草稿 KV 内存纳入混合池预算，以便目标缓存分配为草稿模型留出空间。草稿捕获要求 PP=1，并且服务上下文必须同时容纳目标模型和所选的草稿模型。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "目标与草稿 KV 的统一内存",
+          "inlines": [
+            {
+              "text": "目标与草稿 KV 的统一内存"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 的全注意力 KV 随上下文增长，而其滑动层保留一个近期窗口。上游 SGLang 的统一 KV 分配器用共享的 GPU 页预算为这些分配提供支持。请求表保持稳定的虚拟 token ID；注意力读取和 KV 写入将它们转换为当前物理槽位。转换接口在两个方向上使用相同的虚拟到物理契约。",
+          "inlines": [
+            {
+              "text": "Beam 的全注意力 KV 随上下文增长，而其滑动层保留一个近期窗口。上游 SGLang 的统一 KV 分配器用共享的 GPU 页预算为这些分配提供支持。请求表保持稳定的虚拟 token ID；注意力读取和 KV 写入将它们转换为当前物理槽位。"
+            },
+            {
+              "href": "https://github.com/sgl-project/sglang/pull/40331",
+              "text": "转换接口"
+            },
+            {
+              "text": "在两个方向上使用相同的虚拟到物理契约。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DFlash 进入统一池将此布局扩展到符合条件的全注意力 drafter。目标模型和 draft 模型在目标的页包络内保持不同的 KV 行，因此分配器将两者一起计入。紧凑窗口 drafter 可以基于目标的虚拟 ID 保留自己的请求到 token 表，限制其读取哪些页，同时其 KV 存储保持在共享布局中。Draft 写入在存储 KV 之前转换这些 ID。",
+          "inlines": [
+            {
+              "href": "https://github.com/sgl-project/sglang/pull/40492",
+              "text": "DFlash 进入统一池"
+            },
+            {
+              "text": "将此布局扩展到符合条件的全注意力 drafter。目标模型和 draft 模型在目标的页包络内保持不同的 KV 行，因此分配器将两者一起计入。紧凑窗口 drafter 可以基于目标的虚拟 ID 保留自己的请求到 token 表，限制其读取哪些页，同时其 KV 存储保持在共享布局中。Draft 写入在存储 KV 之前转换这些 ID。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "放置取决于 draft 几何结构、KV dtype 和注意力后端。该门控在 HiCache、主机池回收或解码上下文并行的情况下拒绝共享 draft 放置。混合 SWA 主机会为私有 draft 回退预留预算；不支持的主机/draft 组合在启动时被拒绝。",
+          "inlines": [
+            {
+              "text": "放置取决于 draft 几何结构、KV dtype 和注意力后端。该门控在 HiCache、主机池回收或解码上下文并行的情况下拒绝共享 draft 放置。混合 SWA 主机会为私有 draft 回退预留预算；不支持的主机/draft 组合在启动时被拒绝。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们将此路径扩展到具有解码 CUDA 图的 trtllm_mha 目标和 drafter。它使用为当前迭代读/写范围规划的页表，并将新页包络清零。在 SM90/SM120 上，它将 fmha_v2 预填充工作区与 XQA 解码信号量分离。该扩展在 TRTLLM 后端中通过目标验证和 draft 执行传递转换后的 KV 位置。",
+          "inlines": [
+            {
+              "text": "我们将此路径扩展到具有解码 CUDA 图的 "
+            },
+            {
+              "code": true,
+              "text": "trtllm_mha"
+            },
+            {
+              "text": " 目标和 drafter。它使用为当前迭代读/写范围规划的页表，并将新页包络清零。在 SM90/SM120 上，它将 fmha_v2 预填充工作区与 XQA 解码信号量分离。该扩展在 TRTLLM 后端中通过目标验证和 draft 执行传递转换后的 KV 位置。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "用于预填充/解码分离的异构 TP",
+          "inlines": [
+            {
+              "text": "用于预填充/解码分离的异构 TP"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "预填充和解码处理不同的 token 批次形状，因此分离式服务器可以为每个阶段选择单独的注意力 TP 大小。对于 Beam 的混合注意力，当 KV 头所有权在两个组之间变化时，这种交接必须保留全注意力 KV 和活动滑动窗口。",
+          "inlines": [
+            {
+              "text": "预填充和解码处理不同的 token 批次形状，因此分离式服务器可以为每个阶段选择单独的注意力 TP 大小。对于 Beam 的混合注意力，当 KV 头所有权在两个组之间变化时，这种交接必须保留全注意力 KV 和活动滑动窗口。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PR #40909 通过 NIXL 和 Mooncake 为混合滑动窗口模型添加了此传输路径。它使用现有的 rank 所有权映射，以 token/头段复制窗口状态，将每个 token 的头段放入匹配的解码缓冲区。暂存携带全注意力 KV；窗口状态遵循头切片路径。",
+          "inlines": [
+            {
+              "href": "https://github.com/sgl-project/sglang/pull/40909",
+              "text": "PR #40909"
+            },
+            {
+              "text": " 通过 NIXL 和 Mooncake 为混合滑动窗口模型添加了此传输路径。它使用现有的 rank 所有权映射，以 token/头段复制窗口状态，将每个 token 的头段放入匹配的解码缓冲区。暂存携带全注意力 KV；窗口状态遵循头切片路径。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "推理、工具调用和 LoRA",
+          "inlines": [
+            {
+              "text": "推理、工具调用和 LoRA"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang 读取 Beam 的检查点响应模板，为流式和非流式请求分离推理、答案和工具调用。该集成涵盖 Chat Completions、Responses 和 Messages，并支持 Beam 工具语法和 JSON 输出约束。",
+          "inlines": [
+            {
+              "text": "SGLang 读取 Beam 的检查点响应模板，为流式和非流式请求分离推理、答案和工具调用。该集成涵盖 Chat Completions、Responses 和 Messages，并支持 Beam 工具语法和 JSON 输出约束。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "BF16 LoRA 服务使用 Triton MoE 运行器，涵盖注意力投影和门控、密集 MLP、路由专家、嵌入和输出头。加载器保留注意力门控的限定名称，以免与 MLP 门控目标冲突。",
+          "inlines": [
+            {
+              "text": "BF16 LoRA 服务使用 Triton MoE 运行器，涵盖注意力投影和门控、密集 MLP、路由专家、嵌入和输出头。加载器保留注意力门控的限定名称，以免与 MLP 门控目标冲突。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "BF16、NVFP4 和 FP8 模型支持",
+          "inlines": [
+            {
+              "text": "BF16、NVFP4 和 FP8 模型支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们支持原生 BF16、FP8 和 NVFP4 检查点。我们通过 FlashInfer MegaMoE 添加了 NVFP4 专家并行替代方案。它需要 flashinfer_megamoe 运行器和全对全后端；BF16 和动态 FP8 仍在此 Beam 扩展之外。优化部分解释了其 token 所有权和通信路径。",
+          "inlines": [
+            {
+              "text": "我们支持原生 BF16、FP8 和 NVFP4 检查点。我们通过 FlashInfer MegaMoE 添加了 NVFP4 专家并行替代方案。它需要 "
+            },
+            {
+              "code": true,
+              "text": "flashinfer_megamoe"
+            },
+            {
+              "text": " 运行器和全对全后端；BF16 和动态 FP8 仍在此 Beam 扩展之外。优化部分解释了其 token 所有权和通信路径。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "路由器在这些格式之间保持其精度和路由缩放契约。量化检查点和 LoRA 为其加载和适配器路径保留单独的 QKV 和注意力门控模块。",
+          "inlines": [
+            {
+              "text": "路由器在这些格式之间保持其精度和路由缩放契约。量化检查点和 LoRA 为其加载和适配器路径保留单独的 QKV 和注意力门控模块。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "前缀复用、分块预填充和 HiCache",
+          "inlines": [
+            {
+              "text": "前缀复用、分块预填充和 HiCache"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "缓存的 Beam 前缀包含完整注意力历史以及在其复用边界处所需的滑动窗口状态。SGLang 将两者与分页缓存对齐，使请求能够从该前缀恢复，并保持其活动窗口完整。分块预填充将长提示分成多个部分，与解码工作一同处理。",
+          "inlines": [
+            {
+              "text": "缓存的 Beam 前缀包含完整注意力历史以及在其复用边界处所需的滑动窗口状态。SGLang 将两者与分页缓存对齐，使请求能够从该前缀恢复，并保持其活动窗口完整。分块预填充将长提示分成多个部分，与解码工作一同处理。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HiCache 将前缀复用从 GPU 内存扩展到主机内存及受支持的存储后端。Beam 在启用 HiCache 的情况下保留其混合 SWA 池和滑动窗口内存节省。主机回载使用每个流水线阶段的本地层映射。",
+          "inlines": [
+            {
+              "href": "https://docs.sglang.io/docs/advanced_features/hicache",
+              "text": "HiCache"
+            },
+            {
+              "text": " 将前缀复用从 GPU 内存扩展到主机内存及受支持的存储后端。Beam 在启用 HiCache 的情况下保留其混合 SWA 池和滑动窗口内存节省。主机回载使用每个流水线阶段的本地层映射。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "优化",
+          "inlines": [
+            {
+              "text": "优化"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "融合优化",
+          "inlines": [
+            {
+              "text": "融合优化"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 的归一化和门控路径围绕投影和集合通信串联起一系列小操作。我们融合这些链以消除中间存储、拷贝和启动开销。",
+          "inlines": [
+            {
+              "text": "Beam 的归一化和门控路径围绕投影和集合通信串联起一系列小操作。我们融合这些链以消除中间存储、拷贝和启动开销。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "跨投影、归一化和集合通信边界的核融合。"
+                },
+                {
+                  "text": " 我们融合 all-reduce、输出归一化、缩放残差加法和下一输入归一化，将可融合边界扩展到 NVFP4。PDL 让后续归一化在其依赖等待之前加载权重。滑动层将 Q/K 归一化与 RoPE 融合。完整注意力层使用融合的 Q/K 归一化并复用 SSMax 位置缩放。符合条件的 BF16 层将 QKV 和门控投影打包为一次启动。注意力门控融合偏置加法、sigmoid 和乘法。BF16 MoE 集合通信路径还集成了本地专家求和、路由缩放和 BF16 舍入。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "使用 MegaMoE 结合专家通信与计算。"
+                },
+                {
+                  "text": " 我们在 FlashInfer MegaMoE 上启用 Beam 的 NVFP4 专家，将其 runner 与 MegaMoE all-to-all 后端配对。FlashInfer 在其融合 EP 核内执行专家分发、计算和合并。Beam 提供显式专家 ID 和路由权重，并接收每个 rank 令牌的完整输出。融合转换在加法之前保留两个缩放残差操作数的舍入。注意力和 MoE 有各自独立的融合资格检查；MoE 归约遵循所选后端的所有权。CPU 卸载、空流水线阶段和不支持的集合通信形状保留常规路径。所有 EP rank 都参与专家执行，包括没有本地令牌的 rank。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5eed062ec3bd51472b0c4b5461b21942c5dd3c8c4f430bdfd3220ce8fe4d8001.webp",
+          "alt": "Token ownership with attention data parallelism and MegaMoE: dense MLP layers gather and scatter tokens, while sparse layers return complete outputs to each owning rank."
+        },
+        {
+          "type": "paragraph",
+          "text": "MegaMoE 令牌所有权与数据并行注意力。稠密 MLP 层保留 TP gather/scatter；稀疏层通过融合的专家分发、计算和合并传递 DP 本地令牌。完整输出返回到每个令牌所属的 rank，无需额外的 all-reduce。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "MegaMoE 令牌所有权与数据并行注意力。稠密 MLP 层保留 TP gather/scatter；稀疏层通过融合的专家分发、计算和合并传递 DP 本地令牌。完整输出返回到每个令牌所属的 rank，无需额外的 all-reduce。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "BF16 MoE 核优化",
+          "inlines": [
+            {
+              "text": "BF16 MoE 核优化"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "预填充和解码为专家核提供不同的令牌形状。我们为 gate/up 和 down 投影添加了 GB300 tile 配置，并为选定的预填充形状使用 TMA。Triton 调优器还从其配置中读取 Beam 的专家维度。",
+          "inlines": [
+            {
+              "text": "预填充和解码为专家核提供不同的令牌形状。我们为 gate/up 和 down 投影添加了 GB300 tile 配置，并为选定的预填充形状使用 TMA。Triton 调优器还从其配置中读取 Beam 的专家维度。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对于单令牌解码，一条可选路径使用两个 GEMV 核计算路由专家输出。它保留 gate/up 和激活的 BF16 舍入边界，并在对 down 投影输出舍入之前应用 FP32 路由权重。调用方仍执行专家归约、路由缩放和 TP 通信。FP32 归约顺序与张量核路径不同。",
+          "inlines": [
+            {
+              "text": "对于单令牌解码，一条可选路径使用两个 GEMV 核计算路由专家输出。它保留 gate/up 和激活的 BF16 舍入边界，并在对 down 投影输出舍入之前应用 FP32 路由权重。调用方仍执行专家归约、路由缩放和 TP 通信。FP32 归约顺序与张量核路径不同。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TPU 支持",
+          "inlines": [
+            {
+              "text": "TPU 支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们通过 SGLang-TorchTPU 为 Beam 带来首日 TPU 支持，这是一个用于在 TPU 上进行 LLM、VLM 和扩散模型推理的原生 PyTorch 后端。它将 TPU 加速与 SGLang 功能（如 RadixAttention 和 HiCache）相结合，为智能体工作负载实现经济高效、生产就绪的服务。",
+          "inlines": [
+            {
+              "text": "我们通过 SGLang-TorchTPU 为 Beam 带来首日 TPU 支持，这是一个用于在 TPU 上进行 LLM、VLM 和扩散模型推理的原生 PyTorch 后端。它将 TPU 加速与 SGLang 功能（如 RadixAttention 和 HiCache）相结合，为智能体工作负载实现经济高效、生产就绪的服务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam 的 TPU 配方以及 SGLang-TorchTPU 的访问权限即将推出。通过此 Google Form 注册以获取最新动态。",
+          "inlines": [
+            {
+              "text": "Beam 的 TPU 配方以及 SGLang-TorchTPU 的访问权限即将推出。通过此 "
+            },
+            {
+              "href": "https://docs.google.com/forms/d/e/1FAIpQLSe2Y8hzyU3KGB2StA-0huulrVsq79A0tSxcBQwjj8vlhLhYuQ/viewform?usp=publish-editor",
+              "text": "Google Form"
+            },
+            {
+              "text": " 注册以获取最新动态。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Miles 中的强化学习",
+          "inlines": [
+            {
+              "text": "Miles 中的强化学习"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Miles 通过 Megatron 插件支持 Beam，并在 Reflection 的 SGLang 构建上运行 rollout。 训练后端实现了 Beam 的三明治归一化与深度缩放残差、 SSMax 注意力缩放、混合滑动窗口注意力、门控注意力输出、 无辅助损失的 MoE 路由，以及 FP32 最终 logit 软上限，并通过 Megatron-Bridge 直接加载 Hugging Face 检查点。目标是让同一响应的训练器与 rollout 对数概率尽可能接近。",
+          "inlines": [
+            {
+              "text": "Miles 通过 Megatron 插件支持 Beam，并在 Reflection 的 SGLang 构建上运行 rollout。 训练后端实现了 Beam 的三明治归一化与深度缩放残差、 SSMax 注意力缩放、混合滑动窗口注意力、门控注意力输出、 无辅助损失的 MoE 路由，以及 FP32 最终 logit 软上限，并通过 Megatron-Bridge 直接加载 Hugging Face 检查点。目标是让同一响应的训练器与 rollout 对数概率尽可能接近。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "并行性。 后端支持 DP、TP、SP、EP、专家 TP 和 PP。TP 对 注意力投影（包括输出门）进行分片，SP 则沿序列维度对它们之间的激活进行分片。EP 和专家 TP 独立于 注意力布局对路由专家进行分片，流水线阶段可以容纳不等数量的层。启用路由重放后， 训练器–rollout 差距在这些布局下保持同一水平， 且不会随训练步数增长。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "并行性。"
+            },
+            {
+              "text": " 后端支持 DP、TP、SP、EP、专家 TP 和 PP。TP 对 注意力投影（包括输出门）进行分片，SP 则沿序列维度对它们之间的激活进行分片。EP 和专家 TP 独立于 注意力布局对路由专家进行分片，流水线阶段可以容纳不等数量的层。启用路由重放后， 训练器–rollout 差距在这些布局下保持同一水平， 且不会随训练步数增长。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "路由重放。 Rollout Routing Replay 作为可选项提供。SGLang 记录每个生成 token 所选的专家，训练器的 MoE 层复用这些分配，而不是重新计算 top-k，因此近乎并列的路由器分数不会在训练中选择不同的专家路径。重放的路由在激活重计算期间以及每个流水线阶段也会生效。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "路由重放。"
+            },
+            {
+              "text": " Rollout Routing Replay 作为可选项提供。SGLang 记录每个生成 token 所选的专家，训练器的 MoE 层复用这些分配，而不是重新计算 top-k，因此近乎并列的路由器分数不会在训练中选择不同的专家路径。重放的路由在激活重计算期间以及每个流水线阶段也会生效。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "数值一致性。 在 Beam 对精度敏感的地方，训练器遵循 SGLang 的数值处理。最终 logit 软上限以 FP32 运行，深度缩放残差加法在与引擎融合内核相同的点进行舍入。路由器门在训练、检查点和权重同步过程中始终保持 FP32。这些改动共同将训练器–rollout 对数概率差距减半，使其处于 BF16 归约顺序噪声的水平。确定性设置使重复运行可复现。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "数值一致性。"
+            },
+            {
+              "text": " 在 Beam 对精度敏感的地方，训练器遵循 SGLang 的数值处理。最终 logit 软上限以 FP32 运行，深度缩放残差加法在与引擎融合内核相同的点进行舍入。路由器门在训练、检查点和权重同步过程中始终保持 FP32。这些改动共同将训练器–rollout 对数概率差距减半，使其处于 BF16 归约顺序噪声的水平。确定性设置使重复运行可复现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "共置与分离部署。 Beam 可在任一模式下运行。分离式运行将训练和 rollout 放在不同的 GPU 上，并将下一次 rollout 与当前训练步重叠；TIS 缓解由此产生的一步策略陈旧所导致的离策略不匹配。共置运行共享相同的 GPU 并同步交替进行，在引擎生成时将训练器状态卸载到节点本地 NVMe。在两种模式下，更新后的 BF16 权重在每一步之后以桶的形式传输到引擎。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "共置与分离部署。"
+            },
+            {
+              "text": " Beam 可在任一模式下运行。分离式运行将训练和 rollout 放在不同的 GPU 上，并将下一次 rollout 与当前训练步重叠；TIS 缓解由此产生的一步策略陈旧所导致的离策略不匹配。共置运行共享相同的 GPU 并同步交替进行，在引擎生成时将训练器状态卸载到节点本地 NVMe。在两种模式下，更新后的 BF16 权重在每一步之后以桶的形式传输到引擎。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LoRA 训练支持。 LoRA 训练通过 Megatron-Bridge PEFT 进行，涵盖注意力、稠密 MLP 和路由专家投影。适配器以 Hugging Face 格式导出，并由 SGLang 直接提供服务。在 RL 期间，仅适配器权重通过权重更新会话流式传输到引擎，而基础权重保持常驻，引擎会验证每个接收到的适配器的校验和。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "LoRA 训练支持。"
+            },
+            {
+              "text": " LoRA 训练通过 Megatron-Bridge PEFT 进行，涵盖注意力、稠密 MLP 和路由专家投影。适配器以 Hugging Face 格式导出，并由 SGLang 直接提供服务。在 RL 期间，仅适配器权重通过权重更新会话流式传输到引擎，而基础权重保持常驻，引擎会验证每个接收到的适配器的校验和。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "已验证运行",
+          "inlines": [
+            {
+              "text": "已验证运行"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "下图展示了在 DAPO-Math-17K 上进行的全参数 GRPO 运行，从早期的 Beam checkpoint 开始，在 96 块 H200 GPU 上以分离式异步模式运行。64 块 GPU 以 TP8、SP、EP8、expert TP8 和 DP8 进行训练，32 块 GPU 服务两个 TP16 SGLang 引擎。每次 rollout 生成 32 个 prompt × 8 个响应，响应上限为 4K token，并馈入一次优化器步骤。在前 204 步中，AIME25 准确率从 46.3% 上升到 56.7%，同时平均响应长度下降。运行期间，训练从保存的 checkpoint 恢复了一次。",
+          "inlines": [
+            {
+              "text": "下图展示了在 DAPO-Math-17K 上进行的全参数 GRPO 运行，从早期的 Beam checkpoint 开始，在 96 块 H200 GPU 上以分离式异步模式运行。64 块 GPU 以 TP8、SP、EP8、expert TP8 和 DP8 进行训练，32 块 GPU 服务两个 TP16 SGLang 引擎。每次 rollout 生成 32 个 prompt × 8 个响应，响应上限为 4K token，并馈入一次优化器步骤。在前 204 步中，AIME25 准确率从 46.3% 上升到 56.7%，同时平均响应长度下降。运行期间，训练从保存的 checkpoint 恢复了一次。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e8cc961be734c690ecbd03b9fbc9748ee77152d75282389a5534022bb02aaca4.webp",
+          "alt": "Training dynamics: train-rollout KL divergence and gradient norm."
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0799f3fa70046c93879ac8d1dcdad3a4b95906f5893ce2203038f7c6633787f9.webp",
+          "alt": "AIME 2025 accuracy and mean output length during training."
+        },
+        {
+          "type": "heading",
+          "text": "性能结果",
+          "inlines": [
+            {
+              "text": "性能结果"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "OpenHands Agentic Coding 扫描",
+          "inlines": [
+            {
+              "text": "OpenHands Agentic Coding 扫描"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们收集了 Beam NVFP4 在四块 GB300 GPU 上以 TP4 运行 OpenHands 多轮 agentic coding 工作负载的性能结果。每段对话以约 74K token 的 prompt 开始，每轮输出约 220 token，总共 13 轮。连续轮次复用前缀，聚合缓存命中率约 92%。我们扫描并发数 1、4、8、16 和 32 段对话，并绘制每 GPU token 吞吐量（tok/s/GPU）与 p50 交互性（tok/s/user）的关系。总吞吐量包括缓存输入 token。这些测量使用八 token 的 DFlash2 块，模拟接受长度固定为四，并使用真实 draft token；它们不测量自然 draft 接受率或模型准确率。",
+          "inlines": [
+            {
+              "text": "我们收集了 Beam NVFP4 在四块 GB300 GPU 上以 TP4 运行 OpenHands 多轮 agentic coding 工作负载的性能结果。每段对话以约 74K token 的 prompt 开始，每轮输出约 220 token，总共 13 轮。连续轮次复用前缀，聚合缓存命中率约 92%。我们扫描并发数 1、4、8、16 和 32 段对话，并绘制每 GPU token 吞吐量（tok/s/GPU）与 p50 交互性（tok/s/user）的关系。总吞吐量包括缓存输入 token。这些测量使用八 token 的 DFlash2 块，模拟接受长度固定为四，并使用真实 draft token；它们不测量自然 draft 接受率或模型准确率。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9e4c1a9837d9680d990d3cf80e19f7ca38247c45be1918b80c2f06b070f04981.webp",
+          "alt": "Beam NVFP4 OpenHands performance on four GB300 GPUs with TP4/EP1: total throughput per GPU versus p50 interactivity."
+        },
+        {
+          "type": "heading",
+          "text": "AgentX Agentic Coding 扫描",
+          "inlines": [
+            {
+              "text": "AgentX Agentic Coding 扫描"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们与 NVIDIA 合作，收集了 Beam NVFP4 在四块 GB300 GPU 上以 TP4/EP1 运行 AgentX 的性能结果，AgentX 是 SemiAnalysis 用于回放记录的多轮 agentic coding 轨迹的工具。AgentX 复现真实 coding-agent 会话的 prompt 大小、前缀共享、子代理扇出和轮次间时序，因此结果反映了“真实的 agentic 负载”。会话中的请求共享长前缀，因此 92% 到 96% 的输入 token 命中前缀缓存。使用了 FP8 KV 缓存，选定的投机块大小为 8。我们扫描并发数从 1 到 96 个会话，并绘制每 GPU token 吞吐量（tok/s/GPU）与 p90 交互性（tok/s/user）的关系。在并发数 96 时，吞吐量达到 83,504 tok/s/GPU，交互性为 43.9 tok/s/user；单个会话以 348.0 tok/s/user 运行。",
+          "inlines": [
+            {
+              "text": "我们与 NVIDIA 合作，收集了 Beam NVFP4 在四块 GB300 GPU 上以 TP4/EP1 运行 "
+            },
+            {
+              "href": "https://github.com/SemiAnalysisAI/agentx-harness",
+              "text": "AgentX"
+            },
+            {
+              "text": " 的性能结果，AgentX 是 SemiAnalysis 用于回放记录的多轮 agentic coding 轨迹的工具。AgentX 复现真实 coding-agent 会话的 prompt 大小、前缀共享、子代理扇出和轮次间时序，因此结果反映了“真实的 agentic 负载”。会话中的请求共享长前缀，因此 92% 到 96% 的输入 token 命中前缀缓存。使用了 FP8 KV 缓存，选定的投机块大小为 8。我们扫描并发数从 1 到 96 个会话，并绘制每 GPU token 吞吐量（tok/s/GPU）与 p90 交互性（tok/s/user）的关系。在并发数 96 时，吞吐量达到 83,504 tok/s/GPU，交互性为 43.9 tok/s/user；单个会话以 348.0 tok/s/user 运行。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9b61ee655794d55a6f5535a4ffe68d0df9d9f1c90dc82b73f29868fe1c72e9dc.webp",
+          "alt": "Beam NVFP4 AgentX performance on GB300: total throughput per GPU versus p90 interactivity."
+        },
+        {
+          "type": "heading",
+          "text": "致谢",
+          "inlines": [
+            {
+              "text": "致谢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们想向以下组织和个人表示感谢，感谢他们对 Beam 的 SGL 集成开发所做的贡献，以及对其性能进行的广泛基准测试。",
+          "inlines": [
+            {
+              "text": "我们想向以下组织和个人表示感谢，感谢他们对 Beam 的 SGL 集成开发所做的贡献，以及对其性能进行的广泛基准测试。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang 社区/RadixArk：Jimmy Shong、Andy Ye、Xiaoyu Zhang、Yanbin Jiang、Qiaolin Yu、Alex Nails、Yuhao Yang",
+          "inlines": [
+            {
+              "text": "SGLang 社区/RadixArk：Jimmy Shong、Andy Ye、Xiaoyu Zhang、Yanbin Jiang、Qiaolin Yu、Alex Nails、Yuhao Yang"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reflection：Aksel Joonas Reedi、Aymen Kallala、Christopher Vanderschuere、Ewen Wang、Florent Gbelidji、George Antoniadis、Joel Gustafson、Yoni Gozlan、Iaroslav Geraskin、Kai Wu、Neil Gollapudi、Renault Young、Asfandyar Qureshi、Thibaut Barroyer、Matthias Reso。",
+          "inlines": [
+            {
+              "text": "Reflection：Aksel Joonas Reedi、Aymen Kallala、Christopher Vanderschuere、Ewen Wang、Florent Gbelidji、George Antoniadis、Joel Gustafson、Yoni Gozlan、Iaroslav Geraskin、Kai Wu、Neil Gollapudi、Renault Young、Asfandyar Qureshi、Thibaut Barroyer、Matthias Reso。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVIDIA：Jinze Xue、Dong Xu、Michael Loh、Matthew Radzihovsky",
+          "inlines": [
+            {
+              "text": "NVIDIA：Jinze Xue、Dong Xu、Michael Loh、Matthew Radzihovsky"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "附录",
+          "inlines": [
+            {
+              "text": "附录"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "OpenHands 复现",
+          "inlines": [
+            {
+              "text": "OpenHands 复现"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam OpenHands 扫描背后的脚本位于公开 bench-openhands-gb300-sweep-beam 分支上的 benchmark/beam_openhands 中。从准备好的 Beam docker 镜像开始，然后使用 reproduce.py 安装隔离客户端、构建数据集，并在一个 4 × NVIDIA GB300 节点上以 TP4/EP1 运行并发级别 1、4、8、16 和 32。",
+          "inlines": [
+            {
+              "text": "Beam OpenHands 扫描背后的脚本位于公开 "
+            },
+            {
+              "code": true,
+              "text": "bench-openhands-gb300-sweep-beam"
+            },
+            {
+              "text": " 分支上的 "
+            },
+            {
+              "href": "https://github.com/sgl-project/sglang/tree/bench-openhands-gb300-sweep-beam/benchmark/beam_openhands",
+              "code": true,
+              "text": "benchmark/beam_openhands"
+            },
+            {
+              "text": " 中。从准备好的 Beam docker "
+            },
+            {
+              "href": "https://hub.docker.com/layers/lmsysorg/sglang/beam",
+              "text": "镜像"
+            },
+            {
+              "text": "开始，然后使用 reproduce.py 安装隔离客户端、构建数据集，并在一个 4 × NVIDIA GB300 节点上以 TP4/EP1 运行并发级别 1、4、8、16 和 32。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "服务器是该分支的 SGLang。客户端是提交 acd09b44 的 EvalScope，使用其 swe_smith 多轮工作负载和 Beam 回放适配器。HiCache 在并发数 16 和 32 时配置为每 rank 88 GB，在较低并发数时禁用。",
+          "inlines": [
+            {
+              "text": "服务器是该分支的 SGLang。客户端是提交 acd09b44 的 EvalScope，使用其 swe_smith 多轮工作负载和 Beam 回放适配器。HiCache 在并发数 16 和 32 时配置为每 rank 88 GB，在较低并发数时禁用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该工作负载是基于 nebius/SWE-rebench-openhands-trajectories 构建的 OpenHands 多轮智能体回放，并用 nvidia/OpenScienceReasoning-2 文本进行填充：每段对话 13 轮，首轮 74,160 个裸输入 token，之后每轮额外增加 753 个输入 token，每轮输出 220 个 token。不断增长的对话历史使每个请求的 prompt token 约为 80K，聚合前缀缓存命中率达到 92%。",
+          "inlines": [
+            {
+              "text": "该工作负载是基于 nebius/SWE-rebench-openhands-trajectories 构建的 OpenHands 多轮智能体回放，并用 nvidia/OpenScienceReasoning-2 文本进行填充：每段对话 13 轮，首轮 74,160 个裸输入 token，之后每轮额外增加 753 个输入 token，每轮输出 220 个 token。不断增长的对话历史使每个请求的 prompt token 约为 80K，聚合前缀缓存命中率达到 92%。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "服务器启动命令如下，其中 <cc> 同时设置最大运行请求数和解码 CUDA 图批处理上限",
+          "inlines": [
+            {
+              "text": "服务器启动命令如下，其中 <cc> 同时设置最大运行请求数和解码 CUDA 图批处理上限"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "export MODEL_PATH=/models/Beam-1.0-501B-A23B-NVFP4\nexport DRAFT_PATH=/models/Beam-1.0-501B-A23B-DFlash2\nexport SGLANG_SIMULATE_ACC_LEN=4\nexport SGLANG_SIMULATE_ACC_METHOD=match-expected\nexport SGLANG_SIMULATE_ACC_TOKEN_MODE=real-draft-token\nexport SGLANG_RESPONSE_TEMPLATE_TURN_GRAMMAR=0\n\nexport OMP_NUM_THREADS=4 MKL_NUM_THREADS=4\nexport PYTHONNOUSERSITE=1 TZ=UTC\nexport HF_HUB_OFFLINE=1\n\nCC=16  # Set to 16 or 32\npython3 -m sglang.launch_server \\\n    --model-path \"$MODEL_PATH\" \\\n    --served-model-name beam \\\n    --quantization modelopt_fp4 \\\n    --tp-size 4 \\\n    --ep-size 1 \\\n    --attn-dp-size 1 \\\n    --nnodes 1 \\\n    --node-rank 0 \\\n    --dist-init-addr 127.0.0.1:39746 \\\n    --attention-backend trtllm_mha \\\n    --page-size 64 \\\n    --mem-fraction-static 0.80 \\\n    --enable-unified-memory \\\n    --reasoning-parser beam \\\n    --tool-call-parser beam \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path \"$DRAFT_PATH\" \\\n    --speculative-draft-attention-backend trtllm_mha \\\n    --speculative-num-draft-tokens 8 \\\n    --enable-hierarchical-cache \\\n    --hicache-size 88 \\\n    --max-running-requests \"$CC\" \\\n    --cuda-graph-max-bs-decode \"$CC\" \\\n    --context-length 1048576 \\\n    --chunked-prefill-size 16384 \\\n    --prefill-decode-interval 0 \\\n    --enable-cache-report \\\n    --enable-metrics \\\n    --tokenizer-worker-num 1 \\\n    --host 0.0.0.0 \\\n    --port 30080\n\nCC=1  # Set to 1, 4, or 8\npython3 -m sglang.launch_server \\\n    --model-path \"$MODEL_PATH\" \\\n    --served-model-name beam \\\n    --quantization modelopt_fp4 \\\n    --tp-size 4 \\\n    --ep-size 1 \\\n    --attn-dp-size 1 \\\n    --nnodes 1 \\\n    --node-rank 0 \\\n    --dist-init-addr 127.0.0.1:39746 \\\n    --attention-backend trtllm_mha \\\n    --page-size 64 \\\n    --mem-fraction-static 0.80 \\\n    --enable-unified-memory \\\n    --reasoning-parser beam \\\n    --tool-call-parser beam \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path \"$DRAFT_PATH\" \\\n    --speculative-draft-attention-backend trtllm_mha \\\n    --speculative-num-draft-tokens 8 \\\n    --max-running-requests \"$CC\" \\\n    --cuda-graph-max-bs-decode \"$CC\" \\\n    --context-length 1048576 \\\n    --chunked-prefill-size 16384 \\\n    --prefill-decode-interval 0 \\\n    --enable-cache-report \\\n    --enable-metrics \\\n    --tokenizer-worker-num 1 \\\n    --host 0.0.0.0 \\\n    --port 30080\n"
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Reflection’s Beam is a 501B-parameter mixture-of-experts model with 23B active parameters per token, built for software engineering and long-horizon agentic tasks. With its planned Apache 2.0 release, Beam is designed for developers to deploy and build on across the runtimes, frameworks, and coding harnesses they already use.",
+          "inlines": [
+            {
+              "text": "Reflection’s Beam is a 501B-parameter mixture-of-experts model with 23B active parameters per token, built for software engineering and long-horizon agentic tasks. With its planned Apache 2.0 release, Beam is designed for developers to deploy and build on across the runtimes, frameworks, and coding harnesses they already use."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang now supports Beam natively and powers Reflection’s production API. It helps developers translate Beam’s inference efficiency into practical and production-proven serving performance. BF16, NVFP4, and dynamic FP8 support provide flexibility across precision and memory requirements; DFlash2 speculative decoding accelerates generation; and prefix caching with hybrid-attention memory management enables efficient reuse of context across agent interactions. Underneath these serving capabilities, we optimized Beam’s projections, normalization, and communication to improve throughput.",
+          "inlines": [
+            {
+              "text": "SGLang now supports Beam natively and powers Reflection’s production API. It helps developers translate Beam’s inference efficiency into practical and production-proven serving performance. BF16, NVFP4, and dynamic FP8 support provide flexibility across precision and memory requirements; DFlash2 speculative decoding accelerates generation; and prefix caching with hybrid-attention memory management enables efficient reuse of context across agent interactions. Underneath these serving capabilities, we optimized Beam’s projections, normalization, and communication to improve throughput."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This post covers the integration, optimizations, and performance results behind Beam on SGLang. To deploy the model, start with our Beam serving cookbook for validated configurations and launch instructions.",
+          "inlines": [
+            {
+              "text": "This post covers the integration, optimizations, and performance results behind Beam on SGLang. To deploy the model, start with our "
+            },
+            {
+              "href": "https://docs.sglang.io/cookbook/autoregressive/Reflection/Beam-1_0",
+              "text": "Beam serving cookbook"
+            },
+            {
+              "text": " for validated configurations and launch instructions."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Highlights",
+          "inlines": [
+            {
+              "text": "Highlights"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Beam 1.0 501B-A23B:"
+                },
+                {
+                  "text": " a decoder-only MoE with sliding-window and full attention, 256 routed experts and top-8 selection, and a native 1M-token context window."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Checkpoint support:"
+                },
+                {
+                  "text": " BF16, ModelOpt NVFP4, and compressed-tensors dynamic FP8."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Serving features:"
+                },
+                {
+                  "text": " DFlash2 speculative decoding, radix caching and HiCache, chunked prefill, CUDA graphs, TP/EP/PP and attention data parallelism."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Kernel optimizations:"
+                },
+                {
+                  "text": " projection packing, fusion across attention and residual boundaries, a specialized BF16x3 GEMM for FP32 router, and GB300 MoE tuning."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Performance:"
+                },
+                {
+                  "text": " On an OpenHands multi-turn agentic coding replay with the NVFP4 checkpoint on 4 NVIDIA GB300 GPUs, SGLang reaches 127.6K total tokens/sec per GPU at 185.87 tokens/sec per user (p50) with concurrency 32."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Model Architecture",
+          "inlines": [
+            {
+              "text": "Model Architecture"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam combines grouped-query attention with a hybrid of sliding-window and full-attention layers. Its feed-forward stack starts with dense SwiGLU layers and then switches to routed MoE. Beam gates the attention output before its projection and places sandwich normalization around both branches. Depth-scaled residuals control how each branch joins the hidden-state stream.",
+          "inlines": [
+            {
+              "text": "Beam combines grouped-query attention with a hybrid of sliding-window and full-attention layers. Its feed-forward stack starts with dense SwiGLU layers and then switches to routed MoE. Beam gates the attention output before its projection and places sandwich normalization around both branches. Depth-scaled residuals control how each branch joins the hidden-state stream."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/426e891a7de75d85477d957a33633296d7808804fd1cbb23c74dbd2c5e1039c4.webp",
+          "alt": "Beam's embedding and decoder stack, with an expanded decoder layer showing attention, feed-forward work, sandwich normalization and depth-scaled residual paths."
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam's decoder and the operations inside one layer. Both the attention and feed-forward branches end with output normalization and a depth-scaled residual addition.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Beam's decoder and the operations inside one layer. Both the attention and feed-forward branches end with output normalization and a depth-scaled residual addition."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Component",
+          "inlines": [
+            {
+              "text": "Component"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Native configuration",
+          "inlines": [
+            {
+              "text": "Native configuration"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Decoder layers",
+          "inlines": [
+            {
+              "text": "Decoder layers"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "52",
+          "inlines": [
+            {
+              "text": "52"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hidden dimension",
+          "inlines": [
+            {
+              "text": "Hidden dimension"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5,120",
+          "inlines": [
+            {
+              "text": "5,120"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attention heads",
+          "inlines": [
+            {
+              "text": "Attention heads"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48 query heads and 8 KV heads",
+          "inlines": [
+            {
+              "text": "48 query heads and 8 KV heads"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Head dimension",
+          "inlines": [
+            {
+              "text": "Head dimension"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "128",
+          "inlines": [
+            {
+              "text": "128"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sliding window",
+          "inlines": [
+            {
+              "text": "Sliding window"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "512 tokens",
+          "inlines": [
+            {
+              "text": "512 tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Feed-forward schedule",
+          "inlines": [
+            {
+              "text": "Feed-forward schedule"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Three initial dense layers, followed by routed MoE layers",
+          "inlines": [
+            {
+              "text": "Three initial dense layers, followed by routed MoE layers"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Routed experts",
+          "inlines": [
+            {
+              "text": "Routed experts"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "256 experts, with 8 selected per token",
+          "inlines": [
+            {
+              "text": "256 experts, with 8 selected per token"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Context limit",
+          "inlines": [
+            {
+              "text": "Context limit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,048,576 tokens",
+          "inlines": [
+            {
+              "text": "1,048,576 tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The checkpoint specifies the attention and feed-forward schedules. The native attention schedule places full attention after groups of sliding-window layers and ends with full attention. This gives the serving stack two KV lifetimes to manage: the complete history for full attention and the recent window for sliding attention.",
+          "inlines": [
+            {
+              "text": "The checkpoint specifies the attention and feed-forward schedules. The native attention schedule places full attention after groups of sliding-window layers and ends with full attention. This gives the serving stack two KV lifetimes to manage: the complete history for full attention and the recent window for sliding attention."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Hybrid Attention and Output Gating",
+          "inlines": [
+            {
+              "text": "Hybrid Attention and Output Gating"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "GQA shares eight KV heads among 48 query heads, reducing the KV cache that SGLang stores per token. Sliding-window layers also restrict their live history to the recent window and use RoPE. Full-attention layers use NoPE with position-dependent SSMax query scaling. Both normalize Q and K before attention.",
+          "inlines": [
+            {
+              "text": "GQA shares eight KV heads among 48 query heads, reducing the KV cache that SGLang stores per token. Sliding-window layers also restrict their live history to the recent window and use RoPE. Full-attention layers use NoPE with position-dependent SSMax query scaling. Both normalize Q and K before attention."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam gates the attention result before the output projection. A second projection produces gate activations from the normalized hidden state; the model adds a learned per-head bias, applies sigmoid, and multiplies the attention output by the elementwise gate. The QKV and gate projections share an input, which lets us pack them into one BF16 projection in eligible layouts.",
+          "inlines": [
+            {
+              "text": "Beam gates the attention result before the output projection. A second projection produces gate activations from the normalized hidden state; the model adds a learned per-head bias, applies sigmoid, and multiplies the attention output by the elementwise gate. The QKV and gate projections share an input, which lets us pack them into one BF16 projection in eligible layouts."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Dense Layers and Grouped MoE Routing",
+          "inlines": [
+            {
+              "text": "Dense Layers and Grouped MoE Routing"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The first three feed-forward layers use dense SwiGLU. Later layers select eight experts from a pool of 256 and combine their SwiGLU outputs.",
+          "inlines": [
+            {
+              "text": "The first three feed-forward layers use dense SwiGLU. Later layers select eight experts from a pool of 256 and combine their SwiGLU outputs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The router computes FP32 logits. Grouped top-k selection uses sigmoid scores and an expert correction bias to choose the experts. The backend retains FP32 routing coefficients and applies Beam's routed scaling factor during expert combination, or carries it in the routing weights when that kernel requires it.",
+          "inlines": [
+            {
+              "text": "The router computes FP32 logits. Grouped top-k selection uses sigmoid scores and an expert correction bias to choose the experts. The backend retains FP32 routing coefficients and applies Beam's routed scaling factor during expert combination, or carries it in the routing weights when that kernel requires it."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "SSMax",
+          "inlines": [
+            {
+              "text": "SSMax"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam’s full-attention layers use Scalable Softmax (SSMax) to keep attention focused as context grows. After Q/K normalization, each query at zero-based position p is scaled by (1+(p+1)/2048)0.1. This gradually sharpens the attention distribution, counteracting the tendency for softmax weights to spread across more tokens in long contexts.",
+          "inlines": [
+            {
+              "text": "Beam’s full-attention layers use Scalable Softmax (SSMax) to keep attention focused as context grows. After Q/K normalization, each query at zero-based position p is scaled by (1+(p+1)/2048)0.1. This gradually sharpens the attention distribution, counteracting the tendency for softmax weights to spread across more tokens in long contexts."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Sandwich Normalization and Depth-Scaled Residuals",
+          "inlines": [
+            {
+              "text": "Sandwich Normalization and Depth-Scaled Residuals"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Each attention and feed-forward branch has input and output RMS normalization. Beam scales the branch and residual by coefficients derived from layer depth, then adds them. Both scaled operands round to the activation dtype before the addition.",
+          "inlines": [
+            {
+              "text": "Each attention and feed-forward branch has input and output RMS normalization. Beam scales the branch and residual by coefficients derived from layer depth, then adds them. Both scaled operands round to the activation dtype before the addition."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "An unfused transition writes the normalized branch, reads it for residual combination, and reads the combined result for the next input norm. These memory passes repeat through the decoder, so we fuse the transition while keeping Beam's rounding boundaries. The final decoder norm and language-model head feed FP32 logit softcapping.",
+          "inlines": [
+            {
+              "text": "An unfused transition writes the normalized branch, reads it for residual combination, and reads the combined result for the next input norm. These memory passes repeat through the decoder, so we fuse the transition while keeping Beam's rounding boundaries. The final decoder norm and language-model head feed FP32 logit softcapping."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Feature Support",
+          "inlines": [
+            {
+              "text": "Feature Support"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Dflash2 Speculative Decoding w/ Data-Parallel Attention",
+          "inlines": [
+            {
+              "text": "Dflash2 Speculative Decoding w/ Data-Parallel Attention"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam supports DFlash2 through SGLang's DFLASH runtime. The target captures selected decoder layers' post-layer residuals before final normalization. The drafter uses those features to propose a token block, and Beam verifies that block in one target forward.",
+          "inlines": [
+            {
+              "text": "Beam supports DFlash2 through SGLang's "
+            },
+            {
+              "href": "https://docs.sglang.io/docs/advanced_features/speculative_decoding#dflash-decoding",
+              "text": "DFLASH runtime"
+            },
+            {
+              "text": ". The target captures selected decoder layers' post-layer residuals before final normalization. The drafter uses those features to propose a token block, and Beam verifies that block in one target forward."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam's integration adds a new CUDA serving path that combines DFlash2 with attention data parallelism. With --attn-dp-size N and --enable-dp-lm-head, the runtime keeps the attention and draft-head work aligned with the DP layout. SGLang initializes target-verification metadata after DP padding establishes the final token shape, including batches with idle peers.",
+          "inlines": [
+            {
+              "text": "Beam's integration adds a new CUDA serving path that combines DFlash2 with attention data parallelism. With "
+            },
+            {
+              "code": true,
+              "text": "--attn-dp-size N"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "--enable-dp-lm-head"
+            },
+            {
+              "text": ", the runtime keeps the attention and draft-head work aligned with the DP layout. SGLang initializes target-verification metadata after DP padding establishes the final token shape, including batches with idle peers."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We include draft KV memory in the hybrid pool budget so target-cache allocation leaves room for the drafter. Draft capture requires PP=1, and the serving context must fit both the target and the chosen drafter.",
+          "inlines": [
+            {
+              "text": "We include draft KV memory in the hybrid pool budget so target-cache allocation leaves room for the drafter. Draft capture requires PP=1, and the serving context must fit both the target and the chosen drafter."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Unified Memory for Target and Draft KV",
+          "inlines": [
+            {
+              "text": "Unified Memory for Target and Draft KV"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam's full-attention KV grows with context, while its sliding layers retain a recent window. Upstream SGLang's unified KV allocator backs these allocations with a shared GPU page budget. Request tables keep stable virtual token IDs; attention reads and KV writes translate them into the current physical slots. The translation interface uses the same virtual-to-physical contract for both directions.",
+          "inlines": [
+            {
+              "text": "Beam's full-attention KV grows with context, while its sliding layers retain a recent window. Upstream SGLang's unified KV allocator backs these allocations with a shared GPU page budget. Request tables keep stable virtual token IDs; attention reads and KV writes translate them into the current physical slots. The "
+            },
+            {
+              "href": "https://github.com/sgl-project/sglang/pull/40331",
+              "text": "translation interface"
+            },
+            {
+              "text": " uses the same virtual-to-physical contract for both directions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DFlash admission to the unified pool extends this layout to eligible full-attention drafters. Target and draft keep distinct KV rows inside the target's page envelope, so the allocator accounts for both together. A compact-window drafter can retain its own request-to-token table over the target's virtual IDs, limiting which pages it reads while its KV storage stays in the shared layout. Draft writes translate those IDs before storing KV.",
+          "inlines": [
+            {
+              "href": "https://github.com/sgl-project/sglang/pull/40492",
+              "text": "DFlash admission to the unified pool"
+            },
+            {
+              "text": " extends this layout to eligible full-attention drafters. Target and draft keep distinct KV rows inside the target's page envelope, so the allocator accounts for both together. A compact-window drafter can retain its own request-to-token table over the target's virtual IDs, limiting which pages it reads while its KV storage stays in the shared layout. Draft writes translate those IDs before storing KV."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Placement depends on draft geometry, KV dtype and attention backend. The gate declines shared draft placement with HiCache, host-pool retraction or decode context parallelism. A hybrid-SWA host budgets the private draft fallback; unsupported host/draft combinations are rejected at startup.",
+          "inlines": [
+            {
+              "text": "Placement depends on draft geometry, KV dtype and attention backend. The gate declines shared draft placement with HiCache, host-pool retraction or decode context parallelism. A hybrid-SWA host budgets the private draft fallback; unsupported host/draft combinations are rejected at startup."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We extend this path to trtllm_mha targets and drafters with decode CUDA graphs. It uses page tables planned for the current iteration's read/write extent and zeros new page envelopes. On SM90/SM120, it separates the fmha_v2 prefill workspace from XQA decode semaphores. The extension carries translated KV locations through target verification and draft execution in the TRTLLM backend.",
+          "inlines": [
+            {
+              "text": "We extend this path to "
+            },
+            {
+              "code": true,
+              "text": "trtllm_mha"
+            },
+            {
+              "text": " targets and drafters with decode CUDA graphs. It uses page tables planned for the current iteration's read/write extent and zeros new page envelopes. On SM90/SM120, it separates the fmha_v2 prefill workspace from XQA decode semaphores. The extension carries translated KV locations through target verification and draft execution in the TRTLLM backend."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Heterogeneous TP for Prefill/Decode Disaggregation",
+          "inlines": [
+            {
+              "text": "Heterogeneous TP for Prefill/Decode Disaggregation"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Prefill and decode process different token-batch shapes, so a disaggregated server can choose a separate attention TP size for each phase. For Beam's hybrid attention, that handoff must preserve full-attention KV and the live sliding window as KV-head ownership changes between the two groups.",
+          "inlines": [
+            {
+              "text": "Prefill and decode process different token-batch shapes, so a disaggregated server can choose a separate attention TP size for each phase. For Beam's hybrid attention, that handoff must preserve full-attention KV and the live sliding window as KV-head ownership changes between the two groups."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PR #40909 adds this transfer path for hybrid sliding-window models through NIXL and Mooncake. It copies window state in token/head segments using the existing rank-ownership mapping, placing each token's head segment into the matching decode buffer. Staging carries full-attention KV; window state follows the head-sliced path.",
+          "inlines": [
+            {
+              "href": "https://github.com/sgl-project/sglang/pull/40909",
+              "text": "PR #40909"
+            },
+            {
+              "text": " adds this transfer path for hybrid sliding-window models through NIXL and Mooncake. It copies window state in token/head segments using the existing rank-ownership mapping, placing each token's head segment into the matching decode buffer. Staging carries full-attention KV; window state follows the head-sliced path."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Reasoning, Tool Calls and LoRA",
+          "inlines": [
+            {
+              "text": "Reasoning, Tool Calls and LoRA"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang reads Beam's checkpoint response template to separate reasoning, answers and tool calls for streaming and non-streaming requests. The integration covers Chat Completions, Responses and Messages, with Beam tool grammars and JSON-output constraints.",
+          "inlines": [
+            {
+              "text": "SGLang reads Beam's checkpoint response template to separate reasoning, answers and tool calls for streaming and non-streaming requests. The integration covers Chat Completions, Responses and Messages, with Beam tool grammars and JSON-output constraints."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "BF16 LoRA serving uses the Triton MoE runner and covers attention projections and gates, dense MLPs, routed experts, embeddings and the output head. The loader keeps the attention gate's qualified name so it does not collide with an MLP gate target.",
+          "inlines": [
+            {
+              "text": "BF16 LoRA serving uses the Triton MoE runner and covers attention projections and gates, dense MLPs, routed experts, embeddings and the output head. The loader keeps the attention gate's qualified name so it does not collide with an MLP gate target."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "BF16, NVFP4 and FP8 Model Support",
+          "inlines": [
+            {
+              "text": "BF16, NVFP4 and FP8 Model Support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We support the native BF16, FP8, and NVFP4 checkpoints. We add an NVFP4 expert-parallel alternative through FlashInfer MegaMoE. It requires both the flashinfer_megamoe runner and all-to-all backend; BF16 and dynamic FP8 remain outside this Beam extension. The optimization section explains its token ownership and communication path.",
+          "inlines": [
+            {
+              "text": "We support the native BF16, FP8, and NVFP4 checkpoints. We add an NVFP4 expert-parallel alternative through FlashInfer MegaMoE. It requires both the "
+            },
+            {
+              "code": true,
+              "text": "flashinfer_megamoe"
+            },
+            {
+              "text": " runner and all-to-all backend; BF16 and dynamic FP8 remain outside this Beam extension. The optimization section explains its token ownership and communication path."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The router retains its precision and routing-scale contract across these formats. Quantized checkpoints and LoRA keep separate QKV and attention-gate modules for their loading and adapter paths.",
+          "inlines": [
+            {
+              "text": "The router retains its precision and routing-scale contract across these formats. Quantized checkpoints and LoRA keep separate QKV and attention-gate modules for their loading and adapter paths."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Prefix Reuse, Chunked Prefill and HiCache",
+          "inlines": [
+            {
+              "text": "Prefix Reuse, Chunked Prefill and HiCache"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "A cached Beam prefix contains full-attention history and the sliding-window state needed at its reuse boundary. SGLang aligns both with the paged cache so a request can resume from the prefix with its live window intact. Chunked prefill processes long prompts in parts alongside decode work.",
+          "inlines": [
+            {
+              "text": "A cached Beam prefix contains full-attention history and the sliding-window state needed at its reuse boundary. SGLang aligns both with the paged cache so a request can resume from the prefix with its live window intact. Chunked prefill processes long prompts in parts alongside decode work."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HiCache extends prefix reuse from GPU memory to host memory and supported storage backends. Beam keeps its hybrid SWA pool and sliding-window memory savings with HiCache on. Host load-back uses each pipeline stage's local layer mapping.",
+          "inlines": [
+            {
+              "href": "https://docs.sglang.io/docs/advanced_features/hicache",
+              "text": "HiCache"
+            },
+            {
+              "text": " extends prefix reuse from GPU memory to host memory and supported storage backends. Beam keeps its hybrid SWA pool and sliding-window memory savings with HiCache on. Host load-back uses each pipeline stage's local layer mapping."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Optimizations",
+          "inlines": [
+            {
+              "text": "Optimizations"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Fusion Optimizations",
+          "inlines": [
+            {
+              "text": "Fusion Optimizations"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam's normalization and gating paths chain small operations around the projections and collectives. We fuse these chains to remove intermediate stores, copies and launches.",
+          "inlines": [
+            {
+              "text": "Beam's normalization and gating paths chain small operations around the projections and collectives. We fuse these chains to remove intermediate stores, copies and launches."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Kernel Fusion across projections, normalization, and collective boundaries."
+                },
+                {
+                  "text": " We fuse all-reduce, output norm, scaled residual addition and next input norm, extending eligible boundaries to NVFP4. PDL lets the following norm load weights before its dependency wait. Sliding layers fuse Q/K normalization with RoPE. Full-attention layers use fused Q/K normalization and reuse SSMax position scales. Eligible BF16 layers pack QKV and gate projections into one launch. Attention gating fuses bias addition, sigmoid and multiplication. The BF16 MoE collective path also incorporates local expert summation, routed scaling and BF16 rounding."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Combine expert communication and compute with MegaMoE."
+                },
+                {
+                  "text": " We enable Beam's NVFP4 experts on FlashInfer MegaMoE, pairing its runner with the MegaMoE all-to-all backend. FlashInfer runs expert dispatch, computation and combine inside its fused EP kernel. Beam supplies explicit expert IDs and routing weights and receives complete outputs for each rank's tokens. The fused transitions preserve the rounding of both scaled residual operands before addition. Attention and MoE have separate fusion eligibility checks; MoE reduction follows the selected backend's ownership. CPU offload, empty pipeline stages and unsupported collective shapes retain the regular paths. All EP ranks participate in expert execution, including ranks with no local tokens."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5eed062ec3bd51472b0c4b5461b21942c5dd3c8c4f430bdfd3220ce8fe4d8001.webp",
+          "alt": "Token ownership with attention data parallelism and MegaMoE: dense MLP layers gather and scatter tokens, while sparse layers return complete outputs to each owning rank."
+        },
+        {
+          "type": "paragraph",
+          "text": "MegaMoE token ownership with data parallel attention. Dense MLP layers retain TP gather/scatter; sparse layers pass DP-local tokens through fused expert dispatch, computation and combination. Complete outputs return to each token’s owning rank without an extra all-reduce.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "MegaMoE token ownership with data parallel attention. Dense MLP layers retain TP gather/scatter; sparse layers pass DP-local tokens through fused expert dispatch, computation and combination. Complete outputs return to each token’s owning rank without an extra all-reduce."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "BF16 MoE Kernel Optimization",
+          "inlines": [
+            {
+              "text": "BF16 MoE Kernel Optimization"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Prefill and decode give the expert kernels different token shapes. We added GB300 tile configurations for the gate/up and down projections, with TMA for selected prefill shapes. The Triton tuner also reads Beam's expert dimensions from its configuration.",
+          "inlines": [
+            {
+              "text": "Prefill and decode give the expert kernels different token shapes. We added GB300 tile configurations for the gate/up and down projections, with TMA for selected prefill shapes. The Triton tuner also reads Beam's expert dimensions from its configuration."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For single-token decode, an opt-in path computes routed expert outputs with two GEMV kernels. It preserves the gate/up and activation BF16 rounding boundaries and applies FP32 routing weights before rounding the down-projection output. The caller still performs expert reduction, routed scaling and TP communication. The FP32 reduction order differs from the tensor-core path.",
+          "inlines": [
+            {
+              "text": "For single-token decode, an opt-in path computes routed expert outputs with two GEMV kernels. It preserves the gate/up and activation BF16 rounding boundaries and applies FP32 routing weights before rounding the down-projection output. The caller still performs expert reduction, routed scaling and TP communication. The FP32 reduction order differs from the tensor-core path."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TPU Support",
+          "inlines": [
+            {
+              "text": "TPU Support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We’re bringing day-0 TPU support to Beam through SGLang-TorchTPU, a native PyTorch backend for LLM, VLM, and diffusion model inference on TPUs. It combines TPU acceleration with SGLang features such as RadixAttention and HiCache to enable cost-efficient, production-ready serving for agentic workloads.",
+          "inlines": [
+            {
+              "text": "We’re bringing day-0 TPU support to Beam through SGLang-TorchTPU, a native PyTorch backend for LLM, VLM, and diffusion model inference on TPUs. It combines TPU acceleration with SGLang features such as RadixAttention and HiCache to enable cost-efficient, production-ready serving for agentic workloads."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TPU recipes for Beam and access to SGLang-TorchTPU will be available soon. Sign up through this Google Form to receive the latest updates.",
+          "inlines": [
+            {
+              "text": "TPU recipes for Beam and access to SGLang-TorchTPU will be available soon. Sign up through this "
+            },
+            {
+              "href": "https://docs.google.com/forms/d/e/1FAIpQLSe2Y8hzyU3KGB2StA-0huulrVsq79A0tSxcBQwjj8vlhLhYuQ/viewform?usp=publish-editor",
+              "text": "Google Form"
+            },
+            {
+              "text": " to receive the latest updates."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Reinforcement learning in Miles",
+          "inlines": [
+            {
+              "text": "Reinforcement learning in Miles"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Miles supports Beam through a Megatron plugin and runs rollouts on Reflection's SGLang build. The training backend implements Beam's sandwich normalization with depth-scaled residuals, SSMax attention scaling, hybrid sliding-window attention, gated attention output, auxiliary-loss-free MoE routing, and FP32 final-logit softcapping, and loads the Hugging Face checkpoint directly through Megatron-Bridge. The goal is to keep trainer and rollout log-probabilities for the same responses as close as possible.",
+          "inlines": [
+            {
+              "text": "Miles supports Beam through a Megatron plugin and runs rollouts on Reflection's SGLang build. The training backend implements Beam's sandwich normalization with depth-scaled residuals, SSMax attention scaling, hybrid sliding-window attention, gated attention output, auxiliary-loss-free MoE routing, and FP32 final-logit softcapping, and loads the Hugging Face checkpoint directly through Megatron-Bridge. The goal is to keep trainer and rollout log-probabilities for the same responses as close as possible."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Parallelism. The backend supports DP, TP, SP, EP, expert TP, and PP. TP shards the attention projections, including the output gate, and SP shards the activations between them along the sequence. EP and expert TP shard the routed experts independently of the attention layout, and pipeline stages can hold unequal numbers of layers. With routing replay enabled, the trainer–rollout gap stays at the same level across these layouts and does not grow over training steps.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Parallelism."
+            },
+            {
+              "text": " The backend supports DP, TP, SP, EP, expert TP, and PP. TP shards the attention projections, including the output gate, and SP shards the activations between them along the sequence. EP and expert TP shard the routed experts independently of the attention layout, and pipeline stages can hold unequal numbers of layers. With routing replay enabled, the trainer–rollout gap stays at the same level across these layouts and does not grow over training steps."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Routing replay. Rollout Routing Replay is available as an opt-in. SGLang records the experts selected for each generated token, and the trainer's MoE layers reuse those assignments instead of recomputing top-k, so near-tied router scores cannot select a different expert path in training. Replayed routes also apply during activation recomputation and on every pipeline stage.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Routing replay."
+            },
+            {
+              "text": " Rollout Routing Replay is available as an opt-in. SGLang records the experts selected for each generated token, and the trainer's MoE layers reuse those assignments instead of recomputing top-k, so near-tied router scores cannot select a different expert path in training. Replayed routes also apply during activation recomputation and on every pipeline stage."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Numerical consistency. The trainer follows SGLang's numerics wherever Beam is precision-sensitive. The final-logit softcap runs in FP32, and depth-scaled residual additions round at the same points as the engine's fused kernel. The router gate stays in FP32 through training, checkpointing, and weight synchronization. Together these changes halve the trainer–rollout log-probability gap, leaving it at the level of BF16 reduction-order noise. Deterministic settings make repeated runs reproducible.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Numerical consistency."
+            },
+            {
+              "text": " The trainer follows SGLang's numerics wherever Beam is precision-sensitive. The final-logit softcap runs in FP32, and depth-scaled residual additions round at the same points as the engine's fused kernel. The router gate stays in FP32 through training, checkpointing, and weight synchronization. Together these changes halve the trainer–rollout log-probability gap, leaving it at the level of BF16 reduction-order noise. Deterministic settings make repeated runs reproducible."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Colocated and disaggregated deployment. Beam runs in either mode. Disaggregated runs place training and rollout on separate GPUs and overlap the next rollout with the current training step; TIS mitigates the off-policy mismatch resulting from this one-step policy staleness. Colocated runs share the same GPUs and alternate synchronously, offloading trainer state to node-local NVMe while the engines generate. In both modes, updated BF16 weights are transferred to the engines in buckets after each step.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Colocated and disaggregated deployment."
+            },
+            {
+              "text": " Beam runs in either mode. Disaggregated runs place training and rollout on separate GPUs and overlap the next rollout with the current training step; TIS mitigates the off-policy mismatch resulting from this one-step policy staleness. Colocated runs share the same GPUs and alternate synchronously, offloading trainer state to node-local NVMe while the engines generate. In both modes, updated BF16 weights are transferred to the engines in buckets after each step."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LoRA Training Support. LoRA training goes through Megatron-Bridge PEFT and covers attention, dense MLP, and routed-expert projections. Adapters are exported in Hugging Face format and served directly by SGLang. During RL, only adapter weights are streamed to the engines through the weight-update session while base weights stay resident, and the engines verify checksums of each received adapter.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "LoRA Training Support."
+            },
+            {
+              "text": " LoRA training goes through Megatron-Bridge PEFT and covers attention, dense MLP, and routed-expert projections. Adapters are exported in Hugging Face format and served directly by SGLang. During RL, only adapter weights are streamed to the engines through the weight-update session while base weights stay resident, and the engines verify checksums of each received adapter."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Validated Run",
+          "inlines": [
+            {
+              "text": "Validated Run"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The figures below show a full-parameter GRPO run on DAPO-Math-17K, starting from an early Beam checkpoint, in the disaggregated asynchronous mode on 96 H200 GPUs. 64 GPUs train with TP8, SP, EP8, expert TP8, and DP8, and 32 serve two TP16 SGLang engines. Each rollout generates 32 prompts × 8 responses with a 4K-token response cap and feeds one optimizer step. Over the first 204 steps, AIME25 accuracy rises from 46.3% to 56.7% while mean response length decreases. During the run, training resumed once from a saved checkpoint.",
+          "inlines": [
+            {
+              "text": "The figures below show a full-parameter GRPO run on DAPO-Math-17K, starting from an early Beam checkpoint, in the disaggregated asynchronous mode on 96 H200 GPUs. 64 GPUs train with TP8, SP, EP8, expert TP8, and DP8, and 32 serve two TP16 SGLang engines. Each rollout generates 32 prompts × 8 responses with a 4K-token response cap and feeds one optimizer step. Over the first 204 steps, AIME25 accuracy rises from 46.3% to 56.7% while mean response length decreases. During the run, training resumed once from a saved checkpoint."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e8cc961be734c690ecbd03b9fbc9748ee77152d75282389a5534022bb02aaca4.webp",
+          "alt": "Training dynamics: train-rollout KL divergence and gradient norm."
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0799f3fa70046c93879ac8d1dcdad3a4b95906f5893ce2203038f7c6633787f9.webp",
+          "alt": "AIME 2025 accuracy and mean output length during training."
+        },
+        {
+          "type": "heading",
+          "text": "Performance Results",
+          "inlines": [
+            {
+              "text": "Performance Results"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "OpenHands Agentic Coding Sweep",
+          "inlines": [
+            {
+              "text": "OpenHands Agentic Coding Sweep"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We collected performance results for Beam NVFP4 on four GB300 GPUs with TP4 using an OpenHands multi-turn agentic coding workload. Each conversation starts with an around 74K token prompt and outputs around 220 tokens each turn, for a total of 13 turns. Successive turns reuse the prefix for a ~92% aggregate cache hit rate. We sweep concurrency across 1, 4, 8, 16, and 32 conversations and plot per-GPU token throughput (tok/s/GPU) against p50 interactivity (tok/s/user). Total throughput includes cached input tokens. These measurements use eight-token DFlash2 blocks with simulated acceptance length fixed at four and real draft tokens; they do not measure natural draft acceptance or model accuracy.",
+          "inlines": [
+            {
+              "text": "We collected performance results for Beam NVFP4 on four GB300 GPUs with TP4 using an OpenHands multi-turn agentic coding workload. Each conversation starts with an around 74K token prompt and outputs around 220 tokens each turn, for a total of 13 turns. Successive turns reuse the prefix for a ~92% aggregate cache hit rate. We sweep concurrency across 1, 4, 8, 16, and 32 conversations and plot per-GPU token throughput (tok/s/GPU) against p50 interactivity (tok/s/user). Total throughput includes cached input tokens. These measurements use eight-token DFlash2 blocks with simulated acceptance length fixed at four and real draft tokens; they do not measure natural draft acceptance or model accuracy."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9e4c1a9837d9680d990d3cf80e19f7ca38247c45be1918b80c2f06b070f04981.webp",
+          "alt": "Beam NVFP4 OpenHands performance on four GB300 GPUs with TP4/EP1: total throughput per GPU versus p50 interactivity."
+        },
+        {
+          "type": "heading",
+          "text": "AgentX Agentic Coding Sweep",
+          "inlines": [
+            {
+              "text": "AgentX Agentic Coding Sweep"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "In collaboration with NVIDIA, we collected performance results for Beam NVFP4 on four GB300 GPUs with TP4/EP1 using AgentX, SemiAnalysis's replayer for recorded multi-turn agentic coding traces. AgentX reproduces the prompt sizes, prefix sharing, subagent fan-out and inter-turn timing of real coding-agent sessions, so the results reflect \"realistic agentic load\". Requests in a session share a long prefix, so 92% to 96% of input tokens hit the prefix cache. FP8 KV cache was utilized, and the selected speculative block size was 8. We sweep concurrency from 1 to 96 sessions and plot per-GPU token throughput (tok/s/GPU) against p90 interactivity (tok/s/user). At concurrency 96, throughput reaches 83,504 tok/s/GPU at 43.9 tok/s/user; a single session runs at 348.0 tok/s/user.",
+          "inlines": [
+            {
+              "text": "In collaboration with NVIDIA, we collected performance results for Beam NVFP4 on four GB300 GPUs with TP4/EP1 using "
+            },
+            {
+              "href": "https://github.com/SemiAnalysisAI/agentx-harness",
+              "text": "AgentX"
+            },
+            {
+              "text": ", SemiAnalysis's replayer for recorded multi-turn agentic coding traces. AgentX reproduces the prompt sizes, prefix sharing, subagent fan-out and inter-turn timing of real coding-agent sessions, so the results reflect \"realistic agentic load\". Requests in a session share a long prefix, so 92% to 96% of input tokens hit the prefix cache. FP8 KV cache was utilized, and the selected speculative block size was 8. We sweep concurrency from 1 to 96 sessions and plot per-GPU token throughput (tok/s/GPU) against p90 interactivity (tok/s/user). At concurrency 96, throughput reaches 83,504 tok/s/GPU at 43.9 tok/s/user; a single session runs at 348.0 tok/s/user."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9b61ee655794d55a6f5535a4ffe68d0df9d9f1c90dc82b73f29868fe1c72e9dc.webp",
+          "alt": "Beam NVFP4 AgentX performance on GB300: total throughput per GPU versus p90 interactivity."
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgments",
+          "inlines": [
+            {
+              "text": "Acknowledgments"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We would like to express our gratitude to the following organizations and individuals, for their contribution to the development of the SGL integration of Beam, and for extensively benchmarking its performance.",
+          "inlines": [
+            {
+              "text": "We would like to express our gratitude to the following organizations and individuals, for their contribution to the development of the SGL integration of Beam, and for extensively benchmarking its performance."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang Community/RadixArk: Jimmy Shong, Andy Ye, Xiaoyu Zhang, Yanbin Jiang, Qiaolin Yu, Alex Nails, Yuhao Yang",
+          "inlines": [
+            {
+              "text": "SGLang Community/RadixArk: Jimmy Shong, Andy Ye, Xiaoyu Zhang, Yanbin Jiang, Qiaolin Yu, Alex Nails, Yuhao Yang"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reflection: Aksel Joonas Reedi, Aymen Kallala, Christopher Vanderschuere, Ewen Wang, Florent Gbelidji, George Antoniadis, Joel Gustafson, Yoni Gozlan, Iaroslav Geraskin, Kai Wu, Neil Gollapudi, Renault Young, Asfandyar Qureshi, Thibaut Barroyer, Matthias Reso.",
+          "inlines": [
+            {
+              "text": "Reflection: Aksel Joonas Reedi, Aymen Kallala, Christopher Vanderschuere, Ewen Wang, Florent Gbelidji, George Antoniadis, Joel Gustafson, Yoni Gozlan, Iaroslav Geraskin, Kai Wu, Neil Gollapudi, Renault Young, Asfandyar Qureshi, Thibaut Barroyer, Matthias Reso."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVIDIA: Jinze Xue, Dong Xu, Michael Loh, Matthew Radzihovsky",
+          "inlines": [
+            {
+              "text": "NVIDIA: Jinze Xue, Dong Xu, Michael Loh, Matthew Radzihovsky"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Appendix",
+          "inlines": [
+            {
+              "text": "Appendix"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "OpenHands Reproduction",
+          "inlines": [
+            {
+              "text": "OpenHands Reproduction"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The scripts behind the Beam OpenHands sweep are in benchmark/beam_openhands on the public bench-openhands-gb300-sweep-beam branch. Start from a prepared Beam docker image, then use reproduce.py to install the isolated client, build the dataset, and run concurrency levels 1, 4, 8, 16, and 32 on one 4 × NVIDIA GB300 node, using TP4/EP1.",
+          "inlines": [
+            {
+              "text": "The scripts behind the Beam OpenHands sweep are in "
+            },
+            {
+              "href": "https://github.com/sgl-project/sglang/tree/bench-openhands-gb300-sweep-beam/benchmark/beam_openhands",
+              "code": true,
+              "text": "benchmark/beam_openhands"
+            },
+            {
+              "text": " on the public "
+            },
+            {
+              "code": true,
+              "text": "bench-openhands-gb300-sweep-beam"
+            },
+            {
+              "text": " branch. Start from a prepared Beam docker "
+            },
+            {
+              "href": "https://hub.docker.com/layers/lmsysorg/sglang/beam",
+              "text": "image"
+            },
+            {
+              "text": ", then use reproduce.py to install the isolated client, build the dataset, and run concurrency levels 1, 4, 8, 16, and 32 on one 4 × NVIDIA GB300 node, using TP4/EP1."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The server is SGLang from that branch. The client is EvalScope at commit acd09b44, using its swe_smith multi-turn workload with the Beam replay adapter. HiCache is configured at 88 GB per rank for concurrency 16 and 32, and disabled at lower concurrency.",
+          "inlines": [
+            {
+              "text": "The server is SGLang from that branch. The client is EvalScope at commit acd09b44, using its swe_smith multi-turn workload with the Beam replay adapter. HiCache is configured at 88 GB per rank for concurrency 16 and 32, and disabled at lower concurrency."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The workload is an OpenHands multi-turn agentic replay built from nebius/SWE-rebench-openhands-trajectories and padded with nvidia/OpenScienceReasoning-2 text: 13 turns per conversation, 74,160 bare input tokens on the first turn, 753 additional input tokens on each later turn, and 220 output tokens per turn. Growing conversation history produces approximately 80K prompt tokens per request and a 92% aggregate prefix-cache hit rate.",
+          "inlines": [
+            {
+              "text": "The workload is an OpenHands multi-turn agentic replay built from nebius/SWE-rebench-openhands-trajectories and padded with nvidia/OpenScienceReasoning-2 text: 13 turns per conversation, 74,160 bare input tokens on the first turn, 753 additional input tokens on each later turn, and 220 output tokens per turn. Growing conversation history produces approximately 80K prompt tokens per request and a 92% aggregate prefix-cache hit rate."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The server launch commands are as follows, with <cc> setting both the maximum running requests and the decode CUDA-graph batch cap",
+          "inlines": [
+            {
+              "text": "The server launch commands are as follows, with <cc> setting both the maximum running requests and the decode CUDA-graph batch cap"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "export MODEL_PATH=/models/Beam-1.0-501B-A23B-NVFP4\nexport DRAFT_PATH=/models/Beam-1.0-501B-A23B-DFlash2\nexport SGLANG_SIMULATE_ACC_LEN=4\nexport SGLANG_SIMULATE_ACC_METHOD=match-expected\nexport SGLANG_SIMULATE_ACC_TOKEN_MODE=real-draft-token\nexport SGLANG_RESPONSE_TEMPLATE_TURN_GRAMMAR=0\n\nexport OMP_NUM_THREADS=4 MKL_NUM_THREADS=4\nexport PYTHONNOUSERSITE=1 TZ=UTC\nexport HF_HUB_OFFLINE=1\n\nCC=16  # Set to 16 or 32\npython3 -m sglang.launch_server \\\n    --model-path \"$MODEL_PATH\" \\\n    --served-model-name beam \\\n    --quantization modelopt_fp4 \\\n    --tp-size 4 \\\n    --ep-size 1 \\\n    --attn-dp-size 1 \\\n    --nnodes 1 \\\n    --node-rank 0 \\\n    --dist-init-addr 127.0.0.1:39746 \\\n    --attention-backend trtllm_mha \\\n    --page-size 64 \\\n    --mem-fraction-static 0.80 \\\n    --enable-unified-memory \\\n    --reasoning-parser beam \\\n    --tool-call-parser beam \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path \"$DRAFT_PATH\" \\\n    --speculative-draft-attention-backend trtllm_mha \\\n    --speculative-num-draft-tokens 8 \\\n    --enable-hierarchical-cache \\\n    --hicache-size 88 \\\n    --max-running-requests \"$CC\" \\\n    --cuda-graph-max-bs-decode \"$CC\" \\\n    --context-length 1048576 \\\n    --chunked-prefill-size 16384 \\\n    --prefill-decode-interval 0 \\\n    --enable-cache-report \\\n    --enable-metrics \\\n    --tokenizer-worker-num 1 \\\n    --host 0.0.0.0 \\\n    --port 30080\n\nCC=1  # Set to 1, 4, or 8\npython3 -m sglang.launch_server \\\n    --model-path \"$MODEL_PATH\" \\\n    --served-model-name beam \\\n    --quantization modelopt_fp4 \\\n    --tp-size 4 \\\n    --ep-size 1 \\\n    --attn-dp-size 1 \\\n    --nnodes 1 \\\n    --node-rank 0 \\\n    --dist-init-addr 127.0.0.1:39746 \\\n    --attention-backend trtllm_mha \\\n    --page-size 64 \\\n    --mem-fraction-static 0.80 \\\n    --enable-unified-memory \\\n    --reasoning-parser beam \\\n    --tool-call-parser beam \\\n    --speculative-algorithm DFLASH \\\n    --speculative-draft-model-path \"$DRAFT_PATH\" \\\n    --speculative-draft-attention-backend trtllm_mha \\\n    --speculative-num-draft-tokens 8 \\\n    --max-running-requests \"$CC\" \\\n    --cuda-graph-max-bs-decode \"$CC\" \\\n    --context-length 1048576 \\\n    --chunked-prefill-size 16384 \\\n    --prefill-decode-interval 0 \\\n    --enable-cache-report \\\n    --enable-metrics \\\n    --tokenizer-worker-num 1 \\\n    --host 0.0.0.0 \\\n    --port 30080\n"
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:23:10.908813Z",
+  "contentMode": "full"
+}

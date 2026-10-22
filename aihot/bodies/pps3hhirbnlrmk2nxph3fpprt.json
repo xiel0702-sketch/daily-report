@@ -1,0 +1,1346 @@
+{
+  "schemaVersion": 1,
+  "id": "pps3hhirbnlrmk2nxph3fpprt",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/pps3hhirbnlrmk2nxph3fpprt",
+  "fetchedAt": "2026-10-22T13:25:08.944304Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Meta / Llama",
+    "推理能力",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "推理",
+    "Meta"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/880eac6b47ecb41df1484ad0de3b22802b7813163b9ea471d36da27e9c76e4b9.webp",
+          "alt": "Day 0 support for Muse Spark Open on vLLM"
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open 在 vLLM 上的 Day 0 支持",
+          "inlines": [
+            {
+              "text": "Muse Spark Open 在 vLLM 上的 Day 0 支持"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们很高兴与 Meta Superintelligence Labs 合作，在 Day 0 就将 Muse Spark Open 引入 vLLM。Muse Spark Open 是一个开放权重的稀疏专家混合（MoE）模型，专为长时程智能体编程工作流打造。它是迄今为止能力最强的美国开放权重模型，也是 Muse Glimmer 30B 蒸馏自的模型。",
+          "inlines": [
+            {
+              "text": "我们很高兴与 Meta Superintelligence Labs 合作，在 Day 0 就将 Muse Spark Open 引入 vLLM。Muse Spark Open 是一个开放权重的稀疏专家混合（MoE）模型，专为长时程智能体编程工作流打造。它是迄今为止能力最强的美国开放权重模型，也是 Muse Glimmer 30B 蒸馏自的模型。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "亮点",
+          "inlines": [
+            {
+              "text": "亮点"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "架构：总参数 816B，每 token 激活 42B，上下文窗口 1M。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "量化：Meta 以 BF16 和 NVFP4 两种格式发布了该模型。MXFP4 权重由 AMD 发布。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "多模态：通过与其 Muse Glimmer 相同的 Perception Encoder 实现原生图像和视频感知，并额外支持音频。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "并行：在 Nvidia 和 AMD 上均支持张量并行和流水线并行。在 Nvidia 上支持 EP、TEP、DEP 和 PD 分离。还提供对 TPU 的初步支持。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "投机解码：我们训练了一个 DSpark 草稿模型，在 CUDA 和 ROCm 上均受支持，可加速模型性能，已在 SPEED bench 上测试。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "使用",
+          "inlines": [
+            {
+              "text": "使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "两家厂商均提供预构建镜像：",
+          "inlines": [
+            {
+              "text": "两家厂商均提供预构建镜像："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Nvidia：vllm/vllm-openai:muse-spark-open"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "AMD：vllm/vllm-openai-rocm:muse-spark-open"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "请注意，只有在代码（PR #61879）经过审查并合并后，该模型才会在 nightly PyPI wheel 中提供，这通常需要大约一周时间。",
+          "inlines": [
+            {
+              "text": "请注意，只有在代码（"
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/pull/61879",
+              "text": "PR #61879"
+            },
+            {
+              "text": "）经过审查并合并后，该模型才会在 nightly PyPI wheel 中提供，这通常需要大约一周时间。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# Rust frontend is recommended\nexport VLLM_USE_RUST_FRONTEND=1\n \nvllm serve meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --tensor-parallel-size 8 \\\n    --enable-expert-parallel \\\n    --max-model-len 1048576 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --enable-auto-tool-choice \\\n    --speculative-config '{\"method\":\"dspark\",\"model\": \"Inferact/Muse-Spark-Open-DSpark\",\"num_speculative_tokens\":7,\"draft_sample_method\":\"probabilistic\",\"rejection_sample_method\":\"block\",\"enable_adaptive_verification\":true}'"
+        },
+        {
+          "type": "paragraph",
+          "text": "要以纯文本方式使用该模型：",
+          "inlines": [
+            {
+              "text": "要以纯文本方式使用该模型："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  curl http://localhost:8000/v1/chat/completions \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n      \"model\": \"meta-models/Muse-Spark-Open-816B-A42B-NVFP4\",\n      \"messages\": [{\"role\": \"user\", \"content\": \"Refactor this module.\"}],\n      \"reasoning_effort\": \"xhigh\"\n    }'"
+        },
+        {
+          "type": "paragraph",
+          "text": "用于多模态感知：",
+          "inlines": [
+            {
+              "text": "用于多模态感知："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": " curl http://localhost:8000/v1/chat/completions \\\n   -H 'Content-Type: application/json' \\\n   -d '{\n     \"model\": \"meta-models/Muse-Spark-Open-816B-A42B\",\n     \"messages\": [{\"role\": \"user\", \"content\": [\n       {\"type\": \"image_url\", \"image_url\": {\"url\": \"https://example.com/screenshot.png\"}},\n       {\"type\": \"video_url\", \"video_url\": {\"url\": \"https://example.com/demo.mp4\"}},\n       {\"type\": \"audio_url\", \"audio_url\": {\"url\": \"https://example.com/clip.wav\"}},\n       {\"type\": \"text\",      \"text\": \"What is happening here, and when?\"}\n     ]}]\n   }'\n "
+        },
+        {
+          "type": "heading",
+          "text": "实现细节",
+          "inlines": [
+            {
+              "text": "实现细节"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "模型架构",
+          "inlines": [
+            {
+              "text": "模型架构"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b1c420a9b0f99a66e761985e387d16ad880ea9dab8af4b1a01e093421bb9605e.webp",
+          "alt": "Muse Spark Open model architecture"
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open 模型架构",
+          "inlines": [
+            {
+              "text": "Muse Spark Open 模型架构"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open 是一个专家混合模型，包含文本解码器在内的总参数为 816B，外加一个 2B 视觉编码器和一个小的音频编码器。解码器有 62 层，每一层都是专家混合层。以下是权重的分布：",
+          "inlines": [
+            {
+              "text": "Muse Spark Open 是一个专家混合模型，包含文本解码器在内的总参数为 816B，外加一个 2B 视觉编码器和一个小的音频编码器。解码器有 62 层，每一层都是专家混合层。以下是权重的分布："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "部分",
+          "inlines": [
+            {
+              "text": "部分"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "大小",
+          "inlines": [
+            {
+              "text": "大小"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每层 256 个专家",
+          "inlines": [
+            {
+              "text": "每层 256 个专家"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "799 B",
+          "inlines": [
+            {
+              "text": "799 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "注意力",
+          "inlines": [
+            {
+              "text": "注意力"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.5 B",
+          "inlines": [
+            {
+              "text": "13.5 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MoE 潜在投影",
+          "inlines": [
+            {
+              "text": "MoE 潜在投影"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.2 B",
+          "inlines": [
+            {
+              "text": "4.2 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "嵌入和输出层",
+          "inlines": [
+            {
+              "text": "嵌入和输出层"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.3 B",
+          "inlines": [
+            {
+              "text": "3.3 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "视觉塔（独立）",
+          "inlines": [
+            {
+              "text": "视觉塔（独立）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.9 B",
+          "inlines": [
+            {
+              "text": "1.9 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该模型架构与 Muse Glimmer 类似。对于还没用过 Muse Glimmer 的人，这个模型架构中有几处值得仔细看看。",
+          "inlines": [
+            {
+              "text": "该模型架构与 Muse Glimmer 类似。对于还没用过 Muse Glimmer 的人，这个模型架构中有几处值得仔细看看。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f47382bc71cc5bf487bef22cf592410ef2dcc21a153f0eeee7e7499881417e0a.webp",
+          "alt": "Attention block with normalization and gating"
+        },
+        {
+          "type": "paragraph",
+          "text": "带归一化和门控的注意力块",
+          "inlines": [
+            {
+              "text": "带归一化和门控的注意力块"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "三明治归一化。大多数解码器在每个块之前放置一个归一化层，得到 x + F(norm(x))。Muse Spark Open 与 Muse Glimmer 类似，在前后各放置一个，就像三明治的两片面包夹着中间的块，得到 x + post_norm(F(norm(x)))",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "三明治归一化。"
+            },
+            {
+              "text": "大多数解码器在每个块之前放置一个归一化层，得到 x + F(norm(x))。Muse Spark Open 与 Muse Glimmer 类似，在前后各放置一个，就像三明治的两片面包夹着中间的块，得到 x + post_norm(F(norm(x)))"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/742da37f277ca410928024ece2cecd48c526de12603f9e03963c17f8d067c46b.webp",
+          "alt": "Latent MoE pooler and unpooler"
+        },
+        {
+          "type": "paragraph",
+          "text": "潜在 MoE 池化器和反池化器",
+          "inlines": [
+            {
+              "text": "潜在 MoE 池化器和反池化器"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "潜在 MoE。每个专家混合（MoE）层都带有两个额外的矩阵，由该层中所有 256 个专家共享。代码称它们为池化器和反池化器，不过两者都不是通常意义上的池化，而是用于压缩和扩展维度的学习投影。池化器是一个 8192 × 4096 的矩阵，在 token 到达专家之前将其宽度减半；而反池化器之后会恢复完整宽度。因此专家完全在 4096 而非 8192 上工作，这实际上将两个专家投影层所需的参数量减半。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "潜在 MoE"
+            },
+            {
+              "text": "。每个专家混合（MoE）层都带有两个额外的矩阵，由该层中所有 256 个专家共享。代码称它们为池化器和反池化器，不过两者都不是通常意义上的池化，而是用于压缩和扩展维度的学习投影。池化器是一个 8192 × 4096 的矩阵，在 token 到达专家之前将其宽度减半；而反池化器之后会恢复完整宽度。因此专家完全在 4096 而非 8192 上工作，这实际上将两个专家投影层所需的参数量减半。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/098680592f2247919e59e9b984425b7b7c900c975bdab7234a37a33f7f982b10.webp",
+          "alt": "Hybrid sliding-window and full attention"
+        },
+        {
+          "type": "paragraph",
+          "text": "混合滑动窗口和全注意力",
+          "inlines": [
+            {
+              "text": "混合滑动窗口和全注意力"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "混合注意力。 各层在完整注意力和滑动窗口注意力（SWA）之间交替，以 4 层为一个重复周期，其中三层关注 2048 token 的窗口，第四层关注整个上下文。该周期锚定在堆栈末尾，因此最后一层始终是完整注意力层。在 62 层中，这给出 46 个窄层和 16 个宽层，其中窄层只保留最近的 KV。在 1M token 时，这使缓存仅为全完整注意力所需缓存略多于 ¼ 的量。这正是 1M 上下文长度变得可负担的原因。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "混合注意力。"
+            },
+            {
+              "text": " 各层在完整注意力和滑动窗口注意力（SWA）之间交替，以 4 层为一个重复周期，其中三层关注 2048 token 的窗口，第四层关注整个上下文。该周期锚定在堆栈末尾，因此最后一层始终是完整注意力层。在 62 层中，这给出 46 个窄层和 16 个宽层，其中窄层只保留最近的 KV。在 1M token 时，这使缓存仅为全完整注意力所需缓存略多于 ¼ 的量。这正是 1M 上下文长度变得可负担的原因。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "视觉编码器。 Muse Spark Open 使用与 Muse Glimmer 相同的 Perception Encoder，这是一个 2B 参数的塔，按图像原生分辨率读取图像，而不是将其调整为正方形。视频通过同一编码器处理：帧在加载时被采样为一系列采样视频帧，并在提示中对时间戳进行 token 化。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "视觉编码器。"
+            },
+            {
+              "text": " Muse Spark Open 使用与 Muse Glimmer 相同的 Perception Encoder，这是一个 2B 参数的塔，按图像原生分辨率读取图像，而不是将其调整为正方形。视频通过同一编码器处理：帧在加载时被采样为一系列采样视频帧，并在提示中对时间戳进行 token 化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "音频编码器。 音频以 24 kHz 的原始波形读取，每 1920 个采样，即 80ms，通过一系列变换成为一个 token。整个音频编码器只有 118M 参数。请注意，视频的音轨不会被处理。要让模型同时获得一个片段的画面和声音，请将视频和提取出的音频作为同一请求中的两个独立内容部分发送。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "音频编码器。"
+            },
+            {
+              "text": " 音频以 24 kHz 的原始波形读取，每 1920 个采样，即 80ms，通过一系列变换成为一个 token。整个音频编码器只有 118M 参数。请注意，视频的音轨不会被处理。要让模型同时获得一个片段的画面和声音，请将视频和提取出的音频作为同一请求中的两个独立内容部分发送。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "DSpark",
+          "inlines": [
+            {
+              "text": "DSpark"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "为了在 vLLM 上加速 Muse Spark Open 推理，我们使用 DSpark 训练了一个推测器，这是一种使用块扩散在单次传递中提出最多七个草稿 token 的推测解码算法。基于置信度的调度有助于在大批量大小下仍保持显著加速，而推测解码在大批量大小下传统上收益递减，如下方结果所示。",
+          "inlines": [
+            {
+              "text": "为了在 vLLM 上加速 Muse Spark Open 推理，我们使用 DSpark 训练了一个推测器，这是一种使用块扩散在单次传递中提出最多七个草稿 token 的推测解码算法。基于置信度的调度有助于在大批量大小下仍保持显著加速，而推测解码在大批量大小下传统上收益递减，如下方结果所示。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2232c8429f2800e181864bc48b2fab82275037527e390c0ba7214adecd53b3eb.webp",
+          "alt": "DSpark performance results"
+        },
+        {
+          "type": "paragraph",
+          "text": "DSpark 性能结果",
+          "inlines": [
+            {
+              "text": "DSpark 性能结果"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的推测器还使用 Muse Spark Open 的滑动窗口注意力来保持草稿轻量，即使在 1M token 上下文下也是如此。这些选择共同使其非常适合跨越各种批量大小和上下文长度的生产工作负载。",
+          "inlines": [
+            {
+              "text": "我们的推测器还使用 Muse Spark Open 的滑动窗口注意力来保持草稿轻量，即使在 1M token 上下文下也是如此。这些选择共同使其非常适合跨越各种批量大小和上下文长度的生产工作负载。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要启用它，请在服务器启动时添加以下内容：",
+          "inlines": [
+            {
+              "text": "要启用它，请在服务器启动时添加以下内容："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "--speculative-config '{\"method\":\"dspark\",\"model\": \"Inferact/Muse-Spark-Open-DSpark\",\"num_speculative_tokens\":7,\"draft_sample_method\":\"probabilistic\",\"rejection_sample_method\":\"block\",\"enable_adaptive_verification\":true}'"
+        },
+        {
+          "type": "heading",
+          "text": "Nvidia",
+          "inlines": [
+            {
+              "text": "Nvidia"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Nvidia 团队通过融合归一化、门控和残差内核，改进了 Muse Spark Open 在 FlashInfer 和 vLLM 上的推理；融合 MoE 最终化与张量并行通信和 RMSNorm；新的低延迟 BF16 GEMM 实现并减少编译开销；带融合 MNNVL 集合通信的 TEP pooler/unpooler 分片；由 norm 的 FP32 输出馈入的 TF32 router GEMM；以及数据移动、硬件支持和运行时可靠性方面的改进。",
+          "inlines": [
+            {
+              "text": "Nvidia 团队通过融合归一化、门控和残差内核，改进了 Muse Spark Open 在 FlashInfer 和 vLLM 上的推理；融合 MoE 最终化与张量并行通信和 RMSNorm；新的低延迟 BF16 GEMM 实现并减少编译开销；带融合 MNNVL 集合通信的 TEP pooler/unpooler 分片；由 norm 的 FP32 输出馈入的 TF32 router GEMM；以及数据移动、硬件支持和运行时可靠性方面的改进。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "AMD",
+          "inlines": [
+            {
+              "text": "AMD"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "感谢 AMD 团队，我们还在 AMD Instinct™ MI355X GPU 上支持了该模型，提供 FP8 和 MXFP4 量化格式，从而带来更好的推理性能和部署效率。请注意，ROCm 目前同时支持张量并行和流水线并行。",
+          "inlines": [
+            {
+              "text": "感谢 AMD 团队，我们还在 AMD Instinct™ MI355X GPU 上支持了该模型，提供 FP8 和 MXFP4 量化格式，从而带来更好的推理性能和部署效率。请注意，ROCm 目前同时支持张量并行和流水线并行。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TPU",
+          "inlines": [
+            {
+              "text": "TPU"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 TorchTPU 之上添加了对 TPU 上 Muse Spark Open 的支持。请联系我们或 Google 获取代码访问权限。我们还为 Muse Spark Open 构建了 megakernels。使用 DSpark 推测解码（接受长度 = 6），它们在 4 个 TPU v7 芯片上达到超过 650 tokens/sec，在 8 个芯片上达到超过 960 tokens/sec。不使用推测解码时，它们仍分别提供超过 270 和 350 tokens/sec。",
+          "inlines": [
+            {
+              "text": "我们在 TorchTPU 之上添加了对 TPU 上 Muse Spark Open 的支持。请联系我们或 Google 获取代码访问权限。我们还为 Muse Spark Open 构建了 "
+            },
+            {
+              "href": "https://github.com/Inferact/tpu-megakernels",
+              "text": "megakernels"
+            },
+            {
+              "text": "。使用 DSpark 推测解码（接受长度 = 6），它们在 4 个 TPU v7 芯片上达到超过 650 tokens/sec，在 8 个芯片上达到超过 960 tokens/sec。不使用推测解码时，它们仍分别提供超过 270 和 350 tokens/sec。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "vLLM 中的强化学习",
+          "inlines": [
+            {
+              "text": "vLLM 中的强化学习"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM 还从第 0 天起就支持在 Muse Spark Open 上进行 LoRA RL，作为 rollout 引擎，并以 Verl FSDP2 作为训练器。vLLM 提供原始 NVFP4 checkpoint，并在其上应用 LoRA adapter。训练器在相同权重的 BF16 反量化版本上运行，并且只更新 adapter（rank 32，alpha 64），其覆盖 attention、MoE latent projections 以及所有 routed experts。它还会重放 rollout 的 MoE routing（R3），并且每一步之后只有 adapter 会被同步回 vLLM。",
+          "inlines": [
+            {
+              "text": "vLLM 还从第 0 天起就支持在 Muse Spark Open 上进行 LoRA RL，作为 rollout 引擎，并以 Verl FSDP2 作为训练器。vLLM 提供原始 NVFP4 checkpoint，并在其上应用 LoRA adapter。训练器在相同权重的 BF16 反量化版本上运行，并且只更新 adapter（rank 32，alpha 64），其覆盖 attention、MoE latent projections 以及所有 routed experts。它还会重放 rollout 的 MoE routing（R3），并且每一步之后只有 adapter 会被同步回 vLLM。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 16 张 GB300 GPU 上使用 GRPO 在 DAPO-Math-17K 上训练了 150 步，每步对 32 个 prompt 各采样 8 个响应，每个响应最多 4K tokens。AIME-2024 上的准确率（mean@8）从训练前的 0.56 提升到运行结束时的 0.85。在整个运行过程中，训练器与 vLLM 的 log-probabilities 之间的 k3 KL 保持在接近 2×10⁻⁴。更多细节见 https://github.com/verl-project/verl/pull/8257。在 vLLM 生态中，Titan RL 也使用 vLLM 作为其 rollout 引擎，以提供第 0 天 RL 支持。",
+          "inlines": [
+            {
+              "text": "我们在 16 张 GB300 GPU 上使用 GRPO 在 DAPO-Math-17K 上训练了 150 步，每步对 32 个 prompt 各采样 8 个响应，每个响应最多 4K tokens。AIME-2024 上的准确率（mean@8）从训练前的 0.56 提升到运行结束时的 0.85。在整个运行过程中，训练器与 vLLM 的 log-probabilities 之间的 k3 KL 保持在接近 2×10⁻⁴。更多细节见 "
+            },
+            {
+              "href": "https://github.com/verl-project/verl/pull/8257",
+              "text": "https://github.com/verl-project/verl/pull/8257"
+            },
+            {
+              "text": "。在 vLLM 生态中，Titan RL 也使用 vLLM 作为其 rollout 引擎，以提供第 0 天 RL 支持。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5a67b825e9f728d34c032579ca3f8eeff6f8945f8867776f1016302a5a0d8d94.webp",
+          "alt": "Muse Spark Open LoRA RL results"
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open LoRA RL 结果",
+          "inlines": [
+            {
+              "text": "Muse Spark Open LoRA RL 结果"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "致谢",
+          "inlines": [
+            {
+              "text": "致谢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们衷心感谢 Meta Superintelligence Labs 的团队和 vLLM 社区，感谢他们在 vLLM 上为 Muse Spark Open 提供第 0 天支持方面的紧密合作。我们也感谢 Inferact 训练 DSpark speculator 和 TPU 集成，以及 NVIDIA 和 AMD 提供的关键硬件优化。",
+          "inlines": [
+            {
+              "text": "我们衷心感谢 Meta Superintelligence Labs 的团队和 vLLM 社区，感谢他们在 vLLM 上为 Muse Spark Open 提供第 0 天支持方面的紧密合作。我们也感谢 Inferact 训练 DSpark speculator 和 TPU 集成，以及 NVIDIA 和 AMD 提供的关键硬件优化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "贡献者：",
+          "inlines": [
+            {
+              "text": "贡献者："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Inferact：Jie Li、Zifeng Mo、Zixi Qi、Jeff Ma、Ziqi Zhao、Dakai An、Ao Shen"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Meta：Beto de Paola、Sidhartha Reddy Potu"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Nvidia：Cyrus Chang、Duncan Moss、Marek Pikulski、Seong Hee Lee"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "AMD：Andy Luo、Hongxia Yang、Haichen Zhang"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/880eac6b47ecb41df1484ad0de3b22802b7813163b9ea471d36da27e9c76e4b9.webp",
+          "alt": "Day 0 support for Muse Spark Open on vLLM"
+        },
+        {
+          "type": "paragraph",
+          "text": "Day 0 support for Muse Spark Open on vLLM",
+          "inlines": [
+            {
+              "text": "Day 0 support for Muse Spark Open on vLLM"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We're excited to have worked with Meta Superintelligence Labs to bring Muse Spark Open to vLLM on day 0. Muse Spark Open is an open-weight sparse mixture-of-experts (MoE) model, built for long-horizon agentic coding workflows. It is the most capable US open-weights model to date and it is the model Muse Glimmer 30B was distilled from.",
+          "inlines": [
+            {
+              "text": "We're excited to have worked with Meta Superintelligence Labs to bring Muse Spark Open to vLLM on day 0. Muse Spark Open is an open-weight sparse mixture-of-experts (MoE) model, built for long-horizon agentic coding workflows. It is the most capable US open-weights model to date and it is the model Muse Glimmer 30B was distilled from."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Highlights",
+          "inlines": [
+            {
+              "text": "Highlights"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Architecture: 816B total parameters, 42B active per token with a 1M context window."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Quantization: Meta released the model in both BF16 and NVFP4. MXFP4 weights were released by AMD."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Multimodal: Native image and video perception through the same Perception Encoder as Muse Glimmer, with additional audio support."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Parallelism: Tensor Parallelism and Pipeline Parallelism on both Nvidia and AMD. EP, TEP, DEP and PD disaggregation on Nvidia. Initial support on TPU is also available."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Speculative decoding: We have trained a DSpark draft model, supported on both CUDA and ROCm that accelerates the model performance, tested on the SPEED bench."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Usage",
+          "inlines": [
+            {
+              "text": "Usage"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Prebuilt images are available for both vendors:",
+          "inlines": [
+            {
+              "text": "Prebuilt images are available for both vendors:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Nvidia: vllm/vllm-openai:muse-spark-open"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "AMD: vllm/vllm-openai-rocm:muse-spark-open"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Note that the model will only be available at nightly PyPI wheel after the code (PR #61879) is reviewed and merged, which usually takes about a week.",
+          "inlines": [
+            {
+              "text": "Note that the model will only be available at nightly PyPI wheel after the code ("
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/pull/61879",
+              "text": "PR #61879"
+            },
+            {
+              "text": ") is reviewed and merged, which usually takes about a week."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# Rust frontend is recommended\nexport VLLM_USE_RUST_FRONTEND=1\n \nvllm serve meta-models/Muse-Spark-Open-816B-A42B-NVFP4 \\\n    --tensor-parallel-size 8 \\\n    --enable-expert-parallel \\\n    --max-model-len 1048576 \\\n    --reasoning-parser muse \\\n    --tool-call-parser muse \\\n    --enable-auto-tool-choice \\\n    --speculative-config '{\"method\":\"dspark\",\"model\": \"Inferact/Muse-Spark-Open-DSpark\",\"num_speculative_tokens\":7,\"draft_sample_method\":\"probabilistic\",\"rejection_sample_method\":\"block\",\"enable_adaptive_verification\":true}'"
+        },
+        {
+          "type": "paragraph",
+          "text": "To use this model with plain text:",
+          "inlines": [
+            {
+              "text": "To use this model with plain text:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  curl http://localhost:8000/v1/chat/completions \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n      \"model\": \"meta-models/Muse-Spark-Open-816B-A42B-NVFP4\",\n      \"messages\": [{\"role\": \"user\", \"content\": \"Refactor this module.\"}],\n      \"reasoning_effort\": \"xhigh\"\n    }'"
+        },
+        {
+          "type": "paragraph",
+          "text": "For multimodal perception:",
+          "inlines": [
+            {
+              "text": "For multimodal perception:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": " curl http://localhost:8000/v1/chat/completions \\\n   -H 'Content-Type: application/json' \\\n   -d '{\n     \"model\": \"meta-models/Muse-Spark-Open-816B-A42B\",\n     \"messages\": [{\"role\": \"user\", \"content\": [\n       {\"type\": \"image_url\", \"image_url\": {\"url\": \"https://example.com/screenshot.png\"}},\n       {\"type\": \"video_url\", \"video_url\": {\"url\": \"https://example.com/demo.mp4\"}},\n       {\"type\": \"audio_url\", \"audio_url\": {\"url\": \"https://example.com/clip.wav\"}},\n       {\"type\": \"text\",      \"text\": \"What is happening here, and when?\"}\n     ]}]\n   }'\n "
+        },
+        {
+          "type": "heading",
+          "text": "Implementation details",
+          "inlines": [
+            {
+              "text": "Implementation details"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Model architecture",
+          "inlines": [
+            {
+              "text": "Model architecture"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b1c420a9b0f99a66e761985e387d16ad880ea9dab8af4b1a01e093421bb9605e.webp",
+          "alt": "Muse Spark Open model architecture"
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open model architecture",
+          "inlines": [
+            {
+              "text": "Muse Spark Open model architecture"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open is a mixture-of-experts model with 816B total parameters including the text decoder, plus a 2B vision encoder and a small audio encoder alongside it. The decoder has 62 layers, and every one of them is a mixture-of-experts layer. Here is where the weights sit:",
+          "inlines": [
+            {
+              "text": "Muse Spark Open is a mixture-of-experts model with 816B total parameters including the text decoder, plus a 2B vision encoder and a small audio encoder alongside it. The decoder has 62 layers, and every one of them is a mixture-of-experts layer. Here is where the weights sit:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "part",
+          "inlines": [
+            {
+              "text": "part"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "size",
+          "inlines": [
+            {
+              "text": "size"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "256 experts per layer",
+          "inlines": [
+            {
+              "text": "256 experts per layer"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "799 B",
+          "inlines": [
+            {
+              "text": "799 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "attention",
+          "inlines": [
+            {
+              "text": "attention"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.5 B",
+          "inlines": [
+            {
+              "text": "13.5 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MoE latent projections",
+          "inlines": [
+            {
+              "text": "MoE latent projections"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.2 B",
+          "inlines": [
+            {
+              "text": "4.2 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "embedding and output layer",
+          "inlines": [
+            {
+              "text": "embedding and output layer"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.3 B",
+          "inlines": [
+            {
+              "text": "3.3 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vision tower (separate)",
+          "inlines": [
+            {
+              "text": "vision tower (separate)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.9 B",
+          "inlines": [
+            {
+              "text": "1.9 B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The model architecture is similar to Muse Glimmer. For folks who haven't used Muse Glimmer. There are a few things in this model architecture worth a closer look.",
+          "inlines": [
+            {
+              "text": "The model architecture is similar to Muse Glimmer. For folks who haven't used Muse Glimmer. There are a few things in this model architecture worth a closer look."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f47382bc71cc5bf487bef22cf592410ef2dcc21a153f0eeee7e7499881417e0a.webp",
+          "alt": "Attention block with normalization and gating"
+        },
+        {
+          "type": "paragraph",
+          "text": "Attention block with normalization and gating",
+          "inlines": [
+            {
+              "text": "Attention block with normalization and gating"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sandwich normalization. Most decoders put one normalization layer before each block, giving x + F(norm(x)) Muse Spark Open, similar to Muse Glimmer, place one before and one after, like the two slices of a sandwich with the block sitting in between, giving x + post_norm(F(norm(x)))",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Sandwich normalization."
+            },
+            {
+              "text": " Most decoders put one normalization layer before each block, giving x + F(norm(x)) Muse Spark Open, similar to Muse Glimmer, place one before and one after, like the two slices of a sandwich with the block sitting in between, giving x + post_norm(F(norm(x)))"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/742da37f277ca410928024ece2cecd48c526de12603f9e03963c17f8d067c46b.webp",
+          "alt": "Latent MoE pooler and unpooler"
+        },
+        {
+          "type": "paragraph",
+          "text": "Latent MoE pooler and unpooler",
+          "inlines": [
+            {
+              "text": "Latent MoE pooler and unpooler"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Latent MoE. Every mixture-of-experts (MoE) layer carries two extra matrices, shared by all 256 experts in that layer. The code calls them the pooler and unpooler, though neither is pooling in the usual sense, instead both are learned projections to squeeze and expand the dimensions. The pooler is an 8192 × 4096 matrix that halves each token's width before it reaches the experts; while the unpooler restores the full width afterwards. The experts therefore work entirely at 4096 rather than 8192, which effectively halved the number of parameters required in the two expert projection layers.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Latent MoE"
+            },
+            {
+              "text": ". Every mixture-of-experts (MoE) layer carries two extra matrices, shared by all 256 experts in that layer. The code calls them the pooler and unpooler, though neither is pooling in the usual sense, instead both are learned projections to squeeze and expand the dimensions. The pooler is an 8192 × 4096 matrix that halves each token's width before it reaches the experts; while the unpooler restores the full width afterwards. The experts therefore work entirely at 4096 rather than 8192, which effectively halved the number of parameters required in the two expert projection layers."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/098680592f2247919e59e9b984425b7b7c900c975bdab7234a37a33f7f982b10.webp",
+          "alt": "Hybrid sliding-window and full attention"
+        },
+        {
+          "type": "paragraph",
+          "text": "Hybrid sliding-window and full attention",
+          "inlines": [
+            {
+              "text": "Hybrid sliding-window and full attention"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hybrid attention. Layers alternate between full attention and Sliding Window Attention (SWA) on a repeating cycle of 4 with three attending to a 2048-token window and the fourth looking at the whole context. The cycle is anchored to the end of the stack so the final layer is always a full attention layer. Across 62 layers, that gives 46 narrow layers and 16 wide ones where the narrow layers only hold recent KV. At 1M tokens, this brings the cache to just over ¼ of what all-full attention would need. This is what makes 1M context length affordable.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Hybrid attention."
+            },
+            {
+              "text": " Layers alternate between full attention and Sliding Window Attention (SWA) on a repeating cycle of 4 with three attending to a 2048-token window and the fourth looking at the whole context. The cycle is anchored to the end of the stack so the final layer is always a full attention layer. Across 62 layers, that gives 46 narrow layers and 16 wide ones where the narrow layers only hold recent KV. At 1M tokens, this brings the cache to just over ¼ of what all-full attention would need. This is what makes 1M context length affordable."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Vision Encoder. Muse Spark Open uses the same Perception Encoder as Muse Glimmer, a 2B parameter tower that reads images at their native resolution, rather than resizing them to a square. Videos run through the same encoder: frames are sampled at load time as a series of sampled video frames with timestamp tokenized in the prompt.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Vision Encoder."
+            },
+            {
+              "text": " Muse Spark Open uses the same Perception Encoder as Muse Glimmer, a 2B parameter tower that reads images at their native resolution, rather than resizing them to a square. Videos run through the same encoder: frames are sampled at load time as a series of sampled video frames with timestamp tokenized in the prompt."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Audio Encoder. Audio is read as raw waveform at 24 kHz and Every 1920 samples, i.e. 80ms become one token through a series of transformations. The whole audio encoder is just 118M parameters. Note that the video's audio track is not processed. To give the model both the pictures and the sound of a clip, send the video and the extracted audio as two separate content parts in the same request.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Audio Encoder."
+            },
+            {
+              "text": " Audio is read as raw waveform at 24 kHz and Every 1920 samples, i.e. 80ms become one token through a series of transformations. The whole audio encoder is just 118M parameters. Note that the video's audio track is not processed. To give the model both the pictures and the sound of a clip, send the video and the extracted audio as two separate content parts in the same request."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "DSpark",
+          "inlines": [
+            {
+              "text": "DSpark"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "To accelerate Muse Spark Open inference on vLLM, we trained a speculator using DSpark, a speculative decoding algorithm that uses block diffusion to propose up to seven draft tokens in a single pass. Confidence-based scheduling helps sustain significant speedups even at large batch sizes, where speculative decoding traditionally offers diminishing returns, as shown in the results below.",
+          "inlines": [
+            {
+              "text": "To accelerate Muse Spark Open inference on vLLM, we trained a speculator using DSpark, a speculative decoding algorithm that uses block diffusion to propose up to seven draft tokens in a single pass. Confidence-based scheduling helps sustain significant speedups even at large batch sizes, where speculative decoding traditionally offers diminishing returns, as shown in the results below."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2232c8429f2800e181864bc48b2fab82275037527e390c0ba7214adecd53b3eb.webp",
+          "alt": "DSpark performance results"
+        },
+        {
+          "type": "paragraph",
+          "text": "DSpark performance results",
+          "inlines": [
+            {
+              "text": "DSpark performance results"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our speculator also uses the Muse Spark Open sliding-window attention to keep drafting lightweight, even with a 1M-token context. Together, these choices make it well suited to production workloads spanning a wide range of batch sizes and context lengths.",
+          "inlines": [
+            {
+              "text": "Our speculator also uses the Muse Spark Open sliding-window attention to keep drafting lightweight, even with a 1M-token context. Together, these choices make it well suited to production workloads spanning a wide range of batch sizes and context lengths."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To enable it, add this when the server starts:",
+          "inlines": [
+            {
+              "text": "To enable it, add this when the server starts:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "--speculative-config '{\"method\":\"dspark\",\"model\": \"Inferact/Muse-Spark-Open-DSpark\",\"num_speculative_tokens\":7,\"draft_sample_method\":\"probabilistic\",\"rejection_sample_method\":\"block\",\"enable_adaptive_verification\":true}'"
+        },
+        {
+          "type": "heading",
+          "text": "Nvidia",
+          "inlines": [
+            {
+              "text": "Nvidia"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Nvidia team improved Muse Spark Open inference across FlashInfer and vLLM through fused normalization, gating, and residual kernels; fused MoE finalization with tensor-parallel communication and RMSNorm; a new low-latency BF16 GEMM implementation and reduced compilation overhead; TEP pooler/unpooler sharding with fused MNNVL collectives; TF32 router GEMM fed by the norm's FP32 output; and improvements to data movement, hardware support, and runtime reliability.",
+          "inlines": [
+            {
+              "text": "Nvidia team improved Muse Spark Open inference across FlashInfer and vLLM through fused normalization, gating, and residual kernels; fused MoE finalization with tensor-parallel communication and RMSNorm; a new low-latency BF16 GEMM implementation and reduced compilation overhead; TEP pooler/unpooler sharding with fused MNNVL collectives; TF32 router GEMM fed by the norm's FP32 output; and improvements to data movement, hardware support, and runtime reliability."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "AMD",
+          "inlines": [
+            {
+              "text": "AMD"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Thanks to the AMD team, we have also supported the model on AMD Instinct™ MI355X GPUs, in both FP8 and MXFP4 quantized formats, providing improved inference performance and deployment efficiency. Note that ROCm currently supports both Tensor-Parallel and Pipeline-Parallelism.",
+          "inlines": [
+            {
+              "text": "Thanks to the AMD team, we have also supported the model on AMD Instinct™ MI355X GPUs, in both FP8 and MXFP4 quantized formats, providing improved inference performance and deployment efficiency. Note that ROCm currently supports both Tensor-Parallel and Pipeline-Parallelism."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TPU",
+          "inlines": [
+            {
+              "text": "TPU"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We have added support for Muse Spark Open on TPU on top of TorchTPU. Please contact us or Google for code access. We have also built megakernels for Muse Spark Open. With DSpark speculative decoding (acceptance length = 6), they reach over 650 tokens/sec on 4 TPU v7 chips and over 960 tokens/sec on 8 chips. Without speculative decoding, they still deliver over 270 and 350 tokens/sec, respectively.",
+          "inlines": [
+            {
+              "text": "We have added support for Muse Spark Open on TPU on top of TorchTPU. Please contact us or Google for code access. We have also built "
+            },
+            {
+              "href": "https://github.com/Inferact/tpu-megakernels",
+              "text": "megakernels"
+            },
+            {
+              "text": " for Muse Spark Open. With DSpark speculative decoding (acceptance length = 6), they reach over 650 tokens/sec on 4 TPU v7 chips and over 960 tokens/sec on 8 chips. Without speculative decoding, they still deliver over 270 and 350 tokens/sec, respectively."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Reinforcement learning in vLLM",
+          "inlines": [
+            {
+              "text": "Reinforcement learning in vLLM"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM also supports LoRA RL on Muse Spark Open from day 0, serving as the rollout engine with Verl FSDP2 as the trainer. vLLM serves the original NVFP4 checkpoint with the LoRA adapter applied on top. The trainer runs on a BF16 dequantization of the same weights and updates only the adapter (rank 32, alpha 64), which covers attention, the MoE latent projections and all routed experts. It also replays the rollout’s MoE routing (R3), and only the adapter is synced back to vLLM after each step.",
+          "inlines": [
+            {
+              "text": "vLLM also supports LoRA RL on Muse Spark Open from day 0, serving as the rollout engine with Verl FSDP2 as the trainer. vLLM serves the original NVFP4 checkpoint with the LoRA adapter applied on top. The trainer runs on a BF16 dequantization of the same weights and updates only the adapter (rank 32, alpha 64), which covers attention, the MoE latent projections and all routed experts. It also replays the rollout’s MoE routing (R3), and only the adapter is synced back to vLLM after each step."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We trained with GRPO on DAPO-Math-17K for 150 steps on 16 GB300 GPUs, sampling 8 responses for each of 32 prompts per step with up to 4K tokens per response. The accuracy on AIME-2024 (mean@8) went from 0.56 before training to 0.85 by the end of the run. Throughout the run, the k3 KL between the trainer’s and vLLM’s log-probabilities held near 2×10⁻⁴. More details are available in https://github.com/verl-project/verl/pull/8257. In the vLLM ecosystem, Titan RL also uses vLLM as its rollout engine to provide day-0 RL support.",
+          "inlines": [
+            {
+              "text": "We trained with GRPO on DAPO-Math-17K for 150 steps on 16 GB300 GPUs, sampling 8 responses for each of 32 prompts per step with up to 4K tokens per response. The accuracy on AIME-2024 (mean@8) went from 0.56 before training to 0.85 by the end of the run. Throughout the run, the k3 KL between the trainer’s and vLLM’s log-probabilities held near 2×10⁻⁴. More details are available in "
+            },
+            {
+              "href": "https://github.com/verl-project/verl/pull/8257",
+              "text": "https://github.com/verl-project/verl/pull/8257"
+            },
+            {
+              "text": ". In the vLLM ecosystem, Titan RL also uses vLLM as its rollout engine to provide day-0 RL support."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5a67b825e9f728d34c032579ca3f8eeff6f8945f8867776f1016302a5a0d8d94.webp",
+          "alt": "Muse Spark Open LoRA RL results"
+        },
+        {
+          "type": "paragraph",
+          "text": "Muse Spark Open LoRA RL results",
+          "inlines": [
+            {
+              "text": "Muse Spark Open LoRA RL results"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgement",
+          "inlines": [
+            {
+              "text": "Acknowledgement"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We extend our sincere gratitude to the teams at Meta Superintelligence Labs and the vLLM community for their close collaboration in delivering Day 0 support for Muse Spark Open on vLLM. We also thank Inferact for training the DSpark speculator and TPU integration, alongside NVIDIA and AMD for their vital hardware optimizations.",
+          "inlines": [
+            {
+              "text": "We extend our sincere gratitude to the teams at Meta Superintelligence Labs and the vLLM community for their close collaboration in delivering Day 0 support for Muse Spark Open on vLLM. We also thank Inferact for training the DSpark speculator and TPU integration, alongside NVIDIA and AMD for their vital hardware optimizations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Contributors:",
+          "inlines": [
+            {
+              "text": "Contributors:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Inferact: Jie Li, Zifeng Mo, Zixi Qi, Jeff Ma, Ziqi Zhao, Dakai An, Ao Shen"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Meta: Beto de Paola, Sidhartha Reddy Potu"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Nvidia: Cyrus Chang, Duncan Moss, Marek Pikulski, Seong Hee Lee"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "AMD: Andy Luo, Hongxia Yang, Haichen Zhang"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:25:15.941682Z",
+  "contentMode": "full"
+}

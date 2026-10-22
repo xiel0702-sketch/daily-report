@@ -1,0 +1,1264 @@
+{
+  "schemaVersion": 1,
+  "id": "mlusnw9gi199uld4ixj58m2cz",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/mlusnw9gi199uld4ixj58m2cz",
+  "fetchedAt": "2026-10-22T13:19:01.162544Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Google / Gemini",
+    "开源生态",
+    "部署工程",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "部署/工程",
+    "开源生态",
+    "Google"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "作为我们今天 PyTorch 更广泛发布内容的一部分，我们很高兴推出 vLLM（与 Inferact 合作开发）和 SGLang（与 RadixArk 合作开发）的原生 PyTorch 后端。",
+          "inlines": [
+            {
+              "text": "作为我们今天 PyTorch "
+            },
+            {
+              "href": "https://cloud.google.com/blog/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus",
+              "text": "更广泛发布内容"
+            },
+            {
+              "text": "的一部分，我们很高兴推出 vLLM（与 Inferact 合作开发）和 SGLang（与 RadixArk 合作开发）的原生 PyTorch 后端。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "背景",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "背景"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "多年来，TPU 一直以高性能和高效率支撑着大规模 AI 工作负载。随着智能体（agentic）和多模态工作负载的兴起，高效服务比以往任何时候都更加重要。vLLM 和 SGLang 已经通过基于 JAX 的后端在 TPU 上运行，但我们不断听到开发者表示，他们希望用 PyTorch 来自定义和调试自己的服务栈。",
+          "inlines": [
+            {
+              "text": "多年来，TPU 一直以高性能和高效率支撑着大规模 AI 工作负载。随着智能体（agentic）和多模态工作负载的兴起，高效服务比以往任何时候都更加重要。vLLM 和 SGLang 已经通过基于 JAX 的后端在 TPU 上运行，但我们不断听到开发者表示，他们希望用 PyTorch 来自定义和调试自己的服务栈。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "因此我们认真启动了 TorchTPU 项目，让 PyTorch 原生运行在 TPU 上。随后我们在其之上构建了新的 vLLM 和 SGLang 引擎。",
+          "inlines": [
+            {
+              "text": "因此我们认真启动了 "
+            },
+            {
+              "href": "https://developers.googleblog.com/torchtpu-running-pytorch-natively-on-tpus-at-google-scale/",
+              "text": "TorchTPU"
+            },
+            {
+              "text": " 项目，让 PyTorch 原生运行在 TPU 上。随后我们在其之上构建了新的 "
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm-torchtpu",
+              "text": "vLLM"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://github.com/sgl-project/sglang-torchtpu",
+              "text": "SGLang"
+            },
+            {
+              "text": " 引擎。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的目标是让 PyTorch 社区能够将模型带到 TPU 上，并使用开发者已经熟悉的工具让模型跑得更快。这些引擎自带经过优化的、可用于生产的服务特性以及自定义 Pallas 内核。",
+          "inlines": [
+            {
+              "text": "我们的目标是让 PyTorch 社区能够将模型带到 TPU 上，并使用开发者已经熟悉的工具让模型跑得更快。这些引擎自带经过优化的、可用于生产的服务特性以及自定义 Pallas 内核。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "推理栈",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "推理栈"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "大规模服务需要在技术栈的每一层进行协同设计，从芯片到编译器再到编排。今天发布的新推理引擎正处于一个集成、开放的 TPU 生态系统的核心位置。",
+          "inlines": [
+            {
+              "text": "大规模服务需要在技术栈的每一层进行协同设计，从芯片到编译器再到编排。今天发布的新推理引擎正处于一个集成、开放的 TPU 生态系统的核心位置。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "引擎概览",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "引擎概览"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "TorchTPU 让 TPU 成为原生的 PyTorch 设备。张量作为标准 PyTorch 张量在 tpu 设备上管理，没有包装类型；代码可以即时执行，也可以通过 torch.compile 使用 XLA 编译；集合通信经由 torch.distributed 完成。",
+          "inlines": [
+            {
+              "text": "TorchTPU 让 TPU 成为原生的 PyTorch 设备。张量作为标准 PyTorch 张量在 "
+            },
+            {
+              "code": true,
+              "text": "tpu"
+            },
+            {
+              "text": " 设备上管理，没有包装类型；代码可以即时执行，也可以通过 "
+            },
+            {
+              "code": true,
+              "text": "torch.compile"
+            },
+            {
+              "text": " 使用 XLA 编译；集合通信经由 "
+            },
+            {
+              "code": true,
+              "text": "torch.distributed"
+            },
+            {
+              "text": " 完成。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "由于每个设备运行自己的 PyTorch 进程，两个引擎都保留了各自框架的 worker 模型、调度器、KV 缓存管理器和 API 服务器等，并在底层添加了 TPU 实现。",
+          "inlines": [
+            {
+              "text": "由于每个设备运行自己的 PyTorch 进程，两个引擎都保留了各自框架的 worker 模型、调度器、KV 缓存管理器和 API 服务器等，并在底层添加了 TPU 实现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "大多数模型使用 vLLM 或 SGLang 中标准的上游 PyTorch 模型定义，并在内核和层实现中加入 TPU 特定的优化。用 Pallas 编写的自定义内核作为自定义算子，在编译图中直接从 PyTorch 调用。这种平台插件式设计尽可能复用了每个框架的现有能力，同时让 TPU 优化能够按自己的节奏推进。",
+          "inlines": [
+            {
+              "text": "大多数模型使用 vLLM 或 SGLang 中标准的上游 PyTorch 模型定义，并在内核和层实现中加入 TPU 特定的优化。用 Pallas 编写的自定义内核作为自定义算子，在编译图中直接从 PyTorch 调用。这种平台插件式设计尽可能复用了每个框架的现有能力，同时让 TPU 优化能够按自己的节奏推进。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "工作负载支持",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "工作负载支持"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "两个引擎都为完整的生产工作负载而构建。",
+          "inlines": [
+            {
+              "text": "两个引擎都为完整的生产工作负载而构建。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "以下是支持的特性列表：",
+          "inlines": [
+            {
+              "text": "以下是支持的特性列表："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "智能体与多轮对话："
+                },
+                {
+                  "text": "自动前缀缓存（包括混合模型）；通过 TPU Sync 将 KV 缓存卸载到主机内存和 Managed Lustre；工具调用和结构化输出"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "交互与低延迟："
+                },
+                {
+                  "text": "使用 MTP、EAGLE-3、DFlash、DSpark 和 n-gram 草稿器的投机解码"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "高吞吐批处理："
+                },
+                {
+                  "text": "结合专家并行的数据并行注意力"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "长上下文："
+                },
+                {
+                  "text": "用于预填充和解码的上下文并行；FP8 KV 缓存；主机 KV 卸载"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "分离式服务："
+                },
+                {
+                  "text": "通过 TPU Sync 在不同主机上分别进行预填充和解码，包括不同并行布局之间"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "多模态："
+                },
+                {
+                  "text": "支持图像和视频输入的视觉语言模型；嵌入模型"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "超大型模型："
+                },
+                {
+                  "text": "混合与稀疏注意力架构，跨主机的张量、数据、专家、流水线和上下文并行；FP8、FP4（MXFP4、NVFP4）、INT8 和 INT4 检查点"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "尤其是智能体工作负载会同时需要上述多项特性。由于智能体会反复重发不断扩大的多轮对话，要高效地服务它们，就需要找到已缓存的前缀而不是重新计算。两个引擎都将可复用的前缀保存在 HBM 中，并在开启主机卸载后，自动将较旧的前缀移至主机内存作为第二层。",
+          "inlines": [
+            {
+              "text": "尤其是智能体工作负载会同时需要上述多项特性。由于智能体会反复重发不断扩大的多轮对话，要高效地服务它们，就需要找到已缓存的前缀而不是重新计算。两个引擎都将可复用的前缀保存在 HBM 中，并在开启主机卸载后，自动将较旧的前缀移至主机内存作为第二层。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "使用 TPU Sync 迁移 KV 缓存",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "使用 TPU Sync 迁移 KV 缓存"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "其中两项特性让 KV cache 离开计算它的设备。分离式服务将 prefill 和 decode 运行在独立的 TPU 主机上，因此每个请求的 KV cache 都必须从 prefill 主机传输到 decode 主机。分层 KV 卸载将 HBM 中已放不下的那部分 KV cache 迁移到主机的 DRAM 以及借助 Google Cloud Managed Lustre 的二级存储，并在后续请求复用该前缀时将其取回。无论哪种方式，传输都必须与计算重叠，否则会直接增加延迟。",
+          "inlines": [
+            {
+              "text": "其中两项特性让 KV cache 离开计算它的设备。分离式服务将 prefill 和 decode 运行在独立的 TPU 主机上，因此每个请求的 KV cache 都必须从 prefill 主机传输到 decode 主机。分层 KV 卸载将 HBM 中已放不下的那部分 KV cache 迁移到主机的 DRAM 以及借助 Google Cloud Managed Lustre 的二级存储，并在后续请求复用该前缀时将其取回。无论哪种方式，传输都必须与计算重叠，否则会直接增加延迟。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "两个引擎都为此使用 TPU Sync。它是一个用于 TPU 上 KV cache 传输与管理的开源 C++ 库。它直接读取 PyTorch 张量背后的设备缓冲区，因此传输无需在主机上额外做一次暂存拷贝，并且它在 Python 之外的独立线程上运行传输，同时 prefill 和 decode 继续进行。vLLM-TorchTPU 通过 vLLM 的 KV connector 接口将其暴露出来。SGLang-TorchTPU 将其用作分离式传输后端以及 HiCache 的 I/O 后端。",
+          "inlines": [
+            {
+              "text": "两个引擎都为此使用 "
+            },
+            {
+              "href": "https://github.com/google/tpu-sync",
+              "text": "TPU Sync"
+            },
+            {
+              "text": "。它是一个用于 TPU 上 KV cache 传输与管理的开源 C++ 库。它直接读取 PyTorch 张量背后的设备缓冲区，因此传输无需在主机上额外做一次暂存拷贝，并且它在 Python 之外的独立线程上运行传输，同时 prefill 和 decode 继续进行。vLLM-TorchTPU 通过 vLLM 的 KV connector 接口将其暴露出来。SGLang-TorchTPU 将其用作分离式传输后端以及 HiCache 的 I/O 后端。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "现已在生产环境和公开基准测试中运行",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "现已在生产环境和公开基准测试中运行"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "两个引擎都已在生产环境中与预览客户一起大规模运行。为了提供透明、可复现的性能证明，我们通过社区标准的 SemiAnalysis InferenceX 项目进行公开基准测试。",
+          "inlines": [
+            {
+              "text": "两个引擎都已在生产环境中与预览客户一起大规模运行。为了提供透明、可复现的性能证明，我们通过社区标准的 SemiAnalysis InferenceX 项目进行公开基准测试。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们于 Ironwood TPU（TPU 7x）上首次提交 Qwen 3.5 的基础上，我们的工程团队进一步优化了技术栈，在高并发配置下实现了每百万 token 2.01 美分的总体最低成本。除这些改进外，我们还向 AgentX 发布了新的最先进（SOTA）性能结果，AgentX 是该项目中专门用于评估智能体长上下文和多轮工作负载的赛道。Ironwood TPU 在帕累托前沿的大部分区域领先。随着我们将更多模型和配置带上排行榜，我们期待持续更新我们的公开性能档案。",
+          "inlines": [
+            {
+              "text": "在我们于 Ironwood TPU（TPU 7x）上"
+            },
+            {
+              "href": "https://newsletter.semianalysis.com/p/tpu-inferencex-full-steam",
+              "text": "首次提交"
+            },
+            {
+              "text": " Qwen 3.5 的基础上，我们的工程团队进一步优化了技术栈，在高并发配置下实现了每百万 token 2.01 美分的总体最低成本。除这些改进外，我们还向 "
+            },
+            {
+              "href": "https://inferencex.semianalysis.com/inference/qwen-3-5?g_model=Qwen-3.5-397B-A17B&g_rundate=2026-10-19&i_seq=agentic-traces&g_tco=external&i_prec=fp8&i_xmode=interactivity",
+              "text": "AgentX"
+            },
+            {
+              "text": " 发布了新的最先进（SOTA）性能结果，AgentX 是该项目中专门用于评估智能体长上下文和多轮工作负载的赛道。Ironwood TPU 在帕累托前沿的大部分区域领先。随着我们将更多模型和配置带上排行榜，我们期待持续更新我们的公开性能档案。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们并非闭门造车地构建这些后端。通过拥抱 PyTorch 并直接与开源项目维护者合作，我们确保这些引擎保持与上游一致并坚持社区优先：",
+          "inlines": [
+            {
+              "text": "我们并非闭门造车地构建这些后端。通过拥抱 PyTorch 并直接与开源项目维护者合作，我们确保这些引擎保持与上游一致并坚持社区优先："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang-TorchTPU 是与 RadixArk（由 SGLang 的创造者创立）共同开发的",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "SGLang-TorchTPU 是"
+            },
+            {
+              "href": "https://www.lmsys.org/blog/2026-07-30-sglang-google-tpu/",
+              "bold": true,
+              "text": "与 RadixArk（由 SGLang 的创造者创立）共同开发"
+            },
+            {
+              "bold": true,
+              "text": "的"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这一合作让 SGLang 的优秀团队为 TPU 构建，交付了一个已在 Meta 生产环境中运行、并在各种严苛真实场景中经过大规模实战检验的引擎。",
+          "inlines": [
+            {
+              "text": "这一合作让 SGLang 的优秀团队为 TPU 构建，交付了一个已在 Meta 生产环境中运行、并在各种严苛真实场景中经过大规模实战检验的引擎。"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "“SGLang-TorchTPU 目前已在 Meta 的生产环境中运行，实现这一目标离不开 Meta、Google 和 SGLang 团队的三方紧密合作，使该技术栈达到生产就绪状态。它为我们提供了一个非常成熟、PyTorch 原生的服务栈，能够轻松集成到我们现有的 AI 基础设施中，并具备我们在 TPU 上高效运行前沿工作负载所需的性能、可靠性和灵活性。”Meta 的 PyTorch-TPU 负责人 Zongwei Zhou 表示。"
+        },
+        {
+          "type": "quote",
+          "text": "“在 RadixArk，TorchTPU 在我们于多种芯片上推出 SGLang 支持的过程中极大地提升了我们的开发速度。它为我们提供了一条通往原生 TPU 加速的无痛路径，将巨大的效率提升和灵活的计算选择直接传递给我们的客户，”RadixArk 首席技术官兼联合创始人 Banghua Zhu 表示。"
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM-TorchTPU 是与 Inferact（由 vLLM 的创造者创立）共同开发的",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "vLLM-TorchTPU 是"
+            },
+            {
+              "href": "https://inferact.ai/news/google-tpu-partnership",
+              "bold": true,
+              "text": "与 Inferact（由 vLLM 的创造者创立）共同开发"
+            },
+            {
+              "bold": true,
+              "text": "的"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们共同为 2.8T 参数的 Kimi K3 模型集成了一个高性能 Pallas megakernel，将整个解码步骤作为单个 kernel 运行，在 Ironwood TPU 上为单个用户提供每秒超过 700 个 token 的服务。在此基础上，Inferact 最近在 vLLM-TorchTPU 栈上为 Kimi K3 主导了我们首个初步的 AgentX 提交。这一初步里程碑已在超高交互性工作负载中展现出卓越的每 TCO 性能，并且 vLLM 和 PyTorch 生态系统在 TPU 上用于新前沿 OSS 模型引入的成熟度正在快速提升，后续提交将通过更大规模的 prefill/decode 分离来释放更高的效率。",
+          "inlines": [
+            {
+              "text": "我们共同为 2.8T 参数的 Kimi K3 模型集成了一个高性能 Pallas"
+            },
+            {
+              "href": "https://inferact.ai/blog/tpu-megakernels",
+              "text": " megakernel"
+            },
+            {
+              "text": "，将整个解码步骤作为单个 kernel 运行，在 Ironwood TPU 上为单个用户提供每秒超过 700 个 token 的服务。在此基础上，Inferact 最近在 vLLM-TorchTPU 栈上为 Kimi K3 主导了我们首个初步的 "
+            },
+            {
+              "href": "https://inferencex.semianalysis.com/inference/kimi-k3",
+              "text": "AgentX 提交"
+            },
+            {
+              "text": "。这一初步里程碑已在超高交互性工作负载中展现出卓越的每 TCO 性能，并且 vLLM 和 PyTorch 生态系统在 TPU 上用于新前沿 OSS 模型引入的成熟度正在快速提升，后续提交将通过更大规模的 prefill/decode 分离来释放更高的效率。"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "“Inferact 的使命始终是让高性能推理在整个 AI 生态系统中变得可访问、可靠且具有成本效益。我们非常高兴能合作推出 TorchTPU，并将 vLLM 的一流支持带到 TPU 上。通过将 PyTorch 优化的 TPU 能力直接桥接到 vLLM，开发者可以立即在 TPU 上运行生产工作负载，获得他们期望从我们的栈中获得的高吞吐量、低延迟和内存效率，”Inferact 首席执行官兼联合创始人 Simon Mo 表示。"
+        },
+        {
+          "type": "paragraph",
+          "text": "为促进持续的开源贡献，vLLM 还推出了首个社区贡献 TPU 容量池，为积极贡献这两个引擎的开发者提供免费 TPU 算力。请在此申请。",
+          "inlines": [
+            {
+              "text": "为促进持续的开源贡献，vLLM 还推出了首个社区贡献 TPU 容量池，为积极贡献这两个引擎的开发者提供免费 TPU 算力。请"
+            },
+            {
+              "href": "https://docs.google.com/forms/d/1Jm0uUXvcwYJRrvRojfS2RzMLjaqlt2a7lNyALFZs-nQ/viewform?edit_requested=true",
+              "text": "在此"
+            },
+            {
+              "text": "申请。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "路线图",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "路线图"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "随着模型规模增大，我们正在演进这两个引擎，使大规模 TPU 推理部署兼具高性能和高效率。生产级智能体工作负载的主要功能已得到支持。更多性能优化和高级功能正在推进中——请提交 Github issue 申请就你的需求开展合作！",
+          "inlines": [
+            {
+              "text": "随着模型规模增大，我们正在演进这两个引擎，使大规模 TPU 推理部署兼具高性能和高效率。生产级智能体工作负载的主要功能已得到支持。更多性能优化和高级功能正在推进中——请提交 Github issue 申请就你的需求开展合作！"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在这两个引擎中，大多数流行的开放模型系列均已得到支持，包括 Qwen、DeepSeek、GLM、Kimi、GPT-OSS、Gemma4 等。团队正投入资源让更多模型能够在 TPU 上原生运行，包括对新开放模型的 Day 0 支持。我们还希望为社区提供工具和 TPU 算力，以便针对其自身的工作负载和配置调优性能。",
+          "inlines": [
+            {
+              "text": "在这两个引擎中，大多数流行的开放模型系列均已得到支持，包括 Qwen、DeepSeek、GLM、Kimi、GPT-OSS、Gemma4 等。团队正投入资源让更多模型能够在 TPU 上原生运行，包括对新开放模型的 Day 0 支持。我们还希望为社区提供工具和 TPU 算力，以便针对其自身的工作负载和配置调优性能。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "关于我们的 JAX 运行时",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "关于我们的 JAX 运行时"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM-Jax 和 SGLang-JAX 仍是重要项目。两者都将继续得到维护、支持，并可供社区使用和适配。",
+          "inlines": [
+            {
+              "href": "https://github.com/vllm-project/tpu-inference",
+              "text": "vLLM-Jax"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://github.com/sgl-project/sglang-jax",
+              "text": "SGLang-JAX"
+            },
+            {
+              "text": " 仍是重要项目。两者都将继续得到维护、支持，并可供社区使用和适配。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "开始使用",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "开始使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "立即开始：",
+          "inlines": [
+            {
+              "text": "立即开始："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "vLLM-TorchTPU："
+                },
+                {
+                  "href": "https://github.com/vllm-project/vllm-torchtpu",
+                  "text": "https://github.com/vllm-project/vllm-torchtpu"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "SGLang-TorchTPU："
+                },
+                {
+                  "href": "https://github.com/sgl-project/sglang-torchtpu",
+                  "text": "https://github.com/sgl-project/sglang-torchtpu"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "TorchTPU："
+                },
+                {
+                  "href": "https://github.com/google-pytorch/torch_tpu",
+                  "text": "https://github.com/google-pytorch/torch_tpu"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "相关公告：",
+          "inlines": [
+            {
+              "text": "相关公告："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://vllm.ai/blog/2026-10-20-vllm-torchtpu",
+                  "text": "Inferact 公告"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://lmsys.org/blog/2026-10-20-sglang-torchtpu",
+                  "text": "Radixark 公告"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "As part of our broader announcements for PyTorch today, we are excited to launch native PyTorch backends for vLLM (developed in partnership with Inferact) and SGLang (developed in partnership with RadixArk).",
+          "inlines": [
+            {
+              "text": "As part of our "
+            },
+            {
+              "href": "https://cloud.google.com/blog/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus",
+              "text": "broader announcements"
+            },
+            {
+              "text": " for PyTorch today, we are excited to launch native PyTorch backends for vLLM (developed in partnership with Inferact) and SGLang (developed in partnership with RadixArk)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Background",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Background"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "For years, TPUs have powered large-scale AI workloads with high performance and efficiency. With the rise of agentic and multimodal workloads, serving efficiently is more important than ever. vLLM and SGLang already run on TPU through JAX-based backend, but we kept hearing from developers that they wanted to customize and debug their serving stack in PyTorch.",
+          "inlines": [
+            {
+              "text": "For years, TPUs have powered large-scale AI workloads with high performance and efficiency. With the rise of agentic and multimodal workloads, serving efficiently is more important than ever. vLLM and SGLang already run on TPU through JAX-based backend, but we kept hearing from developers that they wanted to customize and debug their serving stack in PyTorch."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So we started in earnest on TorchTPU, which runs PyTorch natively on TPU. We then built new vLLM and SGLang engines on top of it.",
+          "inlines": [
+            {
+              "text": "So we started in earnest on "
+            },
+            {
+              "href": "https://developers.googleblog.com/torchtpu-running-pytorch-natively-on-tpus-at-google-scale/",
+              "text": "TorchTPU"
+            },
+            {
+              "text": ", which runs PyTorch natively on TPU. We then built new "
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm-torchtpu",
+              "text": "vLLM"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://github.com/sgl-project/sglang-torchtpu",
+              "text": "SGLang"
+            },
+            {
+              "text": " engines on top of it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our goal is for the PyTorch community to bring models to TPU and make them fast using the tools developers are already familiar with. The engines come with optimized, production-ready serving features and custom Pallas kernels.",
+          "inlines": [
+            {
+              "text": "Our goal is for the PyTorch community to bring models to TPU and make them fast using the tools developers are already familiar with. The engines come with optimized, production-ready serving features and custom Pallas kernels."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The Inference Stack",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The Inference Stack"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Serving at scale requires co-design across every layer of the technology stack, from silicon to compilers to orchestration. Today's launch of new inference engines is at the central part of an integrated, open TPU ecosystem.",
+          "inlines": [
+            {
+              "text": "Serving at scale requires co-design across every layer of the technology stack, from silicon to compilers to orchestration. Today's launch of new inference engines is at the central part of an integrated, open TPU ecosystem."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Engine Overview",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Engine Overview"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "TorchTPU makes the TPU a native PyTorch device. Tensors are managed as standard PyTorch tensors on a tpu device with no wrapper types, code runs eagerly or compiles via torch.compile using XLA, and collectives go through torch.distributed.",
+          "inlines": [
+            {
+              "text": "TorchTPU makes the TPU a native PyTorch device. Tensors are managed as standard PyTorch tensors on a "
+            },
+            {
+              "code": true,
+              "text": "tpu"
+            },
+            {
+              "text": " device with no wrapper types, code runs eagerly or compiles via "
+            },
+            {
+              "code": true,
+              "text": "torch.compile"
+            },
+            {
+              "text": " using XLA, and collectives go through "
+            },
+            {
+              "code": true,
+              "text": "torch.distributed"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Because each device runs its own PyTorch process, both engines keep each framework’s worker model, scheduler, KV cache manager and API server etc, and add TPU implementations underneath.",
+          "inlines": [
+            {
+              "text": "Because each device runs its own PyTorch process, both engines keep each framework’s worker model, scheduler, KV cache manager and API server etc, and add TPU implementations underneath."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Most models use the standard upstream PyTorch model definitions in vLLM or SGLang, with TPU-specific optimizations in kernels and layer implementations. Custom kernels written in Pallas are called directly from PyTorch as custom operators inside the compiled graph. This platform-plugin design reuses as much of each framework as possible while letting TPU optimizations move at their own pace",
+          "inlines": [
+            {
+              "text": "Most models use the standard upstream PyTorch model definitions in vLLM or SGLang, with TPU-specific optimizations in kernels and layer implementations. Custom kernels written in Pallas are called directly from PyTorch as custom operators inside the compiled graph. This platform-plugin design reuses as much of each framework as possible while letting TPU optimizations move at their own pace"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Workload support",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Workload support"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Both engines are built for the full range of production workloads.",
+          "inlines": [
+            {
+              "text": "Both engines are built for the full range of production workloads."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Here’s the list of supported features:",
+          "inlines": [
+            {
+              "text": "Here’s the list of supported features:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Agentic & Multi-Turn:"
+                },
+                {
+                  "text": " Automatic prefix caching, including for hybrid models; KV cache offloading to host memory and Managed Lustre through TPU Sync; tool calling and structured output"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Interactive & Low Latency:"
+                },
+                {
+                  "text": " Speculative decoding with MTP, EAGLE-3, DFlash, DSpark and n-gram drafters"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "High-throughput Batch:"
+                },
+                {
+                  "text": " Data-parallel attention with expert parallelism"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Long Context:"
+                },
+                {
+                  "text": " Context parallelism for prefill and decode; FP8 KV cache; host KV offloading"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Disaggregated Serving:"
+                },
+                {
+                  "text": " Prefill and decode on separate hosts over TPU Sync, including between different parallel layouts"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Multimodal:"
+                },
+                {
+                  "text": " Vision-language models with image and video input; embedding models"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Very Large Models:"
+                },
+                {
+                  "text": " Hybrid and sparse-attention architectures, tensor, data, expert, pipeline and context parallelism across hosts; FP8, FP4 (MXFP4, NVFP4), INT8 and INT4 checkpoints"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Agentic workloads in particular demand several of these features simultaneously. Because agents repeatedly resend expanding multi-turn conversations, serving them efficiently requires finding the cached prefix instead of recomputing it. Both engines keep reusable prefixes in HBM and, with host offload turned on, automatically move older prefixes to host memory as a second tier.",
+          "inlines": [
+            {
+              "text": "Agentic workloads in particular demand several of these features simultaneously. Because agents repeatedly resend expanding multi-turn conversations, serving them efficiently requires finding the cached prefix instead of recomputing it. Both engines keep reusable prefixes in HBM and, with host offload turned on, automatically move older prefixes to host memory as a second tier."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Moving the KV Cache with TPU Sync",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Moving the KV Cache with TPU Sync"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Two of these features move the KV cache away from the device that computed it. Disaggregated serving runs prefill and decode on separate TPU hosts, so each request's KV cache has to travel from the prefill host to the decode host.Tiered KV offload moves the part of the KV cache that no longer fits in HBM to the host's DRAM and secondary storage with Google Cloud Managed Lustre, and brings it back when a later request reuses the prefix. Either way, the transfer has to overlap computation or it adds directly to latency.",
+          "inlines": [
+            {
+              "text": "Two of these features move the KV cache away from the device that computed it. Disaggregated serving runs prefill and decode on separate TPU hosts, so each request's KV cache has to travel from the prefill host to the decode host.Tiered KV offload moves the part of the KV cache that no longer fits in HBM to the host's DRAM and secondary storage with Google Cloud Managed Lustre, and brings it back when a later request reuses the prefix. Either way, the transfer has to overlap computation or it adds directly to latency."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Both engines use TPU Sync for this. It is an open-source C++ library for KV cache transfer and management on TPU. It reads the device buffers behind PyTorch tensors directly, so a transfer needs no extra staging copy on the host, and it runs transfers on its own threads outside Python while prefill and decode continue. vLLM-TorchTPU exposes it through vLLM's KV connector interface. SGLang-TorchTPU uses it as a disaggregation transfer backend and as the I/O backend for HiCache.",
+          "inlines": [
+            {
+              "text": "Both engines use "
+            },
+            {
+              "href": "https://github.com/google/tpu-sync",
+              "text": "TPU Sync"
+            },
+            {
+              "text": " for this. It is an open-source C++ library for KV cache transfer and management on TPU. It reads the device buffers behind PyTorch tensors directly, so a transfer needs no extra staging copy on the host, and it runs transfers on its own threads outside Python while prefill and decode continue. vLLM-TorchTPU exposes it through vLLM's KV connector interface. SGLang-TorchTPU uses it as a disaggregation transfer backend and as the I/O backend for HiCache."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Running today in production & public benchmarks",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Running today in production & public benchmarks"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Both engines are already running at scale in production with preview customers. To provide transparent, reproducible proof of our performance, we benchmark in public through the community-standard SemiAnalysis InferenceX project.",
+          "inlines": [
+            {
+              "text": "Both engines are already running at scale in production with preview customers. To provide transparent, reproducible proof of our performance, we benchmark in public through the community-standard SemiAnalysis InferenceX project."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Building on our initial submission of Qwen 3.5 on Ironwood TPU (TPU 7x), our engineering teams have further optimized the stack, bringing the lowest cost per million tokens overall at 2.01 cents at high-concurrency configurations. Alongside these improvements, we have also published new state-of-the-art (SOTA) performance results to AgentX, the project's dedicated track for evaluating agentic long-context and multi-turn workloads. Ironwood TPU leads across most of the Pareto frontier. We look forward to continuously updating our public performance profiles as we bring more models and configurations to the leaderboard.",
+          "inlines": [
+            {
+              "text": "Building on our "
+            },
+            {
+              "href": "https://newsletter.semianalysis.com/p/tpu-inferencex-full-steam",
+              "text": "initial submission"
+            },
+            {
+              "text": " of Qwen 3.5 on Ironwood TPU (TPU 7x), our engineering teams have further optimized the stack, bringing the lowest cost per million tokens overall at 2.01 cents at high-concurrency configurations. Alongside these improvements, we have also published new "
+            },
+            {
+              "href": "https://inferencex.semianalysis.com/inference/qwen-3-5?g_model=Qwen-3.5-397B-A17B&g_rundate=2026-10-19&i_seq=agentic-traces&g_tco=external&i_prec=fp8&i_xmode=interactivity",
+              "text": "state-of-the-art (SOTA) performance results to AgentX"
+            },
+            {
+              "text": ", the project's dedicated track for evaluating agentic long-context and multi-turn workloads. Ironwood TPU leads across most of the Pareto frontier. We look forward to continuously updating our public performance profiles as we bring more models and configurations to the leaderboard."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We did not build these backends in a vacuum. By embracing PyTorch and working directly with open-source project maintainers, we ensure these engines remain upstream-aligned and community-first:",
+          "inlines": [
+            {
+              "text": "We did not build these backends in a vacuum. By embracing PyTorch and working directly with open-source project maintainers, we ensure these engines remain upstream-aligned and community-first:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang-TorchTPU was co-developed with RadixArk (founded by the creators of SGLang)",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "SGLang-TorchTPU was"
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://www.lmsys.org/blog/2026-07-30-sglang-google-tpu/",
+              "bold": true,
+              "text": "co-developed"
+            },
+            {
+              "bold": true,
+              "text": " with RadixArk (founded by the creators of SGLang)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This partnership is bringing SGLang's stellar team to build for TPU, delivering an engine that is already running in production at Meta and battle-tested at scale across demanding real-world scenarios.",
+          "inlines": [
+            {
+              "text": "This partnership is bringing SGLang's stellar team to build for TPU, delivering an engine that is already running in production at Meta and battle-tested at scale across demanding real-world scenarios."
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "\"SGLang-TorchTPU is running in production at Meta today, and getting there was a close three-way collaboration between Meta, Google, and the SGLang team to make the stack production-ready. It gives us a remarkably mature, PyTorch-native serving stack that integrates effortlessly into our existing AI infrastructure, with the performance, reliability, and flexibility we need to run frontier workloads efficiently on TPUs. \" said Zongwei Zhou, PyTorch-TPU lead at Meta."
+        },
+        {
+          "type": "quote",
+          "text": "\"At RadixArk, TorchTPU has supercharged our development velocity as we roll out SGLang support across diverse silicon. It’s given us a painless path to native TPU acceleration, passing massive efficiency gains and flexible compute choices directly down to our customers,\" said Banghua Zhu, CTO and co-founder of RadixArk."
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM-TorchTPU was co-developed with Inferact (founded by the creators of vLLM)",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "vLLM-TorchTPU was"
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://inferact.ai/news/google-tpu-partnership",
+              "bold": true,
+              "text": "co-developed"
+            },
+            {
+              "bold": true,
+              "text": " with Inferact (founded by the creators of vLLM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Together, we integrated a high-performance Pallas megakernel for the 2.8T-parameter Kimi K3 model that runs the entire decode step as one kernel, serving more than 700 tokens per second to a single user on Ironwood TPU. Building on this work, Inferact recently led our first preliminary AgentX submission for Kimi K3 on the vLLM-TorchTPU stack. This initial milestone already demonstrates exceptional performance per TCO in ultra-high-interactivity workloads, and the rapid increase in the maturity of the vLLM and PyTorch ecosystem on TPU for doing new frontier OSS models bring-up, with follow-up submissions set to unlock even greater efficiency through larger scale prefill/decode disaggregation.",
+          "inlines": [
+            {
+              "text": "Together, we integrated a high-performance Pallas"
+            },
+            {
+              "href": "https://inferact.ai/blog/tpu-megakernels",
+              "text": " megakernel"
+            },
+            {
+              "text": " for the 2.8T-parameter Kimi K3 model that runs the entire decode step as one kernel, serving more than 700 tokens per second to a single user on Ironwood TPU. Building on this work, Inferact recently led our first preliminary "
+            },
+            {
+              "href": "https://inferencex.semianalysis.com/inference/kimi-k3",
+              "text": "AgentX submission"
+            },
+            {
+              "text": " for Kimi K3 on the vLLM-TorchTPU stack. This initial milestone already demonstrates exceptional performance per TCO in ultra-high-interactivity workloads, and the rapid increase in the maturity of the vLLM and PyTorch ecosystem on TPU for doing new frontier OSS models bring-up, with follow-up submissions set to unlock even greater efficiency through larger scale prefill/decode disaggregation."
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "\"Our mission at Inferact has always been to make high-performance inference accessible, reliable, and cost-effective across the entire AI ecosystem. We are thrilled to partner on the launch of TorchTPU and bring first-class support for vLLM to TPUs. By bridging PyTorch’s optimized TPU capabilities directly into vLLM, developers can immediately run production workloads on TPUs with the high throughput, low latency, and memory efficiency they expect from our stack,\" said Simon Mo, CEO and co-founder of Inferact."
+        },
+        {
+          "type": "paragraph",
+          "text": "To foster continuous open-source contribution, vLLM is also launching a first-of-its-kind community contribution TPU capacity pool to provide free TPU compute to developers who actively contribute to both engines. Request here.",
+          "inlines": [
+            {
+              "text": "To foster continuous open-source contribution, vLLM is also launching a first-of-its-kind community contribution TPU capacity pool to provide free TPU compute to developers who actively contribute to both engines. Request "
+            },
+            {
+              "href": "https://docs.google.com/forms/d/1Jm0uUXvcwYJRrvRojfS2RzMLjaqlt2a7lNyALFZs-nQ/viewform?edit_requested=true",
+              "text": "here"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Roadmap",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Roadmap"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "As the models get larger, we are evolving both engines to make large-scale TPU inference deployments performant and efficient. The major features for production-grade agentic workloads are already supported. More performance optimizations and advanced features are under way – open a Github issue to request collaboration on yours!",
+          "inlines": [
+            {
+              "text": "As the models get larger, we are evolving both engines to make large-scale TPU inference deployments performant and efficient. The major features for production-grade agentic workloads are already supported. More performance optimizations and advanced features are under way – open a Github issue to request collaboration on yours!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Across the two engines, most of the popular open model families are supported, including Qwen, DeepSeek, GLM, Kimi, GPT-OSS, Gemma4 and more. The team is investing in making more models available to run natively on TPUs, including Day 0 support for new open models. We also want to give the community the tools and TPU capacity to tune performance for their own workloads and configurations.",
+          "inlines": [
+            {
+              "text": "Across the two engines, most of the popular open model families are supported, including Qwen, DeepSeek, GLM, Kimi, GPT-OSS, Gemma4 and more. The team is investing in making more models available to run natively on TPUs, including Day 0 support for new open models. We also want to give the community the tools and TPU capacity to tune performance for their own workloads and configurations."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A note on our JAX runtimes",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "A note on our JAX runtimes"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM-Jax, and SGLang-JAX remain important projects. Both will continue to be maintained, supported, and available for the community to use and adapt.",
+          "inlines": [
+            {
+              "href": "https://github.com/vllm-project/tpu-inference",
+              "text": "vLLM-Jax"
+            },
+            {
+              "text": ", and "
+            },
+            {
+              "href": "https://github.com/sgl-project/sglang-jax",
+              "text": "SGLang-JAX"
+            },
+            {
+              "text": " remain important projects. Both will continue to be maintained, supported, and available for the community to use and adapt."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Getting started",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Getting started"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Get started today:",
+          "inlines": [
+            {
+              "text": "Get started today:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "vLLM-TorchTPU: "
+                },
+                {
+                  "href": "https://github.com/vllm-project/vllm-torchtpu",
+                  "text": "https://github.com/vllm-project/vllm-torchtpu"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "SGLang-TorchTPU: "
+                },
+                {
+                  "href": "https://github.com/sgl-project/sglang-torchtpu",
+                  "text": "https://github.com/sgl-project/sglang-torchtpu"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "TorchTPU: "
+                },
+                {
+                  "href": "https://github.com/google-pytorch/torch_tpu",
+                  "text": "https://github.com/google-pytorch/torch_tpu"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Related announcements:",
+          "inlines": [
+            {
+              "text": "Related announcements:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://vllm.ai/blog/2026-10-20-vllm-torchtpu",
+                  "text": "Inferact announcement"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://lmsys.org/blog/2026-10-20-sglang-torchtpu",
+                  "text": "Radixark announcement"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:19:01.163924Z",
+  "contentMode": "full"
+}

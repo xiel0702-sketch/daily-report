@@ -1,0 +1,1074 @@
+{
+  "schemaVersion": 1,
+  "id": "virsb1x13670yw25mr9fyxqtt",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/virsb1x13670yw25mr9fyxqtt",
+  "fetchedAt": "2026-10-22T13:26:30.896065Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Agent 智能体",
+    "AI 编码",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "编码",
+    "Agent"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "作者：@Amy Heineike 和 @Simon Maple",
+          "inlines": [
+            {
+              "text": "作者：@Amy Heineike 和 @Simon Maple"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tessl Verifiers 是用纯文本编写的规则，存放在你的仓库中，并在每次代码变更时进行检查。每次运行时，它们都会返回通过或失败，因此你可以像今天使用 lint 或测试一样使用 verifiers：在本地、在 pre-commit 中，或作为 CI 门禁。它们适用于 linter 无法检查的规则，例如“面向用户的错误必须告诉用户下一步该做什么”。",
+          "inlines": [
+            {
+              "text": "Tessl Verifiers 是用纯文本编写的规则，存放在你的仓库中，并在每次代码变更时进行检查。每次运行时，它们都会返回通过或失败，因此你可以像今天使用 lint 或测试一样使用 verifiers：在本地、在 pre-commit 中，或作为 CI 门禁。它们适用于 linter 无法检查的规则，例如“面向用户的错误必须告诉用户下一步该做什么”。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "它们目前已正式发布（GA），你可以阅读 文档 开始使用。",
+          "inlines": [
+            {
+              "text": "它们目前已正式发布（GA），你可以阅读 "
+            },
+            {
+              "href": "https://docs.tessl.io/codifying-and-enforcing-your-skill-standards/verifiers-overview",
+              "text": "文档"
+            },
+            {
+              "text": " 开始使用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们为什么构建它们",
+          "inlines": [
+            {
+              "text": "我们为什么构建它们"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "大多数团队已经为他们的 agent 编写了编码标准。也许他们规定了应该使用哪个 helper，或者哪些 API 应该和不应该被调用，当然还有安全最佳实践，比如绝不记录 token。Agent 通常能很好地遵循这些规则，但它们不会每次都捕捉到所有问题。当某条规则被遗漏时，你通常要到代码审查时才会发现，甚至更晚。",
+          "inlines": [
+            {
+              "text": "大多数团队已经为他们的 agent 编写了编码标准。也许他们规定了应该使用哪个 helper，或者哪些 API 应该和不应该被调用，当然还有安全最佳实践，比如绝不记录 token。Agent 通常能很好地遵循这些规则，但它们不会每次都捕捉到所有问题。当某条规则被遗漏时，你通常要到代码审查时才会发现，甚至更晚。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Linters 无法帮助处理大多数这类规则，因为它们只能检查确定性规则。AI 代码审查可以捕捉到它们，但审查会查找 PR 中的一般性问题，并不能在每次运行时可靠地检查同一条规则。在 Tessl，我们需要介于两者之间的东西：一种既能理解你的代码，又能保证每次确定性地运行相同规则的检查。",
+          "inlines": [
+            {
+              "text": "Linters 无法帮助处理大多数这类规则，因为它们只能检查确定性规则。AI 代码审查可以捕捉到它们，但审查会查找 PR 中的一般性问题，并不能在每次运行时可靠地检查同一条规则。在 Tessl，我们需要介于两者之间的东西：一种既能理解你的代码，又能保证每次确定性地运行相同规则的检查。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "注册以获取早鸟折扣",
+          "inlines": [
+            {
+              "href": "https://tessl.io/devcon/#tickets",
+              "text": "注册以获取早鸟折扣"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "它们如何工作",
+          "inlines": [
+            {
+              "text": "它们如何工作"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "一个 verifier 是你仓库中的一个 JSON 文件。它包含一条指令、适用条件，以及一份是/否规则清单。当你运行 tessl change verify 时，一个 LLM 评判器会读取相关文件，并将每条规则评分为通过或失败。",
+          "inlines": [
+            {
+              "text": "一个 verifier 是你仓库中的一个 JSON 文件。它包含一条指令、适用条件，以及一份是/否规则清单。当你运行 "
+            },
+            {
+              "code": true,
+              "text": "tessl change verify"
+            },
+            {
+              "text": " 时，一个 LLM 评判器会读取相关文件，并将每条规则评分为通过或失败。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一个 verifier 适用于哪些文件，以及它有多严格，是在 tessl.json 的 verify 块中设置的。每个组会获得 info、warn 或 error 级别。在 CI 中，警告会被报告，但不会使构建失败。错误会以非零状态退出，并可以阻止 PR。由于作用域和严重性位于 verifier 本身之外，你可以在不同设置的团队之间复用一个 verifier。",
+          "inlines": [
+            {
+              "text": "一个 verifier 适用于哪些文件，以及它有多严格，是在 "
+            },
+            {
+              "code": true,
+              "text": "tessl.json"
+            },
+            {
+              "text": " 的 "
+            },
+            {
+              "code": true,
+              "text": "verify"
+            },
+            {
+              "text": " 块中设置的。每个组会获得 "
+            },
+            {
+              "code": true,
+              "text": "info"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "warn"
+            },
+            {
+              "text": " 或 "
+            },
+            {
+              "code": true,
+              "text": "error"
+            },
+            {
+              "text": " 级别。在 CI 中，警告会被报告，但不会使构建失败。错误会以非零状态退出，并可以阻止 PR。由于作用域和严重性位于 verifier 本身之外，你可以在不同设置的团队之间复用一个 verifier。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "默认情况下，tessl change verify 只检查当前变更触及的文件。如果你编辑了一个 verifier 或其配置，它会重新检查该 verifier 覆盖的所有内容。要审计整个项目，请使用 --all 运行它，并在 monorepo 中添加 --recursive。",
+          "inlines": [
+            {
+              "text": "默认情况下，"
+            },
+            {
+              "code": true,
+              "text": "tessl change verify"
+            },
+            {
+              "text": " 只检查当前变更触及的文件。如果你编辑了一个 verifier 或其配置，它会重新检查该 verifier 覆盖的所有内容。要审计整个项目，请使用 "
+            },
+            {
+              "code": true,
+              "text": "--all"
+            },
+            {
+              "text": " 运行它，并在 monorepo 中添加 "
+            },
+            {
+              "code": true,
+              "text": "--recursive"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "默认评判器是 openai/gpt-6-luna。我们也支持新的 Jev 模型，以防你觉得它在速度、成本或准确性方面更合适，它会为每条规则返回一个判定和置信度分数，而不提供书面推理。你可以使用 --model jev 标志在命令行切换模型选择。.",
+          "inlines": [
+            {
+              "text": "默认评判器是 "
+            },
+            {
+              "code": true,
+              "text": "openai/gpt-6-luna"
+            },
+            {
+              "text": "。我们也支持新的 Jev 模型，以防你觉得它在速度、成本或准确性方面更合适，它会为每条规则返回一个判定和置信度分数，而不提供书面推理。你可以使用 "
+            },
+            {
+              "code": true,
+              "text": "--model jev"
+            },
+            {
+              "text": " 标志在命令行切换模型选择。."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "何时使用",
+          "inlines": [
+            {
+              "text": "何时使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "当规则有明确的是/否答案、你能在变更文件中看到证据，并且没有 linter 或测试能可靠地检查它时，verifier 就很合适。如果 linter 能做这件事，就用 linter。",
+          "inlines": [
+            {
+              "text": "当规则有明确的是/否答案、你能在变更文件中看到证据，并且没有 linter 或测试能可靠地检查它时，verifier 就很合适。如果 linter 能做这件事，就用 linter。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一些效果很好的例子：",
+          "inlines": [
+            {
+              "text": "一些效果很好的例子："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "每个 API 路由都使用你的类型化响应 helper"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "每条面向用户的错误消息都告诉用户下一步该做什么"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "没有 handler 记录请求头、token 或密码"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Verifiers 不适合“这可读吗？”这类主观问题。把规则缩小到你可以用清单检查的程度。",
+          "inlines": [
+            {
+              "text": "Verifiers 不适合“这可读吗？”这类主观问题。把规则缩小到你可以用清单检查的程度。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "把 verifiers 与你已经在使用的其他工具一起思考会很有帮助。规则在 agent 编写代码之前告诉它该做什么。Verifier 在之后检查结果。它们作为一对配合得很好：规则教授模式，verifier 捕捉 agent 没有遵循它的情况。",
+          "inlines": [
+            {
+              "text": "把 verifiers 与你已经在使用的其他工具一起思考会很有帮助。规则在 agent 编写代码之前告诉它该做什么。Verifier 在之后检查结果。它们作为一对配合得很好：规则教授模式，verifier 捕捉 agent 没有遵循它的情况。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "试一试",
+          "inlines": [
+            {
+              "text": "试一试"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "安装 verify 插件：",
+          "inlines": [
+            {
+              "text": "安装 verify 插件："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "1tessl install tessl/tessl-verify"
+        },
+        {
+          "type": "paragraph",
+          "text": "然后向你的 agent 索要一个 verifier：",
+          "inlines": [
+            {
+              "text": "然后向你的 agent 索要一个 verifier："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "1Create a verifier that checks every user-facing error message\n2includes a next step for the user."
+        },
+        {
+          "type": "paragraph",
+          "text": "该插件的 skill 会帮助你的 agent 编写 verifier、设置其作用域并添加 CI 门禁。作用域最终会出现在 tessl.json 中：",
+          "inlines": [
+            {
+              "text": "该插件的 skill 会帮助你的 agent 编写 verifier、设置其作用域并添加 CI 门禁。作用域最终会出现在 "
+            },
+            {
+              "code": true,
+              "text": "tessl.json"
+            },
+            {
+              "text": " 中："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "1\"verify\": {\n2  \"groups\": {\n3    \"core\": {\n4      \"path\": \"verifiers/*.json\",\n5      \"level\": \"error\",\n6      \"include\": [\"src/**/*.ts\"],\n7      \"exclude\": [\"**/*.test.ts\"]\n8    }\n9  }\n10}"
+        },
+        {
+          "type": "paragraph",
+          "text": "在本地针对一个 PR 运行它：",
+          "inlines": [
+            {
+              "text": "在本地针对一个 PR 运行它："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "1tessl change verify"
+        },
+        {
+          "type": "paragraph",
+          "text": "[截图：在真实 diff 上显示一个通过和一个失败的检查]",
+          "inlines": [
+            {
+              "text": "[截图：在真实 diff 上显示一个通过和一个失败的检查]"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在哪里运行它们",
+          "inlines": [
+            {
+              "text": "在哪里运行它们"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "大多数团队从 CI 开始。在 CI 中验证 agent 变更指南介绍了如何设置拉取请求门禁。你也可以在 pre-commit 钩子中运行验证器，或者让你的 agent 在打开 PR 之前运行它们。我们不会强推任何一种方案。",
+          "inlines": [
+            {
+              "text": "大多数团队从 CI 开始。"
+            },
+            {
+              "href": "https://docs.tessl.io/codifying-and-enforcing-your-skill-standards/verify-agent-changes-in-ci",
+              "text": "在 CI 中验证 agent 变更"
+            },
+            {
+              "text": "指南介绍了如何设置拉取请求门禁。你也可以在 pre-commit 钩子中运行验证器，或者让你的 agent 在打开 PR 之前运行它们。我们不会强推任何一种方案。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们建议从 warn 级别开始，这样你可以看到验证器在真实 PR 上的表现。一旦你信任它，就把它提升到 error。",
+          "inlines": [
+            {
+              "text": "我们建议从 "
+            },
+            {
+              "code": true,
+              "text": "warn"
+            },
+            {
+              "text": " 级别开始，这样你可以看到验证器在真实 PR 上的表现。一旦你信任它，就把它提升到 "
+            },
+            {
+              "code": true,
+              "text": "error"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "验证器与 Tessl Code Review 是分开的，它们配合得很好。如果审查者总是留下同一条评论，那条评论很可能就是验证器的好候选。",
+          "inlines": [
+            {
+              "text": "验证器与 Tessl Code Review 是分开的，它们配合得很好。如果审查者总是留下同一条评论，那条评论很可能就是验证器的好候选。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "开始使用",
+          "inlines": [
+            {
+              "text": "开始使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "安装 Tessl CLI 并登录。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "运行 "
+                },
+                {
+                  "code": true,
+                  "text": "tessl install tessl/tessl-verify"
+                },
+                {
+                  "text": "，让你的 agent 编写你的第一个验证器。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在本地运行 "
+                },
+                {
+                  "code": true,
+                  "text": "tessl change verify"
+                },
+                {
+                  "text": "，然后以 "
+                },
+                {
+                  "code": true,
+                  "text": "warn"
+                },
+                {
+                  "text": " 级别将其添加到 CI。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "一旦你对结果满意，就把它提升到 "
+                },
+                {
+                  "code": true,
+                  "text": "error"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "验证器运行可免费试用。验证器文档涵盖了完整配置。",
+          "inlines": [
+            {
+              "text": "验证器运行可免费试用。"
+            },
+            {
+              "href": "https://docs.tessl.io/codifying-and-enforcing-your-skill-standards/verifiers-overview",
+              "text": "验证器文档"
+            },
+            {
+              "text": "涵盖了完整配置。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在自己的代码库中大量使用 Tessl 验证器，发现它们作为检查手段以及引导 agent 编写更好代码方面都有相当大的进步。我们很想听听你的使用体验，所以为什么不在 discord 上告诉我们呢！",
+          "inlines": [
+            {
+              "text": "我们在自己的代码库中大量使用 Tessl 验证器，发现它们作为检查手段以及引导 agent 编写更好代码方面都有相当大的进步。我们很想听听你的使用体验，所以为什么不在 discord 上告诉我们呢！"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "相关博客",
+          "inlines": [
+            {
+              "text": "相关博客"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "https://tessl.io/blog/jev-is-136x-faster-and-27x-cheaper-than-gpt-luna-6-for-tessl-verifiers-try-it-yourself",
+          "inlines": [
+            {
+              "href": "https://tessl.io/blog/jev-is-136x-faster-and-27x-cheaper-than-gpt-luna-6-for-tessl-verifiers-try-it-yourself",
+              "text": "https://tessl.io/blog/jev-is-136x-faster-and-27x-cheaper-than-gpt-luna-6-for-tessl-verifiers-try-it-yourself"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Authors: @Amy Heineike and @Simon Maple",
+          "inlines": [
+            {
+              "text": "Authors: @Amy Heineike and @Simon Maple"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tessl Verifiers are rules written in plain text that live in your repo, and are checked on every code change. Each time they run, they return a pass or fail, so you can use verifiers the same way you use lint or tests today: locally, in pre-commit, or as a CI gate. They're meant for rules a linter can't check, like \"user-facing errors must tell the user what to do next.\"",
+          "inlines": [
+            {
+              "text": "Tessl Verifiers are rules written in plain text that live in your repo, and are checked on every code change. Each time they run, they return a pass or fail, so you can use verifiers the same way you use lint or tests today: locally, in pre-commit, or as a CI gate. They're meant for rules a linter can't check, like \"user-facing errors must tell the user what to do next.\""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "They're currently available right now in GA, and you can read the docs to get started.",
+          "inlines": [
+            {
+              "text": "They're currently available right now in GA, and you can read the "
+            },
+            {
+              "href": "https://docs.tessl.io/codifying-and-enforcing-your-skill-standards/verifiers-overview",
+              "text": "docs"
+            },
+            {
+              "text": " to get started."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why we built them",
+          "inlines": [
+            {
+              "text": "Why we built them"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Most teams already have written coding standards for their agents. Perhaps they state which helper should be used, or which APIs should and shouldn't be called, and of course security best practices like never log a token. Agents often follow these rules well, but they won't catch everything, every time. When a rule slips, you usually won't find out till code review, or even later.",
+          "inlines": [
+            {
+              "text": "Most teams already have written coding standards for their agents. Perhaps they state which helper should be used, or which APIs should and shouldn't be called, and of course security best practices like never log a token. Agents often follow these rules well, but they won't catch everything, every time. When a rule slips, you usually won't find out till code review, or even later."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Linters can't help with most of these rules, because theycan check deterministic rules. AI code review can catch them, but review looks for general problems across a PR and won't reliably check the same rule on every run. At Tessl, we needed something in between: a check that both understands your code, and deterministically runs the same rules every time, guaranteed.",
+          "inlines": [
+            {
+              "text": "Linters can't help with most of these rules, because theycan check deterministic rules. AI code review can catch them, but review looks for general problems across a PR and won't reliably check the same rule on every run. At Tessl, we needed something in between: a check that both understands your code, and deterministically runs the same rules every time, guaranteed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Register to get the early birds discount",
+          "inlines": [
+            {
+              "href": "https://tessl.io/devcon/#tickets",
+              "text": "Register to get the early birds discount"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How they work",
+          "inlines": [
+            {
+              "text": "How they work"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "A verifier is a JSON file in your repo. It holds an instruction, the conditions for when it applies, and a checklist of yes-or-no rules. When you run tessl change verify, an LLM judge reads the relevant files and scores each rule as pass or fail.",
+          "inlines": [
+            {
+              "text": "A verifier is a JSON file in your repo. It holds an instruction, the conditions for when it applies, and a checklist of yes-or-no rules. When you run "
+            },
+            {
+              "code": true,
+              "text": "tessl change verify"
+            },
+            {
+              "text": ", an LLM judge reads the relevant files and scores each rule as pass or fail."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The files a verifier applies for, and how strict it is, is set in the verify block of tessl.json. Each group gets a level of info, warn or error. In CI, warnings are reported but don't fail the build. Errors exit non-zero and can block the PR. Because scope and severity live outside the verifier itself, you can reuse one verifier across teams with different settings.",
+          "inlines": [
+            {
+              "text": "The files a verifier applies for, and how strict it is, is set in the "
+            },
+            {
+              "code": true,
+              "text": "verify"
+            },
+            {
+              "text": " block of "
+            },
+            {
+              "code": true,
+              "text": "tessl.json"
+            },
+            {
+              "text": ". Each group gets a level of "
+            },
+            {
+              "code": true,
+              "text": "info"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "warn"
+            },
+            {
+              "text": " or "
+            },
+            {
+              "code": true,
+              "text": "error"
+            },
+            {
+              "text": ". In CI, warnings are reported but don't fail the build. Errors exit non-zero and can block the PR. Because scope and severity live outside the verifier itself, you can reuse one verifier across teams with different settings."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "By default, tessl change verify only checks files the current change touches. If you edit a verifier or its config, it re-checks everything that verifier covers. To audit the whole project, run it with --all, and add --recursive in a monorepo.",
+          "inlines": [
+            {
+              "text": "By default, "
+            },
+            {
+              "code": true,
+              "text": "tessl change verify"
+            },
+            {
+              "text": " only checks files the current change touches. If you edit a verifier or its config, it re-checks everything that verifier covers. To audit the whole project, run it with "
+            },
+            {
+              "code": true,
+              "text": "--all"
+            },
+            {
+              "text": ", and add "
+            },
+            {
+              "code": true,
+              "text": "--recursive"
+            },
+            {
+              "text": " in a monorepo."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The default judge is openai/gpt-6-luna. We also support the new Jev model, in case you feel it's more appropriate for speed, cost or accuracy, which returns a verdict and a confidence score for each rule without written reasoning. You can toggle model choice at the command line using the --model jev flag. .",
+          "inlines": [
+            {
+              "text": "The default judge is "
+            },
+            {
+              "code": true,
+              "text": "openai/gpt-6-luna"
+            },
+            {
+              "text": ". We also support the new Jev model, in case you feel it's more appropriate for speed, cost or accuracy, which returns a verdict and a confidence score for each rule without written reasoning. You can toggle model choice at the command line using the "
+            },
+            {
+              "code": true,
+              "text": "--model jev"
+            },
+            {
+              "text": " flag. ."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "When to use one",
+          "inlines": [
+            {
+              "text": "When to use one"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "A verifier is a good fit when the rule has a clear yes-or-no answer, you can see the evidence in the changed files, and no linter or test can check it reliably. If a linter can do the job, use the linter.",
+          "inlines": [
+            {
+              "text": "A verifier is a good fit when the rule has a clear yes-or-no answer, you can see the evidence in the changed files, and no linter or test can check it reliably. If a linter can do the job, use the linter."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Some examples that work well:",
+          "inlines": [
+            {
+              "text": "Some examples that work well:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Every API route uses your typed response helpers"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Every user-facing error message tells the user what to do next"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "No handler logs request headers, tokens or passwords"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Verifiers don't work well for subjective questions like \"is this readable?\" Narrow the rule until you could check it with a checklist.",
+          "inlines": [
+            {
+              "text": "Verifiers don't work well for subjective questions like \"is this readable?\" Narrow the rule until you could check it with a checklist."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "It helps to think of verifiers alongside the other tools you already use. A rule tells an agent what to do before it writes code. A verifier checks the result afterwards. They work well as a pair: the rule teaches the pattern, and the verifier catches the cases where the agent didn't follow it.",
+          "inlines": [
+            {
+              "text": "It helps to think of verifiers alongside the other tools you already use. A rule tells an agent what to do before it writes code. A verifier checks the result afterwards. They work well as a pair: the rule teaches the pattern, and the verifier catches the cases where the agent didn't follow it."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Try it",
+          "inlines": [
+            {
+              "text": "Try it"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Install the verify plugin:",
+          "inlines": [
+            {
+              "text": "Install the verify plugin:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "1tessl install tessl/tessl-verify"
+        },
+        {
+          "type": "paragraph",
+          "text": "Then ask your agent for a verifier:",
+          "inlines": [
+            {
+              "text": "Then ask your agent for a verifier:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "1Create a verifier that checks every user-facing error message\n2includes a next step for the user."
+        },
+        {
+          "type": "paragraph",
+          "text": "The plugin's skill helps your agent write the verifier, set its scope and add a CI gate. The scope ends up in tessl.json:",
+          "inlines": [
+            {
+              "text": "The plugin's skill helps your agent write the verifier, set its scope and add a CI gate. The scope ends up in "
+            },
+            {
+              "code": true,
+              "text": "tessl.json"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "1\"verify\": {\n2  \"groups\": {\n3    \"core\": {\n4      \"path\": \"verifiers/*.json\",\n5      \"level\": \"error\",\n6      \"include\": [\"src/**/*.ts\"],\n7      \"exclude\": [\"**/*.test.ts\"]\n8    }\n9  }\n10}"
+        },
+        {
+          "type": "paragraph",
+          "text": "Run it locally against a PR:",
+          "inlines": [
+            {
+              "text": "Run it locally against a PR:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "1tessl change verify"
+        },
+        {
+          "type": "paragraph",
+          "text": "[Screenshot: output showing one passing and one failing check on a real diff]",
+          "inlines": [
+            {
+              "text": "[Screenshot: output showing one passing and one failing check on a real diff]"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where to run them",
+          "inlines": [
+            {
+              "text": "Where to run them"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Most teams start in CI. The Verify agent changes in CI guide walks through setting up a pull request gate. You can also run verifiers in a pre-commit hook, or have your agent run them before it opens a PR. We don't push you toward any one setup.",
+          "inlines": [
+            {
+              "text": "Most teams start in CI. The "
+            },
+            {
+              "href": "https://docs.tessl.io/codifying-and-enforcing-your-skill-standards/verify-agent-changes-in-ci",
+              "text": "Verify agent changes in CI"
+            },
+            {
+              "text": " guide walks through setting up a pull request gate. You can also run verifiers in a pre-commit hook, or have your agent run them before it opens a PR. We don't push you toward any one setup."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We'd suggest starting at warn level so you can see how a verifier behaves on real PRs. Once you trust it, move it to error.",
+          "inlines": [
+            {
+              "text": "We'd suggest starting at "
+            },
+            {
+              "code": true,
+              "text": "warn"
+            },
+            {
+              "text": " level so you can see how a verifier behaves on real PRs. Once you trust it, move it to "
+            },
+            {
+              "code": true,
+              "text": "error"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Verifiers are separate from Tessl Code Review, and they work well together. If reviewers keep leaving the same comment, that comment is probably a good candidate for a verifier.",
+          "inlines": [
+            {
+              "text": "Verifiers are separate from Tessl Code Review, and they work well together. If reviewers keep leaving the same comment, that comment is probably a good candidate for a verifier."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Get started",
+          "inlines": [
+            {
+              "text": "Get started"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Install the Tessl CLI and sign in."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Run "
+                },
+                {
+                  "code": true,
+                  "text": "tessl install tessl/tessl-verify"
+                },
+                {
+                  "text": " and ask your agent to write your first verifier."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Run "
+                },
+                {
+                  "code": true,
+                  "text": "tessl change verify"
+                },
+                {
+                  "text": " locally, then add it to CI at "
+                },
+                {
+                  "code": true,
+                  "text": "warn"
+                },
+                {
+                  "text": " level."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Move it to "
+                },
+                {
+                  "code": true,
+                  "text": "error"
+                },
+                {
+                  "text": " once you're happy with the results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Verifier runs are free to try. The verifiers docs cover the full configuration.",
+          "inlines": [
+            {
+              "text": "Verifier runs are free to try. The "
+            },
+            {
+              "href": "https://docs.tessl.io/codifying-and-enforcing-your-skill-standards/verifiers-overview",
+              "text": "verifiers docs"
+            },
+            {
+              "text": " cover the full configuration."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We use Tessl verifiers extensively on our own codebase, and find them a considerable advance as a check as well as guiding an agent to write better code. We'd love to hear how you got on with them, so why not let us know on discord!",
+          "inlines": [
+            {
+              "text": "We use Tessl verifiers extensively on our own codebase, and find them a considerable advance as a check as well as guiding an agent to write better code. We'd love to hear how you got on with them, so why not let us know on discord!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Related blogs",
+          "inlines": [
+            {
+              "text": "Related blogs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "https://tessl.io/blog/jev-is-136x-faster-and-27x-cheaper-than-gpt-luna-6-for-tessl-verifiers-try-it-yourself",
+          "inlines": [
+            {
+              "href": "https://tessl.io/blog/jev-is-136x-faster-and-27x-cheaper-than-gpt-luna-6-for-tessl-verifiers-try-it-yourself",
+              "text": "https://tessl.io/blog/jev-is-136x-faster-and-27x-cheaper-than-gpt-luna-6-for-tessl-verifiers-try-it-yourself"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:26:30.897283Z",
+  "contentMode": "full"
+}

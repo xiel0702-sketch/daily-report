@@ -1,0 +1,874 @@
+{
+  "schemaVersion": 1,
+  "id": "m21za8riy5da0davyqguzkvla",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/m21za8riy5da0davyqguzkvla",
+  "fetchedAt": "2026-10-22T13:17:25.064930Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic / Claude",
+    "安全对齐",
+    "论文研究"
+  ],
+  "tags": [
+    "论文/研究",
+    "安全/对齐",
+    "Anthropic"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Chris Rohlf",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Chris Rohlf"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在过去一年里，我们发布了大量数据，表明前沿 AI 模型完全有能力发现并利用安全漏洞。然而，展示此前未知的漏洞可能如何被利用，只是前沿 AI 模型在网络防御领域所能做之事的起点。在本文中，我们总结了关于自动化攻击面分析与缩减的一些初步研究：即使用 AI 模型来梳理可达代码，然后移除或限制对给定部署无需暴露的任何内容的访问。",
+          "inlines": [
+            {
+              "text": "在过去一年里，我们"
+            },
+            {
+              "href": "https://www.anthropic.com/research/mythos-preview",
+              "text": "发布"
+            },
+            {
+              "text": "了大量数据，表明前沿 AI 模型完全有能力"
+            },
+            {
+              "href": "https://www.anthropic.com/news/mozilla-firefox-security",
+              "text": "发现"
+            },
+            {
+              "text": "并"
+            },
+            {
+              "href": "https://www.anthropic.com/research/exploit-evals",
+              "text": "利用"
+            },
+            {
+              "text": "安全漏洞。然而，展示此前未知的漏洞可能如何被利用，只是前沿 AI 模型在网络防御领域所能做之事的起点。在本文中，我们总结了关于自动化攻击面分析与缩减的一些初步研究：即使用 AI 模型来梳理可达代码，然后移除或限制对给定部署无需暴露的任何内容的访问。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "自动化攻击面分析与缩减可以在短期内切实提升已部署软件的安全性。仅靠发现并修复单个漏洞来保障软件安全，其可扩展性很差：即便修复了一个严重漏洞，也无法告诉你还剩下哪些漏洞。相比之下，减少代码可达性可以降低未知漏洞的严重程度，包括那些可能正被积极利用的漏洞。这些技术并不会消除代码中的未知漏洞，但它们确实让漏洞更难被触及，从而降低其严重程度。最小化代码库的攻击面，无需发现或修复任何单个漏洞，就能带来更好的安全性。",
+          "inlines": [
+            {
+              "text": "自动化攻击面分析与缩减可以在短期内切实提升已部署软件的安全性。仅靠发现并修复单个漏洞来保障软件安全，其可扩展性很差：即便修复了一个严重漏洞，也无法告诉你还剩下哪些漏洞。相比之下，减少代码可达性可以降低未知漏洞的严重程度，包括那些可能正被积极利用的漏洞。这些技术并不会消除代码中的未知漏洞，但它们确实让漏洞更难被触及，从而降低其严重程度。最小化代码库的攻击面，无需发现或修复任何单个漏洞，就能带来更好的安全性。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下面，我们预览一些使用 Claude 对大型开源代码库应用攻击面缩减技术所收集的数据。我们这样做的目的是表明，Claude 可以通过我们概述的方法，切实且经济地提升软件安全性。具体而言，我们在 25 个项目（涵盖多种语言）上运行了 Claude，它发现了 493 个问题。基于这些结果，我们讨论了开发者如何将类似技术应用于自己的代码。",
+          "inlines": [
+            {
+              "text": "下面，我们预览一些使用 Claude 对大型开源代码库应用攻击面缩减技术所收集的数据。我们这样做的目的是表明，Claude 可以通过我们概述的方法，切实且经济地提升软件安全性。具体而言，我们在 25 个项目（涵盖多种语言）上运行了 Claude，它发现了 493 个问题。基于这些结果，我们讨论了开发者如何将类似技术应用于自己的代码。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "缩减代码库攻击面的方法",
+          "inlines": [
+            {
+              "text": "缩减代码库攻击面的方法"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "随着时间推移，软件往往会变得越来越复杂，新的抽象层、新的依赖项和新功能会慢慢层层叠加。这常常导致其实际行为与最初开发者的意图大相径庭。这也是攻击者往往如此成功的一大原因：他们研究的正是代码在实践中的实际行为，而非开发者意图或设计的工作方式。",
+          "inlines": [
+            {
+              "text": "随着时间推移，软件往往会变得越来越复杂，新的抽象层、新的依赖项和新功能会慢慢层层叠加。这常常导致其实际行为与最初开发者的意图大相径庭。这也是攻击者往往如此成功的一大原因：他们研究的正是代码在实践中的实际行为，而非开发者意图或设计的工作方式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "自动化攻击面分析与缩减技术旨在发现不必要的攻击面，然后将这些代码移到适当的关卡之后。这可能涉及将代码从认证前移到认证后、从 0 点击移到 1 点击、从默认开启移到显式选择加入，或从协议的第一条消息移到会话状态机更深处。有些代码本就应当在这些阶段之前可达，但很多并非如此；而且，考虑到数千或数百万行代码频繁变动所带来的复杂性，功能的不必要暴露往往不被察觉。",
+          "inlines": [
+            {
+              "text": "自动化攻击面分析与缩减技术旨在发现不必要的攻击面，然后将这些代码移到适当的关卡之后。这可能涉及将代码从认证前移到认证后、从 0 点击移到 1 点击、从默认开启移到显式选择加入，或从协议的第一条消息移到会话状态机更深处。有些代码本就应当在这些阶段之前可达，但很多并非如此；而且，考虑到数千或数百万行代码频繁变动所带来的复杂性，功能的不必要暴露往往不被察觉。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "减少代码攻击面的方法有很多。在我们自己的研究工作中，我们特别聚焦于三种方法：",
+          "inlines": [
+            {
+              "text": "减少代码攻击面的方法有很多。在我们自己的研究工作中，我们特别聚焦于三种方法："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "默认配置。"
+                },
+                {
+                  "text": "我们识别出了在其出厂默认配置下可达、但并非任何默认功能所意图使用的代码。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "配置交互。"
+                },
+                {
+                  "text": "我们发现了一些单独看似乎合理、但组合配置时会引发问题的选项对（例如，静默禁用某项安全控制，或在代码仍可触达的情况下让某项功能的行为处于未定义状态）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "早期可达性。"
+                },
+                {
+                  "text": "我们识别出了安全敏感且复杂的代码，这些代码会在适当的安全控制（如身份验证）之前运行、无需受害者交互即可运行，或在协议状态转换之前运行。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们希望了解 Claude 能在多大程度上利用这三种攻击面描述，在大型复杂代码库中发现真实问题。我们分析了 25 个开源项目（代码总量超过五百万行），涵盖 C、C++、Java、PHP 和 Python 等语言。Claude 在这些项目中梳理出超过 17,000 个配置选项的清单。其中 3,842 个与安全相关的控制项或功能配置有关。",
+          "inlines": [
+            {
+              "text": "我们希望了解 Claude 能在多大程度上利用这三种攻击面描述，在大型复杂代码库中发现真实问题。我们分析了 25 个开源项目（代码总量超过五百万行），涵盖 C、C++、Java、PHP 和 Python 等语言。Claude 在这些项目中梳理出超过 17,000 个配置选项的清单。其中 3,842 个与安全相关的控制项或功能配置有关。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为便于研究，我们将这些开源项目划分为三大类：",
+          "inlines": [
+            {
+              "text": "为便于研究，我们将这些开源项目划分为三大类："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "公开型（Public）"
+                },
+                {
+                  "text": "。这类项目旨在服务任何能够访问到它们的用户，或处理来自无法识别来源的数据。（例如，解析上游应答的 DNS 解析器，或解析源站响应的代理。）"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "门控型（Gated）"
+                },
+                {
+                  "text": "。这类项目旨在服务已通过身份验证的用户（例如持有密码、密钥或证书的用户，或已注册的设备）。软件仍允许任意客户端请求，但在用户通过身份验证之前，不提供任何功能。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "私有型（Private）"
+                },
+                {
+                  "text": "。这类项目构建并部署用于服务运营者自身的私有环境。在此类情况下，添加身份验证层之类的控制是可选的，但不属于软件本身的范畴。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些分类有助于为我们的结果提供背景。例如，我们预计公开型代码库中会有相当大比例在默认配置下即可触达（因为它本就设计为服务任何用户），而门控型项目的情况则相反。",
+          "inlines": [
+            {
+              "text": "这些分类有助于为我们的结果提供背景。例如，我们预计公开型代码库中会有相当大比例在默认配置下即可触达（因为它本就设计为服务任何用户），而门控型项目的情况则相反。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude 的发现",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Claude 的发现"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 使用上述三种方法共发现了 493 个问题。从结果中，我们注意到几个突出的主题。",
+          "inlines": [
+            {
+              "text": "Claude 使用上述三种方法共发现了 493 个问题。从结果中，我们注意到几个突出的主题。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "首先，Claude 发现全部 11 个门控型项目都存在非预期可达的代码（尽管这些代码在任何项目的总代码行数中占比都不大）。具体而言，Claude 在门控组的默认配置中发现了 93 处不必要的预身份验证暴露面、37 处在身份验证之前执行代码或记录状态的位置，以及 61 种会静默削弱管理员所配置的预身份验证控制的配置组合。这些问题单独来看都不会立即被利用，但它们造成了远超必要范围的攻击面。",
+          "inlines": [
+            {
+              "text": "首先，Claude 发现全部 11 个门控型项目都存在非预期可达的代码（尽管这些代码在任何项目的总代码行数中占比都不大）。具体而言，Claude 在门控组的默认配置中发现了 93 处不必要的预身份验证暴露面、37 处在身份验证之前执行代码或记录状态的位置，以及 61 种会静默削弱管理员所配置的预身份验证控制的配置组合。这些问题单独来看都不会立即被利用，但它们造成了远超必要范围的攻击面。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0e525b5f6ff43e38de1d6d41c38edccc44f8e0e41f30bd9d661348d4ccce52c1.webp",
+          "alt": "",
+          "width": 1920,
+          "height": 1240
+        },
+        {
+          "type": "paragraph",
+          "text": "按类别和每种技术划分的问题分布。在我们评估的 25 个项目中，10 个为公开型，11 个为门控型，4 个为私有型。门控组的结果最令人意外，其中早期可达性发现数量很多。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "按类别和每种技术划分的问题分布。在我们评估的 25 个项目中，10 个为公开型，11 个为门控型，4 个为私有型。门控组的结果最令人意外，其中早期可达性发现数量很多。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "其次，Claude 在处理配置交互问题方面的工作产生了一些最有趣、最具影响力的发现（涵盖所有项目类型）。Claude 发现了 162 个安全敏感的配置组合，这些组合被接受时既没有报错也没有警告，且没有任何关于其交互预期行为的文档说明。在其中 94 个案例中，该组合会静默关闭某项安全控制。其余 68 个案例则是同一安全机制内部的不一致（例如，某个监听器或登录路径尽管配置声称已禁用，却仍然可达；两项设置相互冲突，而哪一项生效取决于它们在配置文件中的顺序；或者管理员配置的某项保护实际不起作用，而其代码仍然可达）。虽然其中一些配置组合可能属于非标准或不常使用的用法，但并没有什么能阻止这些项目的管理员以这种方式配置和部署代码。",
+          "inlines": [
+            {
+              "text": "其次，Claude 在处理配置交互问题方面的工作产生了一些最有趣、最具影响力的发现（涵盖所有项目类型）。Claude 发现了 162 个安全敏感的配置组合，这些组合被接受时既没有报错也没有警告，且没有任何关于其交互预期行为的文档说明。在其中 94 个案例中，该组合会静默关闭某项安全控制。其余 68 个案例则是同一安全机制内部的不一致（例如，某个监听器或登录路径尽管配置声称已禁用，却仍然可达；两项设置相互冲突，而哪一项生效取决于它们在配置文件中的顺序；或者管理员配置的某项保护实际不起作用，而其代码仍然可达）。虽然其中一些配置组合可能属于非标准或不常使用的用法，但并没有什么能阻止这些项目的管理员以这种方式配置和部署代码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 还发现了一种特定模式，它在四个互不相关的项目中各自独立出现。其运作方式如下。管理员会使用主机名或通配符模式（而非 IP 地址）为远程客户端编写访问规则。当客户端连接时，服务器会将这条规则与客户端的主机名进行比对。而服务器是否能获知该主机名，取决于一个控制反向 DNS 查询的独立选项（大多数项目都将其配置为关闭）。在查询关闭的情况下，服务器只能拿到客户端的 IP 地址。服务器会将规则与该地址按纯文本进行比对。但主机名模式永远无法匹配 IP 地址。这意味着拒绝规则永远不会触发，该列表会失效开放（fail open）。部分受影响的项目在文档中提到，主机名规则依赖于启用 DNS 查询，但没有任何一个项目说明以这种方式编写的拒绝列表会具有失效开放行为。",
+          "inlines": [
+            {
+              "text": "Claude 还发现了一种特定模式，它在四个互不相关的项目中各自独立出现。其运作方式如下。管理员会使用主机名或通配符模式（而非 IP 地址）为远程客户端编写访问规则。当客户端连接时，服务器会将这条规则与客户端的主机名进行比对。而服务器是否能获知该主机名，取决于一个控制反向 DNS 查询的独立选项（大多数项目都将其配置为关闭）。在查询关闭的情况下，服务器只能拿到客户端的 IP 地址。服务器会将规则与该地址按纯文本进行比对。但主机名模式永远无法匹配 IP 地址。这意味着拒绝规则永远不会触发，该列表会失效开放（fail open）。部分受影响的项目在文档中提到，主机名规则依赖于启用 DNS 查询，但没有任何一个项目说明以这种方式编写的拒绝列表会具有失效开放行为。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "第三，Claude 经常发现两个配置选项会以静默丢弃某项安全检查的方式相互冲突。在一个案例中，管理员可以要求每个连接的客户端用证书证明其身份。在另一个案例中，代码本意只是将这项检查推迟到需要时再执行，但实际上却完全禁用了该检查。因此，一台配置为仅接受受信任客户端的服务器会接受任何人的连接。这使得大量请求处理代码（本应位于证书检查之后）暴露给了未认证的客户端。该软件在默认设置下同时接受这两个配置选项且没有任何警告；文档也从未提到证书要求已被丢弃。这组相互冲突的配置选项在该软件中已存在了 21 年。",
+          "inlines": [
+            {
+              "text": "第三，Claude 经常发现两个配置选项会以静默丢弃某项安全检查的方式相互冲突。在一个案例中，管理员可以要求每个连接的客户端用证书证明其身份。在另一个案例中，代码本意只是将这项检查推迟到需要时再执行，但实际上却完全禁用了该检查。因此，一台配置为仅接受受信任客户端的服务器会接受任何人的连接。这使得大量请求处理代码（本应位于证书检查之后）暴露给了未认证的客户端。该软件在默认设置下同时接受这两个配置选项且没有任何警告；文档也从未提到证书要求已被丢弃。这组相互冲突的配置选项在该软件中已存在了 21 年。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "最后，Claude 在一个项目中发现了问题：该项目默认关闭身份验证（并期望管理员手动开启）。要求 TLS 客户端证书的选项在该项目的大多数网络端点上都会生效，但在另外少数几个端点上却被静默忽略（这些端点通过不同命名空间的路径加载其 TLS 设置）。这意味着，没有证书的客户端也能完成 TLS 握手，并在受影响的端点上打开会话。对于被忽略的设置，不会记录任何日志。该选项是否生效取决于管理员在配置中使用的命名空间。设置名称的一种形式在所有端点上都能生效，但较短的形式——大多数示例使用的形式——在受影响的端点上会被丢弃。",
+          "inlines": [
+            {
+              "text": "最后，Claude 在一个项目中发现了问题：该项目默认关闭身份验证（并期望管理员手动开启）。要求 TLS 客户端证书的选项在该项目的大多数网络端点上都会生效，但在另外少数几个端点上却被静默忽略（这些端点通过不同命名空间的路径加载其 TLS 设置）。这意味着，没有证书的客户端也能完成 TLS 握手，并在受影响的端点上打开会话。对于被忽略的设置，不会记录任何日志。该选项是否生效取决于管理员在配置中使用的命名空间。设置名称的一种形式在所有端点上都能生效，但较短的形式——大多数示例使用的形式——在受影响的端点上会被丢弃。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "案例研究：OpenSSH",
+          "inlines": [
+            {
+              "text": "案例研究：OpenSSH"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "令人惊讶的是，若以占总代码行数的百分比来衡量，Claude 实现攻击面缩减幅度最大的项目是 OpenSSH。OpenSSH 是一个高质量的 C 代码库，提供安全的远程访问。Claude 追踪了 10.4 版本中 SSH 守护进程的输入路径，发现约 4,500 行用于 ML-DSA-44（一种后量子签名算法）的新增实验性代码，未认证的客户端在默认配置下即可触达这些代码。ML-DSA 默认并未启用，但无论是否启用，这些代码都可被触达，即使管理员明确排除了该算法也是如此。守护进程会解析客户端发送的任意密钥类型（对于证书，还会验证内嵌的 CA 签名）。直到这时，它才检查该密钥类型是否被允许。当配置未启用时，让这段复杂且内存不安全的代码可被触达，没有任何正当理由。在默认的 sshd 中，ML-DSA-44 的这 4,500 行代码约占 OpenSSH 自身预认证代码的 16%。我们将此问题连同补丁一并报告给了 OpenSSH 开发者。10.5 版本将检查移到了解析之前。",
+          "inlines": [
+            {
+              "text": "令人惊讶的是，若以占总代码行数的百分比来衡量，Claude 实现攻击面缩减幅度最大的项目是 OpenSSH。OpenSSH 是一个高质量的 C 代码库，提供安全的远程访问。Claude 追踪了 10.4 版本中 SSH 守护进程的输入路径，发现约 4,500 行用于 ML-DSA-44（一种后量子签名算法）的新增实验性代码，未认证的客户端在默认配置下即可触达这些代码。ML-DSA 默认并未启用，但无论是否启用，这些代码都可被触达，即使管理员明确排除了该算法也是如此。守护进程会解析客户端发送的任意密钥类型（对于证书，还会验证内嵌的 CA 签名）。直到这时，它才检查该密钥类型是否被允许。当配置未启用时，让这段复杂且内存不安全的代码可被触达，没有任何正当理由。在默认的 sshd 中，ML-DSA-44 的这 4,500 行代码约占 OpenSSH 自身预认证代码的 16%。我们将此问题连同补丁一并报告给了 OpenSSH 开发者。10.5 版本将检查移到了解析之前。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随后 Claude 指出了 10.5 版本检查中的两个缺口。第一个是客户端声称的算法与其实际发送的算法不一致。该检查查看的是客户端通告的算法名称，但解析器却是由密钥 blob 内嵌的类型字符串选择的。客户端可以通告 ssh-ed25519，通过检查，却仍然发送一个会被解析的 ML-DSA 密钥。",
+          "inlines": [
+            {
+              "text": "随后 Claude 指出了 10.5 版本检查中的两个缺口。第一个是客户端声称的算法与其实际发送的算法不一致。该检查查看的是客户端通告的算法名称，但解析器却是由密钥 blob 内嵌的类型字符串选择的。客户端可以通告 ssh-ed25519，通过检查，却仍然发送一个会被解析的 ML-DSA 密钥。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "第二个缺口在于 10.5 版本检查对证书的处理。证书密钥类型默认处于启用状态。面对攻击者提供的证书，sshd 会反序列化内嵌的 CA 公钥，并对其运行完整的签名验证——对任何受支持的算法都是如此——而且这一切都发生在查询配置之前。用户密钥签名路径被正确地限制在允许连接服务器的公钥列表之后，但 CA 签名路径却没有。这使得二进制文件中每一个公钥签名验证器都能被任何能完成密钥交换的客户端触达。我们构建了一个概念验证，并与维护者一起迭代了多个修复方案。最终的改动将检查放入了解析器本身。现在，编码的密钥类型和证书的 CA 签名算法会在相应的反序列化或签名验证之前，与配置的允许列表进行比对。",
+          "inlines": [
+            {
+              "text": "第二个缺口在于 10.5 版本检查对证书的处理。证书密钥类型默认处于启用状态。面对攻击者提供的证书，sshd 会反序列化内嵌的 CA 公钥，并对其运行完整的签名验证——对任何受支持的算法都是如此——而且这一切都发生在查询配置之前。用户密钥签名路径被正确地限制在允许连接服务器的公钥列表之后，但 CA 签名路径却没有。这使得二进制文件中每一个公钥签名验证器都能被任何能完成密钥交换的客户端触达。我们构建了一个概念验证，并与维护者一起迭代了多个修复方案。最终的改动将检查放入了解析器本身。现在，编码的密钥类型和证书的 CA 签名算法会在相应的反序列化或签名验证"
+            },
+            {
+              "italic": true,
+              "text": "之前"
+            },
+            {
+              "text": "，与配置的允许列表进行比对。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "此修复移除了 OpenSSH 中约五分之一的代码，这些代码在默认构建中原本可被未认证客户端触及。其中几乎全部都是新的 ML-DSA 代码，现在即使客户端谎报其密钥类型，或在其他方面可接受的证书中隐藏 ML-DSA CA 密钥，也无法触及这些代码。使用允许的 CA 算法签名的证书仍会被解析和验证，但检查现在在解析之前运行。维护者在 10.6 版本中发布了此处描述的更改。",
+          "inlines": [
+            {
+              "text": "此修复移除了 OpenSSH 中约五分之一的代码，这些代码在默认构建中原本可被未认证客户端触及。其中几乎全部都是新的 ML-DSA 代码，现在即使客户端谎报其密钥类型，或在其他方面可接受的证书中隐藏 ML-DSA CA 密钥，也无法触及这些代码。使用允许的 CA 算法签名的证书仍会被解析和验证，但检查现在在解析"
+            },
+            {
+              "italic": true,
+              "text": "之前"
+            },
+            {
+              "text": "运行。维护者在 "
+            },
+            {
+              "href": "https://www.openssh.org/releasenotes.html#10.6",
+              "text": "10.6"
+            },
+            {
+              "text": " 版本中发布了此处描述的更改。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenSSH 是世界上经过最严格审计的代码之一。如果不必要的可达性在那里都能存活，那么它在任何地方都能存活。这表明，减少代码库的攻击面很可能在许多重要代码库中带来回报。",
+          "inlines": [
+            {
+              "text": "OpenSSH 是世界上经过最严格审计的代码之一。如果不必要的可达性在那里都能存活，那么它在任何地方都能存活。这表明，减少代码库的攻击面很可能在许多重要代码库中带来回报。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结论",
+          "inlines": [
+            {
+              "text": "结论"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "或许无法衡量任何给定代码库中存在多少未知漏洞。而且有大量数据表明，攻击者有足够时间就能找到这些漏洞（尤其是配备前沿 AI 模型时）。但防御者若减少其代码中不必要的攻击面，就能一次性降低该代码中所有未知漏洞带来的风险——包括任何已被悄然利用的漏洞。OpenSSH 是世界上经过最严格审计的 C 代码之一。然而它发布了约 4,500 行实验性签名解析代码，攻击者在任何配置检查之前就可能触及这些代码。",
+          "inlines": [
+            {
+              "text": "或许无法衡量任何给定代码库中存在多少未知漏洞。而且有大量数据表明，攻击者有足够时间就能找到这些漏洞（尤其是配备前沿 AI 模型时）。但防御者若减少其代码中不必要的攻击面，就能一次性降低该代码中所有未知漏洞带来的风险——包括任何已被悄然利用的漏洞。OpenSSH 是世界上经过最严格审计的 C 代码之一。然而它发布了约 4,500 行实验性签名解析代码，攻击者在任何配置检查之前就可能触及这些代码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们已将上述攻击面削减技术整合为一个可复用的 Claude 技能，并正努力将其集成到 OSS-Scanner 中。该技能对代码库运行三轮检查。每轮都从全新状态开始（上下文窗口为空），仅接收上一轮传递的一小段上下文。",
+          "inlines": [
+            {
+              "text": "我们已将上述攻击面削减技术整合为一个可复用的 Claude 技能，并正努力将其集成到 "
+            },
+            {
+              "href": "https://www.anthropic.com/research/launching-opt-in-vuln-finding-service-for-open-source",
+              "text": "OSS-Scanner"
+            },
+            {
+              "text": " 中。该技能对代码库运行三轮检查。每轮都从全新状态开始（上下文窗口为空），仅接收上一轮传递的一小段上下文。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在第一轮中，该技能检查是否存在默认配置允许触及、但任何预期功能都未使用的代码。在第二轮中，它检查在任何配置下、在任何硬性门禁（如身份验证）之前或协议状态机入口点之前运行的代码。最后，第三轮评估哪些配置组合会静默关闭安全控制或降低其有效性。每一轮中，Claude 都会从代码中建立入口点清单，并通过程序的动态跟踪确认每项发现。对于默认配置的发现，它会设计并实现一个门禁，并确保这不会改变程序的默认行为。它通过针对基线运行项目自身的测试套件（以及黑盒回归套件）来实现这一点；它要求修改后的构建具有相同结果。任何会改变非默认配置的门禁都会被搁置，交由人类决定。对于另外两轮，它会提出更改建议，例如重新排序配置检查、添加守卫以强制状态顺序，或在配置加载时拒绝该组合。即使不使用这个特定技能，我们认为此处概述的广泛方法很可能也是有效的。",
+          "inlines": [
+            {
+              "text": "在第一轮中，该技能检查是否存在默认配置允许触及、但任何预期功能都未使用的代码。在第二轮中，它检查在任何配置下、在任何硬性门禁（如身份验证）之前或协议状态机入口点之前运行的代码。最后，第三轮评估哪些配置组合会静默关闭安全控制或降低其有效性。每一轮中，Claude 都会从代码中建立入口点清单，并通过程序的动态跟踪确认每项发现。对于默认配置的发现，它会设计并实现一个门禁，并确保这不会改变程序的默认行为。它通过针对基线运行项目自身的测试套件（以及黑盒回归套件）来实现这一点；它要求修改后的构建具有相同结果。任何会改变非默认配置的门禁都会被搁置，交由人类决定。对于另外两轮，它会提出更改建议，例如重新排序配置检查、添加守卫以强制状态顺序，或在配置加载时拒绝该组合。即使不使用这个特定技能，我们认为此处概述的广泛方法很可能也是有效的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本文概述的技术仅展示了攻击面削减可能性的非常有限的一面。例如，Claude 还能分析和比较运行时日志与配置，以确保仅启用所需功能：禁用未使用的解析器、遗留协议和仪表板能以极低成本降低安全风险。",
+          "inlines": [
+            {
+              "text": "本文概述的技术仅展示了攻击面削减可能性的非常有限的一面。例如，Claude 还能分析和比较运行时日志与配置，以确保仅启用所需功能：禁用未使用的解析器、遗留协议和仪表板能以极低成本降低安全风险。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们鼓励各组织探索使用 Claude 来分析并减少其所依赖软件的受攻击面。我们预计，这将成为开发者切实提升当今世界所运行代码安全性的最实用方式之一。",
+          "inlines": [
+            {
+              "text": "我们鼓励各组织探索使用 Claude 来分析并减少其所依赖软件的受攻击面。我们预计，这将成为开发者切实提升当今世界所运行代码安全性的最实用方式之一。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Chris Rohlf",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Chris Rohlf"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Over the past year, we’ve published lots of data that shows that frontier AI models are more than capable of discovering and exploiting security vulnerabilities. Showing how previously unknown vulnerabilities might be exploited is, however, only the start of what frontier AI models can do for cyber defense. In this post, we summarize some of our initial research into automated attack surface analysis and reduction: the process of using AI models to map the code that is reachable, then removing or restricting access to anything than a given deployment doesn’t need to expose.",
+          "inlines": [
+            {
+              "text": "Over the past year, we’ve "
+            },
+            {
+              "href": "https://www.anthropic.com/research/mythos-preview",
+              "text": "published"
+            },
+            {
+              "text": " lots of data that shows that frontier AI models are more than capable of "
+            },
+            {
+              "href": "https://www.anthropic.com/news/mozilla-firefox-security",
+              "text": "discovering"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://www.anthropic.com/research/exploit-evals",
+              "text": "exploiting"
+            },
+            {
+              "text": " security vulnerabilities. Showing how previously unknown vulnerabilities might be exploited is, however, only the start of what frontier AI models can do for cyber defense. In this post, we summarize some of our initial research into automated attack surface analysis and reduction: the process of using AI models to map the code that is reachable, then removing or restricting access to anything than a given deployment doesn’t need to expose."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Automated attack surface analysis and reduction can meaningfully improve the security of deployed software in the near term. Securing software by finding and fixing individual vulnerabilities alone scales poorly: fixing even a critical vulnerability tells you nothing about the vulnerabilities that remain. By contrast, reducing code reachability can reduce the severity of unknown vulnerabilities, including the ones that might be under active exploitation. These techniques don’t remove the unknown vulnerabilities in the code, but they do make the vulnerabilities harder to reach, and thereby reduce their severity. Minimizing codebases’ attack surface results in better security without ever having to find or fix an individual vulnerability.",
+          "inlines": [
+            {
+              "text": "Automated attack surface analysis and reduction can meaningfully improve the security of deployed software in the near term. Securing software by finding and fixing individual vulnerabilities alone scales poorly: fixing even a critical vulnerability tells you nothing about the vulnerabilities that remain. By contrast, reducing code reachability can reduce the severity of unknown vulnerabilities, including the ones that might be under active exploitation. These techniques don’t remove the unknown vulnerabilities in the code, but they do make the vulnerabilities harder to reach, and thereby reduce their severity. Minimizing codebases’ attack surface results in better security without ever having to find or fix an individual vulnerability."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Below, we preview some of the data we’ve collected from applying attack surface reduction techniques to large open-source codebases using Claude. Our aim in doing so is to show that Claude can meaningfully, and economically, improve software security through the methods we outline. Specifically, we ran Claude over 25 projects (in a variety of languages), and it discovered 493 issues. With these results in mind, we discuss how developers can apply similar techniques to their own code.",
+          "inlines": [
+            {
+              "text": "Below, we preview some of the data we’ve collected from applying attack surface reduction techniques to large open-source codebases using Claude. Our aim in doing so is to show that Claude can meaningfully, and economically, improve software security through the methods we outline. Specifically, we ran Claude over 25 projects (in a variety of languages), and it discovered 493 issues. With these results in mind, we discuss how developers can apply similar techniques to their own code."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Methods for reducing codebases’ attack surface",
+          "inlines": [
+            {
+              "text": "Methods for reducing codebases’ attack surface"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Over time, software has a tendency to become more complicated, with new layers of abstractions, new dependencies, and new features slowly piling on top of one-another. This can often cause it to function very differently to how its original developers intended. And it is a big part of why attackers are often so successful: they study exactly how a piece of code behaves in practice, rather than how its developers intended or designed it to work.",
+          "inlines": [
+            {
+              "text": "Over time, software has a tendency to become more complicated, with new layers of abstractions, new dependencies, and new features slowly piling on top of one-another. This can often cause it to function very differently to how its original developers intended. And it is a big part of why attackers are often so successful: they study exactly how a piece of code behaves in practice, rather than how its developers intended or designed it to work."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Automated attack surface analysis and reduction techniques aim to discover unnecessary attack surfaces, then move that code behind an appropriate gate. This might involve moving code from pre-authentication to post-authentication, from 0-click to 1-click, from on-by-default to explicit opt-in, or from the first message of a protocol to deeper in the session state machine. Some code is meant to be reachable before these stages, but a lot it is not, and, given the complexity that comes with code churn across thousands or millions of lines of code, unnecessary exposure of features often goes unnoticed.",
+          "inlines": [
+            {
+              "text": "Automated attack surface analysis and reduction techniques aim to discover unnecessary attack surfaces, then move that code behind an appropriate gate. This might involve moving code from pre-authentication to post-authentication, from 0-click to 1-click, from on-by-default to explicit opt-in, or from the first message of a protocol to deeper in the session state machine. Some code is meant to be reachable before these stages, but a lot it is not, and, given the complexity that comes with code churn across thousands or millions of lines of code, unnecessary exposure of features often goes unnoticed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "There are numerous ways to reduce the attack surface of code. In our own research efforts, we focused on three methods in particular:",
+          "inlines": [
+            {
+              "text": "There are numerous ways to reduce the attack surface of code. In our own research efforts, we focused on three methods in particular:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Default configuration."
+                },
+                {
+                  "text": " We identified code that was reachable in its shipped default configuration but wasn’t intended to be used by any default functionality."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Configuration interaction."
+                },
+                {
+                  "text": " We found pairs of options that looked reasonable on their own, but which caused issues when configured together (for instance, by silently disabling a security control, or leaving a features behavior undefined while its code remains reachable)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Early reachability."
+                },
+                {
+                  "text": " We identified security sensitive and complex code that runs either before an appropriate security control (such as authentication), without victim interaction, or before a protocol state transition."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We wanted to understand how well Claude could take these three descriptions of attack surface and discover real issues in large and complex codebases. We analyzed 25 open source projects (representing over five million lines of code), written in languages including C, C++, Java, PHP, and Python. Claude created an inventory of over 17,000 configuration options across these projects. Of those, 3,842 related to the configuration of a control or feature that was security relevant.",
+          "inlines": [
+            {
+              "text": "We wanted to understand how well Claude could take these three descriptions of attack surface and discover real issues in large and complex codebases. We analyzed 25 open source projects (representing over five million lines of code), written in languages including C, C++, Java, PHP, and Python. Claude created an inventory of over 17,000 configuration options across these projects. Of those, 3,842 related to the configuration of a control or feature that was security relevant."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For the purposes of our research, we broke down these open source projects into three broad categories:",
+          "inlines": [
+            {
+              "text": "For the purposes of our research, we broke down these open source projects into three broad categories:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Public"
+                },
+                {
+                  "text": ". These projects are built to serve any user who can reach them, or to consume data authored by parties they cannot identify. (Examples include a DNS resolver parsing upstream answers, or a proxy parsing origin responses.)"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Gated"
+                },
+                {
+                  "text": ". These projects are intended to serve authenticated users (such as those with a password, key or certificate holders, or enrolled devices). The software still allows for arbitrary client requests, but no functionality is available until the user has been authenticated."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Private"
+                },
+                {
+                  "text": ". These are built and deployed to serve the operator's own private environment. In these cases, adding a control like an authentication layer is optional, but outside the scope of the software."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These categories help to contextualize our results. For example, we’d expect a significant percentage of a Public codebase to be reachable in the default configuration (since it’s designed to serve any user), but the opposite to be true for projects in the Gated category.",
+          "inlines": [
+            {
+              "text": "These categories help to contextualize our results. For example, we’d expect a significant percentage of a Public codebase to be reachable in the default configuration (since it’s designed to serve any user), but the opposite to be true for projects in the Gated category."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude’s findings",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Claude’s findings"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude found 493 issues using the three methods described above. Several themes stuck out to us from its results.",
+          "inlines": [
+            {
+              "text": "Claude found 493 issues using the three methods described above. Several themes stuck out to us from its results."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "First, Claude found that all eleven gated projects had code that was unintentionally reachable (although this code wasn’t a significant percentage of the total lines of code for any of those projects). Specifically, Claude discovered 93 unnecessary pre-authentication surfaces in the default configuration of the gated cohort, 37 locations where code executed, or state was recorded, before authentication, and 61 configuration combinations that silently weakened a pre-authentication control configured by the administrator. None of these issues would have been immediately exploitable on their own, but they create a much larger attack surface than is necessary.",
+          "inlines": [
+            {
+              "text": "First, Claude found that all eleven gated projects had code that was unintentionally reachable (although this code wasn’t a significant percentage of the total lines of code for any of those projects). Specifically, Claude discovered 93 unnecessary pre-authentication surfaces in the default configuration of the gated cohort, 37 locations where code executed, or state was recorded, before authentication, and 61 configuration combinations that silently weakened a pre-authentication control configured by the administrator. None of these issues would have been immediately exploitable on their own, but they create a much larger attack surface than is necessary."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0e525b5f6ff43e38de1d6d41c38edccc44f8e0e41f30bd9d661348d4ccce52c1.webp",
+          "alt": "",
+          "width": 1920,
+          "height": 1240
+        },
+        {
+          "type": "paragraph",
+          "text": "A breakdown of issues discovered per category for each technique. Of the 25 projects we assessed, 10 were Public, 11 Gated, and 4 Private. The Gated cohort contained the most surprising results with a high number of early reachability findings.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "A breakdown of issues discovered per category for each technique. Of the 25 projects we assessed, 10 were Public, 11 Gated, and 4 Private. The Gated cohort contained the most surprising results with a high number of early reachability findings."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Second, Claude’s work mitigating configuration interaction issues produced some of the most interesting and impactful findings (across all project types). Claude found 162 security sensitive configuration combinations that were accepted both without an error or warning and without any documentation of the expected behavior of their interaction. In 94 of those cases, the combination silently turned off a security control. The other 68 cases were inconsistencies in the same security mechanisms (e.g. a listener or login path would remain reachable even though the configuration would say it was disabled; two settings would conflict, and the one that would take precedence would depend on their order in the configuration file, or a protection configured by the administrator would do nothing while its code remained reachable). While some of these configuration combinations might be non-standard or infrequently used, there would be nothing preventing an administrator of these projects from configuring and deploying the code in this way.",
+          "inlines": [
+            {
+              "text": "Second, Claude’s work mitigating configuration interaction issues produced some of the most interesting and impactful findings (across all project types). Claude found 162 security sensitive configuration combinations that were accepted both without an error or warning and without any documentation of the expected behavior of their interaction. In 94 of those cases, the combination silently turned off a security control. The other 68 cases were inconsistencies in the same security mechanisms (e.g. a listener or login path would remain reachable even though the configuration would say it was disabled; two settings would conflict, and the one that would take precedence would depend on their order in the configuration file, or a protection configured by the administrator would do nothing while its code remained reachable). While some of these configuration combinations might be non-standard or infrequently used, there would be nothing preventing an administrator of these projects from configuring and deploying the code in this way."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude also found one specific pattern that turned up independently in four unrelated projects. This would work as follows. An administrator would write an access rule for remote clients using a hostname or a wildcard pattern, instead of an IP address. When a client connects, the server would compare that rule against the client’s hostname. Whether the server ever learned that hostname would depend on a separate option that controlled reverse DNS lookups (which most projects had configured off). With lookups off, the server would only have the client’s IP address. The server would compare the rule against that address as plain text. But a hostname pattern can never match an IP address. This means that a deny rule would never fire, and the list would fail open. Some of the affected projects mention in their documentation that hostname rules depend on DNS lookups being enabled, but none state that a deny list written this way would have fail open behavior.",
+          "inlines": [
+            {
+              "text": "Claude also found one specific pattern that turned up independently in four unrelated projects. This would work as follows. An administrator would write an access rule for remote clients using a hostname or a wildcard pattern, instead of an IP address. When a client connects, the server would compare that rule against the client’s hostname. Whether the server ever learned that hostname would depend on a separate option that controlled reverse DNS lookups (which most projects had configured off). With lookups off, the server would only have the client’s IP address. The server would compare the rule against that address as plain text. But a hostname pattern can never match an IP address. This means that a deny rule would never fire, and the list would fail open. Some of the affected projects mention in their documentation that hostname rules depend on DNS lookups being enabled, but none state that a deny list written this way would have fail open behavior."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Third, Claude often discovered that two configuration options would conflict in a way that silently dropped a security check. In one case, an administrator could require every connecting client to prove its identity with a certificate. In another, the code was only intended to delay that check until it was required, but in fact disabled the check entirely. A server that was configured to accept only trusted clients would therefore accept a connection from anyone. This exposed a large body of request handling code (which was supposed to be behind the certificate check) to unauthenticated clients. The software accepted both configuration options together with no warning under default settings; the documentation never mentioned that the certificate requirement had been dropped. This conflicting set of configuration options had been present in the software for 21 years.",
+          "inlines": [
+            {
+              "text": "Third, Claude often discovered that two configuration options would conflict in a way that silently dropped a security check. In one case, an administrator could require every connecting client to prove its identity with a certificate. In another, the code was only intended to delay that check until it was required, but in fact disabled the check entirely. A server that was configured to accept only trusted clients would therefore accept a connection from anyone. This exposed a large body of request handling code (which was supposed to be behind the certificate check) to unauthenticated clients. The software accepted both configuration options together with no warning under default settings; the documentation never mentioned that the certificate requirement had been dropped. This conflicting set of configuration options had been present in the software for 21 years."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Finally, Claude discovered an issue in a project that left authentication off by default (and expected the administrator to turn it on). The option that required TLS client certificates was honored on most of the project’s network endpoints, but silently ignored on a few others (ones which loaded their TLS settings through a path with a different namespace). This meant that a client with no certificate could complete the TLS handshake and open a session on an affected endpoint. Nothing would be logged about the ignored setting. Whether the option takes effect would depend on the namespace used by the administrator in the configuration. One form of the setting name works on every endpoint, but the shorter form—which most examples use—is dropped on the affected ones.",
+          "inlines": [
+            {
+              "text": "Finally, Claude discovered an issue in a project that left authentication off by default (and expected the administrator to turn it on). The option that required TLS client certificates was honored on most of the project’s network endpoints, but silently ignored on a few others (ones which loaded their TLS settings through a path with a different namespace). This meant that a client with no certificate could complete the TLS handshake and open a session on an affected endpoint. Nothing would be logged about the ignored setting. Whether the option takes effect would depend on the namespace used by the administrator in the configuration. One form of the setting name works on every endpoint, but the shorter form—which most examples use—is dropped on the affected ones."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Case study: OpenSSH",
+          "inlines": [
+            {
+              "text": "Case study: OpenSSH"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Surprisingly, when measured as a percentage of the total lines of code, the project for which Claude achieved the largest reduction in attack surface was OpenSSH. OpenSSH is a high quality C codebase that provides secure remote access. Claude traced the input paths of the SSH daemon in the 10.4 release and found roughly 4,500 lines of new and experimental code for ML-DSA-44, a post-quantum signature algorithm, that an unauthenticated client could reach in the default configuration. ML-DSA is not enabled by default, but the code was reachable regardless, even when an administrator explicitly excluded the algorithm. The daemon parsed whichever key type the client sent, (and, for certificates, it also verified the embedded CA signature). Only then did it check whether that key type was allowed. There is no good reason for this complex, memory unsafe code to be reachable when it hasn’t been enabled by the configuration. Those 4,500 lines of code in ML-DSA-44 are about 16% of OpenSSH’s own pre-authentication code in a default sshd. We reported this to the OpenSSH developers along with patches. The 10.5 release moved the check before parsing.",
+          "inlines": [
+            {
+              "text": "Surprisingly, when measured as a percentage of the total lines of code, the project for which Claude achieved the largest reduction in attack surface was OpenSSH. OpenSSH is a high quality C codebase that provides secure remote access. Claude traced the input paths of the SSH daemon in the 10.4 release and found roughly 4,500 lines of new and experimental code for ML-DSA-44, a post-quantum signature algorithm, that an unauthenticated client could reach in the default configuration. ML-DSA is not enabled by default, but the code was reachable regardless, even when an administrator explicitly excluded the algorithm. The daemon parsed whichever key type the client sent, (and, for certificates, it also verified the embedded CA signature). Only then did it check whether that key type was allowed. There is no good reason for this complex, memory unsafe code to be reachable when it hasn’t been enabled by the configuration. Those 4,500 lines of code in ML-DSA-44 are about 16% of OpenSSH’s own pre-authentication code in a default sshd. We reported this to the OpenSSH developers along with patches. The 10.5 release moved the check before parsing."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude then noted two gaps in the 10.5 check. The first was a mismatch between what the client claimed and what it sent. The check looked at the algorithm name advertised by the client, but the parser was chosen by a type string embedded inside the key blob. A client could advertise ssh-ed25519, pass the check, and still send an ML-DSA key that would be parsed.",
+          "inlines": [
+            {
+              "text": "Claude then noted two gaps in the 10.5 check. The first was a mismatch between what the client claimed and what it sent. The check looked at the algorithm name advertised by the client, but the parser was chosen by a type string embedded inside the key blob. A client could advertise ssh-ed25519, pass the check, and still send an ML-DSA key that would be parsed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The second gap was in the 10.5 check’s certificates. Certificate key types were enabled by default. Given a certificate supplied by an attacker, sshd would deserialize the embedded CA public key and run a full signature verification with it, for any supported algorithm, before consulting the configuration. The user key signature path was properly gated behind the list of public keys allowed to connect to the server, but the CA signature path was not. That made every public key signature verifier in the binary reachable by any client that could complete a key exchange. We built a proof of concept and worked through several iterations of a fix with the maintainers. The resulting change placed the checks inside the parser itself. The encoded key type and the certificate’s CA signature algorithm are now compared against the configured allow lists before the corresponding deserialization or signature verification.",
+          "inlines": [
+            {
+              "text": "The second gap was in the 10.5 check’s certificates. Certificate key types were enabled by default. Given a certificate supplied by an attacker, sshd would deserialize the embedded CA public key and run a full signature verification with it, for any supported algorithm, before consulting the configuration. The user key signature path was properly gated behind the list of public keys allowed to connect to the server, but the CA signature path was not. That made every public key signature verifier in the binary reachable by any client that could complete a key exchange. We built a proof of concept and worked through several iterations of a fix with the maintainers. The resulting change placed the checks inside the parser itself. The encoded key type and the certificate’s CA signature algorithm are now compared against the configured allow lists "
+            },
+            {
+              "italic": true,
+              "text": "before"
+            },
+            {
+              "text": " the corresponding deserialization or signature verification."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This fix removed roughly a fifth of the OpenSSH code that an unauthenticated client previously could have reached in a default build. Almost all of that was the new ML-DSA code, which is now unreachable even for a client that lies about its key type or hides an ML-DSA CA key inside an otherwise acceptable certificate. Certificates signed with an allowed CA algorithm are still parsed and verified, but the check now runs before parsing. The maintainers shipped the changes described here in version 10.6.",
+          "inlines": [
+            {
+              "text": "This fix removed roughly a fifth of the OpenSSH code that an unauthenticated client previously could have reached in a default build. Almost all of that was the new ML-DSA code, which is now unreachable even for a client that lies about its key type or hides an ML-DSA CA key inside an otherwise acceptable certificate. Certificates signed with an allowed CA algorithm are still parsed and verified, but the check now runs "
+            },
+            {
+              "italic": true,
+              "text": "before"
+            },
+            {
+              "text": " parsing. The maintainers shipped the changes described here in version "
+            },
+            {
+              "href": "https://www.openssh.org/releasenotes.html#10.6",
+              "text": "10.6"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenSSH is some of the most heavily audited code in the world. If unnecessary reachability survives there, it can survive anywhere. This suggests that reducing the attack surface of codebases is likely to pay dividends across many important codebases.",
+          "inlines": [
+            {
+              "text": "OpenSSH is some of the most heavily audited code in the world. If unnecessary reachability survives there, it can survive anywhere. This suggests that reducing the attack surface of codebases is likely to pay dividends across many important codebases."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Conclusion",
+          "inlines": [
+            {
+              "text": "Conclusion"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "It is perhaps impossible to measure how many unknown vulnerabilities are in any given codebase. And there is plenty of data that shows attackers can and will find those vulnerabilities with enough time (particularly if equipped with frontier AI models). But a defender who reduces unnecessary attack surface in their code reduces the risk from all of the unknown vulnerabilities in that code at once—including any that are already being quietly exploited. OpenSSH is some of the most audited C code in the world. Yet it shipped around 4,500 lines of experimental signature parsing code that could have been reached by an attacker prior to any configuration check.",
+          "inlines": [
+            {
+              "text": "It is perhaps impossible to measure how many unknown vulnerabilities are in any given codebase. And there is plenty of data that shows attackers can and will find those vulnerabilities with enough time (particularly if equipped with frontier AI models). But a defender who reduces unnecessary attack surface in their code reduces the risk from all of the unknown vulnerabilities in that code at once—including any that are already being quietly exploited. OpenSSH is some of the most audited C code in the world. Yet it shipped around 4,500 lines of experimental signature parsing code that could have been reached by an attacker prior to any configuration check."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We have combined the attack surface reduction techniques we described above into one reusable Claude skill, which we are working to integrate into OSS-Scanner. The skill runs three passes on a codebase. Each time it starts fresh (with an empty context window), except for a short piece of context it receives from the prior pass.",
+          "inlines": [
+            {
+              "text": "We have combined the attack surface reduction techniques we described above into one reusable Claude skill, which we are working to integrate into "
+            },
+            {
+              "href": "https://www.anthropic.com/research/launching-opt-in-vuln-finding-service-for-open-source",
+              "text": "OSS-Scanner"
+            },
+            {
+              "text": ". The skill runs three passes on a codebase. Each time it starts fresh (with an empty context window), except for a short piece of context it receives from the prior pass."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the first pass, the skill looks at whether there is code that the default configuration allows to be reached but which isn’t used by any intended functionality. In the second pass, it looks at the code that runs before any hard gates (like authentication) or before protocol state machine entry points, in any configuration. Finally, third, the skill assesses which combinations of configurations silently switch a security control off or degrade its efficacy. In every pass, Claude creates an inventory of the entry points from the code and confirms each finding with a dynamic trace of the program. For default configuration findings, it designs and implements a gate and ensures that this causes no change in the program’s default behavior. It does so by running the project's own test suite (along with a black box regression suite) against the baseline; it requires modified builds to have identical results. Any gate that would change a non-default configuration is set aside for a human to decide. For the other two passes, it proposes changes like reordering a configuration check, adding a guard to enforce state ordering, or rejecting the combination at configuration load. Even without using this specific skill, we think the broad methodology outlined here is likely to be effective.",
+          "inlines": [
+            {
+              "text": "In the first pass, the skill looks at whether there is code that the default configuration allows to be reached but which isn’t used by any intended functionality. In the second pass, it looks at the code that runs before any hard gates (like authentication) or before protocol state machine entry points, in any configuration. Finally, third, the skill assesses which combinations of configurations silently switch a security control off or degrade its efficacy. In every pass, Claude creates an inventory of the entry points from the code and confirms each finding with a dynamic trace of the program. For default configuration findings, it designs and implements a gate and ensures that this causes no change in the program’s default behavior. It does so by running the project's own test suite (along with a black box regression suite) against the baseline; it requires modified builds to have identical results. Any gate that would change a non-default configuration is set aside for a human to decide. For the other two passes, it proposes changes like reordering a configuration check, adding a guard to enforce state ordering, or rejecting the combination at configuration load. Even without using this specific skill, we think the broad methodology outlined here is likely to be effective."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The techniques outlined in this post offer only a very limited view into what is possible in attack surface reduction. For instance, Claude is also capable of analyzing and comparing runtime logs against configurations to ensure that only required functionality has been enabled: disabling unused parsers, legacy protocols, and dashboards reduces security risk at little cost.",
+          "inlines": [
+            {
+              "text": "The techniques outlined in this post offer only a very limited view into what is possible in attack surface reduction. For instance, Claude is also capable of analyzing and comparing runtime logs against configurations to ensure that only required functionality has been enabled: disabling unused parsers, legacy protocols, and dashboards reduces security risk at little cost."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We encourage organizations to explore using Claude to analyze and reduce the attack surface of the software they depend on. We expect this to be one of the most practical ways that developers can measurably improve the security of the code the world already runs on.",
+          "inlines": [
+            {
+              "text": "We encourage organizations to explore using Claude to analyze and reduce the attack surface of the software they depend on. We expect this to be one of the most practical ways that developers can measurably improve the security of the code the world already runs on."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:17:25.745219Z",
+  "contentMode": "full"
+}

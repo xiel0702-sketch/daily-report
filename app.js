@@ -34,6 +34,7 @@
   var curatedUpdatedAt = '';
   var itemCache = new Map();
   var localExcerptCache = new Map();
+  var syncedBodyCache = new Map();
   var localBodyCache = new Map();
   var articleLanguage = 'zh';
   var returnRoute = '#feed';
@@ -171,7 +172,9 @@
       return { type: block.type, inlines: inlines, level: Number.isInteger(block.level) && block.level >= 2 && block.level <= 4 ? block.level : 2 };
     }
     if (block.type === 'image') {
-      if (typeof block.src !== 'string' || !/^\/api\/local-reader\/media\/[a-f0-9]{64}$/.test(block.src)) return null;
+      var imagePath = typeof block.src === 'string' ? block.src : '';
+      var supportedImage = /^\/api\/local-reader\/media\/[a-f0-9]{64}$/.test(imagePath) || /^aihot\/media\/[a-f0-9]{64}\.(?:avif|gif|jpe?g|png|webp)$/.test(imagePath);
+      if (!supportedImage) return null;
       return { type: 'image', src: block.src, alt: cleanString(block.alt, 1000), caption: cleanString(block.caption, 2000), width: Number.isInteger(block.width) && block.width > 0 && block.width < 30000 ? block.width : null, height: Number.isInteger(block.height) && block.height > 0 && block.height < 30000 ? block.height : null };
     }
     if (block.type === 'list' && Array.isArray(block.items)) {
@@ -195,6 +198,21 @@
     });
     return { id: id, schemaVersion: 1, status: value.status, provenance: value.provenance, fetchedAt: validISO(value.fetchedAt), sourceURL: safeURL(value.sourceURL), label: cleanString(value.label, 160) || '正文', notice: cleanString(value.notice, 2000), languages: languages };
   }
+  async function loadSyncedBody(id, force) {
+    if (force) syncedBodyCache.delete(id);
+    if (syncedBodyCache.has(id)) return syncedBodyCache.get(id);
+    var promise = (async function () {
+      try {
+        var response = await fetch('aihot/bodies/' + id + '.json', { cache: force ? 'reload' : 'default' });
+        if (!response.ok) return null;
+        return normalizeLocalBody(await response.json(), id);
+      } catch (_) {
+        return null;
+      }
+    })();
+    syncedBodyCache.set(id, promise);
+    return promise;
+  }
   async function loadLocalBody(id, force) {
     if (force) localBodyCache.delete(id);
     if (localBodyCache.has(id)) return localBodyCache.get(id);
@@ -207,6 +225,20 @@
     })();
     localBodyCache.set(id, promise);
     try { return await promise; } catch (error) { if (localBodyCache.get(id) === promise) localBodyCache.delete(id); throw error; }
+  }
+  async function loadReaderBody(id, force) {
+    if (!force) {
+      var synced = await loadSyncedBody(id, false);
+      if (synced) return { body: synced, source: 'snapshot' };
+    }
+    if (!localReaderEnabled) return null;
+    try {
+      return { body: await loadLocalBody(id, force), source: 'local' };
+    } catch (error) {
+      var fallback = await loadSyncedBody(id, false);
+      if (fallback) return { body: fallback, source: 'snapshot' };
+      throw error;
+    }
   }
   async function loadAIHOTItem(id, force) {
     if (!validAIHOTId(id)) throw new Error('资讯编号无效。');
@@ -932,7 +964,7 @@
     var words = (text.replace(/[\u3400-\u9fff]/g, ' ').match(/\S+/g) || []).length;
     return Math.max(1, Math.ceil(chinese / 450 + words / 220));
   }
-  function appendLocalBody(target, body) {
+  function appendLocalBody(target, body, source) {
     var keys = ['zh', 'original'].filter(function (key) { return body.languages[key]; });
     if (!keys.length) return null;
     var key = keys.includes(articleLanguage) ? articleLanguage : keys[0];
@@ -953,7 +985,8 @@
       var language = body.languages[key];
       var headings = renderBodyBlocks(content, language.blocks);
       content.lang = key === 'zh' ? 'zh-CN' : '';
-      status.textContent = (body.status === 'partial' ? '部分正文' : '正文已就绪') + ' · ' + language.label + ' · 约 ' + bodyReadingTime(language.blocks) + ' 分钟';
+      var stateLabel = body.status === 'partial' ? '部分正文' : source === 'snapshot' ? '正文已收录' : '正文已就绪';
+      status.textContent = stateLabel + ' · ' + language.label + ' · 约 ' + bodyReadingTime(language.blocks) + ' 分钟';
       languageButtons.forEach(function (button) { var active = button.dataset.language === key; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
       clear(navigation);
       headings.forEach(function (heading) {
@@ -971,9 +1004,12 @@
       });
       actions.appendChild(controls);
     }
-    var refresh = element('button', 'article-body-refresh', '刷新正文'); refresh.type = 'button';
-    refresh.addEventListener('click', function () { loadArticle(renderVersion, true); });
-    actions.appendChild(refresh); header.appendChild(actions);
+    if (localReaderEnabled) {
+      var refresh = element('button', 'article-body-refresh', '刷新正文'); refresh.type = 'button';
+      refresh.addEventListener('click', function () { loadArticle(renderVersion, true); });
+      actions.appendChild(refresh);
+    }
+    if (actions.childNodes.length) header.appendChild(actions);
     section.appendChild(header); section.appendChild(status);
     if (body.notice) section.appendChild(element('p', 'article-excerpt-note', body.notice));
     section.appendChild(content); selectLanguage(key, false); target.appendChild(section);
@@ -1020,12 +1056,13 @@
       appendArticleSection(main, 'AI HOT 导读', item.summary);
       if (!item.summary) main.appendChild(element('p', 'article-note', '本次同步的公开数据未提供导读，可通过右侧来源链接继续阅读。'));
       var hasBody = item.localBody && Object.keys(item.localBody.languages).length > 0;
-      if (localReaderEnabled) {
+      if (hasBody) {
+        bodyToc = appendLocalBody(main, item.localBody, item.localBodySource);
+      } else if (localReaderEnabled || item.localBodyState === 'loading' || item.localBodyState === 'error') {
         appendBodyStatus(main, item, hasBody);
-        if (hasBody) bodyToc = appendLocalBody(main, item.localBody);
-        else if (excerpt) appendLocalExcerpt(main, excerpt);
+        if (excerpt) appendLocalExcerpt(main, excerpt);
       } else {
-        main.appendChild(element('p', 'article-note', '本站收录 AI HOT 导读、来源与主题信息；完整正文请打开原文或 AI HOT。'));
+        main.appendChild(element('p', 'article-note', '这条资讯暂未收录可展示的 AI HOT 正文，可通过右侧来源链接继续阅读。'));
         if (excerpt) appendLocalExcerpt(main, excerpt);
       }
       if (!curatedById.has(item.aihotId) && curatedLoaded) main.appendChild(element('p', 'article-note', '这是一条已收录的历史资讯，不属于本次同步的近7日精选列表。'));
@@ -1047,8 +1084,8 @@
       if (!links.length) sourceSection.appendChild(element('p', 'article-note', '当期原稿未附来源链接。'));
     }
     aside.appendChild(sourceSection);
-    if (isAIHOT && localReaderEnabled) {
-      var localNote = element('p', 'article-local-mark', '个人本地阅读');
+    if (isAIHOT && hasBody) {
+      var localNote = element('p', 'article-local-mark', item.localBodySource === 'snapshot' ? '正文来源 · AI HOT' : '个人本地阅读');
       sourceSection.appendChild(localNote);
     }
     if (isAIHOT && item.score !== null) {
@@ -1072,19 +1109,20 @@
   }
   async function loadArticle(version, force) {
     if (!ui.articleContent) return;
+    if (!force) articleLanguage = 'zh';
     clear(ui.articleContent); ui.articleContent.appendChild(element('p', 'status-message', '正在读取资讯…')); ui.articleContent.setAttribute('aria-busy', 'true');
     try {
       var route = currentRoute;
       var item = route.provider === 'aihot' ? await loadAIHOTItem(route.id, force) : await loadReportItem(route.id, force);
       if (version !== renderVersion) return;
-      if (route.provider === 'aihot' && localReaderEnabled) {
+      if (route.provider === 'aihot') {
         renderArticle(Object.assign({}, item, { localBodyState: 'loading' }));
-        loadLocalBody(route.id, force).then(function (body) {
+        loadReaderBody(route.id, force).then(function (result) {
           if (version !== renderVersion) return;
           var y = window.scrollY;
-          renderArticle(Object.assign({}, item, { localBody: body, localBodyState: 'loaded' }));
+          renderArticle(Object.assign({}, item, result ? { localBody: result.body, localBodySource: result.source, localBodyState: 'loaded' } : { localBodyState: 'unavailable' }));
           requestAnimationFrame(function () { if (version === renderVersion) window.scrollTo({ top: y, behavior: 'instant' }); });
-          announce(Object.keys(body.languages).length ? '正文已载入' : '暂未取得正文');
+          announce(result && Object.keys(result.body.languages).length ? (result.source === 'snapshot' ? '正文快照已载入' : '正文已载入') : '暂未收录正文');
         }).catch(function (bodyError) {
           if (version !== renderVersion) return;
           var y = window.scrollY;
@@ -1190,7 +1228,7 @@
     return localReaderEnabled;
   }
   function updateHeader(route) {
-    var titles = { feed: ['每日精选', 'TODAY’S SIGNALS', '人工智能完整沿用 AI HOT 近7日精选；半导体、机器人沿用最新一期投研日报。'], all: ['全部动态', 'RESEARCH FEED', 'AI HOT 近7日精选与已归档的半导体、机器人资讯；历史 AI 内容保留在日报原稿中。'], daily: ['投研日报', 'DAILY ARCHIVE', '按月浏览历史日报，回到信号发生的那一天。'], weekly: ['投研周报', 'WEEKLY ARCHIVE', '从一周资讯中观察趋势、融资与产业变化。'], saved: ['我的收藏', 'SAVED FOR LATER', '值得再读的资讯，保存在当前浏览器。'], about: ['关于投研', 'ABOUT RESEARCH', '聚焦人工智能、半导体与机器人领域的研究资料。'], item: ['资讯详情', 'READING', localReaderEnabled ? '在本站阅读导读、正文与来源。' : '阅读导读、来源与主题信息。'] };
+    var titles = { feed: ['每日精选', 'TODAY’S SIGNALS', '人工智能完整沿用 AI HOT 近7日精选；半导体、机器人沿用最新一期投研日报。'], all: ['全部动态', 'RESEARCH FEED', 'AI HOT 近7日精选与已归档的半导体、机器人资讯；历史 AI 内容保留在日报原稿中。'], daily: ['投研日报', 'DAILY ARCHIVE', '按月浏览历史日报，回到信号发生的那一天。'], weekly: ['投研周报', 'WEEKLY ARCHIVE', '从一周资讯中观察趋势、融资与产业变化。'], saved: ['我的收藏', 'SAVED FOR LATER', '值得再读的资讯，保存在当前浏览器。'], about: ['关于投研', 'ABOUT RESEARCH', '聚焦人工智能、半导体与机器人领域的研究资料。'], item: ['资讯详情', 'READING', '阅读 AI HOT 正文、导读与来源。'] };
     var header = titles[route.view] || ['页面不存在', 'PAGE NOT FOUND', '请使用导航返回资讯或归档。'];
     text(ui.pageHeading, header[0]); text(ui.pageEyebrow, header[1]); text(ui.pageDescription, header[2]);
     text(ui.headerDate, dailyReports[0] ? dateLabel(dailyReports[0].date, true) : '暂无日报');

@@ -1,0 +1,1908 @@
+{
+  "schemaVersion": 1,
+  "id": "z9nqeyi6p0br6knhkrt3xd3n6",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/z9nqeyi6p0br6knhkrt3xd3n6",
+  "fetchedAt": "2026-10-22T13:17:05.375394Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "安全对齐",
+    "论文研究"
+  ],
+  "tags": [
+    "论文/研究",
+    "安全/对齐"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "执行摘要",
+          "inlines": [
+            {
+              "text": "执行摘要"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Wiz Research 在 PHP 核心中发现了多个严重漏洞。PHP 是一种流行的通用脚本语言，为全球 70% 的网站提供支持。成功利用这些漏洞可能使攻击者控制受影响的服务器、窃取敏感数据，并篡改其上运行的网站。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "PHP 是 Web 的支柱：它是驱动 WordPress、Joomla、Drupal、维基百科的 MediaWiki 以及许多其他项目的编程语言。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "这些漏洞包括内存泄露和未经身份验证的远程代码执行，"
+                },
+                {
+                  "bold": true,
+                  "text": "且存在于 PHP 本身，与运行在其上的应用程序无关"
+                },
+                {
+                  "text": "，使每个受影响的网站都面临直接风险。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "过去十年发布的每个 PHP 版本都至少受其中一个漏洞影响，最早可追溯至 5.4 版本。攻击者可以远程利用这些漏洞，某些情况下还相当容易。强烈建议立即打补丁。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "2026 年 10 月 21 日，"
+                },
+                {
+                  "href": "https://www.php.net/archive/2026.php#2026-10-21-5",
+                  "text": "PHP 发布了补丁"
+                },
+                {
+                  "text": "，修复了核心引擎中的多个内存安全漏洞。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "这些发现属于 PHP 中发现的最严重漏洞之列，也可以说是软件史上最严重的漏洞之一。底层缺陷已存在数十年，但要证明其可利用性，需要一条异常复杂的步骤链，处于人类研究人员实际所能达到的极限边缘。前沿 AI 模型大幅降低了这一门槛，将长期存在的缺陷转化为可实际利用的漏洞。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "概述",
+          "inlines": [
+            {
+              "text": "概述"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在本文中，我们解释前沿 AI 如何帮助我们找到并修复在 PHP 代码库中隐藏了十多年的漏洞。下文描述的问题均源于关键的架构决策，其中一些决策在十多年前就已做出，并被归入两个 CVE，严重程度最高达 CVSS 9.2。这项工作发展为一项跨行业协作，以保护客户、发现变体、部署检测与缓解措施，并在协调披露前及时验证补丁。",
+          "inlines": [
+            {
+              "text": "在本文中，我们解释前沿 AI 如何帮助我们找到并修复在 PHP 代码库中隐藏了十多年的漏洞。下文描述的问题均源于关键的架构决策，其中一些决策在十多年前就已做出，并被归入两个 CVE，严重程度最高达 CVSS 9.2。这项工作发展为一项跨行业协作，以保护客户、发现变体、部署检测与缓解措施，并在协调披露前及时验证补丁。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "几乎每个 PHP 版本都至少受其中一个问题影响，包括可追溯至 PHP 5.4 的版本。这些漏洞可让未经身份验证的攻击者在受影响的服务器上执行代码，或读取敏感的进程内存。该内存可能包含属于其他请求或服务器本身的密码、身份验证令牌、API 密钥和证书。",
+          "inlines": [
+            {
+              "text": "几乎每个 PHP 版本都至少受其中一个问题影响，包括可追溯至 PHP 5.4 的版本。这些漏洞可让未经身份验证的攻击者在受影响的服务器上执行代码，或读取敏感的进程内存。该内存可能包含属于其他请求或服务器本身的密码、身份验证令牌、API 密钥和证书。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PHP 是支撑 Web 大部分内容的编程语言，为 WordPress、Drupal 和 MediaWiki（运行维基百科的软件）提供支持。其核心引擎中的缺陷可能影响整个生态系统中的网站，即使这些网站自身的应用代码是安全的。",
+          "inlines": [
+            {
+              "text": "PHP 是支撑 Web 大部分内容的编程语言，为 WordPress、Drupal 和 MediaWiki（运行维基百科的软件）提供支持。其核心引擎中的缺陷可能影响整个生态系统中的网站，即使这些网站自身的应用代码是安全的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "有些漏洞之所以成为转折点，是因为它们挑战了人们对安全的基本假设。2014 年，Heartbleed 暴露了保障互联网安全的共享基础设施的脆弱性。2021 年，Log4Shell 揭示了深度嵌入的软件依赖如何造成广泛暴露，而组织难以识别这些暴露。我们认为 PHP2Shell 可能标志着 AI 时代的类似转折点，说明 AI 如何改变长期存在的漏洞在实际中的可利用性。构建该漏洞利用需要串联多个缺陷，并通过反复测试和调试来适应每个目标的内存布局。前沿模型对于使这一过程变得可行至关重要，使我们能够在数小时内为多个应用开发并调整出可用的漏洞利用。随着这项工作所需的时间和专业知识减少，复杂性可能不再构成有意义的障碍，从而改变我们在实践中界定何为易受攻击的方式。",
+          "inlines": [
+            {
+              "text": "有些漏洞之所以成为转折点，是因为它们挑战了人们对安全的基本假设。2014 年，Heartbleed 暴露了保障互联网安全的共享基础设施的脆弱性。2021 年，Log4Shell 揭示了深度嵌入的软件依赖如何造成广泛暴露，而组织难以识别这些暴露。我们认为 PHP2Shell 可能标志着 AI 时代的类似转折点，说明 AI 如何改变长期存在的漏洞在实际中的可利用性。构建该漏洞利用需要串联多个缺陷，并通过反复测试和调试来适应每个目标的内存布局。前沿模型对于使这一过程变得可行至关重要，使我们能够在数小时内为多个应用开发并调整出可用的漏洞利用。随着这项工作所需的时间和专业知识减少，复杂性可能不再构成有意义的障碍，从而改变我们在实践中界定何为易受攻击的方式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz Research 感谢 PHP 团队、Calif 和 OpenAI 在发现、协调和补丁验证方面所做的工作。OpenAI 和 Calif 也发布了博客，包含有关该漏洞的详细信息——其历史、技术细节以及对披露过程的见解。PHP 也发布了文章。",
+          "inlines": [
+            {
+              "text": "Wiz Research 感谢 PHP 团队、Calif 和 OpenAI 在发现、协调和补丁验证方面所做的工作。"
+            },
+            {
+              "href": "http://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities",
+              "text": "OpenAI"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://calif.io/php2shell/",
+              "text": "Calif"
+            },
+            {
+              "text": " 也发布了博客，包含有关该漏洞的详细信息——其历史、技术细节以及对披露过程的见解。"
+            },
+            {
+              "href": "https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/",
+              "text": "PHP"
+            },
+            {
+              "text": " 也发布了文章。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还要衷心感谢 Automattic、Akamai、AWS、Cloudflare、Fastly、Google、Imperva、Microsoft、Vercel 以及许多其他公司，感谢他们帮助为无法立即应用补丁的客户准备指南和开箱即用的缓解措施。",
+          "inlines": [
+            {
+              "text": "我们还要衷心感谢 Automattic、Akamai、AWS、"
+            },
+            {
+              "href": "http://blog.cloudflare.com/php-vulnerabilities-waf-protection/",
+              "text": "Cloudflare"
+            },
+            {
+              "text": "、Fastly、Google、Imperva、Microsoft、Vercel 以及许多其他公司，感谢他们帮助为无法立即应用补丁的客户准备指南和开箱即用的缓解措施。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "漏洞",
+          "inlines": [
+            {
+              "text": "漏洞"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "所有披露的漏洞都是内存安全问题，源于 PHP 在处理请求时处理致命错误（尤其是内存不足错误）的方式中的缺陷。这些缺陷可能在请求意外结束后留下损坏的 PHP 内部状态。后续请求或工作进程可能重用该陈旧状态，导致内存泄露或损坏。",
+          "inlines": [
+            {
+              "text": "所有披露的漏洞都是内存安全问题，源于 PHP 在处理请求时处理致命错误（尤其是内存不足错误）的方式中的缺陷。这些缺陷可能在请求意外结束后留下损坏的 PHP 内部状态。后续请求或工作进程可能重用该陈旧状态，导致内存泄露或损坏。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下面你可以找到一个表格，展示我们报告给 PHP 的每个缺陷所演示的影响类型。下面列出的应用是我们为 RCE 演示选择的目标。它们是具有代表性的目标——利用漏洞并不需要这些 CMS 之一，因为易受攻击的代码位于 PHP 本身。",
+          "inlines": [
+            {
+              "text": "下面你可以找到一个表格，展示我们报告给 PHP 的每个缺陷所演示的影响类型。下面列出的应用是我们为 RCE 演示选择的目标。它们是具有代表性的目标——利用漏洞并不需要这些 CMS 之一，因为易受攻击的代码位于 PHP 本身。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "跟踪 ID",
+          "inlines": [
+            {
+              "text": "跟踪 ID"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "缺陷",
+          "inlines": [
+            {
+              "text": "缺陷"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "攻击者可以实现什么",
+          "inlines": [
+            {
+              "text": "攻击者可以实现什么"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们演示了什么",
+          "inlines": [
+            {
+              "text": "我们演示了什么"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-109618",
+          "inlines": [
+            {
+              "text": "CVE-2026-109618"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "上传进度反序列化器释放后使用",
+          "inlines": [
+            {
+              "text": "上传进度反序列化器释放后使用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "远程进程内存泄露",
+          "inlines": [
+            {
+              "text": "远程进程内存泄露"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "破坏进程内存并执行代码",
+          "inlines": [
+            {
+              "text": "破坏进程内存并执行代码"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "未经身份验证泄露 PHP 工作进程内存",
+          "inlines": [
+            {
+              "text": "未经身份验证泄露 PHP 工作进程内存"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "WordPress、Drupal 和 Joomla 上的预认证 RCE",
+          "inlines": [
+            {
+              "text": "WordPress、Drupal 和 Joomla 上的预认证 RCE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "与应用无关的远程内存泄露",
+          "inlines": [
+            {
+              "text": "与应用无关的远程内存泄露"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-109619",
+          "inlines": [
+            {
+              "text": "CVE-2026-109619"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "致命错误回溯释放后使用",
+          "inlines": [
+            {
+              "text": "致命错误回溯释放后使用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OPcache 类型混淆",
+          "inlines": [
+            {
+              "text": "OPcache 类型混淆"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "破坏进程内存并执行代码",
+          "inlines": [
+            {
+              "text": "破坏进程内存并执行代码"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "破坏共享 PHP 状态并执行代码",
+          "inlines": [
+            {
+              "text": "破坏共享 PHP 状态并执行代码"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Drupal 上的预认证 RCE",
+          "inlines": [
+            {
+              "text": "Drupal 上的预认证 RCE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "WordPress 上的预认证 RCE",
+          "inlines": [
+            {
+              "text": "WordPress 上的预认证 RCE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "虽然本博客仅涵盖遵循这一有问题模式的四个可利用缺陷实例（归入两个 CVE），但 PHP 代码库中还有其他已跟踪、且很可能未跟踪的该问题变体。这些变体具有不同的利用要求，并可能导致不同类型的影响。无论如何，PHP 团队提供的补丁从核心修复了该问题，并在修补版本中消除了所有变体。",
+          "inlines": [
+            {
+              "text": "虽然本博客仅涵盖遵循这一有问题模式的四个可利用缺陷实例（归入两个 CVE），但 PHP 代码库中还有其他已跟踪、且很可能未跟踪的该问题变体。这些变体具有不同的利用要求，并可能导致不同类型的影响。无论如何，PHP 团队提供的补丁从核心修复了该问题，并在修补版本中消除了所有变体。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "影响",
+          "inlines": [
+            {
+              "text": "影响"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们将这些漏洞组合成一个名为 php2shell 的单一漏洞利用脚本，并演示了它可以在无需身份验证的情况下，对 WordPress（wordpress:latest）、Drupal（drupal:latest）和 Joomla（joomla:latest）的部署远程执行代码，测试时使用的是它们最新的容器镜像。",
+          "inlines": [
+            {
+              "text": "我们将这些漏洞组合成一个名为 php2shell 的单一漏洞利用脚本，并演示了它可以在无需身份验证的情况下，对 WordPress（"
+            },
+            {
+              "code": true,
+              "text": "wordpress:latest"
+            },
+            {
+              "text": "）、Drupal（"
+            },
+            {
+              "code": true,
+              "text": "drupal:latest"
+            },
+            {
+              "text": "）和 Joomla（"
+            },
+            {
+              "code": true,
+              "text": "joomla:latest"
+            },
+            {
+              "text": "）的部署远程执行代码，测试时使用的是它们最新的容器镜像。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些平台说明了影响范围，但漏洞存在于 PHP 本身。利用并不依赖于应用程序代码中的缺陷：即使是一个运行在受影响 PHP 版本上的简单“Hello World”应用也可能存在漏洞。",
+          "inlines": [
+            {
+              "text": "这些平台说明了影响范围，但漏洞存在于 PHP 本身。利用并不依赖于应用程序代码中的缺陷：即使是一个运行在受影响 PHP 版本上的简单“Hello World”应用也可能存在漏洞。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "另外，我们还演示了攻击者可以从 PHP 进程的内存中读取敏感数据，包括密码、令牌和 API 密钥，而无需实现远程代码执行。",
+          "inlines": [
+            {
+              "text": "另外，我们还演示了攻击者可以从 PHP 进程的内存中读取敏感数据，包括密码、令牌和 API 密钥，而无需实现远程代码执行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PHP2Shell 与 Wordpress、Joomla 和 Drupal 的演示：",
+          "inlines": [
+            {
+              "text": "PHP2Shell 与 Wordpress、Joomla 和 Drupal 的演示："
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "AI 拐点",
+          "inlines": [
+            {
+              "text": "AI 拐点"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "这些存在漏洞的代码已经存在了十多年。要将这些缺陷转化为可用的漏洞利用，需要串联多个 bug，并考虑 PHP 在请求之间如何分配和复用内存。内存 bug 以复杂著称；PHP 版本、配置和应用程序行为的差异可能会打破漏洞利用所依赖的假设。针对一个部署有效的攻击，可能需要大量调整才能对另一个部署生效，每一次都需要进一步的分析、测试和调试。在 AI 出现之前，这种人工工作很难实施，更难规模化。",
+          "inlines": [
+            {
+              "text": "这些存在漏洞的代码已经存在了十多年。要将这些缺陷转化为可用的漏洞利用，需要串联多个 bug，并考虑 PHP 在请求之间如何分配和复用内存。内存 bug 以复杂著称；PHP 版本、配置和应用程序行为的差异可能会打破漏洞利用所依赖的假设。针对一个部署有效的攻击，可能需要大量调整才能对另一个部署生效，每一次都需要进一步的分析、测试和调试。在 AI 出现之前，这种人工工作很难实施，更难规模化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "有了 AI，这不再是障碍。LLM 可以帮助将漏洞利用适配到不同的 PHP 版本、配置和内存布局。借助测试和调试工具，模型可以分析失败并迭代调整，减少每个目标所需的专家投入。这大大降低了跨不同部署规模化攻击的门槛。",
+          "inlines": [
+            {
+              "text": "有了 AI，这不再是障碍。LLM 可以帮助将漏洞利用适配到不同的 PHP 版本、配置和内存布局。借助测试和调试工具，模型可以分析失败并迭代调整，减少每个目标所需的专家投入。这大大降低了跨不同部署规模化攻击的门槛。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这改变了漏洞发现和利用的经济性。随着 AI 减少开发和适配复杂漏洞利用所需的工作量，曾经看似不切实际利用的漏洞变成了可行的目标。",
+          "inlines": [
+            {
+              "text": "这改变了漏洞发现和利用的经济性。随着 AI 减少开发和适配复杂漏洞利用所需的工作量，曾经看似不切实际利用的漏洞变成了可行的目标。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在整个研究中使用了 Wiz Atlas、Gemini 4 Argon 和 GPT-5.6 Sol。值得注意的是，Gemini 4 Argon 在发现漏洞、漏洞利用开发、攻击检测和补丁验证方面做出了宝贵贡献。",
+          "inlines": [
+            {
+              "text": "我们在整个研究中使用了 "
+            },
+            {
+              "href": "https://www.wiz.io/blog/atlas-ai-vulnerability-researcher",
+              "text": "Wiz Atlas"
+            },
+            {
+              "text": "、Gemini 4 Argon 和 GPT-5.6 Sol。值得注意的是，Gemini 4 Argon 在发现漏洞、漏洞利用开发、攻击检测和补丁验证方面做出了宝贵贡献。"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "使用 Gemini 4 Argon，Wiz 团队展示了为什么前沿 AI 是网络防御的游戏规则改变者。十多年来，这些关键漏洞一直未得到解决，因为漏洞发现和利用极其复杂。我们很高兴看到 Gemini 4 Argon 帮助防御者弥合这一差距，发现漏洞并帮助修补它们。"
+        },
+        {
+          "type": "quote",
+          "text": "Raluca Ada Popa，Google DeepMind Gemini 安全负责人"
+        },
+        {
+          "type": "heading",
+          "text": "行业级合作",
+          "inlines": [
+            {
+              "text": "行业级合作"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在公开披露之前，Wiz Research 与 PHP 团队、Calif 和 OpenAI 在发现、协调和补丁验证方面进行了合作。我们还与 Google Cloud、Cloudflare、AWS、Microsoft、Automattic、Fastly、Akamai、Imperva、Vercel 以及许多其他公司合作，为无法立即更新的组织准备客户指南、检测规则和开箱即用的缓解措施。",
+          "inlines": [
+            {
+              "text": "在公开披露之前，Wiz Research 与 PHP 团队、Calif 和 OpenAI 在发现、协调和补丁验证方面进行了合作。我们还与 Google Cloud、Cloudflare、AWS、Microsoft、Automattic、Fastly、Akamai、Imperva、Vercel 以及许多其他公司合作，为无法立即更新的组织准备客户指南、检测规则和开箱即用的缓解措施。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "核心 PHP 中的漏洞影响远不止单个应用程序。PHP 运行在云、托管服务提供商、内容分发网络和数百万独立管理的服务器上。在技术细节公开之前降低暴露面，需要整个生态系统的协调工作。",
+          "inlines": [
+            {
+              "text": "核心 PHP 中的漏洞影响远不止单个应用程序。PHP 运行在云、托管服务提供商、内容分发网络和数百万独立管理的服务器上。在技术细节公开之前降低暴露面，需要整个生态系统的协调工作。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "技术深入探讨",
+          "inlines": [
+            {
+              "text": "技术深入探讨"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Bug：上传进度反序列化器释放后使用",
+          "inlines": [
+            {
+              "text": "Bug：上传进度反序列化器释放后使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "PHP 的 Session 模块可以在上传进度处理期间、在同一个预初始化窗口内解码会话数据。解码器将请求自有的簿记信息存储在 BG(unserialize) 中。致命的内存分配失败可能中断此路径，销毁请求堆，并使反序列化器的全局状态保持已发布状态。",
+          "inlines": [
+            {
+              "text": "PHP 的 Session 模块可以在上传进度处理期间、在同一个预初始化窗口内解码会话数据。解码器将请求自有的簿记信息存储在 "
+            },
+            {
+              "code": true,
+              "text": "BG(unserialize)"
+            },
+            {
+              "text": " 中。致命的内存分配失败可能中断此路径，销毁请求堆，并使反序列化器的全局状态保持已发布状态。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在由同一 worker 处理的后续请求中，PHP 可能将攻击者回收的内存当作活跃的反序列化器簿记信息来使用。这种陈旧状态成为一种强大的内存破坏原语。我们将其与内存泄露结合，消除了地址不确定性，并在 WordPress、Drupal 和 Joomla 上实现了未认证的远程代码执行。",
+          "inlines": [
+            {
+              "text": "在由同一 worker 处理的后续请求中，PHP 可能将攻击者回收的内存当作活跃的反序列化器簿记信息来使用。这种陈旧状态成为一种强大的内存破坏原语。我们将其与内存泄露结合，消除了地址不确定性，并在 WordPress、Drupal 和 Joomla 上实现了未认证的远程代码执行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "WordPress、Drupal 和 Joomla 的攻击链是代表性的演示。底层原语存在于 PHP 引擎层面，可能影响任何运行易受攻击版本的 PHP 应用。",
+          "inlines": [
+            {
+              "text": "WordPress、Drupal 和 Joomla 的攻击链是代表性的演示。底层原语存在于 PHP 引擎层面，可能影响任何运行易受攻击版本的 PHP 应用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些问题在应用层之下执行，因此应用日志可能包含很少的上下文。在系统打补丁之前，防御者应特别关注异常的多部分请求后跟内存限制错误或反复出现的 HTTP 500 响应、异常大或格式错误的 PHPSESSID 响应 cookie，以及无法解释的 PHP worker 频繁更替。这些信号可以指导调查。应用 PHP 安全更新仍然是唯一完整的修复措施。",
+          "inlines": [
+            {
+              "text": "这些问题在应用层之下执行，因此应用日志可能包含很少的上下文。在系统打补丁之前，防御者应特别关注异常的多部分请求后跟内存限制错误或反复出现的 HTTP 500 响应、异常大或格式错误的 "
+            },
+            {
+              "code": true,
+              "text": "PHPSESSID"
+            },
+            {
+              "text": " 响应 cookie，以及无法解释的 PHP worker 频繁更替。这些信号可以指导调查。应用 PHP 安全更新仍然是唯一完整的修复措施。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "漏洞：远程进程内存泄露",
+          "inlines": [
+            {
+              "text": "漏洞：远程进程内存泄露"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "PHP 在请求启动期间解析 RFC1867 多部分请求，此时正常模块初始化尚未完成。Session 上传进度处理可以在这个早期阶段初始化 Session 状态，并在 PS(id) 中发布会话 ID。内存不足错误可能在清理完成之前中止请求。随后 PHP 销毁请求堆，并可能使 PS(id) 指向已释放的分配。",
+          "inlines": [
+            {
+              "text": "PHP 在请求启动期间解析 RFC1867 多部分请求，此时正常模块初始化尚未完成。Session 上传进度处理可以在这个早期阶段初始化 Session 状态，并在 "
+            },
+            {
+              "code": true,
+              "text": "PS(id)"
+            },
+            {
+              "text": " 中发布会话 ID。内存不足错误可能在清理完成之前中止请求。随后 PHP 销毁请求堆，并可能使 "
+            },
+            {
+              "code": true,
+              "text": "PS(id)"
+            },
+            {
+              "text": " 指向已释放的分配。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "由同一 worker 处理的后续多部分请求可以在正常 Session 初始化重置该指针之前到达上传进度清理路径。PHP 将该陈旧指针和长度当作活跃的 zend_string 来信任，并将回收的堆内容进行 URL 编码写入 PHPSESSID 响应 cookie。即使应用从未调用 session_start()，该攻击也能奏效，使该问题与应用无关。我们演示了未认证泄露攻击者指定大小的活跃 worker 内存区域，其中包含来自攻击者请求之外的数据。",
+          "inlines": [
+            {
+              "text": "由同一 worker 处理的后续多部分请求可以在正常 Session 初始化重置该指针之前到达上传进度清理路径。PHP 将该陈旧指针和长度当作活跃的 "
+            },
+            {
+              "code": true,
+              "text": "zend_string"
+            },
+            {
+              "text": " 来信任，并将回收的堆内容进行 URL 编码写入 "
+            },
+            {
+              "code": true,
+              "text": "PHPSESSID"
+            },
+            {
+              "text": " 响应 cookie。即使应用从未调用 "
+            },
+            {
+              "code": true,
+              "text": "session_start()"
+            },
+            {
+              "text": "，该攻击也能奏效，使该问题与应用无关。我们演示了未认证泄露攻击者指定大小的活跃 worker 内存区域，其中包含来自攻击者请求之外的数据。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "漏洞：致命错误回溯释放后使用",
+          "inlines": [
+            {
+              "text": "漏洞：致命错误回溯释放后使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在受影响版本中，PHP 将最近一次致命错误的回溯保留在 EG(last_fatal_error_backtrace) 中。致命的内存不足错误可以销毁请求堆，而不取消定义该执行器全局值。worker 存活下来，但其全局变量仍指向前一个请求的内存。",
+          "inlines": [
+            {
+              "text": "在受影响版本中，PHP 将最近一次致命错误的回溯保留在 "
+            },
+            {
+              "code": true,
+              "text": "EG(last_fatal_error_backtrace)"
+            },
+            {
+              "text": " 中。致命的内存不足错误可以销毁请求堆，而不取消定义该执行器全局值。worker 存活下来，但其全局变量仍指向前一个请求的内存。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果同一 worker 在下一个请求早期发出诊断信息，它可以在执行器重新初始化该状态之前访问该指针。随后 PHP 销毁或更新悬空的回溯，并跟随攻击者回收的内存。由此产生的跨请求释放后使用可以被发展为受控的内存破坏。我们使用该原语演示了对 Drupal 的未认证远程代码执行。",
+          "inlines": [
+            {
+              "text": "如果同一 worker 在下一个请求早期发出诊断信息，它可以在执行器重新初始化该状态之前访问该指针。随后 PHP 销毁或更新悬空的回溯，并跟随攻击者回收的内存。由此产生的跨请求释放后使用可以被发展为受控的内存破坏。我们使用该原语演示了对 Drupal 的未认证远程代码执行。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "漏洞：OPcache 类型混淆",
+          "inlines": [
+            {
+              "text": "漏洞：OPcache 类型混淆"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "OPcache 将编译后的 PHP 结构持久化在共享内存中，并在每个 worker 的运行时指针映射中分配索引。各 worker 通过共享 frontier 协调这些索引。在 zend_accel_script_persist() 期间，PHP 推进进程本地的 CG(map_ptr_last) frontier。只有在持久化完成后，它才会发布对应的共享 frontier。若在这两个事件之间发生分配失败，进程本地的推进就会保留下来，而部分已持久化的对象会引用共享状态仍视为可用的槽位。",
+          "inlines": [
+            {
+              "text": "OPcache 将编译后的 PHP 结构持久化在共享内存中，并在每个 worker 的运行时指针映射中分配索引。各 worker 通过共享 frontier 协调这些索引。在 "
+            },
+            {
+              "code": true,
+              "text": "zend_accel_script_persist()"
+            },
+            {
+              "text": " 期间，PHP 推进进程本地的 "
+            },
+            {
+              "code": true,
+              "text": "CG(map_ptr_last)"
+            },
+            {
+              "text": " frontier。只有在持久化完成后，它才会发布对应的共享 frontier。若在这两个事件之间发生分配失败，进程本地的推进就会保留下来，而部分已持久化的对象会引用共享状态仍视为可用的槽位。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当另一个 worker 随后将其中一个槽位复用于不同的运行时对象时，过期的共享元数据会解析为类型错误的指针。这种不匹配会造成跨 worker 的类型混淆，并破坏共享的 OPcache 状态。我们利用这一原语构建了针对 WordPress 的未认证 RCE 利用链。",
+          "inlines": [
+            {
+              "text": "当另一个 worker 随后将其中一个槽位复用于不同的运行时对象时，过期的共享元数据会解析为类型错误的指针。这种不匹配会造成跨 worker 的类型混淆，并破坏共享的 OPcache 状态。我们利用这一原语构建了针对 WordPress 的未认证 RCE 利用链。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "除了这四个漏洞之外，还存在其他变体。虽然我们最初只向 PHP 报告了这四个，但通过这项研究我们意识到，该漏洞深植于 PHP 代码库中，需要全面修复。其他变体也应归入同样的两个 CVE。",
+          "inlines": [
+            {
+              "text": "除了这四个漏洞之外，还存在其他变体。虽然我们最初只向 PHP 报告了这四个，但通过这项研究我们意识到，该漏洞深植于 PHP 代码库中，需要全面修复。其他变体也应归入同样的两个 CVE。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Wiz 如何提供帮助？",
+          "inlines": [
+            {
+              "text": "Wiz 如何提供帮助？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz 客户应参阅 Wiz 威胁情报中心关于 PHP2Shell 的公告，其中包含对无代理和运行时漏洞检测的内置覆盖、通过 Wiz Defend 和 Sensor 进行的利用检测、自动响应策略，以及修复和威胁狩猎指导。",
+          "inlines": [
+            {
+              "text": "Wiz 客户应参阅 "
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center/",
+              "text": "Wiz 威胁情报中心关于 PHP2Shell 的公告"
+            },
+            {
+              "text": "，其中包含对无代理和运行时漏洞检测的内置覆盖、通过 Wiz Defend 和 Sensor 进行的利用检测、自动响应策略，以及修复和威胁狩猎指导。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "使用最新版本（1.0.12768）的 Sensor 客户还可以启用内置响应策略，自动终止表现出 PHP2Shell 利用典型行为的进程：",
+          "inlines": [
+            {
+              "text": "使用最新版本（1.0.12768）的 Sensor 客户还可以启用内置响应策略，自动终止表现出 PHP2Shell 利用典型行为的进程："
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结论",
+          "inlines": [
+            {
+              "text": "结论"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "由于影响 70% 的互联网，PHP2Shell 的影响怎么强调都不为过。它标志着 AI 的一个拐点。易受攻击的代码已存在十多年——AI 改变的是理解这些弱点并将其转化为可用漏洞利用的能力。借助前沿 AI 模型和合适的工具，一名研究员在一周内完成了过去世界级团队需要数月才能完成的工作。",
+          "inlines": [
+            {
+              "text": "由于影响 70% 的互联网，PHP2Shell 的影响怎么强调都不为过。它标志着 AI 的一个拐点。易受攻击的代码已存在十多年——AI 改变的是理解这些弱点并将其转化为可用漏洞利用的能力。借助前沿 AI 模型和合适的工具，一名研究员在一周内完成了过去世界级团队需要数月才能完成的工作。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这改变了发现和利用两者的经济性。曾经看似不切实际的漏洞利用变得可行。这些相同的能力也让防御者有机会发现并修复那些历经多年审查而存活的缺陷。",
+          "inlines": [
+            {
+              "text": "这改变了发现和利用两者的经济性。曾经看似不切实际的漏洞利用变得可行。这些相同的能力也让防御者有机会发现并修复那些历经多年审查而存活的缺陷。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz 在整个研究过程中使用了 Wiz Atlas、Gemini 4 Argon 和 GPT-5.6 Sol，其中 Argon 在发现并帮助修复该漏洞方面做出了尤为重要的贡献。",
+          "inlines": [
+            {
+              "text": "Wiz 在整个研究过程中使用了 Wiz Atlas、Gemini 4 Argon 和 GPT-5.6 Sol，其中 Argon 在发现并帮助修复该漏洞方面做出了尤为重要的贡献。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "机会在于让这项工作成为常规：系统地发现现有软件中的缺陷，并在新缺陷进入生产环境之前将其捕获。我们与 PHP、OpenAI 和 Calif 的协同努力推进了这一目标，将 AI 应用于强化我们共同依赖的软件基础。",
+          "inlines": [
+            {
+              "text": "机会在于让这项工作成为常规：系统地发现现有软件中的缺陷，并在新缺陷进入生产环境之前将其捕获。我们与 PHP、OpenAI 和 Calif 的协同努力推进了这一目标，将 AI 应用于强化我们共同依赖的软件基础。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "负责任的披露时间线",
+          "inlines": [
+            {
+              "text": "负责任的披露时间线"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 8 月 19 日："
+                },
+                {
+                  "text": "Wiz Research 使用 Wiz Atlas、Gemini 4 Argon 和 GPT-5.6 Sol 发现了第一个 PHP 漏洞。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 8 月 20 日："
+                },
+                {
+                  "text": "确认针对 Drupal 的未认证 RCE。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 8 月 21 日："
+                },
+                {
+                  "text": "确认针对 WordPress 的未认证 RCE。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 8 月 24 日："
+                },
+                {
+                  "text": "Wiz Research 向 PHP 安全团队报告了这些漏洞。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 9 月 21 日："
+                },
+                {
+                  "text": "PHP 确认收到报告并开始开发协同修复。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 10 月 21 日："
+                },
+                {
+                  "text": "修复后的 PHP 版本发布。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 10 月 21 日："
+                },
+                {
+                  "text": "公开披露。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "保持联系",
+          "inlines": [
+            {
+              "text": "保持联系"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "大家好！我们是来自 Wiz 研究团队（@wiz_io）的 Sagi Tzadik、Shir Tamari、Nir Ohfeld 和 Tomer Schwartz。我们是一群资深白帽黑客，只有一个目标：让云对每个人来说都更安全。我们专注于在云软件中寻找新的攻击向量，并揭示组织所依赖系统中的隔离问题。欢迎在 X 上或通过 research@wiz.io 与我们联系。",
+          "inlines": [
+            {
+              "text": "大家好！我们是来自 Wiz 研究团队（"
+            },
+            {
+              "href": "https://x.com/wiz_io",
+              "text": "@wiz_io"
+            },
+            {
+              "text": "）的 Sagi Tzadik、Shir Tamari、Nir Ohfeld 和 Tomer Schwartz。我们是一群资深白帽黑客，只有一个目标：让云对每个人来说都更安全。我们专注于在云软件中寻找新的攻击向量，并揭示组织所依赖系统中的隔离问题。欢迎在 X 上或通过 research@wiz.io 与我们联系。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Executive Summary",
+          "inlines": [
+            {
+              "text": "Executive Summary"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Wiz Research uncovered multiple critical vulnerabilities in core PHP, a popular general-purpose scripting language that powers 70% of all websites in the world. Successful exploitation could allow attackers to take control of affected servers, steal sensitive data, and deface the websites running on them."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "PHP is a backbone of the web: it’s the programming language powering WordPress, Joomla, Drupal, Wikipedia’s MediaWiki, and many others."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "These vulnerabilities include memory disclosure and unauthenticated remote code execution "
+                },
+                {
+                  "bold": true,
+                  "text": "in PHP itself, independent of the application running on top of it"
+                },
+                {
+                  "text": ", putting every affected website in immediate risk."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Every PHP version released in the last decade is affected by at least one of these vulnerabilities, going back to version 5.4. Attackers can exploit them remotely, in some cases fairly easily. Immediate patching is strongly advised."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "On October 21, 2026, "
+                },
+                {
+                  "href": "https://www.php.net/archive/2026.php#2026-10-21-5",
+                  "text": "PHP released the patch"
+                },
+                {
+                  "text": " fixing multiple memory-safety vulnerabilities in the core engine."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "These findings rank among the most severe vulnerabilities discovered in PHP, and arguably in software history. The underlying flaws had been present for decades, but demonstrating their exploitability required an exceptionally complex chain of steps, at the edge of what human researchers could practically achieve. Frontier AI models substantially reduced that barrier, turning a longstanding flaw into an exploit."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Overview",
+          "inlines": [
+            {
+              "text": "Overview"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "In this post, we explain how frontier AI helped us find and fix vulnerabilities that had remained hidden in the PHP codebase for more than a decade. The issues described below all stem from key architecture decisions, some made over a decade ago, and were grouped under two CVEs, with severity reaching CVSS 9.2. The work grew into a cross-industry effort to protect customers, find variants, deploy detections and mitigations, and verify a patch in time for coordinated disclosure.",
+          "inlines": [
+            {
+              "text": "In this post, we explain how frontier AI helped us find and fix vulnerabilities that had remained hidden in the PHP codebase for more than a decade. The issues described below all stem from key architecture decisions, some made over a decade ago, and were grouped under two CVEs, with severity reaching CVSS 9.2. The work grew into a cross-industry effort to protect customers, find variants, deploy detections and mitigations, and verify a patch in time for coordinated disclosure."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nearly every PHP version is affected by at least one of these issues, including releases dating back to PHP 5.4. The vulnerabilities can allow unauthenticated attackers to execute code on affected servers or read sensitive process memory. That memory may contain passwords, authentication tokens, API keys and certificates belonging to other requests or the server itself.",
+          "inlines": [
+            {
+              "text": "Nearly every PHP version is affected by at least one of these issues, including releases dating back to PHP 5.4. The vulnerabilities can allow unauthenticated attackers to execute code on affected servers or read sensitive process memory. That memory may contain passwords, authentication tokens, API keys and certificates belonging to other requests or the server itself."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PHP is the programming language behind much of the web, powering WordPress, Drupal and MediaWiki, the software that runs Wikipedia. A flaw in its core engine can affect websites across this ecosystem, even when their own application code is secure.",
+          "inlines": [
+            {
+              "text": "PHP is the programming language behind much of the web, powering WordPress, Drupal and MediaWiki, the software that runs Wikipedia. A flaw in its core engine can affect websites across this ecosystem, even when their own application code is secure."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Some vulnerabilities become turning points because they challenge fundamental assumptions about security. In 2014, Heartbleed exposed the fragility of shared infrastructure securing the internet. In 2021, Log4Shell revealed how deeply embedded software dependencies could create widespread exposure that organizations struggled to identify. We believe PHP2Shell could mark a similar turning point for the AI era, illustrating how AI can change the practical exploitability of longstanding vulnerabilities. Building the exploit required chaining multiple flaws and adapting to each target’s memory layout through repeated testing and debugging. Frontier models were critical to making this process practical, enabling us to develop and adapt working exploits across multiple applications in hours. As the time and expertise required for this work decrease, complexity may no longer provide a meaningful barrier, changing how we define what is vulnerable in practice.",
+          "inlines": [
+            {
+              "text": "Some vulnerabilities become turning points because they challenge fundamental assumptions about security. In 2014, Heartbleed exposed the fragility of shared infrastructure securing the internet. In 2021, Log4Shell revealed how deeply embedded software dependencies could create widespread exposure that organizations struggled to identify. We believe PHP2Shell could mark a similar turning point for the AI era, illustrating how AI can change the practical exploitability of longstanding vulnerabilities. Building the exploit required chaining multiple flaws and adapting to each target’s memory layout through repeated testing and debugging. Frontier models were critical to making this process practical, enabling us to develop and adapt working exploits across multiple applications in hours. As the time and expertise required for this work decrease, complexity may no longer provide a meaningful barrier, changing how we define what is vulnerable in practice."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz Research would like to thank the PHP team, Calif and OpenAI for their work on discovery, coordination and patch verification. OpenAI and Calif also published blogs containing details on the vulnerability – its history, technical details, and insight into the disclosure process. PHP posted as well.",
+          "inlines": [
+            {
+              "text": "Wiz Research would like to thank the PHP team, Calif and OpenAI for their work on discovery, coordination and patch verification. "
+            },
+            {
+              "href": "http://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities",
+              "text": "OpenAI"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://calif.io/php2shell/",
+              "text": "Calif"
+            },
+            {
+              "text": " also published blogs containing details on the vulnerability – its history, technical details, and insight into the disclosure process. "
+            },
+            {
+              "href": "https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/",
+              "text": "PHP"
+            },
+            {
+              "text": " posted as well."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We’d also like to express our sincere gratitude towards Automattic, Akamai, AWS, Cloudflare, Fastly, Google, Imperva, Microsoft, Vercel, and many others, for helping prepare guidance and out-of-the-box mitigations for customers who cannot apply the patch immediately.",
+          "inlines": [
+            {
+              "text": "We’d also like to express our sincere gratitude towards Automattic, Akamai, AWS, "
+            },
+            {
+              "href": "http://blog.cloudflare.com/php-vulnerabilities-waf-protection/",
+              "text": "Cloudflare"
+            },
+            {
+              "text": ", Fastly, Google, Imperva, Microsoft, Vercel, and many others, for helping prepare guidance and out-of-the-box mitigations for customers who cannot apply the patch immediately."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The Vulnerabilities",
+          "inlines": [
+            {
+              "text": "The Vulnerabilities"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "All of the disclosed vulnerabilities are memory-safety issues that stem from bugs in how PHP handles fatal errors while processing requests, particularly out-of-memory errors. These bugs can leave a corrupted internal PHP state behind after a request ends unexpectedly. A later request or worker can reuse that stale state, leading to memory disclosure or corruption.",
+          "inlines": [
+            {
+              "text": "All of the disclosed vulnerabilities are memory-safety issues that stem from bugs in how PHP handles fatal errors while processing requests, particularly out-of-memory errors. These bugs can leave a corrupted internal PHP state behind after a request ends unexpectedly. A later request or worker can reuse that stale state, leading to memory disclosure or corruption."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Below you can find a table that demonstrates what type of impact was demonstrated by each of the bugs we reported to PHP. The applications listed below are targets we chose for the RCE demonstrations. They are representative targets - exploitation does not require one of these CMSs, as the vulnerable code is in PHP itself.",
+          "inlines": [
+            {
+              "text": "Below you can find a table that demonstrates what type of impact was demonstrated by each of the bugs we reported to PHP. The applications listed below are targets we chose for the RCE demonstrations. They are representative targets - exploitation does not require one of these CMSs, as the vulnerable code is in PHP itself."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tracking ID",
+          "inlines": [
+            {
+              "text": "Tracking ID"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Bug",
+          "inlines": [
+            {
+              "text": "Bug"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What an attacker can achieve",
+          "inlines": [
+            {
+              "text": "What an attacker can achieve"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What we demonstrated",
+          "inlines": [
+            {
+              "text": "What we demonstrated"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-109618",
+          "inlines": [
+            {
+              "text": "CVE-2026-109618"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Upload-progress unserializer use-after-free",
+          "inlines": [
+            {
+              "text": "Upload-progress unserializer use-after-free"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Remote process-memory disclosure",
+          "inlines": [
+            {
+              "text": "Remote process-memory disclosure"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Corrupt process memory and execute code",
+          "inlines": [
+            {
+              "text": "Corrupt process memory and execute code"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Unauthenticated disclosure of PHP worker memory",
+          "inlines": [
+            {
+              "text": "Unauthenticated disclosure of PHP worker memory"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pre-authentication RCE on WordPress, Drupal and Joomla",
+          "inlines": [
+            {
+              "text": "Pre-authentication RCE on WordPress, Drupal and Joomla"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Application-agnostic remote memory disclosure",
+          "inlines": [
+            {
+              "text": "Application-agnostic remote memory disclosure"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-109619",
+          "inlines": [
+            {
+              "text": "CVE-2026-109619"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fatal-error backtrace use-after-free",
+          "inlines": [
+            {
+              "text": "Fatal-error backtrace use-after-free"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OPcache type confusion",
+          "inlines": [
+            {
+              "text": "OPcache type confusion"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Corrupt process memory and execute code",
+          "inlines": [
+            {
+              "text": "Corrupt process memory and execute code"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Corrupt shared PHP state and execute code",
+          "inlines": [
+            {
+              "text": "Corrupt shared PHP state and execute code"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pre-authentication RCE on Drupal",
+          "inlines": [
+            {
+              "text": "Pre-authentication RCE on Drupal"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pre-authentication RCE on WordPress",
+          "inlines": [
+            {
+              "text": "Pre-authentication RCE on WordPress"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "While this blog covers only four instances of exploitable bugs (grouped under two CVEs) that follow this problematic pattern, there are other tracked, and likely untracked, variants of this issue in the PHP codebase. These variants have different requirements for exploitation and can lead to different types of impact. In any case, the patch provided by the PHP team fixes the issue at its core and eliminates all variants in the patched release.",
+          "inlines": [
+            {
+              "text": "While this blog covers only four instances of exploitable bugs (grouped under two CVEs) that follow this problematic pattern, there are other tracked, and likely untracked, variants of this issue in the PHP codebase. These variants have different requirements for exploitation and can lead to different types of impact. In any case, the patch provided by the PHP team fixes the issue at its core and eliminates all variants in the patched release."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Impact",
+          "inlines": [
+            {
+              "text": "Impact"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We combined these vulnerabilities into a single exploit script, php2shell, and demonstrated that it could execute code remotely without authentication on deployments of WordPress (wordpress:latest), Drupal (drupal:latest), and Joomla (joomla:latest), using their latest container images at the time of testing.",
+          "inlines": [
+            {
+              "text": "We combined these vulnerabilities into a single exploit script, php2shell, and demonstrated that it could execute code remotely without authentication on deployments of WordPress ("
+            },
+            {
+              "code": true,
+              "text": "wordpress:latest"
+            },
+            {
+              "text": "), Drupal ("
+            },
+            {
+              "code": true,
+              "text": "drupal:latest"
+            },
+            {
+              "text": "), and Joomla ("
+            },
+            {
+              "code": true,
+              "text": "joomla:latest"
+            },
+            {
+              "text": "), using their latest container images at the time of testing."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These platforms illustrate the impact, but the vulnerabilities are in PHP itself. Exploitation does not depend on a flaw in the application’s code: even a simple “Hello World” application running on an affected PHP version can be vulnerable.",
+          "inlines": [
+            {
+              "text": "These platforms illustrate the impact, but the vulnerabilities are in PHP itself. Exploitation does not depend on a flaw in the application’s code: even a simple “Hello World” application running on an affected PHP version can be vulnerable."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Separately, we demonstrated that attackers could read sensitive data from the PHP process’s memory, including passwords, tokens, and API keys, without needing to achieve remote code execution.",
+          "inlines": [
+            {
+              "text": "Separately, we demonstrated that attackers could read sensitive data from the PHP process’s memory, including passwords, tokens, and API keys, without needing to achieve remote code execution."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Demonstrations of PHP2Shell with Wordpress, Joomla, and Drupal:",
+          "inlines": [
+            {
+              "text": "Demonstrations of PHP2Shell with Wordpress, Joomla, and Drupal:"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The AI inflection point",
+          "inlines": [
+            {
+              "text": "The AI inflection point"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The vulnerable code had been present for more than a decade. Turning these flaws into working exploits required chaining multiple bugs and accounting for how PHP allocates and reuses memory across requests. Memory bugs are notoriously complex; differences in PHP versions, configurations and application behavior can break assumptions the exploit depends on. An attack that works against one deployment may need substantial adjustments to work against another, each requiring further analysis, testing and debugging. Pre-AI, this manual work would be difficult to implement and even harder to scale.",
+          "inlines": [
+            {
+              "text": "The vulnerable code had been present for more than a decade. Turning these flaws into working exploits required chaining multiple bugs and accounting for how PHP allocates and reuses memory across requests. Memory bugs are notoriously complex; differences in PHP versions, configurations and application behavior can break assumptions the exploit depends on. An attack that works against one deployment may need substantial adjustments to work against another, each requiring further analysis, testing and debugging. Pre-AI, this manual work would be difficult to implement and even harder to scale."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With AI this is no longer a barrier. LLMs can help adapt an exploit to different PHP versions, configurations and memory layouts. With testing and debugging tools, models can analyze failures and iterate on adjustments, reducing the specialist effort required for each target. This significantly lowers the barrier to scaling attacks across different deployments.",
+          "inlines": [
+            {
+              "text": "With AI this is no longer a barrier. LLMs can help adapt an exploit to different PHP versions, configurations and memory layouts. With testing and debugging tools, models can analyze failures and iterate on adjustments, reducing the specialist effort required for each target. This significantly lowers the barrier to scaling attacks across different deployments."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This changes the economics of both discovery and exploitation. As AI reduces the effort needed to develop and adapt complex exploits, vulnerabilities that once seemed impractical to exploit become viable targets.",
+          "inlines": [
+            {
+              "text": "This changes the economics of both discovery and exploitation. As AI reduces the effort needed to develop and adapt complex exploits, vulnerabilities that once seemed impractical to exploit become viable targets."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We used Wiz Atlas, Gemini 4 Argon and GPT-5.6 Sol throughout this research. Notably, Gemini 4 Argon made an invaluable contribution to finding the vulnerability, exploit development, attack detection, and validation of the patch.",
+          "inlines": [
+            {
+              "text": "We used "
+            },
+            {
+              "href": "https://www.wiz.io/blog/atlas-ai-vulnerability-researcher",
+              "text": "Wiz Atlas"
+            },
+            {
+              "text": ", Gemini 4 Argon and GPT-5.6 Sol throughout this research. Notably, Gemini 4 Argon made an invaluable contribution to finding the vulnerability, exploit development, attack detection, and validation of the patch."
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "Using Gemini 4 Argon, the team at Wiz has shown why frontier AI is a game-changer for cyber defense. For over a decade, these critical vulnerabilities remained unaddressed because vulnerability discovery and exploitation were incredibly complex. We're pleased to see Gemini 4 Argon help defenders bridge that gap, finding vulnerabilities and helping patch them."
+        },
+        {
+          "type": "quote",
+          "text": "Raluca Ada Popa, Head of Gemini Security, Google DeepMind"
+        },
+        {
+          "type": "heading",
+          "text": "Industry-level collaborations",
+          "inlines": [
+            {
+              "text": "Industry-level collaborations"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Prior to public disclosure, Wiz Research worked with the PHP team, Calif and OpenAI on discovery, coordination and patch verification. We also partnered with Google Cloud, Cloudflare, AWS, Microsoft, Automattic, Fastly, Akamai, Imperva, Vercel and many others to prepare customer guidance, detections and out-of-the-box mitigations for organizations that cannot update immediately.",
+          "inlines": [
+            {
+              "text": "Prior to public disclosure, Wiz Research worked with the PHP team, Calif and OpenAI on discovery, coordination and patch verification. We also partnered with Google Cloud, Cloudflare, AWS, Microsoft, Automattic, Fastly, Akamai, Imperva, Vercel and many others to prepare customer guidance, detections and out-of-the-box mitigations for organizations that cannot update immediately."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A vulnerability in core PHP reaches far beyond a single application. PHP runs across clouds, hosting providers, content-delivery networks and millions of independently managed servers. Reducing exposure before the technical details became public required coordinated work across that entire ecosystem.",
+          "inlines": [
+            {
+              "text": "A vulnerability in core PHP reaches far beyond a single application. PHP runs across clouds, hosting providers, content-delivery networks and millions of independently managed servers. Reducing exposure before the technical details became public required coordinated work across that entire ecosystem."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Technical deep dive",
+          "inlines": [
+            {
+              "text": "Technical deep dive"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Bug: Upload-progress unserializer use-after-free",
+          "inlines": [
+            {
+              "text": "Bug: Upload-progress unserializer use-after-free"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "PHP's Session module can decode session data during upload-progress handling in the same pre-initialization window. The decoder stores request-owned bookkeeping in BG(unserialize). A fatal allocation failure can interrupt this path, destroy the request heap and leave the unserializer's global state published.",
+          "inlines": [
+            {
+              "text": "PHP's Session module can decode session data during upload-progress handling in the same pre-initialization window. The decoder stores request-owned bookkeeping in "
+            },
+            {
+              "code": true,
+              "text": "BG(unserialize)"
+            },
+            {
+              "text": ". A fatal allocation failure can interrupt this path, destroy the request heap and leave the unserializer's global state published."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On a later request handled by the same worker, PHP can consume attacker-reclaimed memory as live unserializer bookkeeping. The stale state becomes a powerful memory-corruption primitive. We combined it with the memory disclosure to remove address uncertainty and achieved unauthenticated remote code execution on WordPress, Drupal and Joomla.",
+          "inlines": [
+            {
+              "text": "On a later request handled by the same worker, PHP can consume attacker-reclaimed memory as live unserializer bookkeeping. The stale state becomes a powerful memory-corruption primitive. We combined it with the memory disclosure to remove address uncertainty and achieved unauthenticated remote code execution on WordPress, Drupal and Joomla."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The WordPress, Drupal and Joomla chains are representative demonstrations. The underlying primitives exist at the PHP engine level and can affect any PHP application running on a vulnerable version.",
+          "inlines": [
+            {
+              "text": "The WordPress, Drupal and Joomla chains are representative demonstrations. The underlying primitives exist at the PHP engine level and can affect any PHP application running on a vulnerable version."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These issues execute below the application layer, so application logs may contain little context. Until systems are patched, defenders should pay particular attention to unusual multipart requests followed by memory-limit errors or repeated HTTP 500 responses, unexpectedly large or malformed PHPSESSID response cookies, and unexplained PHP worker churn. These signals can guide an investigation. Applying the PHP security update remains the only complete remediation.",
+          "inlines": [
+            {
+              "text": "These issues execute below the application layer, so application logs may contain little context. Until systems are patched, defenders should pay particular attention to unusual multipart requests followed by memory-limit errors or repeated HTTP 500 responses, unexpectedly large or malformed "
+            },
+            {
+              "code": true,
+              "text": "PHPSESSID"
+            },
+            {
+              "text": " response cookies, and unexplained PHP worker churn. These signals can guide an investigation. Applying the PHP security update remains the only complete remediation."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Bug: Remote process-memory disclosure",
+          "inlines": [
+            {
+              "text": "Bug: Remote process-memory disclosure"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "PHP parses RFC1867 multipart requests during request startup, before normal module initialization has completed. Session upload-progress handling can initialize Session state at this early stage and publish a session ID in PS(id). An out-of-memory error can abort the request before cleanup completes. PHP then destroys the request heap and may leave PS(id) pointing to the freed allocation.",
+          "inlines": [
+            {
+              "text": "PHP parses RFC1867 multipart requests during request startup, before normal module initialization has completed. Session upload-progress handling can initialize Session state at this early stage and publish a session ID in "
+            },
+            {
+              "code": true,
+              "text": "PS(id)"
+            },
+            {
+              "text": ". An out-of-memory error can abort the request before cleanup completes. PHP then destroys the request heap and may leave "
+            },
+            {
+              "code": true,
+              "text": "PS(id)"
+            },
+            {
+              "text": " pointing to the freed allocation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A later multipart request handled by the same worker can reach the upload-progress cleanup path before normal Session initialization resets that pointer. PHP trusts the stale pointer and length as a live zend_string and URL-encodes the reclaimed heap contents into a PHPSESSID response cookie. The attack works even when the application never calls session_start(), making the issue application-agnostic. We demonstrated unauthenticated disclosure of an attacker-sized region of live worker memory containing data from outside the attacker's request.",
+          "inlines": [
+            {
+              "text": "A later multipart request handled by the same worker can reach the upload-progress cleanup path before normal Session initialization resets that pointer. PHP trusts the stale pointer and length as a live "
+            },
+            {
+              "code": true,
+              "text": "zend_string"
+            },
+            {
+              "text": " and URL-encodes the reclaimed heap contents into a "
+            },
+            {
+              "code": true,
+              "text": "PHPSESSID"
+            },
+            {
+              "text": " response cookie. The attack works even when the application never calls "
+            },
+            {
+              "code": true,
+              "text": "session_start()"
+            },
+            {
+              "text": ", making the issue application-agnostic. We demonstrated unauthenticated disclosure of an attacker-sized region of live worker memory containing data from outside the attacker's request."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Bug: Fatal-error backtrace use-after-free",
+          "inlines": [
+            {
+              "text": "Bug: Fatal-error backtrace use-after-free"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "In affected versions, PHP retains the backtrace of the most recent fatal error in EG(last_fatal_error_backtrace). A fatal out-of-memory error can destroy the request heap without undefining that executor-global value. The worker survives with a global that still points to memory from the previous request.",
+          "inlines": [
+            {
+              "text": "In affected versions, PHP retains the backtrace of the most recent fatal error in "
+            },
+            {
+              "code": true,
+              "text": "EG(last_fatal_error_backtrace)"
+            },
+            {
+              "text": ". A fatal out-of-memory error can destroy the request heap without undefining that executor-global value. The worker survives with a global that still points to memory from the previous request."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If the same worker emits a diagnostic early in the next request, it can access the pointer before the executor reinitializes that state. PHP then destroys or updates the dangling backtrace and follows attacker-reclaimed memory. The resulting cross-request use-after-free can be developed into controlled memory corruption. We demonstrated unauthenticated remote code execution against Drupal using this primitive.",
+          "inlines": [
+            {
+              "text": "If the same worker emits a diagnostic early in the next request, it can access the pointer before the executor reinitializes that state. PHP then destroys or updates the dangling backtrace and follows attacker-reclaimed memory. The resulting cross-request use-after-free can be developed into controlled memory corruption. We demonstrated unauthenticated remote code execution against Drupal using this primitive."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Bug: OPcache type confusion",
+          "inlines": [
+            {
+              "text": "Bug: OPcache type confusion"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "OPcache persists compiled PHP structures in shared memory and assigns indices into per-worker runtime-pointer maps. Workers coordinate those indices through a shared frontier. During zend_accel_script_persist(), PHP advances the process-local CG(map_ptr_last) frontier. It publishes the corresponding shared frontier only after persistence completes. An allocation failure between those two events leaves the process-local advance in place and partially persisted objects referring to slots that the shared state still considers available.",
+          "inlines": [
+            {
+              "text": "OPcache persists compiled PHP structures in shared memory and assigns indices into per-worker runtime-pointer maps. Workers coordinate those indices through a shared frontier. During "
+            },
+            {
+              "code": true,
+              "text": "zend_accel_script_persist()"
+            },
+            {
+              "text": ", PHP advances the process-local "
+            },
+            {
+              "code": true,
+              "text": "CG(map_ptr_last)"
+            },
+            {
+              "text": " frontier. It publishes the corresponding shared frontier only after persistence completes. An allocation failure between those two events leaves the process-local advance in place and partially persisted objects referring to slots that the shared state still considers available."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When another worker later reuses one of those slots for a different runtime object, stale shared metadata resolves to a pointer of the wrong type. The mismatch creates a cross-worker type confusion and corrupts shared OPcache state. We used this primitive to build an unauthenticated RCE chain against WordPress.",
+          "inlines": [
+            {
+              "text": "When another worker later reuses one of those slots for a different runtime object, stale shared metadata resolves to a pointer of the wrong type. The mismatch creates a cross-worker type confusion and corrupts shared OPcache state. We used this primitive to build an unauthenticated RCE chain against WordPress."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "There are other variants outside of these four bugs. While we initially reported these four to PHP, through this research we realized the vulnerability is deeply rooted in the PHP codebase and will require a comprehensive fix. Other variants should also fold under the same two CVEs.",
+          "inlines": [
+            {
+              "text": "There are other variants outside of these four bugs. While we initially reported these four to PHP, through this research we realized the vulnerability is deeply rooted in the PHP codebase and will require a comprehensive fix. Other variants should also fold under the same two CVEs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How Can Wiz Help?",
+          "inlines": [
+            {
+              "text": "How Can Wiz Help?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz customers should refer to the Wiz Threat Intel Center advisory for PHP2Shell, which includes built-in coverage for agentless and runtime vulnerability detection, exploitation detection via Wiz Defend and Sensor, and automatic response policies, alongside remediation and threat hunting guidance.",
+          "inlines": [
+            {
+              "text": "Wiz customers should refer to the "
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center/",
+              "text": "Wiz Threat Intel Center advisory for PHP2Shell"
+            },
+            {
+              "text": ", which includes built-in coverage for agentless and runtime vulnerability detection, exploitation detection via Wiz Defend and Sensor, and automatic response policies, alongside remediation and threat hunting guidance."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sensor customers using the newest version (1.0.12768) can also enable a built-in response policy to automatically terminate processes exhibiting behaviors typical of PHP2Shell exploitation:",
+          "inlines": [
+            {
+              "text": "Sensor customers using the newest version (1.0.12768) can also enable a built-in response policy to automatically terminate processes exhibiting behaviors typical of PHP2Shell exploitation:"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Conclusion",
+          "inlines": [
+            {
+              "text": "Conclusion"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "With 70% of the Internet affected, the impact of PHP2Shell cannot be overstated. It marks an AI inflection point. The vulnerable code had been there for more than a decade – what AI changed was the ability to understand the weaknesses and turn them into a working exploit. With frontier AI models and the right tools, a single researcher completed in a week what previously would have taken a world-class team months of work.",
+          "inlines": [
+            {
+              "text": "With 70% of the Internet affected, the impact of PHP2Shell cannot be overstated. It marks an AI inflection point. The vulnerable code had been there for more than a decade – what AI changed was the ability to understand the weaknesses and turn them into a working exploit. With frontier AI models and the right tools, a single researcher completed in a week what previously would have taken a world-class team months of work."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This changes the economics of both discovery and exploitation. Vulnerabilities that once seemed impractical to exploit become viable targets. These same capabilities also give defenders a chance to uncover and fix flaws that have survived years of scrutiny.",
+          "inlines": [
+            {
+              "text": "This changes the economics of both discovery and exploitation. Vulnerabilities that once seemed impractical to exploit become viable targets. These same capabilities also give defenders a chance to uncover and fix flaws that have survived years of scrutiny."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz used Wiz Atlas, Gemini 4 Argon, and GPT-5.6 Sol throughout this research, with Argon making a particularly significant contribution to finding and helping to remediate the vulnerability.",
+          "inlines": [
+            {
+              "text": "Wiz used Wiz Atlas, Gemini 4 Argon, and GPT-5.6 Sol throughout this research, with Argon making a particularly significant contribution to finding and helping to remediate the vulnerability."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The opportunity is to make this work routine: systematically finding flaws in existing software and catching new ones before they reach production. Our coordinated efforts with PHP, OpenAI and Calif advance that goal, applying AI to strengthen the software foundations we all share.",
+          "inlines": [
+            {
+              "text": "The opportunity is to make this work routine: systematically finding flaws in existing software and catching new ones before they reach production. Our coordinated efforts with PHP, OpenAI and Calif advance that goal, applying AI to strengthen the software foundations we all share."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Responsible disclosure timeline",
+          "inlines": [
+            {
+              "text": "Responsible disclosure timeline"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "August 19, 2026:"
+                },
+                {
+                  "text": " Wiz Research discovers the first PHP vulnerability using Wiz Atlas, Gemini 4 Argon, and GPT-5.6 Sol."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "August 20, 2026:"
+                },
+                {
+                  "text": " Unauthenticated RCE is confirmed against Drupal."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "August 21, 2026:"
+                },
+                {
+                  "text": " Unauthenticated RCE is confirmed against WordPress."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "August 24, 2026:"
+                },
+                {
+                  "text": " Wiz Research reports the vulnerabilities to the PHP security team."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "September 21, 2026:"
+                },
+                {
+                  "text": " PHP acknowledges the reports and begins developing a coordinated fix."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "October 21, 2026:"
+                },
+                {
+                  "text": " Patched PHP releases become available."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "October 21, 2026:"
+                },
+                {
+                  "text": " Public disclosure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Stay in touch",
+          "inlines": [
+            {
+              "text": "Stay in touch"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Hi there! We are Sagi Tzadik, Shir Tamari, Nir Ohfeld and Tomer Schwartz from the Wiz Research Team (@wiz_io). We are a group of veteran white-hat hackers with a single goal: to make the cloud a safer place for everyone. We focus on finding new attack vectors in cloud software and uncovering isolation issues in the systems organizations depend on. We would love to hear from you on X or at research@wiz.io.",
+          "inlines": [
+            {
+              "text": "Hi there! We are Sagi Tzadik, Shir Tamari, Nir Ohfeld and Tomer Schwartz from the Wiz Research Team ("
+            },
+            {
+              "href": "https://x.com/wiz_io",
+              "text": "@wiz_io"
+            },
+            {
+              "text": "). We are a group of veteran white-hat hackers with a single goal: to make the cloud a safer place for everyone. We focus on finding new attack vectors in cloud software and uncovering isolation issues in the systems organizations depend on. We would love to hear from you on X or at research@wiz.io."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-22T13:17:05.376891Z",
+  "contentMode": "full"
+}
