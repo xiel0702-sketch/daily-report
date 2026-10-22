@@ -976,25 +976,15 @@
     var languageButtons = [];
     var status = element('p', 'article-reading-status');
     var content = element('div', 'article-body-content');
-    var toc = element('section', 'article-aside-section article-toc');
-    toc.appendChild(element('h2', '', '本文目录'));
-    var navigation = element('nav'); navigation.setAttribute('aria-label', '本文目录'); toc.appendChild(navigation);
     function selectLanguage(next, fromClick) {
       key = next; articleLanguage = next;
       clear(content);
       var language = body.languages[key];
-      var headings = renderBodyBlocks(content, language.blocks);
+      renderBodyBlocks(content, language.blocks);
       content.lang = key === 'zh' ? 'zh-CN' : '';
       var stateLabel = body.status === 'partial' ? '部分正文' : source === 'snapshot' ? '正文已收录' : '正文已就绪';
       status.textContent = stateLabel + ' · ' + language.label + ' · 约 ' + bodyReadingTime(language.blocks) + ' 分钟';
       languageButtons.forEach(function (button) { var active = button.dataset.language === key; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
-      clear(navigation);
-      headings.forEach(function (heading) {
-        var button = element('button', 'article-toc-link level-' + heading.level, heading.text); button.type = 'button';
-        button.addEventListener('click', function () { heading.node.scrollIntoView({ behavior: 'smooth', block: 'start' }); heading.node.setAttribute('tabindex', '-1'); heading.node.focus({ preventScroll: true }); });
-        navigation.appendChild(button);
-      });
-      show(toc, headings.length > 0);
       if (fromClick) announce('已切换至' + language.label + '正文');
     }
     if (keys.length > 1) {
@@ -1013,7 +1003,6 @@
     section.appendChild(header); section.appendChild(status);
     if (body.notice) section.appendChild(element('p', 'article-excerpt-note', body.notice));
     section.appendChild(content); selectLanguage(key, false); target.appendChild(section);
-    return toc;
   }
   function appendBodyStatus(target, item, hasBody) {
     var body = item.localBody;
@@ -1034,9 +1023,6 @@
     var excerpt = isAIHOT && item.localExcerpt ? normalizeLocalExcerpt(Object.assign({ schemaVersion: 1 }, item.localExcerpt), item.aihotId) : null;
     var layout = element('div', 'article-layout');
     var main = element('div', 'article-main');
-    var aside = element('aside', 'article-aside');
-    var bodyToc = null;
-    aside.setAttribute('aria-label', '资讯来源与主题');
     var toolbar = element('div', 'article-toolbar');
     toolbar.appendChild(routeLink(returnRoute || (isAIHOT ? '#feed/ai' : '#feed'), '← 返回', 'article-back'));
     toolbar.appendChild(saveButton(item, 'save-button article-save'));
@@ -1054,15 +1040,15 @@
     if (item.originalTitle && item.originalTitle !== item.title) main.appendChild(element('p', 'article-original-title', item.originalTitle));
     if (isAIHOT) {
       appendArticleSection(main, 'AI HOT 导读', item.summary);
-      if (!item.summary) main.appendChild(element('p', 'article-note', '本次同步的公开数据未提供导读，可通过右侧来源链接继续阅读。'));
+      if (!item.summary) main.appendChild(element('p', 'article-note', '本次同步的公开数据未提供导读，可通过下方来源链接继续阅读。'));
       var hasBody = item.localBody && Object.keys(item.localBody.languages).length > 0;
       if (hasBody) {
-        bodyToc = appendLocalBody(main, item.localBody, item.localBodySource);
+        appendLocalBody(main, item.localBody, item.localBodySource);
       } else if (localReaderEnabled || item.localBodyState === 'loading' || item.localBodyState === 'error') {
         appendBodyStatus(main, item, hasBody);
         if (excerpt) appendLocalExcerpt(main, excerpt);
       } else {
-        main.appendChild(element('p', 'article-note', '这条资讯暂未收录可展示的 AI HOT 正文，可通过右侧来源链接继续阅读。'));
+        main.appendChild(element('p', 'article-note', '这条资讯暂未收录可展示的 AI HOT 正文，可通过下方来源链接继续阅读。'));
         if (excerpt) appendLocalExcerpt(main, excerpt);
       }
       if (!curatedById.has(item.aihotId) && curatedLoaded) main.appendChild(element('p', 'article-note', '这是一条已收录的历史资讯，不属于本次同步的近7日精选列表。'));
@@ -1073,7 +1059,7 @@
       main.appendChild(element('p', 'article-note', item.category === 'ai' ? '此内容保留自历史日报原稿；AI 板块当前精选以 AI HOT 为准，本条历史稿不计入当前精选。' : '此内容保留自当期投研日报，半导体与机器人板块的来源和筛选方式暂沿用原流程。'));
       if (dailyReports.some(function (report) { return report.date === item.date; })) main.appendChild(routeLink('#daily/' + item.date, '阅读当期完整日报 →', 'report-link'));
     }
-    var sourceSection = element('section', 'article-aside-section article-source-actions');
+    var sourceSection = element('section', 'article-reading-sources article-source-actions');
     sourceSection.appendChild(element('h2', '', '阅读来源'));
     if (isAIHOT) {
       if (item.sourceURL) sourceSection.appendChild(sourceLink(item.sourceURL, '打开原文 ↗', 'article-source-button'));
@@ -1083,25 +1069,12 @@
       links.forEach(function (link, index) { sourceSection.appendChild(sourceLink(link, '打开原文' + (links.length > 1 ? ' ' + (index + 1) : '') + ' ↗', 'article-source-button')); });
       if (!links.length) sourceSection.appendChild(element('p', 'article-note', '当期原稿未附来源链接。'));
     }
-    aside.appendChild(sourceSection);
     if (isAIHOT && hasBody) {
       var localNote = element('p', 'article-local-mark', item.localBodySource === 'snapshot' ? '正文来源 · AI HOT' : '个人本地阅读');
       sourceSection.appendChild(localNote);
     }
-    if (isAIHOT && item.score !== null) {
-      var score = element('section', 'article-aside-section'); score.appendChild(element('h2', '', 'AI HOT 评分')); score.appendChild(element('span', 'article-score', item.score));
-      score.appendChild(element('p', 'article-note', '来自 AI HOT，不是盈峰投资评分。')); aside.appendChild(score);
-    }
-    if (isAIHOT && item.reason) {
-      var reason = element('section', 'article-aside-section'); reason.appendChild(element('h2', '', 'AI HOT 入选理由')); reason.appendChild(element('p', '', item.reason)); aside.appendChild(reason);
-    }
-    [['主题', item.topics && item.topics.length ? item.topics : excerpt && excerpt.topics], ['标签', item.tags && item.tags.length ? item.tags : excerpt && excerpt.tags]].forEach(function (group) {
-      if (!Array.isArray(group[1]) || !group[1].length) return;
-      var section = element('section', 'article-aside-section'); section.appendChild(element('h2', '', group[0]));
-      var tags = element('div', 'article-tags'); group[1].forEach(function (tag) { tags.appendChild(element('span', 'article-tag', tag)); }); section.appendChild(tags); aside.appendChild(section);
-    });
-    if (bodyToc) aside.appendChild(bodyToc);
-    layout.appendChild(main); layout.appendChild(aside);
+    main.appendChild(sourceSection);
+    layout.appendChild(main);
     ui.articleContent.replaceChildren(layout);
     document.title = item.title + ' · 盈峰投研';
     document.querySelectorAll('#sidebar a[data-category]').forEach(function (link) { var active = link.dataset.category === item.category; link.classList.toggle('active', active); if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current'); });
