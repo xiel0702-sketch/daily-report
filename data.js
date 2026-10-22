@@ -90,5 +90,16 @@ const REPORT_DATA = [
 
 // 投研周报数据
 const WEEKLY_DATA = [
-  {"week":"W30","label":"2026 Week 30","coverage":"7月20日 — 7月26日","file":"weekly-reports/2026-W30.md"}
+  {"week": "W42", "label": "2026 Week 42", "coverage": "10月12日 — 10月18日", "file": "weekly-reports/2026-W42.md"},
+  {"week": "W41", "label": "2026 Week 41", "coverage": "10月5日 — 10月11日", "file": "weekly-reports/2026-W41.md"},
+  {"week": "W40", "label": "2026 Week 40", "coverage": "9月28日 — 10月4日", "file": "weekly-reports/2026-W40.md"},
+  {"week": "W39", "label": "2026 Week 39", "coverage": "9月21日 — 9月27日", "file": "weekly-reports/2026-W39.md"},
+  {"week": "W38", "label": "2026 Week 38", "coverage": "9月14日 — 9月20日", "file": "weekly-reports/2026-W38.md"},
+  {"week": "W37", "label": "2026 Week 37", "coverage": "9月7日 — 9月13日", "file": "weekly-reports/2026-W37.md"},
+  {"week": "W36", "label": "2026 Week 36", "coverage": "8月31日 — 9月6日", "file": "weekly-reports/2026-W36.md"},
+  {"week": "W34", "label": "2026 Week 34", "coverage": "8月17日 — 8月23日", "file": "weekly-reports/2026-W34.md"},
+  {"week": "W33", "label": "2026 Week 33", "coverage": "8月10日 — 8月16日", "file": "weekly-reports/2026-W33.md"},
+  {"week": "W32", "label": "2026 Week 32", "coverage": "8月3日 — 8月9日", "file": "weekly-reports/2026-W32.md"},
+  {"week": "W31", "label": "2026 Week 31", "coverage": "7月27日 — 8月2日", "file": "weekly-reports/2026-W31.md"},
+  {"week": "W30", "label": "2026 Week 30", "coverage": "7月20日 — 7月26日", "file": "weekly-reports/2026-W30.md"}
 ];
