@@ -398,7 +398,12 @@
     cnt.textContent = '共 ' + WEEKLY_DATA.length + ' 期';
     l.innerHTML = '';
 
-    WEEKLY_DATA.forEach(function(w){
+    var label = document.getElementById('weeklySortLabel');
+    if (label) label.textContent = weeklyOrder === 'asc' ? '正序 ↑' : '倒序 ↓';
+
+    var items = WEEKLY_DATA.slice();
+    if (weeklyOrder === 'asc') items.reverse();
+    items.forEach(function(w){
       var a = document.createElement('a');
       a.className = 'archive-item weekly-item';
       a.href = '#';
@@ -435,6 +440,12 @@
   window.toggleArchiveOrder = function() {
     archiveOrder = archiveOrder === 'asc' ? 'desc' : 'asc';
     renderArchive();
+  };
+
+  var weeklyOrder = 'desc'; // 周报默认新→旧
+  window.toggleWeeklyOrder = function() {
+    weeklyOrder = weeklyOrder === 'asc' ? 'desc' : 'asc';
+    renderWeekly();
   };
 
   window.switchView = function(v) {
