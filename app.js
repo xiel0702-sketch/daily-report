@@ -354,8 +354,12 @@
     cnt.textContent = '共 ' + REPORT_DATA.length + ' 期';
     l.innerHTML = '';
 
-    var reversed = REPORT_DATA.slice().reverse();
-    reversed.forEach(function(r){
+    var label = document.getElementById('archiveSortLabel');
+    if (label) label.textContent = archiveOrder === 'asc' ? '正序 ↑' : '倒序 ↓';
+
+    var items = REPORT_DATA.slice();
+    if (archiveOrder === 'asc') items.reverse();
+    items.forEach(function(r){
       var a = document.createElement('a');
       a.className = 'archive-item';
       a.href = '#';
@@ -427,6 +431,12 @@
   }
 
   // ========== View Switching ==========
+  var archiveOrder = 'asc'; // asc = 旧→新，desc = 新→旧
+  window.toggleArchiveOrder = function() {
+    archiveOrder = archiveOrder === 'asc' ? 'desc' : 'asc';
+    renderArchive();
+  };
+
   window.switchView = function(v) {
     ['today','archive','detail','weekly','weekly-detail','about'].forEach(function(x){
       var el = document.getElementById('view-'+x);
