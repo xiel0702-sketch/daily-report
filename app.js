@@ -695,12 +695,23 @@
     ['financingTotal', 'financingDomestic', 'financingOverseas', 'financingKnown', 'financingAmount'].forEach(function (id) { text(ui[id], '—'); });
     ['financingIndustries', 'financingResultCount', 'financingSource', 'financingActiveFilters'].forEach(function (id) { clear(ui[id]); });
     text(ui.financingDateLabel, label); show(ui.financingActiveFilters, false); show(ui.financingDateField, false);
+    show(ui.financingDateNotice, false); text(ui.financingOverviewHeading, '交易概览');
     ['financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) { ui[id].value = ''; ui[id].disabled = true; } });
   }
   function normalizeFinancingSnapshot(value) {
     if (!value || value.schemaVersion !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(value.date || '') || !Array.isArray(value.items)) return null;
     if (!value.summary || !value.source) return null;
     return value;
+  }
+  async function loadFinancingEntries() {
+    var response = await fetch('financing-data.js', { cache: 'no-store' });
+    if (!response.ok) throw new Error('融资日期索引读取失败（HTTP ' + response.status + '）。');
+    var source = await response.text();
+    var assignment = source.match(/\b(?:const|let|var)\s+FINANCING_DATA\s*=\s*(\[[\s\S]*\])\s*;?\s*$/);
+    if (!assignment) throw new Error('融资日期索引格式无效。');
+    var entries = JSON.parse(assignment[1]);
+    if (!Array.isArray(entries) || !entries.every(function (entry) { return entry && /^\d{4}-\d{2}-\d{2}$/.test(entry.date || '') && entry.file === 'data/financings/' + entry.date + '.json'; })) throw new Error('融资日期索引内容无效。');
+    return entries;
   }
   async function loadFinancingSnapshot(file) {
     if (financingCache.has(file)) return financingCache.get(file);
@@ -801,9 +812,25 @@
     announce(item.company + '项目详情已加载');
   }
   async function renderFinancing(version) {
-    var entries = (typeof FINANCING_DATA !== 'undefined' && Array.isArray(FINANCING_DATA) ? FINANCING_DATA : []).slice();
     var target = ui.financingList;
     if (!target) return;
+    resetFinancingOverview('正在核对最新数据日期…');
+    clear(target);
+    var loadingTarget = currentRoute.financingId ? ui.financingDetailContent : target;
+    clear(loadingTarget); loadingTarget.appendChild(element('div', 'status-message', '正在核对最新融资日期…'));
+    if (ui.financingDate) ui.financingDate.disabled = true;
+    document.querySelectorAll('[data-financing-filter]').forEach(function (button) { button.disabled = true; });
+    var entries;
+    try {
+      entries = await loadFinancingEntries();
+    } catch (error) {
+      if (version !== renderVersion) return;
+      var indexTarget = currentRoute.financingId ? ui.financingDetailContent : target;
+      resetFinancingOverview('日期索引读取失败'); clear(indexTarget);
+      retryBox(indexTarget, errorMessage(error), function () { renderFinancing(renderVersion); });
+      return;
+    }
+    if (version !== renderVersion) return;
     if (!entries.length) {
       var emptyTarget = currentRoute.financingId ? ui.financingDetailContent : target;
       clear(emptyTarget); emptyTarget.appendChild(element('div', 'empty-state', '暂无投融资数据，等待烯牛 MCP 同步。'));
@@ -812,7 +839,7 @@
       return;
     }
     entries.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
-    var requested = currentRoute && currentRoute.id ? currentRoute.id : financingSelectedDate;
+    var requested = currentRoute && currentRoute.id ? currentRoute.id : entries[0].date;
     if (currentRoute.id && !entries.some(function (item) { return item.date === currentRoute.id; })) {
       var missingTarget = currentRoute.financingId ? ui.financingDetailContent : target;
       clear(missingTarget); missingTarget.appendChild(element('p', 'empty-state', '这个日期暂无已归档的投融资数据。'));
@@ -824,11 +851,18 @@
     financingSelectedDate = entry.date;
     if (ui.financingDate) {
       clear(ui.financingDate);
-      entries.forEach(function (item) { var option = element('option', '', dateLabel(item.date)); option.value = item.date; ui.financingDate.appendChild(option); });
+      entries.forEach(function (item, index) { var option = element('option', '', dateLabel(item.date) + (index === 0 ? ' · 最新' : '')); option.value = item.date; ui.financingDate.appendChild(option); });
       ui.financingDate.value = entry.date;
       if (ui.financingDateField) show(ui.financingDateField, entries.length > 1);
     }
     text(ui.financingDateLabel, '覆盖 ' + dateLabel(entry.date, true) + ' · 北京时间');
+    var historical = entry.date !== entries[0].date;
+    text(ui.financingOverviewHeading, historical ? '历史交易概览' : '最新交易概览');
+    clear(ui.financingDateNotice);
+    ui.financingDateNotice.classList.toggle('is-historical', historical);
+    ui.financingDateNotice.appendChild(element('p', '', (historical ? '正在查看历史数据。' : '') + '最新数据：' + dateLabel(entries[0].date) + '；每天北京时间 9:30 更新前一日融资事件。'));
+    if (historical) ui.financingDateNotice.appendChild(routeLink('#financing', '查看最新 →', 'financing-latest-link'));
+    show(ui.financingDateNotice, true);
     clear(target); target.appendChild(element('div', 'status-message', '正在读取烯牛投融资数据…'));
     try {
       var snapshot = await loadFinancingSnapshot(entry.file);
@@ -844,7 +878,8 @@
         if (originalRegion !== currentRoute.region) replaceRoute();
       }
       if (currentRoute.financingId) { renderFinancingDetail(snapshot, snapshot.items.find(function (item) { return String(item.id) === currentRoute.financingId; })); return; }
-      ['financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) ui[id].disabled = false; });
+      ['financingDate', 'financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) ui[id].disabled = false; });
+      document.querySelectorAll('[data-financing-filter]').forEach(function (button) { button.disabled = false; });
       var summary = snapshot.summary;
       text(ui.financingTotal, summary.totalEvents);
       text(ui.financingDomestic, summary.domesticEvents);
@@ -1630,6 +1665,7 @@
     });
   }
   async function init() {
+    ['financingDateNotice', 'financingOverviewHeading'].forEach(function (id) { ui[id] = byId(id); });
     ['financingOverseas', 'financingIndustryFilter', 'financingRegionFilter', 'financingActiveFilters', 'financingResultCount', 'financingDetailView', 'financingDetailContent'].forEach(function (id) { ui[id] = byId(id); });
     ['pageIntro', 'pageHeading', 'pageEyebrow', 'pageDescription', 'headerDate', 'topbarSubtitle', 'searchForm', 'searchInput', 'searchClear', 'feedControls', 'resultCount', 'layoutList', 'layoutCompact', 'feedView', 'feedList', 'feedStatus', 'loadMore', 'financingView', 'financingDate', 'financingDateField', 'financingDateLabel', 'financingTotal', 'financingDomestic', 'financingKnown', 'financingAmount', 'financingIndustries', 'financingList', 'financingSource', 'readerView', 'archiveSort', 'archiveSearch', 'archiveRail', 'reportContent', 'articleView', 'articleContent', 'aboutView', 'rightRail', 'latestDate', 'statDaily', 'statWeekly', 'statItems', 'sectorStats', 'recentReports', 'savedCount', 'liveStatus', 'mobileMenu', 'sidebar', 'menuBackdrop', 'backToTop'].forEach(function (id) { ui[id] = byId(id); });
     if (!ui.pageIntro) ui.pageIntro = document.querySelector('.page-intro');
