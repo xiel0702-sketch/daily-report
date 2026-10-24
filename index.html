@@ -6,7 +6,7 @@
 <meta name="description" content="盈峰投资的产业资讯与投资观察。聚焦 AI、半导体、机器人，以及烯牛数据每日投融资动态。">
 <meta name="theme-color" content="#fafbf9">
 <link rel="icon" type="image/png" href="assets/logo-mark.png?v=20261022">
-<link rel="stylesheet" href="style.css?v=20261023-financing">
+<link rel="stylesheet" href="style.css?v=20261024-projects">
 </head>
 <body>
 <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -56,11 +56,15 @@
 <section id="feedView" aria-label="资讯列表"><div class="feed-summary"><span id="resultCount" role="status">正在加载最新一期…</span><span>产业 · 技术 · 资本</span></div><div id="feedList" class="feed-list"></div><div id="feedStatus" class="feed-status" role="status"></div><button type="button" id="loadMore" class="load-more" hidden>加载更多动态 <span>↓</span></button></section>
 <section id="financingView" class="financing-view" aria-label="每日投融资动态" hidden>
 <div class="financing-toolbar"><div class="financing-heading"><span class="financing-eyebrow">PRIMARY MARKET FINANCING</span><h2>当日交易概览</h2><p id="financingDateLabel">正在读取烯牛数据…</p></div><label class="financing-date-field" id="financingDateField">数据日期<select id="financingDate"></select></label></div>
-<div class="financing-overview"><div class="financing-stat"><strong id="financingTotal">—</strong><span>全部事件</span></div><div class="financing-stat"><strong id="financingDomestic">—</strong><span>国内公司</span></div><div class="financing-stat"><strong id="financingKnown">—</strong><span>金额可估</span></div><div class="financing-stat"><strong id="financingAmount">—</strong><span>可估金额</span></div></div>
-<div class="financing-controls"><div class="financing-filters" role="group" aria-label="按公司地区筛选"><button type="button" class="active" data-financing-filter="all" aria-pressed="true">全部</button><button type="button" data-financing-filter="domestic" aria-pressed="false">国内</button></div><p id="financingIndustries" class="financing-industries"></p></div>
+<div class="financing-overview"><div class="financing-stat"><strong id="financingTotal">—</strong><span>当日全部事件</span></div><div class="financing-stat"><strong id="financingDomestic">—</strong><span>国内公司</span></div><div class="financing-stat"><strong id="financingOverseas">—</strong><span>国外公司</span></div><div class="financing-stat"><strong id="financingKnown">—</strong><span>金额可估</span></div><div class="financing-stat"><strong id="financingAmount">—</strong><span>当日可估金额</span></div></div>
+<div class="financing-controls"><div class="financing-filters" role="group" aria-label="按公司地区筛选"><button type="button" class="active" data-financing-filter="all" aria-pressed="true">全部</button><button type="button" data-financing-filter="domestic" aria-pressed="false">国内</button><button type="button" data-financing-filter="overseas" aria-pressed="false">国外</button></div><p id="financingIndustries" class="financing-industries"></p></div>
+<div class="financing-tag-controls"><label>行业<select id="financingIndustryFilter" aria-label="筛选行业"><option value="">全部行业</option></select></label><label>地域<select id="financingRegionFilter" aria-label="筛选地域"><option value="">全部地域</option></select></label><span class="financing-filter-hint">点击项目标签，也可组合筛选</span></div>
+<div id="financingActiveFilters" class="financing-active-filters" aria-label="当前筛选条件" hidden></div>
+<p id="financingResultCount" class="financing-result-count" role="status"></p>
 <div id="financingList" class="financing-list"></div>
 <p id="financingSource" class="financing-source"></p>
 </section>
+<section id="financingDetailView" class="financing-detail-view" aria-label="投融资项目详情" hidden><article id="financingDetailContent"></article></section>
 <section id="readerView" class="reader-view" aria-label="投研报告阅读" hidden><div class="reader-layout"><aside class="archive-panel" aria-label="报告归档"><nav class="report-tabs" id="reportTabs" aria-label="报告类型"><a href="#daily">日报</a><a href="#weekly">周报</a></nav><div class="archive-toolbar"><span>往期档案</span><select id="archiveSort" aria-label="报告排列顺序"><option value="asc">正序 ↑</option><option value="desc">倒序 ↓</option></select></div><input class="archive-search" id="archiveSearch" type="search" placeholder="查找日期或期数" aria-label="查找报告日期或期数"><div id="archiveRail" class="archive-rail"></div></aside><article id="reportContent" class="report-paper" aria-label="报告正文"></article></div></section>
 <section id="articleView" class="article-view" aria-label="资讯详情" hidden><article id="articleContent"></article></section>
 <section id="aboutView" class="about-view" hidden><div class="about-lead">连接产业变化与投资判断。</div><p>盈峰投研日报聚焦人工智能、半导体、机器人和一级市场投融资，整理产业动态、技术进展与资本信号，为日常投研提供信息索引。</p><div class="about-sectors"><div><span class="sector-dot ai"></span><h2>人工智能</h2><p>技术进展与资本信号</p></div><div><span class="sector-dot semi"></span><h2>半导体</h2><p>产业周期与供需变化</p></div><div><span class="sector-dot robot"></span><h2>机器人</h2><p>融资进展与商业落地</p></div><div><span class="sector-dot financing"></span><h2>投融资</h2><p>每日交易与资本流向</p></div></div><h2>阅读与使用</h2><p>AI 板块直接同步 AI HOT 近7日的精选集合和顺序，不再经模型二次挑选。可读取的正文、章节、中文与原文内容和配图已生成本站静态快照；源页面未提供正文时，保留导读、来源与主题信息。「投融资动态」按交易日展示烯牛数据投融资事件，可按地区筛选；金额为数据库估算值，并同时标明可估算金额的事件数。「全部动态」汇集往期日报，可继续加载更早内容；搜索范围为当前已加载的资讯。日报与周报按月份归档，支持日期定位和正倒序切换。</p><p>点击整张资讯卡片可进入站内详情并直接阅读正文；「打开原文」仍可访问对应来源。收藏保存在当前浏览器，清除浏览器数据后将不再保留。</p><h2>来源与说明</h2><p>AI 精选资讯来源为 <a href="https://aihot.news/" target="_blank" rel="noopener noreferrer">AI HOT</a>，其他赛道来源包括财经及产业媒体。投融资数据来源为 <a href="https://www.xiniudata.com/" target="_blank" rel="noopener noreferrer">烯牛数据</a> MCP，覆盖公司、轮次、金额、投资方、行业和地区。资讯与投资观察沿用已发布日报，保留可用原文链接；无链接条目会明确标示。</p><p>本网站的信息组织参考 <a href="https://github.com/KKKKhazix/AIHOT" target="_blank" rel="noopener noreferrer">AIHOT 开源项目</a>，以盈峰投资的品牌与报告内容重新实现。文中观察供研究参考，具体事实请以原始披露为准。</p></section>
@@ -78,6 +82,6 @@
 </div>
 <div id="liveStatus" class="sr-only" role="status" aria-live="polite"></div>
 <button id="backToTop" class="back-to-top" type="button" aria-label="回到顶部" title="回到顶部">↑</button>
-<script src="data.js?v=20261022-redesign"></script><script src="financing-data.js?v=20261023"></script><script src="app.js?v=20261023-financing"></script>
+<script src="data.js?v=20261022-redesign"></script><script src="financing-data.js?v=20261023"></script><script src="company-profiles.js?v=20261024-projects"></script><script src="app.js?v=20261024-projects"></script>
 </body>
 </html>
