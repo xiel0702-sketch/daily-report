@@ -624,7 +624,12 @@
     return [item.industryL1, item.industryL2, item.industryL3].filter(function (value, index, list) { return value && list.indexOf(value) === index; });
   }
   function financingRegionTags(item) {
-    return [item.region].concat(String(item.location || '').split(/\s*>\s*/)).filter(function (value, index, list) { return value && list.indexOf(value) === index; });
+    var path = [item.region].concat(String(item.location || '').split('>')).map(function (value) { return String(value || '').trim(); }).filter(function (value, index, list) { return value && list.indexOf(value) === index; });
+    return path.length ? [path.join(' > ')] : [];
+  }
+  function financingRegionLabel(value) {
+    var path = String(value || '').split('>').map(function (part) { return part.trim(); }).filter(Boolean);
+    return path[path.length - 1] || '';
   }
   function financingRoute(changes) {
     return buildRoute(Object.assign({}, currentRoute, { view: 'financing', id: financingSelectedDate, financingId: '' }, changes || {}));
@@ -634,9 +639,11 @@
   }
   function financingTag(label, field) {
     var active = currentRoute[field] === label;
-    var button = element('button', 'financing-tag interactive-tag' + (active ? ' active' : ''), label);
+    var visibleLabel = field === 'region' ? financingRegionLabel(label) : label;
+    var button = element('button', 'financing-tag interactive-tag' + (active ? ' active' : ''), visibleLabel);
     button.type = 'button'; button.setAttribute('aria-pressed', String(active));
-    button.setAttribute('aria-label', (active ? '取消' : '筛选') + (field === 'industry' ? '行业：' : '地域：') + label);
+    button.setAttribute('aria-label', (active ? '取消' : '筛选') + (field === 'industry' ? '行业：' : '地域：') + visibleLabel);
+    if (field === 'region') button.title = label;
     button.addEventListener('click', function () { setFinancingTag(field, label); });
     return button;
   }
@@ -651,7 +658,9 @@
       var values = new Set(); snapshot.items.forEach(function (item) { getter(item).forEach(function (value) { values.add(value); }); });
       if (currentRoute[field]) values.add(currentRoute[field]);
       clear(select); var all = element('option', '', label); all.value = ''; select.appendChild(all);
-      Array.from(values).sort(function (a, b) { return a.localeCompare(b, 'zh-CN'); }).forEach(function (value) { var option = element('option', '', value); option.value = value; select.appendChild(option); });
+      Array.from(values).sort(function (a, b) { return (field === 'region' ? financingRegionLabel(a) : a).localeCompare(field === 'region' ? financingRegionLabel(b) : b, 'zh-CN') || a.localeCompare(b, 'zh-CN'); }).forEach(function (value) {
+        var option = element('option', '', field === 'region' ? financingRegionLabel(value) : value); option.value = value; if (field === 'region') option.title = value; select.appendChild(option);
+      });
       select.value = currentRoute[field] || '';
     }
     options('financingIndustryFilter', 'industry', financingIndustryTags, '全部行业');
@@ -659,8 +668,9 @@
     clear(ui.financingActiveFilters);
     ['industry', 'region'].forEach(function (field) {
       if (!currentRoute[field]) return;
-      var chip = element('button', 'financing-filter-chip', (field === 'industry' ? '行业：' : '地域：') + currentRoute[field] + ' ×');
+      var chip = element('button', 'financing-filter-chip', (field === 'industry' ? '行业：' : '地域：') + (field === 'region' ? financingRegionLabel(currentRoute[field]) : currentRoute[field]) + ' ×');
       chip.type = 'button'; chip.setAttribute('aria-label', '移除' + chip.textContent.replace(' ×', ''));
+      if (field === 'region') chip.title = currentRoute[field];
       chip.addEventListener('click', function () { location.hash = financingRoute({ [field]: '' }); });
       ui.financingActiveFilters.appendChild(chip);
     });
@@ -815,6 +825,10 @@
     try {
       var snapshot = await loadFinancingSnapshot(entry.file);
       if (version !== renderVersion) return;
+      if (currentRoute.region && !currentRoute.region.includes('>')) {
+        var regionPaths = Array.from(new Set(snapshot.items.flatMap(financingRegionTags))).filter(function (path) { return financingRegionLabel(path) === currentRoute.region; });
+        if (regionPaths.length === 1 && regionPaths[0] !== currentRoute.region) { currentRoute.region = regionPaths[0]; replaceRoute(); }
+      }
       if (currentRoute.financingId) { renderFinancingDetail(snapshot, snapshot.items.find(function (item) { return String(item.id) === currentRoute.financingId; })); return; }
       ['financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) ui[id].disabled = false; });
       var summary = snapshot.summary;
