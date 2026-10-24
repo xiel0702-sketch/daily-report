@@ -623,12 +623,20 @@
   function financingIndustryTags(item) {
     return [item.industryL1, item.industryL2, item.industryL3].filter(function (value, index, list) { return value && list.indexOf(value) === index; });
   }
+  function financingCityPath(value) {
+    var path = String(value || '').split('>').map(function (part) { return part.trim(); }).filter(Boolean);
+    var cityIndex = path.findIndex(function (part) { return /(?:市|自治州|地区|盟)$/.test(part); });
+    if (cityIndex !== -1) return path.slice(0, cityIndex + 1);
+    while (path.length && /(?:区|县|旗)$/.test(path[path.length - 1]) && !/(?:自治区|特别行政区)$/.test(path[path.length - 1])) path.pop();
+    return path;
+  }
   function financingRegionTags(item) {
-    var path = [item.region].concat(String(item.location || '').split('>')).map(function (value) { return String(value || '').trim(); }).filter(function (value, index, list) { return value && list.indexOf(value) === index; });
+    var parts = [item.region].concat(String(item.location || '').split('>')).map(function (value) { return String(value || '').trim(); }).filter(function (value, index, list) { return value && list.indexOf(value) === index; });
+    var path = financingCityPath(parts.join(' > '));
     return path.length ? [path.join(' > ')] : [];
   }
   function financingRegionLabel(value) {
-    var path = String(value || '').split('>').map(function (part) { return part.trim(); }).filter(Boolean);
+    var path = financingCityPath(value);
     return path[path.length - 1] || '';
   }
   function financingRoute(changes) {
@@ -825,9 +833,15 @@
     try {
       var snapshot = await loadFinancingSnapshot(entry.file);
       if (version !== renderVersion) return;
-      if (currentRoute.region && !currentRoute.region.includes('>')) {
-        var regionPaths = Array.from(new Set(snapshot.items.flatMap(financingRegionTags))).filter(function (path) { return financingRegionLabel(path) === currentRoute.region; });
-        if (regionPaths.length === 1 && regionPaths[0] !== currentRoute.region) { currentRoute.region = regionPaths[0]; replaceRoute(); }
+      if (currentRoute.region) {
+        var originalRegion = currentRoute.region;
+        var cityRegion = financingCityPath(originalRegion).join(' > ');
+        if (cityRegion) currentRoute.region = cityRegion;
+        if (!currentRoute.region.includes('>')) {
+          var regionPaths = Array.from(new Set(snapshot.items.filter(function (item) { return [item.region].concat(String(item.location || '').split('>')).some(function (part) { return String(part || '').trim() === currentRoute.region; }); }).flatMap(financingRegionTags)));
+          if (regionPaths.length === 1) currentRoute.region = regionPaths[0];
+        }
+        if (originalRegion !== currentRoute.region) replaceRoute();
       }
       if (currentRoute.financingId) { renderFinancingDetail(snapshot, snapshot.items.find(function (item) { return String(item.id) === currentRoute.financingId; })); return; }
       ['financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) ui[id].disabled = false; });
