@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """On-demand reading of public AI HOT article pages, cached outside the public site."""
 import hashlib
+import ipaddress
 import json
 import os
 import re
+import socket
 import tempfile
 import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlsplit
+from urllib.parse import parse_qsl, urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
-from aihot_article_parser import parse_article
+from aihot_article_parser import parse_article, parse_source_article
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CACHE = ROOT.parent / 'tmp' / 'aihot-private-reader-cache'
@@ -65,17 +67,68 @@ class SourceRedirects(HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
+def allowed_public_url(url):
+    """Allow public publisher pages while rejecting local/private targets."""
+    try:
+        parsed = urlsplit(url)
+        if (
+            parsed.scheme not in ("http", "https")
+            or not parsed.hostname
+            or parsed.username
+            or parsed.password
+            or parsed.port not in (None, 80, 443)
+        ):
+            return False
+        host = parsed.hostname.rstrip(".").lower()
+        if (
+            host in ("localhost", "localhost.localdomain")
+            or host.endswith(".localhost")
+            or host.endswith(".local")
+        ):
+            return False
+        private_keys = {
+            "access_token", "api_key", "apikey", "auth", "authorization",
+            "credential", "password", "secret", "signature", "token",
+        }
+        if any(key.lower() in private_keys for key, _ in parse_qsl(parsed.query)):
+            return False
+        try:
+            addresses = {ipaddress.ip_address(host)}
+        except ValueError:
+            addresses = {
+                ipaddress.ip_address(value[4][0].split("%", 1)[0])
+                for value in socket.getaddrinfo(host, parsed.port or (443 if parsed.scheme == "https" else 80))
+            }
+        codex_proxy = ipaddress.ip_network("198.18.0.0/15")
+        allow_codex_proxy = os.environ.get("CODEX_CI") == "1"
+        return bool(addresses) and all(
+            address.is_global or (allow_codex_proxy and address in codex_proxy)
+            for address in addresses
+        )
+    except (OSError, TypeError, ValueError):
+        return False
+
+
+class PublicRedirects(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not allowed_public_url(newurl):
+            raise ValueError("原文来源跳转到了不支持的地址。")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 class PrivateReader:
-    def __init__(self, cache_dir=DEFAULT_CACHE):
+    def __init__(self, cache_dir=DEFAULT_CACHE, known_ids=None):
         self.cache_dir = Path(cache_dir).resolve()
         if self.cache_dir == ROOT or ROOT in self.cache_dir.parents:
             raise ValueError('Private article cache must stay outside the public checkout')
         self.cache_dir.mkdir(parents=True, exist_ok=True)
+        self.known_ids = set(known_ids) if known_ids is not None else None
         self.lock = threading.RLock()
         self.network_lock = threading.Lock()
         self.last_request = 0
         self.retry_until = 0
         self.opener = build_opener(SourceRedirects())
+        self.public_opener = build_opener(PublicRedirects())
         self.prune()
 
     def prune(self):
@@ -121,8 +174,67 @@ class PrivateReader:
     def known_item(self, identifier):
         if not ID_PATTERN.fullmatch(identifier):
             return False
+        if self.known_ids is not None:
+            return identifier in self.known_ids
         path = ROOT / 'aihot' / 'items' / (identifier + '.json')
         return path.is_file()
+
+    def fetch_public(self, url, accept, limit):
+        """Fetch a bounded public resource, following only public redirects."""
+        if not allowed_public_url(url):
+            raise ValueError('原文来源地址不受支持。')
+        request = Request(url, headers={
+            'User-Agent': 'Mozilla/5.0 (compatible; InforeResearchReader/1.0)',
+            'Accept': accept,
+        })
+        for attempt in range(3):
+            try:
+                with self.public_opener.open(request, timeout=25) as response:
+                    body = response.read(limit + 1)
+                    if len(body) > limit:
+                        raise ValueError('原文资源超过本地阅读大小限制。')
+                    final_url = response.geturl()
+                    if not allowed_public_url(final_url):
+                        raise ValueError('原文来源跳转到了不支持的地址。')
+                    return body, dict(response.headers), final_url
+            except HTTPError as error:
+                code = error.code
+                error.close()
+                if code not in (429, 500, 502, 503, 504) or attempt == 2:
+                    raise RuntimeError('原文页面暂不可读（HTTP ' + str(code) + '）。') from None
+            except (URLError, TimeoutError, OSError):
+                if attempt == 2:
+                    raise RuntimeError('暂时无法连接原文来源。') from None
+            time.sleep(min(2 ** attempt, 4))
+        raise RuntimeError('原文来源请求失败。')
+
+    def source_article(self, url):
+        """Fetch and normalize a public publisher article without retaining raw HTML."""
+        body, headers, final_url = self.fetch_public(
+            url, 'text/html,application/xhtml+xml', 5_000_000
+        )
+        content_type = next((value for key, value in headers.items() if key.lower() == 'content-type'), '')
+        if 'text/html' not in content_type and 'application/xhtml+xml' not in content_type:
+            raise ValueError('原文来源未返回文章页面。')
+        charset = next((value for key, value in headers.items() if key.lower() == 'content-type' and 'charset=' in value.lower()), '')
+        if charset:
+            charset = charset.lower().split('charset=', 1)[1].split(';', 1)[0].strip(' "\'')
+        else:
+            sample = body[:8192].decode('ascii', errors='ignore')
+            match = re.search(r'<meta[^>]+charset=["\']?([A-Za-z0-9._-]+)', sample, re.I)
+            charset = match.group(1) if match else 'utf-8'
+        try:
+            html = body.decode(charset, errors='replace')
+        except LookupError:
+            html = body.decode('utf-8', errors='replace')
+        parsed = parse_source_article(html, final_url)
+        return {
+            'status': 'available',
+            'sourceURL': final_url,
+            'fetchedAt': utc_now(),
+            'language': parsed['language'],
+            'blocks': parsed['blocks'],
+        }
 
     def page(self, url, old=None):
         headers = {}

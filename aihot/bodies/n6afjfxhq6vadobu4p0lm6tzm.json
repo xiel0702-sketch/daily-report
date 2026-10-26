@@ -1,0 +1,2606 @@
+{
+  "schemaVersion": 1,
+  "id": "n6afjfxhq6vadobu4p0lm6tzm",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/n6afjfxhq6vadobu4p0lm6tzm",
+  "fetchedAt": "2026-10-26T09:05:13.791205Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Microsoft / Copilot",
+    "Agent 智能体",
+    "安全对齐",
+    "行业动态"
+  ],
+  "tags": [
+    "行业动态",
+    "安全/对齐",
+    "Agent",
+    "Microsoft"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "2026年10月期间，我们发现一名攻击者使用与ARTEX（一个自主AI渗透测试代理）相关的工具，针对多家IT和软件供应商发起攻击。该活动聚焦于身份提供商（Okta、Entra、Cognito）以及对Microsoft 365集成的滥用。我们观察到其在多个环境中反复尝试发现身份验证绕过、枚举API并访问（目标供应商的）客户数据。",
+          "inlines": [
+            {
+              "text": "2026年10月期间，我们发现一名攻击者使用与ARTEX（一个自主AI渗透测试代理）相关的工具，针对多家IT和软件供应商发起攻击。该活动聚焦于身份提供商（Okta、Entra、Cognito）以及对Microsoft 365集成的滥用。我们观察到其在多个环境中反复尝试发现身份验证绕过、枚举API并访问（目标供应商的）客户数据。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的观察与微软近期关于Storm-0940的报告存在重叠，该组织是一个与中国政府关联的攻击者，与近期涉及被盗供应商凭证及下游Microsoft 365租户的供应链攻击有关。\\",
+          "inlines": [
+            {
+              "text": "我们的观察与微软"
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/",
+              "text": "近期关于Storm-0940的报告"
+            },
+            {
+              "text": "存在重叠，该组织是一个与中国政府关联的攻击者，与近期"
+            },
+            {
+              "href": "https://www.huntress.com/blog/vendor-credential-enables-unauthorized-access?hnt=xvnsv6u6opfh",
+              "text": "涉及被盗供应商凭证及下游Microsoft 365租户的供应链攻击"
+            },
+            {
+              "text": "有关。\\"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "然而，我们还额外观察到相同的基础设施、工具和攻击模式针对整个行业。通过对已识别的TTP和IOC进行关联分析，我们还发现同一攻击者正将其尝试的供应链入侵扩展到其他软件领域。",
+          "inlines": [
+            {
+              "text": "然而，我们还额外观察到相同的基础设施、工具和攻击模式针对整个行业。通过对已识别的TTP和IOC进行关联分析，我们还发现同一攻击者正将其尝试的供应链入侵扩展到其他软件领域。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在本博客中，我们将描述使用ARTEX的攻击者在多个环境和云提供商中应用的可重复模式和方法，并附上来自真实攻击的示例。",
+          "inlines": [
+            {
+              "text": "在本博客中，我们将描述使用ARTEX的攻击者在多个环境和云提供商中应用的可重复模式和方法，并附上来自真实攻击的示例。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "什么是ARTEX？",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "什么是ARTEX？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "ARTEX是一个开源的自主渗透测试框架。一名中国开发者于2026年7月在GitHub上发布了它，并于当年9月赢得了百度的“Agent+”红队挑战赛。在实际操作中，操作员提供目标和目的。随后规划代理选择下一步行动，工作代理运行nmap、curl和Impacket等工具，每个结果都会汇入一个共享的资产与发现图谱。",
+          "inlines": [
+            {
+              "text": "ARTEX是一个开源的自主渗透测试框架。一名中国开发者于2026年7月在GitHub上发布了它，并于当年9月赢得了百度的“Agent+”红队挑战赛。在实际操作中，操作员提供目标和目的。随后规划代理选择下一步行动，工作代理运行"
+            },
+            {
+              "code": true,
+              "text": "nmap"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "curl"
+            },
+            {
+              "text": "和"
+            },
+            {
+              "code": true,
+              "text": "Impacket"
+            },
+            {
+              "text": "等工具，每个结果都会汇入一个共享的资产与发现图谱。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "攻击者在数周内就采用了它。ARTEX的痕迹出现在9月下旬对韩国银行的攻击以及10月对日本企业的攻击中。微软和Zscaler此后将其与两个不同的攻击者关联起来。开发者于10月8日将该工具转为闭源。彼时，该代码已有超过12,000个分支。",
+          "inlines": [
+            {
+              "text": "攻击者在数周内就采用了它。ARTEX的痕迹出现在9月下旬"
+            },
+            {
+              "href": "https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/",
+              "text": "对韩国银行的攻击"
+            },
+            {
+              "text": "以及10月"
+            },
+            {
+              "href": "https://www.japantimes.co.jp/news/2026/10/20/japan/china-ai-cyberattacks/",
+              "text": "对日本企业的攻击"
+            },
+            {
+              "text": "中。"
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/",
+              "text": "微软"
+            },
+            {
+              "text": "和"
+            },
+            {
+              "href": "https://www.zscaler.com/blogs/security-research/inside-global-ai-assisted-hacking-campaign",
+              "text": "Zscaler"
+            },
+            {
+              "text": "此后将其与两个不同的攻击者关联起来。开发者于"
+            },
+            {
+              "href": "https://www.reuters.com/world/china/chinese-developer-makes-artex-ai-agent-closed-source-after-korean-bank-hack-2026-10-09/",
+              "text": "10月8日将该工具转为闭源"
+            },
+            {
+              "text": "。彼时，该代码已有超过12,000个分支。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "一套可重复的剧本",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "一套可重复的剧本"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在所调查的环境中，我们观察到一致的侦察和攻击尝试序列：",
+          "inlines": [
+            {
+              "text": "在所调查的环境中，我们观察到一致的侦察和攻击尝试序列："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "测绘应用："
+                },
+                {
+                  "text": "下载JavaScript包、暴露的source map、运行时配置以及Swagger/OpenAPI文档，以发现内部API路由和应用功能。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "探测身份验证："
+                },
+                {
+                  "text": "反复发起登录流程，操纵OAuth回调和state参数，测试未签名的JWT，并探测SSO和Microsoft 365专用端点。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "攻击身份提供商和登录流程："
+                },
+                {
+                  "text": "对企业Okta和Entra ID环境进行密码喷洒，并针对内部和专有应用的登录页面。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "滥用账户恢复："
+                },
+                {
+                  "text": "反复调用密码重置、用户名找回、激活和重置令牌端点。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "测试租户隔离："
+                },
+                {
+                  "text": "尽可能使用一次性电子邮件地址注册账户，然后操纵可预测的标识符，以探测访问控制缺陷和未经授权的跨租户数据访问。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "适应防御机制："
+                },
+                {
+                  "text": "被封锁时轮换IP地址，并不断更换用户代理。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "日志中的表现",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "日志中的表现"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们使用通过Wiz无代理工作负载检测收集的HTTP访问日志，以及AWS Cognito事件、Entra登录活动和Okta身份验证日志等身份提供商日志，分析了这些攻击模式。",
+          "inlines": [
+            {
+              "text": "我们使用通过"
+            },
+            {
+              "href": "https://www.wiz.io/blog/agentless-visibility-uncovering-cloud-blind-spots",
+              "text": "Wiz无代理工作负载检测"
+            },
+            {
+              "text": "收集的HTTP访问日志，以及AWS Cognito事件、Entra登录活动和Okta身份验证日志等身份提供商日志，分析了这些攻击模式。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "针对内部应用",
+          "inlines": [
+            {
+              "text": "针对内部应用"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "在所有观察到的攻击实例中，该代理的第一步始终是读取应用本身。首次接触后几分钟内就出现了如下请求：",
+          "inlines": [
+            {
+              "text": "在所有观察到的攻击实例中，该代理的第一步始终是读取应用本身。首次接触后几分钟内就出现了如下请求："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不久之后，它开始按名称调用内部 API 路由。这些路由名称唯一出现的地方，就是它刚刚下载的 source map。",
+          "inlines": [
+            {
+              "text": "不久之后，它开始按名称调用内部 API 路由。这些路由名称唯一出现的地方，就是它刚刚下载的 source map。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "账户恢复功能也遭遇了同样的对待。该代理先检查哪些用户名存在，然后对重置端点发起猛烈请求：",
+          "inlines": [
+            {
+              "text": "账户恢复功能也遭遇了同样的对待。该代理先检查哪些用户名存在，然后对重置端点发起猛烈请求："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "凡是能注册的地方，它都注册了，使用的是来自免费临时邮箱服务的一次性邮箱。随后，它立即尝试查看他人的数据：",
+          "inlines": [
+            {
+              "text": "凡是能注册的地方，它都注册了，使用的是来自免费临时邮箱服务的一次性邮箱。随后，它立即尝试查看他人的数据："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在每次模糊测试运行之前，它都会先确认基线“未找到”响应是什么样子：",
+          "inlines": [
+            {
+              "text": "在每次模糊测试运行之前，它都会先确认基线“未找到”响应是什么样子："
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "针对 OAuth 身份提供商",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "针对 OAuth 身份提供商"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "在探测 Microsoft OAuth 流程时，该代理通过注入伪造的授权码和格式错误的 state 参数，直接操纵回调端点，同时还尝试使用未签名的 JWT 绕过身份验证：",
+          "inlines": [
+            {
+              "text": "在探测 Microsoft OAuth 流程时，该代理通过注入伪造的授权码和格式错误的 state 参数，直接操纵回调端点，同时还尝试使用未签名的 JWT 绕过身份验证："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "第二个令牌解码后不过是 {\"alg\":\"none\"} 和 {\"email\":\"test@test.com\"}。该代理在两分钟内用这个载荷对 60 多种 SSO 路由变体发起了密集请求。",
+          "inlines": [
+            {
+              "text": "第二个令牌解码后不过是 "
+            },
+            {
+              "code": true,
+              "text": "{\"alg\":\"none\"}"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "{\"email\":\"test@test.com\"}"
+            },
+            {
+              "text": "。该代理在两分钟内用这个载荷对 60 多种 SSO 路由变体发起了密集请求。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 AWS Cognito 上，我们观察到了与专有应用中账户恢复滥用相呼应的模式。这一活动体现在 InitiateAuth、ForgotPassword 和 ResendConfirmationCode 等事件中。这些请求来自与早前攻击中观察到的相同的用户代理组合，包括 boto 和 python-urllib 这类看似无害的编程客户端。",
+          "inlines": [
+            {
+              "text": "在 AWS Cognito 上，我们观察到了与专有应用中账户恢复滥用相呼应的模式。这一活动体现在 "
+            },
+            {
+              "code": true,
+              "text": "InitiateAuth"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "ForgotPassword"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "ResendConfirmationCode"
+            },
+            {
+              "text": " 等事件中。这些请求来自与早前攻击中观察到的相同的用户代理组合，包括 "
+            },
+            {
+              "code": true,
+              "text": "boto"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "python-urllib"
+            },
+            {
+              "text": " 这类看似无害的编程客户端。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该代理还尝试直接创建新身份，调用 AWS Cognito SignUp API，同时轮换其用户代理池。",
+          "inlines": [
+            {
+              "text": "该代理还尝试直接创建新身份，调用 AWS Cognito SignUp API，同时轮换其用户代理池。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "密码喷洒",
+          "inlines": [
+            {
+              "text": "密码喷洒"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还追踪到一场针对众多已观察目标的大规模密码喷洒活动。该活动不区分 IDP，同时攻击 Entra 和 Okta，并表现出若干独特的 AI 驱动特征。",
+          "inlines": [
+            {
+              "text": "我们还追踪到一场针对众多已观察目标的大规模密码喷洒活动。该活动不区分 IDP，同时攻击 Entra 和 Okta，并表现出若干独特的 AI 驱动特征。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些攻击针对数百名用户，并以高度协调的突发方式执行。每次突发都具有以下特征：",
+          "inlines": [
+            {
+              "text": "这些攻击针对数百名用户，并以高度协调的突发方式执行。每次突发都具有以下特征："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "专用用户代理："
+                },
+                {
+                  "text": "每次突发都分配了唯一的用户代理字符串，与之前各波次使用的不同。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "精确计时："
+                },
+                {
+                  "text": "认证尝试之间的中位间隔严格为 1 秒。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "持续执行："
+                },
+                {
+                  "text": "单次突发持续 20 到 60 分钟不等。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "基于角色的定向："
+                },
+                {
+                  "text": "该代理主要针对软件工程师所属的账户。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "重复尝试："
+                },
+                {
+                  "text": "部分单个用户遭受了十多次登录尝试。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "设计上的不懈",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "设计上的不懈"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该活动具有持久性和高度自动化。部分会话持续 24–30 小时，当 IP 被封锁时，新地址会在几分钟内出现。",
+          "inlines": [
+            {
+              "text": "该活动具有持久性和高度自动化。部分会话持续 24–30 小时，当 IP 被封锁时，新地址会在几分钟内出现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在一次会话中，该代理轮换了同一 SSO 端点的十几种变体 （/sso、/sso/、/sso/login、/sso/jwt、/jwt/sso…），每种变体都分别携带和不携带同一伪造令牌，速率约为每秒一个请求。当某个登录页面开始对该活动进行速率限制时，该代理干脆切换到同一主机上的另一个端点继续操作。",
+          "inlines": [
+            {
+              "text": "在一次会话中，该代理轮换了同一 SSO 端点的十几种变体 （"
+            },
+            {
+              "code": true,
+              "text": "/sso"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "/sso/"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "/sso/login"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "/sso/jwt"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "/jwt/sso…"
+            },
+            {
+              "text": "），每种变体都分别携带和不携带同一伪造令牌，速率约为每秒一个请求。当某个登录页面开始对该活动进行速率限制时，该代理干脆切换到同一主机上的另一个端点继续操作。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在受害者中观察到了 15 种以上不同的用户代理字符串：",
+          "inlines": [
+            {
+              "text": "我们在受害者中观察到了 15 种以上不同的用户代理字符串："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "基于 Python 的客户端和 "
+                },
+                {
+                  "code": true,
+                  "text": "curl"
+                },
+                {
+                  "text": "；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "被截断的 Chrome 字符串，以及版本号看似随机的无头浏览器。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "更具辨识度的自描述标识符，例如 "
+                },
+                {
+                  "code": true,
+                  "text": "ReconProbe/1.0"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种多样性，结合一致的攻击模式和与 ARTEX 相关的指标，帮助我们将跨多个组织的活动关联起来。",
+          "inlines": [
+            {
+              "text": "这种多样性，结合一致的攻击模式和与 ARTEX 相关的指标，帮助我们将跨多个组织的活动关联起来。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "尽管这些尝试大多失败了，但真正的威胁在于其方法论。人类攻击者受限于时间和疲劳，而自主智能体不会放弃。它只会不断迭代，直到找到一个薄弱点。",
+          "inlines": [
+            {
+              "text": "尽管这些尝试大多失败了，但真正的威胁在于其方法论。人类攻击者受限于时间和疲劳，而自主智能体不会放弃。它只会不断迭代，直到找到一个薄弱点。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "一次明显的智能体攻击",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "一次明显的智能体攻击"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "观察到的单项技术均无新颖之处。然而，将这些技术结合起来，便能看清此次攻击背后的智能体。有几个明确的信号：",
+          "inlines": [
+            {
+              "text": "观察到的单项技术均无新颖之处。然而，将这些技术结合起来，便能看清此次攻击背后的智能体。有几个明确的信号："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "步骤被自动串联"
+                },
+                {
+                  "text": "：当注册开放时，它使用一次性邮箱注册、确认账户，并立即请求另一家公司的数据。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "每个自动化步骤都使用上一步的输出"
+                },
+                {
+                  "text": "：在拉取源映射几分钟后，便按名称调用内部 API 路由"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "自适应是自动的"
+                },
+                {
+                  "text": "：当登录页面开始限流时，智能体转向同一主机上的其他端点。当一个 IP 被封禁时，几分钟内就会出现一个新 IP。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "并非所有攻击都是合乎逻辑的"
+                },
+                {
+                  "text": "：具备此技能水平的人类攻击者不太可能花时间在备受审视的 Microsoft OAuth 流程上测试通用载荷。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "领先于 AI 驱动的攻击",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "领先于 AI 驱动的攻击"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "随着 AI 使侦察和利用尝试变得更快、更易于扩展，防御者需要缩短暴露与修复之间的差距。进一步了解如何借助 Wiz 的 AI 威胁就绪框架 做好准备。",
+          "inlines": [
+            {
+              "text": "随着 AI 使侦察和利用尝试变得更快、更易于扩展，防御者需要缩短暴露与修复之间的差距。进一步了解如何借助 Wiz 的 "
+            },
+            {
+              "href": "https://www.wiz.io/blog/ai-threat-readiness-framework",
+              "text": "AI 威胁就绪框架"
+            },
+            {
+              "text": " 做好准备。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "此外，Wiz 的 AI 红队智能体 持续自主开展攻击性测试，帮助以 AI 的速度减少暴露面——从而平衡双方力量。",
+          "inlines": [
+            {
+              "text": "此外，"
+            },
+            {
+              "href": "https://www.wiz.io/solutions/red-agent",
+              "text": "Wiz 的 AI 红队智能体"
+            },
+            {
+              "text": " 持续自主开展攻击性测试，帮助以 AI 的速度减少暴露面——从而平衡双方力量。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz 客户可参阅我们的威胁情报中心警报：ARTEX：智能体 AI 活动导致云与供应链沦陷",
+          "inlines": [
+            {
+              "text": "Wiz 客户可参阅我们的威胁情报中心警报："
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center/wiz-adv-2026-192",
+              "bold": true,
+              "text": "ARTEX：智能体 AI 活动导致云与供应链沦陷"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "现有检测规则也能有效识别此活动，例如：",
+          "inlines": [
+            {
+              "text": "现有检测规则也能有效识别此活动，例如："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "针对多个用户的大量失败登录尝试，随后成功登录管理员用户"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "来自单一 IP 的潜在密码喷洒攻击"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Okta 用户密码喷洒"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种持续不断的行为还会产生可预测的模式，同样可通过“异常大规模访问被拒活动”等规则检测到。",
+          "inlines": [
+            {
+              "text": "这种持续不断的行为还会产生可预测的模式，同样可通过“异常大规模访问被拒活动”等规则检测到。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "入侵指标",
+          "inlines": [
+            {
+              "text": "入侵指标"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "注意：所提供的许多用户代理并非该攻击者独有，若单独进行狩猎，预计会产生大量噪声。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "注意：所提供的许多用户代理并非该攻击者独有，若单独进行狩猎，预计会产生大量噪声。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "类型",
+          "inlines": [
+            {
+              "text": "类型"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "指标",
+          "inlines": [
+            {
+              "text": "指标"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP 地址",
+          "inlines": [
+            {
+              "text": "IP 地址"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "104.194.150.21",
+          "inlines": [
+            {
+              "text": "104.194.150.21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP 地址",
+          "inlines": [
+            {
+              "text": "IP 地址"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "144.172.64.60 - Microsoft 归因于 Storm-0940",
+          "inlines": [
+            {
+              "text": "144.172.64.60 - Microsoft 归因于 Storm-0940"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP 地址",
+          "inlines": [
+            {
+              "text": "IP 地址"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "144.172.64.99 - Microsoft 归因于 Storm-0940",
+          "inlines": [
+            {
+              "text": "144.172.64.99 - Microsoft 归因于 Storm-0940"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP 地址",
+          "inlines": [
+            {
+              "text": "IP 地址"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "144.172.64.128 - Microsoft 归因于 Storm-0940",
+          "inlines": [
+            {
+              "text": "144.172.64.128 - Microsoft 归因于 Storm-0940"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP 地址",
+          "inlines": [
+            {
+              "text": "IP 地址"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "167.88.172.97",
+          "inlines": [
+            {
+              "text": "167.88.172.97"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "curl/7.88.1",
+          "inlines": [
+            {
+              "text": "curl/7.88.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Python-urllib/3.12",
+          "inlines": [
+            {
+              "text": "Python-urllib/3.12"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "python-requests/2.34.2",
+          "inlines": [
+            {
+              "text": "python-requests/2.34.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理",
+          "inlines": [
+            {
+              "text": "用户代理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "norma/0.4",
+          "inlines": [
+            {
+              "text": "norma/0.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理 (Boto3 1.43.113)",
+          "inlines": [
+            {
+              "text": "用户代理 (Boto3 1.43.113)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Boto3/1.43.113 md/Botocore#1.43.113 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/e,b,Z,D cfg/retry-mode#legacy Botocore/1.43.113",
+          "inlines": [
+            {
+              "text": "Boto3/1.43.113 md/Botocore#1.43.113 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/e,b,Z,D cfg/retry-mode#legacy Botocore/1.43.113"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理 (Boto3 1.43.112)",
+          "inlines": [
+            {
+              "text": "用户代理 (Boto3 1.43.112)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Boto3/1.43.112 md/Botocore#1.43.112 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/n,Z,b,D cfg/retry-mode#legacy Botocore/1.43.112",
+          "inlines": [
+            {
+              "text": "Boto3/1.43.112 md/Botocore#1.43.112 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/n,Z,b,D cfg/retry-mode#legacy Botocore/1.43.112"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用户代理 (aws-cli 1.46.1)",
+          "inlines": [
+            {
+              "text": "用户代理 (aws-cli 1.46.1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "aws-cli/1.46.1 md/Botocore#1.43.62 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/b,Z,D cfg/retry-mode#legacy botocore/1.43.62",
+          "inlines": [
+            {
+              "text": "aws-cli/1.46.1 md/Botocore#1.43.62 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/b,Z,D cfg/retry-mode#legacy botocore/1.43.62"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Throughout October 2026, we identified an actor using tooling associated with ARTEX, an autonomous AI penetration-testing agent, to target multiple IT and software vendors. The activity focused on identity providers (Okta, Entra, Cognito) and abuse of Microsoft 365 integrations. We observed repeated attempts to uncover authentication bypasses, enumerate APIs, and access customer data (of the targeted vendors) across multiple environments.",
+          "inlines": [
+            {
+              "text": "Throughout October 2026, we identified an actor using tooling associated with ARTEX, an autonomous AI penetration-testing agent, to target multiple IT and software vendors. The activity focused on identity providers (Okta, Entra, Cognito) and abuse of Microsoft 365 integrations. We observed repeated attempts to uncover authentication bypasses, enumerate APIs, and access customer data (of the targeted vendors) across multiple environments."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our observations overlap with Microsoft's recent report on ​​Storm-0940, a Chinese-state aligned actor - linked to the recent supply-chain attack involving stolen vendor credentials and downstream Microsoft 365 tenants. \\",
+          "inlines": [
+            {
+              "text": "Our observations overlap with Microsoft's "
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/",
+              "text": "recent report on ​​Storm-0940"
+            },
+            {
+              "text": ", a Chinese-state aligned actor - linked to the recent "
+            },
+            {
+              "href": "https://www.huntress.com/blog/vendor-credential-enables-unauthorized-access?hnt=xvnsv6u6opfh",
+              "text": "supply-chain attack involving stolen vendor credentials and downstream Microsoft 365 tenants"
+            },
+            {
+              "text": ". \\"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "However, we have additionally observed the same infrastructure, tooling, and attack patterns targeting the sector as a whole. Pivoting on identified TTPs and IOCs, we have also identified the same actor expanding their attempted supply chain compromises into other software sectors.",
+          "inlines": [
+            {
+              "text": "However, we have additionally observed the same infrastructure, tooling, and attack patterns targeting the sector as a whole. Pivoting on identified TTPs and IOCs, we have also identified the same actor expanding their attempted supply chain compromises into other software sectors."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this blog, we will describe the repeatable patterns and methodologies the ARTEX-using actor applied across multiple environments and cloud providers, with examples taken from real world attacks.",
+          "inlines": [
+            {
+              "text": "In this blog, we will describe the repeatable patterns and methodologies the ARTEX-using actor applied across multiple environments and cloud providers, with examples taken from real world attacks."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is ARTEX?",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What is ARTEX?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "ARTEX is an open-source autonomous penetration testing framework. A Chinese developer published it on GitHub in July 2026, and it won Baidu's \"Agent+\" red team challenge that September. In practice, an operator supplies a target and an objective. A planner agent then chooses the next step, worker agents run tools like nmap, curl, and Impacket, and every result feeds a shared graph of assets and findings.",
+          "inlines": [
+            {
+              "text": "ARTEX is an open-source autonomous penetration testing framework. A Chinese developer published it on GitHub in July 2026, and it won Baidu's \"Agent+\" red team challenge that September. In practice, an operator supplies a target and an objective. A planner agent then chooses the next step, worker agents run tools like "
+            },
+            {
+              "code": true,
+              "text": "nmap"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "curl"
+            },
+            {
+              "text": ", and "
+            },
+            {
+              "code": true,
+              "text": "Impacket"
+            },
+            {
+              "text": ", and every result feeds a shared graph of assets and findings."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attackers picked it up within weeks. ARTEX artifacts surfaced in attacks on South Korean banks in late September and attacks on Japanese companies in October. Microsoft and Zscaler have since tied it to two separate actors. The developer made the tool closed-source on October 8. By then, the code had more than 12,000 forks.",
+          "inlines": [
+            {
+              "text": "Attackers picked it up within weeks. ARTEX artifacts surfaced in "
+            },
+            {
+              "href": "https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/",
+              "text": "attacks on South Korean banks"
+            },
+            {
+              "text": " in late September and "
+            },
+            {
+              "href": "https://www.japantimes.co.jp/news/2026/10/20/japan/china-ai-cyberattacks/",
+              "text": "attacks on Japanese companies in October"
+            },
+            {
+              "text": ". "
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/",
+              "text": "Microsoft"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://www.zscaler.com/blogs/security-research/inside-global-ai-assisted-hacking-campaign",
+              "text": "Zscaler"
+            },
+            {
+              "text": " have since tied it to two separate actors. The developer "
+            },
+            {
+              "href": "https://www.reuters.com/world/china/chinese-developer-makes-artex-ai-agent-closed-source-after-korean-bank-hack-2026-10-09/",
+              "text": "made the tool closed-source on October 8"
+            },
+            {
+              "text": ". By then, the code had more than 12,000 forks."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A repeatable playbook",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "A repeatable playbook"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Across the investigated environments, we observed a consistent sequence of reconnaissance and attack attempts:",
+          "inlines": [
+            {
+              "text": "Across the investigated environments, we observed a consistent sequence of reconnaissance and attack attempts:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Map the application:"
+                },
+                {
+                  "text": " Download JavaScript bundles, exposed source maps, runtime configurations, and Swagger/OpenAPI documentation to discover internal API routes and application functionality."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Probe authentication:"
+                },
+                {
+                  "text": " Repeatedly initiate sign-in flows, manipulate OAuth callbacks and state parameters, test unsigned JWTs, and probe SSO and Microsoft 365-specific endpoints."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Attack identity providers and login flows:"
+                },
+                {
+                  "text": " Password-spray corporate Okta and Entra ID environments, and target internal and proprietary application login pages."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Abuse account recovery:"
+                },
+                {
+                  "text": " Repeatedly invoke password-reset, username-recovery, activation, and reset-token endpoints."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Test tenant isolation:"
+                },
+                {
+                  "text": " Register accounts using disposable email addresses where possible, then manipulate predictable identifiers to probe for broken access controls and unauthorized cross-tenant data access."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Adapt to defense mechanisms:"
+                },
+                {
+                  "text": " Rotate IP addresses when blocked, and constantly circulate user agents."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What it looked like in the logs",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What it looked like in the logs"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We analyzed these attack patterns using HTTP access logs collected via Wiz Agentless Workload Detection, alongside identity provider logs such as AWS Cognito events, Entra sign-in activity, and Okta authentication logs.",
+          "inlines": [
+            {
+              "text": "We analyzed these attack patterns using HTTP access logs collected via "
+            },
+            {
+              "href": "https://www.wiz.io/blog/agentless-visibility-uncovering-cloud-blind-spots",
+              "text": "Wiz Agentless Workload Detection"
+            },
+            {
+              "text": ", alongside identity provider logs such as AWS Cognito events, Entra sign-in activity, and Okta authentication logs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Targeting Internal Applications",
+          "inlines": [
+            {
+              "text": "Targeting Internal Applications"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "The agent's first move across all observed instances of the attack was always to read the application itself. Requests like these showed up minutes after first contact:",
+          "inlines": [
+            {
+              "text": "The agent's first move across all observed instances of the attack was always to read the application itself. Requests like these showed up minutes after first contact:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Not long after, it started calling internal API routes by name. The only place those route names appear is in the source maps it had just downloaded.",
+          "inlines": [
+            {
+              "text": "Not long after, it started calling internal API routes by name. The only place those route names appear is in the source maps it had just downloaded."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Account recovery got the same treatment. The agent checked which usernames existed, then hammered the reset endpoints:",
+          "inlines": [
+            {
+              "text": "Account recovery got the same treatment. The agent checked which usernames existed, then hammered the reset endpoints:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Where it could sign up, it did, using a throwaway mailbox from a free temporary-email service. Then, it immediately tried to look at someone else's data:",
+          "inlines": [
+            {
+              "text": "Where it could sign up, it did, using a throwaway mailbox from a free temporary-email service. Then, it immediately tried to look at someone else's data:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Before every fuzzing run, it checked what a baseline \"not found\" response looked like:",
+          "inlines": [
+            {
+              "text": "Before every fuzzing run, it checked what a baseline \"not found\" response looked like:"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Targeting OAuth Identity Providers",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Targeting OAuth Identity Providers"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "When probing Microsoft OAuth flows, the agent directly manipulated the callback endpoint by injecting fabricated authorization codes and malformed state parameters, while also attempting to bypass authentication using unsigned JWTs:",
+          "inlines": [
+            {
+              "text": "When probing Microsoft OAuth flows, the agent directly manipulated the callback endpoint by injecting fabricated authorization codes and malformed state parameters, while also attempting to bypass authentication using unsigned JWTs:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That second token simply decodes to {\"alg\":\"none\"} and {\"email\":\"test@test.com\"}. The agent bombarded more than 60 variations of SSO routes with this payload in just two minutes.",
+          "inlines": [
+            {
+              "text": "That second token simply decodes to "
+            },
+            {
+              "code": true,
+              "text": "{\"alg\":\"none\"}"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "{\"email\":\"test@test.com\"}"
+            },
+            {
+              "text": ". The agent bombarded more than 60 variations of SSO routes with this payload in just two minutes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On AWS Cognito, we observed patterns mirroring the account recovery abuse seen in proprietary apps. This activity was reflected in events like InitiateAuth, ForgotPassword, and ResendConfirmationCode. These requests originated from the same mix of user agents observed in earlier attacks, including benign-looking programmatic clients like boto and python-urllib.",
+          "inlines": [
+            {
+              "text": "On AWS Cognito, we observed patterns mirroring the account recovery abuse seen in proprietary apps. This activity was reflected in events like "
+            },
+            {
+              "code": true,
+              "text": "InitiateAuth"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "ForgotPassword"
+            },
+            {
+              "text": ", and "
+            },
+            {
+              "code": true,
+              "text": "ResendConfirmationCode"
+            },
+            {
+              "text": ". These requests originated from the same mix of user agents observed in earlier attacks, including benign-looking programmatic clients like "
+            },
+            {
+              "code": true,
+              "text": "boto"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "python-urllib"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The agent also attempted to provision new identities directly, invoking the AWS Cognito SignUp API while cycling through its pool of user agents.",
+          "inlines": [
+            {
+              "text": "The agent also attempted to provision new identities directly, invoking the AWS Cognito SignUp API while cycling through its pool of user agents."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Password Spraying",
+          "inlines": [
+            {
+              "text": "Password Spraying"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "We also tracked a massive password spray campaign across many of the observed targets. The activity was IDP-agnostic, hitting both Entra and Okta, and displayed several unique, AI-driven characteristics.",
+          "inlines": [
+            {
+              "text": "We also tracked a massive password spray campaign across many of the observed targets. The activity was IDP-agnostic, hitting both Entra and Okta, and displayed several unique, AI-driven characteristics."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The attacks targeted hundreds of users and were executed in highly coordinated bursts. Each burst featured:",
+          "inlines": [
+            {
+              "text": "The attacks targeted hundreds of users and were executed in highly coordinated bursts. Each burst featured:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Dedicated user agents:"
+                },
+                {
+                  "text": " A unique user-agent string was assigned to each burst, distinct from those used in previous waves."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Precise timing:"
+                },
+                {
+                  "text": " The median gap between authentication attempts was strictly one second."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Sustained execution:"
+                },
+                {
+                  "text": " Individual bursts lasted anywhere from 20 to 60 minutes."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Role-based targeting:"
+                },
+                {
+                  "text": " The agent primarily focused on accounts belonging to software engineers."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Repeated attempts:"
+                },
+                {
+                  "text": " Some individual users were subjected to more than a dozen login attempts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Relentless by Design",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Relentless by Design"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The activity was persistent and highly automated. Some sessions lasted 24–30 hours, and when IPs were blocked, new addresses appeared within minutes.",
+          "inlines": [
+            {
+              "text": "The activity was persistent and highly automated. Some sessions lasted 24–30 hours, and when IPs were blocked, new addresses appeared within minutes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In one session, the agent cycled through a dozen variations of the same SSO endpoint (/sso, /sso/, /sso/login, /sso/jwt, /jwt/sso…), each with and without the same forged token, at a rate of about one request per second. When a login page started rate-limiting the activity, the agent simply switched to a different endpoint on the same host and carried on.",
+          "inlines": [
+            {
+              "text": "In one session, the agent cycled through a dozen variations of the same SSO endpoint ("
+            },
+            {
+              "code": true,
+              "text": "/sso"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "/sso/"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "/sso/login"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "/sso/jwt"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "/jwt/sso…"
+            },
+            {
+              "text": "), each with and without the same forged token, at a rate of about one request per second. When a login page started rate-limiting the activity, the agent simply switched to a different endpoint on the same host and carried on."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We observed more than 15 different user-agent strings across the victims:",
+          "inlines": [
+            {
+              "text": "We observed more than 15 different user-agent strings across the victims:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Python-based clients and "
+                },
+                {
+                  "code": true,
+                  "text": "curl"
+                },
+                {
+                  "text": ";"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Truncated Chrome strings and headless browsers with seemingly random version numbers."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "More distinctive, self-describing identifiers, such as "
+                },
+                {
+                  "code": true,
+                  "text": "ReconProbe/1.0"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This variety, combined with the consistent attack patterns and ARTEX-related indicators, helped us connect the activity across multiple organizations.",
+          "inlines": [
+            {
+              "text": "This variety, combined with the consistent attack patterns and ARTEX-related indicators, helped us connect the activity across multiple organizations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Although most of these attempts failed, the true threat lies in the methodology. While a human attacker is bound by time constraints and fatigue, an autonomous agent does not give up. It simply continues to iterate until it finds a single weak point.",
+          "inlines": [
+            {
+              "text": "Although most of these attempts failed, the true threat lies in the methodology. While a human attacker is bound by time constraints and fatigue, an autonomous agent does not give up. It simply continues to iterate until it finds a single weak point."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A clearly agentic attack",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "A clearly agentic attack"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "None of the individual techniques observed are novel. However, together the agent behind this attack is illuminated. There are a few clear signals:",
+          "inlines": [
+            {
+              "text": "None of the individual techniques observed are novel. However, together the agent behind this attack is illuminated. There are a few clear signals:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Steps were chained automatically"
+                },
+                {
+                  "text": ": when sign-up was open, it registered with a disposable mailbox, confirmed the account, and immediately requested another company's data."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Each automated step used the output of the last one"
+                },
+                {
+                  "text": ": internal API routes are called by name minutes after pulling the source maps"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Adaptation was automatic"
+                },
+                {
+                  "text": ": when a login page started rate-limiting, the agent moved to a different endpoint on the same host. When an IP was blocked, a new one appeared within minutes."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Not all attacks were logical"
+                },
+                {
+                  "text": ": a human attacker of this skill level is unlikely to spend their time testing generic payloads on the heavily scrutinized Microsoft OAuth flows."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Staying Ahead of AI-Powered Attacks",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Staying Ahead of AI-Powered Attacks"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "As AI makes reconnaissance and exploitation attempts faster and easier to scale, defenders need to shorten the gap between exposure and remediation. Learn more about how to prepare with Wiz's AI Threat Readiness Framework.",
+          "inlines": [
+            {
+              "text": "As AI makes reconnaissance and exploitation attempts faster and easier to scale, defenders need to shorten the gap between exposure and remediation. Learn more about how to prepare with Wiz's "
+            },
+            {
+              "href": "https://www.wiz.io/blog/ai-threat-readiness-framework",
+              "text": "AI Threat Readiness Framework"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In addition, Wiz's AI Red Agent continuously and autonomously conducts offensive tests, helping reduce exposure at the speed of AI - evening the scales.",
+          "inlines": [
+            {
+              "text": "In addition, "
+            },
+            {
+              "href": "https://www.wiz.io/solutions/red-agent",
+              "text": "Wiz's AI Red Agent"
+            },
+            {
+              "text": " continuously and autonomously conducts offensive tests, helping reduce exposure at the speed of AI - evening the scales."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz customers can refer to our Threat Intel Center Alert: ARTEX: Agentic AI Campaign Enables Cloud and Supply Chain Compromise",
+          "inlines": [
+            {
+              "text": "Wiz customers can refer to our Threat Intel Center Alert: "
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center/wiz-adv-2026-192",
+              "bold": true,
+              "text": "ARTEX: Agentic AI Campaign Enables Cloud and Supply Chain Compromise"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Existing detection rules can also effectively identify this activity, for example:",
+          "inlines": [
+            {
+              "text": "Existing detection rules can also effectively identify this activity, for example:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Numerous Failed Login Attempts To Multiple Users Followed By A Successful Login To Admin User"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Potential Password Spray Attack From Single IP"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Okta Users Password Spray"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The relentless behavior also creates predictable patterns that can also be detected by rules such as \"Unusual Mass Access Denied Activity.\"",
+          "inlines": [
+            {
+              "text": "The relentless behavior also creates predictable patterns that can also be detected by rules such as \"Unusual Mass Access Denied Activity.\""
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Indicators of Compromise",
+          "inlines": [
+            {
+              "text": "Indicators of Compromise"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Note: many of the provided user agents are not unique to this actor, and are expected to be noisy if hunted independently.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Note: many of the provided user agents are not unique to this actor, and are expected to be noisy if hunted independently."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Type",
+          "inlines": [
+            {
+              "text": "Type"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Indicator",
+          "inlines": [
+            {
+              "text": "Indicator"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP Address",
+          "inlines": [
+            {
+              "text": "IP Address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "104.194.150.21",
+          "inlines": [
+            {
+              "text": "104.194.150.21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP Address",
+          "inlines": [
+            {
+              "text": "IP Address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "144.172.64.60 - Microsoft attributes to Storm-0940",
+          "inlines": [
+            {
+              "text": "144.172.64.60 - Microsoft attributes to Storm-0940"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP Address",
+          "inlines": [
+            {
+              "text": "IP Address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "144.172.64.99 - Microsoft attributes to Storm-0940",
+          "inlines": [
+            {
+              "text": "144.172.64.99 - Microsoft attributes to Storm-0940"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP Address",
+          "inlines": [
+            {
+              "text": "IP Address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "144.172.64.128 - Microsoft attributes to Storm-0940",
+          "inlines": [
+            {
+              "text": "144.172.64.128 - Microsoft attributes to Storm-0940"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "IP Address",
+          "inlines": [
+            {
+              "text": "IP Address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "167.88.172.97",
+          "inlines": [
+            {
+              "text": "167.88.172.97"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "curl/7.88.1",
+          "inlines": [
+            {
+              "text": "curl/7.88.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Python-urllib/3.12",
+          "inlines": [
+            {
+              "text": "Python-urllib/3.12"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "python-requests/2.34.2",
+          "inlines": [
+            {
+              "text": "python-requests/2.34.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+          "inlines": [
+            {
+              "text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent",
+          "inlines": [
+            {
+              "text": "User Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "norma/0.4",
+          "inlines": [
+            {
+              "text": "norma/0.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent (Boto3 1.43.113)",
+          "inlines": [
+            {
+              "text": "User Agent (Boto3 1.43.113)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Boto3/1.43.113 md/Botocore#1.43.113 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/e,b,Z,D cfg/retry-mode#legacy Botocore/1.43.113",
+          "inlines": [
+            {
+              "text": "Boto3/1.43.113 md/Botocore#1.43.113 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/e,b,Z,D cfg/retry-mode#legacy Botocore/1.43.113"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent (Boto3 1.43.112)",
+          "inlines": [
+            {
+              "text": "User Agent (Boto3 1.43.112)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Boto3/1.43.112 md/Botocore#1.43.112 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/n,Z,b,D cfg/retry-mode#legacy Botocore/1.43.112",
+          "inlines": [
+            {
+              "text": "Boto3/1.43.112 md/Botocore#1.43.112 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/n,Z,b,D cfg/retry-mode#legacy Botocore/1.43.112"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "User Agent (aws-cli 1.46.1)",
+          "inlines": [
+            {
+              "text": "User Agent (aws-cli 1.46.1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "aws-cli/1.46.1 md/Botocore#1.43.62 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/b,Z,D cfg/retry-mode#legacy botocore/1.43.62",
+          "inlines": [
+            {
+              "text": "aws-cli/1.46.1 md/Botocore#1.43.62 ua/2.1 os/linux#6.8.0-147-generic md/arch#x86_64 lang/python#3.12.14 md/pyimpl#CPython m/b,Z,D cfg/retry-mode#legacy botocore/1.43.62"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-26T09:05:13.793343Z",
+  "contentMode": "full"
+}

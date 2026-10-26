@@ -189,7 +189,7 @@
     return block.type === 'rule' ? { type: 'rule' } : null;
   }
   function normalizeLocalBody(value, id) {
-    if (!value || value.schemaVersion !== 1 || value.id !== id || value.provenance !== 'aihot-public-page' || !['available', 'partial', 'unavailable', 'error'].includes(value.status)) return null;
+    if (!value || value.schemaVersion !== 1 || value.id !== id || !['aihot-public-page', 'source-public-page'].includes(value.provenance) || !['available', 'partial', 'unavailable', 'error'].includes(value.status)) return null;
     var languages = {};
     ['zh', 'original'].forEach(function (key) {
       var language = value.languages && value.languages[key];
@@ -1451,7 +1451,8 @@
       if (!links.length) sourceSection.appendChild(element('p', 'article-note', '当期原稿未附来源链接。'));
     }
     if (isAIHOT && hasBody) {
-      var localNote = element('p', 'article-local-mark', item.localBodySource === 'snapshot' ? '正文来源 · AI HOT' : '个人本地阅读');
+      var bodySource = item.localBody && item.localBody.provenance === 'source-public-page' ? '原始来源' : 'AI HOT';
+      var localNote = element('p', 'article-local-mark', item.localBodySource === 'snapshot' ? '正文来源 · ' + bodySource : '个人本地阅读');
       sourceSection.appendChild(localNote);
     }
     main.appendChild(sourceSection);

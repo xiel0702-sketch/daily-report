@@ -1,13 +1,2614 @@
 {
   "schemaVersion": 1,
   "id": "ezjbo6ic6xfvpyxyghjekaude",
-  "status": "unavailable",
-  "provenance": "aihot-public-page",
-  "sourceURL": "https://aihot.news/items/ezjbo6ic6xfvpyxyghjekaude",
-  "fetchedAt": "2026-10-22T13:20:47.342655Z",
-  "label": "正文",
-  "notice": "No visible article div.prose was found",
-  "languages": {},
-  "snapshotAt": "2026-10-22T13:20:47.342699Z",
+  "status": "available",
+  "provenance": "source-public-page",
+  "sourceURL": "https://blog.n8n.io/n8n-nvidia-dgx-spark/",
+  "fetchedAt": "2026-10-26T09:09:52.180700Z",
+  "label": "正文 · 原文来源",
+  "notice": "AI HOT 页面未提供完整正文，以下内容抓取自原始来源。",
+  "topics": [],
+  "tags": [],
+  "languages": {
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Run your n8n AI workflows on NVIDIA DGX Spark, with no cloud API",
+          "inlines": [
+            {
+              "text": "Run your n8n AI workflows on NVIDIA DGX Spark, with no cloud API"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/66ef5977136d83f9262fb0ef22beaade0ae4164551c0ffdf9428ad430d6badec.png",
+          "alt": "Jamie Madden"
+        },
+        {
+          "type": "paragraph",
+          "text": "Jamie Madden",
+          "inlines": [
+            {
+              "href": "https://blog.n8n.io/author/jamie/",
+              "text": "Jamie Madden"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 19, 2026 ∙ 14 minutes read",
+          "inlines": [
+            {
+              "text": "October 19, 2026 ∙ 14 minutes read"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ad5f9c799cf87b052d95c01d3633278a44b6ae2d30bbfd5a1712078a253223bf.png",
+          "alt": "Run your n8n AI workflows on NVIDIA DGX Spark, with no cloud API"
+        },
+        {
+          "type": "paragraph",
+          "text": "Most small businesses want the same handful of AI jobs. They want to draft emails, summarize calls, read invoices, search their own documents, and make the odd image. Plenty of them can't send customer data to a cloud API to do it.",
+          "inlines": [
+            {
+              "text": "Most small businesses want the same handful of AI jobs. They want to draft emails, summarize calls, read invoices, search their own documents, and make the odd image. Plenty of them can't send customer data to a cloud API to do it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Often the reason is data privacy and sovereignty. A clinic, a law firm, or an accountant may hold records that a contract, a regulator, or a professional duty says must stay under their control. Once that data goes to a cloud API, it sits on someone else's hardware, possibly in another jurisdiction, under terms the provider can change. Running the models on hardware you own keeps the data in your building, and lets you show an auditor exactly where it went.",
+          "inlines": [
+            {
+              "text": "Often the reason is data privacy and sovereignty. A clinic, a law firm, or an accountant may hold records that a contract, a regulator, or a professional duty says must stay under their control. Once that data goes to a cloud API, it sits on someone else's hardware, possibly in another jurisdiction, under terms the provider can change. Running the models on hardware you own keeps the data in your building, and lets you show an auditor exactly where it went."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Your n8n workflows can transcribe calls, read invoices, answer questions from your own documents, and draft replies without sending a byte to a cloud API. This post shows you how to serve every model those workflows need from one NVIDIA DGX Spark, behind one OpenAI-compatible endpoint that n8n's OpenAI nodes already speak.",
+          "inlines": [
+            {
+              "text": "Your n8n workflows can transcribe calls, read invoices, answer questions from your own documents, and draft replies without sending a byte to a cloud API. This post shows you how to serve every model those workflows need from one NVIDIA DGX Spark, behind one OpenAI-compatible endpoint that n8n's OpenAI nodes already speak."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A DGX Spark has 128GB of unified memory shared by the CPU and GPU. That's enough to keep every one of those jobs loaded at once, if you pick the right models. Most of this post is about that.",
+          "inlines": [
+            {
+              "text": "A DGX Spark has 128GB of unified memory shared by the CPU and GPU. That's enough to keep every one of those jobs loaded at once, if you pick the right models. Most of this post is about that."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The self-hosted AI starter kit gets one person running local models on a laptop. This is the next step: a box in the office that serves a whole team, with a model for each job and the code to run it.",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "href": "https://blog.n8n.io/self-hosted-ai/",
+              "text": "self-hosted AI starter kit"
+            },
+            {
+              "text": " gets one person running local models on a laptop. This is the next step: a box in the office that serves a whole team, with a model for each job and the code to run it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this post, you'll:",
+          "inlines": [
+            {
+              "text": "In this post, you'll:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Choose models that run fast on the DGX Spark's memory bandwidth"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Serve a 35B mixture-of-experts model with vLLM in NVFP4"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Fit a full AI stack into one box's shared memory"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Route every job through one LiteLLM endpoint with per-team keys"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Connect n8n to the stack and build a workflow that never calls a cloud API"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Measure what happens to chat speed when someone generates an image"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Pick models for the bandwidth, not the parameter count",
+          "inlines": [
+            {
+              "text": "Pick models for the bandwidth, not the parameter count"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The DGX Spark's GB10 Grace Blackwell Superchip reads memory at 273 GB/s. When a model generates text, it reads its active weights from memory for each token, so the fewer bytes it reads, the faster it runs.",
+          "inlines": [
+            {
+              "text": "The DGX Spark's "
+            },
+            {
+              "href": "https://www.nvidia.com/en-us/products/workstations/dgx-spark/",
+              "text": "GB10 Grace Blackwell Superchip"
+            },
+            {
+              "text": " reads memory at 273 GB/s. When a model generates text, it reads its active weights from memory for each token, so the fewer bytes it reads, the faster it runs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A mixture-of-experts (MoE) model only activates a few experts per token. Qwen3.6-35B-A3B has 35B parameters in total but about 3B active. Stored in NVFP4 (NVIDIA's 4-bit floating point format), those active weights are a small fraction of a dense model's.",
+          "inlines": [
+            {
+              "text": "A mixture-of-experts (MoE) model only activates a few experts per token. "
+            },
+            {
+              "code": true,
+              "text": "Qwen3.6-35B-A3B"
+            },
+            {
+              "text": " has 35B parameters in total but about 3B active. Stored in NVFP4 (NVIDIA's 4-bit floating point format), those active weights are a small fraction of a dense model's."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On my DGX Spark, Qwen3.6-35B-A3B generated 120 tokens per second for one user, and 359 tokens per second in total across eight users. Those numbers include the reasoning tokens the model writes before it answers.",
+          "inlines": [
+            {
+              "text": "On my DGX Spark, "
+            },
+            {
+              "code": true,
+              "text": "Qwen3.6-35B-A3B"
+            },
+            {
+              "text": " generated 120 tokens per second for one user, and 359 tokens per second in total across eight users. Those numbers include the reasoning tokens the model writes before it answers."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That gives the first design rule: one strong MoE model for everything text-shaped. Summarizing, classifying, extracting, drafting, coding, and reading screenshots all go to the same model. Every extra model is another container to pin, patch, and monitor, so a specialist model only gets a slot where an LLM can't do the job.",
+          "inlines": [
+            {
+              "text": "That gives the first design rule: "
+            },
+            {
+              "bold": true,
+              "text": "one strong MoE model for everything text-shaped."
+            },
+            {
+              "text": " Summarizing, classifying, extracting, drafting, coding, and reading screenshots all go to the same model. Every extra model is another container to pin, patch, and monitor, so a specialist model only gets a slot where an LLM can't do the job."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The stack",
+          "inlines": [
+            {
+              "text": "The stack"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9cf16573f42ec151efb7e7e5e63715b40b7596ace30b1b38018e8c5c9527d2a6.png",
+          "alt": "n8n, IDEs, and chat apps call the LiteLLM proxy on port 4000 of one DGX Spark through an OpenAI-compatible API. LiteLLM routes each request to vLLM, vLLM-Omni, or Kokoro-FastAPI.",
+          "width": 2000,
+          "height": 825
+        },
+        {
+          "type": "paragraph",
+          "text": "These are the models that stay loaded on one DGX Spark:",
+          "inlines": [
+            {
+              "text": "These are the models that stay loaded on one DGX Spark:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Job",
+          "inlines": [
+            {
+              "text": "Job"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model",
+          "inlines": [
+            {
+              "text": "Model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "License",
+          "inlines": [
+            {
+              "text": "License"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Chat, coding, vision, extraction",
+          "inlines": [
+            {
+              "text": "Chat, coding, vision, extraction"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "nvidia/Qwen3.6-35B-A3B-NVFP4",
+          "inlines": [
+            {
+              "code": true,
+              "text": "nvidia/Qwen3.6-35B-A3B-NVFP4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Apache 2.0",
+          "inlines": [
+            {
+              "text": "Apache 2.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Embeddings",
+          "inlines": [
+            {
+              "text": "Embeddings"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen/Qwen3-Embedding-4B",
+          "inlines": [
+            {
+              "code": true,
+              "text": "Qwen/Qwen3-Embedding-4B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Apache 2.0",
+          "inlines": [
+            {
+              "text": "Apache 2.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reranking",
+          "inlines": [
+            {
+              "text": "Reranking"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen/Qwen3-Reranker-0.6B",
+          "inlines": [
+            {
+              "code": true,
+              "text": "Qwen/Qwen3-Reranker-0.6B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Apache 2.0",
+          "inlines": [
+            {
+              "text": "Apache 2.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Speech to text",
+          "inlines": [
+            {
+              "text": "Speech to text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/whisper-large-v3-turbo",
+          "inlines": [
+            {
+              "code": true,
+              "text": "openai/whisper-large-v3-turbo"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MIT",
+          "inlines": [
+            {
+              "text": "MIT"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Document OCR",
+          "inlines": [
+            {
+              "text": "Document OCR"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "zai-org/GLM-OCR",
+          "inlines": [
+            {
+              "code": true,
+              "text": "zai-org/GLM-OCR"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MIT",
+          "inlines": [
+            {
+              "text": "MIT"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Image generation",
+          "inlines": [
+            {
+              "text": "Image generation"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tongyi-MAI/Z-Image-Turbo",
+          "inlines": [
+            {
+              "code": true,
+              "text": "Tongyi-MAI/Z-Image-Turbo"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Apache 2.0",
+          "inlines": [
+            {
+              "text": "Apache 2.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Text to speech",
+          "inlines": [
+            {
+              "text": "Text to speech"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "hexgrad/Kokoro-82M",
+          "inlines": [
+            {
+              "code": true,
+              "text": "hexgrad/Kokoro-82M"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Apache 2.0",
+          "inlines": [
+            {
+              "text": "Apache 2.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Every model in the stack allows commercial use. That rule cost more than any technical one, and there's a section on it later.",
+          "inlines": [
+            {
+              "text": "Every model in the stack allows commercial use. That rule cost more than any technical one, and there's a section on it later."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 1: Cache everything for offline use",
+          "inlines": [
+            {
+              "text": "Step 1: Cache everything for offline use"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The stack has to run with the network cable unplugged, so download every model once and record the exact commit you got. This loop caches each model and writes a lock file of repository and commit:",
+          "inlines": [
+            {
+              "text": "The stack has to run with the network cable unplugged, so download every model once and record the exact commit you got. This loop caches each model and writes a lock file of repository and commit:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "pipx install \"huggingface_hub[cli]\"\nhf auth login\n\nfor repo in nvidia/Qwen3.6-35B-A3B-NVFP4 Qwen/Qwen3-Embedding-4B Qwen/Qwen3-Reranker-0.6B \\\n            openai/whisper-large-v3-turbo zai-org/GLM-OCR Tongyi-MAI/Z-Image-Turbo; do\n  hf download \"$repo\"\n  echo \"$repo $(cat ~/.cache/huggingface/hub/models--${repo//\\//--}/refs/main)\" >> models.lock\ndone\n",
+          "language": "bash"
+        },
+        {
+          "type": "paragraph",
+          "text": "When you start a model, pass --revision with the commit from models.lock. vLLM then serves the weights you tested rather than whatever main points to today, so an upstream change can't swap the weights or the license under you.",
+          "inlines": [
+            {
+              "text": "When you start a model, pass "
+            },
+            {
+              "code": true,
+              "text": "--revision"
+            },
+            {
+              "text": " with the commit from "
+            },
+            {
+              "code": true,
+              "text": "models.lock"
+            },
+            {
+              "text": ". vLLM then serves the weights you tested rather than whatever "
+            },
+            {
+              "code": true,
+              "text": "main"
+            },
+            {
+              "text": " points to today, so an upstream change can't swap the weights or the license under you."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Check the vLLM version, not the tag",
+          "inlines": [
+            {
+              "text": "Check the vLLM version, not the tag"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Pin containers the same way, and check what's inside them. My first attempt used vLLM's cu130-nightly tag. That tag had stopped updating, and the image it pulled was five months old, with vLLM 0.19. It couldn't load Qwen3.6 at all. The errors didn't mention versions. They were a KeyError for a missing weight-scale parameter, which reads like a broken checkpoint.",
+          "inlines": [
+            {
+              "text": "Pin containers the same way, and check what's inside them. My first attempt used vLLM's "
+            },
+            {
+              "code": true,
+              "text": "cu130-nightly"
+            },
+            {
+              "text": " tag. That tag had stopped updating, and the image it pulled was five months old, with vLLM 0.19. It couldn't load Qwen3.6 at all. The errors didn't mention versions. They were a "
+            },
+            {
+              "code": true,
+              "text": "KeyError"
+            },
+            {
+              "text": " for a missing weight-scale parameter, which reads like a broken checkpoint."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Before you trust an image, print the vLLM version inside it:",
+          "inlines": [
+            {
+              "text": "Before you trust an image, print the vLLM version inside it:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "docker run --rm --entrypoint python3 <image> -c \"import vllm; print(vllm.__version__)\"\n",
+          "language": "bash"
+        },
+        {
+          "type": "paragraph",
+          "text": "The image that worked was the official vllm/vllm-omni:v0.30.0, which ships vLLM 0.30.0 with an arm64 build. vLLM-Omni is a full vLLM with extra serving modes for images and speech, so it also serves plain LLMs. Its default entrypoint isn't vllm serve, so wrap it once:",
+          "inlines": [
+            {
+              "text": "The image that worked was the official "
+            },
+            {
+              "code": true,
+              "text": "vllm/vllm-omni:v0.30.0"
+            },
+            {
+              "text": ", which ships vLLM 0.30.0 with an arm64 build. vLLM-Omni is a full vLLM with extra serving modes for images and speech, so it also serves plain LLMs. Its default entrypoint isn't "
+            },
+            {
+              "code": true,
+              "text": "vllm serve"
+            },
+            {
+              "text": ", so wrap it once:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "printf 'FROM vllm/vllm-omni:v0.30.0\\nENTRYPOINT [\"vllm\", \"serve\"]\\n' | docker build -t vllm-spark:omni-0.30.0 -\n",
+          "language": "bash"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Kokoro-FastAPI image needed a community fix to build on arm64. The Dockerfile comes from a post by swann.schilling on the NVIDIA Developer Forums.",
+          "inlines": [
+            {
+              "text": "The Kokoro-FastAPI image needed a community fix to build on arm64. The Dockerfile comes from "
+            },
+            {
+              "href": "https://forums.developer.nvidia.com/t/running-kokoro-tts-on-nvidia-dgx-spark-arm64-gb10/368846",
+              "text": "a post by swann.schilling on the NVIDIA Developer Forums"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 2: Serve the backbone",
+          "inlines": [
+            {
+              "text": "Step 2: Serve the backbone"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "This command starts the main model in vLLM:",
+          "inlines": [
+            {
+              "text": "This command starts the main model in vLLM:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "docker run -d --name qwen3.6 --gpus all --ipc=host \\\n  -p 172.17.0.1:8001:8000 \\\n  -e HF_HUB_OFFLINE=1 -e VLLM_API_KEY=<your-backend-key> \\\n  -v ~/.cache/huggingface:/root/.cache/huggingface \\\n  vllm-spark:omni-0.30.0 \\\n  nvidia/Qwen3.6-35B-A3B-NVFP4 --revision <commit-from-models.lock> \\\n  --served-model-name qwen3.6-35b \\\n  --gpu-memory-utilization 0.32 --max-model-len 65536 \\\n  --max-num-seqs 8 --max-num-batched-tokens 8192 \\\n  --trust-remote-code --kv-cache-dtype fp8 --moe-backend marlin \\\n  --enable-chunked-prefill --async-scheduling --enable-prefix-caching \\\n  --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3,\"moe_backend\":\"triton\"}' \\\n  --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_xml \\\n  --host 0.0.0.0 --port 8000\n",
+          "language": "bash"
+        },
+        {
+          "type": "paragraph",
+          "text": "On my DGX Spark, this model was ready to serve 311 seconds after docker run.",
+          "inlines": [
+            {
+              "text": "On my DGX Spark, this model was ready to serve 311 seconds after "
+            },
+            {
+              "code": true,
+              "text": "docker run"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The port is published on 172.17.0.1, Docker's bridge address, so only containers on this machine can reach it. VLLM_API_KEY makes vLLM reject any request without the key.",
+          "inlines": [
+            {
+              "text": "The port is published on "
+            },
+            {
+              "code": true,
+              "text": "172.17.0.1"
+            },
+            {
+              "text": ", Docker's bridge address, so only containers on this machine can reach it. "
+            },
+            {
+              "code": true,
+              "text": "VLLM_API_KEY"
+            },
+            {
+              "text": " makes vLLM reject any request without the key."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The flags that matter most on a DGX Spark:",
+          "inlines": [
+            {
+              "text": "The flags that matter most on a DGX Spark:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "--gpu-memory-utilization 0.32"
+                },
+                {
+                  "text": " caps this model at about a third of memory. The other models need the rest."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "--kv-cache-dtype fp8"
+                },
+                {
+                  "text": " halves the memory the KV cache needs, so the same budget holds more context."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "--moe-backend marlin"
+                },
+                {
+                  "text": " picks the kernel for the quantized expert layers. The draft model's experts aren't quantized, so "
+                },
+                {
+                  "code": true,
+                  "text": "--speculative-config"
+                },
+                {
+                  "text": " sets its own "
+                },
+                {
+                  "code": true,
+                  "text": "moe_backend"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "--speculative-config"
+                },
+                {
+                  "text": " turns on multi-token prediction (MTP). The model drafts three tokens ahead and checks them in one pass."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "--reasoning-parser"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "--tool-call-parser"
+                },
+                {
+                  "text": " must match the model family. When tool calling fails, check these flags before you blame the model."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Check the startup log for the kernels vLLM chose. These lines are from my run:",
+          "inlines": [
+            {
+              "text": "Check the startup log for the kernels vLLM chose. These lines are from my run:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "Using MarlinNvFp4LinearKernel for NVFP4 GEMM\nUsing 'MARLIN' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', ...]\nYour GPU does not have native support for FP4 computation but FP4 quantization is being used.\nWeight-only FP4 compression will be used leveraging the Marlin kernel.\n",
+          "language": "text"
+        },
+        {
+          "type": "paragraph",
+          "text": "That last warning matters for how you read \"NVFP4\" on a DGX Spark. With this vLLM build, the weights are stored in 4 bits, but the math runs in 16 bits. You still get most of the benefit, because generating tokens is limited by reading weights from memory, and 4-bit weights are a quarter of the size. Faster FP4 kernels for GB10 may raise these numbers in later builds.",
+          "inlines": [
+            {
+              "text": "That last warning matters for how you read \"NVFP4\" on a DGX Spark. With this vLLM build, the weights are stored in 4 bits, but the math runs in 16 bits. You still get most of the benefit, because generating tokens is limited by reading weights from memory, and 4-bit weights are a quarter of the size. Faster FP4 kernels for GB10 may raise these numbers in later builds."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 3: Fit the rest into shared memory",
+          "inlines": [
+            {
+              "text": "Step 3: Fit the rest into shared memory"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "On a DGX Spark, the GPU and the operating system share one 128GB pool. Linux reported 121GB of it as total memory on my box. That changes two things you might take for granted on a discrete GPU.",
+          "inlines": [
+            {
+              "text": "On a DGX Spark, the GPU and the operating system share one 128GB pool. Linux reported 121GB of it as total memory on my box. That changes two things you might take for granted on a discrete GPU."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "First, --gpu-memory-utilization is a fraction of the whole pool, taken at startup. It's not a fraction of what's free. An instance without a cap tries to take almost everything, and the next model fails to start.",
+          "inlines": [
+            {
+              "text": "First, "
+            },
+            {
+              "code": true,
+              "text": "--gpu-memory-utilization"
+            },
+            {
+              "text": " is a fraction of the whole pool, taken at startup. It's not a fraction of what's free. An instance without a cap tries to take almost everything, and the next model fails to start."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Second, vLLM sizes its cache from the memory that's free when it starts. Start two models at once and they fight over the same memory. Start one at a time, and wait for each to answer its health check before starting the next:",
+          "inlines": [
+            {
+              "text": "Second, vLLM sizes its cache from the memory that's free when it starts. Start two models at once and they fight over the same memory. Start one at a time, and wait for each to answer its health check before starting the next:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "until curl -sf http://172.17.0.1:8001/health; do sleep 5; done\n",
+          "language": "bash"
+        },
+        {
+          "type": "paragraph",
+          "text": "If a model fails with CUDA error: out of memory while free shows plenty available, the Linux page cache is holding it. This is common straight after downloading 220GB of weights. Drop the cache, then start the model again:",
+          "inlines": [
+            {
+              "text": "If a model fails with "
+            },
+            {
+              "code": true,
+              "text": "CUDA error: out of memory"
+            },
+            {
+              "text": " while "
+            },
+            {
+              "code": true,
+              "text": "free"
+            },
+            {
+              "text": " shows plenty available, the Linux page cache is holding it. This is common straight after downloading 220GB of weights. Drop the cache, then start the model again:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'\n",
+          "language": "bash"
+        },
+        {
+          "type": "paragraph",
+          "text": "This is how long each service took to load from cold, with the page cache dropped first, and how much memory it took:",
+          "inlines": [
+            {
+              "text": "This is how long each service took to load from cold, with the page cache dropped first, and how much memory it took:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Service",
+          "inlines": [
+            {
+              "text": "Service"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Seconds to ready",
+          "inlines": [
+            {
+              "text": "Seconds to ready"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GB taken",
+          "inlines": [
+            {
+              "text": "GB taken"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "qwen3.6",
+          "inlines": [
+            {
+              "text": "qwen3.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "237",
+          "inlines": [
+            {
+              "text": "237"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "43",
+          "inlines": [
+            {
+              "text": "43"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "rerank",
+          "inlines": [
+            {
+              "text": "rerank"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "106",
+          "inlines": [
+            {
+              "text": "106"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "whisper",
+          "inlines": [
+            {
+              "text": "whisper"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "136",
+          "inlines": [
+            {
+              "text": "136"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ocr",
+          "inlines": [
+            {
+              "text": "ocr"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "137",
+          "inlines": [
+            {
+              "text": "137"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11",
+          "inlines": [
+            {
+              "text": "11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "image",
+          "inlines": [
+            {
+              "text": "image"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "96",
+          "inlines": [
+            {
+              "text": "96"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "tts",
+          "inlines": [
+            {
+              "text": "tts"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "21",
+          "inlines": [
+            {
+              "text": "21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3",
+          "inlines": [
+            {
+              "text": "3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The embedding model needed one more flag on vLLM 0.30.0, --convert embed, and started later, after the rest. With all seven models loaded, the DGX Spark used 108GB and had 13GB available. That's the limit of what one DGX Spark holds. Start the stack well before anyone needs it: the six services in the table took about 12 minutes.",
+          "inlines": [
+            {
+              "text": "The embedding model needed one more flag on vLLM 0.30.0, "
+            },
+            {
+              "code": true,
+              "text": "--convert embed"
+            },
+            {
+              "text": ", and started later, after the rest. With all seven models loaded, the DGX Spark used 108GB and had 13GB available. That's the limit of what one DGX Spark holds. Start the stack well before anyone needs it: the six services in the table took about 12 minutes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM can also fail at startup with Error in memory profiling, when another process frees memory while vLLM measures what's available. On shared memory, that happens if another model is loading or shutting down. Start the model again once the box is quiet.",
+          "inlines": [
+            {
+              "text": "vLLM can also fail at startup with "
+            },
+            {
+              "code": true,
+              "text": "Error in memory profiling"
+            },
+            {
+              "text": ", when another process frees memory while vLLM measures what's available. On shared memory, that happens if another model is loading or shutting down. Start the model again once the box is quiet."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 4: Put one endpoint in front",
+          "inlines": [
+            {
+              "text": "Step 4: Put one endpoint in front"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "LiteLLM gives every client one OpenAI-compatible endpoint. Each job is a named route, so you can swap the model behind a route without touching any client. LiteLLM also handles virtual keys, teams, and budgets in its open-source version.",
+          "inlines": [
+            {
+              "href": "https://github.com/BerriAI/litellm",
+              "text": "LiteLLM"
+            },
+            {
+              "text": " gives every client one OpenAI-compatible endpoint. Each job is a named route, so you can swap the model behind a route without touching any client. LiteLLM also handles virtual keys, teams, and budgets in its open-source version."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each route in LiteLLM's config.yaml points at a backend. This excerpt shows three of them:",
+          "inlines": [
+            {
+              "text": "Each route in LiteLLM's "
+            },
+            {
+              "code": true,
+              "text": "config.yaml"
+            },
+            {
+              "text": " points at a backend. This excerpt shows three of them:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "model_list:\n  - model_name: qwen3.6                 # main model: chat, coding, vision, extraction\n    litellm_params:\n      model: hosted_vllm/qwen3.6-35b\n      api_base: http://host.docker.internal:8001/v1\n      api_key: os.environ/BACKEND_API_KEY\n\n  - model_name: whisper\n    litellm_params:\n      model: openai/whisper-large-v3-turbo\n      api_base: http://host.docker.internal:8101/v1\n      api_key: os.environ/BACKEND_API_KEY\n    model_info:\n      mode: audio_transcription\n\n  - model_name: image                   # Z-Image-Turbo on vLLM-Omni\n    litellm_params:\n      model: openai/z-image-turbo\n      api_base: http://host.docker.internal:8103/v1\n      api_key: os.environ/BACKEND_API_KEY\n    model_info:\n      mode: image_generation\n\nlitellm_settings:\n  drop_params: true                     # needed for the image route, see below\n\ngeneral_settings:\n  master_key: os.environ/LITELLM_MASTER_KEY\n  database_url: os.environ/DATABASE_URL\n",
+          "language": "yaml"
+        },
+        {
+          "type": "paragraph",
+          "text": "Keep drop_params: true. Without it, LiteLLM rejects any image request that sets response_format with a 400 error, because it doesn't map that field for a self-hosted image model. With it, LiteLLM drops the field, and vLLM-Omni returns the image as base64 anyway.",
+          "inlines": [
+            {
+              "text": "Keep "
+            },
+            {
+              "code": true,
+              "text": "drop_params: true"
+            },
+            {
+              "text": ". Without it, LiteLLM rejects any image request that sets "
+            },
+            {
+              "code": true,
+              "text": "response_format"
+            },
+            {
+              "text": " with a 400 error, because it doesn't map that field for a self-hosted image model. With it, LiteLLM drops the field, and vLLM-Omni returns the image as base64 anyway."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LiteLLM runs in Docker too. To let it reach the backends, map host.docker.internal to the host in its Compose service:",
+          "inlines": [
+            {
+              "text": "LiteLLM runs in Docker too. To let it reach the backends, map "
+            },
+            {
+              "code": true,
+              "text": "host.docker.internal"
+            },
+            {
+              "text": " to the host in its Compose service:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "    extra_hosts:\n      - \"host.docker.internal:host-gateway\"\n",
+          "language": "yaml"
+        },
+        {
+          "type": "paragraph",
+          "text": "The backends listen only on Docker's bridge network and require a shared key, so LiteLLM is the only service on the office network. Point LiteLLM at the bridge, not at the box's LAN address. If you use the LAN address, the backends refuse the connection, because they aren't listening there.",
+          "inlines": [
+            {
+              "text": "The backends listen only on Docker's bridge network and require a shared key, so LiteLLM is the only service on the office network. Point LiteLLM at the bridge, not at the box's LAN address. If you use the LAN address, the backends refuse the connection, because they aren't listening there."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pin LiteLLM by image digest, and use version 1.84.0 or later. Two PyPI releases were backdoored in March 2026, and 1.84.0 fixed two authentication bypasses. I ran 1.99.1.",
+          "inlines": [
+            {
+              "text": "Pin LiteLLM by image digest, and use version 1.84.0 or later. Two PyPI releases were backdoored in March 2026, and 1.84.0 fixed two authentication bypasses. I ran 1.99.1."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Any OpenAI client now works against the DGX Spark. This Python example calls three different models through the same client:",
+          "inlines": [
+            {
+              "text": "Any OpenAI client now works against the DGX Spark. This Python example calls three different models through the same client:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from openai import OpenAI\n\nclient = OpenAI(base_url=\"http://<spark-ip>:4000/v1\", api_key=\"<your-litellm-key>\")\n\nreply = client.chat.completions.create(\n    model=\"qwen3.6\",\n    messages=[{\"role\": \"user\", \"content\": \"Draft a two-line reply confirming Tuesday's delivery.\"}],\n)\n\nwith open(\"call.wav\", \"rb\") as audio:\n    transcript = client.audio.transcriptions.create(model=\"whisper\", file=audio)\n\nimage = client.images.generate(\n    model=\"image\",\n    prompt=\"a delivery van outside a bakery at dawn\",\n    size=\"1024x1024\",\n    extra_body={\"num_inference_steps\": 8},\n)\n",
+          "language": "python"
+        },
+        {
+          "type": "paragraph",
+          "text": "num_inference_steps isn't an OpenAI parameter, so it goes in extra_body. LiteLLM passes it through to vLLM-Omni. The next section explains why it matters.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "num_inference_steps"
+            },
+            {
+              "text": " isn't an OpenAI parameter, so it goes in "
+            },
+            {
+              "code": true,
+              "text": "extra_body"
+            },
+            {
+              "text": ". LiteLLM passes it through to vLLM-Omni. The next section explains why it matters."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 5: Connect n8n",
+          "inlines": [
+            {
+              "text": "Step 5: Connect n8n"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "n8n's OpenAI credential accepts a custom base URL, so n8n can talk to the DGX Spark the same way it talks to OpenAI. To point n8n at the DGX Spark, follow these steps:",
+          "inlines": [
+            {
+              "text": "n8n's OpenAI credential accepts a custom base URL, so n8n can talk to the DGX Spark the same way it talks to OpenAI. To point n8n at the DGX Spark, follow these steps:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Create a LiteLLM virtual key for the team that owns the workflows, limited to the routes they need. This command creates one with the LiteLLM master key and prints it:"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "curl -s http://<spark-ip>:4000/key/generate \\\n  -H \"Authorization: Bearer <your-litellm-master-key>\" -H 'Content-Type: application/json' \\\n  -d '{\"key_alias\": \"n8n-accounts\", \"models\": [\"qwen3.6\", \"ocr\"]}'\n",
+          "language": "bash"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "In n8n, create an "
+                },
+                {
+                  "bold": true,
+                  "text": "OpenAI"
+                },
+                {
+                  "text": " credential."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Enter the virtual key in "
+                },
+                {
+                  "bold": true,
+                  "text": "API Key"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Set "
+                },
+                {
+                  "bold": true,
+                  "text": "Base URL"
+                },
+                {
+                  "text": " to "
+                },
+                {
+                  "code": true,
+                  "text": "http://<spark-ip>:4000/v1"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Because each team gets its own virtual key, LiteLLM tracks spend and usage per team, even though nothing is billed per token.",
+          "inlines": [
+            {
+              "text": "Because each team gets its own virtual key, LiteLLM tracks spend and usage per team, even though nothing is billed per token."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To use the DGX Spark from an AI Agent or a Basic LLM Chain, add an OpenAI Chat Model node with this credential, and set its model By ID to a LiteLLM route name, such as qwen3.6. Then turn off Use Responses API in the node's options. From version 1.3, the node calls OpenAI's newer Responses API by default, and the DGX Spark's models are served through chat completions.",
+          "inlines": [
+            {
+              "text": "To use the DGX Spark from an "
+            },
+            {
+              "bold": true,
+              "text": "AI Agent"
+            },
+            {
+              "text": " or a "
+            },
+            {
+              "bold": true,
+              "text": "Basic LLM Chain"
+            },
+            {
+              "text": ", add an "
+            },
+            {
+              "bold": true,
+              "text": "OpenAI Chat Model"
+            },
+            {
+              "text": " node with this credential, and set its model "
+            },
+            {
+              "bold": true,
+              "text": "By ID"
+            },
+            {
+              "text": " to a LiteLLM route name, such as "
+            },
+            {
+              "code": true,
+              "text": "qwen3.6"
+            },
+            {
+              "text": ". Then turn off "
+            },
+            {
+              "bold": true,
+              "text": "Use Responses API"
+            },
+            {
+              "text": " in the node's options. From version 1.3, the node calls OpenAI's newer Responses API by default, and the DGX Spark's models are served through chat completions."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Workflow: read an invoice",
+          "inlines": [
+            {
+              "text": "Workflow: read an invoice"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "This workflow gives you a web form. Upload an invoice image, and the form shows you the supplier, invoice number, date, and total, with no cloud call anywhere. Get the template.",
+          "inlines": [
+            {
+              "text": "This workflow gives you a web form. Upload an invoice image, and the form shows you the supplier, invoice number, date, and total, with no cloud call anywhere. "
+            },
+            {
+              "href": "https://n8n.io/workflows/21011-extract-invoice-details-from-images-with-dgx-spark-ocr-and-qwen36/",
+              "text": "Get the template"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/4070224eeb18cbe7646213722daca1638ec85ae2d9460a226e04e87954853db7.png",
+          "alt": "The invoice workflow in n8n, with the form's result page showing the supplier, invoice number, date, and total read from the sample invoice",
+          "width": 2000,
+          "height": 1018
+        },
+        {
+          "type": "paragraph",
+          "text": "It has six nodes:",
+          "inlines": [
+            {
+              "text": "It has six nodes:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Upload invoice"
+                },
+                {
+                  "text": " (n8n Form Trigger) serves a form with one file field."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Image to base64"
+                },
+                {
+                  "text": " (Extract from File) turns the upload into a base64 string."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "OCR on the DGX Spark"
+                },
+                {
+                  "text": " (HTTP Request) sends the image to the "
+                },
+                {
+                  "code": true,
+                  "text": "ocr"
+                },
+                {
+                  "text": " route and gets the page back as text."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Extract fields with Qwen3.6"
+                },
+                {
+                  "text": " (HTTP Request) asks "
+                },
+                {
+                  "code": true,
+                  "text": "qwen3.6"
+                },
+                {
+                  "text": " for supplier, invoice number, date, total, and currency as JSON."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Invoice fields"
+                },
+                {
+                  "text": " (Edit Fields) turns the reply into one item with those five fields."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Show the fields"
+                },
+                {
+                  "text": " (Form Ending) shows them on the form's result page."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To file invoices automatically, swap the form for an Email Trigger (IMAP) node, and the result page for a Postgres or Google Sheets node.",
+          "inlines": [
+            {
+              "text": "To file invoices automatically, swap the form for an "
+            },
+            {
+              "bold": true,
+              "text": "Email Trigger (IMAP)"
+            },
+            {
+              "text": " node, and the result page for a "
+            },
+            {
+              "bold": true,
+              "text": "Postgres"
+            },
+            {
+              "text": " or "
+            },
+            {
+              "bold": true,
+              "text": "Google Sheets"
+            },
+            {
+              "text": " node."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Both HTTP Request nodes use the OpenAI credential from the previous section, so they send the same key. They use HTTP Request rather than the OpenAI node because each call needs a field the OpenAI node doesn't set: an image in the OCR call, and a thinking switch in the extraction call. This is the body of the extraction request:",
+          "inlines": [
+            {
+              "text": "Both HTTP Request nodes use the OpenAI credential from the previous section, so they send the same key. They use HTTP Request rather than the "
+            },
+            {
+              "bold": true,
+              "text": "OpenAI"
+            },
+            {
+              "text": " node because each call needs a field the "
+            },
+            {
+              "bold": true,
+              "text": "OpenAI"
+            },
+            {
+              "text": " node doesn't set: an image in the OCR call, and a thinking switch in the extraction call. This is the body of the extraction request:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "{\n  model: 'qwen3.6',\n  max_tokens: 512,\n  temperature: 0,\n  chat_template_kwargs: { enable_thinking: false },\n  messages: [{ role: 'user', content: 'Extract supplier name, invoice number, invoice date, total amount and currency from this OCR text. Reply with one JSON object and nothing else. Use null for anything missing.\\n\\n' + $json.choices[0].message.content }]\n}\n",
+          "language": "javascript"
+        },
+        {
+          "type": "paragraph",
+          "text": "chat_template_kwargs turns off the model's thinking for this call, and that's where the speed comes from. I tested it on a clean, single-page sample invoice:",
+          "inlines": [
+            {
+              "code": true,
+              "text": "chat_template_kwargs"
+            },
+            {
+              "text": " turns off the model's thinking for this call, and that's where the speed comes from. I tested it on a clean, single-page sample invoice:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Step",
+          "inlines": [
+            {
+              "text": "Step"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With thinking",
+          "inlines": [
+            {
+              "text": "With thinking"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Thinking off",
+          "inlines": [
+            {
+              "text": "Thinking off"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OCR, one page",
+          "inlines": [
+            {
+              "text": "OCR, one page"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.8s",
+          "inlines": [
+            {
+              "text": "1.8s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.8s",
+          "inlines": [
+            {
+              "text": "1.8s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Extraction",
+          "inlines": [
+            {
+              "text": "Extraction"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.1s, 1,616 tokens",
+          "inlines": [
+            {
+              "text": "12.1s, 1,616 tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.59s, 76 tokens",
+          "inlines": [
+            {
+              "text": "0.59s, 76 tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With thinking on, the model wrote 1,538 reasoning tokens before a 78-token answer. With thinking off, it got all five fields right in under a second. For fixed-format extraction, turn thinking off.",
+          "inlines": [
+            {
+              "text": "With thinking on, the model wrote 1,538 reasoning tokens before a 78-token answer. With thinking off, it got all five fields right in under a second. For fixed-format extraction, turn thinking off."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OCR read every line item and total correctly, but it dropped one zero from a VAT ID. Validate IDs before you file them. The form accepts PNG and JPEG files. Convert PDF invoices to images first, because GLM-OCR takes images.",
+          "inlines": [
+            {
+              "text": "OCR read every line item and total correctly, but it dropped one zero from a VAT ID. Validate IDs before you file them. The form accepts PNG and JPEG files. Convert PDF invoices to images first, because GLM-OCR takes images."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A scanned or photographed invoice is harder than this clean page, so test OCR on your own documents before you rely on it.",
+          "inlines": [
+            {
+              "text": "A scanned or photographed invoice is harder than this clean page, so test OCR on your own documents before you rely on it."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Other workflows the same stack serves",
+          "inlines": [
+            {
+              "text": "Other workflows the same stack serves"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Call summaries:"
+                },
+                {
+                  "text": " Whisper transcribes a recording, "
+                },
+                {
+                  "code": true,
+                  "text": "qwen3.6"
+                },
+                {
+                  "text": " summarizes it, and Kokoro reads the summary back for a voicemail or an internal update."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Answers from your own documents:"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "embed"
+                },
+                {
+                  "text": " fills a vector store, "
+                },
+                {
+                  "code": true,
+                  "text": "rerank"
+                },
+                {
+                  "text": " orders the matches, and an "
+                },
+                {
+                  "bold": true,
+                  "text": "AI Agent"
+                },
+                {
+                  "text": " on "
+                },
+                {
+                  "code": true,
+                  "text": "qwen3.6"
+                },
+                {
+                  "text": " answers with them."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What one DGX Spark measured",
+          "inlines": [
+            {
+              "text": "What one DGX Spark measured"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "All numbers come from one benchmark run on October 13, 2026, on vLLM 0.30.0 with pinned model commits. Your numbers will differ with other images, models, or prompts. Every chat prompt started with a random tag, so the prefix cache couldn't flatter the results.",
+          "inlines": [
+            {
+              "text": "All numbers come from one benchmark run on October 13, 2026, on vLLM 0.30.0 with pinned model commits. Your numbers will differ with other images, models, or prompts. Every chat prompt started with a random tag, so the prefix cache couldn't flatter the results."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Chat speed",
+          "inlines": [
+            {
+              "text": "Chat speed"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Users",
+          "inlines": [
+            {
+              "text": "Users"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Time to first token (median)",
+          "inlines": [
+            {
+              "text": "Time to first token (median)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tokens per second per user",
+          "inlines": [
+            {
+              "text": "Tokens per second per user"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tokens per second total",
+          "inlines": [
+            {
+              "text": "Tokens per second total"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.11s",
+          "inlines": [
+            {
+              "text": "0.11s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "120",
+          "inlines": [
+            {
+              "text": "120"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "87",
+          "inlines": [
+            {
+              "text": "87"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.21s",
+          "inlines": [
+            {
+              "text": "0.21s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "68",
+          "inlines": [
+            {
+              "text": "68"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "242",
+          "inlines": [
+            {
+              "text": "242"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.29s",
+          "inlines": [
+            {
+              "text": "0.29s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "47",
+          "inlines": [
+            {
+              "text": "47"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "359",
+          "inlines": [
+            {
+              "text": "359"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Per-user speed is the median generation speed of each request, measured after its first token. Total is all tokens generated divided by the test's elapsed time, so it also counts time to first token and any slower requests. In the single-user run, one of the five requests ran at 43 tokens per second while the other four ran at 117 to 129, which pulls the total down to 87.",
+          "inlines": [
+            {
+              "text": "Per-user speed is the median generation speed of each request, measured after its first token. Total is all tokens generated divided by the test's elapsed time, so it also counts time to first token and any slower requests. In the single-user run, one of the five requests ran at 43 tokens per second while the other four ran at 117 to 129, which pulls the total down to 87."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With an 8,537-token prompt, the first token took 1.14 seconds.",
+          "inlines": [
+            {
+              "text": "With an 8,537-token prompt, the first token took 1.14 seconds."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Per-user speed falls as users are added, but total throughput keeps climbing. That's batching at work: vLLM serves several users in each pass over the weights.",
+          "inlines": [
+            {
+              "text": "Per-user speed falls as users are added, but total throughput keeps climbing. That's batching at work: vLLM serves several users in each pass over the weights."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Every other job",
+          "inlines": [
+            {
+              "text": "Every other job"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Job",
+          "inlines": [
+            {
+              "text": "Job"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Task",
+          "inlines": [
+            {
+              "text": "Task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Seconds (median of 3)",
+          "inlines": [
+            {
+              "text": "Seconds (median of 3)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Text to speech",
+          "inlines": [
+            {
+              "text": "Text to speech"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One paragraph, 30 seconds of audio",
+          "inlines": [
+            {
+              "text": "One paragraph, 30 seconds of audio"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.87",
+          "inlines": [
+            {
+              "text": "0.87"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Speech to text",
+          "inlines": [
+            {
+              "text": "Speech to text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Transcribe that clip",
+          "inlines": [
+            {
+              "text": "Transcribe that clip"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.58",
+          "inlines": [
+            {
+              "text": "0.58"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Image generation",
+          "inlines": [
+            {
+              "text": "Image generation"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One 1024x1024 image, 8 steps",
+          "inlines": [
+            {
+              "text": "One 1024x1024 image, 8 steps"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.2",
+          "inlines": [
+            {
+              "text": "12.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OCR",
+          "inlines": [
+            {
+              "text": "OCR"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One page",
+          "inlines": [
+            {
+              "text": "One page"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.80",
+          "inlines": [
+            {
+              "text": "1.80"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Extraction",
+          "inlines": [
+            {
+              "text": "Extraction"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OCR text to invoice JSON, thinking off",
+          "inlines": [
+            {
+              "text": "OCR text to invoice JSON, thinking off"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.59",
+          "inlines": [
+            {
+              "text": "0.59"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Embeddings",
+          "inlines": [
+            {
+              "text": "Embeddings"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32 passages",
+          "inlines": [
+            {
+              "text": "32 passages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.18",
+          "inlines": [
+            {
+              "text": "0.18"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reranking",
+          "inlines": [
+            {
+              "text": "Reranking"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32 candidates",
+          "inlines": [
+            {
+              "text": "32 candidates"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.03",
+          "inlines": [
+            {
+              "text": "0.03"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Speech is far faster than real time in both directions: 30 seconds of audio in under a second each way. Whisper's transcript was accurate, but it added a \"Thank you.\" at the end that isn't in the audio. Whisper is known to invent text on silence, so trim trailing silence before you transcribe.",
+          "inlines": [
+            {
+              "text": "Speech is far faster than real time in both directions: 30 seconds of audio in under a second each way. Whisper's transcript was accurate, but it added a \"Thank you.\" at the end that isn't in the audio. Whisper is known to invent text on silence, so trim trailing silence before you transcribe."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Set the step count for image generation yourself. Z-Image-Turbo is built to make an image in about 8 steps, but vLLM-Omni's default ran about 48 at 1.5 seconds each, which took 72 seconds per image. At 8 steps, the same 1024x1024 image took 12.2 seconds.",
+          "inlines": [
+            {
+              "text": "Set the step count for image generation yourself. Z-Image-Turbo is built to make an image in about 8 steps, but vLLM-Omni's default ran about 48 at 1.5 seconds each, which took 72 seconds per image. At 8 steps, the same 1024x1024 image took 12.2 seconds."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Chat while an image generates",
+          "inlines": [
+            {
+              "text": "Chat while an image generates"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Every model on the box shares one GPU. Fitting in memory doesn't mean running well together. I couldn't find a published DGX Spark benchmark for this, so I measured it. I generated 1024px images back to back, at the server's default step count, while running the chat test again.",
+          "inlines": [
+            {
+              "text": "Every model on the box shares one GPU. Fitting in memory doesn't mean running well together. I couldn't find a published DGX Spark benchmark for this, so I measured it. I generated 1024px images back to back, at the server's default step count, while running the chat test again."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Users",
+          "inlines": [
+            {
+              "text": "Users"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tokens per second per user, alone",
+          "inlines": [
+            {
+              "text": "Tokens per second per user, alone"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With images generating",
+          "inlines": [
+            {
+              "text": "With images generating"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Change",
+          "inlines": [
+            {
+              "text": "Change"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "122",
+          "inlines": [
+            {
+              "text": "122"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "38",
+          "inlines": [
+            {
+              "text": "38"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-69%",
+          "inlines": [
+            {
+              "text": "-69%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "69",
+          "inlines": [
+            {
+              "text": "69"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "24",
+          "inlines": [
+            {
+              "text": "24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-65%",
+          "inlines": [
+            {
+              "text": "-65%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "While images were generating, chat ran at about a third of its normal speed, and the images slowed down too, from 73 seconds to between 85 and 122.",
+          "inlines": [
+            {
+              "text": "While images were generating, chat ran at about a third of its normal speed, and the images slowed down too, from 73 seconds to between 85 and 122."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One DGX Spark holds the whole stack, but it can't run image generation without slowing everyone's chat. For a small team, queue image jobs or run them outside working hours. Once image generation is part of the daily work, move media to a second DGX Spark and keep the first for text.",
+          "inlines": [
+            {
+              "text": "One DGX Spark holds the whole stack, but it can't run image generation without slowing everyone's chat. For a small team, queue image jobs or run them outside working hours. Once image generation is part of the daily work, move media to a second DGX Spark and keep the first for text."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The license problem",
+          "inlines": [
+            {
+              "text": "The license problem"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Model quality wasn't the hard part. Licenses were.",
+          "inlines": [
+            {
+              "text": "Model quality wasn't the hard part. Licenses were."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Several of the best open text-to-speech and image models don't allow commercial use. The FLUX models that compete with Z-Image-Turbo are non-commercial or need a separately priced license. The strongest open image model at the time of writing, Qwen-Image-2.1, ships under a research license. Some repositories even have a non-commercial twin next to a permissive original, so caching the wrong repository ID changes your license.",
+          "inlines": [
+            {
+              "text": "Several of the best open text-to-speech and image models don't allow commercial use. The FLUX models that compete with Z-Image-Turbo are non-commercial or need a separately priced license. The strongest open image model at the time of writing, Qwen-Image-2.1, ships under a research license. Some repositories even have a non-commercial twin next to a permissive original, so caching the wrong repository ID changes your license."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The rules this stack follows:",
+          "inlines": [
+            {
+              "text": "The rules this stack follows:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Allow only Apache 2.0, MIT, CC-BY-4.0, OpenMDW, and the NVIDIA Open Model License."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Pin every model to a Hugging Face commit, so a license change upstream can't land silently."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Credit CC-BY-4.0 models in your documentation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This isn't legal advice. Have someone review every pinned license before you sell or deploy this for a client.",
+          "inlines": [
+            {
+              "text": "This isn't legal advice. Have someone review every pinned license before you sell or deploy this for a client."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What to watch for",
+          "inlines": [
+            {
+              "text": "What to watch for"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "New checkpoints can need a newer vLLM than the one you pinned, and the error won't say so. Check the version inside the image first."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "faster-whisper"
+                },
+                {
+                  "text": " has no CUDA build for arm64, so tools built on it run on the CPU without telling you."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "This stack uses vLLM rather than Ollama, which ships in the starter kit. Ollama suits one person on a laptop. For a team, vLLM batches requests from many users into each pass over the weights, which is where the multi-user throughput comes from."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Try it",
+          "inlines": [
+            {
+              "text": "Try it"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Import the "
+                },
+                {
+                  "href": "https://n8n.io/workflows/21011-extract-invoice-details-from-images-with-dgx-spark-ocr-and-qwen36/",
+                  "text": "invoice workflow template"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Start smaller with the "
+                },
+                {
+                  "href": "https://github.com/n8n-io/self-hosted-ai-starter-kit",
+                  "text": "self-hosted AI starter kit"
+                },
+                {
+                  "text": " if you don't have a DGX Spark yet."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you run this on your own DGX Spark, share your numbers on the n8n community forum.",
+          "inlines": [
+            {
+              "text": "If you run this on your own DGX Spark, share your numbers on the "
+            },
+            {
+              "href": "https://community.n8n.io",
+              "text": "n8n community forum"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Share with us",
+          "inlines": [
+            {
+              "text": "Share with us"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "n8n users come from a wide range of backgrounds, experience levels, and interests. We have been looking to highlight different users and their projects in our blog posts. If you're working with n8n and would like to inspire the community, contact us 💌",
+          "inlines": [
+            {
+              "text": "n8n users come from a wide range of backgrounds, experience levels, and interests. We have been looking to highlight different users and their projects in our blog posts. If you're working with n8n and would like to inspire the community, "
+            },
+            {
+              "href": "https://n8n-community.typeform.com/to/VYiRI7WN?ref=blog.n8n.io",
+              "text": "contact us"
+            },
+            {
+              "text": " 💌"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SHARE",
+          "inlines": [
+            {
+              "text": "SHARE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Why we refreshed the n8n brand Newer post 12 Best Enterprise Workflow Automation Platforms Older post",
+          "inlines": [
+            {
+              "href": "https://blog.n8n.io/n8n-brand-refresh-2026/",
+              "text": "Why we refreshed the n8n brand Newer post "
+            },
+            {
+              "href": "https://blog.n8n.io/enterprise-workflow-automation/",
+              "text": "12 Best Enterprise Workflow Automation Platforms Older post"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-26T09:09:57.447354Z",
   "contentMode": "full"
 }

@@ -35,6 +35,11 @@ _HIDDEN_STYLE = re.compile(
     r"(?:^|;)\s*(?:display\s*:\s*none|visibility\s*:\s*hidden)\s*(?:!important)?\s*(?:;|$)",
     re.I,
 )
+_CONTENT_CLASSES = {
+    "article-body", "article-content", "article__body", "article__content",
+    "content-body", "entry-content", "markdown-body", "post-body",
+    "post-content", "prose", "rich_media_content", "story-body",
+}
 
 
 class _Node:
@@ -360,6 +365,137 @@ def parse_article(html, page_url):
     return result
 
 
+def _text_length(blocks):
+    total = 0
+    for block in blocks:
+        if block.get("inlines"):
+            total += sum(len(part.get("text", "")) for part in block["inlines"])
+        elif block.get("items"):
+            total += sum(
+                len(part.get("text", ""))
+                for item in block["items"]
+                for part in item.get("inlines", [])
+            )
+        elif block.get("type") == "code":
+            total += len(block.get("text", ""))
+    return total
+
+
+def _link_text_length(blocks):
+    total = 0
+    for block in blocks:
+        if not block.get("inlines"):
+            continue
+        for part in block["inlines"]:
+            if part.get("href"):
+                total += len(part.get("text", ""))
+    return total
+
+
+def _source_candidates(root):
+    for node in _walk(root):
+        if node.tag in ("article", "main"):
+            yield node
+            continue
+        if node.tag not in ("div", "section"):
+            continue
+        classes = {value.lower() for value in node.attrs.get("class", "").split()}
+        if classes & _CONTENT_CLASSES:
+            yield node
+
+
+def _source_block_signature(block):
+    kind = block.get("type", "")
+    if block.get("inlines"):
+        text = " ".join(part.get("text", "") for part in block["inlines"])
+    elif block.get("items"):
+        text = " ".join(
+            part.get("text", "")
+            for item in block["items"]
+            for part in item.get("inlines", [])
+        )
+    else:
+        text = block.get("text", "")
+    return kind + ":" + _SPACE.sub(" ", text).strip().lower()
+
+
+def _clean_source_blocks(blocks):
+    stop_phrases = {
+        "keep reading", "related", "related articles", "read more",
+        "recommended", "recommended articles", "you may also like",
+        "更多内容", "推荐阅读", "相关阅读", "延伸阅读",
+    }
+    result = []
+    seen = set()
+    for block in blocks:
+        if block.get("type") == "heading":
+            heading = _source_block_signature(block).split(":", 1)[-1]
+            if heading in stop_phrases:
+                break
+        signature = _source_block_signature(block)
+        if signature and signature in seen:
+            continue
+        seen.add(signature)
+        result.append(block)
+    return result
+
+
+def parse_source_article(html, page_url):
+    """Extract the strongest readable article from a publisher page.
+
+    Publisher pages use several common containers instead of AI HOT's
+    ``div.prose``. Candidate content is scored by readable text and block
+    structure so a page shell or teaser is not mistaken for the full article.
+    """
+    if not isinstance(html, str):
+        raise TypeError("html must be text")
+    if not _url(page_url, page_url):
+        raise ValueError("page_url must be an absolute HTTP(S) URL without credentials")
+    parser = _PageParser()
+    parser.feed(html)
+    parser.close()
+
+    language = "original"
+    html_node = next((node for node in _walk(parser.root) if node.tag == "html"), None)
+    if html_node and html_node.attrs.get("lang", "").lower().startswith("zh"):
+        language = "zh"
+
+    best = None
+    for node in _source_candidates(parser.root):
+        blocks = _BlockConverter(page_url).flow(node.children)
+        if not blocks:
+            continue
+        chars = _text_length(blocks)
+        paragraphs = sum(block.get("type") == "paragraph" for block in blocks)
+        headings = sum(block.get("type") == "heading" for block in blocks)
+        if chars < 80 or (paragraphs < 2 and chars < 200):
+            continue
+        link_chars = _link_text_length(blocks)
+        link_penalty = int(800 * link_chars / max(chars, 1))
+        score = (
+            chars
+            + paragraphs * 80
+            + headings * 50
+            + (500 if node.tag == "article" else 300 if node.tag == "main" else 200)
+            - link_penalty
+        )
+        if best is None or score > best[0]:
+            best = (score, language, blocks)
+
+    if best is None:
+        raise ValueError("No readable publisher article was found")
+    blocks = best[2]
+    first_heading = next(
+        (index for index, block in enumerate(blocks) if block.get("type") == "heading"),
+        None,
+    )
+    if first_heading is not None and 0 < first_heading <= 5:
+        if _text_length(blocks[:first_heading]) < 300:
+            blocks = blocks[first_heading:]
+    blocks = _clean_source_blocks(blocks)
+    return {"blocks": blocks, "language": best[1], "topics": [], "tags": []}
+
+
 def _verify():
     example = '''<script>{"body":"hidden secret"}</script>
     <div hidden><div class="prose"><p>invisible article</p></div></div>
@@ -406,6 +542,24 @@ def _verify():
             pass
         else:
             raise AssertionError("Unreadable page must not be accepted")
+
+    source = '''<html lang="zh-CN"><body><nav><p>导航链接</p></nav>
+    <main><p>很短</p></main><article><h1>原始文章</h1>
+    <p>这是从原始来源提取的第一段正文，包含足够多的说明、背景信息和具体事实，用于正文识别与质量校验。</p>
+    <p>这是第二段正文，包含<a href="/reference">站内引用</a>、补充解释、影响分析以及更多可供后续阅读的正文信息。</p>
+    <img src="/publisher.png" width="800" height="450">
+    </article><footer><p>版权信息</p></footer></body></html>'''
+    source_article = parse_source_article(source, "https://publisher.example/story")
+    assert source_article["language"] == "zh"
+    assert source_article["blocks"][0]["text"] == "原始文章"
+    assert any(block.get("type") == "image" for block in source_article["blocks"])
+    for invalid in ("<html><body><nav>only navigation</nav></body></html>", "<html><body></body></html>"):
+        try:
+            parse_source_article(invalid, "https://publisher.example/")
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("Publisher page without article must not be accepted")
     print("Article parser structural/security verification passed.")
 
 
