@@ -1345,13 +1345,30 @@
     var words = (text.replace(/[\u3400-\u9fff]/g, ' ').match(/\S+/g) || []).length;
     return Math.max(1, Math.ceil(chinese / 450 + words / 220));
   }
-  function appendLocalBody(target, body, source) {
+  function isShortSocialPost(item, body) {
+    if (!item || !item.sourceURL) return false;
+    try {
+      var host = new URL(item.sourceURL).hostname.toLowerCase();
+      if (!/(^|\.)(x|twitter)\.com$/.test(host)) return false;
+      var blocks = Object.keys(body.languages || {}).map(function (key) {
+        return (body.languages[key] && body.languages[key].blocks) || [];
+      }).reduce(function (longest, value) { return value.length > longest.length ? value : longest; }, []);
+      var text = blocks.map(function (block) {
+        if (block.inlines) return inlineText(block.inlines);
+        if (block.items) return block.items.map(inlineText).join(' ');
+        return block.text || '';
+      }).join(' ');
+      return text.length < 600;
+    } catch (_) { return false; }
+  }
+  function appendLocalBody(target, body, source, item) {
     var keys = ['zh', 'original'].filter(function (key) { return body.languages[key]; });
     if (!keys.length) return null;
     var key = keys.includes(articleLanguage) ? articleLanguage : keys[0];
+    var shortPost = isShortSocialPost(item, body);
     var section = element('section', 'article-section article-body'); section.id = 'article-body';
     var header = element('div', 'article-body-toolbar');
-    header.appendChild(element('h2', 'article-section-label', body.label || '正文'));
+    header.appendChild(element('h2', 'article-section-label', shortPost ? 'X 原帖内容' : body.label || '正文'));
     var actions = element('div', 'article-body-actions');
     var controls = element('div', 'article-language-switch'); controls.setAttribute('role', 'group'); controls.setAttribute('aria-label', '正文语言');
     var languageButtons = [];
@@ -1363,8 +1380,8 @@
       var language = body.languages[key];
       renderBodyBlocks(content, language.blocks);
       content.lang = key === 'zh' ? 'zh-CN' : '';
-      var stateLabel = body.status === 'partial' ? '部分正文' : source === 'snapshot' ? '正文已收录' : '正文已就绪';
-      status.textContent = stateLabel + ' · ' + language.label + ' · 约 ' + bodyReadingTime(language.blocks) + ' 分钟';
+      var stateLabel = shortPost ? '原帖完整内容已收录' : body.status === 'partial' ? '部分正文' : source === 'snapshot' ? '正文已收录' : '正文已就绪';
+      status.textContent = stateLabel + ' · ' + language.label + (shortPost ? '' : ' · 约 ' + bodyReadingTime(language.blocks) + ' 分钟');
       languageButtons.forEach(function (button) { var active = button.dataset.language === key; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
       if (fromClick) announce('已切换至' + language.label + '正文');
     }
@@ -1383,6 +1400,7 @@
     if (actions.childNodes.length) header.appendChild(actions);
     section.appendChild(header); section.appendChild(status);
     if (body.notice) section.appendChild(element('p', 'article-excerpt-note', body.notice));
+    if (shortPost) section.appendChild(element('p', 'article-excerpt-note', '该来源为 X 短帖，当前展示原帖的完整公开内容，没有额外长文正文。'));
     section.appendChild(content); selectLanguage(key, false); target.appendChild(section);
   }
   function appendBodyStatus(target, item, hasBody) {
@@ -1424,7 +1442,7 @@
       if (!item.summary) main.appendChild(element('p', 'article-note', '本次同步的公开数据未提供导读，可通过下方来源链接继续阅读。'));
       var hasBody = item.localBody && Object.keys(item.localBody.languages).length > 0;
       if (hasBody) {
-        appendLocalBody(main, item.localBody, item.localBodySource);
+        appendLocalBody(main, item.localBody, item.localBodySource, item);
       } else if (localReaderEnabled || item.localBodyState === 'loading' || item.localBodyState === 'error') {
         appendBodyStatus(main, item, hasBody);
         if (excerpt) appendLocalExcerpt(main, excerpt);
