@@ -5713,14 +5713,7 @@ window.FINANCING_COMPANY_PROFILES = {
   },
   "PAXGU": {
     "description": "Pine Tree Acquisition公司是一家综合领域特殊目的收购商，公司为空白支票公司，尚未选定目标行业或地区，计划通过首次业务合并收购具备成长潜力的企业，并依托管理团队在私募股权、风险投资和资本市场方面的经验寻找合适标的。公司暂无统一社会信用代码。",
-    "products": [],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
-    "leadInvestors": [],
-    "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
-    "fundingDate": "2026-10-23",
-    "fundingEventId": 1045536,
     "website": "",
     "firmName": "Pine Tree Acquisition Corp.",
     "foundedAt": "",
@@ -5731,18 +5724,18 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
-  },
-  "Apex Critical": {
-    "description": "Apex Critical是加拿大一家矿产勘探服务提供商，专注于收购和开发具有碳酸盐岩及碱性岩石潜力的矿产资源。",
+    "status": "available",
     "products": [],
     "competitors": [],
     "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
-    "valuation": null,
-    "leadInvestors": [],
-    "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
     "fundingDate": "2026-10-23",
-    "fundingEventId": 1045537,
+    "fundingEventId": 1045536,
+    "leadInvestors": [],
+    "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示"
+  },
+  "Apex Critical": {
+    "description": "Apex Critical是加拿大一家矿产勘探服务提供商，专注于收购和开发具有碳酸盐岩及碱性岩石潜力的矿产资源。",
+    "valuation": null,
     "website": "",
     "firmName": "Apex Critical Metals Corp.",
     "foundedAt": "2018-08-02",
@@ -5753,6 +5746,235 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "products": [],
+    "competitors": [],
+    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "fundingDate": "2026-10-23",
+    "fundingEventId": 1045537,
+    "leadInvestors": [],
+    "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示"
+  },
+  "启望精密": {
+    "description": "启望精密是一家面向高端制造业战略发展需求设立的市场化高端精密光学企业。公司秉承“协力开拓，精益求精”的企业文化精神，致力于解决我国在超精密光学系统与精密光学仪器装备等领域面临的卡脖子问题，助力实现我国半导体产业等高端制造业的自主可控升级。",
+    "products": [],
+    "competitors": [
+      {
+        "name": "霖鼎光学",
+        "description": "超精密技术研发和光学智能制造服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "光码未来",
+        "description": "精密传感技术解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "晶华光学",
+        "description": "精密光学产品制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "格蓝若精密",
+        "description": "精密运动控制整体解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "埃福思",
+        "description": "超精密光学加工智能装备研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科环光",
+        "description": "高端智能立体监测设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "光维科技",
+        "description": "精密仪器研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "清测科技",
+        "description": "精密仪器制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "iStar星空科技",
+        "description": "先进精密装备研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "久远智造",
+        "description": "精密装备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "valuation": null,
+    "leadInvestors": [],
+    "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
+    "fundingDate": "2026-10-24",
+    "fundingEventId": 1053728,
+    "website": "",
+    "firmName": "北京启望精密光学科技有限公司",
+    "foundedAt": "2024-09-05",
+    "fetchedAt": "2026-10-26T09:30:42+08:00",
+    "sources": [
+      {
+        "name": "烯牛数据 · 公司资料与融资事件",
+        "url": "https://vip.xiniudata.com"
+      }
+    ],
+    "status": "available",
+    "marketFetchedAt": "2026-10-26T09:30:42+08:00"
+  },
+  "亿铸科技": {
+    "description": "亿铸科技是一家大算力AI芯片设计研发商，是全球首家基于存算一体这一创新架构，面向数据中心、云计算、中心侧服务器、自动驾驶及边缘计算等场景，提供AI大算力芯片的企业。公司将新型存储器ReRAM及存算一体计算架构相结合，通过全数字化的芯片设计思路，致力于实现数倍性价比、更高能效比、更大算力发展空间的新一代AI大算力芯片。",
+    "products": [],
+    "competitors": [
+      {
+        "name": "知存科技",
+        "description": "存算一体AI芯片及系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "苹芯科技",
+        "description": "存内计算芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "九天睿芯",
+        "description": "感存算一体芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云朵数据",
+        "description": "AI芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恒瀚微电子",
+        "description": "AI智算网络互联芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "算能科技",
+        "description": "通用算力提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天数智芯",
+        "description": "通用GPU云端芯片及超级算力系统提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鲲云科技",
+        "description": "人工智能算力供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "墨芯人工智能",
+        "description": "AI芯片设计商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "沐曦股份",
+        "description": "高性能GPU芯片及解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "valuation": null,
+    "leadInvestors": [],
+    "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
+    "fundingDate": "2026-10-25",
+    "fundingEventId": 1045767,
+    "website": "https://yizhu-tech.com/",
+    "firmName": "苏州亿铸智能科技有限公司",
+    "foundedAt": "2020-06-08",
+    "fetchedAt": "2026-10-26T09:30:51+08:00",
+    "sources": [
+      {
+        "name": "烯牛数据 · 公司资料与融资事件",
+        "url": "https://vip.xiniudata.com"
+      }
+    ],
+    "status": "available",
+    "marketFetchedAt": "2026-10-26T09:30:51+08:00"
+  },
+  "灵颜科技": {
+    "description": "灵颜科技是一家仿生灵巧脸智能体研发商，推出了核心产品——FaceSoul Agent。这是一套全栈式仿生灵巧脸智能体技术架构，旨在为人形机器人、服务机器人及情感陪伴设备提供从“形”到“魂”的完整情感交互解决方案。",
+    "products": [],
+    "competitors": [
+      {
+        "name": "超维动力",
+        "description": "具身智能机器人全栈研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深穹星核",
+        "description": "具身智能大脑开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "首形科技",
+        "description": "超仿生机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "范博特",
+        "description": "心理具身机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星海图",
+        "description": "具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "破壳机器人",
+        "description": "家庭场景通用具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "X-ORIGIN-AI",
+        "description": "具身智能陪伴机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "无论科技",
+        "description": "多模态交互机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "风火轮萤图",
+        "description": "主动交互型具身智能大脑研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Traini",
+        "description": "硅谷宠物情感智能产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "valuation": null,
+    "leadInvestors": [],
+    "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
+    "fundingDate": "2026-10-25",
+    "fundingEventId": 1045766,
+    "website": "",
+    "firmName": "杭州灵颜科技有限公司",
+    "foundedAt": "2026-06-15",
+    "fetchedAt": "2026-10-26T09:30:51+08:00",
+    "sources": [
+      {
+        "name": "烯牛数据 · 公司资料与融资事件",
+        "url": "https://vip.xiniudata.com"
+      }
+    ],
+    "status": "available",
+    "marketFetchedAt": "2026-10-26T09:30:51+08:00"
   }
 };
