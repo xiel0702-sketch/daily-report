@@ -99,11 +99,10 @@
     };
   }
   async function loadCurated(force) {
-    if (curatedLoaded && !force) return curatedItems;
-    if (curatedPromise && !force) return curatedPromise;
+    if (curatedPromise) return curatedPromise;
     var promise = (async function () {
       try {
-        var response = await fetch('aihot/curated.json', { cache: force ? 'reload' : 'no-cache' });
+        var response = await fetch('aihot/curated.json', { cache: 'no-store' });
         if (!response.ok) throw new Error('AI HOT 精选读取失败（HTTP ' + response.status + '）。');
         var payload = await response.json();
         if (!payload || payload.schemaVersion !== 1 || !Array.isArray(payload.items)) throw new Error('AI HOT 精选数据格式无效。');
@@ -946,13 +945,21 @@
     }
     if (feedLoading) ui.feedStatus.appendChild(element('p', 'status-message', '正在读取报告…'));
     var needsAI = currentRoute.view !== 'saved' && (currentRoute.category === 'all' || currentRoute.category === 'ai');
-    if (needsAI && curatedError) {
-      var snapshotStatus = curatedLoaded ? '更新失败，仍展示上次成功同步的精选快照。' + (curatedUpdatedAt ? '同步时间：' + dateTimeLabel(curatedUpdatedAt) + '。' : '') : 'AI 板块暂未展示；旧日报中的 AI 条目不会替代源站精选。';
-      retryBox(ui.feedStatus, errorMessage(curatedError) + ' ' + snapshotStatus, retryCurated);
-    }
-    else if (needsAI && curatedLoaded) {
-      var freshness = curatedUpdatedAt ? '本地同步时间：' + dateTimeLabel(curatedUpdatedAt) + '。' : '';
-      ui.feedStatus.appendChild(element('p', 'source-note', 'AI 板块完整沿用本次同步的 AI HOT 近7日精选及源站顺序。' + freshness + '半导体、机器人仍来自投研日报。'));
+    if (needsAI) {
+      var snapshotAge = curatedUpdatedAt ? Date.now() - Date.parse(curatedUpdatedAt) : NaN;
+      var staleSnapshot = Number.isFinite(snapshotAge) && snapshotAge > 24 * 60 * 60 * 1000;
+      var status = element('div', 'aihot-sync-status' + (staleSnapshot || curatedError ? ' is-stale' : ''));
+      var copy = element('div', '');
+      var freshness = curatedLoaded ? curatedUpdatedAt ? 'AI HOT 快照同步时间：' + dateTimeLabel(curatedUpdatedAt) + '。' : 'AI HOT 快照未提供同步时间。' : 'AI HOT 快照尚未加载。';
+      if (staleSnapshot) freshness += '快照已过期，超过 24 小时未同步。';
+      copy.appendChild(element('p', '', freshness));
+      var syncState = curatedPromise ? '正在核对最新快照…' + (curatedLoaded ? '当前继续展示上次成功同步的内容。' : '') : curatedError ? errorMessage(curatedError) + (curatedLoaded ? '本次更新失败，继续展示上次成功同步的精选快照。' : '暂无可展示的 AI HOT 快照，请重试。') : '人工智能完整沿用本次同步的 AI HOT 近7日精选及源站顺序；半导体、机器人来自投研日报。';
+      copy.appendChild(element('p', '', syncState));
+      status.appendChild(copy);
+      var refresh = element('button', '', curatedPromise ? '正在刷新…' : curatedError ? '重试 AI 快照' : '刷新 AI 快照');
+      refresh.type = 'button'; refresh.disabled = Boolean(curatedPromise);
+      refresh.addEventListener('click', retryCurated); status.appendChild(refresh);
+      ui.feedStatus.appendChild(status);
     }
     var applicableFailures = currentRoute.view === 'feed' ? dailyReports.slice(0, 1).filter(function (meta) { return failedDaily.has(meta.date); }) : currentRoute.view === 'all' ? dailyReports.slice(0, loadedCount).filter(function (meta) { return failedDaily.has(meta.date); }) : [];
     if (applicableFailures.length) {
@@ -999,11 +1006,13 @@
     feedLoading = false; renderFeed();
   }
   async function retryCurated() {
+    if (!currentRoute || !['feed', 'all'].includes(currentRoute.view)) return;
     var version = renderVersion;
-    feedLoading = true; renderFeed();
-    try { await loadCurated(true); } catch (_) { /* The retry status is shown in the feed. */ }
+    var refresh = loadCurated(true);
+    renderFeed();
+    try { await refresh; } catch (_) { /* The retry status is shown in the feed. */ }
     if (version !== renderVersion) return;
-    feedLoading = false; renderFeed();
+    renderFeed();
   }
   function updateStats() {
     text(ui.statDaily, dailyReports.length);
@@ -1556,9 +1565,11 @@
     if (feed) {
       renderFeed();
       if (currentRoute.view === 'feed') {
-        feedLoading = true; renderFeed();
+        feedLoading = true;
+        var curatedRequest = loadCurated(false).catch(function () { /* The AI HOT error remains visible, without falling back to old AI reports. */ });
+        renderFeed();
         await Promise.all([
-          loadCurated(false).catch(function () { /* The AI HOT error remains visible, without falling back to old AI reports. */ }),
+          curatedRequest,
           readDailyBatch(dailyReports.slice(0, 1).filter(function (entry) { return !loadedDaily.has(entry.date); }), false)
         ]);
         if (version !== renderVersion) return;
