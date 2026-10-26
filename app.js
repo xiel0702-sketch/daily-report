@@ -40,7 +40,7 @@
   var returnRoute = '#feed';
   var localReaderEnabled = false;
   var financingCache = new Map();
-  var financingSelectedDate = '';
+  var FINANCING_PAGE_SIZE = 10;
 
   function byId(id) { return document.getElementById(id); }
   function element(tag, className, text) {
@@ -639,7 +639,8 @@
     return path[path.length - 1] || '';
   }
   function financingRoute(changes) {
-    return buildRoute(Object.assign({}, currentRoute, { view: 'financing', id: financingSelectedDate, financingId: '' }, changes || {}));
+    var listDate = currentRoute.financingId && currentRoute.financingFromAll ? '' : currentRoute.id;
+    return buildRoute(Object.assign({}, currentRoute, { view: 'financing', id: listDate, financingId: '', financingFromAll: false, financingPage: 1 }, changes || {}));
   }
   function setFinancingTag(field, value) {
     location.hash = financingRoute({ [field]: currentRoute[field] === value ? '' : value });
@@ -673,28 +674,56 @@
     options('financingIndustryFilter', 'industry', financingIndustryTags, '全部行业');
     options('financingRegionFilter', 'region', financingRegionTags, '全部地域');
     clear(ui.financingActiveFilters);
-    ['industry', 'region'].forEach(function (field) {
+    ['id', 'industry', 'region'].forEach(function (field) {
       if (!currentRoute[field]) return;
-      var chip = element('button', 'financing-filter-chip', (field === 'industry' ? '行业：' : '地域：') + (field === 'region' ? financingRegionLabel(currentRoute[field]) : currentRoute[field]) + ' ×');
+      var chip = element('button', 'financing-filter-chip', (field === 'id' ? '日期：' : field === 'industry' ? '行业：' : '地域：') + (field === 'id' ? dateLabel(currentRoute[field]) : field === 'region' ? financingRegionLabel(currentRoute[field]) : currentRoute[field]) + ' ×');
       chip.type = 'button'; chip.setAttribute('aria-label', '移除' + chip.textContent.replace(' ×', ''));
       if (field === 'region') chip.title = currentRoute[field];
       chip.addEventListener('click', function () { location.hash = financingRoute({ [field]: '' }); });
       ui.financingActiveFilters.appendChild(chip);
     });
-    var filtered = Boolean(currentRoute.industry || currentRoute.region || currentRoute.market !== 'all');
+    var filtered = Boolean(currentRoute.id || currentRoute.industry || currentRoute.region || currentRoute.market !== 'all');
     if (filtered) {
       var reset = element('button', 'financing-reset', '清除全部筛选'); reset.type = 'button';
-      reset.addEventListener('click', function () { location.hash = financingRoute({ market: 'all', industry: '', region: '' }); });
+      reset.addEventListener('click', function () { location.hash = financingRoute({ id: '', market: 'all', industry: '', region: '' }); });
       ui.financingActiveFilters.appendChild(reset);
     }
     show(ui.financingActiveFilters, filtered);
-    text(ui.financingResultCount, (filtered ? '筛选结果 ' : '当日共 ') + items.length + ' 条 · 国内 ' + items.filter(function (item) { return item.isDomestic; }).length + ' / 国外 ' + items.filter(function (item) { return !item.isDomestic; }).length);
+    text(ui.financingResultCount, (filtered ? '筛选结果 ' : currentRoute.id ? '当日共 ' : '全部归档共 ') + items.length + ' 条 · 国内 ' + items.filter(function (item) { return item.isDomestic; }).length + ' / 国外 ' + items.filter(function (item) { return !item.isDomestic; }).length);
+  }
+  function renderFinancingPagination(total) {
+    var pages = Math.max(1, Math.ceil(total / FINANCING_PAGE_SIZE));
+    var page = Math.min(pages, Math.max(1, currentRoute.financingPage || 1));
+    if (currentRoute.financingPage !== page) { currentRoute.financingPage = page; replaceRoute(); }
+    ['financingPaginationTop', 'financingPaginationBottom'].forEach(function (id) {
+      var nav = ui[id]; clear(nav); show(nav, total > 0);
+      function step(label, target, enabled) {
+        var control = enabled ? routeLink(financingRoute({ financingPage: target }), label) : element('button', '', label);
+        if (!enabled) { control.type = 'button'; control.disabled = true; }
+        nav.appendChild(control);
+      }
+      step('上一页', page - 1, page > 1);
+      nav.appendChild(element('span', 'financing-page-info', '第 ' + page + ' / ' + pages + ' 页 · 每页 10 条'));
+      var numbers = element('div', 'financing-page-numbers');
+      var visiblePages = Array.from(new Set([1, page - 1, page, page + 1, pages])).filter(function (number) { return number >= 1 && number <= pages; }).sort(function (a, b) { return a - b; });
+      visiblePages.forEach(function (number, index) {
+        if (index && number > visiblePages[index - 1] + 1) numbers.appendChild(element('span', 'financing-page-gap', '…'));
+        var link = routeLink(financingRoute({ financingPage: number }), String(number));
+        link.setAttribute('aria-label', '第 ' + number + ' 页');
+        if (number === page) link.setAttribute('aria-current', 'page');
+        numbers.appendChild(link);
+      });
+      nav.appendChild(numbers);
+      step('下一页', page + 1, page < pages);
+    });
+    return (page - 1) * FINANCING_PAGE_SIZE;
   }
   function resetFinancingOverview(label) {
     ['financingTotal', 'financingDomestic', 'financingOverseas', 'financingKnown', 'financingAmount'].forEach(function (id) { text(ui[id], '—'); });
     ['financingIndustries', 'financingResultCount', 'financingSource', 'financingActiveFilters'].forEach(function (id) { clear(ui[id]); });
     text(ui.financingDateLabel, label); show(ui.financingActiveFilters, false); show(ui.financingDateField, false);
     show(ui.financingDateNotice, false); text(ui.financingOverviewHeading, '交易概览');
+    ['financingPaginationTop', 'financingPaginationBottom'].forEach(function (id) { clear(ui[id]); show(ui[id], false); });
     ['financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) { ui[id].value = ''; ui[id].disabled = true; } });
   }
   function normalizeFinancingSnapshot(value) {
@@ -729,12 +758,14 @@
     var top = element('div', 'financing-item-top');
     var identity = element('div', 'financing-identity');
     var companyLine = element('div', 'financing-company-line');
-    var detailURL = financingRoute({ financingId: String(item.id) });
+    var detailURL = financingRoute({ id: item.archiveDate, financingId: String(item.id), financingFromAll: !currentRoute.id, financingPage: currentRoute.financingPage });
     var companyHeading = element('h3', 'financing-company');
     companyHeading.appendChild(routeLink(detailURL, item.company, 'financing-company-link'));
     companyLine.appendChild(companyHeading);
     companyLine.appendChild(element('span', 'financing-round', item.round));
+    companyLine.appendChild(element('span', 'financing-market-label' + (item.isDomestic ? '' : ' is-overseas'), item.isDomestic ? '国内' : '国外'));
     identity.appendChild(companyLine);
+    var eventDate = element('time', 'financing-event-date', dateLabel(item.archiveDate)); eventDate.dateTime = item.archiveDate; identity.appendChild(eventDate);
     if (item.description) identity.appendChild(element('p', 'financing-description', item.description));
     top.appendChild(identity);
     var amount = element('div', 'financing-amount', item.amount);
@@ -757,7 +788,7 @@
   }
   function renderFinancingDetail(snapshot, item) {
     var target = ui.financingDetailContent; clear(target);
-    target.appendChild(routeLink(financingRoute(), '← 返回投融资动态', 'article-back'));
+    target.appendChild(routeLink(financingRoute({ financingPage: currentRoute.financingPage }), '← 返回投融资动态', 'article-back'));
     if (!item) { retryBox(target, '未找到这条融资事件，请返回列表选择项目。'); return; }
     var profiles = window.FINANCING_COMPANY_PROFILES || {};
     var profile = Object.prototype.hasOwnProperty.call(profiles, item.company) ? profiles[item.company] : {};
@@ -810,6 +841,41 @@
     document.title = item.company + ' · 项目详情 · 盈峰投研';
     announce(item.company + '项目详情已加载');
   }
+  async function loadFinancingRange(entries, version) {
+    var snapshots = [];
+    for (var start = 0; start < entries.length; start += 4) {
+      var batch = await Promise.all(entries.slice(start, start + 4).map(async function (entry) {
+        var snapshot = await loadFinancingSnapshot(entry.file);
+        if (snapshot.date !== entry.date) throw new Error(entry.date + ' 的融资归档日期不一致。');
+        return snapshot;
+      }));
+      if (version !== renderVersion) return null;
+      snapshots = snapshots.concat(batch);
+    }
+    return snapshots;
+  }
+  function combineFinancingSnapshots(snapshots) {
+    var items = snapshots.flatMap(function (snapshot) {
+      return snapshot.items.map(function (item) { return Object.assign({}, item, { archiveDate: snapshot.date }); });
+    });
+    items.sort(function (a, b) { return b.archiveDate.localeCompare(a.archiveDate); });
+    var known = items.filter(function (item) { return Number.isFinite(item.estimatedInvestmentCny); });
+    var industries = new Map();
+    items.forEach(function (item) { if (item.industryL1) industries.set(item.industryL1, (industries.get(item.industryL1) || 0) + 1); });
+    return {
+      items: items,
+      summary: {
+        totalEvents: items.length,
+        domesticEvents: items.filter(function (item) { return item.isDomestic; }).length,
+        overseasEvents: items.filter(function (item) { return !item.isDomestic; }).length,
+        knownAmountEvents: known.length,
+        estimatedTotalCny: known.reduce(function (sum, item) { return sum + item.estimatedInvestmentCny; }, 0),
+        topIndustries: Array.from(industries, function (entry) { return { name: entry[0], count: entry[1] }; }).sort(function (a, b) { return b.count - a.count || a.name.localeCompare(b.name, 'zh-CN'); }).slice(0, 4)
+      },
+      source: snapshots[0].source,
+      fetchedAt: snapshots.reduce(function (latest, snapshot) { return Date.parse(snapshot.fetchedAt) > Date.parse(latest) ? snapshot.fetchedAt : latest; }, snapshots[0].fetchedAt)
+    };
+  }
   async function renderFinancing(version) {
     var target = ui.financingList;
     if (!target) return;
@@ -838,34 +904,37 @@
       return;
     }
     entries.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
-    var requested = currentRoute && currentRoute.id ? currentRoute.id : entries[0].date;
     if (currentRoute.id && !entries.some(function (item) { return item.date === currentRoute.id; })) {
       var missingTarget = currentRoute.financingId ? ui.financingDetailContent : target;
       clear(missingTarget); missingTarget.appendChild(element('p', 'empty-state', '这个日期暂无已归档的投融资数据。'));
-      missingTarget.appendChild(routeLink('#financing', '查看最新投融资动态 →'));
+      missingTarget.appendChild(routeLink('#financing', '查看全部投融资动态 →'));
       resetFinancingOverview(dateLabel(currentRoute.id) + ' · 暂无归档数据');
       return;
     }
-    var entry = entries.find(function (item) { return item.date === requested; }) || entries[0];
-    financingSelectedDate = entry.date;
+    var selectedDate = currentRoute.financingId && currentRoute.financingFromAll ? '' : currentRoute.id;
+    var selectedEntries = currentRoute.id ? entries.filter(function (item) { return item.date === currentRoute.id; }) : entries;
     if (ui.financingDate) {
       clear(ui.financingDate);
+      var allDates = element('option', '', '全部日期'); allDates.value = ''; ui.financingDate.appendChild(allDates);
       entries.forEach(function (item, index) { var option = element('option', '', dateLabel(item.date) + (index === 0 ? ' · 最新' : '')); option.value = item.date; ui.financingDate.appendChild(option); });
-      ui.financingDate.value = entry.date;
-      if (ui.financingDateField) show(ui.financingDateField, entries.length > 1);
+      ui.financingDate.value = selectedDate;
+      show(ui.financingDateField, true);
     }
-    text(ui.financingDateLabel, '覆盖 ' + dateLabel(entry.date, true) + ' · 北京时间');
-    var historical = entry.date !== entries[0].date;
-    text(ui.financingOverviewHeading, historical ? '历史交易概览' : '最新交易概览');
+    text(ui.financingDateLabel, selectedDate ? '覆盖 ' + dateLabel(selectedDate, true) + ' · 北京时间' : dateLabel(entries[entries.length - 1].date) + ' — ' + dateLabel(entries[0].date) + ' · 共 ' + entries.length + ' 个归档日期');
+    var historical = Boolean(selectedDate && selectedDate !== entries[0].date);
+    text(ui.financingOverviewHeading, selectedDate ? '当日交易概览' : '全部交易概览');
+    text(ui.financingTotalLabel, selectedDate ? '当日全部事件' : '归档全部事件');
+    text(ui.financingAmountLabel, selectedDate ? '当日可估金额' : '归档可估金额');
     clear(ui.financingDateNotice);
     ui.financingDateNotice.classList.toggle('is-historical', historical);
-    ui.financingDateNotice.appendChild(element('p', '', (historical ? '正在查看历史数据。' : '') + '最新数据：' + dateLabel(entries[0].date) + '；每天北京时间 9:30 更新前一日融资事件。'));
-    if (historical) ui.financingDateNotice.appendChild(routeLink('#financing', '查看最新 →', 'financing-latest-link'));
+    ui.financingDateNotice.appendChild(element('p', '', (selectedDate ? '当前仅显示所选日期。' : '全部归档按日期倒序，每页 10 条。') + '最新数据：' + dateLabel(entries[0].date) + '；每天北京时间 9:30 更新前一日融资事件。'));
+    if (selectedDate) ui.financingDateNotice.appendChild(routeLink('#financing', '查看全部日期 →', 'financing-latest-link'));
     show(ui.financingDateNotice, true);
     clear(target); target.appendChild(element('div', 'status-message', '正在读取烯牛投融资数据…'));
     try {
-      var snapshot = await loadFinancingSnapshot(entry.file);
-      if (version !== renderVersion) return;
+      var snapshots = await loadFinancingRange(selectedEntries, version);
+      if (!snapshots || version !== renderVersion) return;
+      var snapshot = combineFinancingSnapshots(snapshots);
       if (currentRoute.region) {
         var originalRegion = currentRoute.region;
         var cityRegion = financingCityPath(originalRegion).join(' > ');
@@ -876,7 +945,7 @@
         }
         if (originalRegion !== currentRoute.region) replaceRoute();
       }
-      if (currentRoute.financingId) { renderFinancingDetail(snapshot, snapshot.items.find(function (item) { return String(item.id) === currentRoute.financingId; })); return; }
+      if (currentRoute.financingId) { renderFinancingDetail(snapshots[0], snapshots[0].items.find(function (item) { return String(item.id) === currentRoute.financingId; })); return; }
       ['financingDate', 'financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) ui[id].disabled = false; });
       document.querySelectorAll('[data-financing-filter]').forEach(function (button) { button.disabled = false; });
       var summary = snapshot.summary;
@@ -890,24 +959,23 @@
         return (currentRoute.market === 'all' || (currentRoute.market === 'domestic' ? item.isDomestic : !item.isDomestic)) && (!currentRoute.industry || financingIndustryTags(item).includes(currentRoute.industry)) && (!currentRoute.region || financingRegionTags(item).includes(currentRoute.region));
       });
       updateFinancingControls(snapshot, items);
+      var offset = renderFinancingPagination(items.length);
+      var pageItems = items.slice(offset, offset + FINANCING_PAGE_SIZE);
+      if (items.length) ui.financingResultCount.appendChild(document.createTextNode(' · 当前第 ' + (offset + 1) + '–' + (offset + pageItems.length) + ' 条'));
       clear(target);
-      if (!items.length) target.appendChild(element('div', 'empty-state', '当日暂无对应投融资事件。'));
-      else [{ domestic: true, label: '国内', english: 'DOMESTIC' }, { domestic: false, label: '国外', english: 'OVERSEAS' }].forEach(function (group) {
-        var members = items.filter(function (item) { return Boolean(item.isDomestic) === group.domestic; }); if (!members.length) return;
-        var heading = element('h2', 'financing-group-heading', group.label + ' · ' + members.length + ' 起融资'); heading.appendChild(element('span', '', group.english)); target.appendChild(heading);
-        members.forEach(function (item) { target.appendChild(createFinancingItem(item)); });
-      });
+      if (!items.length) target.appendChild(element('div', 'empty-state', '当前范围暂无对应投融资事件。'));
+      else pageItems.forEach(function (item) { target.appendChild(createFinancingItem(item)); });
       document.querySelectorAll('[data-financing-filter]').forEach(function (button) {
         var active = button.dataset.financingFilter === currentRoute.market;
         button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active));
       });
-      text(ui.financingSource, '数据来源：' + snapshot.source.name + ' MCP · ' + summary.knownAmountEvents + '/' + summary.totalEvents + ' 条可估算金额，金额为数据库估计值 · 查询于 ' + dateTimeLabel(snapshot.fetchedAt));
-      announce('投融资动态已加载，共 ' + items.length + ' 条');
+      text(ui.financingSource, '数据来源：' + snapshot.source.name + ' MCP · 当前日期范围 ' + summary.knownAmountEvents + '/' + summary.totalEvents + ' 条可估算金额，金额为数据库估计值 · 最近查询于 ' + dateTimeLabel(snapshot.fetchedAt));
+      announce('投融资动态已加载，共 ' + items.length + ' 条，当前第 ' + currentRoute.financingPage + ' 页');
     } catch (error) {
       if (version !== renderVersion) return;
       var errorTarget = currentRoute.financingId ? ui.financingDetailContent : target;
       resetFinancingOverview('数据读取失败');
-      clear(errorTarget); errorTarget.appendChild(routeLink(financingRoute(), '← 返回投融资动态', 'article-back'));
+      clear(errorTarget); errorTarget.appendChild(routeLink(financingRoute({ financingPage: currentRoute.financingPage }), '← 返回投融资动态', 'article-back'));
       retryBox(errorTarget, errorMessage(error), function () { renderFinancing(renderVersion); });
     }
   }
@@ -1437,6 +1505,9 @@
     if (name === 'financing') {
       route.id = /^\d{4}-\d{2}-\d{2}$/.test(path[1] || '') ? path[1] : '';
       route.financingId = /^\d+$/.test(path[2] || '') ? path[2] : '';
+      route.financingFromAll = Boolean(route.financingId && query.get('from') === 'all');
+      var financingPage = query.get('page') || '';
+      route.financingPage = /^\d+$/.test(financingPage) && Number.isSafeInteger(Number(financingPage)) ? Math.max(1, Number(financingPage)) : 1;
       route.market = ['domestic', 'overseas'].includes(query.get('market')) ? query.get('market') : 'all';
       route.industry = cleanString(query.get('industry'), 160);
       route.region = cleanString(query.get('region'), 160);
@@ -1468,6 +1539,8 @@
     } else if (route.view === 'financing') {
       if (route.id) path += '/' + route.id;
       if (route.financingId) path += '/' + route.financingId;
+      if (route.financingId && route.financingFromAll) query.set('from', 'all');
+      if (route.financingPage > 1) query.set('page', String(route.financingPage));
       if (route.market && route.market !== 'all') query.set('market', route.market);
       if (route.industry) query.set('industry', route.industry);
       if (route.region) query.set('region', route.region);
@@ -1641,9 +1714,7 @@
     if (ui.archiveSearch) ui.archiveSearch.addEventListener('input', function () { currentRoute.archiveQ = ui.archiveSearch.value; replaceRoute(); renderArchive(); });
     if (ui.financingDate) ui.financingDate.addEventListener('change', function () {
       if (!currentRoute || currentRoute.view !== 'financing') return;
-      financingSelectedDate = ui.financingDate.value;
-      currentRoute.id = financingSelectedDate;
-      location.hash = buildRoute(currentRoute);
+      location.hash = financingRoute({ id: ui.financingDate.value });
     });
     document.querySelectorAll('[data-financing-filter]').forEach(function (button) {
       button.addEventListener('click', function () {
@@ -1676,7 +1747,7 @@
     });
   }
   async function init() {
-    ['financingDateNotice', 'financingOverviewHeading'].forEach(function (id) { ui[id] = byId(id); });
+    ['financingDateNotice', 'financingOverviewHeading', 'financingTotalLabel', 'financingAmountLabel', 'financingPaginationTop', 'financingPaginationBottom'].forEach(function (id) { ui[id] = byId(id); });
     ['financingOverseas', 'financingIndustryFilter', 'financingRegionFilter', 'financingActiveFilters', 'financingResultCount', 'financingDetailView', 'financingDetailContent'].forEach(function (id) { ui[id] = byId(id); });
     ['pageIntro', 'pageHeading', 'pageEyebrow', 'pageDescription', 'headerDate', 'topbarSubtitle', 'searchForm', 'searchInput', 'searchClear', 'feedControls', 'resultCount', 'layoutList', 'layoutCompact', 'feedView', 'feedList', 'feedStatus', 'loadMore', 'financingView', 'financingDate', 'financingDateField', 'financingDateLabel', 'financingTotal', 'financingDomestic', 'financingKnown', 'financingAmount', 'financingIndustries', 'financingList', 'financingSource', 'readerView', 'archiveSort', 'archiveSearch', 'archiveRail', 'reportContent', 'articleView', 'articleContent', 'aboutView', 'rightRail', 'latestDate', 'statDaily', 'statWeekly', 'statItems', 'sectorStats', 'recentReports', 'savedCount', 'liveStatus', 'mobileMenu', 'sidebar', 'menuBackdrop', 'backToTop'].forEach(function (id) { ui[id] = byId(id); });
     if (!ui.pageIntro) ui.pageIntro = document.querySelector('.page-intro');
