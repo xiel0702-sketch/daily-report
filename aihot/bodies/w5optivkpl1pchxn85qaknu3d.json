@@ -1,0 +1,840 @@
+{
+  "schemaVersion": 1,
+  "id": "w5optivkpl1pchxn85qaknu3d",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/w5optivkpl1pchxn85qaknu3d",
+  "fetchedAt": "2026-10-27T01:11:14.943478Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "AI 编码",
+    "安全对齐",
+    "论文研究"
+  ],
+  "tags": [
+    "论文/研究",
+    "安全/对齐",
+    "编码"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "生物AI工具（BAITs）是越来越多地被用于推动生物学各领域进展的AI模型，从预测蛋白质结构到设计新分子。许多工具是公开发布的，但一些开发者选择只发布关于工具方法、架构和数据的部分信息。这可能是出于保护商业价值的考虑，但也是为了限制两用工具被滥用——即那些既能推动合法研究、又可能被用于追求有害结果的能力。",
+          "inlines": [
+            {
+              "text": "生物AI工具（BAITs）是越来越多地被用于推动生物学各领域进展的AI模型，从预测蛋白质结构到设计新分子。许多工具是公开发布的，但一些开发者选择只发布关于工具方法、架构和数据的部分信息。这可能是出于保护商业价值的考虑，但也是为了限制两用工具被滥用——即那些既能推动合法研究、又可能被用于追求有害结果的能力。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AISI的化学-生物团队开展前沿研究，以理解、评估和缓解与前沿AI系统相关的化学和生物风险。我们评估先进模型可能在多大程度上助长有害能力，开发严格评估这些风险的方法，并直接与领先的AI公司、英国官员和盟国政府分享我们的发现，为部署、研究和政策决策提供依据。",
+          "inlines": [
+            {
+              "text": "AISI的化学-生物团队开展前沿研究，以理解、评估和缓解与前沿AI系统相关的化学和生物风险。我们评估先进模型可能在多大程度上助长有害能力，开发严格评估这些风险的方法，并直接与领先的AI公司、英国官员和盟国政府分享我们的发现，为部署、研究和政策决策提供依据。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随着基于前沿LLM的AI智能体在研究、编程和科学推理等任务上能力增强，我们预计它们复现BAITs的能力也会提升。如果闭源BAIT能够从有限的公开信息中被逆向工程，那么防止其被滥用的保障措施可能会被削弱。",
+          "inlines": [
+            {
+              "text": "随着基于前沿LLM的AI智能体在研究、编程和科学推理等任务上能力增强，我们预计它们复现BAITs的能力也会提升。如果闭源BAIT能够从有限的公开信息中被逆向工程，那么防止其被滥用的保障措施可能会被削弱。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了衡量这一能力，我们与SecureBio合作构建了ReproBAIT（复现生物AI工具）评估。ReproBAIT测试智能体在获得相关数据以及关于其设计的有限公开信息的情况下，能够多好地复现现有的BAITs。",
+          "inlines": [
+            {
+              "text": "为了衡量这一能力，我们与"
+            },
+            {
+              "href": "https://securebio.substack.com/p/reprobait-a-benchmark-for-reproducing?r=5hthfe&utm_campaign=post&utm_medium=web",
+              "text": "SecureBio"
+            },
+            {
+              "text": "合作构建了ReproBAIT（复现生物AI工具）评估。ReproBAIT测试智能体在获得相关数据以及关于其设计的有限公开信息的情况下，能够多好地复现现有的BAITs。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的发现表明，每个BAIT的选定功能都能在有限的时间和算力预算内被复现。最简单的工具可以在4小时内、算力预算低于20美元的情况下成功复现。这意味着，不公开代码或限制BAIT发布的信息本身并不等同于安全发布。这表明需要进一步探索数据治理作为管理BAITs滥用的一种方法。",
+          "inlines": [
+            {
+              "text": "我们的发现表明，每个BAIT的选定功能都能在有限的时间和算力预算内被复现。最简单的工具可以在4小时内、算力预算低于20美元的情况下成功复现。这意味着，不公开代码或限制BAIT发布的信息本身并不等同于安全发布。这表明需要进一步探索数据治理作为管理BAITs滥用的一种方法。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "ReproBAIT如何运作",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "ReproBAIT如何运作"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "ReproBAIT衡量AI智能体在固定时间和算力预算下，设计、实现并训练一个新BAIT以匹配现有BAIT功能和性能的能力。时间预算根据每个工具的复杂度进行缩放。每次尝试都在一个隔离的沙箱中运行，配备单个GPU且无互联网访问。智能体收到关于原始BAIT及其训练数据的有限描述，然后被要求编写并运行代码以生成可用的复现品。随后，一个独立的、网络隔离的评分器将提交工具的性能与原始版本进行比较。",
+          "inlines": [
+            {
+              "text": "ReproBAIT衡量AI智能体在固定时间和算力预算下，设计、实现并训练一个新BAIT以匹配现有BAIT功能和性能的能力。时间预算根据每个工具的复杂度进行缩放。每次尝试都在一个隔离的沙箱中运行，配备单个GPU且无互联网访问。智能体收到关于原始BAIT及其训练数据的有限描述，然后被要求编写并运行代码以生成可用的复现品。随后，一个独立的、网络隔离的评分器将提交工具的性能与原始版本进行比较。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/6039ff9ae2a7368d97c7ca79557fa69439cefd5974f5c75e616ea60d6c606a7d.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "图1：ReproBAIT评估流程。",
+          "inlines": [
+            {
+              "text": "图1：ReproBAIT评估流程。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "开发者发布的BAIT信息量各不相同：从仅摘要，到完整论文，再到完全开源发布。我们选择了三个在计算生物学中广泛使用且复杂度差异显著的目标BAITs：两个复杂度递增的开源蛋白质设计BAIT，ProteinMPNN和RFdiffusion3，以及一个闭源分子设计BAIT，称为CMD1。",
+          "inlines": [
+            {
+              "text": "开发者发布的BAIT信息量各不相同：从仅摘要，到完整论文，再到完全开源发布。我们选择了三个在计算生物学中广泛使用且复杂度差异显著的目标BAITs：两个复杂度递增的开源蛋白质设计BAIT，"
+            },
+            {
+              "href": "https://github.com/dauparas/ProteinMPNN",
+              "text": "ProteinMPNN"
+            },
+            {
+              "text": "和"
+            },
+            {
+              "href": "https://github.com/RosettaCommons/foundry/blob/production/models/rfd3/README.md",
+              "text": "RFdiffusion3"
+            },
+            {
+              "text": "，以及一个闭源分子设计BAIT，称为CMD1。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的假设是，未完全开源的 BAIT 的可复现性，至少在一定程度上取决于作者选择披露的细节程度。因此我们测试了两种条件：仅摘要，即智能体只收到论文摘要；以及仅论文，即智能体收到完整手稿及任何补充材料。对于两个已开源的 BAIT，我们还运行了含代码基线，即智能体收到原始 BAIT 的代码。CMD 的方法在一篇公开论文中有描述，但其原始代码从未发布。这使其成为检验受控访问机制有效性的有用测试；受控访问是一种开发者仅与经过审核的用户或在特定条件下共享工具、而非公开释放的做法，以便合法研究人员能够受益，同时降低滥用风险。",
+          "inlines": [
+            {
+              "text": "我们的假设是，未完全开源的 BAIT 的可复现性，至少在一定程度上取决于作者选择披露的细节程度。因此我们测试了两种条件："
+            },
+            {
+              "bold": true,
+              "text": "仅摘要"
+            },
+            {
+              "text": "，即智能体只收到论文摘要；以及"
+            },
+            {
+              "bold": true,
+              "text": "仅论文"
+            },
+            {
+              "text": "，即智能体收到完整手稿及任何补充材料。对于两个已开源的 BAIT，我们还运行了"
+            },
+            {
+              "bold": true,
+              "text": "含代码"
+            },
+            {
+              "text": "基线，即智能体收到原始 BAIT 的代码。CMD 的方法在一篇公开论文中有描述，但其原始代码从未发布。这使其成为检验受控访问机制有效性的有用测试；受控访问是一种开发者仅与经过审核的用户或在特定条件下共享工具、而非公开释放的做法，以便合法研究人员能够受益，同时降低滥用风险。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在智能体训练期间无法访问的留出数据上，按照原始发表中的主要性能指标，评估了智能体构建完成的 BAIT。例如，对于蛋白质结构到序列模型 ProteinMPNN，性能通过其设计的蛋白质序列与天然序列匹配的频率来衡量。我们将结果表示为复现保真度：智能体构建的 BAIT 在同一指标上的得分占原始 BAIT 得分的百分比，其中 100% 表示持平，高于 100% 表示智能体构建的 BAIT 在该指标上得分高于原始 BAIT。这仅捕捉每个工具在孤立情况下的某一项能力，而非其全部功能范围，因此高保真度得分并不等同于对原始的完整复现。",
+          "inlines": [
+            {
+              "text": "我们在智能体训练期间无法访问的留出数据上，按照原始发表中的主要性能指标，评估了智能体构建完成的 BAIT。例如，对于蛋白质结构到序列模型 ProteinMPNN，性能通过其设计的蛋白质序列与天然序列匹配的频率来衡量。我们将结果表示为复现保真度：智能体构建的 BAIT 在同一指标上的得分占原始 BAIT 得分的百分比，其中 100% 表示持平，高于 100% 表示智能体构建的 BAIT 在该指标上得分高于原始 BAIT。这仅捕捉每个工具在孤立情况下的某一项能力，而非其全部功能范围，因此高保真度得分并不等同于对原始的完整复现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们对每种配置运行三次并报告最佳尝试，覆盖四个领先的编码智能体，横跨闭源与开放权重模型：Claude Opus 5、GPT-5.6 Sol、Kimi K3 和 Qwen3.8-2.4T。",
+          "inlines": [
+            {
+              "text": "我们对每种配置运行三次并报告最佳尝试，覆盖四个领先的编码智能体，横跨闭源与开放权重模型：Claude Opus 5、GPT-5.6 Sol、Kimi K3 和 Qwen3.8-2.4T。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们的发现",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "我们的发现"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "当前的编码智能体在获得描述某些 BAIT 的论文时，能够实现并训练出这些 BAIT 的功能性复制品，而且这一能力在多个智能体上均成立，无论闭源还是开放权重。",
+          "inlines": [
+            {
+              "text": "当前的编码智能体在获得描述某些 BAIT 的论文时，能够实现并训练出这些 BAIT 的功能性复制品，而且这一能力在多个智能体上均成立，无论闭源还是开放权重。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "工具",
+          "inlines": [
+            {
+              "text": "工具"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们测量的内容",
+          "inlines": [
+            {
+              "text": "我们测量的内容"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的发现",
+          "inlines": [
+            {
+              "text": "我们的发现"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CMD \n（闭源分子设计）",
+          "inlines": [
+            {
+              "text": "CMD \n（闭源分子设计）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "有效性：生成的分子中化学有效的比例",
+          "inlines": [
+            {
+              "text": "有效性：生成的分子中化学有效的比例"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "四个智能体均接近或超过了原始。该指标本已接近饱和，几乎没有改进空间，而且智能体是在针对单一指标进行优化，而原始作者没有动机这样做，代价是所生成分子的新颖性略有下降。",
+          "inlines": [
+            {
+              "text": "四个智能体均接近或超过了原始。该指标本已接近饱和，几乎没有改进空间，而且智能体是在针对单一指标进行优化，而原始作者没有动机这样做，代价是所生成分子的新颖性略有下降。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ProteinMPNN（蛋白质设计）",
+          "inlines": [
+            {
+              "text": "ProteinMPNN（蛋白质设计）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "序列恢复率：该工具在已知蛋白质骨架的每个位置上，选中与自然界中出现的相同氨基酸的频率",
+          "inlines": [
+            {
+              "text": "序列恢复率：该工具在已知蛋白质骨架的每个位置上，选中与自然界中出现的相同氨基酸的频率"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "最强的智能体接近原始性能，在获得完整论文的情况下，Claude Opus 5 达到 96.5% 的保真度，不过不同智能体之间的结果存在差异。",
+          "inlines": [
+            {
+              "text": "最强的智能体接近原始性能，在获得完整论文的情况下，Claude Opus 5 达到 96.5% 的保真度，不过不同智能体之间的结果存在差异。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "RFdiffusion3（蛋白质设计，最复杂）",
+          "inlines": [
+            {
+              "text": "RFdiffusion3（蛋白质设计，最复杂）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "可设计性：为生成的蛋白质骨架设计的序列，是否被预测会折叠回同一结构",
+          "inlines": [
+            {
+              "text": "可设计性：为生成的蛋白质骨架设计的序列，是否被预测会折叠回同一结构"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "没有任何智能体在其时间预算内成功复现，即便是在所评估的单一功能上也是如此：仅生成蛋白质骨架，而非在其他分子的背景下生成。唯一部分成功的智能体通过将训练数据过滤为更易于生成的结构来缩小任务范围。后续运行因返回与已知蛋白质数据库条目近乎重复的结果而被排除。因此，在可用时间内于单块 GPU 上忠实重建该工具很可能无法实现。",
+          "inlines": [
+            {
+              "text": "没有任何智能体在其时间预算内成功复现，即便是在所评估的单一功能上也是如此：仅生成蛋白质骨架，而非在其他分子的背景下生成。唯一部分成功的智能体通过将训练数据过滤为更易于生成的结构来缩小任务范围。后续运行因返回与已知蛋白质数据库条目近乎重复的结果而被排除。因此，在可用时间内于单块 GPU 上忠实重建该工具很可能无法实现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些复现的成本也相对较低。两个较不复杂的 BAIT 的成功重建通常花费在 4 到 20 美元之间。我们未能成功重建 RFdiffusion3，但每次尝试花费在 102 到 301 美元之间。 就训练算力而言，这些工具与已发布的最大 BAIT 相比规模较小，重建更大的工具将花费 considerably 更多。我们预计随着时间和算力的增加，性能会有所提升，探索这一点可能成为未来研究的一个方向。",
+          "inlines": [
+            {
+              "text": "这些复现的成本也相对较低。两个较不复杂的 BAIT 的成功重建通常花费在 4 到 20 美元之间。我们未能成功重建 RFdiffusion3，但每次尝试花费在 102 到 301 美元之间。 就训练算力而言，这些工具与已发布的最大 BAIT 相比规模较小，重建更大的工具将花费 considerably 更多。我们预计随着时间和算力的增加，性能会有所提升，探索这一点可能成为未来研究的一个方向。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fcf7dfd21efe7d52714fa56d286e4d090a65436825ce188bfc434fb222b11cad.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "图 2：在仅提供论文条件下，复现保真度与工具复杂度的关系。随着复杂度上升，保真度急剧下降：智能体在两个较不复杂的工具上达到或超过了已发布的基线，但没有智能体完全复现最复杂的工具。",
+          "inlines": [
+            {
+              "text": "图 2：在仅提供论文条件下，复现保真度与工具复杂度的关系。随着复杂度上升，保真度急剧下降：智能体在两个较不复杂的工具上达到或超过了已发布的基线，但没有智能体完全复现最复杂的工具。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "值得注意的是，提供完整论文而非仅提供摘要并未持续提升性能。一个可能的促成因素是记忆：开源 BAIT 的论文和代码极有可能属于这些智能体的预训练数据，因此即使方法被隐去，智能体也可能调用记忆中的实现细节。",
+          "inlines": [
+            {
+              "text": "值得注意的是，提供完整论文而非仅提供摘要并未持续提升性能。一个可能的促成因素是记忆：开源 BAIT 的论文和代码极有可能属于这些智能体的预训练数据，因此即使方法被隐去，智能体也可能调用记忆中的实现细节。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们通过扫描智能体的记录以查找被回忆起的细节，并测量智能体编写的代码与原始代码逐字匹配的程度，对此进行了筛查。我们发现中等程度的证据与 ProteinMPNN（两个开源工具中较旧且被复现最广泛的一个）的记忆现象一致，而 RFdiffusion3 则几乎没有。这些诊断并不完美，因此我们将其视为方向性信号而非证据，它们无法确定智能体的成功中有多少可由记忆来解释。",
+          "inlines": [
+            {
+              "text": "我们通过扫描智能体的记录以查找被回忆起的细节，并测量智能体编写的代码与原始代码逐字匹配的程度，对此进行了筛查。我们发现中等程度的证据与 ProteinMPNN（两个开源工具中较旧且被复现最广泛的一个）的记忆现象一致，而 RFdiffusion3 则几乎没有。这些诊断并不完美，因此我们将其视为方向性信号而非证据，它们无法确定智能体的成功中有多少可由记忆来解释。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "研究结果的意义",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "研究结果的意义"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "综合来看，这些结果表明，每个 BAIT 的部分功能可以在有限的时间和算力下被复现。虽然这不能证明原始 BAIT 可以被完整复现，但趋势是明确的。",
+          "inlines": [
+            {
+              "text": "综合来看，这些结果表明，每个 BAIT 的"
+            },
+            {
+              "italic": true,
+              "text": "部分"
+            },
+            {
+              "text": "功能可以在有限的时间和算力下被复现。虽然这不能证明原始 BAIT 可以被完整复现，但趋势是明确的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这一点尤其相关，因为 BAIT 往往是在浓厚的开放协作科学文化中开发的。即使模型未公开释放，其方法也常被详细描述。我们的结果表明，仅隐去代码本身并不能确保对 BAIT 能力的访问控制，因为编码智能体在获得训练数据的情况下，仅凭公开描述就能重建 BAIT 的部分功能。这意味着仅隐去 BAIT 的代码并不等同于安全发布。限制关于工具所发布的信息是否能提供额外保护也不明确，因为我们发现仅获得摘要的智能体与获得完整论文的智能体在性能上没有明显差异。 这些发现支持有必要进一步探索数据治理作为管理滥用风险的方法；控制对基础生物数据的访问似乎比仅仅控制对代码的访问更有前景。",
+          "inlines": [
+            {
+              "text": "这一点尤其相关，因为 BAIT 往往是在浓厚的开放协作科学文化中开发的。即使模型未公开释放，其方法也常被详细描述。我们的结果表明，仅隐去代码本身并不能确保对 BAIT 能力的访问控制，因为编码智能体在获得训练数据的情况下，仅凭公开描述就能重建 BAIT 的部分功能。这意味着仅隐去 BAIT 的代码并不等同于安全发布。限制关于工具所发布的信息是否能提供额外保护也不明确，因为我们发现仅获得摘要的智能体与获得完整论文的智能体在性能上没有明显差异。 这些发现支持有必要进一步探索数据治理作为管理滥用风险的方法；控制对基础生物数据的访问似乎比仅仅控制对代码的访问更有前景。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你可以在这里了解更多关于 ReproBAIT 的信息。",
+          "inlines": [
+            {
+              "text": "你可以在"
+            },
+            {
+              "href": "https://arxiv.org/abs/2610.19810",
+              "text": "这里"
+            },
+            {
+              "text": "了解更多关于 ReproBAIT 的信息。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AISI 的化学-生物团队正在招聘。如果你对这项工作感兴趣，请在这里申请。",
+          "inlines": [
+            {
+              "text": "AISI 的化学-生物团队正在招聘。如果你对这项工作感兴趣，请在"
+            },
+            {
+              "href": "https://job-boards.eu.greenhouse.io/aisi/jobs/4919338101",
+              "text": "这里"
+            },
+            {
+              "text": "申请。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "‍",
+          "inlines": [
+            {
+              "text": "‍"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Biological AI tools (BAITs) are AI models that are increasingly used to drive advances across biology, from predicting protein structures to designing new molecules. Many are openly released, but some developers choose to release only partial information about a tool's methodology, architecture, and data. This can be driven by a desire to protect commercial value, but also to limit misuse of dual-use tools, where the same capabilities that advance legitimate research can also be deployed in the pursuit of harmful outcomes.",
+          "inlines": [
+            {
+              "text": "Biological AI tools (BAITs) are AI models that are increasingly used to drive advances across biology, from predicting protein structures to designing new molecules. Many are openly released, but some developers choose to release only partial information about a tool's methodology, architecture, and data. This can be driven by a desire to protect commercial value, but also to limit misuse of dual-use tools, where the same capabilities that advance legitimate research can also be deployed in the pursuit of harmful outcomes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AISI's Chem-Bio team conducts cutting-edge research to understand, evaluate, and mitigate chemical and biological risks associated with frontier AI systems. We assess the extent to which advanced models may enable harmful capabilities, develop methods for evaluating these risks rigorously, and share our findings directly with leading AI companies, UK officials and allied governments to inform deployment, research and policy decisions.",
+          "inlines": [
+            {
+              "text": "AISI's Chem-Bio team conducts cutting-edge research to understand, evaluate, and mitigate chemical and biological risks associated with frontier AI systems. We assess the extent to which advanced models may enable harmful capabilities, develop methods for evaluating these risks rigorously, and share our findings directly with leading AI companies, UK officials and allied governments to inform deployment, research and policy decisions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As frontier LLM-based AI agents become more capable at tasks such as research, coding, and scientific reasoning, we expect their ability to reproduce BAITs to improve. If a closed-source BAIT can be reverse-engineered from limited public information, then approaches to safeguard against its misuse may be undermined.",
+          "inlines": [
+            {
+              "text": "As frontier LLM-based AI agents become more capable at tasks such as research, coding, and scientific reasoning, we expect their ability to reproduce BAITs to improve. If a closed-source BAIT can be reverse-engineered from limited public information, then approaches to safeguard against its misuse may be undermined."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To measure this capability, we built the ReproBAIT (Reproducing Biological AI Tools) evaluation, in collaboration with SecureBio. ReproBAIT tests how well agents can reproduce existing BAITs given the relevant data and limited, publicly available information about their design.",
+          "inlines": [
+            {
+              "text": "To measure this capability, we built the ReproBAIT (Reproducing Biological AI Tools) evaluation, in collaboration with "
+            },
+            {
+              "href": "https://securebio.substack.com/p/reprobait-a-benchmark-for-reproducing?r=5hthfe&utm_campaign=post&utm_medium=web",
+              "text": "SecureBio"
+            },
+            {
+              "text": ". ReproBAIT tests how well agents can reproduce existing BAITs given the relevant data and limited, publicly available information about their design."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our findings show that selected functions of each BAIT can be reproduced within a limited time and compute budget. The simplest tools could be successfully reproduced within 4 hours and with a compute budget of under $20.This means that withholding code or limiting the information published on a BAIT does not by itself equate to a safe release. This points to the need for further exploration of data governance as a method for managing misuse of BAITs.",
+          "inlines": [
+            {
+              "text": "Our findings show that selected functions of each BAIT can be reproduced within a limited time and compute budget. The simplest tools could be successfully reproduced within 4 hours and with a compute budget of under $20.This means that withholding code or limiting the information published on a BAIT does not by itself equate to a safe release. This points to the need for further exploration of data governance as a method for managing misuse of BAITs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How ReproBAIT works",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "How ReproBAIT works"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "ReproBAIT measures the ability of AI agents to design, implement, and train a new BAIT that matches the function and performance of an existing BAIT, given a fixed time and compute budget. The time budget was scaled to each tool’s complexity. Each attempt runs in an isolated sandbox with a single GPU and no internet access. The agent receives a limited description of the original BAIT and the training data used to create it. It is then tasked with writing and running code to produce a working replica. A separate, network-isolated scorer then compares the performance of the submitted tool to the original version.",
+          "inlines": [
+            {
+              "text": "ReproBAIT measures the ability of AI agents to design, implement, and train a new BAIT that matches the function and performance of an existing BAIT, given a fixed time and compute budget. The time budget was scaled to each tool’s complexity. Each attempt runs in an isolated sandbox with a single GPU and no internet access. The agent receives a limited description of the original BAIT and the training data used to create it. It is then tasked with writing and running code to produce a working replica. A separate, network-isolated scorer then compares the performance of the submitted tool to the original version."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/6039ff9ae2a7368d97c7ca79557fa69439cefd5974f5c75e616ea60d6c606a7d.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 1: The ReproBAIT evaluation pipeline.",
+          "inlines": [
+            {
+              "text": "Figure 1: The ReproBAIT evaluation pipeline."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Developers publish varying amounts of information about BAITs: from an abstract alone, to a full paper, to a full open-source release. We selected three target BAITs that are widely used in computational biology and vary significantly in complexity: Two open-sourced protein-design BAITs of increasing complexity, ProteinMPNN and RFdiffusion3, and a closed-source molecular-design BAIT, referred to as CMD1.",
+          "inlines": [
+            {
+              "text": "Developers publish varying amounts of information about BAITs: from an abstract alone, to a full paper, to a full open-source release. We selected three target BAITs that are widely used in computational biology and vary significantly in complexity: Two open-sourced protein-design BAITs of increasing complexity, "
+            },
+            {
+              "href": "https://github.com/dauparas/ProteinMPNN",
+              "text": "ProteinMPNN"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://github.com/RosettaCommons/foundry/blob/production/models/rfd3/README.md",
+              "text": "RFdiffusion3"
+            },
+            {
+              "text": ", and a closed-source molecular-design BAIT, referred to as CMD1."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our hypothesis is that the reproducibility of BAITs that are not fully open source will be driven, at least in part, by the level of detail the authors choose to disclose. We therefore tested two conditions: abstract-only, where the agent received just the paper's abstract, and paper-only, where it received the full manuscript and any supplementary material. For the two open-sourced BAITs, we also ran a with-code baseline, in which the agent received the code for the original BAIT. CMD's method is described in a public paper, but its original code has never been released. This made it a useful test of the efficacy of managed access controls; an approach where developers share a tool only with vetted users or under specific conditions, rather than releasing it openly, so that legitimate researchers can benefit while the risk of misuse is reduced.",
+          "inlines": [
+            {
+              "text": "Our hypothesis is that the reproducibility of BAITs that are not fully open source will be driven, at least in part, by the level of detail the authors choose to disclose. We therefore tested two conditions: "
+            },
+            {
+              "bold": true,
+              "text": "abstract-only"
+            },
+            {
+              "text": ", where the agent received just the paper's abstract, and "
+            },
+            {
+              "bold": true,
+              "text": "paper-only"
+            },
+            {
+              "text": ", where it received the full manuscript and any supplementary material. For the two open-sourced BAITs, we also ran a "
+            },
+            {
+              "bold": true,
+              "text": "with-code"
+            },
+            {
+              "text": " baseline, in which the agent received the code for the original BAIT. CMD's method is described in a public paper, but its original code has never been released. This made it a useful test of the efficacy of managed access controls; an approach where developers share a tool only with vetted users or under specific conditions, rather than releasing it openly, so that legitimate researchers can benefit while the risk of misuse is reduced."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We evaluated the finished agent-built BAITs on held-out data which the agents did not have access to during training, against the primary performance metric from the original publication. For example, for ProteinMPNN, a protein structure to sequence model, performance was measured by how often its designed protein sequences match the natural ones. We express the result as reproduction fidelity: the agent-built BAIT’s score as a percentage of the original BAIT’s score on the same metric, where 100% means parity, and a score above 100% means the agent-built BAIT scored higher than the original BAIT on that metric. This captures one capability of each tool in isolation, not its full range of functions, so a high-fidelity score does not equate to a complete reproduction of the original.",
+          "inlines": [
+            {
+              "text": "We evaluated the finished agent-built BAITs on held-out data which the agents did not have access to during training, against the primary performance metric from the original publication. For example, for ProteinMPNN, a protein structure to sequence model, performance was measured by how often its designed protein sequences match the natural ones. We express the result as reproduction fidelity: the agent-built BAIT’s score as a percentage of the original BAIT’s score on the same metric, where 100% means parity, and a score above 100% means the agent-built BAIT scored higher than the original BAIT on that metric. This captures one capability of each tool in isolation, not its full range of functions, so a high-fidelity score does not equate to a complete reproduction of the original."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We ran each configuration three times and reported the best attempt, across four leading coding agents spanning closed- and open-weight models: Claude Opus 5, GPT-5.6 Sol, Kimi K3, and Qwen3.8-2.4T.",
+          "inlines": [
+            {
+              "text": "We ran each configuration three times and reported the best attempt, across four leading coding agents spanning closed- and open-weight models: Claude Opus 5, GPT-5.6 Sol, Kimi K3, and Qwen3.8-2.4T."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What we found",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What we found"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Current coding agents can implement and train functional replicas of some BAITs when given the paper describing them, and this capability holds across several agents, both closed- and open-weight.",
+          "inlines": [
+            {
+              "text": "Current coding agents can implement and train functional replicas of some BAITs when given the paper describing them, and this capability holds across several agents, both closed- and open-weight."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool",
+          "inlines": [
+            {
+              "text": "Tool"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What we measured",
+          "inlines": [
+            {
+              "text": "What we measured"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What we found",
+          "inlines": [
+            {
+              "text": "What we found"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CMD \n(closed-source molecular design)",
+          "inlines": [
+            {
+              "text": "CMD \n(closed-source molecular design)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Validity: the proportion of generated molecules that are chemically valid",
+          "inlines": [
+            {
+              "text": "Validity: the proportion of generated molecules that are chemically valid"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "All four agents closely matched or exceeded the original. The metric was already close to saturated, leaving little room for improvement, and the agents were optimising for a single metric in a way the original authors had no incentive to do, at a modest cost to the novelty of the molecules generated.",
+          "inlines": [
+            {
+              "text": "All four agents closely matched or exceeded the original. The metric was already close to saturated, leaving little room for improvement, and the agents were optimising for a single metric in a way the original authors had no incentive to do, at a modest cost to the novelty of the molecules generated."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ProteinMPNN (protein design)",
+          "inlines": [
+            {
+              "text": "ProteinMPNN (protein design)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sequence recovery: how often the tool picks the same amino acid that occurs in nature at each position of a known protein backbone",
+          "inlines": [
+            {
+              "text": "Sequence recovery: how often the tool picks the same amino acid that occurs in nature at each position of a known protein backbone"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The strongest agents approached the original's performance, with Claude Opus 5 reaching 96.5% fidelity given the full paper, although results varied across agents.",
+          "inlines": [
+            {
+              "text": "The strongest agents approached the original's performance, with Claude Opus 5 reaching 96.5% fidelity given the full paper, although results varied across agents."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "RFdiffusion3 (protein design, most complex)",
+          "inlines": [
+            {
+              "text": "RFdiffusion3 (protein design, most complex)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Designability: whether a sequence designed for a generated protein backbone is predicted to fold back into that same structure",
+          "inlines": [
+            {
+              "text": "Designability: whether a sequence designed for a generated protein backbone is predicted to fold back into that same structure"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "No agent produced a successful reproduction within its time budget, even on the single function evaluated: generating protein backbones alone, rather than in the context of other molecules. The one partially successful agent narrowed the task by filtering its training data to structures that are easier to generate. Further runs were excluded for returning near-duplicates of known Protein Data Bank entries. Therefore, a faithful rebuild of this tool is likely not achievable on a single GPU within the time available.",
+          "inlines": [
+            {
+              "text": "No agent produced a successful reproduction within its time budget, even on the single function evaluated: generating protein backbones alone, rather than in the context of other molecules. The one partially successful agent narrowed the task by filtering its training data to structures that are easier to generate. Further runs were excluded for returning near-duplicates of known Protein Data Bank entries. Therefore, a faithful rebuild of this tool is likely not achievable on a single GPU within the time available."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These reproductions were also relatively inexpensive. Successful rebuilds of the two less complex BAITs typically cost between $4 and $20. We did not achieve a successful RFdiffusion3 rebuild, but each attempt cost between $102 and $301. In terms of training compute, these tools are small compared to the biggest BAITs that have been released and rebuilding larger ones would cost considerably more. We would expect performance to improve with more time and compute, exploring which could be an avenue for future research.",
+          "inlines": [
+            {
+              "text": "These reproductions were also relatively inexpensive. Successful rebuilds of the two less complex BAITs typically cost between $4 and $20. We did not achieve a successful RFdiffusion3 rebuild, but each attempt cost between $102 and $301. In terms of training compute, these tools are small compared to the biggest BAITs that have been released and rebuilding larger ones would cost considerably more. We would expect performance to improve with more time and compute, exploring which could be an avenue for future research."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fcf7dfd21efe7d52714fa56d286e4d090a65436825ce188bfc434fb222b11cad.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 2: Reproduction fidelity against tool complexity, under the paper-only condition. Fidelity falls sharply as complexity rises: agents reach or exceed the released baseline on the two less complex tools, but no agent fully reproduces the most complex one.",
+          "inlines": [
+            {
+              "text": "Figure 2: Reproduction fidelity against tool complexity, under the paper-only condition. Fidelity falls sharply as complexity rises: agents reach or exceed the released baseline on the two less complex tools, but no agent fully reproduces the most complex one."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Notably, providing the full paper rather than just the abstract did not consistently improve performance. One contributing factor may be memorisation: the open-sourced BAITs’ papers and code were very likely part of these agents' pretraining data, so an agent may draw on remembered implementation details even when the methods are withheld.",
+          "inlines": [
+            {
+              "text": "Notably, providing the full paper rather than just the abstract did not consistently improve performance. One contributing factor may be memorisation: the open-sourced BAITs’ papers and code were very likely part of these agents' pretraining data, so an agent may draw on remembered implementation details even when the methods are withheld."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We screened for this by scanning the agents' transcripts for recalled details and by measuring how much agent-written code was a verbatim match to the original. We found moderate evidence consistent with memorisation for ProteinMPNN, the oldest and most widely replicated of the two open-sourced tools, and little for RFdiffusion3. These diagnostics are imperfect, so we treat them as a directional signal rather than proof, and they cannot establish how much of the agents' success is explained by memorisation.",
+          "inlines": [
+            {
+              "text": "We screened for this by scanning the agents' transcripts for recalled details and by measuring how much agent-written code was a verbatim match to the original. We found moderate evidence consistent with memorisation for ProteinMPNN, the oldest and most widely replicated of the two open-sourced tools, and little for RFdiffusion3. These diagnostics are imperfect, so we treat them as a directional signal rather than proof, and they cannot establish how much of the agents' success is explained by memorisation."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Implications of the findings",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Implications of the findings"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Taken together, these results establish that selected functions of each BAIT can be reproduced with limited time and compute. While they do not prove that the original BAITs can be reproduced in full, the direction of travel is clear.",
+          "inlines": [
+            {
+              "text": "Taken together, these results establish that "
+            },
+            {
+              "italic": true,
+              "text": "selected"
+            },
+            {
+              "text": " functions of each BAIT can be reproduced with limited time and compute. While they do not prove that the original BAITs can be reproduced in full, the direction of travel is clear."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This is particularly relevant as BAITs are often developed in a strong culture of open, collaborative science. Even when models are not released openly, their methods are often described in detail. Our results indicate that withholding code does not, by itself, assure control over access to a BAIT’s capability, as coding agents can reconstruct selected functions of BAITs from public descriptions alone, when supplied with training data. This means that withholding the code for a BAIT by itself does not equate to safe release. It is also not clear that limiting the information published about a tool provides additional protection, as we found no clear difference in performance between agents given only an abstract, and agents given a full paper. These findings support the need for further exploration of data governance as a method for managing misuse risks; controlling access to the underpinning biological data appears to be a more promising intervention than merely controlling access to code.",
+          "inlines": [
+            {
+              "text": "This is particularly relevant as BAITs are often developed in a strong culture of open, collaborative science. Even when models are not released openly, their methods are often described in detail. Our results indicate that withholding code does not, by itself, assure control over access to a BAIT’s capability, as coding agents can reconstruct selected functions of BAITs from public descriptions alone, when supplied with training data. This means that withholding the code for a BAIT by itself does not equate to safe release. It is also not clear that limiting the information published about a tool provides additional protection, as we found no clear difference in performance between agents given only an abstract, and agents given a full paper. These findings support the need for further exploration of data governance as a method for managing misuse risks; controlling access to the underpinning biological data appears to be a more promising intervention than merely controlling access to code."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You can read more about ReproBAIT here.",
+          "inlines": [
+            {
+              "text": "You can read more about ReproBAIT "
+            },
+            {
+              "href": "https://arxiv.org/abs/2610.19810",
+              "text": "here"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AISI’s Chem-Bio Team is hiring. If this work interests you, please apply here.",
+          "inlines": [
+            {
+              "text": "AISI’s Chem-Bio Team is hiring. If this work interests you, please apply "
+            },
+            {
+              "href": "https://job-boards.eu.greenhouse.io/aisi/jobs/4919338101",
+              "text": "here"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "‍",
+          "inlines": [
+            {
+              "text": "‍"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-27T01:11:16.090890Z",
+  "contentMode": "full"
+}

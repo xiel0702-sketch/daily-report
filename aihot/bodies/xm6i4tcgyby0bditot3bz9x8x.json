@@ -1,0 +1,880 @@
+{
+  "schemaVersion": 1,
+  "id": "xm6i4tcgyby0bditot3bz9x8x",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/xm6i4tcgyby0bditot3bz9x8x",
+  "fetchedAt": "2026-10-27T01:11:20.077095Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "数据与训练",
+    "安全对齐",
+    "论文研究"
+  ],
+  "tags": [
+    "论文/研究",
+    "安全/对齐",
+    "数据/训练"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "专用生物 AI 模型（或工具）正在推动生物技术的快速进步。它们通常以开放权重模型的形式发布，并且比前沿大语言模型（LLM）更小，因为它们主要仅使用生物数据进行训练。这使得它们更容易训练、共享和修改。",
+          "inlines": [
+            {
+              "text": "专用生物 AI 模型（或工具）正在推动生物技术的快速进步。它们通常以开放权重模型的形式发布，并且比前沿大语言模型（LLM）更小，因为它们主要仅使用生物数据进行训练。这使得它们更容易训练、共享和修改。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "然而，稳健地保护开放权重模型十分困难。一旦权重和推理代码公开可用，保障措施的有效性就更难保证。训练后保护措施往往可以通过微调以低成本被撤销，安全分类器也常常可以被移除，尽管这需要多少工作量各不相同，且并不总是明确。",
+          "inlines": [
+            {
+              "text": "然而，稳健地保护开放权重模型十分困难。一旦权重和推理代码公开可用，保障措施的有效性就更难保证。训练后保护措施往往可以通过微调以低成本被撤销，安全分类器也常常可以被移除，尽管这需要多少工作量各不相同，且并不总是明确。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要有效，开放权重模型的保障措施必须具有防篡改性。在迄今为止开发的保障措施中，最有前景的一种是对预训练数据进行严格过滤，因为与训练后干预相比，撤销这一措施通常需要显著更多的微调算力。开发者有时会将其作为公开释放模型权重的理由。",
+          "inlines": [
+            {
+              "text": "要有效，开放权重模型的保障措施必须具有防篡改性。在迄今为止开发的保障措施中，最有前景的一种是"
+            },
+            {
+              "bold": true,
+              "text": "对预训练数据进行严格过滤"
+            },
+            {
+              "text": "，因为与训练后干预相比，撤销这一措施通常需要显著更多的微调算力。开发者有时会将其作为公开释放模型权重的理由。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "先前关于 LLM 的研究（见此处和此处）表明，过滤可以选择性地降低目标领域的性能，同时基本保持其他领域的性能不变。这表明，原则上它可以被用来从专用科学模型（如蛋白质模型）中移除与两用能力相关的信息。然而，这些模型的训练数据比 LLM 的多样性要低得多，这使得目标领域更难被隔离：过滤后留下的数据可能与移除的数据非常相似，这反过来可能影响过滤在这些情境中的效果。",
+          "inlines": [
+            {
+              "text": "先前关于 LLM 的研究（见"
+            },
+            {
+              "href": "https://alignment.anthropic.com/2025/pretraining-data-filtering/",
+              "text": "此处"
+            },
+            {
+              "text": "和"
+            },
+            {
+              "href": "https://arxiv.org/abs/2508.06601",
+              "text": "此处"
+            },
+            {
+              "text": "）表明，过滤可以选择性地降低目标领域的性能，同时基本保持其他领域的性能不变。这表明，原则上它可以被用来从专用科学模型（如蛋白质模型）中移除与两用能力相关的信息。然而，这些模型的训练数据比 LLM 的多样性要低得多，这使得目标领域更难被隔离：过滤后留下的数据可能与移除的数据非常相似，这反过来可能影响过滤在这些情境中的效果。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AISI 的化学-生物团队开展前沿研究，以理解、评估和缓解与前沿 AI 系统相关的化学和生物风险。本博客概述了我们对预训练数据过滤在专用科学模型上有效性的调查过程和结果，为此我们使用了开放权重的 ESM-2 蛋白质模型系列。",
+          "inlines": [
+            {
+              "text": "AISI 的化学-生物团队开展前沿研究，以理解、评估和缓解与前沿 AI 系统相关的化学和生物风险。本博客概述了我们对预训练数据过滤在专用科学模型上有效性的调查过程和结果，为此我们使用了开放权重的 ESM-2 蛋白质模型系列。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的研究结果表明，数据过滤可以抑制蛋白质语言模型中的目标能力，而不会显著影响相邻能力。然而，它本身并不构成稳健的保障措施，因为丢失的能力可以以相对较低的成本恢复（即使对我们最大的模型，算力成本也不到 80 美元），而且恢复所需的数据往往公开可用且易于找到。因此，要使其成为有效的保障措施，需要与其他干预措施（如数据访问控制）配合使用。",
+          "inlines": [
+            {
+              "text": "我们的研究结果表明，数据过滤可以抑制蛋白质语言模型中的目标能力，而不会显著影响相邻能力。然而，它本身并不构成稳健的保障措施，因为丢失的能力可以以相对较低的成本恢复（即使对我们最大的模型，算力成本也不到 80 美元），而且恢复所需的数据往往公开可用且易于找到。因此，要使其成为有效的保障措施，需要与其他干预措施（如数据访问控制）配合使用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们如何测试",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "我们如何测试"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "为了衡量数据过滤的效果，我们从零开始预训练了 ESM-2 蛋白质语言模型。蛋白质语言模型的训练方式与 LLM 类似，但使用的是氨基酸序列而非单词：模型看到数百万条蛋白质序列，并学习哪些氨基酸倾向于出现在哪些上下文中。这些氨基酸的序列决定了蛋白质折叠成的形状，而这一形状正是蛋白质在活细胞内执行不同功能的基础。氨基酸序列可用于预测蛋白质如何折叠或突变将如何影响其功能。",
+          "inlines": [
+            {
+              "text": "为了衡量数据过滤的效果，我们从零开始预训练了 ESM-2 蛋白质语言模型。蛋白质语言模型的训练方式与 LLM 类似，但使用的是氨基酸序列而非单词：模型看到数百万条蛋白质序列，并学习哪些氨基酸倾向于出现在哪些上下文中。这些氨基酸的序列决定了蛋白质折叠成的形状，而这一形状正是蛋白质在活细胞内执行不同功能的基础。氨基酸序列可用于预测蛋白质如何折叠或突变将如何影响其功能。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在从 8M 到 3B 参数的多个规模上进行了训练。参数数量是衡量模型规模和复杂度的标准指标，作为对比，前沿大型语言模型（LLM）的参数量甚至比我们最大的模型还要高出几个数量级。",
+          "inlines": [
+            {
+              "text": "我们在从 8M 到 3B 参数的多个规模上进行了训练。参数数量是衡量模型规模和复杂度的标准指标，作为对比，前沿大型语言模型（LLM）的参数量甚至比我们最大的模型还要高出几个数量级。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个模型都在一个数据集上训练，该数据集已移除构成病毒的蛋白质序列（“病毒蛋白质”）。我们将这些被排除的病毒蛋白质称为“遗忘”域：即过滤意图削弱的能力。“保留”域上的性能应不受影响。在本例中，“保留”域指的是构成所有其他生命形式的蛋白质（“非病毒蛋白质”）。只有当过滤削弱了前者性能而后者保持完好时，才被视为成功。随后我们测量了通过微调能恢复多少被移除的能力：继续在预训练期间被扣留的病毒序列上训练每个经过滤的模型。",
+          "inlines": [
+            {
+              "text": "每个模型都在一个数据集上训练，该数据集已移除构成病毒的蛋白质序列（“病毒蛋白质”）。我们将这些被排除的病毒蛋白质称为“遗忘”域：即过滤意图削弱的能力。“保留”域上的性能应不受影响。在本例中，“保留”域指的是构成所有其他生命形式的蛋白质（“非病毒蛋白质”）。只有当过滤削弱了前者性能而后者保持完好时，才被视为成功。随后我们测量了通过微调能恢复多少被移除的能力：继续在预训练期间被扣留的病毒序列上训练每个经过滤的模型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了改变数据移除的程度，我们定义了一系列排除层级，从窄（仅移除单一流感毒株）到宽（移除所有病毒蛋白质及其近缘同源物），每一层级都是下一层级的严格子集。",
+          "inlines": [
+            {
+              "text": "为了改变数据移除的程度，我们定义了一系列"
+            },
+            {
+              "bold": true,
+              "text": "排除层级"
+            },
+            {
+              "text": "，从窄（仅移除单一流感毒株）到宽（移除所有病毒蛋白质及其近缘同源物），每一层级都是下一层级的严格子集。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些层级体现了一个核心权衡：窄过滤移除的数据较少，保留了更多模型的通用能力，但可能更容易被逆转；而宽过滤还会移除密切相关蛋白质的数据，这些数据本可用于重建目标能力，从而提供更强的保护，但可能对其他“保留”域的模型能力造成更大代价。",
+          "inlines": [
+            {
+              "text": "这些层级体现了一个核心权衡：窄过滤移除的数据较少，保留了更多模型的通用能力，但可能更容易被逆转；而宽过滤还会移除密切相关蛋白质的数据，这些数据本可用于重建目标能力，从而提供更强的保护，但可能对其他“保留”域的模型能力造成更大代价。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随后，每个模型都针对三个问题进行了评估：",
+          "inlines": [
+            {
+              "text": "随后，每个模型都针对三个问题进行了评估："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1. 过滤是否会削弱目标能力？使用留出的蛋白质数据，在三个标准任务上比较“遗忘”域（病毒蛋白质）与“保留”域（非病毒蛋白质）的性能：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "1. 过滤是否会削弱目标能力？"
+            },
+            {
+              "text": "使用留出的蛋白质数据，在三个标准任务上比较“遗忘”域（病毒蛋白质）与“保留”域（非病毒蛋白质）的性能："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "掩码语言建模："
+                },
+                {
+                  "text": "预测蛋白质序列中被隐藏的氨基酸。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "突变效应预测："
+                },
+                {
+                  "text": "估计蛋白质序列的改变如何影响其功能。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "接触预测："
+                },
+                {
+                  "text": "识别蛋白质中哪些氨基酸在其 3D 结构内存在物理接触。"
+                },
+                {
+                  "bold": true,
+                  "text": "‍"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2. 结果有多强的抗篡改性？我们尝试通过在排除的病毒数据上继续微调每个模型来恢复被过滤的能力，并记录成功所需的计算量。‍",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "2. 结果有多强的抗篡改性？"
+            },
+            {
+              "text": "我们尝试通过在排除的病毒数据上继续微调每个模型来恢复被过滤的能力，并记录成功所需的计算量。"
+            },
+            {
+              "bold": true,
+              "text": "‍"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3. 效果如何随规模变化？该实验在不同模型规模上重复进行，因为规模行为是与现实系统最相关的问题。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "3. 效果如何随规模变化？"
+            },
+            {
+              "text": "该实验在不同模型规模上重复进行，因为规模行为是与现实系统最相关的问题。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "‍",
+          "inlines": [
+            {
+              "text": "‍"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们的主要发现",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "我们的主要发现"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "过滤会选择性地削弱目标能力",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "过滤会选择性地削弱目标能力"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "从预训练中排除病毒蛋白质数据，在所有三个层级上都大幅降低了模型在病毒蛋白质上的性能，而模型在非病毒蛋白质上的性能基本得以保留。换言之，数据过滤移除了大部分目标能力，却没有降低模型对其他类型蛋白质的实用性。",
+          "inlines": [
+            {
+              "text": "从预训练中排除病毒蛋白质数据，在所有三个层级上都大幅降低了模型在病毒蛋白质上的性能，而模型在非病毒蛋白质上的性能基本得以保留。换言之，数据过滤移除了大部分目标能力，却没有降低模型对其他类型蛋白质的实用性。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们用于衡量病毒蛋白能力的全部三项任务（掩码语言建模、突变效应预测和接触预测）中都观察到了性能下降，尽管下降程度因任务而异。掩码语言建模的下降最为明显，在所有模型规模上都受到影响；而接触预测在参数量超过 150M 的模型上受到影响，突变效应预测则在参数量超过 650M 的模型上受到影响。这种效应在更大、能力更强的模型上也更强，因为过滤抑制了未过滤模型随规模扩展而获得的病毒蛋白性能。",
+          "inlines": [
+            {
+              "text": "在我们用于衡量病毒蛋白能力的全部三项任务（掩码语言建模、突变效应预测和接触预测）中都观察到了性能下降，尽管下降程度因任务而异。掩码语言建模的下降最为明显，在所有模型规模上都受到影响；而接触预测在参数量超过 150M 的模型上受到影响，突变效应预测则在参数量超过 650M 的模型上受到影响。这种效应在更大、能力更强的模型上也更强，因为过滤抑制了未过滤模型随规模扩展而获得的病毒蛋白性能。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7d3591baf45b571b9d6317df3b84b9219ca82939083fba70238686d72badd6ac.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "图 1. 在“遗忘”域（病毒蛋白）和“保留”域（非病毒蛋白）上，将过滤模型与同等规模的未过滤模型进行对比。过滤降低了病毒蛋白上的性能，而非病毒蛋白的性能基本保持不变。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 1."
+            },
+            {
+              "text": " 在“遗忘”域（病毒蛋白）和“保留”域（非病毒蛋白）上，将过滤模型与同等规模的未过滤模型进行对比。过滤降低了病毒蛋白上的性能，而非病毒蛋白的性能基本保持不变。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "过滤有效但并不持久",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "过滤有效但并不持久"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在被排除的病毒数据上继续微调，能够完全恢复病毒蛋白上的性能，这表明过滤提高的是恢复某项能力的成本，而非永久移除该能力。目前，此类病毒数据通常被公开提供，即使它并未被用于模型训练。 虽然在此数据上微调模型的成本随模型规模增加而上升，但绝对成本仍然不高：即使在最大的模型（3B 参数）上恢复完整能力，也仅需约 80 美元的 H100 算力。",
+          "inlines": [
+            {
+              "text": "在被排除的病毒数据上继续微调，能够完全恢复病毒蛋白上的性能，这表明"
+            },
+            {
+              "bold": true,
+              "text": "过滤提高的是恢复某项能力的成本，而非永久移除该能力。"
+            },
+            {
+              "text": "目前，此类病毒数据通常被公开提供，即使它并未被用于模型训练。"
+            },
+            {
+              "bold": true,
+              "text": " "
+            },
+            {
+              "text": "虽然在此数据上微调模型的成本随模型规模增加而上升，但绝对成本仍然不高：即使在最大的模型（3B 参数）上恢复完整能力，也仅需约 80 美元的 H100 算力。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fbb71e5d3f02a27c159320774c9d9bfc534a1a60ca92af8b6def0405ec526b4b.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "图 2. 在被保留的病毒数据上微调，可在每种模型规模上恢复丢失的性能，且所需算力随规模增加而上升。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 2."
+            },
+            {
+              "text": " 在被保留的病毒数据上微调，可在每种模型规模上恢复丢失的性能，且所需算力随规模增加而上升。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些结果基于单一模型系列（ESM-2），因此它们对其他蛋白质模型的泛化程度尚不确定，并且对于能够在推理时检索额外数据的模型，过滤可能效果较差。我们对恢复成本的测量也不精确，这限制了我们能多自信地就防篡改能力如何随模型规模变化得出结论。",
+          "inlines": [
+            {
+              "text": "这些结果基于单一模型系列（ESM-2），因此它们对其他蛋白质模型的泛化程度尚不确定，并且对于能够在推理时检索额外数据的模型，过滤可能效果较差。我们对恢复成本的测量也不精确，这限制了我们能多自信地就防篡改能力如何随模型规模变化得出结论。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "这意味着什么",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "这意味着什么"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "总体而言，我们的发现表明，数据过滤能够有效且选择性地抑制蛋白质语言模型中的某一目标能力。然而，单靠它并不构成稳健的防护措施，因为丢失的能力可以以相对较低的成本恢复，而恢复所需的数据通常被公开提供。 因此，一种持久的方案很可能需要在数据过滤之外采取额外措施，包括改进对科学模型或训练它们所需的生物数据的访问控制。",
+          "inlines": [
+            {
+              "text": "总体而言，我们的发现表明，数据过滤能够有效且选择性地抑制蛋白质语言模型中的某一目标能力。然而，单靠它并不构成稳健的防护措施，因为丢失的能力可以以相对较低的成本恢复，而恢复所需的数据通常被公开提供。 因此，一种持久的方案很可能需要在数据过滤之外采取额外措施，包括改进对科学模型或训练它们所需的生物数据的访问控制。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你可以在完整论文中了解更多。",
+          "inlines": [
+            {
+              "text": "你可以在"
+            },
+            {
+              "href": "https://arxiv.org/abs/2610.26651",
+              "text": "完整论文"
+            },
+            {
+              "text": "中了解更多。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AISI 的化学-生物团队正在招聘。如果你对这项工作感兴趣，请在此申请。",
+          "inlines": [
+            {
+              "text": "AISI 的化学-生物团队正在招聘。如果你对这项工作感兴趣，请"
+            },
+            {
+              "href": "https://job-boards.eu.greenhouse.io/aisi/jobs/4919338101",
+              "text": "在此"
+            },
+            {
+              "text": "申请。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Specialised biological AI models (or tools) are driving rapid advances in biotechnology. They are typically released as open-weight models and are smaller than frontier large language models (LLMs), as they are trained predominantly on biological data only. This makes them easier to train, share and modify.",
+          "inlines": [
+            {
+              "text": "Specialised biological AI models (or tools) are driving rapid advances in biotechnology. They are typically released as open-weight models and are smaller than frontier large language models (LLMs), as they are trained predominantly on biological data only. This makes them easier to train, share and modify."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "However, robustly safeguarding open-weight models is difficult. Once the weights and inference code are openly available, the effectiveness of safeguards is harder to guarantee. Post-training protections can often be cheaply undone through fine-tuning, and safety classifiers can often be removed, though how much effort this takes varies and is not always clear.",
+          "inlines": [
+            {
+              "text": "However, robustly safeguarding open-weight models is difficult. Once the weights and inference code are openly available, the effectiveness of safeguards is harder to guarantee. Post-training protections can often be cheaply undone through fine-tuning, and safety classifiers can often be removed, though how much effort this takes varies and is not always clear."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To be effective, safeguards for open-weight models must be tamper-resistant. Of the safeguards developed to date, one of the most promising is stringent filtering of the pre-training data, since this often requires significantly more fine-tuning compute to undo, compared to post-training interventions. It has sometimes been pointed to by developers as a justification for openly releasing model weights.",
+          "inlines": [
+            {
+              "text": "To be effective, safeguards for open-weight models must be tamper-resistant. Of the safeguards developed to date, one of the most promising is "
+            },
+            {
+              "bold": true,
+              "text": "stringent filtering of the pre-training data"
+            },
+            {
+              "text": ", since this often requires significantly more fine-tuning compute to undo, compared to post-training interventions. It has sometimes been pointed to by developers as a justification for openly releasing model weights."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Prior work on LLMs (see here and here) suggests filtering can selectively degrade performance in a targeted domain, while leaving performance in other domains largely intact. This suggests it could, in principle, be used to remove information relevant to a dual-use capability from specialised scientific models, such as protein models. However, the training data for these models is much less varied than for LLMs, which makes a target domain harder to isolate: the data left behind after filtering may closely resemble the data removed, which could in turn affect how well filtering works in these contexts.",
+          "inlines": [
+            {
+              "text": "Prior work on LLMs (see "
+            },
+            {
+              "href": "https://alignment.anthropic.com/2025/pretraining-data-filtering/",
+              "text": "here"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://arxiv.org/abs/2508.06601",
+              "text": "here"
+            },
+            {
+              "text": ") suggests filtering can selectively degrade performance in a targeted domain, while leaving performance in other domains largely intact. This suggests it could, in principle, be used to remove information relevant to a dual-use capability from specialised scientific models, such as protein models. However, the training data for these models is much less varied than for LLMs, which makes a target domain harder to isolate: the data left behind after filtering may closely resemble the data removed, which could in turn affect how well filtering works in these contexts."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AISI's Chem-Bio team conducts cutting-edge research to understand, evaluate and mitigate chemical and biological risks associated with frontier AI systems. This blog outlines the process and outcomes of our investigation into the effectiveness of pretraining data filtering on specialised scientific models, for which we used the open-weight ESM-2 family of protein models.",
+          "inlines": [
+            {
+              "text": "AISI's Chem-Bio team conducts cutting-edge research to understand, evaluate and mitigate chemical and biological risks associated with frontier AI systems. This blog outlines the process and outcomes of our investigation into the effectiveness of pretraining data filtering on specialised scientific models, for which we used the open-weight ESM-2 family of protein models."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our findings show that data filtering can suppress a targeted capability in protein language models, without significantly impacting adjacent capabilities. However, it does not constitute a robust safeguard on its own, since the lost capability can be recovered at relatively low cost (under $80 of compute even for our largest model), and the data required to do so is often publicly available and easy to find. Therefore, for this to be an effective safeguard, it needs to come alongside other interventions, such as data access controls.",
+          "inlines": [
+            {
+              "text": "Our findings show that data filtering can suppress a targeted capability in protein language models, without significantly impacting adjacent capabilities. However, it does not constitute a robust safeguard on its own, since the lost capability can be recovered at relatively low cost (under $80 of compute even for our largest model), and the data required to do so is often publicly available and easy to find. Therefore, for this to be an effective safeguard, it needs to come alongside other interventions, such as data access controls."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How we tested it",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "How we tested it"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "To measure the effects of data filtering, we pretrained ESM-2 protein language models from scratch. Protein language models are trained in a similar way to LLMs, but on amino acid sequences rather than words: the model sees millions of protein sequences and learns which amino acids tend to appear in which contexts. The sequence of these amino acids determines the shape the protein folds into, and this shape is what allows proteins to perform different functions within a living cell. The sequence of amino acids can be used to predict how a protein folds or how a mutation will affect its function.",
+          "inlines": [
+            {
+              "text": "To measure the effects of data filtering, we pretrained ESM-2 protein language models from scratch. Protein language models are trained in a similar way to LLMs, but on amino acid sequences rather than words: the model sees millions of protein sequences and learns which amino acids tend to appear in which contexts. The sequence of these amino acids determines the shape the protein folds into, and this shape is what allows proteins to perform different functions within a living cell. The sequence of amino acids can be used to predict how a protein folds or how a mutation will affect its function."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We conducted the training at several scales, ranging from 8M to 3B parameters. Parameter count is a standard measure of model size and complexity, and for comparison, frontier large language models (LLMs) exceed even our largest by orders of magnitude.",
+          "inlines": [
+            {
+              "text": "We conducted the training at several scales, ranging from 8M to 3B parameters. Parameter count is a standard measure of model size and complexity, and for comparison, frontier large language models (LLMs) exceed even our largest by orders of magnitude."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each model was trained on a dataset from which protein sequences that make up viruses (‘viral proteins’) had been removed. We refer to those excluded viral proteins as the ‘forget’ domain: the capability that filtering is intended to degrade. Performance on the ‘retain’ domain should be unaffected. In this case, the ‘retain’ domain refers to proteins that make up all other forms of life (‘non-viral proteins’). Filtering is considered successful only to the extent that it degrades performance on the former while leaving the latter intact. We then measured how much of the removed capability could be restored by fine-tuning: continuing to train each filtered model on the viral sequences that had been withheld during pre-training.",
+          "inlines": [
+            {
+              "text": "Each model was trained on a dataset from which protein sequences that make up viruses (‘viral proteins’) had been removed. We refer to those excluded viral proteins as the ‘forget’ domain: the capability that filtering is intended to degrade. Performance on the ‘retain’ domain should be unaffected. In this case, the ‘retain’ domain refers to proteins that make up all other forms of life (‘non-viral proteins’). Filtering is considered successful only to the extent that it degrades performance on the former while leaving the latter intact. We then measured how much of the removed capability could be restored by fine-tuning: continuing to train each filtered model on the viral sequences that had been withheld during pre-training."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To vary the extent of data removal, we defined a series of exclusion tiers, ranging from narrow (removing only a single strain of influenza) to broad (removing all viral proteins and their close homologues), with each tier a strict subset of the next.",
+          "inlines": [
+            {
+              "text": "To vary the extent of data removal, we defined a series of "
+            },
+            {
+              "bold": true,
+              "text": "exclusion tiers"
+            },
+            {
+              "text": ", ranging from narrow (removing only a single strain of influenza) to broad (removing all viral proteins and their close homologues), with each tier a strict subset of the next."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The tiers capture a central trade-off: narrow filtering removes less data and preserves more of the model's general capability, but may be easier to reverse, whereas broad filtering also removes data on closely-related proteins that could otherwise be used to reconstruct the targeted capability, offering stronger protection, but at a potentially greater cost to the model's capabilities in other ‘retain’ domains.",
+          "inlines": [
+            {
+              "text": "The tiers capture a central trade-off: narrow filtering removes less data and preserves more of the model's general capability, but may be easier to reverse, whereas broad filtering also removes data on closely-related proteins that could otherwise be used to reconstruct the targeted capability, offering stronger protection, but at a potentially greater cost to the model's capabilities in other ‘retain’ domains."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each model was then evaluated against three questions:",
+          "inlines": [
+            {
+              "text": "Each model was then evaluated against three questions:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Does filtering degrade the targeted capability? Performance on the 'forget' domain (viral proteins) was compared with performance on the 'retain' domain (non-viral proteins), using held-out protein data across three standard tasks:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "1. Does filtering degrade the targeted capability?"
+            },
+            {
+              "text": " Performance on the 'forget' domain (viral proteins) was compared with performance on the 'retain' domain (non-viral proteins), using held-out protein data across three standard tasks:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Masked language modelling:"
+                },
+                {
+                  "text": " predicting amino acids that have been hidden from a protein sequence."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Mutation-effect prediction: "
+                },
+                {
+                  "text": "estimating how a change to a protein sequence alters its function."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Contact prediction: "
+                },
+                {
+                  "text": "identifying which amino acids of a protein are in physical contact within its 3D structure. "
+                },
+                {
+                  "bold": true,
+                  "text": "‍"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2. How tamper-resistant is the result? We attempted to restore the filtered capability by continuing to fine-tune each model on the excluded viral data, recording the compute required to achieve success. ‍",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "2. How tamper-resistant is the result?"
+            },
+            {
+              "text": " We attempted to restore the filtered capability by continuing to fine-tune each model on the excluded viral data, recording the compute required to achieve success. "
+            },
+            {
+              "bold": true,
+              "text": "‍"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3. How does the effect change with scale? The experiment was repeated across model sizes, since scaling behaviour is the question most relevant to real-world systems.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "3. How does the effect change with scale?"
+            },
+            {
+              "text": " The experiment was repeated across model sizes, since scaling behaviour is the question most relevant to real-world systems."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "‍",
+          "inlines": [
+            {
+              "text": "‍"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Our key findings",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Our key findings"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Filtering selectively degrades the targeted capability",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Filtering selectively degrades the targeted capability"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Excluding viral protein data from pretraining substantially reduced the model’s performance on viral proteins across all three tiers, while performance on non-viral proteins was largely preserved. In other words, data filtering removed much of the targeted capability without reducing the model’s usefulness for other types of proteins.",
+          "inlines": [
+            {
+              "text": "Excluding viral protein data from pretraining substantially reduced the model’s performance on viral proteins across all three tiers, while performance on non-viral proteins was largely preserved. In other words, data filtering removed much of the targeted capability without reducing the model’s usefulness for other types of proteins."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The degradation was observed across all three of the tasks we used to measure viral protein capability (masked language modelling, mutation-effect prediction and contact prediction), although the extent varied by task. Degradation was clearest for masked language modelling, which was affected at every model size, while contact prediction was affected for models with over 150M parameters, and mutation-effect prediction for models with over 650M parameters. The effect was also stronger for larger, more capable models, because filtering holds back the viral protein performance that unfiltered models otherwise gain as they scale.",
+          "inlines": [
+            {
+              "text": "The degradation was observed across all three of the tasks we used to measure viral protein capability (masked language modelling, mutation-effect prediction and contact prediction), although the extent varied by task. Degradation was clearest for masked language modelling, which was affected at every model size, while contact prediction was affected for models with over 150M parameters, and mutation-effect prediction for models with over 650M parameters. The effect was also stronger for larger, more capable models, because filtering holds back the viral protein performance that unfiltered models otherwise gain as they scale."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7d3591baf45b571b9d6317df3b84b9219ca82939083fba70238686d72badd6ac.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 1. Filtered against unfiltered models of the same size, on the 'forget' domain (viral proteins) and the 'retain' domain (non-viral proteins). Filtering lowers performance on viral proteins while leaving non-viral performance largely intact.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Figure 1. "
+            },
+            {
+              "text": "Filtered against unfiltered models of the same size, on the 'forget' domain (viral proteins) and the 'retain' domain (non-viral proteins). Filtering lowers performance on viral proteins while leaving non-viral performance largely intact."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Filtering is effective but not durable",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Filtering is effective but not durable"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Continued fine-tuning on the excluded viral data was able to completely restore performance on viral proteins, which shows that filtering raises the cost of recovering a capability rather than removing it permanently. At present, such viral data is routinely made publicly available, even if it is not used in model training. While the cost of fine-tuning models on this data increased with model size, the absolute cost remained modest: recovering the full capability even in the largest (3B-parameter) model required only about $80 of H100 compute.",
+          "inlines": [
+            {
+              "text": "Continued fine-tuning on the excluded viral data was able to completely restore performance on viral proteins, which shows that "
+            },
+            {
+              "bold": true,
+              "text": "filtering raises the cost of recovering a capability rather than removing it permanently. "
+            },
+            {
+              "text": "At present, such viral data is routinely made publicly available, even if it is not used in model training."
+            },
+            {
+              "bold": true,
+              "text": " "
+            },
+            {
+              "text": "While the cost of fine-tuning models on this data increased with model size, the absolute cost remained modest: recovering the full capability even in the largest (3B-parameter) model required only about $80 of H100 compute."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fbb71e5d3f02a27c159320774c9d9bfc534a1a60ca92af8b6def0405ec526b4b.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 2. Fine-tuning on the withheld viral data recovers the lost performance at every model size, and the compute required to do so increases with scale.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Figure 2. "
+            },
+            {
+              "text": "Fine-tuning on the withheld viral data recovers the lost performance at every model size, and the compute required to do so increases with scale."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These results are based on a single model family (ESM-2), so how well they generalise to other protein models is uncertain, and it is possible that filtering may be less effective for models that can retrieve additional data at inference time. Our measurements of recovery cost are also imprecise, which limits how confidently we can draw conclusions on how tamper-resistance changes with model size.",
+          "inlines": [
+            {
+              "text": "These results are based on a single model family (ESM-2), so how well they generalise to other protein models is uncertain, and it is possible that filtering may be less effective for models that can retrieve additional data at inference time. Our measurements of recovery cost are also imprecise, which limits how confidently we can draw conclusions on how tamper-resistance changes with model size."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What this means",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What this means"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Overall, our findings indicate that data filtering can effectively and selectively suppress a targeted capability in protein language models. On its own, however, it does not constitute a robust safeguard, since the lost capability can be recovered at relatively low cost, and the data required to do so is routinely made publicly available. A durable approach is therefore likely to require additional measures alongside data filtering, including improved access controls for scientific models, or the biological data required to train them.",
+          "inlines": [
+            {
+              "text": "Overall, our findings indicate that data filtering can effectively and selectively suppress a targeted capability in protein language models. On its own, however, it does not constitute a robust safeguard, since the lost capability can be recovered at relatively low cost, and the data required to do so is routinely made publicly available. A durable approach is therefore likely to require additional measures alongside data filtering, including improved access controls for scientific models, or the biological data required to train them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You can read more in the full paper.",
+          "inlines": [
+            {
+              "text": "You can read more in the "
+            },
+            {
+              "href": "https://arxiv.org/abs/2610.26651",
+              "text": "full paper"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AISI’s Chem-Bio Team is hiring. If this work interests you, please apply here.",
+          "inlines": [
+            {
+              "text": "AISI’s Chem-Bio Team is hiring. If this work interests you, please apply "
+            },
+            {
+              "href": "https://job-boards.eu.greenhouse.io/aisi/jobs/4919338101",
+              "text": "here"
+            },
+            {
+              "text": "."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-27T01:11:21.230811Z",
+  "contentMode": "full"
+}
