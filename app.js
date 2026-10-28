@@ -32,6 +32,14 @@
   var curatedLoaded = false;
   var curatedError = null;
   var curatedUpdatedAt = '';
+  var semiconductorItems = [];
+  var semiconductorById = new Map();
+  var semiconductorPromise = null;
+  var semiconductorLoaded = false;
+  var semiconductorError = null;
+  var semiconductorUpdatedAt = '';
+  var semiconductorSources = [];
+  var semiconductorCoverageStart = '';
   var itemCache = new Map();
   var localExcerptCache = new Map();
   var syncedBodyCache = new Map();
@@ -126,6 +134,106 @@
     })();
     curatedPromise = promise;
     try { return await promise; } finally { if (curatedPromise === promise) curatedPromise = null; }
+  }
+  function normalizeSemiconductor(value) {
+    if (!value || !validAIHOTId(value.id) || !cleanString(value.title, 800) || !safeURL(value.sourceURL) || !validISO(value.publishedAt) || !/(?:Z|[+-]\d{2}:\d{2})$/.test(value.publishedAt)) return null;
+    if (!['selected', 'signal', 'review'].includes(value.status) || typeof value.selected !== 'boolean') return null;
+    var score = typeof value.score === 'number' && Number.isFinite(value.score) && value.score >= 0 && value.score <= 100 ? value.score : null;
+    var sourceMode = cleanString(value.sourceMode, 32);
+    if (!['CORE', 'SIGNAL', 'REFERENCE'].includes(sourceMode) || value.score !== null && score === null) return null;
+    if (value.selected && (value.status !== 'selected' || sourceMode !== 'CORE' || score === null)) return null;
+    var summary = cleanString(value.summary, 5000);
+    var related = Array.isArray(value.relatedSources) ? value.relatedSources.slice(0, 30).map(function (source) {
+      if (typeof source === 'string') return { name: '', url: safeURL(source) };
+      return source && typeof source === 'object' ? { name: cleanString(source.name || source.title, 200), url: safeURL(source.url || source.sourceURL) } : null;
+    }).filter(function (source) { return source && source.url; }) : [];
+    var evidence = Array.isArray(value.evidence) ? value.evidence.slice(0, 5).map(function (entry) {
+      return typeof entry === 'string' ? { text: cleanString(entry, 180), url: '' } : entry && typeof entry === 'object' ? { text: cleanString(entry.text || entry.quote, 180), url: safeURL(entry.url || entry.sourceURL) } : null;
+    }).filter(function (entry) { return entry && entry.text; }) : [];
+    var axes = {};
+    ['IMP', 'NOV', 'EVI', 'REL', 'ACT'].forEach(function (axis) { if (value.axes && Number.isInteger(value.axes[axis]) && value.axes[axis] >= 0 && value.axes[axis] <= 10) axes[axis] = value.axes[axis]; });
+    return { id: 'semiconductor-' + value.id, semiconductorId: value.id, provider: 'semiconductor', category: 'semi',
+      title: cleanString(value.title, 800), summary: summary, body: summary, sourceURL: safeURL(value.sourceURL), sourceName: cleanString(value.sourceName, 180),
+      publishedAt: validISO(value.publishedAt), date: chinaDate(value.publishedAt), score: score, selected: value.selected, status: value.status,
+      relevance: ['PASS', 'RISK'].includes(value.relevance) ? value.relevance : '',
+      sourceTier: cleanString(value.sourceTier, 32), sourceMode: sourceMode, reason: cleanString(value.reason, 2400), tags: cleanList(value.tags), topics: [],
+      axes: axes, eventType: cleanString(value.eventType, 100), factKey: cleanString(value.factKey, 200), relatedSources: related, evidence: evidence,
+      signal: '', link: safeURL(value.sourceURL), links: [safeURL(value.sourceURL)], coverage: '', file: '' };
+  }
+  async function loadSemiconductor(force) {
+    if (semiconductorPromise) return semiconductorPromise;
+    var promise = (async function () {
+      try {
+        var response = await fetch('semiconductor/feed.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('半导体资讯读取失败（HTTP ' + response.status + '）。');
+        var payload = await response.json();
+        if (!payload || payload.schemaVersion !== 1 || !Array.isArray(payload.items) || !validISO(payload.updatedAt) || payload.noItemLimit !== true) throw new Error('半导体资讯数据格式无效，保留上次成功快照。');
+        var seen = new Set();
+        var items = payload.items.map(function (value) { var item = normalizeSemiconductor(value); if (!item || seen.has(item.semiconductorId)) throw new Error('半导体资讯包含无效或重复条目，保留上次成功快照。'); seen.add(item.semiconductorId); return item; });
+        semiconductorItems = items;
+        semiconductorById = new Map(items.map(function (item) { return [item.semiconductorId, item]; }));
+        semiconductorUpdatedAt = payload.updatedAt;
+        semiconductorCoverageStart = validISO(payload.coverageStart);
+        semiconductorSources = Array.isArray(payload.sources) ? payload.sources : [];
+        items.forEach(function (item) { itemCache.set(item.id, item); });
+        semiconductorLoaded = true; semiconductorError = null;
+        return items;
+      } catch (error) { semiconductorError = error; throw error; }
+    })();
+    semiconductorPromise = promise;
+    try { return await promise; } finally { if (semiconductorPromise === promise) semiconductorPromise = null; }
+  }
+  async function loadSemiconductorItem(id, force) {
+    if (!validAIHOTId(id)) throw new Error('半导体资讯编号无效。');
+    if (!force && semiconductorById.has(id)) return semiconductorById.get(id);
+    try { await loadSemiconductor(force); } catch (_) { /* Archived detail remains readable when the current feed is unavailable. */ }
+    if (semiconductorById.has(id)) return semiconductorById.get(id);
+    var response = await fetch('semiconductor/items/' + id + '.json', { cache: force ? 'reload' : 'default' });
+    if (!response.ok) throw new Error('未找到这条半导体资讯。');
+    var payload = await response.json();
+    var item = normalizeSemiconductor(payload.item || payload);
+    if (!item || item.semiconductorId !== id) throw new Error('半导体历史资讯格式无效。');
+    itemCache.set(item.id, item); return item;
+  }
+  function semiconductorState(item) {
+    if (item.relevance === 'RISK') return '待核风险';
+    if (item.status === 'review') return '待人工复核';
+    if (item.sourceMode !== 'CORE') return '来源观察中';
+    if (item.score === null) return '待评分';
+    return item.selected ? '已入选' : '观察线索';
+  }
+  function renderSemiconductorStatus(target) {
+    var stale = semiconductorUpdatedAt && Date.now() - Date.parse(semiconductorUpdatedAt) > 24 * 60 * 60 * 1000;
+    var box = element('div', 'semi-sync-status' + (stale || semiconductorError ? ' is-stale' : ''));
+    var copy = element('div', 'semi-sync-copy');
+    copy.appendChild(element('p', '', semiconductorLoaded ? '半导体采集时间：' + dateTimeLabel(semiconductorUpdatedAt) + (stale ? ' · 已超过24小时，请留意更新状态。' : '') : '半导体资讯尚未加载。'));
+    if (semiconductorError) copy.appendChild(element('p', '', errorMessage(semiconductorError) + (semiconductorLoaded ? '继续展示上次成功快照。' : '请稍后重试。')));
+    var selectedCount = semiconductorItems.filter(function (item) { return item.selected; }).length;
+    if (semiconductorLoaded) {
+      copy.appendChild(element('p', '', '已采集 ' + semiconductorItems.length + ' 条，精选 ' + selectedCount + ' 条。观察线索和待复核条目保留在全部动态，条数不设每日上限。'));
+      if (currentRoute.view === 'feed') copy.appendChild(routeLink('#all/semi', '查看半导体全部动态与观察线索 →', 'report-link'));
+      if (semiconductorCoverageStart) copy.appendChild(element('p', 'semi-coverage', '采集范围自 ' + dateTimeLabel(semiconductorCoverageStart) + ' 起。'));
+      if (semiconductorSources.length) {
+        var details = element('details', 'semi-source-health');
+        details.appendChild(element('summary', '', '查看 ' + semiconductorSources.length + ' 个信源的采集状态'));
+        var list = element('ul', '');
+        var labels = { ok: '采集正常', success: '采集正常', complete: '采集正常', partial: '部分可用', error: '采集失败', failed: '采集失败', blocked: '暂不可用', disabled: '未启用', pending: '待采集', skipped: '本轮跳过', unavailable: '暂不可用' };
+        semiconductorSources.forEach(function (source) {
+          if (!source || typeof source !== 'object') return;
+          var name = cleanString(source.name || source.sourceName || source.id || source.sourceId, 180);
+          if (!name) return;
+          var state = labels[source.status] || '状态待确认';
+          var count = [source.itemCount, source.count, source.collected, source.articleCount].find(function (value) { return Number.isInteger(value) && value >= 0; });
+          list.appendChild(element('li', '', name + ' · ' + state + (count !== undefined ? ' · ' + count + ' 条' : '')));
+        });
+        details.appendChild(list); copy.appendChild(details);
+      }
+    }
+    box.appendChild(copy);
+    var refresh = element('button', '', semiconductorPromise ? '正在刷新…' : '刷新半导体资讯');
+    refresh.type = 'button'; refresh.disabled = Boolean(semiconductorPromise);
+    refresh.addEventListener('click', async function () { var version = renderVersion; var pending = loadSemiconductor(true); renderFeed(); try { await pending; } catch (_) { /* Visible status retains the safe error. */ } if (version === renderVersion) { renderFeed(); updateStats(); } });
+    box.appendChild(refresh); target.appendChild(box);
   }
   function normalizeLocalExcerpt(value, id) {
     if (!value || value.schemaVersion !== 1 || value.provenance !== 'user-provided-screenshot' || value.id !== id || !Array.isArray(value.blocks)) return null;
@@ -551,7 +659,7 @@
     button.addEventListener('click', function () { toggleSaved(item); });
     return button;
   }
-  function itemRoute(item) { return item.provider === 'aihot' && validAIHOTId(item.aihotId) ? '#item/aihot/' + item.aihotId : '#item/report/' + encodeURIComponent(item.id); }
+  function itemRoute(item) { return item.provider === 'semiconductor' && validAIHOTId(item.semiconductorId) ? '#semiconductor/' + item.semiconductorId : item.provider === 'aihot' && validAIHOTId(item.aihotId) ? '#item/aihot/' + item.aihotId : '#item/report/' + encodeURIComponent(item.id); }
   function createNews(item, number) {
     itemCache.set(item.id, item);
     var detailHref = itemRoute(item);
@@ -569,6 +677,10 @@
     var meta = element('div', 'item-meta');
     meta.appendChild(element('span', 'category-tag ' + item.category, CATEGORIES[item.category].short));
     if (item.provider === 'aihot') meta.appendChild(element('span', 'signal-tag aihot-source-tag', 'AI HOT 精选'));
+    if (item.provider === 'semiconductor') {
+      meta.appendChild(element('span', 'semi-state ' + (item.selected && item.relevance !== 'RISK' ? 'is-selected' : ''), semiconductorState(item)));
+      meta.appendChild(element('span', 'semi-score', item.score === null ? '评分待完成' : '评分 ' + item.score));
+    }
     if (item.signal) meta.appendChild(element('span', 'signal-tag', item.signal));
     var date = element('time', 'item-date', item.date); date.dateTime = item.date; meta.appendChild(date);
     content.appendChild(meta);
@@ -583,13 +695,17 @@
       sources.appendChild(element('span', 'source-label', item.sourceName ? '来源 · ' + item.sourceName : '精选来源 · AI HOT'));
       sources.appendChild(routeLink(detailHref, '站内阅读 →', 'report-link'));
       sources.appendChild(sourceLink(item.aihotURL, 'AI HOT ↗', 'source-link'));
+    } else if (item.provider === 'semiconductor') {
+      sources.appendChild(element('span', 'source-label', '来源 · ' + (item.sourceName || new URL(item.sourceURL).hostname)));
+      sources.appendChild(routeLink(detailHref, '查看摘要与证据 →', 'report-link'));
+      sources.appendChild(sourceLink(item.sourceURL, '原文 ↗', 'source-link'));
     } else if (links.length) links.forEach(function (link, index) {
       var domain = '';
       try { domain = new URL(link).hostname.replace(/^www\./, ''); } catch (_) { return; }
       sources.appendChild(sourceLink(link, (index ? '原文 ' + (index + 1) : '原文') + ' · ' + domain + ' ↗', 'source-link'));
     });
     else sources.appendChild(element('span', 'source-missing', '原稿未附链接'));
-    if (item.provider !== 'aihot' && dailyReports.some(function (report) { return report.date === item.date; })) sources.appendChild(routeLink('#daily/' + item.date, '查看日报', 'report-link'));
+    if (!['aihot', 'semiconductor'].includes(item.provider) && dailyReports.some(function (report) { return report.date === item.date; })) sources.appendChild(routeLink('#daily/' + item.date, '查看日报', 'report-link'));
     footer.appendChild(sources);
     footer.appendChild(saveButton(item));
     content.appendChild(footer); card.appendChild(content);
@@ -597,17 +713,18 @@
   }
   function savedItems() { return Array.from(saved.values()).sort(function (a, b) { return b.savedAt - a.savedAt; }); }
   function allItems() {
-    return curatedItems.concat(dailyReports.slice(0, loadedCount).flatMap(function (meta) { var report = loadedDaily.get(meta.date); return report ? report.items.filter(function (item) { return item.category !== 'ai'; }) : []; }));
+    return curatedItems.concat(semiconductorItems, dailyReports.slice(0, loadedCount).flatMap(function (meta) { var report = loadedDaily.get(meta.date); return report ? report.items.filter(function (item) { return item.category === 'robot'; }) : []; }));
   }
   function displayedItems() {
     if (currentRoute.view === 'saved') return savedItems();
-    if (currentRoute.view === 'feed') { var latest = dailyReports[0] && loadedDaily.get(dailyReports[0].date); return curatedItems.concat(latest ? latest.items.filter(function (item) { return item.category !== 'ai'; }) : []); }
+    if (currentRoute.view === 'feed') { var latest = dailyReports[0] && loadedDaily.get(dailyReports[0].date); return curatedItems.concat(semiconductorItems.filter(function (item) { return item.selected; }), latest ? latest.items.filter(function (item) { return item.category === 'robot'; }) : []); }
     return allItems();
   }
   function scopeDescription() {
     if (currentRoute.view === 'saved') return '搜索范围：本地收藏';
-    if (currentRoute.view === 'feed') return '搜索范围：AI HOT 近7日精选及最新日报半导体、机器人资讯';
-    return '搜索范围：AI HOT 近7日精选及已加载的 ' + loadedCount + ' 期日报半导体、机器人资讯';
+    if (currentRoute.category === 'semi') return currentRoute.view === 'feed' ? '搜索范围：本轮已入选的半导体资讯' : '搜索范围：本轮半导体采集资讯、观察线索及待复核信息';
+    if (currentRoute.view === 'feed') return '搜索范围：AI HOT 近7日精选、半导体精选及最新日报机器人资讯';
+    return '搜索范围：AI HOT 近7日精选、半导体采集资讯及已加载的 ' + loadedCount + ' 期日报机器人资讯';
   }
   function formatFinancingAmount(value) {
     if (value === null || value === undefined || !Number.isFinite(Number(value))) return '—';
@@ -997,7 +1114,7 @@
       if (currentRoute.view !== 'feed' && previousDate !== groupKey) {
         var group = element('div', 'feed-date-heading');
         group.appendChild(element('h2', '', groupKey === 'aihot-current' ? 'AI HOT 近7日精选' : dateLabel(item.date)));
-        if (item.provider !== 'aihot' && dailyReports.some(function (report) { return report.date === item.date; })) group.appendChild(routeLink('#daily/' + item.date, '阅读日报 →'));
+        if (!['aihot', 'semiconductor'].includes(item.provider) && dailyReports.some(function (report) { return report.date === item.date; })) group.appendChild(routeLink('#daily/' + item.date, '阅读日报 →'));
         fragment.appendChild(group); previousDate = groupKey;
       }
       fragment.appendChild(createNews(item, index + 1));
@@ -1007,11 +1124,15 @@
     if (ui.searchInput) ui.searchInput.setAttribute('aria-description', scopeDescription());
     if (!filtered.length && !feedLoading) {
       var empty = element('div', 'empty-state');
-      empty.appendChild(element('h2', '', query ? '没有找到匹配资讯' : currentRoute.view === 'saved' ? '还没有收藏资讯' : '当前范围暂无资讯'));
-      empty.appendChild(element('p', '', query ? scopeDescription() + '。可调整关键词或加载更多历史日报。' : currentRoute.view === 'saved' ? '点击资讯旁的“收藏”，即可在这里继续阅读。收藏保存在当前浏览器。' : '可切换赛道，或前往日报归档查看完整原稿。'));
+      var semiOnly = currentRoute.category === 'semi' && currentRoute.view !== 'saved';
+      var collectedWithoutSelected = semiOnly && currentRoute.view === 'feed' && !query && semiconductorLoaded && semiconductorItems.length > 0;
+      var allSourcesObserving = semiconductorItems.every(function (item) { return item.sourceMode !== 'CORE'; });
+      empty.appendChild(element('h2', '', collectedWithoutSelected ? '已有 ' + semiconductorItems.length + ' 条半导体产业动态' : query ? '没有找到匹配资讯' : currentRoute.view === 'saved' ? '还没有收藏资讯' : semiOnly && currentRoute.view === 'feed' ? '本轮暂无半导体精选' : '当前范围暂无资讯'));
+      empty.appendChild(element('p', '', collectedWithoutSelected ? allSourcesObserving ? '来源观察期内暂未进入精选，已采集内容可在全部动态中浏览。' : '本轮内容仍在评分或复核中，可先查看全部产业动态与观察线索。' : query ? scopeDescription() + '。可调整关键词。' : currentRoute.view === 'saved' ? '点击资讯旁的“收藏”，即可在这里继续阅读。收藏保存在当前浏览器。' : semiOnly ? semiconductorLoaded ? '来源观察和评分复核通过后，符合条件的信息会进入精选。' : '正在等待可用的半导体采集快照，可通过下方状态重试。' : '可切换赛道，或前往日报归档查看完整原稿。'));
+      if (semiOnly && currentRoute.view === 'feed') empty.appendChild(routeLink('#all/semi', '查看全部半导体动态 →', 'report-link semi-empty-link'));
       ui.feedList.appendChild(empty);
     }
-    if (feedLoading) ui.feedStatus.appendChild(element('p', 'status-message', '正在读取报告…'));
+    if (feedLoading) ui.feedStatus.appendChild(element('p', 'status-message', '正在读取资讯…'));
     var needsAI = currentRoute.view !== 'saved' && (currentRoute.category === 'all' || currentRoute.category === 'ai');
     if (needsAI) {
       var snapshotAge = curatedUpdatedAt ? Date.now() - Date.parse(curatedUpdatedAt) : NaN;
@@ -1021,7 +1142,7 @@
       var freshness = curatedLoaded ? curatedUpdatedAt ? 'AI HOT 快照同步时间：' + dateTimeLabel(curatedUpdatedAt) + '。' : 'AI HOT 快照未提供同步时间。' : 'AI HOT 快照尚未加载。';
       if (staleSnapshot) freshness += '快照已过期，超过 24 小时未同步。';
       copy.appendChild(element('p', '', freshness));
-      var syncState = curatedPromise ? '正在核对最新快照…' + (curatedLoaded ? '当前继续展示上次成功同步的内容。' : '') : curatedError ? errorMessage(curatedError) + (curatedLoaded ? '本次更新失败，继续展示上次成功同步的精选快照。' : '暂无可展示的 AI HOT 快照，请重试。') : '人工智能完整沿用本次同步的 AI HOT 近7日精选及源站顺序；半导体、机器人来自投研日报。';
+      var syncState = curatedPromise ? '正在核对最新快照…' + (curatedLoaded ? '当前继续展示上次成功同步的内容。' : '') : curatedError ? errorMessage(curatedError) + (curatedLoaded ? '本次更新失败，继续展示上次成功同步的精选快照。' : '暂无可展示的 AI HOT 快照，请重试。') : '人工智能完整沿用本次同步的 AI HOT 近7日精选及源站顺序。';
       copy.appendChild(element('p', '', syncState));
       status.appendChild(copy);
       var refresh = element('button', '', curatedPromise ? '正在刷新…' : curatedError ? '重试 AI 快照' : '刷新 AI 快照');
@@ -1029,15 +1150,16 @@
       refresh.addEventListener('click', retryCurated); status.appendChild(refresh);
       ui.feedStatus.appendChild(status);
     }
+    if (currentRoute.view !== 'saved' && ['all', 'semi'].includes(currentRoute.category)) renderSemiconductorStatus(ui.feedStatus);
     var applicableFailures = currentRoute.view === 'feed' ? dailyReports.slice(0, 1).filter(function (meta) { return failedDaily.has(meta.date); }) : currentRoute.view === 'all' ? dailyReports.slice(0, loadedCount).filter(function (meta) { return failedDaily.has(meta.date); }) : [];
-    if (applicableFailures.length) {
+    if (applicableFailures.length && currentRoute.category !== 'semi') {
       retryBox(ui.feedStatus, applicableFailures.length + ' 期日报读取失败：' + applicableFailures.map(function (meta) { return meta.date; }).join('、') + '。' + errorMessage(failedDaily.get(applicableFailures[0].date)), retryFailed);
     }
     if (currentRoute.view === 'saved' && !storageAvailable) ui.feedStatus.appendChild(element('p', 'storage-note', '浏览器未开放本地存储，当前收藏仅在本次浏览期间保留。'));
-    var more = currentRoute.view === 'all' && loadedCount < dailyReports.length;
+    var more = currentRoute.view === 'all' && currentRoute.category !== 'semi' && loadedCount < dailyReports.length;
     show(ui.loadMore, more);
     if (ui.loadMore) { ui.loadMore.disabled = feedLoading; ui.loadMore.textContent = feedLoading ? '加载中…' : '加载更多 · 还有 ' + (dailyReports.length - loadedCount) + ' 期'; }
-    if (currentRoute.view === 'all' && loadedCount === dailyReports.length && !feedLoading) ui.feedStatus.appendChild(element('p', 'status-message', '已加载全部 ' + dailyReports.length + ' 期日报。'));
+    if (currentRoute.view === 'all' && currentRoute.category !== 'semi' && loadedCount === dailyReports.length && !feedLoading) ui.feedStatus.appendChild(element('p', 'status-message', '已加载全部 ' + dailyReports.length + ' 期日报。'));
     document.querySelectorAll('#categoryFilters [data-filter]').forEach(function (button) {
       var active = button.dataset.filter === currentRoute.category;
       button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active));
@@ -1087,15 +1209,16 @@
     text(ui.statWeekly, weeklyReports.length);
     var latest = dailyReports[0] && loadedDaily.get(dailyReports[0].date);
     text(ui.latestDate, dailyReports[0] ? dailyReports[0].date : '暂无日报');
-    var latestItems = curatedItems.concat(latest ? latest.items.filter(function (item) { return item.category !== 'ai'; }) : []);
-    text(ui.statItems, curatedLoaded || latest ? latestItems.length : '—');
-    if (ui.statItems) ui.statItems.title = 'AI HOT 当前精选及最新一期日报半导体、机器人资讯条数';
+    var semiSelected = semiconductorItems.filter(function (item) { return item.selected; });
+    var latestItems = curatedItems.concat(semiSelected, latest ? latest.items.filter(function (item) { return item.category === 'robot'; }) : []);
+    text(ui.statItems, curatedLoaded || semiconductorLoaded || latest ? latestItems.length : '—');
+    if (ui.statItems) ui.statItems.title = 'AI HOT 当前精选、半导体精选及最新一期日报机器人资讯条数';
     if (ui.sectorStats) {
       clear(ui.sectorStats);
       CATEGORY_KEYS.forEach(function (key) {
         var link = routeLink('#feed/' + key, '', 'sector-stat');
         link.appendChild(element('span', 'category-tag ' + key, CATEGORIES[key].short));
-        var count = key === 'ai' ? curatedLoaded ? curatedItems.length + ' 条' : '未同步' : latest ? latest.sections[key].length + ' 条' : '—';
+        var count = key === 'ai' ? curatedLoaded ? curatedItems.length + ' 条' : '未同步' : key === 'semi' ? semiconductorLoaded ? semiSelected.length + ' 条精选 / ' + semiconductorItems.length + ' 条动态' : '未同步' : latest ? latest.sections[key].length + ' 条' : '—';
         link.appendChild(element('span', '', count));
         ui.sectorStats.appendChild(link);
       });
@@ -1419,6 +1542,7 @@
   }
   function renderArticle(item) {
     var isAIHOT = item.provider === 'aihot';
+    var isSemiconductor = item.provider === 'semiconductor';
     var excerpt = isAIHOT && item.localExcerpt ? normalizeLocalExcerpt(Object.assign({ schemaVersion: 1 }, item.localExcerpt), item.aihotId) : null;
     var layout = element('div', 'article-layout');
     var main = element('div', 'article-main');
@@ -1428,16 +1552,39 @@
     main.appendChild(toolbar);
     var meta = element('div', 'article-meta');
     meta.appendChild(element('span', 'category-tag ' + item.category, CATEGORIES[item.category].short));
-    if (isAIHOT) meta.appendChild(element('span', '', item.sourceName || 'AI HOT'));
+    if (isSemiconductor) meta.appendChild(element('span', '', item.sourceName || '半导体信源采集'));
+    else if (isAIHOT) meta.appendChild(element('span', '', item.sourceName || 'AI HOT'));
     else meta.appendChild(element('span', '', '盈峰投资 · 投研日报归档'));
     if (item.author) meta.appendChild(element('span', '', item.author));
-    var time = element('time', '', isAIHOT ? dateTimeLabel(item.publishedAt || item.selectedAt) : dateLabel(item.date));
-    time.dateTime = isAIHOT ? item.publishedAt || item.selectedAt : item.date;
+    var time = element('time', '', isAIHOT || isSemiconductor ? dateTimeLabel(item.publishedAt || item.selectedAt) : dateLabel(item.date));
+    time.dateTime = isAIHOT || isSemiconductor ? item.publishedAt || item.selectedAt : item.date;
     if (time.textContent) meta.appendChild(time);
     main.appendChild(meta);
     main.appendChild(element('h1', 'article-title', item.title));
     if (item.originalTitle && item.originalTitle !== item.title) main.appendChild(element('p', 'article-original-title', item.originalTitle));
-    if (isAIHOT) {
+    if (isSemiconductor) {
+      var state = element('div', 'semi-article-state');
+      state.appendChild(element('span', 'semi-state ' + (item.selected && item.relevance !== 'RISK' ? 'is-selected' : ''), semiconductorState(item)));
+      state.appendChild(element('span', 'semi-score', item.score === null ? '评分待完成' : '评分 ' + item.score + '/100'));
+      main.appendChild(state);
+      if (item.relevance === 'RISK') main.appendChild(element('p', 'article-note semi-observation-note', '本条为待核风险线索，原始披露或报道尚需复核，不代表已确认的风险结论。'));
+      else if (item.sourceMode !== 'CORE' || !item.selected) main.appendChild(element('p', 'article-note semi-observation-note', '本条为观察线索，尚未作为已确认产业结论入选。请结合原始披露与后续核验判断。'));
+      appendArticleSection(main, '事实摘要', item.summary);
+      if (!item.summary) main.appendChild(element('p', 'article-note', '暂无可展示的事实摘要，请查看原始来源。'));
+      appendArticleSection(main, '筛选说明', item.reason || (item.score === null ? '评分尚未完成，当前仅保留采集线索。' : '本次快照未提供进一步筛选说明。'));
+      var axisNames = { IMP: '产业影响', NOV: '增量信息', EVI: '证据强度', REL: '投资相关性', ACT: '可行动性' };
+      if (item.score !== null && Object.keys(item.axes || {}).length) {
+        var axes = element('dl', 'semi-axes');
+        Object.keys(axisNames).forEach(function (axis) { if (Number.isInteger(item.axes[axis])) { var pair = element('div', ''); pair.appendChild(element('dt', '', axisNames[axis])); pair.appendChild(element('dd', '', item.axes[axis] + '/10')); axes.appendChild(pair); } });
+        main.appendChild(axes);
+      }
+      if (item.evidence && item.evidence.length) {
+        var evidence = element('section', 'article-section semi-evidence'); evidence.appendChild(element('h2', 'article-section-label', '引用证据'));
+        item.evidence.forEach(function (entry) { var quote = element('blockquote', '', entry.text); if (entry.url) quote.appendChild(sourceLink(entry.url, '核对来源 ↗', 'source-link')); evidence.appendChild(quote); });
+        main.appendChild(evidence);
+      }
+      if (item.tags && item.tags.length) main.appendChild(element('p', 'article-note', '主题：' + item.tags.join(' · ')));
+    } else if (isAIHOT) {
       appendArticleSection(main, 'AI HOT 导读', item.summary);
       if (!item.summary) main.appendChild(element('p', 'article-note', '本次同步的公开数据未提供导读，可通过下方来源链接继续阅读。'));
       var hasBody = item.localBody && Object.keys(item.localBody.languages).length > 0;
@@ -1460,7 +1607,12 @@
     }
     var sourceSection = element('section', 'article-reading-sources article-source-actions');
     sourceSection.appendChild(element('h2', '', '阅读来源'));
-    if (isAIHOT) {
+    if (isSemiconductor) {
+      sourceSection.appendChild(sourceLink(item.sourceURL, '打开原始披露 ↗', 'article-source-button'));
+      var relatedSeen = new Set([item.sourceURL]);
+      (item.relatedSources || []).forEach(function (source) { if (!relatedSeen.has(source.url)) { sourceSection.appendChild(sourceLink(source.url, (source.name || '关联来源') + ' ↗', 'article-source-button')); relatedSeen.add(source.url); } });
+      sourceSection.appendChild(element('p', 'article-note', '本站展示采集后整理的事实摘要、筛选说明与短证据引用。完整报道请访问原始来源。'));
+    } else if (isAIHOT) {
       if (item.sourceURL) sourceSection.appendChild(sourceLink(item.sourceURL, '打开原文 ↗', 'article-source-button'));
       sourceSection.appendChild(sourceLink(item.aihotURL, '查看 AI HOT ↗', 'article-source-button'));
     } else {
@@ -1486,7 +1638,7 @@
     clear(ui.articleContent); ui.articleContent.appendChild(element('p', 'status-message', '正在读取资讯…')); ui.articleContent.setAttribute('aria-busy', 'true');
     try {
       var route = currentRoute;
-      var item = route.provider === 'aihot' ? await loadAIHOTItem(route.id, force) : await loadReportItem(route.id, force);
+      var item = route.provider === 'semiconductor' ? await loadSemiconductorItem(route.id, force) : route.provider === 'aihot' ? await loadAIHOTItem(route.id, force) : await loadReportItem(route.id, force);
       if (version !== renderVersion) return;
       if (route.provider === 'aihot') {
         renderArticle(Object.assign({}, item, { localBodyState: 'loading' }));
@@ -1536,6 +1688,10 @@
       try { route.id = decodeURIComponent(path[2] || ''); } catch (_) { route.id = ''; }
       if ((path[1] !== 'aihot' && path[1] !== 'report') || !/^[A-Za-z0-9_-]{1,180}$/.test(route.id)) route.id = '';
     }
+    if (name === 'semiconductor') {
+      route.view = 'item'; route.provider = 'semiconductor'; route.category = 'semi';
+      route.id = validAIHOTId(path[1]) ? path[1] : '';
+    }
     if (name === 'daily') route.id = path[1] || (dailyReports[0] ? dailyReports[0].id : '');
     if (name === 'weekly') {
       route.id = path[1] || (weeklyReports[0] ? weeklyReports[0].id : '');
@@ -1564,7 +1720,7 @@
       if (route.industry) query.set('industry', route.industry);
       if (route.region) query.set('region', route.region);
     } else if (route.view === 'item') {
-      path += '/' + route.provider + '/' + encodeURIComponent(route.id);
+      path = route.provider === 'semiconductor' ? 'semiconductor/' + encodeURIComponent(route.id) : path + '/' + route.provider + '/' + encodeURIComponent(route.id);
     }
     return '#' + path + (query.size ? '?' + query.toString() : '');
   }
@@ -1619,7 +1775,7 @@
     return localReaderEnabled;
   }
   function updateHeader(route) {
-    var titles = { feed: ['每日精选', 'TODAY’S SIGNALS', '人工智能完整沿用 AI HOT 近7日精选；半导体、机器人沿用最新一期投研日报。'], all: ['全部动态', 'RESEARCH FEED', 'AI HOT 近7日精选与已归档的半导体、机器人资讯；历史 AI 内容保留在日报原稿中。'], daily: ['投研日报', 'DAILY ARCHIVE', '按月浏览历史日报，回到信号发生的那一天。'], financing: ['投融资动态', 'PRIMARY MARKET FINANCING', '按交易日查看烯牛数据记录的融资轮次、金额、投资方与行业分布。'], weekly: ['投研周报', 'WEEKLY ARCHIVE', '从一周资讯中观察趋势、融资与产业变化。'], saved: ['我的收藏', 'SAVED FOR LATER', '值得再读的资讯，保存在当前浏览器。'], about: ['关于投研', 'ABOUT RESEARCH', '聚焦人工智能、半导体、机器人与一级市场投融资的研究资料。'], item: ['资讯详情', 'READING', '阅读 AI HOT 正文、导读与来源。'] };
+    var titles = { feed: ['每日精选', 'TODAY’S SIGNALS', '人工智能沿用 AI HOT 近7日精选；半导体展示独立采集后入选的产业信息。'], all: ['全部动态', 'RESEARCH FEED', '浏览 AI HOT 精选、半导体产业动态与观察线索，以及已归档的机器人资讯。'], daily: ['投研日报', 'DAILY ARCHIVE', '按月浏览历史日报，回到信号发生的那一天。'], financing: ['投融资动态', 'PRIMARY MARKET FINANCING', '按交易日查看烯牛数据记录的融资轮次、金额、投资方与行业分布。'], weekly: ['投研周报', 'WEEKLY ARCHIVE', '从一周资讯中观察趋势、融资与产业变化。'], saved: ['我的收藏', 'SAVED FOR LATER', '值得再读的资讯，保存在当前浏览器。'], about: ['关于投研', 'ABOUT RESEARCH', '聚焦人工智能、半导体、机器人与一级市场投融资的研究资料。'], item: ['资讯详情', 'READING', '阅读摘要、证据与原始来源。'] };
     var header = titles[route.view] || ['页面不存在', 'PAGE NOT FOUND', '请使用导航返回资讯或归档。'];
     text(ui.pageHeading, header[0]); text(ui.pageEyebrow, header[1]); text(ui.pageDescription, header[2]);
     text(ui.headerDate, dailyReports[0] ? dateLabel(dailyReports[0].date, true) : '暂无日报');
@@ -1629,7 +1785,7 @@
       if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
     });
     document.querySelectorAll('#sidebar a[data-category]').forEach(function (link) {
-      var active = (['feed', 'all'].includes(route.view) && link.dataset.category === route.category) || route.view === 'item' && route.provider === 'aihot' && link.dataset.category === 'ai';
+      var active = (['feed', 'all'].includes(route.view) && link.dataset.category === route.category) || route.view === 'item' && (route.provider === 'aihot' && link.dataset.category === 'ai' || route.provider === 'semiconductor' && link.dataset.category === 'semi');
       link.classList.toggle('active', active); if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
     });
     if (ui.searchInput) { ui.searchInput.value = route.q; ui.searchInput.placeholder = route.view === 'all' ? '搜索已加载资讯…' : route.view === 'saved' ? '搜索本地收藏…' : '搜索精选资讯…'; }
@@ -1662,14 +1818,15 @@
         renderFeed();
         await Promise.all([
           curatedRequest,
+          loadSemiconductor(false).catch(function () { /* Semiconductor failure is displayed without reusing report items. */ }),
           readDailyBatch(dailyReports.slice(0, 1).filter(function (entry) { return !loadedDaily.has(entry.date); }), false)
         ]);
         if (version !== renderVersion) return;
-        feedLoading = false; renderFeed();
+        feedLoading = false; renderFeed(); updateStats();
       } else if (currentRoute.view === 'all') {
-        await Promise.all([loadCurated(false).catch(function () { /* The retry control is rendered below. */ }), ensureAll(currentRoute.count, version)]);
+        await Promise.all([loadCurated(false).catch(function () { /* The retry control is rendered below. */ }), loadSemiconductor(false).catch(function () { /* The retry control is rendered below. */ }), ensureAll(currentRoute.count, version)]);
         if (version !== renderVersion) return;
-        renderFeed();
+        renderFeed(); updateStats();
       }
     } else if (reader) { renderArchive(); await loadReader(version, false); }
     else if (financing) await renderFinancing(version);
