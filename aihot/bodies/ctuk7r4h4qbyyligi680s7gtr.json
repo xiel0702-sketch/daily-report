@@ -1,0 +1,3586 @@
+{
+  "schemaVersion": 1,
+  "id": "ctuk7r4h4qbyyligi680s7gtr",
+  "status": "available",
+  "provenance": "source-public-page",
+  "sourceURL": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1",
+  "fetchedAt": "2026-10-29T01:10:44.914829Z",
+  "label": "正文 · 原文来源",
+  "notice": "AI HOT 页面未提供完整正文，以下内容抓取自原始来源。",
+  "topics": [],
+  "tags": [],
+  "languages": {
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "From Tokens to Bytes I: Scaling Hierarchical Networks",
+          "inlines": [
+            {
+              "text": "From Tokens to Bytes I: Scaling Hierarchical Networks"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Cartesia Research Oct 28, 2026",
+          "inlines": [
+            {
+              "text": "Cartesia Research Oct 28, 2026"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b68c0e93db66dc843bcba80a224d932af15b5f64ed3506c5dd9b5ccee2e30254.webp",
+          "alt": "The bytes of \"The_end_of_tokens\" chunked by an H-Net in two stages: first into \"The_\", \"end_\", \"of_\", and \"tokens\", then into \"The end of\" and \"tokens\"",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "type": "paragraph",
+          "text": "Table of contentsHierarchical Networks (H-Nets)Part 1: BPE and H-Net Scaling LaddersPart 2: Training a larger H-NetPart 3: Qualitative analysis of learned behaviorsPart 4: From tokens to atoms: hierarchical networks beyond languageNext: Post IICitationFootnotes",
+          "inlines": [
+            {
+              "text": "Table of contents"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#hierarchical-networks-h-nets",
+              "text": "Hierarchical Networks (H-Nets)"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#part-1-bpe-and-h-net-scaling-ladders",
+              "text": "Part 1: BPE and H-Net Scaling Ladders"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#part-2-training-a-larger-h-net",
+              "text": "Part 2: Training a larger H-Net"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#part-3-qualitative-analysis-of-learned-behaviors",
+              "text": "Part 3: Qualitative analysis of learned behaviors"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#part-4-from-tokens-to-atoms-hierarchical-networks-beyond-language",
+              "text": "Part 4: From tokens to atoms: hierarchical networks beyond language"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#next-post-ii",
+              "text": "Next: Post II"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#citation",
+              "text": "Citation"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#footnote-label",
+              "text": "Footnotes"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Since Richard Sutton’s influential essay in 2019, the concept of the bitter lesson has guided much of modern progress in AI. This concept espouses general methods that leverage computation and learn with scale, as free of human-engineered priors as possible. Our interpretation is that, fundamentally, intelligence is about learning from raw data: autonomously finding patterns, building abstractions, and developing meaning from messy low-level inputs, ideally end-to-end and as data-efficiently as possible. As AI advances into complex domains such as science, robotics, and biology – where data is scarce and often difficult for humans to understand, let alone engineer for – internalizing this philosophy to develop more general learning algorithms is more important than ever.",
+          "inlines": [
+            {
+              "text": "Since Richard Sutton’s "
+            },
+            {
+              "href": "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+              "text": "influential essay"
+            },
+            {
+              "text": " in 2019, the concept of the "
+            },
+            {
+              "bold": true,
+              "text": "bitter lesson"
+            },
+            {
+              "text": " has guided much of modern progress in AI. This concept espouses general methods that leverage computation and learn with scale, as free of human-engineered priors as possible. Our interpretation is that, fundamentally, "
+            },
+            {
+              "bold": true,
+              "text": "intelligence is about learning from raw data"
+            },
+            {
+              "text": ": autonomously finding patterns, building abstractions, and developing meaning from messy low-level inputs, ideally "
+            },
+            {
+              "italic": true,
+              "text": "end-to-end"
+            },
+            {
+              "text": " and as data-efficiently as possible. As AI advances into complex domains such as science, robotics, and biology – where data is scarce and often difficult for humans to understand, let alone engineer for – internalizing this philosophy to develop more general learning algorithms is more important than ever."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Language models are perhaps AI’s biggest success story today, and largely embrace the bitter lesson. Their abilities are largely attributable to scaling a few simple algorithms such as the Transformer architecture, next-token prediction, reinforcement learning, and test-time computation. However, they still rely on hand-crafted encoding steps such as tokenizers, which severely hinder their ability to learn end-to-end from the underlying data. Towards unlocking another step change of scaling, we believe that developing byte-level language models is foundational for AI progress – not just for improving standalone LLMs, but also as a litmus test for general learning methods. If we can’t even learn language well from characters and bytes, what right do we have to make progress on the next frontier?",
+          "inlines": [
+            {
+              "text": "Language models are perhaps AI’s biggest success story today, and largely embrace the bitter lesson. Their abilities are largely attributable to scaling a few simple algorithms such as the Transformer architecture, next-token prediction, reinforcement learning, and test-time computation. However, they still rely on hand-crafted encoding steps such as tokenizers, which severely hinder their ability to learn end-to-end from the underlying data. Towards unlocking another step change of scaling, "
+            },
+            {
+              "bold": true,
+              "text": "we believe that developing byte-level language models is foundational for AI progress"
+            },
+            {
+              "text": " – not just for improving standalone LLMs, but also as a litmus test for general learning methods. If we can’t even learn language well from characters and bytes, what right do we have to make progress on the next frontier?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In 2025, we developed the concept of hierarchical networks (H-Nets), which not only addressed tokenization in language models, but took a step toward even more general-purpose architectures that could learn from raw data across different modalities. We’ve since significantly improved the technology of H-Nets and are excited to share their capabilities! In this series of two posts, we’ll dig into new results and discuss the implications.",
+          "inlines": [
+            {
+              "text": "In 2025, we developed the concept of "
+            },
+            {
+              "bold": true,
+              "text": "hierarchical networks (H-Nets)"
+            },
+            {
+              "text": ", which not only addressed tokenization in language models, but took a step toward even more general-purpose architectures that could learn from raw data across different modalities. We’ve since significantly improved the technology of H-Nets and are excited to share their capabilities! In this series of two posts, we’ll dig into new results and discuss the implications."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this first post of a two-part series, we’ll explore scaling laws for H-Nets and their qualitative behaviors.",
+          "inlines": [
+            {
+              "text": "In this first post of a two-part series, we’ll explore scaling laws for H-Nets and their qualitative behaviors."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "We produce a standard scaling ladder for tokenized Transformers, and show that carefully controlled 1-stage "
+                },
+                {
+                  "bold": true,
+                  "text": "H-Nets provide meaningful compute efficiency gains"
+                },
+                {
+                  "text": " (up to 3-5x) purely through "
+                },
+                {
+                  "bold": true,
+                  "text": "learned tokenization."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We show empirical results from scaling up a more flexible 2-stage H-Net, where it "
+                },
+                {
+                  "bold": true,
+                  "text": "outperforms a matched open-source model"
+                },
+                {
+                  "text": " with "
+                },
+                {
+                  "bold": true,
+                  "text": "extreme efficiency improvements (10x less compute and data)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We analyze the patterns that H-Nets learn, where they show a "
+                },
+                {
+                  "bold": true,
+                  "text": "rich diversity of new behaviors"
+                },
+                {
+                  "text": " previously unseen in language models, such as "
+                },
+                {
+                  "bold": true,
+                  "text": "in-context tokenization."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We discuss how H-Nets go beyond language modeling, with ongoing research results in biology and vision, showing promise as a "
+                },
+                {
+                  "bold": true,
+                  "text": "general architecture across modalities."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the next post, we’ll do a deeper exploration of a larger range of models to understand better why H-Nets can be so much more efficient for language modeling.",
+          "inlines": [
+            {
+              "text": "In the "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-2",
+              "text": "next post"
+            },
+            {
+              "text": ", we’ll do a deeper exploration of a larger range of models to understand better why H-Nets can be so much more efficient for language modeling."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Altogether, our results provide evidence that H-Nets are a foundational architecture that truly aligns with the bitter lesson, learning meaning directly from raw data and significantly improving efficiency and scalability. This research agenda represents a major opportunity to advance how AI can learn from all data, and we couldn’t be more excited to push the frontier!",
+          "inlines": [
+            {
+              "text": "Altogether, our results provide evidence that H-Nets are a foundational architecture that "
+            },
+            {
+              "bold": true,
+              "text": "truly aligns with the bitter lesson"
+            },
+            {
+              "text": ", learning meaning directly from raw data and significantly improving efficiency and scalability. This research agenda represents a major opportunity to advance how AI can learn from all data, and we couldn’t be more excited to push the frontier!"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Hierarchical Networks (H-Nets)",
+          "inlines": [
+            {
+              "text": "Hierarchical Networks (H-Nets)"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We introduced hierarchical networks (paper, blog) last year as a new end-to-end architecture that models multiple levels of abstraction in data, showing promise in language modeling and beyond. In a nutshell:",
+          "inlines": [
+            {
+              "text": "We introduced hierarchical networks ("
+            },
+            {
+              "href": "https://arxiv.org/abs/2507.07955",
+              "text": "paper"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://goombalab.github.io/blog/2025/hnet-past/",
+              "text": "blog"
+            },
+            {
+              "text": ") last year as a new end-to-end architecture that models multiple levels of abstraction in data, showing promise in language modeling and beyond. In a nutshell:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hierarchical networks (H-Nets) compress data through a recursive, data-dependent dynamic chunking process.",
+          "inlines": [
+            {
+              "text": "Hierarchical networks (H-Nets) compress data through a recursive, data-dependent dynamic chunking process."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The terminology was inspired by the existing concept of chunking in cognitive psychology, which is an essential part of human intelligence. We believe it is also necessary for the frontier of artificial intelligence.",
+          "inlines": [
+            {
+              "text": "The terminology was inspired by the existing concept of "
+            },
+            {
+              "href": "https://en.wikipedia.org/wiki/Chunking_(psychology)",
+              "text": "chunking"
+            },
+            {
+              "text": " in cognitive psychology, which is an essential part of human intelligence. We believe it is also necessary for the frontier of artificial intelligence."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the context of language modeling, the idea is to build new learning primitives that allow models to recursively chunk low-level data into higher-level meaning: characters into words, words into phrases, phrases into concepts.",
+          "inlines": [
+            {
+              "text": "In the context of language modeling, the idea is to build new learning primitives that allow models to recursively chunk low-level data into higher-level meaning: characters into words, words into phrases, phrases into concepts."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the context of this post, for the most part, one can think of hierarchical networks as replacing tokenization. Instead of pre-processing data from bytes into tokens (fixed chunks of bytes), H-Nets perform the chunking dynamically directly inside the model. Furthermore, the signature characterization of H-Nets is that they hierarchically perform this chunking end-to-end. In contrast, standard tokenized language models and even other alternatives (some of which we’ll see in Post II) employ multiple stages of training, and the process of chunking / tokenizing the data is performed entirely offline.",
+          "inlines": [
+            {
+              "text": "In the context of this post, for the most part, one can think of hierarchical networks as replacing tokenization. Instead of pre-processing data from bytes into tokens (fixed chunks of bytes), H-Nets perform the chunking "
+            },
+            {
+              "italic": true,
+              "text": "dynamically"
+            },
+            {
+              "text": " directly inside the model. Furthermore, the signature characterization of H-Nets is that they hierarchically perform this chunking "
+            },
+            {
+              "italic": true,
+              "text": "end-to-end"
+            },
+            {
+              "text": ". In contrast, standard tokenized language models and even other alternatives (some of which we’ll see in "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-2#how-much-does-end-to-end-training-help",
+              "text": "Post II"
+            },
+            {
+              "text": ") employ multiple stages of training, and the process of chunking / tokenizing the data is performed entirely offline."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "\nDetails: Tokenization and BPELanguage models don’t read text directly but instead take as input a sequence of tokens from a fixed vocabulary. A natural vocabulary is the 256 byte values, producing one token per UTF-8 byte. Byte-level sequences, however, are long and expensive for standard language models to process. Tokenization aims to alleviate this problem by compressing the byte sequence into frequently occurring chunks. The most common approach, Byte Pair Encoding (BPE), starts from the 256 bytes and repeatedly merges the most frequent pair of adjacent tokens on a fixed training corpus, until the vocabulary reaches a set size (e.g. 128k for Llama-3). On our data mix, each BPE token covers about 4.57 bytes, making sequences much shorter than at the byte level. However, this compression is fixed, and tokenization remains one of the last parts of the language-modeling pipeline that is designed by hand rather than learned.",
+          "inlines": [
+            {
+              "text": "\nDetails: Tokenization and BPELanguage models don’t read text directly but instead take as input a sequence of tokens from a fixed vocabulary. A natural vocabulary is the 256 byte values, producing one token per UTF-8 byte. Byte-level sequences, however, are long and expensive for standard language models to process. Tokenization aims to alleviate this problem by compressing the byte sequence into frequently occurring chunks. The most common approach, Byte Pair Encoding (BPE), starts from the 256 bytes and repeatedly merges the most frequent pair of adjacent tokens on a fixed training corpus, until the vocabulary reaches a set size (e.g. 128k for Llama-3). On our data mix, each BPE token covers about 4.57 bytes, making sequences much shorter than at the byte level. However, this compression is fixed, and tokenization remains one of the last parts of the language-modeling pipeline that is designed by hand rather than learned."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We’ll see in this post series that even in the narrower context of replacing tokenization, the end-to-end property of H-Nets provides real performance gains. Beyond tokenization, H-Nets have broad utility as a foundational architecture:",
+          "inlines": [
+            {
+              "text": "We’ll see in this post series that even in the narrower context of replacing tokenization, the end-to-end property of H-Nets provides real performance gains. Beyond tokenization, H-Nets have broad utility as a foundational architecture:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "H-Nets can be nested recursively, allowing for multiple levels of abstraction to be built. The "
+                },
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#part-2-training-a-larger-h-net",
+                  "text": "main result"
+                },
+                {
+                  "text": " of this post is a larger two-stage hierarchical network matched against an open-source baseline."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "H-Nets can operate over any type of data, not just bytes, and not just discrete data. In contrast, tokenizing continuous data is a serious challenge. In the "
+                },
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#part-4-from-tokens-to-atoms-hierarchical-networks-beyond-language",
+                  "text": "final part"
+                },
+                {
+                  "text": " of this post, we’ll preview some future research applying H-Nets beyond text."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "H-Net architectureTwo-stage byte H-NetDecoderDechunkingDecoderDechunkingMain networkChunkingEncoderChunkingEncoderFigure 1. The hierarchical network (H-Net) architecture. Inputs go through a series of 5 modules: (1) an encoder reads the inputs, such as bytes; (2) a learned chunking step compresses them into a few chunks; (3) the main network operates over coarse chunks (analogous to tokens); (4) the chunks are decompressed back into the input resolution and summed with a residual; (5) a decoder finishes processing the combined representations. A 1-stage H-Net performs one level of dynamic chunking; the main network itself can be an H-Net, allowing the chunking process to be recursively nested. Hover over different bytes to see how they’re routed through this 2-stage hierarchical network!",
+          "inlines": [
+            {
+              "text": "H-Net architectureTwo-stage byte H-NetDecoderDechunkingDecoderDechunkingMain networkChunkingEncoderChunkingEncoder"
+            },
+            {
+              "bold": true,
+              "text": "Figure 1."
+            },
+            {
+              "text": " The hierarchical network (H-Net) architecture. Inputs go through a series of 5 modules: (1) an encoder reads the inputs, such as bytes; (2) a learned chunking step compresses them into a few chunks; (3) the main network operates over coarse chunks (analogous to tokens); (4) the chunks are decompressed back into the input resolution and summed with a residual; (5) a decoder finishes processing the combined representations. A 1-stage H-Net performs one level of dynamic chunking; the main network itself can be an H-Net, allowing the chunking process to be recursively nested. Hover over different bytes to see how they’re routed through this 2-stage hierarchical network!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 1 illustrates a 2-stage H-Net and defines the main components of the model: the encoder, main network, and decoder. We sometimes call the encoder/decoder together the outer networks and the main model the inner network.",
+          "inlines": [
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-1",
+              "text": "Figure 1"
+            },
+            {
+              "text": " illustrates a 2-stage H-Net and defines the main components of the model: the encoder, main network, and decoder. We sometimes call the encoder/decoder together the "
+            },
+            {
+              "italic": true,
+              "text": "outer networks"
+            },
+            {
+              "text": " and the main model the "
+            },
+            {
+              "italic": true,
+              "text": "inner network"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Throughout this post, we show results with a much improved version of H-Nets, which we plan to release. We’ll comment more on differences from the earlier architecture later in this post.",
+          "inlines": [
+            {
+              "text": "Throughout this post, we show results with a much improved version of H-Nets, which we plan to release. We’ll comment more on differences from the earlier architecture "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#aside-how-does-this-compare-to-the-original-h-net",
+              "text": "later in this post"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Part 1: BPE and H-Net Scaling Ladders",
+          "inlines": [
+            {
+              "text": "Part 1: BPE and H-Net Scaling Ladders"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Carefully controlled H-Nets - varying only the tokenizer - show a serious efficiency gain over tokenized language models. Expanding the H-Net design space can only improve its relative advantage.",
+          "inlines": [
+            {
+              "text": "Carefully controlled H-Nets - varying "
+            },
+            {
+              "italic": true,
+              "text": "only"
+            },
+            {
+              "text": " the tokenizer - show a serious efficiency gain over tokenized language models. Expanding the H-Net design space can only improve its relative advantage."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As with many architecture papers, the original paper on hierarchical networks focused on tuning language models of particular fixed sizes and data horizons (e.g. ~1.3B-parameter models on 100B tokens from FineWeb-Edu have been very common). Although they looked very promising, a missing piece was the lack of compute-optimal scaling laws, now a standard way to measure pretraining innovations. For example, Kimi’s popular innovations on Kimi Delta Attention (KDA) and attention residuals measured compute multipliers of 1.16x and 1.25x, respectively.",
+          "inlines": [
+            {
+              "text": "As with many architecture papers, the original paper on hierarchical networks focused on tuning language models of particular fixed sizes and data horizons (e.g. ~1.3B-parameter models on 100B tokens from FineWeb-Edu have been very common). Although they looked very promising, a missing piece was the lack of compute-optimal scaling laws, now a standard way to measure pretraining innovations. For example, Kimi’s popular innovations on "
+            },
+            {
+              "href": "https://arxiv.org/abs/2510.26692",
+              "text": "Kimi Delta Attention (KDA)"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://arxiv.org/abs/2603.15031",
+              "text": "attention residuals"
+            },
+            {
+              "text": " measured compute multipliers of 1.16x and 1.25x, respectively."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In order to validate the gains of our improved H-Net architecture, we first set out to build a modern LLM scaling ladder, and then replaced its tokenization components with a carefully controlled hierarchical network.",
+          "inlines": [
+            {
+              "text": "In order to validate the gains of our improved H-Net architecture, we first set out to build a modern LLM scaling ladder, and then replaced its tokenization components with a carefully controlled hierarchical network."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "We set up a training mixture for comparing byte-level and BPE scaling laws on equal terms, carefully matching the processing and even re-training a BPE tokenizer for the baseline."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We set up a scaling ladder for a baseline BPE Transformer language model according to standard practices, reproducing results from the literature."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We then converted each rung to a byte-level H-Net as a drop-in replacement, reusing the BPE backbone architecture and hyperparameters."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This recipe directly showed stronger results on validation loss (1.3x), with gains increasing on subdomains such as code (2x), as well as improving out of distribution (2x on evaluation, and up to 5x on out-of-domain code).",
+          "inlines": [
+            {
+              "text": "This recipe directly showed stronger results on validation loss (1.3x), with gains increasing on subdomains such as code (2x), as well as improving out of distribution (2x on evaluation, and up to 5x on out-of-domain code)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A data-controlled comparison",
+          "inlines": [
+            {
+              "text": "A data-controlled comparison"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Since byte-level and BPE models process the same data at different granularities, extra care is needed to keep the methodology controlled.",
+          "inlines": [
+            {
+              "text": "Since byte-level and BPE models process the same data at different granularities, extra care is needed to keep the methodology controlled."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Data mixture: Our training dataset consisted of 70% English, 20% code, 5% math, and 5% multilingual, measured by the number of bytes.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Data mixture"
+            },
+            {
+              "text": ": Our training dataset consisted of 70% English, 20% code, 5% math, and 5% multilingual, measured by the number of bytes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Data processing: Every sample is processed as both bytes and BPE tokens, splitting at the same boundaries; both byte- and BPE- processed datasets therefore contain exactly the same text with aligned document boundaries.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Data processing"
+            },
+            {
+              "text": ": Every sample is processed as both bytes and BPE tokens, splitting at the same boundaries; both byte- and BPE- processed datasets therefore contain exactly the same text with aligned document boundaries."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Metric: We use the standard bits-per-byte (bpb) metric for measuring next-token prediction loss in a way normalized between different tokenizers.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Metric"
+            },
+            {
+              "text": ": We use the standard bits-per-byte (bpb) metric for measuring next-token prediction loss in a way normalized between different tokenizers."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In-corpus BPE tokenizer: LLMs generally use off-the-shelf BPE tokenizers; an advantage of H-Nets is that they learn their chunking directly on the training distribution. To be extra careful, we also trained a BPE tokenizer on the corpus. We used this for the BPE scaling laws below, which ended up resulting in about a 1.1x compute gain on both validation loss and downstream evals (so the H-Net would have an even greater compute multiplier against a standard off-the-shelf tokenizer!).",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "In-corpus BPE tokenizer"
+            },
+            {
+              "text": ": LLMs generally use off-the-shelf BPE tokenizers; an advantage of H-Nets is that they learn their chunking directly on the training distribution. To be extra careful, we also trained a BPE tokenizer on the corpus. We used this for the BPE scaling laws below, which ended up resulting in about a 1.1x compute gain on both validation loss and downstream evals (so the H-Net would have an even greater compute multiplier against a standard off-the-shelf tokenizer!)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The BPE tokenizer’s vocab size is 128k, matching the Llama-3 tokenizer that we were working off of. The in-corpus tokenizer compressed the dataset slightly more, increasing the average BPE token length from 4.45 (Llama-3 tokenizer) to 4.57. Measured in tokens of the in-corpus BPE tokenizer, the training dataset comprised 64.7% English, 23.7% code, 6.1% math, and 5.5% multilingual.",
+          "inlines": [
+            {
+              "text": "The BPE tokenizer’s vocab size is 128k, matching the Llama-3 tokenizer that we were working off of. The in-corpus tokenizer compressed the dataset slightly more, increasing the average BPE token length from 4.45 (Llama-3 tokenizer) to 4.57. Measured in tokens of the in-corpus BPE tokenizer, the training dataset comprised 64.7% English, 23.7% code, 6.1% math, and 5.5% multilingual."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Bytes per BPE tokenSourceUTF-8 bytes per BPE tokenTarget mixture 4.57Figure 2. How much the BPE tokenizers compress each source in the pretraining mix, in UTF-8 bytes per token. Each bar is a source's total bytes over its total tokens. Out of the four categories, English web text packs the most bytes into each token because BPE is biased toward data frequency; code, math, and most other languages use fewer.",
+          "inlines": [
+            {
+              "text": "Bytes per BPE tokenSourceUTF-8 bytes per BPE tokenTarget mixture 4.57"
+            },
+            {
+              "bold": true,
+              "text": "Figure 2."
+            },
+            {
+              "text": " How much the BPE tokenizers compress each source in the pretraining mix, in UTF-8 bytes per token. Each bar is a source's total bytes over its total tokens. Out of the four categories, English web text packs the most bytes into each token because BPE is biased toward data frequency; code, math, and most other languages use fewer."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Creating a robust BPE baseline",
+          "inlines": [
+            {
+              "text": "Creating a robust BPE baseline"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "For our baseline, we fit a well-tuned scaling law for a standard BPE Transformer. To do this, we constructed a scaling ladder, following modern scaling recipes such as Kimi and MAI, fully defining a family of models by the number of layers L. We set the hidden dimension D to a multiple of 128 such that the aspect ratio D/L is approximately 75. For all models, we use multi-head attention with the number of heads equal to the number of layers and a fixed head dimension of 128. For the MLPs, we use SwiGLU layers with the intermediate dimension set to 3.6D, again rounding to the nearest multiple of 128.1",
+          "inlines": [
+            {
+              "text": "For our baseline, we fit a well-tuned scaling law for a standard BPE Transformer. To do this, we constructed a scaling ladder, following modern scaling recipes such as "
+            },
+            {
+              "href": "https://arxiv.org/abs/2607.24653",
+              "text": "Kimi"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://microsoft.ai/pdf/mai-thinking-1.pdf#page=6",
+              "text": "MAI"
+            },
+            {
+              "text": ", fully defining a family of models by the number of layers "
+            },
+            {
+              "italic": true,
+              "text": "L"
+            },
+            {
+              "text": ". We set the hidden dimension "
+            },
+            {
+              "italic": true,
+              "text": "D"
+            },
+            {
+              "text": " to a multiple of 128 such that the aspect ratio "
+            },
+            {
+              "italic": true,
+              "text": "D"
+            },
+            {
+              "text": "/"
+            },
+            {
+              "italic": true,
+              "text": "L"
+            },
+            {
+              "text": " is approximately 75. For all models, we use multi-head attention with the number of heads equal to the number of layers and a fixed head dimension of 128. For the MLPs, we use SwiGLU layers with the intermediate dimension set to 3.6"
+            },
+            {
+              "italic": true,
+              "text": "D"
+            },
+            {
+              "text": ", again rounding to the nearest multiple of 128."
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#user-content-fn-1",
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model",
+          "inlines": [
+            {
+              "text": "Model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Total params",
+          "inlines": [
+            {
+              "text": "Total params"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Backbone params",
+          "inlines": [
+            {
+              "text": "Backbone params"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Layers",
+          "inlines": [
+            {
+              "text": "Layers"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hidden dim",
+          "inlines": [
+            {
+              "text": "Hidden dim"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attn heads",
+          "inlines": [
+            {
+              "text": "Attn heads"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Head dim",
+          "inlines": [
+            {
+              "text": "Head dim"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FFN dim",
+          "inlines": [
+            {
+              "text": "FFN dim"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "L08",
+          "inlines": [
+            {
+              "text": "L08"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "221M",
+          "inlines": [
+            {
+              "text": "221M"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "56.4M",
+          "inlines": [
+            {
+              "text": "56.4M"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "640",
+          "inlines": [
+            {
+              "text": "640"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "128",
+          "inlines": [
+            {
+              "text": "128"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2304",
+          "inlines": [
+            {
+              "text": "2304"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "L12",
+          "inlines": [
+            {
+              "text": "L12"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "399M",
+          "inlines": [
+            {
+              "text": "399M"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "169M",
+          "inlines": [
+            {
+              "text": "169M"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12",
+          "inlines": [
+            {
+              "text": "12"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "896",
+          "inlines": [
+            {
+              "text": "896"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3200",
+          "inlines": [
+            {
+              "text": "3200"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "L16",
+          "inlines": [
+            {
+              "text": "L16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "673M",
+          "inlines": [
+            {
+              "text": "673M"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "378M",
+          "inlines": [
+            {
+              "text": "378M"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1152",
+          "inlines": [
+            {
+              "text": "1152"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4096",
+          "inlines": [
+            {
+              "text": "4096"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "L20",
+          "inlines": [
+            {
+              "text": "L20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.22B",
+          "inlines": [
+            {
+              "text": "1.22B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "822M",
+          "inlines": [
+            {
+              "text": "822M"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1536",
+          "inlines": [
+            {
+              "text": "1536"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5504",
+          "inlines": [
+            {
+              "text": "5504"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "L24",
+          "inlines": [
+            {
+              "text": "L24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.81B",
+          "inlines": [
+            {
+              "text": "1.81B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.35B",
+          "inlines": [
+            {
+              "text": "1.35B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "24",
+          "inlines": [
+            {
+              "text": "24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1792",
+          "inlines": [
+            {
+              "text": "1792"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6400",
+          "inlines": [
+            {
+              "text": "6400"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "L28",
+          "inlines": [
+            {
+              "text": "L28"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.62B",
+          "inlines": [
+            {
+              "text": "2.62B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.10B",
+          "inlines": [
+            {
+              "text": "2.10B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "28",
+          "inlines": [
+            {
+              "text": "28"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2048",
+          "inlines": [
+            {
+              "text": "2048"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7424",
+          "inlines": [
+            {
+              "text": "7424"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Table 1. Example rungs from the BPE Transformer ladder. Rungs are named by depth, and width grows with depth. Every rung uses 128-dimensional attention heads, with one key/value head per query head. Backbone parameters exclude the token embedding and output layers.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Table 1."
+            },
+            {
+              "text": " Example rungs from the BPE Transformer ladder. Rungs are named by depth, and width grows with depth. Every rung uses 128-dimensional attention heads, with one key/value head per query head. Backbone parameters exclude the token embedding and output layers."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We then fit compute-optimal scaling laws with the standard iso-FLOP sweep methodology.",
+          "inlines": [
+            {
+              "text": "We then fit compute-optimal scaling laws with the standard iso-FLOP sweep methodology."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "All runs use the Muon optimizer and WSD learning rate schedule with fixed-fraction warmup and decay."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We tuned batch size and learning rate on selected rungs and fitted hyperparameter scaling laws to extrapolate to larger ones."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We counted FLOPs carefully in all models, including all sequence-mixing layers and the LM head. For softmax attention, we also count only causal FLOPs, as, due to the quadratic complexity, over-counting non-causal FLOPs penalizes byte-level models which process longer sequences."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "An equivalent H-Net ladder",
+          "inlines": [
+            {
+              "text": "An equivalent H-Net ladder"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Because H-Nets over bytes are so different from standard tokenized models, it’s highly nontrivial to compare them directly. There are so many moving parts: how many stages of chunking, the respective compression rates, the architecture configurations of each stage (outer vs. inner networks), and the hyperparameters for each component.",
+          "inlines": [
+            {
+              "text": "Because H-Nets over bytes are so different from standard tokenized models, it’s highly nontrivial to compare them directly. There are so many moving parts: how many stages of chunking, the respective compression rates, the architecture configurations of each stage (outer vs. inner networks), and the hyperparameters for each component."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We decided to investigate a narrower setting: how do H-Nets compare against BPE models, if restricted to being interpreted as purely replacing the tokenization portion of the language model?",
+          "inlines": [
+            {
+              "text": "We decided to investigate a narrower setting: how do H-Nets compare against BPE models, if restricted to being interpreted as purely replacing the tokenization portion of the language model?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To do this, we converted each rung of the BPE ladder to a byte-level 1-stage H-Net. A 1-stage H-Net can be viewed as a standard language model with learned tokenization: the inner network operates over chunks (which play the role of tokens) and the outer networks perform the role of dynamic tokenization, encoding bytes into chunks and decoding them back. Each rung is matched very carefully:",
+          "inlines": [
+            {
+              "text": "To do this, we converted each rung of the BPE ladder to a "
+            },
+            {
+              "bold": true,
+              "text": "byte-level 1-stage H-Net"
+            },
+            {
+              "text": ". A 1-stage H-Net can be viewed as a standard language model with learned tokenization: the inner network operates over chunks (which play the role of tokens) and the outer networks perform the role of "
+            },
+            {
+              "italic": true,
+              "text": "dynamic"
+            },
+            {
+              "text": " tokenization, encoding bytes into chunks and decoding them back. Each rung is matched very carefully:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "The H-Net’s inner network is exactly the same Transformer architecture."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The H-Net’s outer network (encoder and decoder) is FLOP- and parameter- matched to the tokenization layers (embedding and “unembedding” or projection head)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The H-Net’s compression ratio is matched to the BPE compression rate (4.57) by using a strong auxiliary loss."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The BPE Transformer’s hyperparameters (batch size and learning rate) are directly transferred."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Converting a BPE rung into an H-Net",
+          "inlines": [
+            {
+              "text": "Converting a BPE rung into an H-Net"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One rung of the ladder",
+          "inlines": [
+            {
+              "text": "One rung of the ladder"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 3. Converting one rung of the BPE ladder into a byte-level 1-stage H-Net. The main backbone keeps the same architecture and runs on units of about 4.5 bytes in both models. The H-Net’s outer networks replace the tokenization layers and are matched to them in total parameters and FLOPs.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Figure 3."
+            },
+            {
+              "text": " Converting one rung of the BPE ladder into a byte-level 1-stage H-Net. The main backbone keeps the same architecture and runs on units of about 4.5 bytes in both models. The H-Net’s outer networks replace the tokenization layers and are matched to them in total parameters and FLOPs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Compute multipliers: validation, downstreams",
+          "inlines": [
+            {
+              "text": "Compute multipliers: validation, downstreams"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Compute-optimal scaling lawsByte H-Net vs. BPE Transformer1.28×Validation BPB1.83×Paloma Average2.06×OLMES AverageByte H-NetBPE TransformerFigure 4. Compute-optimal scaling of the BPE Transformer ladder and matched H-Net models. The H-Net reaches the BPE Transformer's loss with 22% less compute on held-out pretraining data (validation bpb), and the gap widens on downstream evaluation suites.",
+          "inlines": [
+            {
+              "text": "Compute-optimal scaling lawsByte H-Net vs. BPE Transformer1.28×Validation BPB1.83×Paloma Average2.06×OLMES AverageByte H-NetBPE Transformer"
+            },
+            {
+              "bold": true,
+              "text": "Figure 4."
+            },
+            {
+              "text": " Compute-optimal scaling of the BPE Transformer ladder and matched H-Net models. The H-Net reaches the BPE Transformer's loss with 22% less compute on held-out pretraining data (validation bpb), and the gap widens on downstream evaluation suites."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At all model sizes, the H-Net run achieved lower loss than the matching BPE Transformer rung – the “dynamic tokenization” interpretation outperformed the static tokenizer out of the box!",
+          "inlines": [
+            {
+              "text": "At all model sizes, "
+            },
+            {
+              "bold": true,
+              "text": "the H-Net run achieved lower loss than the matching BPE Transformer rung"
+            },
+            {
+              "text": " – the “dynamic tokenization” interpretation outperformed the static tokenizer out of the box!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "After fitting compute-to-loss power laws to both ladders, we can compare the compute efficiency of both architectures, quantified by how much less compute the H-Net takes to reach the same loss as the BPE ladder (Figure 4).",
+          "inlines": [
+            {
+              "text": "After fitting compute-to-loss power laws to both ladders, we can compare the compute efficiency of both architectures, quantified by how much less compute the H-Net takes to reach the same loss as the BPE ladder ("
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-4",
+              "text": "Figure 4"
+            },
+            {
+              "text": ")."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In-domain: The H-Net is 1.28x more compute efficient than the BPE Transformer.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "In-domain"
+            },
+            {
+              "text": ": The H-Net is 1.28x more compute efficient than the BPE Transformer."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Evaluations: We examined standard downstream evaluation suites such as Paloma and OLMES, each of which consists of a mixture of dozens of datasets and tasks spanning human languages and domains (code, math, etc.). For each one, we measured the “soft accuracy” of a model as the bits-per-byte it assigns to the correct answer. Re-fitting compute-to-bpb scaling laws to each suite, we see that the gap between H-Nets and BPE Transformers grows further to around 2x.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Evaluations"
+            },
+            {
+              "text": ": We examined standard downstream evaluation suites such as "
+            },
+            {
+              "href": "https://arxiv.org/abs/2312.10523",
+              "text": "Paloma"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://github.com/allenai/olmes",
+              "text": "OLMES"
+            },
+            {
+              "text": ", each of which consists of a mixture of dozens of datasets and tasks spanning human languages and domains (code, math, etc.). For each one, we measured the “soft accuracy” of a model as the bits-per-byte it assigns to the correct answer. Re-fitting compute-to-bpb scaling laws to each suite, we see that the gap between H-Nets and BPE Transformers grows further to around 2x."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the second post of this series, we analyze the out-of-distribution behavior of a range of language models more deeply, providing support for the hypothesis that more flexible and semantic chunking leads to stronger downstream transfer.",
+          "inlines": [
+            {
+              "text": "In "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-2#loss-to-loss-scaling-laws-how-pretraining-transfers-downstream",
+              "text": "the second post of this series"
+            },
+            {
+              "text": ", we analyze the out-of-distribution behavior of a range of language models more deeply, providing support for the hypothesis that more flexible and semantic chunking leads to stronger downstream transfer."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Compute multipliers: code",
+          "inlines": [
+            {
+              "text": "Compute multipliers: code"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Interestingly, H-Nets particularly excel on code. Fitting the same laws to each programming language it was trained on, the H-Net’s compute multiplier rises for all 15 languages: from 1.49x on Markdown to 2.40x on Go, with a median of 2.04x (Figure 5).",
+          "inlines": [
+            {
+              "text": "Interestingly, H-Nets particularly excel on code. Fitting the same laws to each programming language it was trained on, the H-Net’s compute multiplier rises for all 15 languages: from 1.49x on Markdown to 2.40x on Go, with a median of 2.04x ("
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-5",
+              "text": "Figure 5"
+            },
+            {
+              "text": ")."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The gains are larger still on languages outside the training mix. On ten Stack v2 languages that were not part of the data mix, including OCaml, Prolog, Lean, and Fortran, H-Net’s multiplier rises to a median of 3.10x, from 2.19x on Haskell to 5.37x on Prolog.",
+          "inlines": [
+            {
+              "text": "The gains are larger still on languages outside the training mix. On ten Stack v2 languages that were not part of the data mix, including OCaml, Prolog, Lean, and Fortran, H-Net’s multiplier rises to a median of 3.10x, from 2.19x on Haskell to "
+            },
+            {
+              "bold": true,
+              "text": "5.37x"
+            },
+            {
+              "text": " on Prolog."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "(Why is this important? LLMs are often asked to work with code they may not have seen much data for, and are increasingly used to invent or reason over new languages such as DSLs, kernel programming languages, and hardware abstraction layers. So OOD code performance may actually be quite meaningful to frontier models.)",
+          "inlines": [
+            {
+              "text": "(Why is this important? LLMs are often asked to work with code they may not have seen much data for, and are increasingly used to invent or reason over new languages such as DSLs, kernel programming languages, and hardware abstraction layers. So OOD code performance may actually be quite meaningful to frontier models.)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Compute efficiency gain on code1 / 15Byte H-NetBPE TransformerFigure 5. Compute multiplier on code, one language at a time: how much more compute BPE needs to match the H-Net. The H-Net’s compute efficiency grows on code, from 1.49× (Markdown) to 2.40× (Go) on the 15 languages in the training mix (In distribution), and further on 10 languages outside it (Out of distribution), from 2.19× (Haskell) to 5.37× (Prolog). Scroll the list or use the arrows to move between languages.",
+          "inlines": [
+            {
+              "text": "Compute efficiency gain on code1 / 15Byte H-NetBPE Transformer"
+            },
+            {
+              "bold": true,
+              "text": "Figure 5."
+            },
+            {
+              "text": " Compute multiplier on code, one language at a time: how much more compute BPE needs to match the H-Net. The H-Net’s compute efficiency grows on code, from 1.49× (Markdown) to 2.40× (Go) on the 15 languages in the training mix (In distribution), and further on 10 languages outside it (Out of distribution), from 2.19× (Haskell) to 5.37× (Prolog). Scroll the list or use the arrows to move between languages."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Intuitively, we hypothesize these phenomena arise for a few reasons:",
+          "inlines": [
+            {
+              "text": "Intuitively, we hypothesize these phenomena arise for a few reasons:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "H-Nets perform better on new distributions in general because they learn how to create semantic concepts from lower-level data, which generalize better. This is reflected in the rise from in-distribution (1.28x) to downstream evaluations (2.06x), and from in-domain programming languages (median 2.04x) to out-of-domain programming languages (median 3.10x). "
+                },
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-2",
+                  "text": "Post II"
+                },
+                {
+                  "text": " will discuss out-of-distribution transfer in much more detail."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "H-Nets are better on data that’s difficult to tokenize, in the sense of lacking a small vocabulary of reusable patterns. This is particularly evident in code, which is very dynamic and possesses a wide range of whitespace and symbols, syntax structure, and variable names (essentially an infinite vocabulary even over Latin characters!). Pre-defined tokens are less likely to capture the full range of semantics."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "In "
+                },
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#new-emergent-behaviors-in-context-tokenization",
+                  "text": "Part 3"
+                },
+                {
+                  "text": ", we show that H-Nets learn semantics on the fly at inference time, for example being able to learn variable names in code as one token; we hypothesize this is one particular mechanism that lets them excel at code."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Finally, we make the interesting observation that the H-Net’s improved performance on code is not due to spending additional compute.",
+          "inlines": [
+            {
+              "text": "Finally, we make the interesting observation that the H-Net’s improved performance on code is "
+            },
+            {
+              "italic": true,
+              "text": "not"
+            },
+            {
+              "text": " due to spending additional compute."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Compression by data sourceH-Net compresses moreH-Net compresses lessFigure 6. Compression rates of the lowest-validation-loss H-Net at the largest FLOP budget, on every data source, relative to BPE. H-Net compresses almost every single code language more than the BPE baseline, indicating that it spends less compute despite modeling code much better.",
+          "inlines": [
+            {
+              "text": "Compression by data sourceH-Net compresses moreH-Net compresses less"
+            },
+            {
+              "bold": true,
+              "text": "Figure 6."
+            },
+            {
+              "text": " Compression rates of the lowest-validation-loss H-Net at the largest FLOP budget, on every data source, relative to BPE. H-Net compresses almost every single code language more than the BPE baseline, indicating that it spends less compute despite modeling code much better."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 6 supports our thesis that language modeling ability is not just about compute and parameters, but learning the right meaning from the data. By finding semantic chunks from raw bytes, H-Nets perform much better on difficult-to-tokenize domains while spending less compute.",
+          "inlines": [
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-6",
+              "text": "Figure 6"
+            },
+            {
+              "text": " supports our thesis that language modeling ability is not just about compute and parameters, but learning the right meaning from the data. By finding semantic chunks from raw bytes, H-Nets perform much better on difficult-to-tokenize domains while spending less compute."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Limitations of the H-Net ladder",
+          "inlines": [
+            {
+              "text": "Limitations of the H-Net ladder"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Controlling H-Nets to match BPE-tokenized models in the way we did is actually seriously restrictive. Hierarchical networks have a tremendous degree of flexibility:",
+          "inlines": [
+            {
+              "text": "Controlling H-Nets to match BPE-tokenized models in the way we did is actually seriously restrictive. Hierarchical networks have a tremendous degree of flexibility:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "They can involve multiple stages of chunking, compared to a single static phase by BPE."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The compression rates are freely controllable; equating them to the ratio defined by BPE is actually against the spirit of H-Nets, which ideally should find "
+                },
+                {
+                  "italic": true,
+                  "text": "natural compression rates of the data"
+                },
+                {
+                  "text": " (loosely governed by information content and semantics of the data)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The hyperparameters of each network should be tunable; in fact, we’ve found that setting them equal to a BPE model is suboptimal."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Importantly, the H-Net ladder we defined by changing just the tokenization part of a BPE Transformer is not an optimal H-Net architecture at all. In fact, it can be viewed as being very favorable to the BPE Transformer baseline. What happens when we remove these restrictions?",
+          "inlines": [
+            {
+              "text": "Importantly, the H-Net ladder we defined by changing just the tokenization part of a BPE Transformer is "
+            },
+            {
+              "italic": true,
+              "text": "not an optimal H-Net architecture"
+            },
+            {
+              "text": " at all. In fact, it can be viewed as being very favorable to the BPE Transformer baseline. What happens when we remove these restrictions?"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Part 2: Training a larger H-Net",
+          "inlines": [
+            {
+              "text": "Part 2: Training a larger H-Net"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Training a larger hierarchical network following an open-source recipe, varying only the architecture with two stages of dynamic chunking, led to >10x compute and data efficiency improvements",
+          "inlines": [
+            {
+              "text": "Training a larger hierarchical network following an open-source recipe, varying only the architecture with two stages of dynamic chunking, led to >10x compute and data efficiency improvements"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Data efficiency vs. SmolLM3Byte H-NetSmolLM3-3B (BPE Transformer)Figure 7. Byte-level 2-stage H-Net vs. SmolLM3 (compute and data matched) on pretraining evaluations.",
+          "inlines": [
+            {
+              "text": "Data efficiency vs. SmolLM3Byte H-NetSmolLM3-3B (BPE Transformer)"
+            },
+            {
+              "bold": true,
+              "text": "Figure 7."
+            },
+            {
+              "text": " Byte-level 2-stage H-Net vs. SmolLM3 (compute and data matched) on pretraining evaluations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We aimed to scale H-Nets up larger than the scaling ladders and the earlier versions (the first paper trained up to the equivalent of a 1.3B parameter model for 100B tokens). As a baseline, we chose SmolLM3, a 3B Transformer LLM released by Hugging Face with a fully documented training recipe. Because the SmolLM3 team released the model architecture, the training datamix, and several checkpoints throughout the training run, we were able to reproduce the recipe and compare the models throughout the training process - including past the horizon we trained to!",
+          "inlines": [
+            {
+              "text": "We aimed to scale H-Nets up larger than the scaling ladders and the earlier versions (the first paper trained up to the equivalent of a 1.3B parameter model for 100B tokens). As a baseline, we chose "
+            },
+            {
+              "href": "https://huggingface.co/blog/smollm3",
+              "text": "SmolLM3"
+            },
+            {
+              "text": ", a 3B Transformer LLM released by Hugging Face with a fully documented training recipe. Because the SmolLM3 team released the model architecture, the training datamix, and several checkpoints throughout the training run, we were able to reproduce the recipe and compare the models throughout the training process - including past the horizon we trained to!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Data: SmolLM3’s pretraining consisted of three phases with 8T/2T/1T tokens, using the Llama-3 tokenizer, for a total of 11.1T tokens. As our target horizon was much shorter, we used only the stage-1 data mixture. We made a best-effort reproduction built from the same public sources. Controlling for data is subtle; most training recipes report their data mixture as a fraction (e.g. SmolLM3’s is 73.2 / 12.1 / 12.0 / 2.7 for English web / multilingual / code / math), but this is usually in tokens. To try to control for data properly, we decided to match the underlying byte-level mixture (just as we did for the scaling ladders), which ended up being 76.5 / 10.9 / 10.3 / 2.2.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Data"
+            },
+            {
+              "text": ": SmolLM3’s pretraining consisted of three phases with 8T/2T/1T tokens, using the Llama-3 tokenizer, for a total of 11.1T tokens. As our target horizon was much shorter, we used only the stage-1 data mixture. We made a best-effort reproduction built from the same public sources. Controlling for data is subtle; most training recipes report their data mixture as a fraction (e.g. SmolLM3’s is "
+            },
+            {
+              "code": true,
+              "text": "73.2 / 12.1 / 12.0 / 2.7"
+            },
+            {
+              "text": " for English web / multilingual / code / math), but this is usually in "
+            },
+            {
+              "italic": true,
+              "text": "tokens"
+            },
+            {
+              "text": ". To try to control for data properly, we decided to match the underlying "
+            },
+            {
+              "italic": true,
+              "text": "byte-level"
+            },
+            {
+              "text": " mixture (just as we did for the "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#part-1-bpe-and-h-net-scaling-ladders",
+              "text": "scaling ladders"
+            },
+            {
+              "text": "), which ended up being "
+            },
+            {
+              "code": true,
+              "text": "76.5 / 10.9 / 10.3 / 2.2"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Optimization: We match the baseline identically without additional tuning for the H-Net: AdamW (0.9, 0.95), weight decay 0.1, clipping 1.0, peak LR 2e-4, same WSD schedule with 5B token-equivalents of warmup. We cooled down for the last 15% of training; one difference from the baseline is that SmolLM3’s cooldown phase appeared during its 3rd pretraining stage (after 10T tokens), with a different data mixture.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Optimization"
+            },
+            {
+              "text": ": We match the baseline identically without additional tuning for the H-Net: AdamW (0.9, 0.95), weight decay 0.1, clipping 1.0, peak LR 2e-4, same WSD schedule with 5B token-equivalents of warmup. We cooled down for the last 15% of training; one difference from the baseline is that SmolLM3’s cooldown phase appeared during its 3rd pretraining stage (after 10T tokens), with a different data mixture."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Architecture: We built a two-stage hierarchical network over bytes.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Architecture"
+            },
+            {
+              "text": ": We built a two-stage hierarchical network over bytes."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "The outermost (byte-level) stage uses four Mamba-2 layers in the encoder and four in the decoder."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The next stage adds a sliding-window attention block and four more Mamba-2 layers on each side."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The main network is a 40-layer Transformer with the same per-layer shape as SmolLM3, with global attention in every layer."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The compression ratios were set according to prior work (targeting 4x and 2x in the two outer encoder stages)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where are the FLOPs spent?",
+          "inlines": [
+            {
+              "text": "Where are the FLOPs spent?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Unlike the scaling ladders, we focused more on aligning with the philosophy of hierarchical networks: allowing the model to perform dynamic chunking in multiple stages, ideally following the semantics of the data. This made matching all axes to the baseline impossible, as parameters and compute get spent in very different ways. We aimed to control for FLOPs/byte, so that every minibatch of training sees the same underlying data and spends the same amount of compute as the baseline.",
+          "inlines": [
+            {
+              "text": "Unlike the scaling ladders, we focused more on aligning with the philosophy of hierarchical networks: allowing the model to perform dynamic chunking in multiple stages, ideally following the semantics of the data. This made matching all axes to the baseline impossible, as parameters and compute get spent in very different ways. We aimed to control for "
+            },
+            {
+              "bold": true,
+              "text": "FLOPs/byte"
+            },
+            {
+              "text": ", so that every minibatch of training sees the same underlying data and spends the same amount of compute as the baseline."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "The compression ratios were set so the main network sees roughly one position for every 8 bytes (the trained model ends up at ~7.6×). Compared to ~4.5 bytes per Llama-3 token, this is about 40% fewer tokens than SmolLM3 processes on the same text."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "That saving trades off for the outer encoder/decoder stages, which account for about 43% of the H-Net’s FLOPs (compared to 8% for the embedding and LM head in the tokenized Transformer)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The resulting models are compute matched to within 2% FLOPs/byte."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The H-Net’s total parameter count ended up at 3.67B, against 3.08B for the baseline. The difference is mostly the encoders and decoders plus the four extra main-stage layers; the byte embedding is tiny.",
+          "inlines": [
+            {
+              "text": "The H-Net’s total parameter count ended up at 3.67B, against 3.08B for the baseline. The difference is mostly the encoders and decoders plus the four extra main-stage layers; the byte embedding is tiny."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Parameters and FLOPs per componentH-Net vs. SmolLM3Figure 8. Parameters and (training) FLOPs/byte for H-Net and SmolLM3.",
+          "inlines": [
+            {
+              "text": "Parameters and FLOPs per componentH-Net vs. SmolLM3"
+            },
+            {
+              "bold": true,
+              "text": "Figure 8."
+            },
+            {
+              "text": " Parameters and (training) FLOPs/byte for H-Net and SmolLM3."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Results",
+          "inlines": [
+            {
+              "text": "Results"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We evaluated using benchmarks and the same evaluation suite as the official SmolLM3 results, among their set of “Reasoning & Commonsense” and “Knowledge & Understanding” evaluations.",
+          "inlines": [
+            {
+              "text": "We evaluated using benchmarks and the same evaluation suite as the official "
+            },
+            {
+              "href": "https://huggingface.co/HuggingFaceTB/SmolLM3-3B#english-benchmarks",
+              "text": "SmolLM3 results"
+            },
+            {
+              "text": ", among their set of “Reasoning & Commonsense” and “Knowledge & Understanding” evaluations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 7 shows both models’ benchmark scores over training. The H-Net reaches SmolLM3’s final average score after ~1T tokens compared to ~11T tokens. Since the two models are compute-matched per byte, the saving in training FLOPs is proportional.",
+          "inlines": [
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-7",
+              "text": "Figure 7"
+            },
+            {
+              "text": " shows both models’ benchmark scores over training. The H-Net reaches SmolLM3’s final average score after ~1T tokens compared to ~11T tokens. Since the two models are compute-matched per byte, the saving in training FLOPs is proportional."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "\nDiscussion: Data controlsDespite our effort to control for data and compute fairly, in hindsight we realized it’s still not obvious what a proper methodology should be. For example, let’s look at English vs. code: the reason SmolLM3’s token mix of 73.2% / 12.0% respectively becomes 76.5% / 10.3% at the byte level is because tokenizers compress English more (see Figure 8b), which itself is an artifact of BPE tokenization (it spends more effort compressing more frequently appearing data, so it’s tied to the arbitrary data distribution).On the other hand, the philosophy of H-Nets is to compress data according to an “intrinsic” notion of compressibility and semantics. For example, we find that H-Nets compress code a lot more because code is naturally compressible; and we attribute much of H-Net’s improvements on code to this ability to understand the data better. But at the same time, this means that H-Nets spend less compute on code (because the same piece of code data gets turned into far fewer chunks sent into the main network) relative to the BPE baseline! So would a better way to control it be to let the models spend similar amounts of compute per source instead?In short, BPE models and H-Nets can compress subdomains in opposite ways - for example, BPE compresses code less than English while H-Nets compress it more - so it’s impossible to both data- and compute- match, and the right way to compare models is subtle. These are all open research problems!Compression and compute per sourceSort byH-Net compresses more or spends lessH-Net spends moreEqual to SmolLM3Hover over a source to see its numbers.Figure 8b. Compression and training compute per byte for each of the 38 sources in the training mix, for the 1T-token byte H-Net against SmolLM3’s Llama-3 tokenizer. Compression is bytes of text per H-Net chunk in the main network, and per SmolLM3 token. Compute is training GFLOPs per byte of text.",
+          "inlines": [
+            {
+              "text": "\nDiscussion: Data controlsDespite our effort to control for data and compute fairly, in hindsight we realized it’s still not obvious what a proper methodology should be. For example, let’s look at English vs. code: the reason SmolLM3’s token mix of "
+            },
+            {
+              "code": true,
+              "text": "73.2% / 12.0%"
+            },
+            {
+              "text": " respectively becomes "
+            },
+            {
+              "code": true,
+              "text": "76.5% / 10.3%"
+            },
+            {
+              "text": " at the byte level is because tokenizers compress English more (see "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-8b",
+              "text": "Figure 8b"
+            },
+            {
+              "text": "), which itself is an artifact of BPE tokenization (it spends more effort compressing more frequently appearing data, so it’s tied to the arbitrary data distribution).On the other hand, the philosophy of H-Nets is to compress data according to an “intrinsic” notion of compressibility and semantics. For example, we find that H-Nets compress code a lot more because code is naturally compressible; and we attribute much of H-Net’s "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#compute-multipliers-code",
+              "text": "improvements on code"
+            },
+            {
+              "text": " to this ability to understand the data better. But at the same time, this means that H-Nets spend "
+            },
+            {
+              "italic": true,
+              "text": "less compute"
+            },
+            {
+              "text": " on code (because the same piece of code data gets turned into far fewer chunks sent into the main network) relative to the BPE baseline! So would a better way to control it be to let the models spend similar amounts of compute per source instead?In short, BPE models and H-Nets can compress subdomains in opposite ways - for example, BPE compresses code less than English while H-Nets compress it more - so it’s impossible to both data- and compute- match, and the right way to compare models is subtle. These are all open research problems!Compression and compute per sourceSort byH-Net compresses more or spends lessH-Net spends moreEqual to SmolLM3Hover over a source to see its numbers."
+            },
+            {
+              "bold": true,
+              "text": "Figure 8b."
+            },
+            {
+              "text": " Compression and training compute per byte for each of the 38 sources in the training mix, for the 1T-token byte H-Net against SmolLM3’s Llama-3 tokenizer. Compression is bytes of text per H-Net chunk in the main network, and per SmolLM3 token. Compute is training GFLOPs per byte of text."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Part 3: Qualitative analysis of learned behaviors",
+          "inlines": [
+            {
+              "text": "Part 3: Qualitative analysis of learned behaviors"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Visualizing the larger hierarchical network’s learned chunks shows rich, context-dependent semantics learned both at training and at inference (in-context tokenization)",
+          "inlines": [
+            {
+              "text": "Visualizing the larger hierarchical network’s learned chunks shows rich, context-dependent semantics learned both at training and at inference ("
+            },
+            {
+              "italic": true,
+              "text": "in-context tokenization"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Training dynamics",
+          "inlines": [
+            {
+              "text": "Training dynamics"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We show how the H-Net learns from the beginning of training, continually updating its representations on a particular held-out piece of text (the abstract from the original H-Net paper!).",
+          "inlines": [
+            {
+              "text": "We show how the H-Net learns from the beginning of training, continually updating its representations on a particular held-out piece of text (the abstract from the original H-Net paper!)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Chunking over trainingHeld-out textstep 71,856 · 671.0B bytesH-NetH-Net abstract · 208 chunks · 8.4 bytes eachChunks in this textStage 0Stage 1Figure 9. Training dynamics of a two-stage H-Net on the original H-Net paper’s English abstract.",
+          "inlines": [
+            {
+              "text": "Chunking over trainingHeld-out textstep 71,856 · 671.0B bytesH-NetH-Net abstract · 208 chunks · 8.4 bytes eachChunks in this textStage 0Stage 1"
+            },
+            {
+              "bold": true,
+              "text": "Figure 9."
+            },
+            {
+              "text": " Training dynamics of a two-stage H-Net on the original H-Net paper’s English abstract."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Visualizing H-Net’s dynamic tokens",
+          "inlines": [
+            {
+              "text": "Visualizing H-Net’s dynamic tokens"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We show an H-Net’s chunks for several examples (that it was not trained on) for every source of its data mixture. We also show various baselines including three BPE tokenizers:",
+          "inlines": [
+            {
+              "text": "We show an H-Net’s chunks for several examples (that it was not trained on) for every source of its data mixture. We also show various baselines including three BPE tokenizers:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "the Llama-3 tokenizer (which SmolLM3 uses)"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "a new BPE tokenizer trained directly on the SmolLM3 training corpus, to show what BPE would learn completely in-distribution ("
+                },
+                {
+                  "bold": true,
+                  "text": "Corpus"
+                },
+                {
+                  "text": ")"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "an in-corpus BPE tokenizer with "
+                },
+                {
+                  "italic": true,
+                  "text": "no pretokenization"
+                },
+                {
+                  "text": " ("
+                },
+                {
+                  "bold": true,
+                  "text": "Corpus (NP)"
+                },
+                {
+                  "text": "), which we will cover more in the "
+                },
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-2#bpe-with-no-pretokenization",
+                  "text": "next post"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We also provide chunks of the originally published H-Net (denoted LH-Net) to illustrate qualitative improvements from our internal version.",
+          "inlines": [
+            {
+              "text": "We also provide chunks of the originally published H-Net (denoted "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#aside-how-does-this-compare-to-the-original-h-net",
+              "text": "LH-Net"
+            },
+            {
+              "text": ") to illustrate qualitative improvements from our internal version."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Language",
+          "inlines": [
+            {
+              "text": "Language"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "H-NetCompare with:Figure 10a. Natural-language text chunked by H-Net (left) and tokenized by various BPE methods (right). Pick a language and an example; H-Net can display stage-1 chunks (the default) or its finer-grained stage-0 chunks. Hovering a byte shows its chunk, the router’s boundary probability p, and the BPE token it falls in.",
+          "inlines": [
+            {
+              "text": "H-NetCompare with:"
+            },
+            {
+              "bold": true,
+              "text": "Figure 10a."
+            },
+            {
+              "text": " Natural-language text chunked by H-Net (left) and tokenized by various BPE methods (right). Pick a language and an example; H-Net can display stage-1 chunks (the default) or its finer-grained stage-0 chunks. Hovering a byte shows its chunk, the router’s boundary probability p, and the BPE token it falls in."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 10a shows examples from human languages.",
+          "inlines": [
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-10a",
+              "text": "Figure 10a"
+            },
+            {
+              "text": " shows examples from human languages."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "H-Net presents coherent and semantically meaningful boundaries for natural languages including Latin-based/Germanic languages that use spaces as delimiters, as well as multi-byte character languages (e.g. CJK, Hindi) with and without explicit delimiters."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "H-Net merges multiple words into a single chunk that can be naturally grouped together. For example, “a foot”, “quite a few”."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Interestingly, tokens from the BPE tokenizer without pretokenization also often comprise multiple words. However, they exhibit many weird boundaries, such as "
+                },
+                {
+                  "code": true,
+                  "text": "beat a bear"
+                },
+                {
+                  "text": " being separated into "
+                },
+                {
+                  "code": true,
+                  "text": "be"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "at a bear"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "H-Net boundaries are not pattern-based. Rather, they are context-based. For example, while “a” frequently gets merged with the following noun in English, "
+                },
+                {
+                  "code": true,
+                  "text": "a"
+                },
+                {
+                  "text": " less frequently is grouped with other words in Italian as it has different meanings."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "For all languages, H-Net achieves much higher compression than BPE tokenizers. This is more pronounced in certain languages that require many bytes to form a character such as Hindi."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Code",
+          "inlines": [
+            {
+              "text": "Code"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "H-NetCompare with:Figure 10b. Coding examples chunked by H-Net (left) and tokenized by various BPE methods (right). Pick a language and an example; H-Net can display stage-1 chunks (the default) or its finer-grained stage-0 chunks. Hovering a byte shows its chunk, the router’s boundary probability p, and the BPE token it falls in.",
+          "inlines": [
+            {
+              "text": "H-NetCompare with:"
+            },
+            {
+              "bold": true,
+              "text": "Figure 10b."
+            },
+            {
+              "text": " Coding examples chunked by H-Net (left) and tokenized by various BPE methods (right). Pick a language and an example; H-Net can display stage-1 chunks (the default) or its finer-grained stage-0 chunks. Hovering a byte shows its chunk, the router’s boundary probability p, and the BPE token it falls in."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 10b shows examples from programming languages.",
+          "inlines": [
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-10b",
+              "text": "Figure 10b"
+            },
+            {
+              "text": " shows examples from programming languages."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "H-Net boundaries for coding languages also exhibit interesting characteristics derived from their context-based properties. For instance, BPE tokenizers strictly use newline as a boundary, whereas H-Nets accept multi-{space/tab/newline} chunks (example: "
+                },
+                {
+                  "code": true,
+                  "text": "__init__(\\n self,"
+                },
+                {
+                  "text": ")."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "H-Nets can generally compress code far more than BPE (also see discussion for "
+                },
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-8b",
+                  "text": "Figure 8b"
+                },
+                {
+                  "text": ")."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "H-Nets can benefit from "
+                },
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#in-context-tokenization",
+                  "text": "in-context tokenization"
+                },
+                {
+                  "text": " to recognize repeated motifs such as new variable/function names as they keep recurring."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Aside: How does this compare to the original H-Net?",
+          "inlines": [
+            {
+              "text": "Aside: How does this compare to the original H-Net?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Since we published the concept of hierarchical networks in 2025, we’ve made many significant improvements to the core architecture and learning mechanisms. We plan to release some of these architectures to the community over time. Here we discuss some concrete qualitative areas of improvement.",
+          "inlines": [
+            {
+              "text": "Since we published the concept of "
+            },
+            {
+              "href": "https://arxiv.org/abs/2507.07955",
+              "text": "hierarchical networks"
+            },
+            {
+              "text": " in 2025, we’ve made many significant improvements to the core architecture and learning mechanisms. We plan to release some of these architectures to the community over time. Here we discuss some concrete qualitative areas of improvement."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For the purposes of this comparison, we’ll call the earlier model the LH-Net, where L can be thought of as meaning “lazy” or “lookahead”. In brief, this original model aims to draw chunk boundaries only after it sees the start of the next chunk.2 This allows LH-Net to have more context in creating chunks, but turns out to negatively impact its ability to perform next-token (byte) prediction as well as model multiple hierarchies.",
+          "inlines": [
+            {
+              "text": "For the purposes of this comparison, we’ll call the earlier model the "
+            },
+            {
+              "bold": true,
+              "text": "LH-Net"
+            },
+            {
+              "text": ", where L can be thought of as meaning “lazy” or “lookahead”. In brief, this original model aims to draw chunk boundaries only after it sees the start of the next chunk."
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#user-content-fn-2",
+              "text": "2"
+            },
+            {
+              "text": " This allows LH-Net to have more context in creating chunks, but turns out to negatively impact its ability to perform next-token (byte) prediction as well as model multiple hierarchies."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Qualitative differences between LH-Net and our current internal H-Net can especially be seen when examining recursive hierarchical networks with multiple stages.",
+          "inlines": [
+            {
+              "text": "Qualitative differences between LH-Net and our current internal H-Net can especially be seen when examining recursive hierarchical networks with multiple stages."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "In English, consider the first example."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Stage 0 chunks from H-Net are generally more meaningful than LH-Net’s. For example, when they occur in the middle of English words, they generally align better with linguistically meaningful stems."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "H-Net examples: "
+                },
+                {
+                  "code": true,
+                  "text": "trackers"
+                },
+                {
+                  "text": " → "
+                },
+                {
+                  "code": true,
+                  "text": "track"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "ers"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "wondered"
+                },
+                {
+                  "text": " → "
+                },
+                {
+                  "code": true,
+                  "text": "wonder"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "ed"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "nearby"
+                },
+                {
+                  "text": " → "
+                },
+                {
+                  "code": true,
+                  "text": "near"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "by"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "LH-Net examples: "
+                },
+                {
+                  "code": true,
+                  "text": "rhino"
+                },
+                {
+                  "text": " → "
+                },
+                {
+                  "code": true,
+                  "text": "r"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "hino"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "from the fact"
+                },
+                {
+                  "text": " → "
+                },
+                {
+                  "code": true,
+                  "text": "fro"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "m the"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "fact"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "mass"
+                },
+                {
+                  "text": " → "
+                },
+                {
+                  "code": true,
+                  "text": "mas"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "s"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "Over"
+                },
+                {
+                  "text": " → "
+                },
+                {
+                  "code": true,
+                  "text": "Ove"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "r"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "ethical"
+                },
+                {
+                  "text": " → "
+                },
+                {
+                  "code": true,
+                  "text": "e"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "thical"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "In scripts where characters are represented with multiple bytes, such as CJK (Chinese, Japanese, Korean), a multistage LH-Net doesn’t segment characters correctly, even after both stages of chunking."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "New emergent behaviors: in-context tokenization",
+          "inlines": [
+            {
+              "text": "New emergent behaviors: in-context tokenization"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "heading",
+          "text": "In-context tokenization",
+          "inlines": [
+            {
+              "text": "In-context tokenization"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "An H-Net’s tokenization not only changes over training time, but can also evolve during inference, which we call in-context tokenization. We previously discussed some simple cases of how boundaries of H-Nets are context-based, and not pattern-based. In Figure 11, we highlight four interesting examples of the in-context tokenization:",
+          "inlines": [
+            {
+              "text": "An H-Net’s tokenization not only changes over training time, but can also evolve during inference, which we call "
+            },
+            {
+              "italic": true,
+              "text": "in-context tokenization"
+            },
+            {
+              "text": ". We previously discussed some simple cases of how boundaries of H-Nets are context-based, and not pattern-based. In "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-11",
+              "text": "Figure 11"
+            },
+            {
+              "text": ", we highlight four interesting examples of the in-context tokenization:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "New concepts"
+                },
+                {
+                  "text": ": When an H-Net encounters an unfamiliar word or a new concept, it tends to split the word into multiple chunks (similar to how BPE would read unfamiliar strings). As it encounters the same word multiple times, it progressively learns to group the word into fewer chunks."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Repeated formats"
+                },
+                {
+                  "text": ": If there is a repeating phrase, we can easily expect what would come next. Similarly, in such a scenario, H-Nets learn to further compress inputs, drawing very large chunks to conserve compute."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Recurring motifs"
+                },
+                {
+                  "text": ": As shown in the figure, H-Nets learn to discover implicit patterns in inputs. In the letter blocks example, the recurring blocks – "
+                },
+                {
+                  "code": true,
+                  "text": "LURD"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "WHYV"
+                },
+                {
+                  "text": ", and "
+                },
+                {
+                  "code": true,
+                  "text": "FYB"
+                },
+                {
+                  "text": " – get grouped together. The digit blocks example is an interesting case that shows how an H-Net can discover the repeated motifs ("
+                },
+                {
+                  "code": true,
+                  "text": "2526"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "3987"
+                },
+                {
+                  "text": ", and "
+                },
+                {
+                  "code": true,
+                  "text": "3526"
+                },
+                {
+                  "text": ") underlying the data. The behavior of stage 0 vs. stage 1 is also interesting to observe."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "H-NetCompare with:Figure 11. In-context tokenization: made-up words that recur in a paragraph, lines that repeat one format, and runs of repeating letter and digit blocks.",
+          "inlines": [
+            {
+              "text": "H-NetCompare with:"
+            },
+            {
+              "bold": true,
+              "text": "Figure 11."
+            },
+            {
+              "text": " In-context tokenization: made-up words that recur in a paragraph, lines that repeat one format, and runs of repeating letter and digit blocks."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Out-of-domain Programming Languages",
+          "inlines": [
+            {
+              "text": "Out-of-domain Programming Languages"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Finally, we visualize how H-Nets handle programming languages that they haven’t seen. We saw previously that the H-Net ladder was particularly effective (relative to the baseline) for out-of-domain programming languages. Figure 12 shows examples from these 10 programming languages.",
+          "inlines": [
+            {
+              "text": "Finally, we visualize how H-Nets handle programming languages that they haven’t seen. We saw "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#compute-multipliers-code",
+              "text": "previously"
+            },
+            {
+              "text": " that the H-Net ladder was particularly effective (relative to the baseline) for out-of-domain programming languages. "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#fig-12",
+              "text": "Figure 12"
+            },
+            {
+              "text": " shows examples from these 10 programming languages."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "H-NetCompare with:Figure 12. Programming languages that the H-Net never saw in training.",
+          "inlines": [
+            {
+              "text": "H-NetCompare with:"
+            },
+            {
+              "bold": true,
+              "text": "Figure 12."
+            },
+            {
+              "text": " Programming languages that the H-Net never saw in training."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Part 4: From tokens to atoms: hierarchical networks beyond language",
+          "inlines": [
+            {
+              "text": "Part 4: From tokens to atoms: hierarchical networks beyond language"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Ongoing research applies hierarchical networks to modalities beyond language, showing promise as a general learning algorithm that learns from raw data in any domain",
+          "inlines": [
+            {
+              "text": "Ongoing research applies hierarchical networks to modalities beyond language, showing promise as a general learning algorithm that learns from raw data in any domain"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This post has so far focused on the capabilities of hierarchical networks as applied to language modeling on bytes, which captures the ideal of learning from raw data in the context of language.",
+          "inlines": [
+            {
+              "text": "This post has so far focused on the capabilities of hierarchical networks as applied to language modeling on bytes, which captures the ideal of learning from raw data in the context of language."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We believe that the utility of H-Nets goes far beyond language: the core concept of chunking low-level data into higher-level patterns is fundamental to intelligence, and can be applied to any domain.",
+          "inlines": [
+            {
+              "text": "We believe that the utility of H-Nets goes far beyond language: the "
+            },
+            {
+              "bold": true,
+              "text": "core concept of chunking low-level data into higher-level patterns is fundamental to intelligence"
+            },
+            {
+              "text": ", and can be applied to any domain."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One such area is audio, a core focus of Cartesia, where the inability of models to autonomously abstract raw audio into phonemes and words represents a major bottleneck toward multimodal speech-to-speech models (and in fact was a motivation for us to start investigating H-Nets years ago!).",
+          "inlines": [
+            {
+              "text": "One such area is audio, a core focus of Cartesia, where the inability of models to autonomously abstract raw audio into phonemes and words represents a major bottleneck toward multimodal speech-to-speech models (and in fact was a motivation for us to start investigating H-Nets years ago!)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "More broadly, bytes are not necessarily a universal encoding for all domains. Most domains have a concept of “primitive building blocks”, such as characters or bytes for language, pixels for images and video, waveforms for audio, nucleotides for biology, and so on. We’ve started thinking of different modalities as being built from various base atoms, and of so-called atomic models as the truly bitter-lesson-pilled way to build powerful foundation models for multimodality. We highlight some examples of additional domains.",
+          "inlines": [
+            {
+              "text": "More broadly, bytes are not necessarily a universal encoding for all domains. Most domains have a concept of “primitive building blocks”, such as characters or bytes for language, pixels for images and video, waveforms for audio, nucleotides for biology, and so on. We’ve started thinking of different modalities as being built from various base "
+            },
+            {
+              "italic": true,
+              "text": "atoms"
+            },
+            {
+              "text": ", and of so-called "
+            },
+            {
+              "italic": true,
+              "text": "atomic models"
+            },
+            {
+              "text": " as the truly bitter-lesson-pilled way to build powerful foundation models for multimodality. We highlight some examples of additional domains."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Biology (DNA)",
+          "inlines": [
+            {
+              "text": "Biology (DNA)"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "DNA is the lowest-level programming language of biology. Depending on the context, its natural level of abstraction, and therefore its natural primitive units, changes drastically. Because of this, we hypothesized that H-Net’s dynamic tokenization would be significantly more effective than a static tokenization scheme on the DNA domain.",
+          "inlines": [
+            {
+              "text": "DNA is the lowest-level programming language of biology. Depending on the context, its natural level of abstraction, and therefore its natural primitive units, changes drastically. Because of this, we hypothesized that H-Net’s dynamic tokenization would be significantly more effective than a static tokenization scheme on the DNA domain."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "DNA scaling ladder",
+          "inlines": [
+            {
+              "text": "DNA scaling ladder"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "We compare an H-Net and a Transformer on autoregressive modeling of DNA sequences. Both models operate at the nucleotide resolution as input (so the vocabulary size is 4, plus some special token IDs). The H-Net has a target compression ratio of 6×: its main network sees approximately one chunk for each six nucleotides.",
+          "inlines": [
+            {
+              "text": "We compare an H-Net and a Transformer on autoregressive modeling of DNA sequences. Both models operate at the nucleotide resolution as input (so the vocabulary size is 4, plus some special token IDs). The H-Net has a target compression ratio of 6×: its main network sees approximately one chunk for each six nucleotides."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We fit compute-optimal scaling ladders using a similar procedure as in Part 1. The H-Net leads to a 6–7× compute gain on all three sets.",
+          "inlines": [
+            {
+              "text": "We fit compute-optimal scaling ladders using a similar procedure as in Part 1. The H-Net leads to a 6–7× compute gain on all three sets."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "\nDetails: DNA Datasets\nTraining data. The GTDB set of prokaryote genomes from OpenGenome (stage 1), approximately 274 billion nucleotides. We cut each contig into segments of 8,192 nucleotides or less, and we mix the segments.\nValidation set. 8,192 segments that we keep out of training (approximately 56 million nucleotides). Other segments of the same genomes are in the training data.\ngtdb_valid_small and gtdb_test. The two official held-out sets of OpenGenome: 5 contigs (26 thousand nucleotides) and 50 contigs (374 thousand nucleotides). All of these contigs come from one genome. We do not train on these contigs, but other contigs of this genome are in the training data.",
+          "inlines": [
+            {
+              "text": "\nDetails: DNA Datasets\n"
+            },
+            {
+              "bold": true,
+              "text": "Training data."
+            },
+            {
+              "text": " The GTDB set of prokaryote genomes from OpenGenome (stage 1), approximately 274 billion nucleotides. We cut each contig into segments of 8,192 nucleotides or less, and we mix the segments.\n"
+            },
+            {
+              "bold": true,
+              "text": "Validation set"
+            },
+            {
+              "text": ". 8,192 segments that we keep out of training (approximately 56 million nucleotides). Other segments of the same genomes are in the training data.\n"
+            },
+            {
+              "bold": true,
+              "code": true,
+              "text": "gtdb_valid_small"
+            },
+            {
+              "bold": true,
+              "text": " and "
+            },
+            {
+              "bold": true,
+              "code": true,
+              "text": "gtdb_test"
+            },
+            {
+              "bold": true,
+              "text": "."
+            },
+            {
+              "text": " The two official held-out sets of OpenGenome: 5 contigs (26 thousand nucleotides) and 50 contigs (374 thousand nucleotides). All of these contigs come from one genome. We do not train on these contigs, but other contigs of this genome are in the training data."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Compute-optimal scaling on DNAH-Net vs. Transformer5.95×Validation BPB5.83×gtdb_valid_small7.06×gtdb_testH-NetTransformerFigure 13. Compute-optimal scaling of Transformers and H-Nets on DNA, from 1018.5 to 1020.5 FLOPs.",
+          "inlines": [
+            {
+              "text": "Compute-optimal scaling on DNAH-Net vs. Transformer5.95×Validation BPB5.83×gtdb_valid_small7.06×gtdb_testH-NetTransformer"
+            },
+            {
+              "bold": true,
+              "text": "Figure 13."
+            },
+            {
+              "text": " Compute-optimal scaling of Transformers and H-Nets on DNA, from 1018.5 to 1020.5 FLOPs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Qualitative analysis in DNA: Biology’s context-dependent atomics",
+          "inlines": [
+            {
+              "text": "Qualitative analysis in DNA: Biology’s context-dependent atomics"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "H-Net was trained only on the next-letter prediction task for prokaryote (bacterial and archaeal) genomes, so the adherence of H-Net’s token segmentation to biology’s natural structure in the human genome is purely emergent behavior. Here we display some of these examples:",
+          "inlines": [
+            {
+              "text": "H-Net was trained only on the next-letter prediction task for prokaryote (bacterial and archaeal) genomes, so the adherence of H-Net’s token segmentation to biology’s natural structure in the human genome is purely emergent behavior. Here we display some of these examples:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Example1 of 5H-Net chunksHuman chromosome 6, histone gene H2BC17 · never seen in trainingone chunk per band1st letter of a codon2nd letter of a codon3rd letter of a codonstart / stop codonpromoterhairpinend of the RNA86 chunks in 680 letters · 7.9 letters eachFigure 14a. A whole human histone gene (H2BC17): coding and non-coding regions. Histones are the proteins that DNA wraps around. This example window runs from the gene's promoter (non-coding region), through its 126 codons (coding), and to the hairpin at which the RNA terminates (non-coding region). Within the coding region, the unit is the codon. H-Net learns chunks that start on codon borders and almost all run one to three codons long . The non-coding DNA on either side (the promoter region before and the termination signal after) has far less structure and is not read in threes. There the H-Net draws chunks that are long and less structured .",
+          "inlines": [
+            {
+              "text": "Example1 of 5H-Net chunksHuman chromosome 6, histone gene H2BC17 · never seen in trainingone chunk per band1st letter of a codon2nd letter of a codon3rd letter of a codonstart / stop codonpromoterhairpinend of the RNA86 chunks in 680 letters · 7.9 letters each"
+            },
+            {
+              "bold": true,
+              "text": "Figure 14a."
+            },
+            {
+              "text": " A whole human histone gene (H2BC17): coding and non-coding regions. Histones are the proteins that DNA wraps around. This example window runs from the gene's promoter (non-coding region), through its 126 codons (coding), and to the hairpin at which the RNA terminates (non-coding region). Within the coding region, the unit is the codon. H-Net learns chunks that start on codon borders and almost all run one to three codons long . The non-coding DNA on either side (the promoter region before and the termination signal after) has far less structure and is not read in threes. There the H-Net draws chunks that are long and less structured ."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "\nQuick primer on Biology/DNADNA and genes. DNA is a string of four letters: A, C, G, and T. A gene is the stretch of DNA responsible for producing an RNA sequence, which is usually translated into a protein. Only its coding region actually spells out the protein, while the DNA around it is far less constrained and more information-sparse: the promoter region before it, the signal that ends the RNA after it. They control when and how the protein is made, not what it is. Additionally, in human genes, introns, non-coding regions that sit in the middle of the coding region, are spliced out and also do not contribute to the protein sequence.Codons and the reading frame. The coding region is read three letters at a time, from a start codon (usually ATG) to a stop codon (TAA, TAG, or TGA). Each three-letter codon names one amino acid in a protein sequence. Where reading starts sets the reading frame: shift it by one letter and every codon downstream changes.",
+          "inlines": [
+            {
+              "text": "\nQuick primer on Biology/DNADNA and genes. DNA is a string of four letters: A, C, G, and T. A gene is the stretch of DNA responsible for producing an RNA sequence, which is usually translated into a protein. Only its coding region actually spells out the protein, while the DNA around it is far less constrained and more information-sparse: the promoter region before it, the signal that ends the RNA after it. They control when and how the protein is made, not what it is. Additionally, in human genes, introns, non-coding regions that sit in the middle of the coding region, are spliced out and also do not contribute to the protein sequence.Codons and the reading frame. The coding region is read three letters at a time, from a start codon (usually ATG) to a stop codon (TAA, TAG, or TGA). Each three-letter codon names one amino acid in a protein sequence. Where reading starts sets the reading frame: shift it by one letter and every codon downstream changes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Some notable learned behaviors:",
+          "inlines": [
+            {
+              "text": "Some notable learned behaviors:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Inside a gene, the H-Net router settles on a different atomic unit depending on what it is reading; we see biologically aligned treatments of:"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "coding region vs. non-coding regions"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "exons vs. introns"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Robustness: H-Net’s learned codon grid isn’t fixed; where two coding regions overlap and the second is offset, H-Net’s boundaries adapt quickly"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "In a transfer RNA (tRNA) gene, the natural unit shrinks to a single letter. H-Net boundaries learn to adhere to this new natural unit"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Large sections of repeats in DNA are typically information-sparse, so in a repeat, the natural biological unit grows to the whole repeat"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Interestingly, as one may expect, a lot of these biologically adherent behaviors aren’t learned until late into training, as shown through the learning trajectory animation. The late onset of these behaviors highlights the nontriviality of the “tokenization task” in the DNA domain, and supports the thesis that hand-crafted tokenization schemes would be even more difficult and less effective in multimodal domains than in language.",
+          "inlines": [
+            {
+              "text": "Interestingly, as one may expect, a lot of these biologically adherent behaviors aren’t learned until late into training, as shown through the learning trajectory animation. The late onset of these behaviors highlights the nontriviality of the “tokenization task” in the DNA domain, and supports the thesis that "
+            },
+            {
+              "bold": true,
+              "text": "hand-crafted tokenization schemes would be even more difficult and less effective in multimodal domains than in language"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Vision",
+          "inlines": [
+            {
+              "text": "Vision"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Hierarchical networks are naturally defined for one-dimensional sequential data, where chunking and segmentation are intuitive. Extending them to higher-dimensional modalities, however, presents a significant technical challenge – and simultaneously a great opportunity, as vision is a domain naturally suited to hierarchies. In ongoing research, we’ve developed new techniques to apply H-Nets to N-dimensional data such as images and videos. When integrated into a pixel-space diffusion model, H-Nets not only improve generation quality, but also uncover unsupervised semantic concepts directly from raw data – mirroring the emergent behaviors we saw with language.",
+          "inlines": [
+            {
+              "text": "Hierarchical networks are naturally defined for one-dimensional sequential data, where chunking and segmentation are intuitive. Extending them to higher-dimensional modalities, however, presents a significant technical challenge – and simultaneously a great opportunity, as vision is a domain naturally suited to hierarchies. In ongoing research, we’ve developed new techniques to apply H-Nets to N-dimensional data such as images and videos. When integrated into a pixel-space diffusion model, H-Nets not only improve generation quality, but also uncover unsupervised semantic concepts directly from raw data – mirroring the emergent behaviors "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#part-3-qualitative-analysis-of-learned-behaviors",
+              "text": "we saw with language"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In more detail, we take a standard pixel-space flow-matching baseline JiT, and replace its backbone with a multi-dimensional H-Net. Just as with 1D H-Nets, the model learns both where to chunk and how much to compress. This allows it to dynamically reallocate compute across three axes: spatially (focusing on detailed regions over simple ones), integration time (varying effort by denoising step), and samples (allocating more compute on complex images). Consequently, the model consolidates homogeneous or low-information areas and focuses on salient details, and discovers semantic segmentations of the image completely without supervision. A final interesting detail is that unlike existing token-merging methods that rely on the similarity of contiguous patches, our 2D H-Net doesn’t enforce local grouping. Because of this, the model often appears to infer underlying 3D structure from flat 2D projections. For instance, it routinely groups disjointed background regions into a single coherent chunk, even when they are separated in the image by occluding foreground objects.",
+          "inlines": [
+            {
+              "text": "In more detail, we take a standard pixel-space flow-matching baseline "
+            },
+            {
+              "href": "https://arxiv.org/abs/2511.13720",
+              "text": "JiT"
+            },
+            {
+              "text": ", and replace its backbone with a multi-dimensional H-Net. Just as with 1D H-Nets, the model learns both where to chunk and how much to compress. This allows it to dynamically reallocate compute across three axes: "
+            },
+            {
+              "italic": true,
+              "text": "spatially"
+            },
+            {
+              "text": " (focusing on detailed regions over simple ones), "
+            },
+            {
+              "italic": true,
+              "text": "integration time"
+            },
+            {
+              "text": " (varying effort by denoising step), and "
+            },
+            {
+              "italic": true,
+              "text": "samples"
+            },
+            {
+              "text": " (allocating more compute on complex images). Consequently, the model consolidates homogeneous or low-information areas and focuses on salient details, and discovers semantic segmentations of the image completely without supervision. A final interesting detail is that unlike existing token-merging methods that rely on the similarity of contiguous patches, our 2D H-Net doesn’t enforce local grouping. Because of this, the model often appears to infer underlying 3D structure from flat 2D projections. For instance, it routinely groups disjointed background regions into a single coherent chunk, even when they are separated in the image by occluding foreground objects."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Learned chunks on imagesHeld-out imagesredshank177 chunksFigure 15. Learned chunks from our multi-dimensional H-Net. Results are shown on noised images at t=0.7 (where t=0 is pure noise and t=1 is a clean image). Chunks need not be spatially contiguous or homogeneous at the pixel level.",
+          "inlines": [
+            {
+              "text": "Learned chunks on imagesHeld-out imagesredshank177 chunks"
+            },
+            {
+              "bold": true,
+              "text": "Figure 15."
+            },
+            {
+              "text": " Learned chunks from our multi-dimensional H-Net. Results are shown on noised images at t=0.7 (where t=0 is pure noise and t=1 is a clean image). Chunks need not be spatially contiguous or homogeneous at the pixel level."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Next: Post II",
+          "inlines": [
+            {
+              "text": "Next: Post II"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "In the next post, we dig into the compute efficiency results in much more detail. We study loss-to-loss scaling laws and find empirical evidence that H-Net’s improved performance really does come from its ability to learn from raw bytes end-to-end.",
+          "inlines": [
+            {
+              "text": "In the "
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-2",
+              "text": "next post"
+            },
+            {
+              "text": ", we dig into the compute efficiency results in much more detail. We study "
+            },
+            {
+              "bold": true,
+              "text": "loss-to-loss"
+            },
+            {
+              "text": " scaling laws and find empirical evidence that H-Net’s improved performance really does come from its ability to learn from raw bytes end-to-end."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Citation",
+          "inlines": [
+            {
+              "text": "Citation"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Please cite this work as:",
+          "inlines": [
+            {
+              "text": "Please cite this work as:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "Cartesia Research, \"From Tokens to Bytes: Scaling Hierarchical Networks\", Cartesia Blog, October 2026."
+        },
+        {
+          "type": "paragraph",
+          "text": "Or use the BibTeX citation:",
+          "inlines": [
+            {
+              "text": "Or use the BibTeX citation:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "@article{cartesia2026hnet,\n  author  = {{Cartesia Research}},\n  title   = {From Tokens to Bytes: Scaling Hierarchical Networks},\n  journal = {Cartesia Blog},\n  year    = {2026},\n  month   = {October},\n  note    = {https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1}\n}"
+        },
+        {
+          "type": "heading",
+          "text": "Footnotes",
+          "inlines": [
+            {
+              "text": "Footnotes"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Since our focus is tokenization, other improvements (gated attention, MoE, hybrid state space model/linear attention layers) are orthogonal, and internally we’ve found that H-Nets synergize with them. "
+                },
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#user-content-fnref-1",
+                  "text": "↩"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "This shares some similarities with BPE as well, which also implicitly looks ahead into the future. "
+                },
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#user-content-fnref-2",
+                  "text": "↩"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Architecting AI that learns and interacts like humans.",
+          "inlines": [
+            {
+              "text": "Architecting AI that learns and interacts like humans."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ask AI about Cartesia",
+          "inlines": [
+            {
+              "text": "Ask AI about Cartesia"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "EnglishEnglish",
+          "inlines": [
+            {
+              "text": "English"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1",
+              "text": "English"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ProductsSonicInkManaged AgentsCompanyAboutCareersCapabilitiesAI Voice GeneratorAI Phone AgentVoice CloningText to Speech APIVoice ChangerAI VoiceoverRealistic Text to SpeechAI DubbingSpeech SynthesisVoice ConversionAI Voice EnhancerText to MP3Voice ReaderVoicemail Greeting GeneratorSolutionsCustomer serviceLocalizationRecruitingFinanceHealthcareRetail and e-commerceTravel and hospitalityResourcesBlogCustomersDocsEventsFree toolsIntegrationsLearnPricingCompare providersResearchStatusSupportTrust Center",
+          "inlines": [
+            {
+              "text": "Products"
+            },
+            {
+              "href": "https://www.cartesia.ai/sonic",
+              "text": "Sonic"
+            },
+            {
+              "href": "https://www.cartesia.ai/ink",
+              "text": "Ink"
+            },
+            {
+              "href": "https://www.cartesia.ai/agents",
+              "text": "Managed Agents"
+            },
+            {
+              "text": "Company"
+            },
+            {
+              "href": "https://www.cartesia.ai/company",
+              "text": "About"
+            },
+            {
+              "href": "https://www.cartesia.ai/careers",
+              "text": "Careers"
+            },
+            {
+              "text": "Capabilities"
+            },
+            {
+              "href": "https://www.cartesia.ai/voice-generator",
+              "text": "AI Voice Generator"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/ai-phone-agent",
+              "text": "AI Phone Agent"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/voice-cloning",
+              "text": "Voice Cloning"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/python-text-to-speech-api-tts",
+              "text": "Text to Speech API"
+            },
+            {
+              "href": "https://www.cartesia.ai/voice-changer",
+              "text": "Voice Changer"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/ai-voiceover",
+              "text": "AI Voiceover"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/realistic-text-to-speech",
+              "text": "Realistic Text to Speech"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/ai-dubbing",
+              "text": "AI Dubbing"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/speech-synthesis",
+              "text": "Speech Synthesis"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/voice-conversion",
+              "text": "Voice Conversion"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/ai-voice-enhancer",
+              "text": "AI Voice Enhancer"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/text-to-speech-mp3",
+              "text": "Text to MP3"
+            },
+            {
+              "href": "https://www.cartesia.ai/product/voice-reader",
+              "text": "Voice Reader"
+            },
+            {
+              "href": "https://www.cartesia.ai/voicemail-greeting-generator",
+              "text": "Voicemail Greeting Generator"
+            },
+            {
+              "text": "Solutions"
+            },
+            {
+              "href": "https://www.cartesia.ai/use-cases/customer-service",
+              "text": "Customer service"
+            },
+            {
+              "href": "https://www.cartesia.ai/use-cases/localization",
+              "text": "Localization"
+            },
+            {
+              "href": "https://www.cartesia.ai/use-cases/recruiting",
+              "text": "Recruiting"
+            },
+            {
+              "href": "https://www.cartesia.ai/use-cases/finance",
+              "text": "Finance"
+            },
+            {
+              "href": "https://www.cartesia.ai/use-cases/healthcare",
+              "text": "Healthcare"
+            },
+            {
+              "href": "https://www.cartesia.ai/use-cases/retail-ecommerce",
+              "text": "Retail and e-commerce"
+            },
+            {
+              "href": "https://www.cartesia.ai/use-cases/travel-hospitality",
+              "text": "Travel and hospitality"
+            },
+            {
+              "text": "Resources"
+            },
+            {
+              "href": "https://www.cartesia.ai/blog",
+              "text": "Blog"
+            },
+            {
+              "href": "https://www.cartesia.ai/customers",
+              "text": "Customers"
+            },
+            {
+              "href": "https://docs.cartesia.ai/",
+              "text": "Docs"
+            },
+            {
+              "href": "https://luma.com/cartesia",
+              "text": "Events"
+            },
+            {
+              "href": "https://www.cartesia.ai/tools",
+              "text": "Free tools"
+            },
+            {
+              "href": "https://www.cartesia.ai/integrations",
+              "text": "Integrations"
+            },
+            {
+              "href": "https://www.cartesia.ai/learn",
+              "text": "Learn"
+            },
+            {
+              "href": "https://www.cartesia.ai/pricing",
+              "text": "Pricing"
+            },
+            {
+              "href": "https://www.cartesia.ai/vs",
+              "text": "Compare providers"
+            },
+            {
+              "href": "https://www.cartesia.ai/research",
+              "text": "Research"
+            },
+            {
+              "href": "https://status.cartesia.ai/",
+              "text": "Status"
+            },
+            {
+              "href": "https://help.cartesia.ai/",
+              "text": "Support"
+            },
+            {
+              "href": "https://trust.cartesia.ai",
+              "text": "Trust Center"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "© 2026 Cartesia",
+          "inlines": [
+            {
+              "text": "© 2026 Cartesia"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Status",
+          "inlines": [
+            {
+              "href": "https://status.cartesia.ai/",
+              "text": "Status"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://www.cartesia.ai/legal/terms",
+                  "text": "Terms of service"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://www.cartesia.ai/legal/privacy",
+                  "text": "Privacy"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://www.cartesia.ai/legal/acceptable-use",
+                  "text": "Acceptable use"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://www.cartesia.ai/blog/from-tokens-to-bytes-part-1#cookie-settings",
+                  "text": "Cookie settings"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-29T01:10:45.056601Z",
+  "contentMode": "full"
+}
