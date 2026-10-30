@@ -1,0 +1,3292 @@
+{
+  "schemaVersion": 1,
+  "id": "gzcwy89nkjreenv5eu1qaysdi",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/gzcwy89nkjreenv5eu1qaysdi",
+  "fetchedAt": "2026-10-30T01:10:07.696417Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic / Claude",
+    "OpenRouter",
+    "AI 编码",
+    "教程实践"
+  ],
+  "tags": [
+    "教程/实践",
+    "编码",
+    "Anthropic"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "把 Claude Sonnet 5.5 设为默认模型，高并发和子智能体任务用 Claude Haiku 5.5，任务耗时长、需求模糊或出错代价高时用 Claude Opus 5.5。",
+          "inlines": [
+            {
+              "text": "把 "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+              "text": "Claude Sonnet 5.5"
+            },
+            {
+              "text": " 设为默认模型，高并发和子智能体任务用 "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+              "text": "Claude Haiku 5.5"
+            },
+            {
+              "text": "，任务耗时长、需求模糊或出错代价高时用 "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-opus-5.5",
+              "text": "Claude Opus 5.5"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对多数团队来说，选择其实是在 Opus 和 Sonnet 之间做，问题在于 Opus 每 token 的价格是 Sonnet 的两倍，值不值。在我们测试的编程任务上，答案是不值。我们给每个模型都安排了同样的 11 个带隐藏测试的编程任务，以及 Claude Code 里同一个修 bug 任务。所有模型全部通过，所以拉开差距的是成本。按任务算，Haiku 比 Opus 便宜 19 到 30 倍，Sonnet 的成本则是 Opus 的一半到三分之二。",
+          "inlines": [
+            {
+              "text": "对多数团队来说，选择其实是在 Opus 和 Sonnet 之间做，问题在于 Opus 每 token 的价格是 Sonnet 的两倍，值不值。在我们测试的编程任务上，答案是不值。我们给每个模型都安排了同样的 11 个带隐藏测试的编程任务，以及 "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/overview",
+              "text": "Claude Code"
+            },
+            {
+              "text": " 里同一个修 bug 任务。所有模型全部通过，所以拉开差距的是成本。按任务算，Haiku 比 Opus 便宜 19 到 30 倍，Sonnet 的成本则是 Opus 的一半到三分之二。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些结果只说明三款模型在我们任务上的表现。要知道哪款最适合你的工作流，唯一的办法是在你自己的工作上测试。Ori Eval 可以帮你做这件事。你问编程智能体哪个模型最适合你的项目，它就会在你的代码里找测试素材、编写评测、运行你想对比的模型，并给出推荐，同时附上分数、耗时和成本。后面讲模型切换的那一节会说明如何让它指向这三个层级。",
+          "inlines": [
+            {
+              "text": "这些结果只说明三款模型在我们任务上的表现。要知道哪款最适合你的工作流，唯一的办法是在你自己的工作上测试。"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/ori/eval",
+              "text": "Ori Eval"
+            },
+            {
+              "text": " 可以帮你做这件事。你问编程智能体哪个模型最适合你的项目，它就会在你的代码里找测试素材、编写评测、运行你想对比的模型，并给出推荐，同时附上分数、耗时和成本。后面讲模型切换的那一节会说明如何让它指向这三个层级。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "简要结论",
+          "inlines": [
+            {
+              "text": "简要结论"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "把 Claude Sonnet 5.5 作为默认模型。在我们的 GPQA Diamond 和 τ-bench 测试中，它的得分与 Opus 5.5 持平或更高，通过了全部编程测试，而每 token 价格只有一半。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "高并发和子智能体任务用 Haiku 5.5。它同样通过了全部编程测试，成本只有 Sonnet 的十二分之一到十六分之一。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "任务耗时长、需求模糊、出错代价高于 token 成本时，保留 Opus 5.5。我们的短任务无法排除它在这类场景下的优势。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们的任务不等于你的任务。选定之前，先用 Ori Eval 在你自己的工作里测试这三款模型。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在 OpenRouter 上，三者只差一个模型字符串，Claude Code 还可以为不同角色分别指定不同的模型。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Opus、Sonnet 和 Haiku 有什么区别？",
+          "inlines": [
+            {
+              "text": "Opus、Sonnet 和 Haiku 有什么区别？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Opus 5.5、Sonnet 5.5 和 Haiku 5.5 是同一代模型的三个层级。Anthropic 于 2026 年 9 月 22 日发布 Opus 5.5，9 月 28 日发布 Sonnet 5.5，10 月 7 日发布 Haiku 5.5。三者都有 100 万 token 上下文窗口，都接受文本、图片和 PDF。它们的主要差异在价格，另外 Haiku 的基准测试分数更低。",
+          "inlines": [
+            {
+              "text": "Opus 5.5、Sonnet 5.5 和 Haiku 5.5 是同一代模型的三个层级。Anthropic 于 2026 年 9 月 22 日发布 "
+            },
+            {
+              "href": "https://www.anthropic.com/claude-opus-5-5",
+              "text": "Opus 5.5"
+            },
+            {
+              "text": "，9 月 28 日发布 "
+            },
+            {
+              "href": "https://www.anthropic.com/claude-sonnet-5-5",
+              "text": "Sonnet 5.5"
+            },
+            {
+              "text": "，10 月 7 日发布 "
+            },
+            {
+              "href": "https://www.anthropic.com/claude-haiku-5-5",
+              "text": "Haiku 5.5"
+            },
+            {
+              "text": "。三者都有 "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/overview",
+              "text": "100 万 token 上下文窗口"
+            },
+            {
+              "text": "，都接受文本、图片和 PDF。它们的主要差异在价格，另外 Haiku 的基准测试分数更低。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型属性 / 指标",
+          "inlines": [
+            {
+              "text": "模型属性 / 指标"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Opus 5.5",
+          "inlines": [
+            {
+              "text": "Opus 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5",
+          "inlines": [
+            {
+              "text": "Sonnet 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5",
+          "inlines": [
+            {
+              "text": "Haiku 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "输入，每百万 token",
+          "inlines": [
+            {
+              "text": "输入，每百万 token"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$4.00",
+          "inlines": [
+            {
+              "text": "$4.00"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$2.00",
+          "inlines": [
+            {
+              "text": "$2.00"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.10",
+          "inlines": [
+            {
+              "text": "$0.10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "输出，每百万 token",
+          "inlines": [
+            {
+              "text": "输出，每百万 token"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$20.00",
+          "inlines": [
+            {
+              "text": "$20.00"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$10.00",
+          "inlines": [
+            {
+              "text": "$10.00"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.50",
+          "inlines": [
+            {
+              "text": "$0.50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "缓存读取，每百万 token",
+          "inlines": [
+            {
+              "text": "缓存读取，每百万 token"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.20",
+          "inlines": [
+            {
+              "text": "$0.20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.10",
+          "inlines": [
+            {
+              "text": "$0.10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.01",
+          "inlines": [
+            {
+              "text": "$0.01"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Artificial Analysis 智能指数",
+          "inlines": [
+            {
+              "text": "Artificial Analysis 智能指数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "57.6",
+          "inlines": [
+            {
+              "text": "57.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "56.0",
+          "inlines": [
+            {
+              "text": "56.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "43.4",
+          "inlines": [
+            {
+              "text": "43.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPQA Diamond（我们的测试）",
+          "inlines": [
+            {
+              "text": "GPQA Diamond（我们的测试）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "90.4%",
+          "inlines": [
+            {
+              "text": "90.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "92.4%",
+          "inlines": [
+            {
+              "text": "92.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "86.6%",
+          "inlines": [
+            {
+              "text": "86.6%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "τ-bench 航空（我们的测试）",
+          "inlines": [
+            {
+              "text": "τ-bench 航空（我们的测试）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "75.5%",
+          "inlines": [
+            {
+              "text": "75.5%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "78.7%",
+          "inlines": [
+            {
+              "text": "78.7%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "76.0%",
+          "inlines": [
+            {
+              "text": "76.0%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenRouter 上的 token 量，10 月 12 日至 18 日",
+          "inlines": [
+            {
+              "text": "OpenRouter 上的 token 量，10 月 12 日至 18 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6.18T",
+          "inlines": [
+            {
+              "text": "6.18T"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.45T",
+          "inlines": [
+            {
+              "text": "2.45T"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.07T",
+          "inlines": [
+            {
+              "text": "2.07T"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "价格是 2026 年 10 月 21 日我们的标价，来自 Opus 5.5、Sonnet 5.5 和 Haiku 5.5 的模型页面。基准测试各行来自我们的 benchmarks 接口，数据于 10 月 21 日拉取（我们的测试运行于 10 月 17 日）。Artificial Analysis 智能指数是独立基准测试公司 Artificial Analysis 对 10 项评测给出的综合分数。T 表示万亿 token，数据来自我们的每日排名数据集。",
+          "inlines": [
+            {
+              "text": "价格是 2026 年 10 月 21 日我们的标价，来自 "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-opus-5.5",
+              "text": "Opus 5.5"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+              "text": "Sonnet 5.5"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+              "text": "Haiku 5.5"
+            },
+            {
+              "text": " 的模型页面。基准测试各行来自我们的 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/api/api-reference/benchmarks/list-benchmarks",
+              "text": "benchmarks 接口"
+            },
+            {
+              "text": "，数据于 10 月 21 日拉取（我们的测试运行于 10 月 17 日）。"
+            },
+            {
+              "href": "https://artificialanalysis.ai/methodology/intelligence-benchmarking",
+              "text": "Artificial Analysis 智能指数"
+            },
+            {
+              "text": "是独立基准测试公司 Artificial Analysis 对 10 项评测给出的综合分数。T 表示万亿 token，数据来自我们的"
+            },
+            {
+              "href": "https://openrouter.ai/docs/api/api-reference/datasets/daily-token-totals-for-top-50-models",
+              "text": "每日排名数据集"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Opus 比 Sonnet 更好吗？",
+          "inlines": [
+            {
+              "text": "Opus 比 Sonnet 更好吗？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们跑的基准测试里，Claude Opus 5.5 并没有胜过 Claude Sonnet 5.5。在我们跑的 GPQA Diamond 上 Sonnet 得分更高，这是一组 198 道研究生水平的科学题（92.4% 对 90.4%）。在 τ-bench airline 上它同样更高，这是一个多轮客服智能体基准（78.7% 对 75.5%）。在 Artificial Analysis 指数上 Opus 领先 1.6 分。在我们两次运行中，Sonnet 每个任务的成本都不到一半：GPQA 每题 $0.025，Opus 是 $0.054；τ-bench 每任务 $0.16，Opus 是 $0.34。",
+          "inlines": [
+            {
+              "text": "在我们跑的基准测试里，Claude Opus 5.5 并没有胜过 Claude Sonnet 5.5。在我们跑的 "
+            },
+            {
+              "href": "https://arxiv.org/abs/2311.12022",
+              "text": "GPQA Diamond"
+            },
+            {
+              "text": " 上 Sonnet 得分更高，这是一组 198 道研究生水平的科学题（92.4% 对 90.4%）。在 "
+            },
+            {
+              "href": "https://github.com/sierra-research/tau2-bench",
+              "text": "τ-bench"
+            },
+            {
+              "text": " airline 上它同样更高，这是一个多轮客服智能体基准（78.7% 对 75.5%）。在 Artificial Analysis 指数上 Opus 领先 1.6 分。在我们两次运行中，Sonnet 每个任务的成本都不到一半：GPQA 每题 $0.025，Opus 是 $0.054；τ-bench 每任务 $0.16，Opus 是 $0.34。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 12 日那一周，Opus 5.5 在 OpenRouter 上的 token 用量约为 Sonnet 的 2.5 倍。Opus 还是 Claude Code 在多数套餐下的默认模型，在我们的测试中，没有指定模型时 Claude Code 会通过 OpenRouter 使用 Opus 5.5。如果你没改过模型，那你跑的就是 Opus。",
+          "inlines": [
+            {
+              "text": "10 月 12 日那一周，Opus 5.5 在 OpenRouter 上的 token 用量约为 Sonnet 的 2.5 倍。Opus 还是 Claude Code 在多数套餐下的"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "text": "默认模型"
+            },
+            {
+              "text": "，在我们的测试中，没有指定模型时 Claude Code 会通过 OpenRouter 使用 Opus 5.5。如果你没改过模型，那你跑的就是 Opus。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Haiku 够不够格取代 Sonnet？",
+          "inlines": [
+            {
+              "text": "Haiku 够不够格取代 Sonnet？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "对于需求明确、常规性的工作，Haiku 5.5 可以取代 Sonnet。它在 τ-bench airline 上得分 76.0%，比 Opus 高半分，比 Sonnet 低 2.7 分，每任务成本 $0.011，约为 Sonnet 的十四分之一。我们每个模型跑了 100 到 200 个任务，所以这个基准上几分之差可能是噪声。在 GPQA Diamond 上 Haiku 落后 Sonnet 5.8 分，在 Artificial Analysis 指数上落后 12.6 分——该指数中智能体任务和通用知识各占 30%，编程和科学推理各占 20%。在常规编程上，我们下面的测试没有发现差距。",
+          "inlines": [
+            {
+              "text": "对于需求明确、常规性的工作，Haiku 5.5 可以取代 Sonnet。它在 τ-bench airline 上得分 76.0%，比 Opus 高半分，比 Sonnet 低 2.7 分，每任务成本 $0.011，约为 Sonnet 的十四分之一。我们每个模型跑了 100 到 200 个任务，所以这个基准上几分之差可能是噪声。在 GPQA Diamond 上 Haiku 落后 Sonnet 5.8 分，在 Artificial Analysis 指数上落后 12.6 分——该指数中智能体任务和通用知识各占 30%，编程和科学推理各占 20%。在常规编程上，我们下面的测试没有发现差距。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们的编程测试说明了什么？",
+          "inlines": [
+            {
+              "text": "我们的编程测试说明了什么？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们测了两件事：按规格写函数，以及用 Claude Code 修一个代码仓库。三个模型在两项测试中都通过了全部测试。",
+          "inlines": [
+            {
+              "text": "我们测了两件事：按规格写函数，以及用 Claude Code 修一个代码仓库。三个模型在两项测试中都通过了全部测试。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "带隐藏测试的函数",
+          "inlines": [
+            {
+              "text": "带隐藏测试的函数"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们写了 11 个 Python 任务，每个都配一个隐藏测试文件。8 个日常任务是：解析时长、合并区间、LRU 缓存、不用 eval 的算术求值器、cron 表达式的下次运行时间、自动换行、语义化版本排序，以及 JSON 路径读取器。3 个困难任务分别是：不用 re 模块的正则引擎、带三值 NULL 逻辑的 SQL WHERE 过滤器，以及夏令时切换日跨时区的空闲日程时段。每个模型对每个日常任务作答两次、每个困难任务作答三次，使用模型默认设置，每个模型共 25 次尝试。",
+          "inlines": [
+            {
+              "text": "我们写了 11 个 Python 任务，每个都配一个隐藏测试文件。8 个日常任务是：解析时长、合并区间、LRU 缓存、不用 "
+            },
+            {
+              "code": true,
+              "text": "eval"
+            },
+            {
+              "text": " 的算术求值器、cron 表达式的下次运行时间、自动换行、"
+            },
+            {
+              "href": "https://semver.org/",
+              "text": "语义化版本"
+            },
+            {
+              "text": "排序，以及 JSON 路径读取器。3 个困难任务分别是：不用 "
+            },
+            {
+              "code": true,
+              "text": "re"
+            },
+            {
+              "text": " 模块的正则引擎、带三值 NULL 逻辑的 SQL WHERE 过滤器，以及夏令时切换日跨时区的空闲日程时段。每个模型对每个日常任务作答两次、每个困难任务作答三次，使用模型默认设置，每个模型共 25 次尝试。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "指标",
+          "inlines": [
+            {
+              "text": "指标"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Opus 5.5",
+          "inlines": [
+            {
+              "text": "Opus 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5",
+          "inlines": [
+            {
+              "text": "Sonnet 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5",
+          "inlines": [
+            {
+              "text": "Haiku 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "通过的尝试",
+          "inlines": [
+            {
+              "text": "通过的尝试"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25/25",
+          "inlines": [
+            {
+              "text": "25/25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25/25",
+          "inlines": [
+            {
+              "text": "25/25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25/25",
+          "inlines": [
+            {
+              "text": "25/25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个日常任务成本",
+          "inlines": [
+            {
+              "text": "每个日常任务成本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0211",
+          "inlines": [
+            {
+              "text": "$0.0211"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0112",
+          "inlines": [
+            {
+              "text": "$0.0112"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0007",
+          "inlines": [
+            {
+              "text": "$0.0007"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个困难任务成本",
+          "inlines": [
+            {
+              "text": "每个困难任务成本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0739",
+          "inlines": [
+            {
+              "text": "$0.0739"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0380",
+          "inlines": [
+            {
+              "text": "$0.0380"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0027",
+          "inlines": [
+            {
+              "text": "$0.0027"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个困难任务耗时",
+          "inlines": [
+            {
+              "text": "每个困难任务耗时"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32.1",
+          "inlines": [
+            {
+              "text": "32.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25.7",
+          "inlines": [
+            {
+              "text": "25.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22.6",
+          "inlines": [
+            {
+              "text": "22.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 用的推理最多，却仍然最快完成困难任务。在困难任务上它平均用了 3,202 个推理 token，Opus 是 1,252 个。推理 token 是模型在写出答案之前用于推演问题的 token。即便推理更多，Haiku 每个困难任务的成本也只有 Opus 的二十七分之一。",
+          "inlines": [
+            {
+              "text": "Haiku 用的推理最多，却仍然最快完成困难任务。在困难任务上它平均用了 3,202 个"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens",
+              "text": "推理 token"
+            },
+            {
+              "text": "，Opus 是 1,252 个。推理 token 是模型在写出答案之前用于推演问题的 token。即便推理更多，Haiku 每个困难任务的成本也只有 Opus 的二十七分之一。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在 Claude Code 里修 bug",
+          "inlines": [
+            {
+              "text": "在 Claude Code 里修 bug"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们给 Claude Code 一个小型发票库，里面有三个 bug 和五个测试。三个 bug 分别是：用了银行家舍入（四舍六入五成双）的舍入逻辑、在引号内的逗号处错误分割的 CSV 解析器，以及用覆盖而非累加数量的汇总逻辑。我们通过 OpenRouter 让每个模型跑了三次，用 ANTHROPIC_MODEL 环境变量选择模型。",
+          "inlines": [
+            {
+              "text": "我们给 Claude Code 一个小型发票库，里面有三个 bug 和五个测试。三个 bug 分别是：用了"
+            },
+            {
+              "href": "https://docs.python.org/3/library/functions.html#round",
+              "text": "银行家舍入"
+            },
+            {
+              "text": "（四舍六入五成双）的舍入逻辑、在引号内的逗号处错误分割的 CSV 解析器，以及用覆盖而非累加数量的汇总逻辑。我们通过 OpenRouter 让每个模型跑了三次，用 "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "code": true,
+              "text": "ANTHROPIC_MODEL"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "text": " 环境变量"
+            },
+            {
+              "text": "选择模型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "指标",
+          "inlines": [
+            {
+              "text": "指标"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Opus 5.5",
+          "inlines": [
+            {
+              "text": "Opus 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5",
+          "inlines": [
+            {
+              "text": "Sonnet 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5",
+          "inlines": [
+            {
+              "text": "Haiku 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "修复全部三个 bug 的运行次数",
+          "inlines": [
+            {
+              "text": "修复全部三个 bug 的运行次数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3/3",
+          "inlines": [
+            {
+              "text": "3/3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3/3",
+          "inlines": [
+            {
+              "text": "3/3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3/3",
+          "inlines": [
+            {
+              "text": "3/3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每次会话成本中位数",
+          "inlines": [
+            {
+              "text": "每次会话成本中位数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.098",
+          "inlines": [
+            {
+              "text": "$0.098"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.062",
+          "inlines": [
+            {
+              "text": "$0.062"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0052",
+          "inlines": [
+            {
+              "text": "$0.0052"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "轮次",
+          "inlines": [
+            {
+              "text": "轮次"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5",
+          "inlines": [
+            {
+              "text": "5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5",
+          "inlines": [
+            {
+              "text": "5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6 到 8",
+          "inlines": [
+            {
+              "text": "6 到 8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "实际耗时",
+          "inlines": [
+            {
+              "text": "实际耗时"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "24 到 30 秒",
+          "inlines": [
+            {
+              "text": "24 到 30 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "18 到 25 秒",
+          "inlines": [
+            {
+              "text": "18 到 25 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22 到 31 秒",
+          "inlines": [
+            {
+              "text": "22 到 31 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一轮指会话中的一次模型响应。我们按自己的价格、根据每个会话的 token 数计算会话成本，因为 Claude Code 自己给出的数字对 Haiku 来说是错的。",
+          "inlines": [
+            {
+              "text": "一轮指会话中的一次模型响应。我们按自己的价格、根据每个会话的 token 数计算会话成本，因为 Claude Code 自己给出的数字对 Haiku 来说是错的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code 自己的total_cost_usd 字段不认识我们的 Haiku slug，报告每个会话 0.16 到 0.31 美元，是我们算出的中位数 0.0052 美元的 30 到 60 倍。在 print 模式（claude -p）下，Claude Code 遇到不认识的模型 slug 会记录一条警告。我们通过 Haiku 发一个单词的回复时又看到了它：Claude Code 报告 0.107 美元，而按我们的价格这次请求约花费 0.002 美元。",
+          "inlines": [
+            {
+              "text": "Claude Code 自己的"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/headless",
+              "code": true,
+              "text": "total_cost_usd"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/headless",
+              "text": " 字段"
+            },
+            {
+              "text": "不认识我们的 Haiku slug，报告每个会话 0.16 到 0.31 美元，是我们算出的中位数 0.0052 美元的 30 到 60 倍。在 print 模式（"
+            },
+            {
+              "code": true,
+              "text": "claude -p"
+            },
+            {
+              "text": "）下，Claude Code 遇到不认识的模型 slug 会记录一条警告。我们通过 Haiku 发一个单词的回复时又看到了它：Claude Code 报告 0.107 美元，而按我们的价格这次请求约花费 0.002 美元。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "[claude-code:unrecognized_model] {\"model\":\"anthropic/claude-haiku-5.5\",\"query_source\":\"sdk\"}"
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你通过 OpenRouter 运行 Claude Code，请改到活动页面查看支出；如果需要设置上限，请使用我们的支出控制。",
+          "inlines": [
+            {
+              "text": "如果你通过 OpenRouter 运行 Claude Code，请改到"
+            },
+            {
+              "href": "https://openrouter.ai/activity",
+              "text": "活动页面"
+            },
+            {
+              "text": "查看支出；如果需要设置上限，请使用我们的"
+            },
+            {
+              "href": "https://openrouter.ai/blog/insights/governing-team-ai-spend/",
+              "text": "支出控制"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些都是规模小、定义明确的任务。在这些任务上，三个档位同样可靠，成本却相差很大。它们并不覆盖 Anthropic 打造 Opus 所针对的工作，也就是长时间运行的智能体编程与知识工作，在那类工作中出错的代价比 token 更贵。",
+          "inlines": [
+            {
+              "text": "这些都是规模小、定义明确的任务。在这些任务上，三个档位同样可靠，成本却相差很大。它们并不覆盖 Anthropic 打造 Opus 所针对的工作，也就是"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/overview",
+              "text": "长时间运行的智能体编程与知识工作"
+            },
+            {
+              "text": "，在那类工作中出错的代价比 token 更贵。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "该用哪一个？",
+          "inlines": [
+            {
+              "text": "该用哪一个？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "如果你想要一个默认选择，就用 Claude Sonnet 5.5。在我们两次基准测试中，它的得分与 Opus 持平或更高，在我们所有测试中也与 Opus 相当，而每 token 价格只有一半。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "如果你要处理大量请求，比如分类、抽取、子智能体或批量代码修改，就用 Haiku 5.5。它通过了我们给它的每一项测试，成本只有 Sonnet 的 1/12 到 1/16、Opus 的 1/19 到 1/30。把提示词控制在 100,000 token 以内，以保持在"
+                },
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/how-to-get-the-lowest-cost-llm-inference-on-openrouter/",
+                  "text": "较低价格"
+                },
+                {
+                  "text": "档。在 Claude Code 之外，我们的"
+                },
+                {
+                  "href": "https://openrouter.ai/docs/guides/features/server-tools/subagent",
+                  "text": "子智能体服务器工具"
+                },
+                {
+                  "text": "可以让较大的模型把独立完整的任务交给较小的模型。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "对于出错代价高昂的长任务，请使用 Opus 5.5。这正是它为之打造的工作，我们的短任务无法排除它在这方面具有优势。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "如果你分不清自己的工作负载属于哪一类，就按下一节所述，测试你自己的任务，而不是我们的任务。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "如何在它们之间切换？",
+          "inlines": [
+            {
+              "text": "如何在它们之间切换？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们通过同一个 API、同一个密钥和同一种请求格式提供这三个模型，所以切换只需改动模型字符串。下面这个循环把同一个提示词发给每个档位，并打印输出 token 数以及我们在每次响应中返回的成本。",
+          "inlines": [
+            {
+              "text": "我们通过"
+            },
+            {
+              "href": "https://openrouter.ai/docs/quickstart",
+              "text": "同一个 API"
+            },
+            {
+              "text": "、同一个密钥和同一种请求格式提供这三个模型，所以切换只需改动模型字符串。下面这个循环把同一个提示词发给每个档位，并打印输出 token 数以及"
+            },
+            {
+              "href": "https://openrouter.ai/docs/cookbook/administration/usage-accounting",
+              "text": "我们在每次响应中返回的成本"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import os\nimport requests\nfor model in [\"anthropic/claude-opus-5.5\", \"anthropic/claude-sonnet-5.5\", \"anthropic/claude-haiku-5.5\"]:\n    r = requests.post(\n        \"https://openrouter.ai/api/v1/chat/completions\",\n        headers={\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"},\n        json={\"model\": model, \"messages\": [{\"role\": \"user\", \"content\": \"Write a Python function that merges overlapping intervals.\"}]},\n        timeout=300,\n    )\n    usage = r.json()[\"usage\"]\n    print(f\"{model}: {usage['completion_tokens']} output tokens, ${usage['cost']:.4f}\")"
+        },
+        {
+          "type": "paragraph",
+          "text": "这是我们在 2026 年 10 月 13 日运行得到的输出。",
+          "inlines": [
+            {
+              "text": "这是我们在 2026 年 10 月 13 日运行得到的输出。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "anthropic/claude-opus-5.5: 1190 output tokens, $0.0239\nanthropic/claude-sonnet-5.5: 876 output tokens, $0.0088\nanthropic/claude-haiku-5.5: 852 output tokens, $0.0004"
+        },
+        {
+          "type": "paragraph",
+          "text": "用 Ori Eval 把你自己的任务在每个档位上各跑一遍。Ori Eval 测试是 TypeScript 的 *.eval.ts 文件。在同一个文件里把三个 slug 都传给 setupAgent({ model })，同样的测试就会在每个档位上运行。",
+          "inlines": [
+            {
+              "text": "用 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/ori/eval",
+              "text": "Ori Eval"
+            },
+            {
+              "text": " 把"
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/building-a-golden-eval-dataset-from-production-traffic/",
+              "text": "你自己的任务"
+            },
+            {
+              "text": "在每个档位上各跑一遍。Ori Eval 测试是 TypeScript 的 "
+            },
+            {
+              "code": true,
+              "text": "*.eval.ts"
+            },
+            {
+              "text": " 文件。在同一个文件里把三个 slug 都传给 "
+            },
+            {
+              "code": true,
+              "text": "setupAgent({ model })"
+            },
+            {
+              "text": "，同样的测试就会在每个档位上运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Claude Code 中，你可以让 Opus 负责规划，把常规工作交给更便宜的模型。按我们的设置指南把 Claude Code 指向 OpenRouter，然后为每个角色设置模型。",
+          "inlines": [
+            {
+              "text": "在 Claude Code 中，你可以让 Opus 负责规划，把常规工作交给更便宜的模型。按我们的"
+            },
+            {
+              "href": "https://openrouter.ai/docs/cookbook/coding-agents/claude-code-integration",
+              "text": "设置指南"
+            },
+            {
+              "text": "把 Claude Code 指向 OpenRouter，然后为每个角色设置模型。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "export ANTHROPIC_DEFAULT_OPUS_MODEL=\"anthropic/claude-opus-5.5\"\nexport ANTHROPIC_DEFAULT_SONNET_MODEL=\"anthropic/claude-sonnet-5.5\"\nexport ANTHROPIC_DEFAULT_HAIKU_MODEL=\"anthropic/claude-haiku-5.5\"\nexport CLAUDE_CODE_SUBAGENT_MODEL=\"anthropic/claude-haiku-5.5\""
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code 2.1.307 能识别 Opus 和 Sonnet 的 slug，并给它们 100 万 token 的上下文窗口。它还不认识 Haiku 的 slug，会假定为 200,000 token。要让 Haiku 获得完整窗口，请在其 slug 后加上 [1m]。我们会在路由前去掉这个后缀。不加后缀则会让 Haiku 会话保持在约 200,000 token 以内。",
+          "inlines": [
+            {
+              "text": "Claude Code 2.1.307 能识别 Opus 和 Sonnet 的 slug，并给它们 100 万 token 的上下文窗口。它还不认识 Haiku 的 slug，会假定为 200,000 token。要让 Haiku 获得完整窗口，请在其 slug 后加上 "
+            },
+            {
+              "code": true,
+              "text": "[1m]"
+            },
+            {
+              "text": "。我们会在路由前去掉这个后缀。不加后缀则会让 Haiku 会话保持在约 200,000 token 以内。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些变量决定每个名称指向哪个模型，并不改变你实际使用的是哪一个。要把 Sonnet 设为主模型，可在会话中运行 /model sonnet，或在启动 Claude Code 前设置 ANTHROPIC_MODEL=sonnet。要用 Opus 规划、用 Sonnet 写代码，请改为运行 /model opusplan。由于设置了 CLAUDE_CODE_SUBAGENT_MODEL，没有指定自己模型的子智能体会运行在 Haiku 上。",
+          "inlines": [
+            {
+              "text": "这些变量决定每个名称指向哪个模型，并不改变你实际使用的是哪一个。要把 Sonnet 设为主模型，可在会话中运行 "
+            },
+            {
+              "code": true,
+              "text": "/model sonnet"
+            },
+            {
+              "text": "，或在启动 Claude Code 前设置 "
+            },
+            {
+              "code": true,
+              "text": "ANTHROPIC_MODEL=sonnet"
+            },
+            {
+              "text": "。要用 Opus 规划、用 Sonnet 写代码，请改为运行 "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "code": true,
+              "text": "/model opusplan"
+            },
+            {
+              "text": "。由于设置了 "
+            },
+            {
+              "code": true,
+              "text": "CLAUDE_CODE_SUBAGENT_MODEL"
+            },
+            {
+              "text": "，没有指定自己模型的"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/sub-agents",
+              "text": "子智能体"
+            },
+            {
+              "text": "会运行在 Haiku 上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你更希望由我们按请求逐个挑选，Auto Router（openrouter/auto）会为每个提示词选择一个模型。用于编程时，Pareto Router 会挑选一个达到你设定的最低编程分数的模型。",
+          "inlines": [
+            {
+              "text": "如果你更希望由我们"
+            },
+            {
+              "href": "https://openrouter.ai/blog/insights/model-routing/",
+              "text": "按请求逐个挑选"
+            },
+            {
+              "text": "，"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/routers/auto-router",
+              "text": "Auto Router"
+            },
+            {
+              "text": "（"
+            },
+            {
+              "code": true,
+              "text": "openrouter/auto"
+            },
+            {
+              "text": "）会为每个提示词选择一个模型。用于编程时，"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/routers/pareto-router",
+              "text": "Pareto Router"
+            },
+            {
+              "text": " 会挑选一个达到你设定的最低编程分数的模型。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "常见问题",
+          "inlines": [
+            {
+              "text": "常见问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Claude Haiku 比 Sonnet 便宜吗？",
+          "inlines": [
+            {
+              "text": "Claude Haiku 比 Sonnet 便宜吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "是的。在 OpenRouter 上，对于 10 万 token 以下的提示词，Haiku 5.5 的每输入和输出 token 成本比 Claude Sonnet 5.5 低 20 倍，每百万输入 token 为 0.10 美元，而后者为 2.00 美元。在我们的 Claude Code 运行中，每次会话的差距更小，约为 12 倍，部分原因是 Haiku 需要更多轮次才能达到相同结果。",
+          "inlines": [
+            {
+              "text": "是的。在 OpenRouter 上，对于 10 万 token 以下的提示词，Haiku 5.5 的每输入和输出 token 成本比 Claude Sonnet 5.5 低 20 倍，每百万输入 token 为 0.10 美元，而后者为 2.00 美元。在我们的 Claude Code 运行中，每次会话的差距更小，约为 12 倍，部分原因是 Haiku 需要更多轮次才能达到相同结果。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在编程方面，Sonnet 5.5 比 Opus 5.5 更好吗？",
+          "inlines": [
+            {
+              "text": "在编程方面，Sonnet 5.5 比 Opus 5.5 更好吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的 Claude Sonnet 与 Opus 编程测试中，两者表现相当。两者都通过了全部 25 次隐藏测试尝试，以及通过 OpenRouter 进行的全部三次 Claude Code 运行，而 Sonnet 更快，成本只有后者的二分之一到三分之二。Opus 在 Artificial Analysis 指数上领先 1.6 分，Anthropic 将其定位为长时间运行的智能体编程，因此对于漫长且模糊的会话，它是更稳妥的选择。",
+          "inlines": [
+            {
+              "text": "在我们的 Claude Sonnet 与 Opus 编程测试中，两者表现相当。两者都通过了全部 25 次隐藏测试尝试，以及通过 OpenRouter 进行的全部三次 Claude Code 运行，而 Sonnet 更快，成本只有后者的二分之一到三分之二。Opus 在 Artificial Analysis 指数上领先 1.6 分，Anthropic 将其定位为"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/overview",
+              "text": "长时间运行的智能体编程"
+            },
+            {
+              "text": "，因此对于漫长且模糊的会话，它是更稳妥的选择。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude Haiku 适合做什么？",
+          "inlines": [
+            {
+              "text": "Claude Haiku 适合做什么？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5 适合高吞吐、定义明确的工作，例如分类、提取、路由、子智能体任务和常规代码修改。在我们通过 OpenRouter 进行的测试中，它通过了所有编程任务，包括正则表达式引擎和 SQL 三值 NULL 逻辑，并在 τ-bench 航空任务上比 Opus 高出半分。",
+          "inlines": [
+            {
+              "text": "Haiku 5.5 适合高吞吐、定义明确的工作，例如"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/overview",
+              "text": "分类、提取、路由"
+            },
+            {
+              "text": "、子智能体任务和常规代码修改。在我们通过 OpenRouter 进行的测试中，它通过了所有编程任务，包括正则表达式引擎和 SQL 三值 NULL 逻辑，并在 τ-bench 航空任务上比 Opus 高出半分。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude Code 使用哪个 Claude 模型？",
+          "inlines": [
+            {
+              "text": "Claude Code 使用哪个 Claude 模型？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "根据Anthropic 的模型配置文档，Claude Code 在 Pro、Max、Team、Enterprise 和 Anthropic API 账户上默认使用 Opus 5.5。当你通过 OpenRouter 运行 Claude Code 时，可以用 ANTHROPIC_MODEL 更改主模型，并用上面的环境变量设置每个角色。",
+          "inlines": [
+            {
+              "text": "根据"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "text": "Anthropic 的模型配置文档"
+            },
+            {
+              "text": "，Claude Code 在 Pro、Max、Team、Enterprise 和 Anthropic API 账户上默认使用 Opus 5.5。当你通过 OpenRouter 运行 Claude Code 时，可以用 "
+            },
+            {
+              "code": true,
+              "text": "ANTHROPIC_MODEL"
+            },
+            {
+              "text": " 更改主模型，并用上面的环境变量设置每个角色。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "后续步骤",
+          "inlines": [
+            {
+              "text": "后续步骤"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/ori/eval",
+                  "text": "Ori Eval"
+                },
+                {
+                  "text": " 会在你自己的任务上运行 Opus、Sonnet 和 Haiku，并推荐其中一个。要开始，请给你的编程智能体这条指令："
+                },
+                {
+                  "code": true,
+                  "text": "run curl -fsSL https://openrouter.ai/skills/spawn-ori-eval and follow the instructions in its output to get started"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们的"
+                },
+                {
+                  "href": "https://openrouter.ai/docs/cookbook/coding-agents/claude-code-integration",
+                  "text": "设置指南"
+                },
+                {
+                  "text": "涵盖按角色配置模型，教程"
+                },
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/claude-code-openrouter/",
+                  "text": "Claude Code with OpenRouter：设置、模型与成本"
+                },
+                {
+                  "text": "涵盖模型选择和成本。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/anthropic/claude-opus-5.5",
+                  "text": "Opus 5.5"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "href": "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+                  "text": "Sonnet 5.5"
+                },
+                {
+                  "text": " 和 "
+                },
+                {
+                  "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+                  "text": "Haiku 5.5"
+                },
+                {
+                  "text": " 的模型页面显示当前价格、提供商和正常运行时间。我们的"
+                },
+                {
+                  "href": "https://openrouter.ai/compare/anthropic/claude-opus-5.5/anthropic/claude-sonnet-5.5",
+                  "text": "Opus 5.5 vs Sonnet 5.5 对比页面"
+                },
+                {
+                  "text": "将其中两者并排比较。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/best-practices/prompt-caching",
+                  "text": "提示词缓存"
+                },
+                {
+                  "text": "解释了上表中的缓存读取价格。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "如果你要从较旧的 Claude 模型迁移，"
+                },
+                {
+                  "href": "https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-5-5",
+                  "text": "Claude 5.5 迁移指南"
+                },
+                {
+                  "text": "涵盖了 API 变更。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/insights/cost-vs-quality-tradeoff-framework-for-agent-models/",
+                  "text": "智能体模型的成本与质量权衡框架"
+                },
+                {
+                  "text": "和"
+                },
+                {
+                  "href": "https://openrouter.ai/blog/insights/confidence-thresholds-for-model-escalation-routing/",
+                  "text": "模型升级路由的置信度阈值"
+                },
+                {
+                  "text": "涵盖了何时将请求提升一个层级。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Use Claude Sonnet 5.5 as your default, Claude Haiku 5.5 for high-volume and sub-agent work, and Claude Opus 5.5 when a task is long, ambiguous, or expensive to get wrong.",
+          "inlines": [
+            {
+              "text": "Use "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+              "text": "Claude Sonnet 5.5"
+            },
+            {
+              "text": " as your default, "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+              "text": "Claude Haiku 5.5"
+            },
+            {
+              "text": " for high-volume and sub-agent work, and "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-opus-5.5",
+              "text": "Claude Opus 5.5"
+            },
+            {
+              "text": " when a task is long, ambiguous, or expensive to get wrong."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For most teams, the choice is between Opus and Sonnet, and the question is whether Opus is worth twice Sonnet’s price per token. On the coding tasks we tested, it wasn’t. We gave each model the same 11 coding tasks with hidden tests and the same bug-fix task in Claude Code. Every model passed everything, so what separated them was cost. Haiku was 19 to 30 times cheaper than Opus per task, and Sonnet cost between half and two-thirds as much as Opus.",
+          "inlines": [
+            {
+              "text": "For most teams, the choice is between Opus and Sonnet, and the question is whether Opus is worth twice Sonnet’s price per token. On the coding tasks we tested, it wasn’t. We gave each model the same 11 coding tasks with hidden tests and the same bug-fix task in "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/overview",
+              "text": "Claude Code"
+            },
+            {
+              "text": ". Every model passed everything, so what separated them was cost. Haiku was 19 to 30 times cheaper than Opus per task, and Sonnet cost between half and two-thirds as much as Opus."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Those results tell you how the three did on our tasks. The only way to know which one is best for your workflow is to test them on your own work. Ori Eval does this for you. You ask your coding agent which model is best for your project, and it finds test material in your code, writes the eval, runs the models you want to compare, and recommends one with the scores, times, and costs behind it. The section on switching between them shows how to point it at all three tiers.",
+          "inlines": [
+            {
+              "text": "Those results tell you how the three did on our tasks. The only way to know which one is best for your workflow is to test them on your own work. "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/ori/eval",
+              "text": "Ori Eval"
+            },
+            {
+              "text": " does this for you. You ask your coding agent which model is best for your project, and it finds test material in your code, writes the eval, runs the models you want to compare, and recommends one with the scores, times, and costs behind it. The section on switching between them shows how to point it at all three tiers."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Tl;dr",
+          "inlines": [
+            {
+              "text": "Tl;dr"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Use Claude Sonnet 5.5 as your default. It scored as well as or better than Opus 5.5 on our GPQA Diamond and τ-bench runs and passed every coding test, at half the per-token price."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Use Haiku 5.5 for high-volume and sub-agent work. It passed every coding test too, at a 12th to a 16th of Sonnet’s cost."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Keep Opus 5.5 for long, ambiguous tasks where a mistake costs more than the tokens. Our short tasks can’t rule out an advantage there."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Our tasks aren’t yours. Test the three on your own work with Ori Eval before you settle on one."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "All three are one model string apart on OpenRouter, and Claude Code can use a different one for each role."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How do Opus, Sonnet, and Haiku differ?",
+          "inlines": [
+            {
+              "text": "How do Opus, Sonnet, and Haiku differ?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Opus 5.5, Sonnet 5.5, and Haiku 5.5 are three tiers of the same model generation. Anthropic released Opus 5.5 on September 22, 2026, Sonnet 5.5 on September 28, and Haiku 5.5 on October 7. All three have a 1-million-token context window and accept text, images, and PDFs. They differ mostly in price and, for Haiku, in lower benchmark scores.",
+          "inlines": [
+            {
+              "text": "Opus 5.5, Sonnet 5.5, and Haiku 5.5 are three tiers of the same model generation. Anthropic released "
+            },
+            {
+              "href": "https://www.anthropic.com/claude-opus-5-5",
+              "text": "Opus 5.5"
+            },
+            {
+              "text": " on September 22, 2026, "
+            },
+            {
+              "href": "https://www.anthropic.com/claude-sonnet-5-5",
+              "text": "Sonnet 5.5"
+            },
+            {
+              "text": " on September 28, and "
+            },
+            {
+              "href": "https://www.anthropic.com/claude-haiku-5-5",
+              "text": "Haiku 5.5"
+            },
+            {
+              "text": " on October 7. All three have a "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/overview",
+              "text": "1-million-token context window"
+            },
+            {
+              "text": " and accept text, images, and PDFs. They differ mostly in price and, for Haiku, in lower benchmark scores."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model Property / Metric",
+          "inlines": [
+            {
+              "text": "Model Property / Metric"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Opus 5.5",
+          "inlines": [
+            {
+              "text": "Opus 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5",
+          "inlines": [
+            {
+              "text": "Sonnet 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5",
+          "inlines": [
+            {
+              "text": "Haiku 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Input, per million tokens",
+          "inlines": [
+            {
+              "text": "Input, per million tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$4.00",
+          "inlines": [
+            {
+              "text": "$4.00"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$2.00",
+          "inlines": [
+            {
+              "text": "$2.00"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.10",
+          "inlines": [
+            {
+              "text": "$0.10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Output, per million tokens",
+          "inlines": [
+            {
+              "text": "Output, per million tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$20.00",
+          "inlines": [
+            {
+              "text": "$20.00"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$10.00",
+          "inlines": [
+            {
+              "text": "$10.00"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.50",
+          "inlines": [
+            {
+              "text": "$0.50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cache read, per million tokens",
+          "inlines": [
+            {
+              "text": "Cache read, per million tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.20",
+          "inlines": [
+            {
+              "text": "$0.20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.10",
+          "inlines": [
+            {
+              "text": "$0.10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.01",
+          "inlines": [
+            {
+              "text": "$0.01"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Artificial Analysis Intelligence Index",
+          "inlines": [
+            {
+              "text": "Artificial Analysis Intelligence Index"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "57.6",
+          "inlines": [
+            {
+              "text": "57.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "56.0",
+          "inlines": [
+            {
+              "text": "56.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "43.4",
+          "inlines": [
+            {
+              "text": "43.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPQA Diamond (our run)",
+          "inlines": [
+            {
+              "text": "GPQA Diamond (our run)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "90.4%",
+          "inlines": [
+            {
+              "text": "90.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "92.4%",
+          "inlines": [
+            {
+              "text": "92.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "86.6%",
+          "inlines": [
+            {
+              "text": "86.6%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "τ-bench airline (our run)",
+          "inlines": [
+            {
+              "text": "τ-bench airline (our run)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "75.5%",
+          "inlines": [
+            {
+              "text": "75.5%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "78.7%",
+          "inlines": [
+            {
+              "text": "78.7%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "76.0%",
+          "inlines": [
+            {
+              "text": "76.0%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tokens on OpenRouter, Oct 12 to 18",
+          "inlines": [
+            {
+              "text": "Tokens on OpenRouter, Oct 12 to 18"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6.18T",
+          "inlines": [
+            {
+              "text": "6.18T"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.45T",
+          "inlines": [
+            {
+              "text": "2.45T"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.07T",
+          "inlines": [
+            {
+              "text": "2.07T"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Prices are our list prices on October 21, 2026, from the model pages for Opus 5.5, Sonnet 5.5, and Haiku 5.5. The benchmark rows come from our benchmarks endpoint, pulled on October 21 (our runs of October 17). The Artificial Analysis Intelligence Index is a composite score across 10 evaluations from the independent benchmarking firm Artificial Analysis. T means trillions of tokens, from our daily rankings dataset.",
+          "inlines": [
+            {
+              "text": "Prices are our list prices on October 21, 2026, from the model pages for "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-opus-5.5",
+              "text": "Opus 5.5"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+              "text": "Sonnet 5.5"
+            },
+            {
+              "text": ", and "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+              "text": "Haiku 5.5"
+            },
+            {
+              "text": ". The benchmark rows come from our "
+            },
+            {
+              "href": "https://openrouter.ai/docs/api/api-reference/benchmarks/list-benchmarks",
+              "text": "benchmarks endpoint"
+            },
+            {
+              "text": ", pulled on October 21 (our runs of October 17). The "
+            },
+            {
+              "href": "https://artificialanalysis.ai/methodology/intelligence-benchmarking",
+              "text": "Artificial Analysis Intelligence Index"
+            },
+            {
+              "text": " is a composite score across 10 evaluations from the independent benchmarking firm Artificial Analysis. T means trillions of tokens, from our "
+            },
+            {
+              "href": "https://openrouter.ai/docs/api/api-reference/datasets/daily-token-totals-for-top-50-models",
+              "text": "daily rankings dataset"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Is Opus better than Sonnet?",
+          "inlines": [
+            {
+              "text": "Is Opus better than Sonnet?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "On the benchmarks we run, Claude Opus 5.5 does not beat Claude Sonnet 5.5. Sonnet scored higher on our run of GPQA Diamond, a set of 198 graduate-level science questions (92.4% vs 90.4%). It also scored higher on τ-bench airline, a multi-turn customer-service agent benchmark (78.7% vs 75.5%). Opus leads by 1.6 points on the Artificial Analysis index. On both of our runs, Sonnet costs less than half as much per task, at $0.025 per GPQA question against $0.054 and $0.16 per τ-bench task against $0.34.",
+          "inlines": [
+            {
+              "text": "On the benchmarks we run, Claude Opus 5.5 does not beat Claude Sonnet 5.5. Sonnet scored higher on our run of "
+            },
+            {
+              "href": "https://arxiv.org/abs/2311.12022",
+              "text": "GPQA Diamond"
+            },
+            {
+              "text": ", a set of 198 graduate-level science questions (92.4% vs 90.4%). It also scored higher on "
+            },
+            {
+              "href": "https://github.com/sierra-research/tau2-bench",
+              "text": "τ-bench"
+            },
+            {
+              "text": " airline, a multi-turn customer-service agent benchmark (78.7% vs 75.5%). Opus leads by 1.6 points on the Artificial Analysis index. On both of our runs, Sonnet costs less than half as much per task, at $0.025 per GPQA question against $0.054 and $0.16 per τ-bench task against $0.34."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the week of October 12, Opus 5.5 carried about two and a half times Sonnet’s token volume on OpenRouter. Opus is also Claude Code’s default model on most plans, and in our test Claude Code used Opus 5.5 through OpenRouter when no model was set. If you haven’t changed your model, Opus is what you’re running.",
+          "inlines": [
+            {
+              "text": "In the week of October 12, Opus 5.5 carried about two and a half times Sonnet’s token volume on OpenRouter. Opus is also Claude Code’s "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "text": "default model"
+            },
+            {
+              "text": " on most plans, and in our test Claude Code used Opus 5.5 through OpenRouter when no model was set. If you haven’t changed your model, Opus is what you’re running."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Is Haiku good enough to replace Sonnet?",
+          "inlines": [
+            {
+              "text": "Is Haiku good enough to replace Sonnet?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5 can replace Sonnet for well-specified, routine work. It scored 76.0% on τ-bench airline, half a point above Opus and 2.7 points behind Sonnet, at $0.011 per task. That is about a fourteenth of Sonnet’s cost. Our runs had 100 to 200 tasks per model, so gaps of a few points on this benchmark may be noise. Haiku trails Sonnet by 5.8 points on GPQA Diamond and by 12.6 points on the Artificial Analysis index, which weights agentic tasks and general knowledge at 30% each and coding and scientific reasoning at 20% each. On routine coding, our tests below found no gap.",
+          "inlines": [
+            {
+              "text": "Haiku 5.5 can replace Sonnet for well-specified, routine work. It scored 76.0% on τ-bench airline, half a point above Opus and 2.7 points behind Sonnet, at $0.011 per task. That is about a fourteenth of Sonnet’s cost. Our runs had 100 to 200 tasks per model, so gaps of a few points on this benchmark may be noise. Haiku trails Sonnet by 5.8 points on GPQA Diamond and by 12.6 points on the Artificial Analysis index, which weights agentic tasks and general knowledge at 30% each and coding and scientific reasoning at 20% each. On routine coding, our tests below found no gap."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What did our coding tests show?",
+          "inlines": [
+            {
+              "text": "What did our coding tests show?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We tested two things, writing a function to a spec and fixing a repo with Claude Code. All three models passed every test in both.",
+          "inlines": [
+            {
+              "text": "We tested two things, writing a function to a spec and fixing a repo with Claude Code. All three models passed every test in both."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Functions with hidden tests",
+          "inlines": [
+            {
+              "text": "Functions with hidden tests"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We wrote 11 Python tasks, each with a hidden test file. The eight everyday tasks were parsing durations, merging intervals, an LRU cache, an arithmetic evaluator without eval, the next run time of a cron expression, word wrapping, Semantic Versioning sort order, and a JSON path reader. The three hard tasks were a regex engine without the re module, a SQL WHERE filter with three-valued NULL logic, and free calendar slots across time zones on daylight-saving transition days. Each model answered each everyday task twice and each hard task three times, with the models’ default settings, for 25 attempts per model.",
+          "inlines": [
+            {
+              "text": "We wrote 11 Python tasks, each with a hidden test file. The eight everyday tasks were parsing durations, merging intervals, an LRU cache, an arithmetic evaluator without "
+            },
+            {
+              "code": true,
+              "text": "eval"
+            },
+            {
+              "text": ", the next run time of a cron expression, word wrapping, "
+            },
+            {
+              "href": "https://semver.org/",
+              "text": "Semantic Versioning"
+            },
+            {
+              "text": " sort order, and a JSON path reader. The three hard tasks were a regex engine without the "
+            },
+            {
+              "code": true,
+              "text": "re"
+            },
+            {
+              "text": " module, a SQL WHERE filter with three-valued NULL logic, and free calendar slots across time zones on daylight-saving transition days. Each model answered each everyday task twice and each hard task three times, with the models’ default settings, for 25 attempts per model."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Metric",
+          "inlines": [
+            {
+              "text": "Metric"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Opus 5.5",
+          "inlines": [
+            {
+              "text": "Opus 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5",
+          "inlines": [
+            {
+              "text": "Sonnet 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5",
+          "inlines": [
+            {
+              "text": "Haiku 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attempts passed",
+          "inlines": [
+            {
+              "text": "Attempts passed"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25 of 25",
+          "inlines": [
+            {
+              "text": "25 of 25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25 of 25",
+          "inlines": [
+            {
+              "text": "25 of 25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25 of 25",
+          "inlines": [
+            {
+              "text": "25 of 25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cost per everyday task",
+          "inlines": [
+            {
+              "text": "Cost per everyday task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0211",
+          "inlines": [
+            {
+              "text": "$0.0211"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0112",
+          "inlines": [
+            {
+              "text": "$0.0112"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0007",
+          "inlines": [
+            {
+              "text": "$0.0007"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cost per hard task",
+          "inlines": [
+            {
+              "text": "Cost per hard task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0739",
+          "inlines": [
+            {
+              "text": "$0.0739"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0380",
+          "inlines": [
+            {
+              "text": "$0.0380"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0027",
+          "inlines": [
+            {
+              "text": "$0.0027"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Seconds per hard task",
+          "inlines": [
+            {
+              "text": "Seconds per hard task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32.1",
+          "inlines": [
+            {
+              "text": "32.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25.7",
+          "inlines": [
+            {
+              "text": "25.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22.6",
+          "inlines": [
+            {
+              "text": "22.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku used the most reasoning and still finished the hard tasks fastest. On the hard tasks it used 3,202 reasoning tokens on average, against 1,252 for Opus. Reasoning tokens are the tokens a model spends working through a problem before it writes its answer. Even with the extra reasoning, Haiku cost a 27th as much as Opus per hard task.",
+          "inlines": [
+            {
+              "text": "Haiku used the most reasoning and still finished the hard tasks fastest. On the hard tasks it used 3,202 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens",
+              "text": "reasoning tokens"
+            },
+            {
+              "text": " on average, against 1,252 for Opus. Reasoning tokens are the tokens a model spends working through a problem before it writes its answer. Even with the extra reasoning, Haiku cost a 27th as much as Opus per hard task."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A bug-fix in Claude Code",
+          "inlines": [
+            {
+              "text": "A bug-fix in Claude Code"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We gave Claude Code a small invoicing library with three bugs and five tests. The bugs were rounding that used banker’s rounding (round half to even), a CSV parser that split on commas inside quotes, and a summary that overwrote quantities instead of adding them. We ran it three times per model through OpenRouter, choosing the model with the ANTHROPIC_MODEL environment variable.",
+          "inlines": [
+            {
+              "text": "We gave Claude Code a small invoicing library with three bugs and five tests. The bugs were rounding that used "
+            },
+            {
+              "href": "https://docs.python.org/3/library/functions.html#round",
+              "text": "banker’s rounding"
+            },
+            {
+              "text": " (round half to even), a CSV parser that split on commas inside quotes, and a summary that overwrote quantities instead of adding them. We ran it three times per model through OpenRouter, choosing the model with the "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "code": true,
+              "text": "ANTHROPIC_MODEL"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "text": " environment variable"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Metric",
+          "inlines": [
+            {
+              "text": "Metric"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Opus 5.5",
+          "inlines": [
+            {
+              "text": "Opus 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5",
+          "inlines": [
+            {
+              "text": "Sonnet 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5",
+          "inlines": [
+            {
+              "text": "Haiku 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Runs that fixed all three bugs",
+          "inlines": [
+            {
+              "text": "Runs that fixed all three bugs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3 of 3",
+          "inlines": [
+            {
+              "text": "3 of 3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3 of 3",
+          "inlines": [
+            {
+              "text": "3 of 3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3 of 3",
+          "inlines": [
+            {
+              "text": "3 of 3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Median cost per session",
+          "inlines": [
+            {
+              "text": "Median cost per session"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.098",
+          "inlines": [
+            {
+              "text": "$0.098"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.062",
+          "inlines": [
+            {
+              "text": "$0.062"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0052",
+          "inlines": [
+            {
+              "text": "$0.0052"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Turns",
+          "inlines": [
+            {
+              "text": "Turns"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5",
+          "inlines": [
+            {
+              "text": "5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5",
+          "inlines": [
+            {
+              "text": "5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6 to 8",
+          "inlines": [
+            {
+              "text": "6 to 8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wall-clock time",
+          "inlines": [
+            {
+              "text": "Wall-clock time"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "24 to 30 s",
+          "inlines": [
+            {
+              "text": "24 to 30 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "18 to 25 s",
+          "inlines": [
+            {
+              "text": "18 to 25 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "22 to 31 s",
+          "inlines": [
+            {
+              "text": "22 to 31 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A turn is one model response in the session. We computed session cost from each session’s token counts at our prices, because Claude Code’s own figure was wrong for Haiku.",
+          "inlines": [
+            {
+              "text": "A turn is one model response in the session. We computed session cost from each session’s token counts at our prices, because Claude Code’s own figure was wrong for Haiku."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code’s own total_cost_usd field didn’t recognize our Haiku slug and reported $0.16 to $0.31 per session, 30 to 60 times our computed median of $0.0052. In print mode (claude -p), Claude Code logs a warning when it doesn’t recognize a model slug. We saw it again on a one-word reply through Haiku, where Claude Code reported $0.107 and the request cost about $0.002 at our prices.",
+          "inlines": [
+            {
+              "text": "Claude Code’s own "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/headless",
+              "code": true,
+              "text": "total_cost_usd"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/headless",
+              "text": " field"
+            },
+            {
+              "text": " didn’t recognize our Haiku slug and reported $0.16 to $0.31 per session, 30 to 60 times our computed median of $0.0052. In print mode ("
+            },
+            {
+              "code": true,
+              "text": "claude -p"
+            },
+            {
+              "text": "), Claude Code logs a warning when it doesn’t recognize a model slug. We saw it again on a one-word reply through Haiku, where Claude Code reported $0.107 and the request cost about $0.002 at our prices."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "[claude-code:unrecognized_model] {\"model\":\"anthropic/claude-haiku-5.5\",\"query_source\":\"sdk\"}"
+        },
+        {
+          "type": "paragraph",
+          "text": "If you run Claude Code through OpenRouter, check spend on your Activity page instead, and use our spend controls if you need a cap.",
+          "inlines": [
+            {
+              "text": "If you run Claude Code through OpenRouter, check spend on your "
+            },
+            {
+              "href": "https://openrouter.ai/activity",
+              "text": "Activity page"
+            },
+            {
+              "text": " instead, and use our "
+            },
+            {
+              "href": "https://openrouter.ai/blog/insights/governing-team-ai-spend/",
+              "text": "spend controls"
+            },
+            {
+              "text": " if you need a cap."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These are small, well-specified tasks. On these tasks, the three tiers were equally reliable, and their costs differed widely. They don’t cover the work Anthropic built Opus for, which is long-running agentic coding and knowledge work where a mistake costs more than the tokens.",
+          "inlines": [
+            {
+              "text": "These are small, well-specified tasks. On these tasks, the three tiers were equally reliable, and their costs differed widely. They don’t cover the work Anthropic built Opus for, which is "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/overview",
+              "text": "long-running agentic coding and knowledge work"
+            },
+            {
+              "text": " where a mistake costs more than the tokens."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Which one should you use?",
+          "inlines": [
+            {
+              "text": "Which one should you use?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "If you want one default, use Claude Sonnet 5.5. It scored as well as or better than Opus on both of our benchmark runs and matched it on all of our tests, at half the per-token price."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "If you run a lot of requests, such as classification, extraction, sub-agents, or bulk code edits, use Haiku 5.5. It passed every test we gave it at a 12th to a 16th of Sonnet’s cost and a 19th to a 30th of Opus’s. Keep prompts under 100,000 tokens to stay on its "
+                },
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/how-to-get-the-lowest-cost-llm-inference-on-openrouter/",
+                  "text": "lower price"
+                },
+                {
+                  "text": ". Outside Claude Code, our "
+                },
+                {
+                  "href": "https://openrouter.ai/docs/guides/features/server-tools/subagent",
+                  "text": "Subagent server tool"
+                },
+                {
+                  "text": " lets a larger model hand self-contained tasks to a smaller one."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Use Opus 5.5 for long tasks where a mistake is costly. That is the work it is built for, and our short tasks can’t rule out an advantage there."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "If you can’t tell which group your workload is in, test your own tasks rather than ours, as described in the next section."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How do you switch between them?",
+          "inlines": [
+            {
+              "text": "How do you switch between them?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We serve all three models through one API, one key, and one request format, so switching means changing the model string. This loop sends the same prompt to each tier and prints the output tokens and the cost we return on every response.",
+          "inlines": [
+            {
+              "text": "We serve all three models through "
+            },
+            {
+              "href": "https://openrouter.ai/docs/quickstart",
+              "text": "one API"
+            },
+            {
+              "text": ", one key, and one request format, so switching means changing the model string. This loop sends the same prompt to each tier and prints the output tokens and the "
+            },
+            {
+              "href": "https://openrouter.ai/docs/cookbook/administration/usage-accounting",
+              "text": "cost we return on every response"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import os\nimport requests\nfor model in [\"anthropic/claude-opus-5.5\", \"anthropic/claude-sonnet-5.5\", \"anthropic/claude-haiku-5.5\"]:\n    r = requests.post(\n        \"https://openrouter.ai/api/v1/chat/completions\",\n        headers={\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"},\n        json={\"model\": model, \"messages\": [{\"role\": \"user\", \"content\": \"Write a Python function that merges overlapping intervals.\"}]},\n        timeout=300,\n    )\n    usage = r.json()[\"usage\"]\n    print(f\"{model}: {usage['completion_tokens']} output tokens, ${usage['cost']:.4f}\")"
+        },
+        {
+          "type": "paragraph",
+          "text": "This is the output from our run on October 13, 2026.",
+          "inlines": [
+            {
+              "text": "This is the output from our run on October 13, 2026."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "anthropic/claude-opus-5.5: 1190 output tokens, $0.0239\nanthropic/claude-sonnet-5.5: 876 output tokens, $0.0088\nanthropic/claude-haiku-5.5: 852 output tokens, $0.0004"
+        },
+        {
+          "type": "paragraph",
+          "text": "Run your own tasks through each tier with Ori Eval. Ori Eval tests are TypeScript *.eval.ts files. Pass each of the three slugs to setupAgent({ model }) in one file, and the same tests run on every tier.",
+          "inlines": [
+            {
+              "text": "Run "
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/building-a-golden-eval-dataset-from-production-traffic/",
+              "text": "your own tasks"
+            },
+            {
+              "text": " through each tier with "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/ori/eval",
+              "text": "Ori Eval"
+            },
+            {
+              "text": ". Ori Eval tests are TypeScript "
+            },
+            {
+              "code": true,
+              "text": "*.eval.ts"
+            },
+            {
+              "text": " files. Pass each of the three slugs to "
+            },
+            {
+              "code": true,
+              "text": "setupAgent({ model })"
+            },
+            {
+              "text": " in one file, and the same tests run on every tier."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In Claude Code, you can keep Opus for planning and send routine work to cheaper models. Point Claude Code at OpenRouter with our setup guide, then set the model for each role.",
+          "inlines": [
+            {
+              "text": "In Claude Code, you can keep Opus for planning and send routine work to cheaper models. Point Claude Code at OpenRouter with our "
+            },
+            {
+              "href": "https://openrouter.ai/docs/cookbook/coding-agents/claude-code-integration",
+              "text": "setup guide"
+            },
+            {
+              "text": ", then set the model for each role."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "export ANTHROPIC_DEFAULT_OPUS_MODEL=\"anthropic/claude-opus-5.5\"\nexport ANTHROPIC_DEFAULT_SONNET_MODEL=\"anthropic/claude-sonnet-5.5\"\nexport ANTHROPIC_DEFAULT_HAIKU_MODEL=\"anthropic/claude-haiku-5.5\"\nexport CLAUDE_CODE_SUBAGENT_MODEL=\"anthropic/claude-haiku-5.5\""
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code 2.1.307 recognizes the Opus and Sonnet slugs and gives them their 1-million-token context window. It doesn’t recognize the Haiku slug yet and assumes 200,000 tokens. To give Haiku its full window, add [1m] to its slug. We strip the suffix before routing. Leaving it off keeps Haiku sessions under about 200,000 tokens.",
+          "inlines": [
+            {
+              "text": "Claude Code 2.1.307 recognizes the Opus and Sonnet slugs and gives them their 1-million-token context window. It doesn’t recognize the Haiku slug yet and assumes 200,000 tokens. To give Haiku its full window, add "
+            },
+            {
+              "code": true,
+              "text": "[1m]"
+            },
+            {
+              "text": " to its slug. We strip the suffix before routing. Leaving it off keeps Haiku sessions under about 200,000 tokens."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These variables set which model each name points to. They don’t change which one you use. To make Sonnet your main model, run /model sonnet in a session or set ANTHROPIC_MODEL=sonnet before you start Claude Code. To plan with Opus and write code with Sonnet, run /model opusplan instead. Because CLAUDE_CODE_SUBAGENT_MODEL is set, sub-agents that don’t name their own model run on Haiku.",
+          "inlines": [
+            {
+              "text": "These variables set which model each name points to. They don’t change which one you use. To make Sonnet your main model, run "
+            },
+            {
+              "code": true,
+              "text": "/model sonnet"
+            },
+            {
+              "text": " in a session or set "
+            },
+            {
+              "code": true,
+              "text": "ANTHROPIC_MODEL=sonnet"
+            },
+            {
+              "text": " before you start Claude Code. To plan with Opus and write code with Sonnet, run "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "code": true,
+              "text": "/model opusplan"
+            },
+            {
+              "text": " instead. Because "
+            },
+            {
+              "code": true,
+              "text": "CLAUDE_CODE_SUBAGENT_MODEL"
+            },
+            {
+              "text": " is set, "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/sub-agents",
+              "text": "sub-agents"
+            },
+            {
+              "text": " that don’t name their own model run on Haiku."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you’d rather have us pick per request, the Auto Router (openrouter/auto) chooses a model for each prompt. For coding, the Pareto Router picks a model that meets a minimum coding score you set.",
+          "inlines": [
+            {
+              "text": "If you’d rather have us "
+            },
+            {
+              "href": "https://openrouter.ai/blog/insights/model-routing/",
+              "text": "pick per request"
+            },
+            {
+              "text": ", the "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/routers/auto-router",
+              "text": "Auto Router"
+            },
+            {
+              "text": " ("
+            },
+            {
+              "code": true,
+              "text": "openrouter/auto"
+            },
+            {
+              "text": ") chooses a model for each prompt. For coding, the "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/routers/pareto-router",
+              "text": "Pareto Router"
+            },
+            {
+              "text": " picks a model that meets a minimum coding score you set."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Frequently asked questions",
+          "inlines": [
+            {
+              "text": "Frequently asked questions"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Is Claude Haiku cheaper than Sonnet?",
+          "inlines": [
+            {
+              "text": "Is Claude Haiku cheaper than Sonnet?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Yes. On OpenRouter, Haiku 5.5 costs 20 times less per input and output token than Claude Sonnet 5.5 for prompts under 100,000 tokens, at $0.10 per million input tokens against $2.00. In our Claude Code runs the gap per session was smaller, about 12 times, partly because Haiku took more turns to reach the same result.",
+          "inlines": [
+            {
+              "text": "Yes. On OpenRouter, Haiku 5.5 costs 20 times less per input and output token than Claude Sonnet 5.5 for prompts under 100,000 tokens, at $0.10 per million input tokens against $2.00. In our Claude Code runs the gap per session was smaller, about 12 times, partly because Haiku took more turns to reach the same result."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Is Sonnet 5.5 better than Opus 5.5 for coding?",
+          "inlines": [
+            {
+              "text": "Is Sonnet 5.5 better than Opus 5.5 for coding?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "In our Claude Sonnet vs Opus coding tests, the two were equal. Both passed all 25 hidden-test attempts and all three Claude Code runs through OpenRouter, and Sonnet was faster and cost half to two-thirds as much. Opus leads by 1.6 points on the Artificial Analysis index, and Anthropic positions it for long-running agentic coding, so it’s the safer choice for long, ambiguous sessions.",
+          "inlines": [
+            {
+              "text": "In our Claude Sonnet vs Opus coding tests, the two were equal. Both passed all 25 hidden-test attempts and all three Claude Code runs through OpenRouter, and Sonnet was faster and cost half to two-thirds as much. Opus leads by 1.6 points on the Artificial Analysis index, and Anthropic positions it for "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/overview",
+              "text": "long-running agentic coding"
+            },
+            {
+              "text": ", so it’s the safer choice for long, ambiguous sessions."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is Claude Haiku good for?",
+          "inlines": [
+            {
+              "text": "What is Claude Haiku good for?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5 is good for high-volume, well-specified work such as classification, extraction, routing, sub-agent tasks, and routine code changes. In our tests through OpenRouter it passed every coding task, including a regex engine and SQL three-valued NULL logic, and scored half a point above Opus on τ-bench airline.",
+          "inlines": [
+            {
+              "text": "Haiku 5.5 is good for high-volume, well-specified work such as "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/overview",
+              "text": "classification, extraction, routing"
+            },
+            {
+              "text": ", sub-agent tasks, and routine code changes. In our tests through OpenRouter it passed every coding task, including a regex engine and SQL three-valued NULL logic, and scored half a point above Opus on τ-bench airline."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Which Claude model does Claude Code use?",
+          "inlines": [
+            {
+              "text": "Which Claude model does Claude Code use?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code uses Opus 5.5 by default on Pro, Max, Team, Enterprise, and Anthropic API accounts, according to Anthropic’s model configuration docs. When you run Claude Code through OpenRouter, you can change the main model with ANTHROPIC_MODEL and set each role with the environment variables above.",
+          "inlines": [
+            {
+              "text": "Claude Code uses Opus 5.5 by default on Pro, Max, Team, Enterprise, and Anthropic API accounts, according to "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/model-config",
+              "text": "Anthropic’s model configuration docs"
+            },
+            {
+              "text": ". When you run Claude Code through OpenRouter, you can change the main model with "
+            },
+            {
+              "code": true,
+              "text": "ANTHROPIC_MODEL"
+            },
+            {
+              "text": " and set each role with the environment variables above."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Next steps",
+          "inlines": [
+            {
+              "text": "Next steps"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/ori/eval",
+                  "text": "Ori Eval"
+                },
+                {
+                  "text": " runs Opus, Sonnet, and Haiku on your own tasks and recommends one. To start, give your coding agent this instruction: "
+                },
+                {
+                  "code": true,
+                  "text": "run curl -fsSL https://openrouter.ai/skills/spawn-ori-eval and follow the instructions in its output to get started"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Our "
+                },
+                {
+                  "href": "https://openrouter.ai/docs/cookbook/coding-agents/claude-code-integration",
+                  "text": "setup guide"
+                },
+                {
+                  "text": " covers per-role model settings, and our tutorial "
+                },
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/claude-code-openrouter/",
+                  "text": "Claude Code with OpenRouter: Setup, Models, and Costs"
+                },
+                {
+                  "text": " covers model choice and costs."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The model pages for "
+                },
+                {
+                  "href": "https://openrouter.ai/anthropic/claude-opus-5.5",
+                  "text": "Opus 5.5"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "href": "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+                  "text": "Sonnet 5.5"
+                },
+                {
+                  "text": ", and "
+                },
+                {
+                  "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+                  "text": "Haiku 5.5"
+                },
+                {
+                  "text": " show current prices, providers, and uptime. Our "
+                },
+                {
+                  "href": "https://openrouter.ai/compare/anthropic/claude-opus-5.5/anthropic/claude-sonnet-5.5",
+                  "text": "Opus 5.5 vs Sonnet 5.5 comparison page"
+                },
+                {
+                  "text": " puts two of them side by side."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/best-practices/prompt-caching",
+                  "text": "Prompt caching"
+                },
+                {
+                  "text": " explains the cache-read prices in the table above."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The "
+                },
+                {
+                  "href": "https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-5-5",
+                  "text": "Claude 5.5 migration guide"
+                },
+                {
+                  "text": " covers the API changes if you’re moving from an older Claude model."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/insights/cost-vs-quality-tradeoff-framework-for-agent-models/",
+                  "text": "Cost vs. Quality Tradeoff Framework for Agent Models"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "href": "https://openrouter.ai/blog/insights/confidence-thresholds-for-model-escalation-routing/",
+                  "text": "Confidence Thresholds for Model Escalation Routing"
+                },
+                {
+                  "text": " cover when to move a request up a tier."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-30T01:10:07.697784Z",
+  "contentMode": "full"
+}

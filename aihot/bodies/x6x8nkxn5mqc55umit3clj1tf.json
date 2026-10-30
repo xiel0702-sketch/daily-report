@@ -1,0 +1,5279 @@
+{
+  "schemaVersion": 1,
+  "id": "x6x8nkxn5mqc55umit3clj1tf",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/x6x8nkxn5mqc55umit3clj1tf",
+  "fetchedAt": "2026-10-30T01:11:01.462607Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "推理能力",
+    "多模态",
+    "开源生态",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "开源生态",
+    "推理",
+    "多模态"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "我们很高兴地宣布，vLLM 已实现 Mistral Large 4 的 day-0 支持。Mistral Large 4 是 Mistral 推出的新一代前沿混合专家（MoE）原生多模态模型。它把 DeepSeek 风格的稀疏注意力栈（MLA 加 DSA top-k 索引器）与多项新架构特性结合在一起：跨层 KV 共享、NoPE 层、SSMax 和 LeRoPE。模型自带 DSpark 投机解码草稿器和 Pixtral 视觉编码器。",
+          "inlines": [
+            {
+              "text": "我们很高兴地宣布，vLLM 已实现 "
+            },
+            {
+              "bold": true,
+              "text": "Mistral Large 4"
+            },
+            {
+              "text": " 的 day-0 支持。Mistral Large 4 是 Mistral 推出的新一代前沿混合专家（MoE）原生多模态模型。它把 DeepSeek 风格的稀疏注意力栈（MLA 加 DSA top-k 索引器）与多项新架构特性结合在一起：跨层 KV 共享、NoPE 层、SSMax 和 LeRoPE。模型自带 DSpark 投机解码草稿器和 Pixtral 视觉编码器。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "支持它远不止加一个模型文件那么简单。ML4 运行在 vLLM 的模型运行器 V2（MRV2）上，并支持可断开的 CUDA 图。它的各个构建模块放在新的 vllm/models/mistral/ 包中，这项工作还顺带改进了 decode 上下文并行（DCP）、prefill 上下文并行（PCP）、DSpark、基于 NIXL 的分离式服务以及 HiSparse 主机内存 KV 卸载。",
+          "inlines": [
+            {
+              "text": "支持它远不止加一个模型文件那么简单。ML4 运行在 vLLM 的模型运行器 V2（MRV2）上，并支持可断开的 CUDA 图。它的各个构建模块放在新的 "
+            },
+            {
+              "code": true,
+              "text": "vllm/models/mistral/"
+            },
+            {
+              "text": " 包中，这项工作还顺带改进了 decode 上下文并行（DCP）、prefill 上下文并行（PCP）、DSpark、基于 NIXL 的分离式服务以及 HiSparse 主机内存 KV 卸载。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "亮点",
+          "inlines": [
+            {
+              "text": "亮点"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "架构："
+                },
+                {
+                  "text": "72 层 MoE，128 个路由专家（top-4）加 1 个共享专家，隐藏维度 6144。注意力采用 MLA（KV LoRA 秩 512，RoPE 维度 64），并配有 DSA 稀疏索引器，每个查询选取 top 2048 个 key。总参数 1 万亿，每 token 激活 490 亿（含嵌入层和输出层为 520 亿）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "检查点："
+                },
+                {
+                  "text": "FP8（块缩放权重）和 NVFP4（专家用 NVFP4，注意力/共享专家用 FP8）。两者默认都使用 FP8 潜在 KV 缓存（"
+                },
+                {
+                  "code": true,
+                  "text": "fp8_ds_mla"
+                },
+                {
+                  "text": "）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "多模态："
+                },
+                {
+                  "text": "Pixtral 视觉编码器处理图像输入，支持每个提示词包含多张图片。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "投机解码："
+                },
+                {
+                  "text": "内置 DSpark 草稿器（3 层滑动窗口 MLA，深度 3），每步接受约 2.9 个 token，在 TP8 上输出吞吐约提升 2 倍。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "长上下文："
+                },
+                {
+                  "text": "DCP 在 TP8 上带来约 7.9 倍的 KV 容量。PCP+DCP 预填充把首 token 时间（TTFT）最多缩短 1.6 倍。DSpark 在两种模式下都能工作。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "分离式服务："
+                },
+                {
+                  "text": "NIXL 预填充/解码（P/D）分离，支持 DP/EP、TP 和 PCP×DCP 预填充节点，两侧都启用 DSpark。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "HiSparse："
+                },
+                {
+                  "text": "主机内存稀疏 KV 卸载，现已支持跨层 KV 共享。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "AMD："
+                },
+                {
+                  "text": "在 AMD Instinct MI350 系列 GPU 上通过 ROCm 实现 day-0 支持，包括 DSpark、图像输入和 MXFP4 专家的专家并行。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "用法",
+          "inlines": [
+            {
+              "text": "用法"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral Large 4 的支持包含在 vllm/vllm-openai:mistral-large-4 Docker 镜像中，该镜像还包含 mistral-common 1.13。下面的命令在镜像内运行 vllm serve：",
+          "inlines": [
+            {
+              "text": "Mistral Large 4 的支持包含在 "
+            },
+            {
+              "code": true,
+              "text": "vllm/vllm-openai:mistral-large-4"
+            },
+            {
+              "text": " Docker 镜像中，该镜像还包含 "
+            },
+            {
+              "code": true,
+              "text": "mistral-common"
+            },
+            {
+              "text": " 1.13。下面的命令在镜像内运行 "
+            },
+            {
+              "code": true,
+              "text": "vllm serve"
+            },
+            {
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "docker pull vllm/vllm-openai:mistral-large-4"
+        },
+        {
+          "type": "paragraph",
+          "text": "8 块 GPU 上的 FP8：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "8 块 GPU 上的 FP8："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve mistralai/Mistral-Large-4-1T-A52B \\\n  --tensor-parallel-size 8 \\\n  --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}' \\\n  --tool-call-parser mistral --enable-auto-tool-choice \\\n  --reasoning-parser mistral"
+        },
+        {
+          "type": "paragraph",
+          "text": "4 块 GPU 上的 NVFP4（Blackwell；在 8 块 GPU 上使用 --tensor-parallel-size 8）：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "4 块 GPU 上的 NVFP4"
+            },
+            {
+              "text": "（Blackwell；在 8 块 GPU 上使用 "
+            },
+            {
+              "code": true,
+              "text": "--tensor-parallel-size 8"
+            },
+            {
+              "text": "）："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve mistralai/Mistral-Large-4-1T-A52B-NVFP4 \\\n  --tensor-parallel-size 4 \\\n  --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}' \\\n  --tool-call-parser mistral --enable-auto-tool-choice \\\n  --reasoning-parser mistral"
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 不以质量换速度。在多模态、长上下文、智能体编程、业务自动化和网络安全评测中，它在每项任务上与 FP8 的差距都在 2.1 分以内，平均差异为 −0.3 分。token 消耗也相当：平均补全 token 数与 FP8 相差约 4% 以内。它还更快、更省：在 TP8 下，不使用投机解码时 NVFP4 每 token 解码速度比 FP8 快 1.08–1.19 倍（启用 DSpark 时为 1.18–1.22 倍），KV 缓存容量约为 1.5 倍。",
+          "inlines": [
+            {
+              "text": "NVFP4 不以质量换速度。在多模态、长上下文、智能体编程、业务自动化和网络安全评测中，它在每项任务上与 FP8 的差距都在 2.1 分以内，平均差异为 −0.3 分。token 消耗也相当：平均补全 token 数与 FP8 相差约 4% 以内。它还更快、更省：在 TP8 下，不使用投机解码时 NVFP4 每 token 解码速度比 FP8 快 1.08–1.19 倍（启用 DSpark 时为 1.18–1.22 倍），KV 缓存容量约为 1.5 倍。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*FP8 与 NVFP4 在核心评测上的得分和 token 消耗对比。误差条为通过自助法估计的 95% 置信区间。在所有领域，包括多模态推理（GDP.pdf、MathVision）、长上下文（Graphwalks 512k）、编程智能体（DeepSWE、SWE-bench Pro、Terminal-Bench 4）、业务自动化（AutomationBench）和网络安全（CyberGym），NVFP4 检查点的表现都与 FP8 一致。",
+          "inlines": [
+            {
+              "text": "*FP8 与 NVFP4 在核心评测上的得分和 token 消耗对比。误差条为通过自助法估计的 95% 置信区间。在所有领域，包括多模态推理（GDP.pdf、MathVision）、长上下文（Graphwalks 512k）、编程智能体（DeepSWE、SWE-bench Pro、Terminal-Bench 4）、业务自动化（AutomationBench）和网络安全（CyberGym），NVFP4 检查点的表现都与 FP8 一致。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "长上下文（DCP）。添加 --decode-context-parallel-size 8 可将潜在 KV 缓存分片到 8 个 rank 上。这要求使用默认的 FP8 KV 缓存。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "长上下文（DCP）。"
+            },
+            {
+              "text": "添加 "
+            },
+            {
+              "code": true,
+              "text": "--decode-context-parallel-size 8"
+            },
+            {
+              "text": " 可将潜在 KV 缓存分片到 8 个 rank 上。这要求使用默认的 FP8 KV 缓存。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "多模态。传入 --limit-mm-per-prompt '{\"image\": N}' 可允许每个提示词最多 N 张图片。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "多模态。"
+            },
+            {
+              "text": "传入 "
+            },
+            {
+              "code": true,
+              "text": "--limit-mm-per-prompt '{\"image\": N}'"
+            },
+            {
+              "text": " 可允许每个提示词最多 N 张图片。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "多节点、分离式 P/D 以及其他已测试的配置，参见 Mistral Large 4 配方。",
+          "inlines": [
+            {
+              "text": "多节点、分离式 P/D 以及其他已测试的配置，参见 "
+            },
+            {
+              "href": "https://recipes.vllm.ai/mistralai/Mistral-Large-4-1T-A52B",
+              "text": "Mistral Large 4 配方"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "实现细节",
+          "inlines": [
+            {
+              "text": "实现细节"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "模型架构",
+          "inlines": [
+            {
+              "text": "模型架构"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "组件",
+          "inlines": [
+            {
+              "text": "组件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral Large 4",
+          "inlines": [
+            {
+              "text": "Mistral Large 4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "层数 / 隐藏维度 / 注意力头数",
+          "inlines": [
+            {
+              "text": "层数 / 隐藏维度 / 注意力头数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "72 / 6144 / 64",
+          "inlines": [
+            {
+              "text": "72 / 6144 / 64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "注意力",
+          "inlines": [
+            {
+              "text": "注意力"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MLA，无 query LoRA，KV LoRA 秩 512，RoPE 维度 64",
+          "inlines": [
+            {
+              "text": "MLA，无 query LoRA，KV LoRA 秩 512，RoPE 维度 64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "稀疏注意力",
+          "inlines": [
+            {
+              "text": "稀疏注意力"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DSA indexer，top-k 2048，32 个 index 头；44 层各自拥有一个 indexer，28 层复用最近的前一个 indexer 层的 top-k",
+          "inlines": [
+            {
+              "text": "DSA indexer，top-k 2048，32 个 index 头；44 层各自拥有一个 indexer，28 层复用最近的前一个 indexer 层的 top-k"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "位置编码",
+          "inlines": [
+            {
+              "text": "位置编码"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "YaRN + LeRoPE（按频率学习缩放）；每第 4 层为 NoPE",
+          "inlines": [
+            {
+              "text": "YaRN + LeRoPE（按频率学习缩放）；每第 4 层为 NoPE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "query 缩放",
+          "inlines": [
+            {
+              "text": "query 缩放"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个注意力层和 indexer 都使用 SSMax（随长度变化的 query 缩放）",
+          "inlines": [
+            {
+              "text": "每个注意力层和 indexer 都使用 SSMax（随长度变化的 query 缩放）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "KV 共享",
+          "inlines": [
+            {
+              "text": "KV 共享"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9 层（39、43、…、71）读取第 35 层的 latent cache（每 4 层 1 层）",
+          "inlines": [
+            {
+              "text": "9 层（39、43、…、71）读取第 35 层的 latent cache（每 4 层 1 层）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MoE",
+          "inlines": [
+            {
+              "text": "MoE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "第 0 层为稠密层；第 1–71 层：128 个专家，top-4，1 个共享专家",
+          "inlines": [
+            {
+              "text": "第 0 层为稠密层；第 1–71 层：128 个专家，top-4，1 个共享专家"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "输出",
+          "inlines": [
+            {
+              "text": "输出"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "logit soft cap 30",
+          "inlines": [
+            {
+              "text": "logit soft cap 30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "视觉",
+          "inlines": [
+            {
+              "text": "视觉"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pixtral 编码器（30 层，隐藏维度 2048，patch 14）",
+          "inlines": [
+            {
+              "text": "Pixtral 编码器（30 层，隐藏维度 2048，patch 14）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*72 个解码器层：每第 4 层为 NoPE，28 层复用最近的前一个 indexer 层的 top-k，NoPE 层 39–71 读取第 35 层的 latent KV，且只有第 0 层是稠密层。*",
+          "inlines": [
+            {
+              "text": "*72 个解码器层：每第 4 层为 NoPE，28 层复用最近的前一个 indexer 层的 top-k，NoPE 层 39–71 读取第 35 层的 latent KV，且只有第 0 层是稠密层。*"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 vLLM 中支持各部分所需的工作：",
+          "inlines": [
+            {
+              "text": "在 vLLM 中支持各部分所需的工作："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "稀疏 MLA + DSA indexer。 ML4 复用了 vLLM 的稀疏 MLA 栈（带 fp8_ds_mla latent cache 的 FlashMLA 稀疏实现，外加带 FP8 indexer cache 的稀疏 indexer）。ML4 特有的差异叠加在其上：共享 indexer 层复用最近的前一个 indexer 层的 top-k；indexer 拥有自己的 SSMax；NoPE 层上使用 NoPE indexer。每个 token 的 KV cache 存储 47,136 字节：41,328 字节用于 MLA latent，5,808 字节用于 indexer。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "稀疏 MLA + DSA indexer。"
+            },
+            {
+              "text": " ML4 复用了 vLLM 的稀疏 MLA 栈（带 "
+            },
+            {
+              "code": true,
+              "text": "fp8_ds_mla"
+            },
+            {
+              "text": " latent cache 的 FlashMLA 稀疏实现，外加带 FP8 indexer cache 的稀疏 indexer）。ML4 特有的差异叠加在其上：共享 indexer 层复用最近的前一个 indexer 层的 top-k；indexer 拥有自己的 SSMax；NoPE 层上使用 NoPE indexer。每个 token 的 KV cache 存储 47,136 字节：41,328 字节用于 MLA latent，5,808 字节用于 indexer。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "跨层 KV 共享。 九个 NoPE 层读取第 35 层写入的 latent KV，而不是写入自己的 KV。我们在 kv_sharing_target_layer_name 到 MLAAttention 以及 AttentionLayerBase 中加入了支持。消费层跳过 cache 写入，V2 runner 将它们解析为目标层的 KV cache 规格。消费层不占用 KV 内存：72 层中有 63 层拥有自己的 cache。 该特性与模型无关，正在 vllm#64095 中向上游合入。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "跨层 KV 共享。"
+            },
+            {
+              "text": " 九个 NoPE 层读取第 35 层写入的 latent KV，而不是写入自己的 KV。我们在 "
+            },
+            {
+              "code": true,
+              "text": "kv_sharing_target_layer_name"
+            },
+            {
+              "text": " 到 "
+            },
+            {
+              "code": true,
+              "text": "MLAAttention"
+            },
+            {
+              "text": " 以及 "
+            },
+            {
+              "code": true,
+              "text": "AttentionLayerBase"
+            },
+            {
+              "text": " 中加入了支持。消费层跳过 cache 写入，V2 runner 将它们解析为目标层的 KV cache 规格。消费层不占用 KV 内存：72 层中有 63 层拥有自己的 cache。 该特性与模型无关，正在 "
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/pull/64095",
+              "text": "vllm#64095"
+            },
+            {
+              "text": " 中向上游合入。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NoPE、SSMax 与 LeRoPE。 NoPE 层以 RoPE 维度为零的 MLA 形式表达，因此使用相同的 kernel 和 cache 布局。LeRoPE 被折叠进 YaRN 频率。SSMax 被融合进 MLA RoPE kernel（见下文融合部分）。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "NoPE、SSMax 与 LeRoPE。"
+            },
+            {
+              "text": " NoPE 层以 RoPE 维度为零的 MLA 形式表达，因此使用相同的 kernel 和 cache 布局。LeRoPE 被折叠进 YaRN 频率。SSMax 被融合进 MLA RoPE kernel（见下文融合部分）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral 模型包。 移植没有在 deepseek_v2.py 中增加开关，而是基于 vllm/models/mistral/ 下可复用的 Mistral 组件构建：注意力、indexer、SSMax、MLP、MoE、融合算子以及逐层规格（common/layer_spec.py）。ML4 模型本身是 vllm/models/mistral_large4/nvidia/model.py，DSpark drafter 紧挨着它 （dspark.py）。逐层特性（RoPE/NoPE、indexer 拥有者/共享者、KV 拥有者/消费者）来自基于 params.json 构建的层规格，而不是共享代码中的模型特定分支。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Mistral 模型包。"
+            },
+            {
+              "text": " 移植没有在 "
+            },
+            {
+              "code": true,
+              "text": "deepseek_v2.py"
+            },
+            {
+              "text": " 中增加开关，而是基于 "
+            },
+            {
+              "code": true,
+              "text": "vllm/models/mistral/"
+            },
+            {
+              "text": " 下可复用的 Mistral 组件构建：注意力、indexer、SSMax、MLP、MoE、融合算子以及逐层规格（"
+            },
+            {
+              "code": true,
+              "text": "common/layer_spec.py"
+            },
+            {
+              "text": "）。ML4 模型本身是 "
+            },
+            {
+              "code": true,
+              "text": "vllm/models/mistral_large4/nvidia/model.py"
+            },
+            {
+              "text": "，DSpark drafter 紧挨着它 （"
+            },
+            {
+              "code": true,
+              "text": "dspark.py"
+            },
+            {
+              "text": "）。逐层特性（RoPE/NoPE、indexer 拥有者/共享者、KV 拥有者/消费者）来自基于 "
+            },
+            {
+              "code": true,
+              "text": "params.json"
+            },
+            {
+              "text": " 构建的层规格，而不是共享代码中的模型特定分支。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型 runner V2。 ML4 仅在 MRV2 上运行。V2 注意力工具会发现 KV 共享层并查找其目标规格。DSpark 接入 V2 的 DFlash/DSpark speculator。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "模型 runner V2。"
+            },
+            {
+              "text": " ML4 仅在 MRV2 上运行。V2 注意力工具会发现 KV 共享层并查找其目标规格。DSpark 接入 V2 的 DFlash/DSpark speculator。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "可断开的 CUDA graph 与融合。 ML4 运行时无需 torch.compile。它使用可断开的 CUDA graph，该特性会针对该架构自动启用（当文本模型位于多模态封装内时同样如此）。相比 eager 模式，它们带来了约 6 倍加速。 手写融合替代了编译器原本会做的工作，同时支持进一步优化：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "可断开的 CUDA graph 与融合。"
+            },
+            {
+              "text": " ML4 运行时无需 "
+            },
+            {
+              "code": true,
+              "text": "torch.compile"
+            },
+            {
+              "text": "。它使用可断开的 CUDA graph，该特性会针对该架构自动启用（当文本模型位于多模态封装内时同样如此）。相比 eager 模式，它们带来了约 6 倍加速。 手写融合替代了编译器原本会做的工作，同时支持进一步优化："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "第一轮：SSMax、MLA RoPE + SSMax、indexer Q 路径和 indexer K 路径。这些将 decode TPOT 降低了 8–10%。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "解码环节：FP32 router GEMM；indexer query 的 LayerNorm 用一次 Triton 启动完成；all-reduce、残差和 RMSNorm 合并进一个 FlashInfer kernel；indexer K 直接写入 FP8 cache。在 TP8 FP8 下，c1 TPOT 从 10.22 ms 降到 9.00 ms（-12%），c8 从 16.01 ms 降到 15.08 ms。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "长上下文：解码与预填充的上下文并行",
+          "inlines": [
+            {
+              "text": "长上下文：解码与预填充的上下文并行"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "DCP。 MLA 只保留一个 latent KV head，因此在 TP 下 cache 会在每个 rank 上复制一份。DCP 改为按 token 分片。在 TP8 上，DCP8 把 KV 容量从 2.38M 提升到 18.88M token（FP8），从 3.60M 提升到 28.76M token（NVFP4）。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "DCP。"
+            },
+            {
+              "text": " MLA 只保留一个 latent KV head，因此在 TP 下 cache 会在每个 rank 上复制一份。DCP 改为按 token 分片。在 TP8 上，DCP8 把 KV 容量从 2.38M 提升到 18.88M token（FP8），从 3.60M 提升到 28.76M token（NVFP4）。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/117725db92dd85237d72d22648bc12a047561ac44b6cb02b68cb06f662019e20.webp",
+          "alt": "Long-context capacity on 8x GB300: TP8 vs TP8 DCP8"
+        },
+        {
+          "type": "paragraph",
+          "text": "8× GB300 上的长上下文容量：TP8 与 TP8 DCP8 对比",
+          "inlines": [
+            {
+              "text": "8× GB300 上的长上下文容量：TP8 与 TP8 DCP8 对比"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "并发 128k / 256k / 1M token 请求，KV cache 在 8× GB300 上以 ML4 NVFP4 运行，TP8 与 TP8 DCP8 对比：floor(KV pool / 输入长度) - 3.60M 与 28.76M token，gpu-memory-utilization 0.85。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "并发 128k / 256k / 1M token 请求，KV cache 在 8× GB300 上以 ML4 NVFP4 运行，TP8 与 TP8 DCP8 对比：floor(KV pool / 输入长度) - 3.60M 与 28.76M token，gpu-memory-utilization 0.85。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "开箱即用时，搭配稀疏 MLA 的 DCP 在每个解码步都要付一笔不小的固定开销。在 60k 上下文下做 profile 显示，每步约有 7 ms 花在 DCP 专属工作上：",
+          "inlines": [
+            {
+              "text": "开箱即用时，搭配稀疏 MLA 的 DCP 在每个解码步都要付一笔不小的固定开销。在 60k 上下文下做 profile 显示，每步约有 7 ms 花在 DCP 专属工作上："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "对 LSE 和 indexer top-k 候选做 NCCL all-gather（共 44 个 indexer 层）；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "reduce-scatter；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "稳定的 top-k 合并；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "query gather；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "小型 mask kernel 和启动间隙。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们把这些替换为：",
+          "inlines": [
+            {
+              "text": "我们把这些替换为："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "a2a combine"
+                },
+                {
+                  "text": "，用于 FlashMLA sparse（已合入 "
+                },
+                {
+                  "href": "https://github.com/vllm-project/vllm/pull/61285",
+                  "text": "vllm#61285"
+                },
+                {
+                  "text": "）：用对称内存的 all-to-all LSE combine 取代 all-gather + reduce-scatter。ML4 默认启用。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "直接 top-k 交换："
+                },
+                {
+                  "text": "每个 rank 把打包好的 (score, id) 候选推送到对端的对称内存 inbox，由 selector 就地读取。这取代了每个 indexer 层的一次 NCCL all-gather 和一次 6-pass radix select。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Top-k 压缩："
+                },
+                {
+                  "text": "对 32 个 token 以上的 batch，每个 rank 压缩自己有效的 top-k 槽位，并用 "
+                },
+                {
+                  "code": true,
+                  "text": "topk_length"
+                },
+                {
+                  "text": " 限定 kernel 范围，而不是扫描 2048 个塞满 "
+                },
+                {
+                  "code": true,
+                  "text": "-1"
+                },
+                {
+                  "text": " 的槽位。在 5k token 的预填充 profile 中，attention 从 165 ms 降到 38 ms。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "一个融合 kernel 负责处理空行（即某个 rank 不拥有某条 query 的任何 top-k 槽位）。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DCP 专属开销降到每步 3.2 ms。再加上解码融合，在 TP8 DCP8 FP8 下（60k 输入 / 1k 输出）：",
+          "inlines": [
+            {
+              "text": "DCP 专属开销降到每步 3.2 ms。再加上解码融合，在 TP8 DCP8 FP8 下（60k 输入 / 1k 输出）："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "之前",
+          "inlines": [
+            {
+              "text": "之前"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "之后",
+          "inlines": [
+            {
+              "text": "之后"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c1 TTFT p50",
+          "inlines": [
+            {
+              "text": "c1 TTFT p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6.89 s",
+          "inlines": [
+            {
+              "text": "6.89 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.73 s",
+          "inlines": [
+            {
+              "text": "4.73 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c1 TPOT p50",
+          "inlines": [
+            {
+              "text": "c1 TPOT p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17.82 ms",
+          "inlines": [
+            {
+              "text": "17.82 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.50 ms",
+          "inlines": [
+            {
+              "text": "12.50 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c64 输出 tok/s",
+          "inlines": [
+            {
+              "text": "c64 输出 tok/s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "139.1",
+          "inlines": [
+            {
+              "text": "139.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "204.0 (+47%)",
+          "inlines": [
+            {
+              "text": "204.0 (+47%)"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b1be2695fe276d9a9c8de83ec17450259da5ba0577943f887aaa031d85a89ee6.webp",
+          "alt": "DCP8 before and after the collectives port"
+        },
+        {
+          "type": "paragraph",
+          "text": "DCP8 在集合通信移植前后的对比",
+          "inlines": [
+            {
+              "text": "DCP8 在集合通信移植前后的对比"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TP8 DCP8 下 TTFT 和 TPOT p50 随并发变化（60k 输入 / 1k 输出，无投机解码），对比 DCP 集合通信移植与解码融合之前（a2db3f0b9d）和之后（bbe5926511）。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "TP8 DCP8 下 TTFT 和 TPOT p50 随并发变化（60k 输入 / 1k 输出，无投机解码），对比 DCP 集合通信移植与解码融合之前（a2db3f0b9d）和之后（bbe5926511）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些 DCP 优化随 Mistral Large 4 支持在 day 0 一同上线。",
+          "inlines": [
+            {
+              "text": "这些 DCP 优化随 Mistral Large 4 支持在 day 0 一同上线。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "何时使用 DCP。DCP 用每步延迟换 KV 容量。在同样的 8x GB300 NVFP4 部署和工作负载下（无投机解码），DCP8 每 token 的解码速度比 TP8 慢约 16–28%：8k 输入时 c1 TPOT 为 11.1 vs 8.7 ms，60k 时为 11.4 vs 9.1 ms。在最多 128 个 8k–60k token 的并发请求下，TP8 的 3.6M token 池从来不是瓶颈，因此 TP8 在那里吞吐更高。一旦 KV 成为限制，DCP8 才划算：超长上下文，或大量并发的长生命周期会话。在我们的 agentic P/D 运行中（约 100k token 会话），一个 TP4 DCP4 解码节点在 32 个会话下把 TTFT 保持在 0.7 s，而普通 TP4 解码节点 KV 耗尽，TTFT 攀升到 15 s。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "何时使用 DCP。"
+            },
+            {
+              "text": "DCP 用每步延迟换 KV 容量。在同样的 8x GB300 NVFP4 部署和工作负载下（无投机解码），DCP8 每 token 的解码速度比 TP8 慢约 16–28%：8k 输入时 c1 TPOT 为 11.1 vs 8.7 ms，60k 时为 11.4 vs 9.1 ms。在最多 128 个 8k–60k token 的并发请求下，TP8 的 3.6M token 池从来不是瓶颈，因此 TP8 在那里吞吐更高。一旦 KV 成为限制，DCP8 才划算：超长上下文，或大量并发的长生命周期会话。在我们的 agentic P/D 运行中（约 100k token 会话），一个 TP4 DCP4 解码节点在 32 个会话下把 TTFT 保持在 0.7 s，而普通 TP4 解码节点 KV 耗尽，TTFT 攀升到 15 s。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PCP + DCP 预填充。对长 prompt，PCP 把一个 prompt 的 token 拆分到各 rank。PCP+DCP 现在在 ML4 上支持 CUDA graphs，包括 DCP > PCP 和 DSpark。两项修复让这成为可能：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "PCP + DCP 预填充。"
+            },
+            {
+              "text": "对长 prompt，PCP 把一个 prompt 的 token 拆分到各 rank。PCP+DCP 现在在 ML4 上支持 CUDA graphs，包括 DCP > PCP 和 DSpark。两项修复让这成为可能："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "在 PCP 下，MLA KV-cache 写入会先跨 PCP rank 对输入做 all-gather，而这次 gather 取决于该批次的 prefill/decode 划分。在分段图（piecewise graph）中捕获时，这个划分在捕获时就被固定了。现在只有 gather 作为 eager 断点运行，写入固定大小的缓冲区，而 cache 写入本身仍留在图里。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "DCP 组的 rank 顺序与集合通信返回数据的顺序保持一致。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 TP1×PCP4×DCP4 上启用图后，GSM8K-200 从 0.315 提升到 0.975。配合 DSpark 可达 0.980。作为 P/D 的 prefill 节点，PCP4×DCP4 给出我们测到的最低 TTFT（见 P/D 一节）。",
+          "inlines": [
+            {
+              "text": "在 TP1×PCP4×DCP4 上启用图后，GSM8K-200 从 0.315 提升到 0.975。配合 DSpark 可达 0.980。作为 P/D 的 prefill 节点，PCP4×DCP4 给出我们测到的最低 TTFT（见 P/D 一节）。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "DSpark 投机解码",
+          "inlines": [
+            {
+              "text": "DSpark 投机解码"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "ML4 在 checkpoint 中内置了一个 DSpark drafter（mtp_dspark.* 个张量，以及 params.json 中的一个 mtp 块）。DSpark 是一种并行 drafter：一个小型非因果 transformer 在一次前向中提出一个块内所有 draft 位置。它以从目标模型第 1、18、36、54、71 层引出的隐藏状态为条件。ML4 的 drafter 还增加了：",
+          "inlines": [
+            {
+              "text": "ML4 在 checkpoint 中内置了一个 DSpark drafter（"
+            },
+            {
+              "code": true,
+              "text": "mtp_dspark.*"
+            },
+            {
+              "text": " 个张量，以及 "
+            },
+            {
+              "code": true,
+              "text": "params.json"
+            },
+            {
+              "text": " 中的一个 "
+            },
+            {
+              "code": true,
+              "text": "mtp"
+            },
+            {
+              "text": " 块）。DSpark 是一种并行 drafter：一个小型非因果 transformer 在一次前向中提出一个块内所有 draft 位置。它以从目标模型第 1、18、36、54、71 层引出的隐藏状态为条件。ML4 的 drafter 还增加了："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "RNN Markov 头："
+                },
+                {
+                  "text": "一个门控循环状态（rank 512）在各 draft 位置间运行，因此每个位置的 logits 都依赖于它之前 draft 出的 token；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "位置专属的 mask 输入："
+                },
+                {
+                  "text": "每个 draft 槽位都有自己的学习输入嵌入，而不是共用一个 mask token；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "滑动窗口 MLA draft 层："
+                },
+                {
+                  "text": "3 个 MLA 层，窗口 2048 token，BF16 KV cache，位于各自的 KV cache 组。Triton MLA 后端为它们新增了滑动窗口解码。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*一个 DSpark 步骤：目标模型的引出状态喂给 draft 的上下文 K/V，[anchor, mask_1, mask_2] 块一次通过 3 个滑动窗口 MLA 层，RNN 头依次输出 3 个 draft token，再由目标模型验证。*",
+          "inlines": [
+            {
+              "text": "*一个 DSpark 步骤：目标模型的引出状态喂给 draft 的上下文 K/V，[anchor, mask_1, mask_2] 块一次通过 3 个滑动窗口 MLA 层，RNN 头依次输出 3 个 draft token，再由目标模型验证。*"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用 --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}' 启用。",
+          "inlines": [
+            {
+              "text": "用 "
+            },
+            {
+              "code": true,
+              "text": "--speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}'"
+            },
+            {
+              "text": " 启用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "结果。TP8，200 条真实提示词，贪心解码（temperature 0），最多输出 512 token：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "结果。"
+            },
+            {
+              "text": "TP8，200 条真实提示词，贪心解码（temperature 0），最多输出 512 token："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FP8 基线 TPOT",
+          "inlines": [
+            {
+              "text": "FP8 基线 TPOT"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FP8 DSpark TPOT（AL）",
+          "inlines": [
+            {
+              "text": "FP8 DSpark TPOT（AL）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 基线 TPOT",
+          "inlines": [
+            {
+              "text": "NVFP4 基线 TPOT"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 DSpark TPOT（AL）",
+          "inlines": [
+            {
+              "text": "NVFP4 DSpark TPOT（AL）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c1",
+          "inlines": [
+            {
+              "text": "c1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.84 ms",
+          "inlines": [
+            {
+              "text": "8.84 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.50 ms (2.90)",
+          "inlines": [
+            {
+              "text": "3.50 ms (2.90)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.21 ms",
+          "inlines": [
+            {
+              "text": "8.21 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.95 ms (2.93)",
+          "inlines": [
+            {
+              "text": "2.95 ms (2.93)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c8",
+          "inlines": [
+            {
+              "text": "c8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.28 ms",
+          "inlines": [
+            {
+              "text": "15.28 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.08 ms (2.85)",
+          "inlines": [
+            {
+              "text": "7.08 ms (2.85)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.85 ms",
+          "inlines": [
+            {
+              "text": "12.85 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5.80 ms (2.86)",
+          "inlines": [
+            {
+              "text": "5.80 ms (2.86)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c32",
+          "inlines": [
+            {
+              "text": "c32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29.92 ms",
+          "inlines": [
+            {
+              "text": "29.92 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11.57 ms (2.85)",
+          "inlines": [
+            {
+              "text": "11.57 ms (2.85)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25.38 ms",
+          "inlines": [
+            {
+              "text": "25.38 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.80 ms (2.86)",
+          "inlines": [
+            {
+              "text": "9.80 ms (2.86)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该表使用贪心解码。采样时接受率也保持接近：在 temperature 1.0 / top-p 0.95 下，并发 8 时 AL 约为 2.8。温度更高时，在投机配置中设置 \"draft_sample_method\": \"probabilistic\"：T=1.5 时它把 AL 从 2.04 提升到 2.36–2.53（吞吐量 +12–22%）。得益于标准的拒绝采样，两种模式都是无损的。",
+          "inlines": [
+            {
+              "text": "该表使用贪心解码。采样时接受率也保持接近：在 temperature 1.0 / top-p 0.95 下，并发 8 时 AL 约为 2.8。温度更高时，在投机配置中设置 "
+            },
+            {
+              "code": true,
+              "text": "\"draft_sample_method\": \"probabilistic\""
+            },
+            {
+              "text": "：T=1.5 时它把 AL 从 2.04 提升到 2.36–2.53（吞吐量 +12–22%）。得益于标准的拒绝采样，两种模式都是无损的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在相同并发下，DSpark 在 FP8 上把输出吞吐量提升 1.9–2.1 倍，在 NVFP4 上提升 1.9–2.2 倍。它不改变模型生成的内容：每个 draft token 都会对照目标模型验证，我们也做了实测确认。当基线模型重新给 DSpark 的输出打分时，这些输出与基线模型自身贪心选择的一致程度，和基线模型自己的输出一样。在 GSM8K（1,319 题）上，FP8 不用 DSpark 得 0.909，用 DSpark 得 0.918。",
+          "inlines": [
+            {
+              "text": "在相同并发下，DSpark 在 FP8 上把输出吞吐量提升 1.9–2.1 倍，在 NVFP4 上提升 1.9–2.2 倍。它不改变模型生成的内容：每个 draft token 都会对照目标模型验证，我们也做了实测确认。当基线模型重新给 DSpark 的输出打分时，这些输出与基线模型自身贪心选择的一致程度，和基线模型自己的输出一样。在 GSM8K（1,319 题）上，FP8 不用 DSpark 得 0.909，用 DSpark 得 0.918。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*每 GPU 输出 tok/s 对每用户 tok/s（1000 / TPOT p50），虚线为不用 DSpark，实线为用 DSpark（深度 3）。Short：上表中的 200 条提示词 TP8 运行。8k / 32k / 60k：ML4 NVFP4 共置于 8× GB300，TP8 和 TP8 DCP8，`vllm bench serve` 使用真实文本提示词和 1k 输出 token；60k 时只有 DSpark 运行。*",
+          "inlines": [
+            {
+              "text": "*每 GPU 输出 tok/s 对每用户 tok/s（1000 / TPOT p50），虚线为不用 DSpark，实线为用 DSpark（深度 3）。Short：上表中的 200 条提示词 TP8 运行。8k / 32k / 60k：ML4 NVFP4 共置于 8× GB300，TP8 和 TP8 DCP8，`vllm bench serve` 使用真实文本提示词和 1k 输出 token；60k 时只有 DSpark 运行。*"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DSpark + DCP。在此之前，滑动窗口 MLA 草稿模型无法在 DCP 下运行。现在，草稿模型的小窗口缓存（3 层 × 约 2k token，每请求约 7 MB）会在每个 DCP rank 上复制一份，而目标缓存仍按 DCP 分片。这把已有支持（vllm#56723）扩展到了带窗口的 MLA 草稿模型。在 TP8 DCP8、60k 上下文下，c1 TPOT 从 11.82 ms 降到 5.22 ms（2.26 倍，AL 2.85），GSM8K-200 保持在 0.965。 代价是 KV 容量：在 DCP8 下，每个 64 token 的草稿块持有一个块 ID，其目标页覆盖 512 个 token。在 64k 上下文下，容量降到纯 DCP8 的约 0.69 倍。在 max_num_seqs 128 下，平均上下文低于约 99k 时这一限制不会触发。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "DSpark + DCP。"
+            },
+            {
+              "text": "在此之前，滑动窗口 MLA 草稿模型无法在 DCP 下运行。现在，草稿模型的小窗口缓存（3 层 × 约 2k token，每请求约 7 MB）会在每个 DCP rank 上复制一份，而目标缓存仍按 DCP 分片。这把已有支持（vllm#56723）扩展到了带窗口的 MLA 草稿模型。在 TP8 DCP8、60k 上下文下，c1 TPOT 从 11.82 ms 降到 5.22 ms（2.26 倍，AL 2.85），GSM8K-200 保持在 0.965。 代价是 KV 容量：在 DCP8 下，每个 64 token 的草稿块持有一个块 ID，其目标页覆盖 512 个 token。在 64k 上下文下，容量降到纯 DCP8 的约 0.69 倍。在 "
+            },
+            {
+              "code": true,
+              "text": "max_num_seqs"
+            },
+            {
+              "text": " 128 下，平均上下文低于约 99k 时这一限制不会触发。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P/D 中的 DSpark。DCP prefill 节点可以向 TP decode 节点交接，两侧都启用 DSpark。NIXL 从一个 prefill rank 拉取复制的草稿窗口，并以 DCP 分片形式拉取目标 KV。无论采用哪种 P/D 布局，接受率都相同：8k / 32k / 60k 输入下约为 2.98 / 2.86 / 2.78。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "P/D 中的 DSpark。"
+            },
+            {
+              "text": "DCP prefill 节点可以向 TP decode 节点交接，两侧都启用 DSpark。NIXL 从一个 prefill rank 拉取复制的草稿窗口，并以 DCP 分片形式拉取目标 KV。无论采用哪种 P/D 布局，接受率都相同：8k / 32k / 60k 输入下约为 2.98 / 2.86 / 2.78。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "滑动窗口 MLA 草稿层以及 DCP 下的 DSpark 正在 vllm#63795 和 vllm#63796 中合入上游。",
+          "inlines": [
+            {
+              "text": "滑动窗口 MLA 草稿层以及 DCP 下的 DSpark 正在 "
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/pull/63795",
+              "text": "vllm#63795"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/pull/63796",
+              "text": "vllm#63796"
+            },
+            {
+              "text": " 中合入上游。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "基于 NIXL 的分离式服务",
+          "inlines": [
+            {
+              "text": "基于 NIXL 的分离式服务"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 4+4 块 GB300 GPU（一个 NVL72 机架）上用 NIXL 对 1P1D 做了基准测试。配置如下：",
+          "inlines": [
+            {
+              "text": "我们在 4+4 块 GB300 GPU（一个 NVL72 机架）上用 NIXL 对 1P1D 做了基准测试。配置如下："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "两侧均启用 NVFP4 与 DSpark，全面使用 CUDA graphs，不启用前缀缓存；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "vllm bench serve"
+                },
+                {
+                  "text": " 使用固定长度提示词：每个输入长度 320 条唯一的单轮聊天提示词，每条恰好 8,192 / 32,768 / 60,000 个 token。每条提示词都是一段自然文本（WikiText-2 和 GSM8K 题目）后接一个问题，提示词之间没有共享前缀，以 token ID 形式发送；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "每请求 1,024 个输出 token（贪心解码，忽略 EOS）；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "并发扫描和固定 QPS 扫描。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "所有配置经代理在 GSM8K-200 上得分 0.965–0.980，NIXL 传输零失败，请求零失败。",
+          "inlines": [
+            {
+              "text": "所有配置经代理在 GSM8K-200 上得分 0.965–0.980，NIXL 传输零失败，请求零失败。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*每 GPU 输出 tok/s 对比每用户 tok/s，1P1D，4+4 GB300。实线为并发扫描；空心/虚线标记为固定 QPS 扫描。*",
+          "inlines": [
+            {
+              "text": "*每 GPU 输出 tok/s 对比每用户 tok/s，1P1D，4+4 GB300。实线为并发扫描；空心/虚线标记为固定 QPS 扫描。*"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在给定最低每用户速度下，每 GPU（8 块 GPU）的最佳输出 tok/s：",
+          "inlines": [
+            {
+              "text": "在给定最低每用户速度下，每 GPU（8 块 GPU）的最佳输出 tok/s："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P → D",
+          "inlines": [
+            {
+              "text": "P → D"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8k，≥40 tok/s/用户",
+          "inlines": [
+            {
+              "text": "8k，≥40 tok/s/用户"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8k，≥100",
+          "inlines": [
+            {
+              "text": "8k，≥100"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32k，≥40",
+          "inlines": [
+            {
+              "text": "32k，≥40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32k，≥100",
+          "inlines": [
+            {
+              "text": "32k，≥100"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "60k，≥40 / ≥100",
+          "inlines": [
+            {
+              "text": "60k，≥40 / ≥100"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c1 TTFT 8k / 32k / 60k",
+          "inlines": [
+            {
+              "text": "c1 TTFT 8k / 32k / 60k"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P DP4/EP → D DP4/EP",
+          "inlines": [
+            {
+              "text": "P DP4/EP → D DP4/EP"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "718.2",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "718.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "176.7",
+          "inlines": [
+            {
+              "text": "176.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "202.6",
+          "inlines": [
+            {
+              "text": "202.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "139.2",
+          "inlines": [
+            {
+              "text": "139.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "108.8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "108.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.49 / 1.90 / 3.65 s",
+          "inlines": [
+            {
+              "text": "0.49 / 1.90 / 3.65 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P DP4/EP → D TP4",
+          "inlines": [
+            {
+              "text": "P DP4/EP → D TP4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "459.2",
+          "inlines": [
+            {
+              "text": "459.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "194.2",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "194.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "205.2",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "205.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "150.0",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "150.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "107.2",
+          "inlines": [
+            {
+              "text": "107.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.46 / 1.88 / 3.66 s",
+          "inlines": [
+            {
+              "text": "0.46 / 1.88 / 3.66 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P PCP4×DCP4 → D TP4",
+          "inlines": [
+            {
+              "text": "P PCP4×DCP4 → D TP4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "350.6",
+          "inlines": [
+            {
+              "text": "350.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "192.6",
+          "inlines": [
+            {
+              "text": "192.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "91.5",
+          "inlines": [
+            {
+              "text": "91.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "91.5",
+          "inlines": [
+            {
+              "text": "91.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49.8",
+          "inlines": [
+            {
+              "text": "49.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.35 / 1.37 / 2.57 s",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "0.35 / 1.37 / 2.57 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P TP4 → D TP4",
+          "inlines": [
+            {
+              "text": "P TP4 → D TP4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "259.2",
+          "inlines": [
+            {
+              "text": "259.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "185.3",
+          "inlines": [
+            {
+              "text": "185.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "62.8",
+          "inlines": [
+            {
+              "text": "62.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "62.8",
+          "inlines": [
+            {
+              "text": "62.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32.3",
+          "inlines": [
+            {
+              "text": "32.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.52 / 2.07 / 4.02 s",
+          "inlines": [
+            {
+              "text": "0.52 / 2.07 / 4.02 s"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "AMD",
+          "inlines": [
+            {
+              "text": "AMD"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral Large 4 从发布首日起就通过 vLLM 的 ROCm 构建在 AMD Instinct MI350 系列 GPU 上运行。稀疏 MLA 运行在 AITER 的 MLA decode 内核上，DSA 索引器运行在 AITER 的 gfx950 索引器上。",
+          "inlines": [
+            {
+              "text": "Mistral Large 4 从发布首日起就通过 vLLM 的 ROCm 构建在 AMD Instinct MI350 系列 GPU 上运行。稀疏 MLA 运行在 AITER 的 MLA decode 内核上，DSA 索引器运行在 AITER 的 gfx950 索引器上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MXFP4 专家。在 ROCm 上，路由专家以 OCP MXFP4 形式运行在 AITER 的融合 MoE 上。有两种方式可以获得它们：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "MXFP4 专家。"
+            },
+            {
+              "text": "在 ROCm 上，路由专家以 OCP MXFP4 形式运行在 AITER 的融合 MoE 上。有两种方式可以获得它们："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "AMD Quark MXFP4 检查点"
+                },
+                {
+                  "text": "（"
+                },
+                {
+                  "href": "https://huggingface.co/amd/Mistral-Large-4-1T-A52B-Quark-MXFP4",
+                  "text": "Mistral-Large-4-1T-A52B-Quark-MXFP4"
+                },
+                {
+                  "text": "）。Quark 只重新量化路由专家，权重使用静态缩放、激活使用动态缩放。注意力、共享专家、稠密前馈层、路由器、输出头、视觉编码器和 DSpark 草稿模型都保持原始精度。检查点从约 1,061 GB 缩小到 578 GB，因此可以在四块 MI350 系列 GPU（每块 288 GB）上服务。服务命令、评测结果和复现步骤见模型卡。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "加载时重新量化 FP8 检查点"
+                },
+                {
+                  "text": "（"
+                },
+                {
+                  "code": true,
+                  "text": "VLLM_FP8_MOE_REQUANT=mxfp4"
+                },
+                {
+                  "text": "）。专家在加载过程中逐层转换，因此峰值内存也足够低，TP4 同样可用。TP8 下每个 GPU 的专家权重从约 125 GiB 降到 69 GiB，在 1–64 并发请求下，输出吞吐量比直接服务 FP8 专家提升 22–71%。"
+                },
+                {
+                  "code": true,
+                  "text": "VLLM_FP8_MOE_REQUANT_ACT"
+                },
+                {
+                  "text": " 设置 MXFP4 专家计算时使用的激活格式："
+                },
+                {
+                  "code": true,
+                  "text": "a8w4"
+                },
+                {
+                  "text": "（FP8 激活，默认）或 "
+                },
+                {
+                  "code": true,
+                  "text": "a4w4"
+                },
+                {
+                  "text": "（MXFP4 激活）。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "无论哪种方式，一个 8-GPU 节点都能跑两个 TP4 副本，每个副本留给 KV 缓存和激活的 HBM 约为 FP8 专家在同样四块 GPU 上所能留下的 6 倍。",
+          "inlines": [
+            {
+              "text": "无论哪种方式，一个 8-GPU 节点都能跑两个 TP4 副本，每个副本留给 KV 缓存和激活的 HBM 约为 FP8 专家在同样四块 GPU 上所能留下的 6 倍。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "功能。 ROCm 上支持 TP8 和 TP4、专家并行、通过 Pixtral 编码器输入图像，以及使用检查点内置草稿模型的 DSpark 投机解码。在 MI350X 上以 TP4 配合 FP8 KV 缓存运行时，DSpark 在真实提示词上每步接受 3.1 个 token，单请求下每 token 解码延迟降低 2.7 倍，8 请求下降低 1.9 倍，32 请求下降低 1.8 倍（输出吞吐量分别为 2.1 倍、1.6 倍和 1.4 倍）。ROCm 上潜在 KV 缓存默认是 FP8（E4M3），KV 容量是 bf16 的 1.86 倍；--kv-cache-dtype bfloat16 可将其关闭。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "功能。"
+            },
+            {
+              "text": " ROCm 上支持 TP8 和 TP4、专家并行、通过 Pixtral 编码器输入图像，以及使用检查点内置草稿模型的 DSpark 投机解码。在 MI350X 上以 TP4 配合 FP8 KV 缓存运行时，DSpark 在真实提示词上每步接受 3.1 个 token，单请求下每 token 解码延迟降低 2.7 倍，8 请求下降低 1.9 倍，32 请求下降低 1.8 倍（输出吞吐量分别为 2.1 倍、1.6 倍和 1.4 倍）。ROCm 上潜在 KV 缓存默认是 FP8（E4M3），KV 容量是 bf16 的 1.86 倍；"
+            },
+            {
+              "code": true,
+              "text": "--kv-cache-dtype bfloat16"
+            },
+            {
+              "text": " 可将其关闭。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AITER。VLLM_ROCM_USE_AITER=1 在 AMD 的内核库 AITER 上运行 vLLM 的热点路径：融合 MoE（MXFP4 专家跑在两阶段 FlyDSL 内核上）、块 FP8 和 bf16 GEMM、MLA 解码内核、RMSNorm 以及张量并行自定义 all-reduce。ROCm 镜像自带针对该模型 MoE 和 GEMM 形状的 AITER 调优表，AITER 在启动时会将其与自己的调优表合并；在 TP4 下，1–8 并发请求时输出吞吐量提升 9–16%。还有两项设置能进一步加分：VLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1 让稀疏 MLA 跑在 AITER 的 Triton 内核上，AITER_CUSTOM_AR_MAX_SIZE=134217728 让大型预填充步骤（最大 128 MiB）的 all-reduce 留在 AITER 的自定义 all-reduce 上。两者合计在 TP4 下再提升 2–5% 的输出吞吐量，并将首 token 时间降低 5–7%。下面两条命令都会启用这三项设置。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "AITER。"
+            },
+            {
+              "code": true,
+              "text": "VLLM_ROCM_USE_AITER=1"
+            },
+            {
+              "text": " 在 AMD 的内核库 AITER 上运行 vLLM 的热点路径：融合 MoE（MXFP4 专家跑在两阶段 FlyDSL 内核上）、块 FP8 和 bf16 GEMM、MLA 解码内核、RMSNorm 以及张量并行自定义 all-reduce。ROCm 镜像自带针对该模型 MoE 和 GEMM 形状的 AITER 调优表，AITER 在启动时会将其与自己的调优表合并；在 TP4 下，1–8 并发请求时输出吞吐量提升 9–16%。还有两项设置能进一步加分："
+            },
+            {
+              "code": true,
+              "text": "VLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1"
+            },
+            {
+              "text": " 让稀疏 MLA 跑在 AITER 的 Triton 内核上，"
+            },
+            {
+              "code": true,
+              "text": "AITER_CUSTOM_AR_MAX_SIZE=134217728"
+            },
+            {
+              "text": " 让大型预填充步骤（最大 128 MiB）的 all-reduce 留在 AITER 的自定义 all-reduce 上。两者合计在 TP4 下再提升 2–5% 的输出吞吐量，并将首 token 时间降低 5–7%。下面两条命令都会启用这三项设置。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "专用解码。对于延迟敏感的服务，--additional-config '{\"decode_backend\": \"latency_specialized\"}' 会把 1、2 或 4 请求解码步骤中的每个 MoE 层作为一次常驻 FlyDSL 内核启动来运行。该启动融合了注意力、索引器、路由器、MXFP4 专家以及两次张量并行 all-reduce。在 MI350X 上以 TP4 运行时，与同样 GPU 上 vLLM 的标准解码相比，单请求下每 token 解码延迟降低 1.5 倍，四请求下降低 1.1 倍。它可以与 DSpark 组合：单请求的验证块跑在融合内核上，每 token 延迟比不做投机的标准解码低 2.9 倍。更大的批次和预填充走标准路径。它运行在默认 FP8 KV 缓存上，要求 TP4 和 VLLM_FP8_MOE_REQUANT_ACT=a4w4，否则会拒绝启动并给出原因。该内核改编自 ROCm ATOM 的 GLM-5.2 融合解码。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "专用解码。"
+            },
+            {
+              "text": "对于延迟敏感的服务，"
+            },
+            {
+              "code": true,
+              "text": "--additional-config '{\"decode_backend\": \"latency_specialized\"}'"
+            },
+            {
+              "text": " 会把 1、2 或 4 请求解码步骤中的每个 MoE 层作为一次常驻 FlyDSL 内核启动来运行。该启动融合了注意力、索引器、路由器、MXFP4 专家以及两次张量并行 all-reduce。在 MI350X 上以 TP4 运行时，与同样 GPU 上 vLLM 的标准解码相比，单请求下每 token 解码延迟降低 1.5 倍，四请求下降低 1.1 倍。它可以与 DSpark 组合：单请求的验证块跑在融合内核上，每 token 延迟比不做投机的标准解码低 2.9 倍。更大的批次和预填充走标准路径。它运行在默认 FP8 KV 缓存上，要求 TP4 和 "
+            },
+            {
+              "code": true,
+              "text": "VLLM_FP8_MOE_REQUANT_ACT=a4w4"
+            },
+            {
+              "text": "，否则会拒绝启动并给出原因。该内核改编自 ROCm ATOM 的 GLM-5.2 融合解码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 MI350 系列上服务。两条命令都会启用 AITER，并在加载时将 FP8 专家重新量化为 MXFP4：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "在 MI350 系列上服务。"
+            },
+            {
+              "text": "两条命令都会启用 AITER，并在加载时将 FP8 专家重新量化为 MXFP4："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# TP8, one replica per node\nVLLM_ROCM_USE_AITER=1 VLLM_FP8_MOE_REQUANT=mxfp4 VLLM_FP8_MOE_REQUANT_ACT=a8w4 \\\nVLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1 AITER_CUSTOM_AR_MAX_SIZE=134217728 \\\nvllm serve mistralai/Mistral-Large-4-1T-A52B --tensor-parallel-size 8 \\\n  --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}' \\\n  --tool-call-parser mistral --enable-auto-tool-choice --reasoning-parser mistral\n \n# TP4 with the specialized decode, for few concurrent users; two replicas per node (second on GPUs 4-7)\nVLLM_ROCM_USE_AITER=1 VLLM_FP8_MOE_REQUANT=mxfp4 VLLM_FP8_MOE_REQUANT_ACT=a4w4 \\\nVLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1 AITER_CUSTOM_AR_MAX_SIZE=134217728 \\\nvllm serve mistralai/Mistral-Large-4-1T-A52B --tensor-parallel-size 4 \\\n  --additional-config '{\"decode_backend\": \"latency_specialized\"}' --max-num-seqs 64 \\\n  --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}' \\\n  --tool-call-parser mistral --enable-auto-tool-choice --reasoning-parser mistral"
+        },
+        {
+          "type": "heading",
+          "text": "ROCm 实现细节",
+          "inlines": [
+            {
+              "text": "ROCm 实现细节"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "AITER 上的稀疏 MLA。在 ROCm 上，ML4 的稀疏 MLA 运行在 ROCM_AITER_MLA_SPARSE 后端。索引器选出的 top-2048 位置会被转换成全局缓存槽位，每个查询 token 在槽位流中各自占一条记录。随后 AITER 的 MLA 解码内核以常驻模式读取这条流，工作切分元数据提前构建好，以便在 CU 之间均衡负载。AITER 的 MLA 内核要求头数为 16 的倍数：TP4 下每块 GPU 正好分到 ML4 的 64 个头中的 16 个，而 TP8 下的 8 个头会被补齐到 16。VLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1 则改用 AITER 的 Triton 稀疏 MLA 内核，它不需要补齐头数，也不需要单独一份 FP8 的查询副本。bf16 缓存上的 NoPE 层没有 RoPE 部分可供 AITER 内核读取，因此它们运行在 vLLM 的 ragged Triton 稀疏注意力内核上。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "AITER 上的稀疏 MLA。"
+            },
+            {
+              "text": "在 ROCm 上，ML4 的稀疏 MLA 运行在 "
+            },
+            {
+              "code": true,
+              "text": "ROCM_AITER_MLA_SPARSE"
+            },
+            {
+              "text": " 后端。索引器选出的 top-2048 位置会被转换成全局缓存槽位，每个查询 token 在槽位流中各自占一条记录。随后 AITER 的 MLA 解码内核以常驻模式读取这条流，工作切分元数据提前构建好，以便在 CU 之间均衡负载。AITER 的 MLA 内核要求头数为 16 的倍数：TP4 下每块 GPU 正好分到 ML4 的 64 个头中的 16 个，而 TP8 下的 8 个头会被补齐到 16。"
+            },
+            {
+              "code": true,
+              "text": "VLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1"
+            },
+            {
+              "text": " 则改用 AITER 的 Triton 稀疏 MLA 内核，它不需要补齐头数，也不需要单独一份 FP8 的查询副本。bf16 缓存上的 NoPE 层没有 RoPE 部分可供 AITER 内核读取，因此它们运行在 vLLM 的 ragged Triton 稀疏注意力内核上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AITER 上的 DSA 索引器。一个融合 Triton 内核把每个索引器键量化为 FP8（使用单一 scale）并写入索引器缓存，每个索引器层每 token 占 132 字节。在一个缓存块内，键按 16×16 的瓦片存储，这正是 AITER 分页读取器期望的布局。写入方和所有读取方（插入、prefill gather 和分页 logits）共用同一条布局规则，因此不会出现不一致。Prefill 打分运行在 AITER 的 fp8_mqa_logits 上，解码打分运行在 AITER 的分页 MQA-logits 内核上，两者都读取 FP8 键。top-2048 在形状受支持时由 AITER 的索引器 top-k 给出，否则由 vLLM 的 top_k_per_row 给出。共享索引器层复用最近的前一个索引器层的 top-k，与其他平台上的做法一致。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "AITER 上的 DSA 索引器。"
+            },
+            {
+              "text": "一个融合 Triton 内核把每个索引器键量化为 FP8（使用单一 scale）并写入索引器缓存，每个索引器层每 token 占 132 字节。在一个缓存块内，键按 16×16 的瓦片存储，这正是 AITER 分页读取器期望的布局。写入方和所有读取方（插入、prefill gather 和分页 logits）共用同一条布局规则，因此不会出现不一致。Prefill 打分运行在 AITER 的 "
+            },
+            {
+              "code": true,
+              "text": "fp8_mqa_logits"
+            },
+            {
+              "text": " 上，解码打分运行在 AITER 的分页 MQA-logits 内核上，两者都读取 FP8 键。top-2048 在形状受支持时由 AITER 的索引器 top-k 给出，否则由 vLLM 的 "
+            },
+            {
+              "code": true,
+              "text": "top_k_per_row"
+            },
+            {
+              "text": " 给出。共享索引器层复用最近的前一个索引器层的 top-k，与其他平台上的做法一致。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FP8 潜在缓存。ROCm 没有 fp8_ds_mla 布局，因此当检查点要求 FP8 KV 缓存时，ROCm 改用普通的 E4M3 缓存。全部 576 个潜在维度（512 个 NoPE 和 64 个 RoPE）都以 FP8 存储，使用一个逐张量 scale，每层每 token 占 576 字节，而 fp8_ds_mla 为 656 字节，bf16 为 1,152 字节。查询也被量化为 FP8，因此 AITER 的内核执行的是 FP8 × FP8。算上 63 个拥有缓存的层加上索引器，一个 token 占 42,096 字节，而 bf16 下为 78,384 字节：这就是 AMD 部分所说的 1.86× KV 容量。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "FP8 潜在缓存。"
+            },
+            {
+              "text": "ROCm 没有 "
+            },
+            {
+              "code": true,
+              "text": "fp8_ds_mla"
+            },
+            {
+              "text": " 布局，因此当检查点要求 FP8 KV 缓存时，ROCm 改用普通的 E4M3 缓存。全部 576 个潜在维度（512 个 NoPE 和 64 个 RoPE）都以 FP8 存储，使用一个逐张量 scale，每层每 token 占 576 字节，而 "
+            },
+            {
+              "code": true,
+              "text": "fp8_ds_mla"
+            },
+            {
+              "text": " 为 656 字节，bf16 为 1,152 字节。查询也被量化为 FP8，因此 AITER 的内核执行的是 FP8 × FP8。算上 63 个拥有缓存的层加上索引器，一个 token 占 42,096 字节，而 bf16 下为 78,384 字节：这就是 AMD 部分所说的 1.86× KV 容量。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "加载时逐层将专家量化为 MXFP4。使用 VLLM_FP8_MOE_REQUANT=mxfp4 时，检查点加载器保持不变：它仍然加载带块 scale 的 block-FP8 专家权重。这些参数起初位于 meta 设备上，逐层加载器一次只物化一层。某一层的专家一加载完成，每个专家就会被反量化为 bf16，再重新量化为 MXFP4（E2M1 数值，每 32 个数值一个 E8M0 scale），随后释放该层的 FP8 副本。峰值内存是 MXFP4 模型加上一层的 FP8 专家，这正是 1T 模型能装进四块 GPU 的原因。权重误差与直接把 bf16 权重量化为 MXFP4 大致相当。之后专家运行在 AITER 的融合 MoE 上：a8w4 使用带 FP8 激活的两阶段 FlyDSL 内核，a4w4 则使用 MXFP4 × MXFP4。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "加载时逐层将专家量化为 MXFP4。"
+            },
+            {
+              "text": "使用 "
+            },
+            {
+              "code": true,
+              "text": "VLLM_FP8_MOE_REQUANT=mxfp4"
+            },
+            {
+              "text": " 时，检查点加载器保持不变：它仍然加载带块 scale 的 block-FP8 专家权重。这些参数起初位于 meta 设备上，逐层加载器一次只物化一层。某一层的专家一加载完成，每个专家就会被反量化为 bf16，再重新量化为 MXFP4（E2M1 数值，每 32 个数值一个 E8M0 scale），随后释放该层的 FP8 副本。峰值内存是 MXFP4 模型加上一层的 FP8 专家，这正是 1T 模型能装进四块 GPU 的原因。权重误差与直接把 bf16 权重量化为 MXFP4 大致相当。之后专家运行在 AITER 的融合 MoE 上："
+            },
+            {
+              "code": true,
+              "text": "a8w4"
+            },
+            {
+              "text": " 使用带 FP8 激活的两阶段 FlyDSL 内核，"
+            },
+            {
+              "code": true,
+              "text": "a4w4"
+            },
+            {
+              "text": " 则使用 MXFP4 × MXFP4。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "专用解码：每层一个常驻内核。使用 decode_backend=latency_specialized 时，1、2 或 4 个请求的纯解码步骤（或单个请求的 DSpark 验证块）会把 71 个 MoE 层中的每一层作为一次 FlyDSL 内核启动来运行。该启动使用 256 个 CTA，全部同时常驻在 GPU 的 256 个 CU 上。其内部依次运行：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "专用解码：每层一个常驻内核。"
+            },
+            {
+              "text": "使用 "
+            },
+            {
+              "code": true,
+              "text": "decode_backend=latency_specialized"
+            },
+            {
+              "text": " 时，1、2 或 4 个请求的纯解码步骤（或单个请求的 DSpark 验证块）会把 71 个 MoE 层中的每一层作为一次 FlyDSL 内核启动来运行。该启动使用 256 个 CTA，全部同时常驻在 GPU 的 256 个 CU 上。其内部依次运行："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "输入归一化，以及带 SSMax 和 LeRoPE 的查询投影与潜在 KV 投影；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "整个 DSA 索引器：投影、键缓存写入、打分以及精确的 top-2048；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在潜在缓存上做稀疏 MLA，以 bf16 或 FP8 原地读取；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "输出投影、softmax top-4 路由，以及共享专家和路由 MXFP4 专家。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "嵌入、稠密层 0 和最终归一化仍留在 vLLM 的模块上。",
+          "inlines": [
+            {
+              "text": "嵌入、稠密层 0 和最终归一化仍留在 vLLM 的模块上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "两次张量并行 all-reduce 都在核内完成，走的是四块 GPU 之间的对等内存，所以一层只需一次启动，不用回主机往返。这些核按 1、2、4 行构建，正好覆盖 vLLM 的 CUDA 图捕获尺寸，并在这些图内重放。其他步骤仍走 vLLM 的层：预填充、混合批次、更宽的批次。该核改编自 ROCm ATOM 的 GLM-5.2 融合解码，并针对 ML4 的层类型做了扩展：",
+          "inlines": [
+            {
+              "text": "两次张量并行 all-reduce 都在核内完成，走的是四块 GPU 之间的对等内存，所以一层只需一次启动，不用回主机往返。这些核按 1、2、4 行构建，正好覆盖 vLLM 的 CUDA 图捕获尺寸，并在这些图内重放。其他步骤仍走 vLLM 的层：预填充、混合批次、更宽的批次。该核改编自 ROCm ATOM 的 GLM-5.2 融合解码，并针对 ML4 的层类型做了扩展："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "查询不使用 LoRA；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "查询和索引查询上使用 SSMax；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "softmax 路由；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "NoPE 层；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "读取第 35 层潜在缓存的 KV 共享层；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "索引共享层。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "故障即停。 等待对等 GPU 的常驻核绝不能把服务器挂死。核内每次等待超过 10 秒就放弃，放弃时会在每个 rank 上置一个粘性故障字，其他 rank 的等待随即结束。每次前向之后，设备端断言会在计算 logits 之前检查该字。若该字已置位，本步剩余工作不再执行，worker 中止、引擎停止，失败步骤产生的任何 token 都不会到达客户端。这项检查每次启动约耗时 1 µs。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "故障即停。"
+            },
+            {
+              "text": " 等待对等 GPU 的常驻核绝不能把服务器挂死。核内每次等待超过 10 秒就放弃，放弃时会在每个 rank 上置一个粘性故障字，其他 rank 的等待随即结束。每次前向之后，设备端断言会在计算 logits 之前检查该字。若该字已置位，本步剩余工作不再执行，worker 中止、引擎停止，失败步骤产生的任何 token 都不会到达客户端。这项检查每次启动约耗时 1 µs。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这条路径同样默认拒绝。如果部署用到了核不支持的任何东西，启动就会失败，并给出一个错误列出全部原因；所有 TP rank 在任何集合通信开始前都会对每项检查达成一致。不支持的特性包括其他 TP 尺寸、专家并行或上下文并行、LoRA、KV 连接器、其他投机方法，以及未以 a4w4 形式存储的专家。",
+          "inlines": [
+            {
+              "text": "这条路径同样默认拒绝。如果部署用到了核不支持的任何东西，启动就会失败，并给出一个错误列出全部原因；所有 TP rank 在任何集合通信开始前都会对每项检查达成一致。不支持的特性包括其他 TP 尺寸、专家并行或上下文并行、LoRA、KV 连接器、其他投机方法，以及未以 "
+            },
+            {
+              "code": true,
+              "text": "a4w4"
+            },
+            {
+              "text": " 形式存储的专家。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TPU",
+          "inlines": [
+            {
+              "text": "TPU"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral Large 4 从第 0 天起就运行在 TPU v7x 上，使用 vllm-torchtpu，并支持 Pixtral 视觉编码器。我们验证过的配置把主机内张量并行、跨主机数据并行与专家并行结合起来，共使用 16 块 TPU v7x 芯片。",
+          "inlines": [
+            {
+              "text": "Mistral Large 4 从第 0 天起就运行在 "
+            },
+            {
+              "bold": true,
+              "text": "TPU v7x"
+            },
+            {
+              "text": " 上，使用 "
+            },
+            {
+              "code": true,
+              "text": "vllm-torchtpu"
+            },
+            {
+              "text": "，并支持 Pixtral 视觉编码器。我们验证过的配置把主机内张量并行、跨主机数据并行与专家并行结合起来，共使用 16 块 TPU v7x 芯片。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 TPU v7x 上服务： 以下命令在一台主机上启动单个数据并行 worker：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "在 TPU v7x 上服务："
+            },
+            {
+              "text": " 以下命令在一台主机上启动单个数据并行 worker："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve mistralai/Mistral-Large-4-1T-A52B \\\n  --tensor-parallel-size 8 --data-parallel-size 4 --data-parallel-size-local 1 \\\n  --data-parallel-start-rank \"$TPU_WORKER_ID\" \\\n  --data-parallel-address \"$HEAD_IP\" --data-parallel-rpc-port 29696 \\\n  --enable-expert-parallel --enable-ep-weight-filter \\\n  --dtype bfloat16 --kv-cache-dtype fp8_e4m3"
+        },
+        {
+          "type": "paragraph",
+          "text": "TPU 实现依赖 vllm-torchtpu 的稀疏 MLA 和 DSA 索引器 Pallas 核，并把 MLA 扩展为跨层 KV 缓存共享。MLA 潜在 KV 缓存以 FP8 存储，稠密线性投影支持 FP8 权重和激活量化。路由专家使用仅权重量化 FP4（W4A16）。",
+          "inlines": [
+            {
+              "text": "TPU 实现依赖 "
+            },
+            {
+              "code": true,
+              "text": "vllm-torchtpu"
+            },
+            {
+              "text": " 的稀疏 MLA 和 DSA 索引器 Pallas 核，并把 MLA 扩展为跨层 KV 缓存共享。MLA 潜在 KV 缓存以 FP8 存储，稠密线性投影支持 FP8 权重和激活量化。路由专家使用仅权重量化 FP4（W4A16）。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "HiSparse：主机内存稀疏 KV 卸载",
+          "inlines": [
+            {
+              "text": "HiSparse：主机内存稀疏 KV 卸载"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "稀疏注意力每个查询只读取 2048 个键，所以长请求的大部分 KV 不必留在 GPU 内存里。HiSparse 把完整的潜在 KV 放在锁页主机内存中，保留一份常驻 GPU 工作集加每请求热缓冲区，未命中时从主机拷贝选中的行。用 HiSparseConnector 启用：",
+          "inlines": [
+            {
+              "text": "稀疏注意力每个查询只读取 2048 个键，所以长请求的大部分 KV 不必留在 GPU 内存里。HiSparse 把完整的潜在 KV 放在锁页主机内存中，保留一份常驻 GPU 工作集加每请求热缓冲区，未命中时从主机拷贝选中的行。用 "
+            },
+            {
+              "code": true,
+              "text": "HiSparseConnector"
+            },
+            {
+              "text": " 启用："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "--kv-transfer-config '{\"kv_connector\": \"HiSparseConnector\", \"kv_role\": \"kv_both\",\n                       \"kv_connector_extra_config\": {\"host_pool_gib\": 440}}'"
+        },
+        {
+          "type": "paragraph",
+          "text": "已知问题。 当张量并行组位于单节点时，还要设置 VLLM_FLASHINFER_ALLREDUCE_BACKEND=trtllm。一旦 HiSparse 把 KV 溢出到主机，默认的单节点 FlashInfer all-reduce（MNNVL）可能以 CUDA error: unspecified launch failure 让引擎崩溃（vllm#64327）。修复在 flashinfer#7782 中。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "已知问题。"
+            },
+            {
+              "text": " 当张量并行组位于单节点时，还要设置 "
+            },
+            {
+              "code": true,
+              "text": "VLLM_FLASHINFER_ALLREDUCE_BACKEND=trtllm"
+            },
+            {
+              "text": "。一旦 HiSparse 把 KV 溢出到主机，默认的单节点 FlashInfer all-reduce（MNNVL）可能以 "
+            },
+            {
+              "code": true,
+              "text": "CUDA error: unspecified launch failure"
+            },
+            {
+              "text": " 让引擎崩溃（"
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/issues/64327",
+              "text": "vllm#64327"
+            },
+            {
+              "text": "）。修复在 "
+            },
+            {
+              "href": "https://github.com/flashinfer-ai/flashinfer/pull/7782",
+              "text": "flashinfer#7782"
+            },
+            {
+              "text": " 中。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "针对 ML4，我们让 HiSparse 支持了跨层 KV 共享。九个消费层绑定到第 35 层的常驻视图和主机副本，只保留自己的热缓冲区和 LRU（每层有自己的索引器）。没有数据重复，也不需要环境变量。与把共享层实体化相比，同样的主机池能多容纳 14.3% 的 token。我们还修复了：",
+          "inlines": [
+            {
+              "text": "针对 ML4，我们让 HiSparse 支持了"
+            },
+            {
+              "bold": true,
+              "text": "跨层 KV 共享"
+            },
+            {
+              "text": "。九个消费层绑定到第 35 层的常驻视图和主机副本，只保留自己的热缓冲区和 LRU（每层有自己的索引器）。没有数据重复，也不需要环境变量。与把共享层实体化相比，同样的主机池能多容纳 14.3% 的 token。我们还修复了："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "从多模态模型的文本配置中读取 "
+                },
+                {
+                  "code": true,
+                  "text": "index_topk"
+                },
+                {
+                  "text": "；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "CUDA 图捕获期间出现双重主机镜像。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "容量。在单台 GB300 节点上（TP4、NVFP4），四个 TP rank 共享同一个去重后的主机内存池，因此 host_pool_gib 是总量。在 440 GiB 的池下，HiSparse 启动时可接纳 877 万 KV token，稳态下最高可容纳 1125 万，而仅靠 GPU 只有 197 万（4.5 倍到 5.7 倍）。GSM8K-200 结果不变（两者均为 0.975），大海捞针测试在约 9.8 万（10/10）和约 24.8 万（5/5）token 下均通过。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "容量。"
+            },
+            {
+              "text": "在单台 GB300 节点上（TP4、NVFP4），四个 TP rank 共享同一个去重后的主机内存池，因此 "
+            },
+            {
+              "code": true,
+              "text": "host_pool_gib"
+            },
+            {
+              "text": " 是总量。在 440 GiB 的池下，HiSparse 启动时可接纳 877 万 KV token，稳态下最高可容纳 1125 万，而仅靠 GPU 只有 197 万（4.5 倍到 5.7 倍）。GSM8K-200 结果不变（两者均为 0.975），大海捞针测试在约 9.8 万（10/10）和约 24.8 万（5/5）token 下均通过。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8005668dd579da8b6fd7d8cd85ebbac5c9da4825a4ad4d2135a77575717231bb.webp",
+          "alt": "HiSparse KV capacity"
+        },
+        {
+          "type": "paragraph",
+          "text": "HiSparse KV 容量",
+          "inlines": [
+            {
+              "text": "HiSparse KV 容量"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "单台 GB300 节点上一个 TP4 服务器的 KV token 容量（NVFP4，max_model_len 262k，关闭前缀缓存）：仅 GPU 为 197 万 token；启用 HiSparse 并由四个 TP rank 共享 440 GiB 主机内存池后，启动时可接纳 877 万（4.5 倍），稳态下最高 1125 万（5.7 倍）。复用第 35 层 KV 的层在主机上只存一份。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "单台 GB300 节点上一个 TP4 服务器的 KV token 容量（NVFP4，max_model_len 262k，关闭前缀缓存）：仅 GPU 为 197 万 token；启用 HiSparse 并由四个 TP rank 共享 440 GiB 主机内存池后，启动时可接纳 877 万（4.5 倍），稳态下最高 1125 万（5.7 倍）。复用第 35 层 KV 的层在主机上只存一份。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "下一步",
+          "inlines": [
+            {
+              "text": "下一步"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "上游合入：MLA 跨层 KV 共享、DSpark 滑动窗口 MLA 草稿，以及 DCP 下的 DSpark 和 HiSparse KV 共享支持。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "一个在 P/D 中运行 DSpark 的 DCP 解码节点，以及独立的草稿块池，使 DCP 下的 DSpark 保持完整 KV 容量。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "HiSparse 支持 NIXL 导入的 GPU 落地，以及面向多节点 TP 的节点共享主机内存池。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "更多面向低并发延迟的解码融合。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "致谢",
+          "inlines": [
+            {
+              "text": "致谢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "vLLM 对 Mistral Large 4 的支持由 Nicolò Lucchesi 和 Mistral Inference 团队牵头合作完成。我们还要感谢审阅、设计并合入大量底层工作的 vLLM 维护者：Lucas Wilkinson、Flora Feng、Matt Bonanni 以及 Red Hat 团队的其他成员；整个 Inferact 团队；Cyrus Leung 以及整个 vLLM 社区。",
+          "inlines": [
+            {
+              "text": "vLLM 对 Mistral Large 4 的支持由 Nicolò Lucchesi 和 Mistral Inference 团队牵头合作完成。我们还要感谢审阅、设计并合入大量底层工作的 vLLM 维护者：Lucas Wilkinson、Flora Feng、Matt Bonanni 以及 Red Hat 团队的其他成员；整个 Inferact 团队；Cyrus Leung 以及整个 vLLM 社区。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 AMD 方面，我们还要感谢 Hongxia Yang、Felix Marty、Andy Luo、Indira Vats 在 AMD Instinct GPU 上的 Day 0 支持与优化，以及 Bowen Bao、Chuan Li、Peng Sun 的总体支持。",
+          "inlines": [
+            {
+              "text": "在 AMD 方面，我们还要感谢 Hongxia Yang、Felix Marty、Andy Luo、Indira Vats 在 AMD Instinct GPU 上的 Day 0 支持与优化，以及 Bowen Bao、Chuan Li、Peng Sun 的总体支持。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We're excited to announce day-0 support for Mistral Large 4 in vLLM. Mistral Large 4 is Mistral's new frontier mixture-of-experts native multimodal model. It combines a DeepSeek-style sparse attention stack (MLA plus a DSA top-k indexer) with several new architecture features: cross-layer KV sharing, NoPE layers, SSMax and LeRoPE. It ships with a built-in DSpark speculative decoding drafter and a Pixtral vision encoder.",
+          "inlines": [
+            {
+              "text": "We're excited to announce day-0 support for "
+            },
+            {
+              "bold": true,
+              "text": "Mistral Large 4"
+            },
+            {
+              "text": " in vLLM. Mistral Large 4 is Mistral's new frontier mixture-of-experts native multimodal model. It combines a DeepSeek-style sparse attention stack (MLA plus a DSA top-k indexer) with several new architecture features: cross-layer KV sharing, NoPE layers, SSMax and LeRoPE. It ships with a built-in DSpark speculative decoding drafter and a Pixtral vision encoder."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Supporting it took more than a model file. ML4 runs on vLLM's model runner V2 (MRV2) with breakable CUDA graphs. Its building blocks live in a new vllm/models/mistral/ package, and the work produced generic improvements to decode context parallelism (DCP), prefill context parallelism (PCP), DSpark, NIXL-based disaggregated serving and HiSparse host-memory KV offload.",
+          "inlines": [
+            {
+              "text": "Supporting it took more than a model file. ML4 runs on vLLM's model runner V2 (MRV2) with breakable CUDA graphs. Its building blocks live in a new "
+            },
+            {
+              "code": true,
+              "text": "vllm/models/mistral/"
+            },
+            {
+              "text": " package, and the work produced generic improvements to decode context parallelism (DCP), prefill context parallelism (PCP), DSpark, NIXL-based disaggregated serving and HiSparse host-memory KV offload."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Highlights",
+          "inlines": [
+            {
+              "text": "Highlights"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Architecture:"
+                },
+                {
+                  "text": " 72-layer MoE with 128 routed experts (top-4) plus 1 shared expert and a hidden size of 6144. Attention is MLA (KV LoRA rank 512, RoPE dim 64) with a DSA sparse indexer that selects the top 2048 keys per query. 1 trillion parameters in total, 49 billion active per token (52 billion including embeddings and output layers)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Checkpoints:"
+                },
+                {
+                  "text": " FP8 (block-scaled weights) and NVFP4 (NVFP4 experts, FP8 attention/shared experts). Both use an FP8 latent KV cache ("
+                },
+                {
+                  "code": true,
+                  "text": "fp8_ds_mla"
+                },
+                {
+                  "text": ") by default."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Multimodal:"
+                },
+                {
+                  "text": " a Pixtral vision encoder for image inputs, including multiple images per prompt."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Speculative decoding:"
+                },
+                {
+                  "text": " a built-in DSpark drafter (3 sliding-window MLA layers, depth 3) accepts ~2.9 tokens per step and gives about 2x output throughput on TP8."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Long context:"
+                },
+                {
+                  "text": " DCP gives ~7.9x more KV capacity on TP8. PCP+DCP prefill cuts time to first token (TTFT) by up to 1.6x. DSpark works under both."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Disaggregated serving:"
+                },
+                {
+                  "text": " NIXL prefill/decode (P/D) disaggregation with DP/EP, TP and PCP×DCP prefill nodes, with DSpark on both sides."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "HiSparse:"
+                },
+                {
+                  "text": " host-memory sparse KV offload, now with support for cross-layer KV sharing."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "AMD:"
+                },
+                {
+                  "text": " day-0 on AMD Instinct MI350 Series GPUs with ROCm, including DSpark, image inputs and expert parallelism with MXFP4 experts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Usage",
+          "inlines": [
+            {
+              "text": "Usage"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral Large 4 support ships in the vllm/vllm-openai:mistral-large-4 Docker image, which also includes mistral-common 1.13. The commands below run vllm serve inside it:",
+          "inlines": [
+            {
+              "text": "Mistral Large 4 support ships in the "
+            },
+            {
+              "code": true,
+              "text": "vllm/vllm-openai:mistral-large-4"
+            },
+            {
+              "text": " Docker image, which also includes "
+            },
+            {
+              "code": true,
+              "text": "mistral-common"
+            },
+            {
+              "text": " 1.13. The commands below run "
+            },
+            {
+              "code": true,
+              "text": "vllm serve"
+            },
+            {
+              "text": " inside it:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "docker pull vllm/vllm-openai:mistral-large-4"
+        },
+        {
+          "type": "paragraph",
+          "text": "FP8 on 8 GPUs:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "FP8 on 8 GPUs:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve mistralai/Mistral-Large-4-1T-A52B \\\n  --tensor-parallel-size 8 \\\n  --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}' \\\n  --tool-call-parser mistral --enable-auto-tool-choice \\\n  --reasoning-parser mistral"
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 on 4 GPUs (Blackwell; use --tensor-parallel-size 8 on 8 GPUs):",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "NVFP4 on 4 GPUs"
+            },
+            {
+              "text": " (Blackwell; use "
+            },
+            {
+              "code": true,
+              "text": "--tensor-parallel-size 8"
+            },
+            {
+              "text": " on 8 GPUs):"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve mistralai/Mistral-Large-4-1T-A52B-NVFP4 \\\n  --tensor-parallel-size 4 \\\n  --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}' \\\n  --tool-call-parser mistral --enable-auto-tool-choice \\\n  --reasoning-parser mistral"
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 does not trade quality for speed. On multimodal, long-context, agentic coding, business automation and cyber evals it stays within 2.1 points of FP8 on every task, and the mean difference is −0.3 points. Token consumption is matched too: mean completion tokens stay within about 4% of FP8. It is also faster and lighter: at TP8, NVFP4 decodes 1.08–1.19x faster per token than FP8 without spec decoding (1.18–1.22x with DSpark) and holds ~1.5x the KV cache.",
+          "inlines": [
+            {
+              "text": "NVFP4 does not trade quality for speed. On multimodal, long-context, agentic coding, business automation and cyber evals it stays within 2.1 points of FP8 on every task, and the mean difference is −0.3 points. Token consumption is matched too: mean completion tokens stay within about 4% of FP8. It is also faster and lighter: at TP8, NVFP4 decodes 1.08–1.19x faster per token than FP8 without spec decoding (1.18–1.22x with DSpark) and holds ~1.5x the KV cache."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*Comparison of FP8 versus NVFP4 scores and token consumption on core evaluations. Error bars show 95% confidence intervals estimated by bootstrapping. Across all domains, including multimodal reasoning (GDP.pdf, MathVision), long-context (Graphwalks 512k), coding agents (DeepSWE, SWE-bench Pro, Terminal-Bench 4), business automation (AutomationBench) and cyber (CyberGym), the NVFP4 checkpoint matches FP8 behaviour.",
+          "inlines": [
+            {
+              "text": "*Comparison of FP8 versus NVFP4 scores and token consumption on core evaluations. Error bars show 95% confidence intervals estimated by bootstrapping. Across all domains, including multimodal reasoning (GDP.pdf, MathVision), long-context (Graphwalks 512k), coding agents (DeepSWE, SWE-bench Pro, Terminal-Bench 4), business automation (AutomationBench) and cyber (CyberGym), the NVFP4 checkpoint matches FP8 behaviour."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Long context (DCP). Add --decode-context-parallel-size 8 to shard the latent KV cache across the 8 ranks. It requires the default FP8 KV cache.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Long context (DCP)."
+            },
+            {
+              "text": " Add "
+            },
+            {
+              "code": true,
+              "text": "--decode-context-parallel-size 8"
+            },
+            {
+              "text": " to shard the latent KV cache across the 8 ranks. It requires the default FP8 KV cache."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Multimodal. Pass --limit-mm-per-prompt '{\"image\": N}' to allow up to N images per prompt.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Multimodal."
+            },
+            {
+              "text": " Pass "
+            },
+            {
+              "code": true,
+              "text": "--limit-mm-per-prompt '{\"image\": N}'"
+            },
+            {
+              "text": " to allow up to N images per prompt."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For multi-node, disaggregated P/D and other tested configurations, see the Mistral Large 4 recipe.",
+          "inlines": [
+            {
+              "text": "For multi-node, disaggregated P/D and other tested configurations, see the "
+            },
+            {
+              "href": "https://recipes.vllm.ai/mistralai/Mistral-Large-4-1T-A52B",
+              "text": "Mistral Large 4 recipe"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Implementation details",
+          "inlines": [
+            {
+              "text": "Implementation details"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Model architecture",
+          "inlines": [
+            {
+              "text": "Model architecture"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "component",
+          "inlines": [
+            {
+              "text": "component"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral Large 4",
+          "inlines": [
+            {
+              "text": "Mistral Large 4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "layers / hidden size / heads",
+          "inlines": [
+            {
+              "text": "layers / hidden size / heads"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "72 / 6144 / 64",
+          "inlines": [
+            {
+              "text": "72 / 6144 / 64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "attention",
+          "inlines": [
+            {
+              "text": "attention"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MLA, no query LoRA, KV LoRA rank 512, RoPE dim 64",
+          "inlines": [
+            {
+              "text": "MLA, no query LoRA, KV LoRA rank 512, RoPE dim 64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "sparse attention",
+          "inlines": [
+            {
+              "text": "sparse attention"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DSA indexer, top-k 2048, 32 index heads; 44 layers own an indexer, 28 reuse the top-k of the nearest earlier indexer layer",
+          "inlines": [
+            {
+              "text": "DSA indexer, top-k 2048, 32 index heads; 44 layers own an indexer, 28 reuse the top-k of the nearest earlier indexer layer"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "positional encoding",
+          "inlines": [
+            {
+              "text": "positional encoding"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "YaRN + LeRoPE (learned per-frequency scaling); every 4th layer is NoPE",
+          "inlines": [
+            {
+              "text": "YaRN + LeRoPE (learned per-frequency scaling); every 4th layer is NoPE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "query scaling",
+          "inlines": [
+            {
+              "text": "query scaling"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SSMax (length-dependent query scale) on every attention layer and indexer",
+          "inlines": [
+            {
+              "text": "SSMax (length-dependent query scale) on every attention layer and indexer"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "KV sharing",
+          "inlines": [
+            {
+              "text": "KV sharing"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9 layers (39, 43, …, 71) read layer 35's latent cache (1 every 4)",
+          "inlines": [
+            {
+              "text": "9 layers (39, 43, …, 71) read layer 35's latent cache (1 every 4)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MoE",
+          "inlines": [
+            {
+              "text": "MoE"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "layer 0 dense; layers 1–71: 128 experts, top-4, 1 shared expert",
+          "inlines": [
+            {
+              "text": "layer 0 dense; layers 1–71: 128 experts, top-4, 1 shared expert"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "output",
+          "inlines": [
+            {
+              "text": "output"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "logit soft cap 30",
+          "inlines": [
+            {
+              "text": "logit soft cap 30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "vision",
+          "inlines": [
+            {
+              "text": "vision"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pixtral encoder (30 layers, hidden 2048, patch 14)",
+          "inlines": [
+            {
+              "text": "Pixtral encoder (30 layers, hidden 2048, patch 14)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*The 72 decoder layers: every 4th layer is NoPE, 28 layers reuse the top-k of the closest preceding indexer layer, the NoPE layers 39–71 read layer 35's latent KV, and only layer 0 is dense.*",
+          "inlines": [
+            {
+              "text": "*The 72 decoder layers: every 4th layer is NoPE, 28 layers reuse the top-k of the closest preceding indexer layer, the NoPE layers 39–71 read layer 35's latent KV, and only layer 0 is dense.*"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What it took to support each piece in vLLM:",
+          "inlines": [
+            {
+              "text": "What it took to support each piece in vLLM:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sparse MLA + DSA indexer. ML4 reuses vLLM's sparse-MLA stack (FlashMLA sparse with the fp8_ds_mla latent cache, plus the sparse indexer with an FP8 indexer cache). ML4-specific differences are layered on top: shared-indexer layers that reuse the top-k of the nearest earlier indexer layer, an indexer with its own SSMax, and NoPE indexers on NoPE layers. Per token, the KV cache stores 47,136 bytes: 41,328 for the MLA latent and 5,808 for the indexer.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Sparse MLA + DSA indexer."
+            },
+            {
+              "text": " ML4 reuses vLLM's sparse-MLA stack (FlashMLA sparse with the "
+            },
+            {
+              "code": true,
+              "text": "fp8_ds_mla"
+            },
+            {
+              "text": " latent cache, plus the sparse indexer with an FP8 indexer cache). ML4-specific differences are layered on top: shared-indexer layers that reuse the top-k of the nearest earlier indexer layer, an indexer with its own SSMax, and NoPE indexers on NoPE layers. Per token, the KV cache stores 47,136 bytes: 41,328 for the MLA latent and 5,808 for the indexer."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cross-layer KV sharing. Nine NoPE layers read the latent KV written by layer 35 instead of writing their own. We added kv_sharing_target_layer_name to MLAAttention and AttentionLayerBase. Consumer layers skip the cache write, and the V2 runner resolves them to the target layer's KV cache spec. Consumers take no KV memory: 63 of the 72 layers own a cache. This is model-agnostic and is being upstreamed in vllm#64095.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Cross-layer KV sharing."
+            },
+            {
+              "text": " Nine NoPE layers read the latent KV written by layer 35 instead of writing their own. We added "
+            },
+            {
+              "code": true,
+              "text": "kv_sharing_target_layer_name"
+            },
+            {
+              "text": " to "
+            },
+            {
+              "code": true,
+              "text": "MLAAttention"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "AttentionLayerBase"
+            },
+            {
+              "text": ". Consumer layers skip the cache write, and the V2 runner resolves them to the target layer's KV cache spec. Consumers take no KV memory: 63 of the 72 layers own a cache. This is model-agnostic and is being upstreamed in "
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/pull/64095",
+              "text": "vllm#64095"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NoPE, SSMax and LeRoPE. NoPE layers are expressed as MLA with zero RoPE dims, so they use the same kernels and cache layout. LeRoPE is folded into the YaRN frequencies. SSMax is fused into the MLA RoPE kernel (see fusions below).",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "NoPE, SSMax and LeRoPE."
+            },
+            {
+              "text": " NoPE layers are expressed as MLA with zero RoPE dims, so they use the same kernels and cache layout. LeRoPE is folded into the YaRN frequencies. SSMax is fused into the MLA RoPE kernel (see fusions below)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A Mistral model package. Rather than adding flags to deepseek_v2.py, the port builds on reusable Mistral components under vllm/models/mistral/: attention, indexer, SSMax, MLP, MoE, fused ops and a per-layer spec (common/layer_spec.py). The ML4 model itself is vllm/models/mistral_large4/nvidia/model.py, and the DSpark drafter sits next to it (dspark.py). Per-layer features (RoPE/NoPE, indexer owner/sharer, KV owner/consumer) come from a layer spec built from params.json, not from model-specific branches in shared code.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "A Mistral model package."
+            },
+            {
+              "text": " Rather than adding flags to "
+            },
+            {
+              "code": true,
+              "text": "deepseek_v2.py"
+            },
+            {
+              "text": ", the port builds on reusable Mistral components under "
+            },
+            {
+              "code": true,
+              "text": "vllm/models/mistral/"
+            },
+            {
+              "text": ": attention, indexer, SSMax, MLP, MoE, fused ops and a per-layer spec ("
+            },
+            {
+              "code": true,
+              "text": "common/layer_spec.py"
+            },
+            {
+              "text": "). The ML4 model itself is "
+            },
+            {
+              "code": true,
+              "text": "vllm/models/mistral_large4/nvidia/model.py"
+            },
+            {
+              "text": ", and the DSpark drafter sits next to it ("
+            },
+            {
+              "code": true,
+              "text": "dspark.py"
+            },
+            {
+              "text": "). Per-layer features (RoPE/NoPE, indexer owner/sharer, KV owner/consumer) come from a layer spec built from "
+            },
+            {
+              "code": true,
+              "text": "params.json"
+            },
+            {
+              "text": ", not from model-specific branches in shared code."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model runner V2. ML4 runs only on MRV2. The V2 attention utilities discover KV-sharing layers and look up their target specs. DSpark plugs into the V2 DFlash/DSpark speculator.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Model runner V2."
+            },
+            {
+              "text": " ML4 runs only on MRV2. The V2 attention utilities discover KV-sharing layers and look up their target specs. DSpark plugs into the V2 DFlash/DSpark speculator."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Breakable CUDA graphs and fusions. ML4 runs without torch.compile. It uses breakable CUDA graphs, enabled automatically for the architecture (also when the text model sits inside the multimodal wrapper). They gave about a 6x speedup over eager mode. Hand-written fusions replace what the compiler would otherwise do, while enabling further optimizations:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Breakable CUDA graphs and fusions."
+            },
+            {
+              "text": " ML4 runs without "
+            },
+            {
+              "code": true,
+              "text": "torch.compile"
+            },
+            {
+              "text": ". It uses breakable CUDA graphs, enabled automatically for the architecture (also when the text model sits inside the multimodal wrapper). They gave about a 6x speedup over eager mode. Hand-written fusions replace what the compiler would otherwise do, while enabling further optimizations:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "First round: SSMax, MLA RoPE + SSMax, the indexer Q path and the indexer K path. These cut decode TPOT by 8–10%."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Decode round: FP32 router GEMM, a one-launch Triton LayerNorm for the indexer query, all-reduce + residual + RMSNorm in one FlashInfer kernel, and indexer K written straight into the FP8 cache. On TP8 FP8, c1 TPOT dropped from 10.22 to 9.00 ms (-12%) and c8 from 16.01 to 15.08 ms."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Long context: decode and prefill context parallelism",
+          "inlines": [
+            {
+              "text": "Long context: decode and prefill context parallelism"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "DCP. MLA keeps one latent KV head, so under TP the cache is replicated on every rank. DCP shards it by token instead. On TP8, DCP8 raises KV capacity from 2.38M to 18.88M tokens (FP8) and from 3.60M to 28.76M tokens (NVFP4).",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "DCP."
+            },
+            {
+              "text": " MLA keeps one latent KV head, so under TP the cache is replicated on every rank. DCP shards it by token instead. On TP8, DCP8 raises KV capacity from 2.38M to 18.88M tokens (FP8) and from 3.60M to 28.76M tokens (NVFP4)."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/117725db92dd85237d72d22648bc12a047561ac44b6cb02b68cb06f662019e20.webp",
+          "alt": "Long-context capacity on 8x GB300: TP8 vs TP8 DCP8"
+        },
+        {
+          "type": "paragraph",
+          "text": "Long-context capacity on 8x GB300: TP8 vs TP8 DCP8",
+          "inlines": [
+            {
+              "text": "Long-context capacity on 8x GB300: TP8 vs TP8 DCP8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Concurrent 128k / 256k / 1M-token requests whose KV cache fits on 8× GB300 with ML4 NVFP4, TP8 vs TP8 DCP8: floor(KV pool / input length) - 3.60M and 28.76M tokens, gpu-memory-utilization 0.85.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Concurrent 128k / 256k / 1M-token requests whose KV cache fits on 8× GB300 with ML4 NVFP4, TP8 vs TP8 DCP8: floor(KV pool / input length) - 3.60M and 28.76M tokens, gpu-memory-utilization 0.85."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Out of the box, DCP with sparse MLA paid a large fixed cost per decode step. A profile at 60k context showed about 7 ms per step of DCP-only work:",
+          "inlines": [
+            {
+              "text": "Out of the box, DCP with sparse MLA paid a large fixed cost per decode step. A profile at 60k context showed about 7 ms per step of DCP-only work:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "NCCL all-gathers of the LSE and of the indexer top-k candidates (44 indexer layers);"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "reduce-scatters;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "a stable top-k merge;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "query gathers;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "small mask kernels and launch gaps."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We replaced these with:",
+          "inlines": [
+            {
+              "text": "We replaced these with:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "a2a combine"
+                },
+                {
+                  "text": " for FlashMLA sparse (merged as "
+                },
+                {
+                  "href": "https://github.com/vllm-project/vllm/pull/61285",
+                  "text": "vllm#61285"
+                },
+                {
+                  "text": "): a symmetric-memory all-to-all LSE combine instead of all-gather + reduce-scatter. ML4 uses it by default."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Direct top-k exchange:"
+                },
+                {
+                  "text": " each rank pushes its packed (score, id) candidates into its peers' symmetric-memory inboxes, and a selector reads them in place. This replaces an NCCL all-gather and a 6-pass radix select per indexer layer."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Top-k compaction:"
+                },
+                {
+                  "text": " for batches of 32+ tokens, each rank compacts its valid top-k slots and bounds the kernel with "
+                },
+                {
+                  "code": true,
+                  "text": "topk_length"
+                },
+                {
+                  "text": ", instead of scanning 2048 slots full of "
+                },
+                {
+                  "code": true,
+                  "text": "-1"
+                },
+                {
+                  "text": ". In a 5k-token prefill profile, attention went from 165 ms to 38 ms."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A fused kernel neutralizes empty rows (a rank that owns none of a query's top-k slots)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The DCP-specific overhead fell to 3.2 ms per step. Together with the decode fusions, on TP8 DCP8 FP8 (60k input / 1k output):",
+          "inlines": [
+            {
+              "text": "The DCP-specific overhead fell to 3.2 ms per step. Together with the decode fusions, on TP8 DCP8 FP8 (60k input / 1k output):"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "before",
+          "inlines": [
+            {
+              "text": "before"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "after",
+          "inlines": [
+            {
+              "text": "after"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c1 TTFT p50",
+          "inlines": [
+            {
+              "text": "c1 TTFT p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6.89 s",
+          "inlines": [
+            {
+              "text": "6.89 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.73 s",
+          "inlines": [
+            {
+              "text": "4.73 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c1 TPOT p50",
+          "inlines": [
+            {
+              "text": "c1 TPOT p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17.82 ms",
+          "inlines": [
+            {
+              "text": "17.82 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.50 ms",
+          "inlines": [
+            {
+              "text": "12.50 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c64 output tok/s",
+          "inlines": [
+            {
+              "text": "c64 output tok/s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "139.1",
+          "inlines": [
+            {
+              "text": "139.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "204.0 (+47%)",
+          "inlines": [
+            {
+              "text": "204.0 (+47%)"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b1be2695fe276d9a9c8de83ec17450259da5ba0577943f887aaa031d85a89ee6.webp",
+          "alt": "DCP8 before and after the collectives port"
+        },
+        {
+          "type": "paragraph",
+          "text": "DCP8 before and after the collectives port",
+          "inlines": [
+            {
+              "text": "DCP8 before and after the collectives port"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TTFT and TPOT p50 vs concurrency on TP8 DCP8 (60k input / 1k output, no spec), before (a2db3f0b9d) and after (bbe5926511) the DCP collectives port and decode fusions.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "TTFT and TPOT p50 vs concurrency on TP8 DCP8 (60k input / 1k output, no spec), before (a2db3f0b9d) and after (bbe5926511) the DCP collectives port and decode fusions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These DCP optimizations ship with Mistral Large 4 support on day 0.",
+          "inlines": [
+            {
+              "text": "These DCP optimizations ship with Mistral Large 4 support on day 0."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When to use DCP. DCP trades per-step latency for KV capacity. On the same 8x GB300 NVFP4 deployment and workload (no spec decoding), DCP8 decodes about 16–28% slower per token than TP8: c1 TPOT is 11.1 vs 8.7 ms at 8k input and 11.4 vs 9.1 ms at 60k. With up to 128 concurrent requests of 8k–60k tokens, TP8's 3.6M-token pool is never the bottleneck, so TP8 delivers more throughput there. DCP8 pays off once KV is the limit: very long contexts, or many concurrent long-lived sessions. In our agentic P/D runs (~100k-token sessions), a TP4 DCP4 decode node kept TTFT at 0.7 s at 32 sessions, where a plain TP4 decode node ran out of KV and climbed to 15 s.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "When to use DCP."
+            },
+            {
+              "text": " DCP trades per-step latency for KV capacity. On the same 8x GB300 NVFP4 deployment and workload (no spec decoding), DCP8 decodes about 16–28% slower per token than TP8: c1 TPOT is 11.1 vs 8.7 ms at 8k input and 11.4 vs 9.1 ms at 60k. With up to 128 concurrent requests of 8k–60k tokens, TP8's 3.6M-token pool is never the bottleneck, so TP8 delivers more throughput there. DCP8 pays off once KV is the limit: very long contexts, or many concurrent long-lived sessions. In our agentic P/D runs (~100k-token sessions), a TP4 DCP4 decode node kept TTFT at 0.7 s at 32 sessions, where a plain TP4 decode node ran out of KV and climbed to 15 s."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PCP + DCP prefill. For long prompts, PCP splits one prompt's tokens across ranks. PCP+DCP now works on ML4 with CUDA graphs, including DCP > PCP and DSpark. Two fixes made this work:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "PCP + DCP prefill."
+            },
+            {
+              "text": " For long prompts, PCP splits one prompt's tokens across ranks. PCP+DCP now works on ML4 with CUDA graphs, including DCP > PCP and DSpark. Two fixes made this work:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Under PCP the MLA KV-cache write first all-gathers its inputs across PCP ranks, and that gather depends on the batch's prefill/decode split. Captured in a piecewise graph, the split was frozen at capture time. Now only the gather runs as an eager break, into fixed-size buffers, and the cache write itself stays in the graph."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The DCP group's ranks are ordered to match the order collectives return data in."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With graphs on TP1×PCP4×DCP4, GSM8K-200 went from 0.315 to 0.975. With DSpark it reaches 0.980. As a P/D prefill node, PCP4×DCP4 gives the lowest TTFT we measured (see the P/D section).",
+          "inlines": [
+            {
+              "text": "With graphs on TP1×PCP4×DCP4, GSM8K-200 went from 0.315 to 0.975. With DSpark it reaches 0.980. As a P/D prefill node, PCP4×DCP4 gives the lowest TTFT we measured (see the P/D section)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "DSpark speculative decoding",
+          "inlines": [
+            {
+              "text": "DSpark speculative decoding"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "ML4 ships a DSpark drafter inside the checkpoint (mtp_dspark.* tensors and an mtp block in params.json). DSpark is a parallel drafter: a small non-causal transformer proposes all draft positions of a block in one forward pass. It conditions on hidden states tapped from target layers 1, 18, 36, 54 and 71. ML4's drafter adds:",
+          "inlines": [
+            {
+              "text": "ML4 ships a DSpark drafter inside the checkpoint ("
+            },
+            {
+              "code": true,
+              "text": "mtp_dspark.*"
+            },
+            {
+              "text": " tensors and an "
+            },
+            {
+              "code": true,
+              "text": "mtp"
+            },
+            {
+              "text": " block in "
+            },
+            {
+              "code": true,
+              "text": "params.json"
+            },
+            {
+              "text": "). DSpark is a parallel drafter: a small non-causal transformer proposes all draft positions of a block in one forward pass. It conditions on hidden states tapped from target layers 1, 18, 36, 54 and 71. ML4's drafter adds:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "an RNN Markov head:"
+                },
+                {
+                  "text": " a gated recurrent state (rank 512) runs across the draft positions, so each position's logits depend on the tokens drafted before it;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "position-specific mask inputs:"
+                },
+                {
+                  "text": " each draft slot gets its own learned input embedding instead of one shared mask token;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "sliding-window MLA draft layers:"
+                },
+                {
+                  "text": " 3 MLA layers with a 2048-token window and a BF16 KV cache, in their own KV cache group. The Triton MLA backend gained sliding-window decode for them."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*One DSpark step: target taps feed the draft's context K/V, the [anchor, mask_1, mask_2] block runs through 3 sliding-window MLA layers in one pass, the RNN head emits 3 draft tokens in sequence, and the target verifies them.*",
+          "inlines": [
+            {
+              "text": "*One DSpark step: target taps feed the draft's context K/V, the [anchor, mask_1, mask_2] block runs through 3 sliding-window MLA layers in one pass, the RNN head emits 3 draft tokens in sequence, and the target verifies them.*"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Enable it with --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}'.",
+          "inlines": [
+            {
+              "text": "Enable it with "
+            },
+            {
+              "code": true,
+              "text": "--speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}'"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Results. TP8, 200 real prompts, greedy (temperature 0), up to 512 output tokens:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Results."
+            },
+            {
+              "text": " TP8, 200 real prompts, greedy (temperature 0), up to 512 output tokens:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FP8 base TPOT",
+          "inlines": [
+            {
+              "text": "FP8 base TPOT"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FP8 DSpark TPOT (AL)",
+          "inlines": [
+            {
+              "text": "FP8 DSpark TPOT (AL)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 base TPOT",
+          "inlines": [
+            {
+              "text": "NVFP4 base TPOT"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NVFP4 DSpark TPOT (AL)",
+          "inlines": [
+            {
+              "text": "NVFP4 DSpark TPOT (AL)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c1",
+          "inlines": [
+            {
+              "text": "c1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.84 ms",
+          "inlines": [
+            {
+              "text": "8.84 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.50 ms (2.90)",
+          "inlines": [
+            {
+              "text": "3.50 ms (2.90)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.21 ms",
+          "inlines": [
+            {
+              "text": "8.21 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.95 ms (2.93)",
+          "inlines": [
+            {
+              "text": "2.95 ms (2.93)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c8",
+          "inlines": [
+            {
+              "text": "c8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.28 ms",
+          "inlines": [
+            {
+              "text": "15.28 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.08 ms (2.85)",
+          "inlines": [
+            {
+              "text": "7.08 ms (2.85)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.85 ms",
+          "inlines": [
+            {
+              "text": "12.85 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5.80 ms (2.86)",
+          "inlines": [
+            {
+              "text": "5.80 ms (2.86)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c32",
+          "inlines": [
+            {
+              "text": "c32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29.92 ms",
+          "inlines": [
+            {
+              "text": "29.92 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11.57 ms (2.85)",
+          "inlines": [
+            {
+              "text": "11.57 ms (2.85)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25.38 ms",
+          "inlines": [
+            {
+              "text": "25.38 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.80 ms (2.86)",
+          "inlines": [
+            {
+              "text": "9.80 ms (2.86)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The table uses greedy decoding. With sampling, acceptance stays close: at temperature 1.0 / top-p 0.95, AL is ~2.8 at concurrency 8. At higher temperatures, set \"draft_sample_method\": \"probabilistic\" in the speculative config: at T=1.5 it raises AL from 2.04 to 2.36–2.53 (+12–22% throughput). Both modes are lossless thanks to standard rejection sampling.",
+          "inlines": [
+            {
+              "text": "The table uses greedy decoding. With sampling, acceptance stays close: at temperature 1.0 / top-p 0.95, AL is ~2.8 at concurrency 8. At higher temperatures, set "
+            },
+            {
+              "code": true,
+              "text": "\"draft_sample_method\": \"probabilistic\""
+            },
+            {
+              "text": " in the speculative config: at T=1.5 it raises AL from 2.04 to 2.36–2.53 (+12–22% throughput). Both modes are lossless thanks to standard rejection sampling."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At the same concurrency, DSpark raises output throughput 1.9–2.1x on FP8 and 1.9–2.2x on NVFP4. It doesn't change what the model generates: every drafted token is verified against the target model, and we checked this empirically. When the base model re-scores DSpark's outputs, they match its own greedy choices as often as the base model's own outputs do. On GSM8K (1,319 questions), FP8 scores 0.909 without DSpark and 0.918 with it.",
+          "inlines": [
+            {
+              "text": "At the same concurrency, DSpark raises output throughput 1.9–2.1x on FP8 and 1.9–2.2x on NVFP4. It doesn't change what the model generates: every drafted token is verified against the target model, and we checked this empirically. When the base model re-scores DSpark's outputs, they match its own greedy choices as often as the base model's own outputs do. On GSM8K (1,319 questions), FP8 scores 0.909 without DSpark and 0.918 with it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*Output tok/s per GPU vs tok/s per user (1000 / TPOT p50), without (dashed) and with DSpark (solid, depth 3). Short: the 200-prompt TP8 runs in the table above. 8k / 32k / 60k: ML4 NVFP4 colocated on 8× GB300, TP8 and TP8 DCP8, `vllm bench serve` with real-text prompts and 1k output tokens; at 60k only the DSpark runs exist.*",
+          "inlines": [
+            {
+              "text": "*Output tok/s per GPU vs tok/s per user (1000 / TPOT p50), without (dashed) and with DSpark (solid, depth 3). Short: the 200-prompt TP8 runs in the table above. 8k / 32k / 60k: ML4 NVFP4 colocated on 8× GB300, TP8 and TP8 DCP8, `vllm bench serve` with real-text prompts and 1k output tokens; at 60k only the DSpark runs exist.*"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DSpark + DCP. Before this work, sliding-window MLA drafts could not run under DCP. Now the draft's small window cache (3 layers × ~2k tokens, about 7 MB per request) is replicated on every DCP rank, while the target cache stays DCP-sharded. This extends the existing support (vllm#56723) to windowed MLA drafts. On TP8 DCP8 at 60k context, c1 TPOT goes from 11.82 to 5.22 ms (2.26x, AL 2.85), and GSM8K-200 stays at 0.965. The cost is KV capacity: under DCP8 each 64-token draft block holds a block ID whose target pages cover 512 tokens. At 64k context, capacity falls to about 0.69x of plain DCP8. That limit doesn't bind at max_num_seqs 128 below ~99k average context.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "DSpark + DCP."
+            },
+            {
+              "text": " Before this work, sliding-window MLA drafts could not run under DCP. Now the draft's small window cache (3 layers × ~2k tokens, about 7 MB per request) is replicated on every DCP rank, while the target cache stays DCP-sharded. This extends the existing support (vllm#56723) to windowed MLA drafts. On TP8 DCP8 at 60k context, c1 TPOT goes from 11.82 to 5.22 ms (2.26x, AL 2.85), and GSM8K-200 stays at 0.965. The cost is KV capacity: under DCP8 each 64-token draft block holds a block ID whose target pages cover 512 tokens. At 64k context, capacity falls to about 0.69x of plain DCP8. That limit doesn't bind at "
+            },
+            {
+              "code": true,
+              "text": "max_num_seqs"
+            },
+            {
+              "text": " 128 below ~99k average context."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DSpark in P/D. A DCP prefill node can hand off to a TP decode node with DSpark on both sides. NIXL pulls the replicated draft window from one prefill rank and the target KV in DCP slices. Acceptance is the same with any P/D layout: ~2.98 / 2.86 / 2.78 at 8k / 32k / 60k input.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "DSpark in P/D."
+            },
+            {
+              "text": " A DCP prefill node can hand off to a TP decode node with DSpark on both sides. NIXL pulls the replicated draft window from one prefill rank and the target KV in DCP slices. Acceptance is the same with any P/D layout: ~2.98 / 2.86 / 2.78 at 8k / 32k / 60k input."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sliding-window MLA draft layers and DSpark under DCP are being upstreamed in vllm#63795 and vllm#63796.",
+          "inlines": [
+            {
+              "text": "Sliding-window MLA draft layers and DSpark under DCP are being upstreamed in "
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/pull/63795",
+              "text": "vllm#63795"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/pull/63796",
+              "text": "vllm#63796"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Disaggregated serving with NIXL",
+          "inlines": [
+            {
+              "text": "Disaggregated serving with NIXL"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We benchmarked 1P1D on 4+4 GB300 GPUs (one NVL72 rack) with NIXL. Setup:",
+          "inlines": [
+            {
+              "text": "We benchmarked 1P1D on 4+4 GB300 GPUs (one NVL72 rack) with NIXL. Setup:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "NVFP4 with DSpark on both sides, CUDA graphs everywhere, no prefix caching;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "vllm bench serve"
+                },
+                {
+                  "text": " with fixed-length prompts: 320 unique single-turn chat prompts per input length, each exactly 8,192 / 32,768 / 60,000 tokens. Each prompt is a natural-text passage (WikiText-2 and GSM8K problems) followed by a question, with no shared prefix between prompts, sent as token IDs;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "1,024 output tokens per request (greedy, EOS ignored);"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "a concurrency sweep and a fixed-QPS sweep."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "All configurations scored 0.965–0.980 on GSM8K-200 through the proxy, with zero failed NIXL transfers and zero failed requests.",
+          "inlines": [
+            {
+              "text": "All configurations scored 0.965–0.980 on GSM8K-200 through the proxy, with zero failed NIXL transfers and zero failed requests."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "*Output tok/s per GPU vs tok/s per user, 1P1D on 4+4 GB300. Solid lines are concurrency sweeps; hollow/dotted markers are fixed-QPS sweeps.*",
+          "inlines": [
+            {
+              "text": "*Output tok/s per GPU vs tok/s per user, 1P1D on 4+4 GB300. Solid lines are concurrency sweeps; hollow/dotted markers are fixed-QPS sweeps.*"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Best output tok/s per GPU (8 GPUs) at a given minimum per-user speed:",
+          "inlines": [
+            {
+              "text": "Best output tok/s per GPU (8 GPUs) at a given minimum per-user speed:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P → D",
+          "inlines": [
+            {
+              "text": "P → D"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8k, ≥40 tok/s/user",
+          "inlines": [
+            {
+              "text": "8k, ≥40 tok/s/user"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8k, ≥100",
+          "inlines": [
+            {
+              "text": "8k, ≥100"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32k, ≥40",
+          "inlines": [
+            {
+              "text": "32k, ≥40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32k, ≥100",
+          "inlines": [
+            {
+              "text": "32k, ≥100"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "60k, ≥40 / ≥100",
+          "inlines": [
+            {
+              "text": "60k, ≥40 / ≥100"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "c1 TTFT 8k / 32k / 60k",
+          "inlines": [
+            {
+              "text": "c1 TTFT 8k / 32k / 60k"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P DP4/EP → D DP4/EP",
+          "inlines": [
+            {
+              "text": "P DP4/EP → D DP4/EP"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "718.2",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "718.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "176.7",
+          "inlines": [
+            {
+              "text": "176.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "202.6",
+          "inlines": [
+            {
+              "text": "202.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "139.2",
+          "inlines": [
+            {
+              "text": "139.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "108.8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "108.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.49 / 1.90 / 3.65 s",
+          "inlines": [
+            {
+              "text": "0.49 / 1.90 / 3.65 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P DP4/EP → D TP4",
+          "inlines": [
+            {
+              "text": "P DP4/EP → D TP4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "459.2",
+          "inlines": [
+            {
+              "text": "459.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "194.2",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "194.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "205.2",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "205.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "150.0",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "150.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "107.2",
+          "inlines": [
+            {
+              "text": "107.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.46 / 1.88 / 3.66 s",
+          "inlines": [
+            {
+              "text": "0.46 / 1.88 / 3.66 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P PCP4×DCP4 → D TP4",
+          "inlines": [
+            {
+              "text": "P PCP4×DCP4 → D TP4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "350.6",
+          "inlines": [
+            {
+              "text": "350.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "192.6",
+          "inlines": [
+            {
+              "text": "192.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "91.5",
+          "inlines": [
+            {
+              "text": "91.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "91.5",
+          "inlines": [
+            {
+              "text": "91.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49.8",
+          "inlines": [
+            {
+              "text": "49.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.35 / 1.37 / 2.57 s",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "0.35 / 1.37 / 2.57 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "P TP4 → D TP4",
+          "inlines": [
+            {
+              "text": "P TP4 → D TP4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "259.2",
+          "inlines": [
+            {
+              "text": "259.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "185.3",
+          "inlines": [
+            {
+              "text": "185.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "62.8",
+          "inlines": [
+            {
+              "text": "62.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "62.8",
+          "inlines": [
+            {
+              "text": "62.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32.3",
+          "inlines": [
+            {
+              "text": "32.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.52 / 2.07 / 4.02 s",
+          "inlines": [
+            {
+              "text": "0.52 / 2.07 / 4.02 s"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "AMD",
+          "inlines": [
+            {
+              "text": "AMD"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral Large 4 runs on AMD Instinct MI350 Series GPUs from day 0 with the ROCm build of vLLM. The sparse MLA runs on AITER's MLA decode kernels and the DSA indexer on AITER's gfx950 indexer.",
+          "inlines": [
+            {
+              "text": "Mistral Large 4 runs on AMD Instinct MI350 Series GPUs from day 0 with the ROCm build of vLLM. The sparse MLA runs on AITER's MLA decode kernels and the DSA indexer on AITER's gfx950 indexer."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MXFP4 experts. On ROCm the routed experts run as OCP MXFP4 on AITER's fused MoE. There are two ways to get them:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "MXFP4 experts."
+            },
+            {
+              "text": " On ROCm the routed experts run as OCP MXFP4 on AITER's fused MoE. There are two ways to get them:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "AMD Quark MXFP4 checkpoint"
+                },
+                {
+                  "text": " ("
+                },
+                {
+                  "href": "https://huggingface.co/amd/Mistral-Large-4-1T-A52B-Quark-MXFP4",
+                  "text": "Mistral-Large-4-1T-A52B-Quark-MXFP4"
+                },
+                {
+                  "text": "). Quark re-quantizes only the routed experts, with static weight and dynamic activation scales. Attention, the shared experts, the dense feed-forward layers, the router, the output head, the vision encoder and the DSpark drafter keep their original precision. The checkpoint shrinks from about 1,061 GB to 578 GB, so it serves on four MI350 Series GPUs (288 GB each). The serving commands, evaluation results and the reproduction recipe are on the model card."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Re-quantize the FP8 checkpoint at load"
+                },
+                {
+                  "text": " ("
+                },
+                {
+                  "code": true,
+                  "text": "VLLM_FP8_MOE_REQUANT=mxfp4"
+                },
+                {
+                  "text": "). The experts are converted layer by layer while loading, so peak memory stays low enough for TP4 as well. Expert weights drop from about 125 to 69 GiB per GPU at TP8, and output throughput rises 22–71% over serving the FP8 experts at 1–64 concurrent requests. "
+                },
+                {
+                  "code": true,
+                  "text": "VLLM_FP8_MOE_REQUANT_ACT"
+                },
+                {
+                  "text": " sets the activation format the MXFP4 experts compute with: "
+                },
+                {
+                  "code": true,
+                  "text": "a8w4"
+                },
+                {
+                  "text": " (FP8 activations, the default) or "
+                },
+                {
+                  "code": true,
+                  "text": "a4w4"
+                },
+                {
+                  "text": " (MXFP4 activations)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Either way, one 8-GPU node serves two TP4 replicas, each with about 6× the HBM left for KV cache and activations that the FP8 experts would leave on the same four GPUs.",
+          "inlines": [
+            {
+              "text": "Either way, one 8-GPU node serves two TP4 replicas, each with about 6× the HBM left for KV cache and activations that the FP8 experts would leave on the same four GPUs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Features. TP8 and TP4, expert parallelism, image inputs through the Pixtral encoder, and DSpark speculative decoding with the checkpoint's built-in drafter are supported on ROCm. On MI350X at TP4 with the FP8 KV cache, DSpark accepts 3.1 tokens per step on real prompts and lowers per-token decode latency 2.7× at one request, 1.9× at 8 and 1.8× at 32 (output throughput 2.1×, 1.6× and 1.4×). On ROCm the latent KV cache is FP8 (E4M3) by default, which gives 1.86× the KV capacity of bf16; --kv-cache-dtype bfloat16 opts out.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Features."
+            },
+            {
+              "text": " TP8 and TP4, expert parallelism, image inputs through the Pixtral encoder, and DSpark speculative decoding with the checkpoint's built-in drafter are supported on ROCm. On MI350X at TP4 with the FP8 KV cache, DSpark accepts 3.1 tokens per step on real prompts and lowers per-token decode latency 2.7× at one request, 1.9× at 8 and 1.8× at 32 (output throughput 2.1×, 1.6× and 1.4×). On ROCm the latent KV cache is FP8 (E4M3) by default, which gives 1.86× the KV capacity of bf16; "
+            },
+            {
+              "code": true,
+              "text": "--kv-cache-dtype bfloat16"
+            },
+            {
+              "text": " opts out."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AITER. VLLM_ROCM_USE_AITER=1 runs vLLM's hot paths on AITER, AMD's kernel library: the fused MoE (the MXFP4 experts on two-stage FlyDSL kernels), the block-FP8 and bf16 GEMMs, the MLA decode kernels, RMSNorm and the tensor-parallel custom all-reduce. The ROCm image ships AITER tuning tables for this model's MoE and GEMM shapes, which AITER merges with its own at startup; at TP4 they raise output throughput 9–16% at 1–8 concurrent requests. Two more settings help on top: VLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1 runs the sparse MLA on AITER's Triton kernel, and AITER_CUSTOM_AR_MAX_SIZE=134217728 keeps the all-reduces of large prefill steps (up to 128 MiB) on AITER's custom all-reduce. Together they raise output throughput a further 2–5% at TP4 and lower time to first token 5–7%. Both commands below set all three.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "AITER."
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "text": "VLLM_ROCM_USE_AITER=1"
+            },
+            {
+              "text": " runs vLLM's hot paths on AITER, AMD's kernel library: the fused MoE (the MXFP4 experts on two-stage FlyDSL kernels), the block-FP8 and bf16 GEMMs, the MLA decode kernels, RMSNorm and the tensor-parallel custom all-reduce. The ROCm image ships AITER tuning tables for this model's MoE and GEMM shapes, which AITER merges with its own at startup; at TP4 they raise output throughput 9–16% at 1–8 concurrent requests. Two more settings help on top: "
+            },
+            {
+              "code": true,
+              "text": "VLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1"
+            },
+            {
+              "text": " runs the sparse MLA on AITER's Triton kernel, and "
+            },
+            {
+              "code": true,
+              "text": "AITER_CUSTOM_AR_MAX_SIZE=134217728"
+            },
+            {
+              "text": " keeps the all-reduces of large prefill steps (up to 128 MiB) on AITER's custom all-reduce. Together they raise output throughput a further 2–5% at TP4 and lower time to first token 5–7%. Both commands below set all three."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Specialized decode. For latency-bound serving, --additional-config '{\"decode_backend\": \"latency_specialized\"}' runs every MoE layer of a 1-, 2- or 4-request decode step as one persistent FlyDSL kernel launch. The launch fuses attention, the indexer, the router, the MXFP4 experts and both tensor-parallel all-reduces. On MI350X at TP4 it lowers per-token decode latency 1.5× at one request and 1.1× at four compared with vLLM's standard decode on the same GPUs. It composes with DSpark: a single request's verify block runs on the fused kernels, for 2.9× lower per-token latency than the standard decode without speculation. Larger batches and prefill run the standard path. It runs on the default FP8 KV cache, requires TP4 and VLLM_FP8_MOE_REQUANT_ACT=a4w4, and refuses to start otherwise, giving the reason. The kernel is adapted from ROCm ATOM's GLM-5.2 fused decode.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Specialized decode."
+            },
+            {
+              "text": " For latency-bound serving, "
+            },
+            {
+              "code": true,
+              "text": "--additional-config '{\"decode_backend\": \"latency_specialized\"}'"
+            },
+            {
+              "text": " runs every MoE layer of a 1-, 2- or 4-request decode step as one persistent FlyDSL kernel launch. The launch fuses attention, the indexer, the router, the MXFP4 experts and both tensor-parallel all-reduces. On MI350X at TP4 it lowers per-token decode latency 1.5× at one request and 1.1× at four compared with vLLM's standard decode on the same GPUs. It composes with DSpark: a single request's verify block runs on the fused kernels, for 2.9× lower per-token latency than the standard decode without speculation. Larger batches and prefill run the standard path. It runs on the default FP8 KV cache, requires TP4 and "
+            },
+            {
+              "code": true,
+              "text": "VLLM_FP8_MOE_REQUANT_ACT=a4w4"
+            },
+            {
+              "text": ", and refuses to start otherwise, giving the reason. The kernel is adapted from ROCm ATOM's GLM-5.2 fused decode."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Serving on MI350 Series. Both commands enable AITER and re-quantize the FP8 experts to MXFP4 at load:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Serving on MI350 Series."
+            },
+            {
+              "text": " Both commands enable AITER and re-quantize the FP8 experts to MXFP4 at load:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# TP8, one replica per node\nVLLM_ROCM_USE_AITER=1 VLLM_FP8_MOE_REQUANT=mxfp4 VLLM_FP8_MOE_REQUANT_ACT=a8w4 \\\nVLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1 AITER_CUSTOM_AR_MAX_SIZE=134217728 \\\nvllm serve mistralai/Mistral-Large-4-1T-A52B --tensor-parallel-size 8 \\\n  --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}' \\\n  --tool-call-parser mistral --enable-auto-tool-choice --reasoning-parser mistral\n \n# TP4 with the specialized decode, for few concurrent users; two replicas per node (second on GPUs 4-7)\nVLLM_ROCM_USE_AITER=1 VLLM_FP8_MOE_REQUANT=mxfp4 VLLM_FP8_MOE_REQUANT_ACT=a4w4 \\\nVLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1 AITER_CUSTOM_AR_MAX_SIZE=134217728 \\\nvllm serve mistralai/Mistral-Large-4-1T-A52B --tensor-parallel-size 4 \\\n  --additional-config '{\"decode_backend\": \"latency_specialized\"}' --max-num-seqs 64 \\\n  --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 3}' \\\n  --tool-call-parser mistral --enable-auto-tool-choice --reasoning-parser mistral"
+        },
+        {
+          "type": "heading",
+          "text": "ROCm implementation details",
+          "inlines": [
+            {
+              "text": "ROCm implementation details"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Sparse MLA on AITER. On ROCm, ML4's sparse MLA runs on the ROCM_AITER_MLA_SPARSE backend. The indexer's top-2048 positions are converted to global cache slots, and each query token becomes its own entry in the slot stream. AITER's MLA decode kernel then reads that stream in persistent mode, with work-split metadata built ahead of time to balance the load across CUs. AITER's MLA kernels take a multiple of 16 heads: TP4 gives exactly 16 of ML4's 64 heads per GPU, while TP8's 8 are padded to 16. VLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1 switches to AITER's Triton sparse-MLA kernel instead, which needs no head padding and no separate FP8 copy of the query. NoPE layers on the bf16 cache have no RoPE part for AITER's kernel to read, so they run on vLLM's ragged Triton sparse-attention kernels.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Sparse MLA on AITER."
+            },
+            {
+              "text": " On ROCm, ML4's sparse MLA runs on the "
+            },
+            {
+              "code": true,
+              "text": "ROCM_AITER_MLA_SPARSE"
+            },
+            {
+              "text": " backend. The indexer's top-2048 positions are converted to global cache slots, and each query token becomes its own entry in the slot stream. AITER's MLA decode kernel then reads that stream in persistent mode, with work-split metadata built ahead of time to balance the load across CUs. AITER's MLA kernels take a multiple of 16 heads: TP4 gives exactly 16 of ML4's 64 heads per GPU, while TP8's 8 are padded to 16. "
+            },
+            {
+              "code": true,
+              "text": "VLLM_ROCM_USE_AITER_TRITON_SPARSE_MLA=1"
+            },
+            {
+              "text": " switches to AITER's Triton sparse-MLA kernel instead, which needs no head padding and no separate FP8 copy of the query. NoPE layers on the bf16 cache have no RoPE part for AITER's kernel to read, so they run on vLLM's ragged Triton sparse-attention kernels."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DSA indexer on AITER. A fused Triton kernel quantizes each indexer key to FP8 with one scale and writes it into the indexer cache, 132 bytes per token per indexer layer. Within a cache block, keys are stored in 16×16 tiles, the layout AITER's paged reader expects. A single layout rule is shared by the writer and every reader (insert, prefill gather and paged logits), so they cannot disagree. Prefill scores run on AITER's fp8_mqa_logits and decode scores on AITER's paged MQA-logits kernel, both reading FP8 keys. The top-2048 comes from AITER's indexer top-k where it supports the shape, and from vLLM's top_k_per_row otherwise. Shared-indexer layers reuse the top-k of the nearest earlier indexer layer, as on other platforms.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "DSA indexer on AITER."
+            },
+            {
+              "text": " A fused Triton kernel quantizes each indexer key to FP8 with one scale and writes it into the indexer cache, 132 bytes per token per indexer layer. Within a cache block, keys are stored in 16×16 tiles, the layout AITER's paged reader expects. A single layout rule is shared by the writer and every reader (insert, prefill gather and paged logits), so they cannot disagree. Prefill scores run on AITER's "
+            },
+            {
+              "code": true,
+              "text": "fp8_mqa_logits"
+            },
+            {
+              "text": " and decode scores on AITER's paged MQA-logits kernel, both reading FP8 keys. The top-2048 comes from AITER's indexer top-k where it supports the shape, and from vLLM's "
+            },
+            {
+              "code": true,
+              "text": "top_k_per_row"
+            },
+            {
+              "text": " otherwise. Shared-indexer layers reuse the top-k of the nearest earlier indexer layer, as on other platforms."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FP8 latent cache. ROCm has no fp8_ds_mla layout, so when the checkpoint asks for an FP8 KV cache, ROCm uses a plain E4M3 cache instead. All 576 latent dimensions (512 NoPE and 64 RoPE) are stored as FP8 with one per-tensor scale, 576 bytes per token per layer, against 656 for fp8_ds_mla and 1,152 for bf16. The query is quantized to FP8 too, so AITER's kernel runs FP8 × FP8. With 63 cache-owning layers plus the indexer, a token takes 42,096 bytes, against 78,384 in bf16: the 1.86× KV capacity in the AMD section.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "FP8 latent cache."
+            },
+            {
+              "text": " ROCm has no "
+            },
+            {
+              "code": true,
+              "text": "fp8_ds_mla"
+            },
+            {
+              "text": " layout, so when the checkpoint asks for an FP8 KV cache, ROCm uses a plain E4M3 cache instead. All 576 latent dimensions (512 NoPE and 64 RoPE) are stored as FP8 with one per-tensor scale, 576 bytes per token per layer, against 656 for "
+            },
+            {
+              "code": true,
+              "text": "fp8_ds_mla"
+            },
+            {
+              "text": " and 1,152 for bf16. The query is quantized to FP8 too, so AITER's kernel runs FP8 × FP8. With 63 cache-owning layers plus the indexer, a token takes 42,096 bytes, against 78,384 in bf16: the 1.86× KV capacity in the AMD section."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MXFP4 experts at load, one layer at a time. With VLLM_FP8_MOE_REQUANT=mxfp4, the checkpoint loader is unchanged: it still loads block-FP8 expert weights with their block scales. Their parameters start on the meta device, and the layerwise loader materializes one layer at a time. As soon as a layer's experts are loaded, each expert is dequantized to bf16 and re-quantized to MXFP4 (E2M1 values, one E8M0 scale per 32 values), and that layer's FP8 copy is freed. Peak memory is the MXFP4 model plus one layer of FP8 experts, which is what lets the 1T model load on four GPUs. The weight error is about the same as quantizing the bf16 weights to MXFP4 directly. The experts then run on AITER's fused MoE: two-stage FlyDSL kernels with FP8 activations for a8w4, or MXFP4 × MXFP4 for a4w4.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "MXFP4 experts at load, one layer at a time."
+            },
+            {
+              "text": " With "
+            },
+            {
+              "code": true,
+              "text": "VLLM_FP8_MOE_REQUANT=mxfp4"
+            },
+            {
+              "text": ", the checkpoint loader is unchanged: it still loads block-FP8 expert weights with their block scales. Their parameters start on the meta device, and the layerwise loader materializes one layer at a time. As soon as a layer's experts are loaded, each expert is dequantized to bf16 and re-quantized to MXFP4 (E2M1 values, one E8M0 scale per 32 values), and that layer's FP8 copy is freed. Peak memory is the MXFP4 model plus one layer of FP8 experts, which is what lets the 1T model load on four GPUs. The weight error is about the same as quantizing the bf16 weights to MXFP4 directly. The experts then run on AITER's fused MoE: two-stage FlyDSL kernels with FP8 activations for "
+            },
+            {
+              "code": true,
+              "text": "a8w4"
+            },
+            {
+              "text": ", or MXFP4 × MXFP4 for "
+            },
+            {
+              "code": true,
+              "text": "a4w4"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Specialized decode: one persistent kernel per layer. With decode_backend=latency_specialized, a pure decode step of 1, 2 or 4 requests (or a single request's DSpark verify block) runs each of the 71 MoE layers as one FlyDSL kernel launch. The launch uses 256 CTAs, all resident at once on the GPU's 256 CUs. Inside it run:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Specialized decode: one persistent kernel per layer."
+            },
+            {
+              "text": " With "
+            },
+            {
+              "code": true,
+              "text": "decode_backend=latency_specialized"
+            },
+            {
+              "text": ", a pure decode step of 1, 2 or 4 requests (or a single request's DSpark verify block) runs each of the 71 MoE layers as one FlyDSL kernel launch. The launch uses 256 CTAs, all resident at once on the GPU's 256 CUs. Inside it run:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "the input norm, the query and latent-KV projections with SSMax and LeRoPE;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "the whole DSA indexer: projections, key-cache write, scoring and an exact top-2048;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "sparse MLA over the latent cache, read in place in bf16 or FP8;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "the output projection, the softmax top-4 router, and the shared and routed MXFP4 experts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The embedding, the dense layer 0 and the final norm stay on vLLM's modules.",
+          "inlines": [
+            {
+              "text": "The embedding, the dense layer 0 and the final norm stay on vLLM's modules."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Both tensor-parallel all-reduces run inside the kernel, over peer memory between the four GPUs, so a layer is one launch with no host round-trip. The kernels are built for 1, 2 and 4 rows, which are vLLM's full CUDA-graph capture sizes, and are replayed inside those graphs. Any other step runs vLLM's layers: prefill, mixed batches, wider batches. The kernel is adapted from ROCm ATOM's GLM-5.2 fused decode, extended for ML4's layer types:",
+          "inlines": [
+            {
+              "text": "Both tensor-parallel all-reduces run inside the kernel, over peer memory between the four GPUs, so a layer is one launch with no host round-trip. The kernels are built for 1, 2 and 4 rows, which are vLLM's full CUDA-graph capture sizes, and are replayed inside those graphs. Any other step runs vLLM's layers: prefill, mixed batches, wider batches. The kernel is adapted from ROCm ATOM's GLM-5.2 fused decode, extended for ML4's layer types:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "no query LoRA;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "SSMax on the query and the index query;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "softmax routing;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "NoPE layers;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "KV-sharing layers that read layer 35's latent cache;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "index-sharing layers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fail-stop. A persistent kernel that waits on peer GPUs must never hang the server. Every in-kernel wait gives up after 10 seconds, and giving up sets a sticky fault word on every rank, which ends the other ranks' waits at once. After every forward, a device-side assert checks the word before logits are computed. If the word is set, the step's remaining work never runs, the worker aborts and the engine stops, so no token from a failed step reaches a client. The check costs about 1 µs per launch.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Fail-stop."
+            },
+            {
+              "text": " A persistent kernel that waits on peer GPUs must never hang the server. Every in-kernel wait gives up after 10 seconds, and giving up sets a sticky fault word on every rank, which ends the other ranks' waits at once. After every forward, a device-side assert checks the word before logits are computed. If the word is set, the step's remaining work never runs, the worker aborts and the engine stops, so no token from a failed step reaches a client. The check costs about 1 µs per launch."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The path is also default-deny. If a deployment uses anything the kernels don't serve, startup fails with one error listing every reason, and all TP ranks agree on each check before anything collective runs. Unsupported features include other TP sizes, expert or context parallelism, LoRA, KV connectors, other speculative methods, and experts not stored as a4w4.",
+          "inlines": [
+            {
+              "text": "The path is also default-deny. If a deployment uses anything the kernels don't serve, startup fails with one error listing every reason, and all TP ranks agree on each check before anything collective runs. Unsupported features include other TP sizes, expert or context parallelism, LoRA, KV connectors, other speculative methods, and experts not stored as "
+            },
+            {
+              "code": true,
+              "text": "a4w4"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TPU",
+          "inlines": [
+            {
+              "text": "TPU"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral Large 4 runs on TPU v7x from day 0 with vllm-torchtpu, including support for the Pixtral vision encoder. Our validated configuration combines intra-host tensor parallelism with cross-host data parallelism with expert parallelism across 16 TPU v7x chips.",
+          "inlines": [
+            {
+              "text": "Mistral Large 4 runs on "
+            },
+            {
+              "bold": true,
+              "text": "TPU v7x from day 0"
+            },
+            {
+              "text": " with "
+            },
+            {
+              "code": true,
+              "text": "vllm-torchtpu"
+            },
+            {
+              "text": ", including support for the Pixtral vision encoder. Our validated configuration combines intra-host tensor parallelism with cross-host data parallelism with expert parallelism across 16 TPU v7x chips."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Serving on TPU v7x: The following command starts a single data parallel worker on one host:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Serving on TPU v7x:"
+            },
+            {
+              "text": " The following command starts a single data parallel worker on one host:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "vllm serve mistralai/Mistral-Large-4-1T-A52B \\\n  --tensor-parallel-size 8 --data-parallel-size 4 --data-parallel-size-local 1 \\\n  --data-parallel-start-rank \"$TPU_WORKER_ID\" \\\n  --data-parallel-address \"$HEAD_IP\" --data-parallel-rpc-port 29696 \\\n  --enable-expert-parallel --enable-ep-weight-filter \\\n  --dtype bfloat16 --kv-cache-dtype fp8_e4m3"
+        },
+        {
+          "type": "paragraph",
+          "text": "The TPU implementation relies on vllm-torchtpu's sparse MLA and DSA indexer Pallas kernels, extending MLA with cross-layer KV cache sharing. We store the MLA latent KV cache in FP8 and support FP8 weight and activation quantization for dense linear projections. Routed experts use weight-only FP4 quantization (W4A16).",
+          "inlines": [
+            {
+              "text": "The TPU implementation relies on "
+            },
+            {
+              "code": true,
+              "text": "vllm-torchtpu"
+            },
+            {
+              "text": "'s sparse MLA and DSA indexer Pallas kernels, extending MLA with cross-layer KV cache sharing. We store the MLA latent KV cache in FP8 and support FP8 weight and activation quantization for dense linear projections. Routed experts use weight-only FP4 quantization (W4A16)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "HiSparse: host-memory sparse KV offload",
+          "inlines": [
+            {
+              "text": "HiSparse: host-memory sparse KV offload"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Sparse attention reads only 2048 keys per query, so most of a long request's KV doesn't need to live in GPU memory. HiSparse keeps the full latent KV in pinned host memory. It keeps a resident GPU working set plus a per-request hot buffer, and copies the selected rows from host on a miss. Enable it with the HiSparseConnector:",
+          "inlines": [
+            {
+              "text": "Sparse attention reads only 2048 keys per query, so most of a long request's KV doesn't need to live in GPU memory. HiSparse keeps the full latent KV in pinned host memory. It keeps a resident GPU working set plus a per-request hot buffer, and copies the selected rows from host on a miss. Enable it with the "
+            },
+            {
+              "code": true,
+              "text": "HiSparseConnector"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "--kv-transfer-config '{\"kv_connector\": \"HiSparseConnector\", \"kv_role\": \"kv_both\",\n                       \"kv_connector_extra_config\": {\"host_pool_gib\": 440}}'"
+        },
+        {
+          "type": "paragraph",
+          "text": "Known issue. When the tensor-parallel group is on a single node, also set VLLM_FLASHINFER_ALLREDUCE_BACKEND=trtllm. The default single-node FlashInfer all-reduce (MNNVL) can crash the engine with CUDA error: unspecified launch failure once HiSparse spills KV to host (vllm#64327). The fix is in flashinfer#7782.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Known issue."
+            },
+            {
+              "text": " When the tensor-parallel group is on a single node, also set "
+            },
+            {
+              "code": true,
+              "text": "VLLM_FLASHINFER_ALLREDUCE_BACKEND=trtllm"
+            },
+            {
+              "text": ". The default single-node FlashInfer all-reduce (MNNVL) can crash the engine with "
+            },
+            {
+              "code": true,
+              "text": "CUDA error: unspecified launch failure"
+            },
+            {
+              "text": " once HiSparse spills KV to host ("
+            },
+            {
+              "href": "https://github.com/vllm-project/vllm/issues/64327",
+              "text": "vllm#64327"
+            },
+            {
+              "text": "). The fix is in "
+            },
+            {
+              "href": "https://github.com/flashinfer-ai/flashinfer/pull/7782",
+              "text": "flashinfer#7782"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For ML4 we made HiSparse work with cross-layer KV sharing. The nine consumer layers bind to layer 35's resident view and host copy and keep only their own hot buffer and LRU (each has its own indexer). Nothing is duplicated, and no environment variable is needed. Compared with materializing the shared layers, this holds 14.3% more tokens for the same host pool. We also fixed:",
+          "inlines": [
+            {
+              "text": "For ML4 we made HiSparse work with "
+            },
+            {
+              "bold": true,
+              "text": "cross-layer KV sharing"
+            },
+            {
+              "text": ". The nine consumer layers bind to layer 35's resident view and host copy and keep only their own hot buffer and LRU (each has its own indexer). Nothing is duplicated, and no environment variable is needed. Compared with materializing the shared layers, this holds 14.3% more tokens for the same host pool. We also fixed:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "reading "
+                },
+                {
+                  "code": true,
+                  "text": "index_topk"
+                },
+                {
+                  "text": " from the text config of multimodal models;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "a double host mirror during CUDA graph capture."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Capacity. On a single GB300 node (TP4, NVFP4), the four TP ranks share one deduplicated host pool, so host_pool_gib is the total. With a 440 GiB pool, HiSparse admits 8.77M KV tokens at startup and holds up to 11.25M in steady state, vs 1.97M on the GPU alone (4.5x to 5.7x). GSM8K-200 is unchanged (0.975 both), and needle-in-a-haystack passes at ~98k (10/10) and ~248k (5/5) tokens.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Capacity."
+            },
+            {
+              "text": " On a single GB300 node (TP4, NVFP4), the four TP ranks share one deduplicated host pool, so "
+            },
+            {
+              "code": true,
+              "text": "host_pool_gib"
+            },
+            {
+              "text": " is the total. With a 440 GiB pool, HiSparse admits 8.77M KV tokens at startup and holds up to 11.25M in steady state, vs 1.97M on the GPU alone (4.5x to 5.7x). GSM8K-200 is unchanged (0.975 both), and needle-in-a-haystack passes at ~98k (10/10) and ~248k (5/5) tokens."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8005668dd579da8b6fd7d8cd85ebbac5c9da4825a4ad4d2135a77575717231bb.webp",
+          "alt": "HiSparse KV capacity"
+        },
+        {
+          "type": "paragraph",
+          "text": "HiSparse KV capacity",
+          "inlines": [
+            {
+              "text": "HiSparse KV capacity"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "KV token capacity of one TP4 server on a single GB300 node (NVFP4, max_model_len 262k, prefix caching off): 1.97M tokens on the GPU alone; with HiSparse and a 440 GiB host pool shared by the four TP ranks, 8.77M admitted at startup (4.5x) and up to 11.25M in steady state (5.7x). Layers that reuse layer 35's KV are stored on the host only once.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "KV token capacity of one TP4 server on a single GB300 node (NVFP4, max_model_len 262k, prefix caching off): 1.97M tokens on the GPU alone; with HiSparse and a 440 GiB host pool shared by the four TP ranks, 8.77M admitted at startup (4.5x) and up to 11.25M in steady state (5.7x). Layers that reuse layer 35's KV are stored on the host only once."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What's next",
+          "inlines": [
+            {
+              "text": "What's next"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Upstreaming: MLA cross-layer KV sharing, DSpark sliding-window MLA drafts and DSpark under DCP and HiSparse KV-sharing support."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A DCP decode node with DSpark in P/D, and a separate draft block pool so DSpark under DCP keeps full KV capacity."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "HiSparse with GPU landing for NIXL imports and node-shared host pools for multi-node TP."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "More decode fusions for low-concurrency latency."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgement",
+          "inlines": [
+            {
+              "text": "Acknowledgement"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral Large 4 support in vLLM was a collaboration led by Nicolò Lucchesi and the Mistral Inference team. We would like to extend our gratitude to the vLLM maintainers who reviewed, designed, and landed much of the underlying work: Lucas Wilkinson, Flora Feng, Matt Bonanni, and the rest of the Red Hat team; the Inferact team as a whole; Cyrus Leung as well as the entire vLLM community.",
+          "inlines": [
+            {
+              "text": "Mistral Large 4 support in vLLM was a collaboration led by Nicolò Lucchesi and the Mistral Inference team. We would like to extend our gratitude to the vLLM maintainers who reviewed, designed, and landed much of the underlying work: Lucas Wilkinson, Flora Feng, Matt Bonanni, and the rest of the Red Hat team; the Inferact team as a whole; Cyrus Leung as well as the entire vLLM community."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On AMD side, we would also like to thank Hongxia Yang, Felix Marty, Andy Luo, Indira Vats for Day 0 enablement and optimization on AMD Instinct GPUs, and Bowen Bao, Chuan Li, Peng Sun for general support.",
+          "inlines": [
+            {
+              "text": "On AMD side, we would also like to thank Hongxia Yang, Felix Marty, Andy Luo, Indira Vats for Day 0 enablement and optimization on AMD Instinct GPUs, and Bowen Bao, Chuan Li, Peng Sun for general support."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-30T01:11:06.369530Z",
+  "contentMode": "full"
+}

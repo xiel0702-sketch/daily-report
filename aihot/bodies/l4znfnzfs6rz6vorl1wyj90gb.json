@@ -1,0 +1,3048 @@
+{
+  "schemaVersion": 1,
+  "id": "l4znfnzfs6rz6vorl1wyj90gb",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/l4znfnzfs6rz6vorl1wyj90gb",
+  "fetchedAt": "2026-10-30T01:11:53.444162Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenRouter",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "今天，我们宣布对提供商路由算法进行自 OpenRouter 成立以来最大的一次升级。",
+          "inlines": [
+            {
+              "text": "今天，我们宣布对提供商路由算法进行自 OpenRouter 成立以来最大的一次升级。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "此前，我们的默认路由器主要只奖励提供商一件事：低价。新路由器奖励的是真正对你最有利的推理：便宜，同时还要快、吞吐量高、可靠。能提供更多价值的提供商会自动赢得更多流量，因此每个提供商都有动力持续改进。这意味着你通过 OpenRouter 获得的推理会越来越快、越来越可靠、越来越划算，而你一行代码都不用改。",
+          "inlines": [
+            {
+              "text": "此前，我们的默认路由器主要只奖励提供商一件事：低价。新路由器奖励的是真正对你最有利的推理：便宜，同时还要快、吞吐量高、可靠。能提供更多价值的提供商会自动赢得更多流量，因此每个提供商都有动力持续改进。这意味着你通过 OpenRouter 获得的推理会越来越快、越来越可靠、越来越划算，而你一行代码都不用改。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "它已经见效了。新算法带来了显著改善：TTFT 提升 16.9%，吞吐量提升 16.3%，容量错误大幅减少 67%！而成本仅小幅上升 6.0%。这还是在提供商尚未有时间针对新算法进行优化的情况下取得的。更多细节请查看完整的实验结果。",
+          "inlines": [
+            {
+              "text": "它已经见效了。新算法带来了显著改善：TTFT 提升 16.9%，吞吐量提升 16.3%，容量错误大幅减少 67%！而成本仅小幅上升 6.0%。这还是在提供商尚未有时间针对新算法进行优化的情况下取得的。更多细节请查看完整的"
+            },
+            {
+              "href": "https://openrouter.ai/blog/announcements/how-we-rebuilt-provider-routing/#results",
+              "text": "实验结果"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "工作原理：",
+          "inlines": [
+            {
+              "text": "工作原理："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "它衡量你实际得到的东西。"
+                },
+                {
+                  "text": "对每个模型，它跟踪每个端点的实际价格、延迟、吞吐量和错误率，并为每个请求挑选成本与性能的最佳组合。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "它实时做出反应。"
+                },
+                {
+                  "text": "当某个端点出现问题时，流量会从它那里转移走，直到它恢复。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "它奖励更好的推理。"
+                },
+                {
+                  "text": "进行创新的提供商会自动获得更多流量作为奖励。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "路由仍然会考虑缓存，因此一旦我们把你发送到某个提供商，只要缓存还是热的，你的会话就会留在那里。",
+          "inlines": [
+            {
+              "text": "路由仍然会考虑缓存，因此一旦我们把你发送到某个提供商，只要缓存还是热的，你的会话就会留在那里。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "想要仅按价格路由？仍然可以。请参阅保持不变的部分中关于固定和排序提供商的内容。",
+          "inlines": [
+            {
+              "text": "想要仅按价格路由？仍然可以。请参阅"
+            },
+            {
+              "href": "https://openrouter.ai/blog/announcements/how-we-rebuilt-provider-routing/#what-stays-the-same",
+              "text": "保持不变的部分"
+            },
+            {
+              "text": "中关于固定和排序提供商的内容。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们此前的状况：仅按价格路由的局限",
+          "inlines": [
+            {
+              "text": "我们此前的状况：仅按价格路由的局限"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenRouter 上的大部分流量（约 77% 的请求）流向由多个提供商提供的模型。当请求没有包含明确的排序或提供商列表时，我们需要选择一个提供商来发送请求。此前，我们几乎完全根据输入 token 价格做出这一选择。提供商越便宜，获得的流量比例就越高，任何失败的请求都会被重新路由到下一个最便宜的选项。",
+          "inlines": [
+            {
+              "text": "OpenRouter 上的大部分流量（约 77% 的请求）流向由多个提供商提供的模型。当请求没有包含明确的排序或提供商列表时，我们需要选择一个提供商来发送请求。此前，我们几乎完全根据输入 token 价格做出这一选择。提供商越便宜，获得的流量比例就越高，任何失败的请求都会被重新路由到下一个最便宜的选项。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种仅按价格的方法为用户带来了生态系统中最低的价格，但也产生了一些意想不到的后果：",
+          "inlines": [
+            {
+              "text": "这种仅按价格的方法为用户带来了生态系统中最低的价格，但也产生了一些意想不到的后果："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "便宜者胜，哪怕它很差。"
+                },
+                {
+                  "text": "回退机制能捕获失败，但用户要一直等到回退完成，而且速度上的改进得不到奖励。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "静态排名。"
+                },
+                {
+                  "text": "该算法对实时性能变化视而不见，因此提供商必须退化到被完全降级的地步，才会反映在流量分配中。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "利润消失。"
+                },
+                {
+                  "text": "提供商赢得流量的唯一方式就是降价，这迫使它们减少对确保可靠性和质量的基础设施的投资。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "定价游戏。"
+                },
+                {
+                  "text": "我们用来排名的价格几乎全是提示词输入价格，因此提供商可以通过奇怪的定价组合来保住流量份额，比如列出人为压低的输入价格，然后用定价过高的缓存 token 或补全 token 来弥补差价。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们希望确保这样一个市场：相互竞争的提供商通过提供更好的推理来赢得流量，而不仅仅是更便宜的推理。",
+          "inlines": [
+            {
+              "text": "我们希望确保这样一个市场：相互竞争的提供商通过提供更好的推理来赢得流量，而不仅仅是更便宜的推理。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "新算法：针对一个好的回答“成本”几何进行优化",
+          "inlines": [
+            {
+              "text": "新算法：针对一个好的回答“成本”几何进行优化"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "新的路由算法会持续监测每个供应商的表现，据此计算出一个实时的路由成本，用来衡量用户为得到一个好答案要付出多少代价。路由成本包含三部分：实际花费的美元金额、等待响应所耗的时间成本，以及供应商失败或返回不可用响应时重试的成本。",
+          "inlines": [
+            {
+              "text": "新的路由算法会持续监测每个供应商的表现，据此计算出一个实时的路由成本，用来衡量用户为得到一个好答案要付出多少代价。路由成本包含三部分：实际花费的美元金额、等待响应所耗的时间成本，以及供应商失败或返回不可用响应时重试的成本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "简单来说：一次尝试要花多少钱，成功率有多高？",
+          "inlines": [
+            {
+              "text": "简单来说：一次尝试要花多少钱，成功率有多高？"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2347868711b8c24b765d56ac0f5a9d9acfd1d53c437b7f36b0032936db47760b.webp",
+          "alt": "Diagram: cost of one try, $0.40 price plus 0.60 waiting, is 1.00. Divided by an 80% chance it works, that is a Routing Cost of 1.25 per good answer. Lower wins more traffic. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/29553477d8a541c0c557c22368bbd1ee62f4adf671dbd95d9aa05aed15b5f062.webp",
+          "alt": "Diagram: cost of one try, $0.40 price plus 0.60 waiting, is 1.00. Divided by an 80% chance it works, that is a Routing Cost of 1.25 per good answer. Lower wins more traffic. (dark mode)"
+        },
+        {
+          "type": "heading",
+          "text": "一次尝试的成本：价格加等待时间",
+          "inlines": [
+            {
+              "text": "一次尝试的成本：价格加等待时间"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "对于每个请求，路由器会根据该模型近期的流量，估算它会用到多少输入和输出 token。这个估算同时决定了一次尝试的两部分成本：你要付的价格和你要等的时间。",
+          "inlines": [
+            {
+              "text": "对于每个请求，路由器会根据该模型近期的流量，估算它会用到多少输入和输出 token。这个估算同时决定了一次尝试的两部分成本：你要付的价格和你要等的时间。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "有效价格",
+          "inlines": [
+            {
+              "text": "有效价格"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "有效价格是供应商实际会向你收取的价格，根据近期实测流量计算得出。它反映了供应商真实的缓存命中率，以及模型输入与输出 token 的平均构成，因此可能与标价相差很大。这样一来，供应商就无法靠压低输入价格、把昂贵的缓存 token 或输出 token 藏起来的方式抢流量。",
+          "inlines": [
+            {
+              "text": "有效价格是供应商实际会向你收取的价格，根据近期实测流量计算得出。它反映了供应商真实的缓存命中率，以及模型输入与输出 token 的平均构成，因此可能与标价相差很大。这样一来，供应商就无法靠压低输入价格、把昂贵的缓存 token 或输出 token 藏起来的方式抢流量。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7557c9b76b613a604d001444ba2f1018a42b13d2c130968f9f7c2684012d2a45.webp",
+          "alt": "Chart of average input and output tokens per request by prompt size, on log scales. As prompts grow from about 370 to 670K input tokens, output only grows from about 190 to 1,050 tokens, so input goes from 2 times output to 8 times at 5.7K input tokens, 90 times at 93K, and 630 times at 670K. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f17def5894f6b39393d0c1f7185efbfa1f908c6132fa5274a578d4d91f35483f.webp",
+          "alt": "Chart of average input and output tokens per request by prompt size, on log scales. As prompts grow from about 370 to 670K input tokens, output only grows from about 190 to 1,050 tokens, so input goes from 2 times output to 8 times at 5.7K input tokens, 90 times at 93K, and 630 times at 670K. (dark mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5939fcf1231aefeef1438d3981d6fc4bfc17c3f3a51b6877f5236b7c5ac27339.webp",
+          "alt": "Effective price example: 40K uncached input tokens at $2.00/M is $0.080, 60K cached input tokens at $0.50/M is $0.030, and about 4K output tokens at $8.00/M is $0.032, for an effective price of $0.142 for one request. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e2a81e9fc08dd1e0b6fe5b82157ce49ef92c6829b7a15f8a1b9ebcffe3541d84.webp",
+          "alt": "Effective price example: 40K uncached input tokens at $2.00/M is $0.080, 60K cached input tokens at $0.50/M is $0.030, and about 4K output tokens at $8.00/M is $0.032, for an effective price of $0.142 for one request. (dark mode)"
+        },
+        {
+          "type": "paragraph",
+          "text": "路由器按每个供应商的有效价格给你的请求计价，并优先选择最便宜的选项。",
+          "inlines": [
+            {
+              "text": "路由器按每个供应商的有效价格给你的请求计价，并优先选择最便宜的选项。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "吞吐量",
+          "inlines": [
+            {
+              "text": "吞吐量"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "吞吐量是与价格相互权衡的因素：更快的供应商可以收费更高，仍然能赢得你的请求。它的衡量方式是端到端的每秒输出 token 数，因此包含了首 token 时间，以及供应商流式输出完整响应所需的时间。路由器会按每个模型设定的换算比率，把这段等待时间折算进路由成本，换算依据是该模型各供应商的典型收费和速度。",
+          "inlines": [
+            {
+              "text": "吞吐量是与价格相互权衡的因素：更快的供应商可以收费更高，仍然能赢得你的请求。它的衡量方式是端到端的每秒输出 token 数，因此包含了首 token 时间，以及供应商流式输出完整响应所需的时间。路由器会按每个模型设定的换算比率，把这段等待时间折算进路由成本，换算依据是该模型各供应商的典型收费和速度。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/564b3bec42b6e2ac60c3cbb93da0cab2822687051884f3892be31051a88c59a2.webp",
+          "alt": "Throughput example: a 5 second time to first token plus 500 tokens streamed in 5 seconds is 50 tokens per second end to end, with the time to first token included. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/78bad81421cc65e593e50e39accaaddff84b8ea86420bded451e306e54399b1d.webp",
+          "alt": "Throughput example: a 5 second time to first token plus 500 tokens streamed in 5 seconds is 50 tokens per second end to end, with the time to first token included. (dark mode)"
+        },
+        {
+          "type": "heading",
+          "text": "首 token 时间",
+          "inlines": [
+            {
+              "text": "首 token 时间"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "首 token 时间（TTFT）是指从发出请求到响应开始流式输出之间你要等待的时长。尽管它已经计入吞吐量，路由器仍会单独把它加进路由成本，因为交互式使用最依赖这一项。在智能体会话中，模型可能连续发起多次工具调用，每一次都要等待首 token。",
+          "inlines": [
+            {
+              "text": "首 token 时间（TTFT）是指从发出请求到响应开始流式输出之间你要等待的时长。尽管它已经计入吞吐量，路由器仍会单独把它加进路由成本，因为交互式使用最依赖这一项。在智能体会话中，模型可能连续发起多次工具调用，每一次都要等待首 token。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3f2a6654d04064e37100e470fb134b450bcc67e0e4ba8434a2434ad04ef02bb9.webp",
+          "alt": "An agent session: reasoning, then five tool calls, then more reasoning and the response. Each step waits for a first token, so the tool calls are mostly waiting on time to first token. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/4b994231a2fdce85194df5ac16cdf6fa30c7be8c22950e1f06611517b14102f3.webp",
+          "alt": "An agent session: reasoning, then five tool calls, then more reasoning and the response. Each step waits for a first token, so the tool calls are mostly waiting on time to first token. (dark mode)"
+        },
+        {
+          "type": "heading",
+          "text": "速率限制",
+          "inlines": [
+            {
+              "text": "速率限制"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "速率限制（HTTP 429）意味着供应商容量已满，拒绝了你的请求。你要先等到这次拒绝，然后整个请求才会转给另一个供应商。路由器会把这段等待时间加上一笔惩罚计入该供应商的路由成本，并按它触发速率限制的频率加权，所以影响通常不大。反复出现的速率限制，更多是通过下文所述的流量上限和退避机制产生影响。",
+          "inlines": [
+            {
+              "text": "速率限制（HTTP 429）意味着供应商容量已满，拒绝了你的请求。你要先等到这次拒绝，然后整个请求才会转给另一个供应商。路由器会把这段等待时间加上一笔惩罚计入该供应商的路由成本，并按它触发速率限制的频率加权，所以影响通常不大。反复出现的速率限制，更多是通过下文所述的流量上限和退避机制产生影响。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/25d4658f8c92ba26a931ce305611bd365d00a7cf439942a7f9630358b011323c.webp",
+          "alt": "A 429 makes you wait for the rejection, then your full request goes elsewhere. Example: a 2.50 wait plus penalty times a 0.4% 429 rate adds 0.01 to the Routing Cost. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/df642d3bc08952cd137798066a34353511be9a1ccd610eedca31f9bde3831d74.webp",
+          "alt": "A 429 makes you wait for the rejection, then your full request goes elsewhere. Example: a 2.50 wait plus penalty times a 0.4% 429 rate adds 0.01 to the Routing Cost. (dark mode)"
+        },
+        {
+          "type": "heading",
+          "text": "成功率：可靠性与质量",
+          "inlines": [
+            {
+              "text": "成功率：可靠性与质量"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "一次失败的尝试同样要付出价格和等待时间，因此路由成本会计算“必须重试到成功为止”的预期成本。如果 5 次尝试中有 1 次失败，那么每得到一个好答案，你要为 1.25 次尝试付费。",
+          "inlines": [
+            {
+              "text": "一次失败的尝试同样要付出价格和等待时间，因此路由成本会计算“必须重试到成功为止”的预期成本。如果 5 次尝试中有 1 次失败，那么每得到一个好答案，你要为 1.25 次尝试付费。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "可靠性",
+          "inlines": [
+            {
+              "text": "可靠性"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "可靠性错误是指因供应商原因而失败的请求。这次尝试会白费，你必须重试，所以每个错误都会在路由成本中带来很重的惩罚。",
+          "inlines": [
+            {
+              "text": "可靠性错误是指因供应商原因而失败的请求。这次尝试会白费，你必须重试，所以每个错误都会在路由成本中带来很重的惩罚。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b675163f29b21a4d8df1ebbb3f71441ce2921608ab8eb6996f2c05900fff84b5.webp",
+          "alt": "Reliability example: a 1% error rate times an 8x penalty per error raises the Routing Cost by about 8%. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/66ccd7a7ef70c7175b1b378b388deb58a386a64c3d06f26c4c69e538dcc52efd.webp",
+          "alt": "Reliability example: a 1% error rate times an 8x penalty per error raises the Routing Cost by about 8%. (dark mode)"
+        },
+        {
+          "type": "paragraph",
+          "text": "如果同一模型下某个供应商的错误率远高于其他供应商，路由器会停止向它发送请求，直到它恢复。",
+          "inlines": [
+            {
+              "text": "如果同一模型下某个供应商的错误率远高于其他供应商，路由器会停止向它发送请求，直到它恢复。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "质量",
+          "inlines": [
+            {
+              "text": "质量"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "质量衡量的是供应商的响应是否可用。目前主要的检查是工具调用是否格式正确，我们还在增加更多检查项。每个糟糕的响应都会抬高该供应商的路由成本，因为一个便宜但错误的答案代价高昂。",
+          "inlines": [
+            {
+              "text": "质量衡量的是供应商的响应是否可用。目前主要的检查是工具调用是否格式正确，我们还在增加更多检查项。每个糟糕的响应都会抬高该供应商的路由成本，因为一个便宜但错误的答案代价高昂。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f6fe5cc3ec9f34f9159eb863337a79c499fba87e5df962c3699ec19ecfbdb74e.webp",
+          "alt": "Quality example: 95% of tool calls well formed raises the Routing Cost by about 5%. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3aa8c40d663e31fda6eb8cf46d5b9cbadc9d98f783431d04fd424cf6ed706aed.webp",
+          "alt": "Quality example: 95% of tool calls well formed raises the Routing Cost by about 5%. (dark mode)"
+        },
+        {
+          "type": "paragraph",
+          "text": "如果某个供应商被标记为工具调用有问题，或基准准确率远低于该模型应有的水平，它就会大幅落后，只能获得少量测试流量，直到标记解除。",
+          "inlines": [
+            {
+              "text": "如果某个供应商被标记为工具调用有问题，或基准准确率远低于该模型应有的水平，它就会大幅落后，只能获得少量测试流量，直到标记解除。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "把所有请求都发给单一最优提供商会让它过载，所以流量需要分摊。更快的提供商可以承担更高的路由成本，同时保持竞争力。落在竞争优势区间内的提供商会分到大部分流量，比最优稍差一点，代价也只是稍多一点。一旦超出这个区间，流量份额就会迅速下滑。",
+          "inlines": [
+            {
+              "text": "把所有请求都发给单一最优提供商会让它过载，所以流量需要分摊。更快的提供商可以承担更高的路由成本，同时保持竞争力。落在"
+            },
+            {
+              "bold": true,
+              "text": "竞争优势区间"
+            },
+            {
+              "text": "内的提供商会分到大部分流量，比最优稍差一点，代价也只是稍多一点。一旦超出这个区间，流量份额就会迅速下滑。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/835e4c25fa952acebb1296d905c35267d5d02b0b75950c4dc174043bfc1f0118.webp",
+          "alt": "Illustrative curve of traffic share against adjusted price compared with the best provider. Share falls slowly inside the competitive zone, then drops off fast past the competitive edge into exploration, where providers still get a small trickle. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b23f604204c03892f63d8158e33f781f273e2edd4fb045fe36e6f4e3d9cf7382.webp",
+          "alt": "Illustrative curve of traffic share against adjusted price compared with the best provider. Share falls slowly inside the competitive zone, then drops off fast past the competitive edge into exploration, where providers still get a small trickle. (dark mode)"
+        },
+        {
+          "type": "paragraph",
+          "text": "在此之上还有三道护栏：",
+          "inlines": [
+            {
+              "text": "在此之上还有三道护栏："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/929be5937d17c5caa1dc901cd920dcb844ff3e7bfff60b0f1a15ce80cfbd18ee.webp",
+          "alt": "Diagram of requests flowing to three providers. A is at its cap, so the extra spills over to other providers. B is struggling, so it gets less. C is furthest behind but still gets a trickle. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fe8a7578eefab10247cc057343ea76cd03a99beca2ff2403225db82e1640e278.webp",
+          "alt": "Diagram of requests flowing to three providers. A is at its cap, so the extra spills over to other providers. B is struggling, so it gets less. C is furthest behind but still gets a trickle. (dark mode)"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "保底："
+                },
+                {
+                  "text": "每个提供商都保留一小股流量，这样当表现不佳的端点有所改善时我们能及时发现。新端点从模型的典型数值起步，因此不需要历史流量数据。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "退避："
+                },
+                {
+                  "text": "提供商一旦开始失败或被限流，分到的流量就会减少，直到它恢复。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "上限："
+                },
+                {
+                  "text": "路由器会学习每个提供商在开始返回 429 之前能承受多大负载，把超出的部分转给其他提供商。增加容量后，上限会自动提高。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "保持不变的部分",
+          "inlines": [
+            {
+              "text": "保持不变的部分"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "设置了 "
+                },
+                {
+                  "code": true,
+                  "text": "provider.order"
+                },
+                {
+                  "text": " 的请求会绕过新的路由逻辑，按指定的提供商顺序处理（默认仍和以前一样按价格排序）。设置 "
+                },
+                {
+                  "code": true,
+                  "text": "provider.only"
+                },
+                {
+                  "text": " 或 "
+                },
+                {
+                  "code": true,
+                  "text": "provider.ignore"
+                },
+                {
+                  "text": " 时，如果剩余提供商不止一个，就会用新算法从中选择。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "显式指定 "
+                },
+                {
+                  "code": true,
+                  "text": "provider.sort"
+                },
+                {
+                  "text": "（"
+                },
+                {
+                  "code": true,
+                  "text": "price"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "throughput"
+                },
+                {
+                  "text": " 或 "
+                },
+                {
+                  "code": true,
+                  "text": "latency"
+                },
+                {
+                  "text": "）时，使用该排序方式，而不用新算法。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "只有对话中的第一个请求会由算法选择提供商。进行中的对话会固定在其原提供商上，以保持提示词缓存的热度。如果该提供商变得不可用，对话会自动回退到另一个提供商。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "如果某次尝试失败，请求会用排名次高的提供商重试。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们如何衡量",
+          "inlines": [
+            {
+              "text": "我们如何衡量"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "为了衡量新路由算法的影响，我们不能只做标准的 A/B 测试，因为路由行为的变化很难与控制组隔离开来。举例来说，如果新算法能更好地把流量从表现不佳的提供商那里引开，那么旧算法发往该提供商的请求就会发现可用容量更多、速度更快，从而让结果失真。请求形态和流量模式的巨大差异让难度进一步加大。单个“鲸鱼”用户如果针对某个提供商发起一连串自动化的高负载请求，无论我们用哪种算法路由，都会人为抬高该提供商的指标。",
+          "inlines": [
+            {
+              "text": "为了衡量新路由算法的影响，我们不能只做标准的 A/B 测试，因为路由行为的变化很难与控制组隔离开来。举例来说，如果新算法能更好地把流量从表现不佳的提供商那里引开，那么旧算法发往该提供商的请求就会发现可用容量更多、速度更快，从而让结果失真。请求形态和流量模式的巨大差异让难度进一步加大。单个“鲸鱼”用户如果针对某个提供商发起一连串自动化的高负载请求，无论我们用哪种算法路由，都会人为抬高该提供商的指标。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "所以我们做了一次切换实验：把每天分成 3 小时的区块，将每一对匹配的区块在新旧路由器之间来回切换，每次切换后丢弃一小时的预热数据，并在整整一周内对一组有代表性的开源模型测量每个模型受到的影响。",
+          "inlines": [
+            {
+              "text": "所以我们做了一次切换实验：把每天分成 3 小时的区块，将每一对匹配的区块在新旧路由器之间来回切换，每次切换后丢弃一小时的预热数据，并在整整一周内对一组有代表性的开源模型测量每个模型受到的影响。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结果",
+          "inlines": [
+            {
+              "text": "结果"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在实验进行的一周里，我们把超过 2400 万个请求、1030 亿个输入 token 平均分配给新旧两种路由算法，测量它们对关键性能指标的影响。",
+          "inlines": [
+            {
+              "text": "在实验进行的一周里，我们把超过 2400 万个请求、1030 亿个输入 token 平均分配给新旧两种路由算法，测量它们对关键性能指标的影响。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "指标",
+          "inlines": [
+            {
+              "text": "指标"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "旧版",
+          "inlines": [
+            {
+              "text": "旧版"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "新算法",
+          "inlines": [
+            {
+              "text": "新算法"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "新算法对比旧版",
+          "inlines": [
+            {
+              "text": "新算法对比旧版"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "95% 区间",
+          "inlines": [
+            {
+              "text": "95% 区间"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TTFT p50",
+          "inlines": [
+            {
+              "text": "TTFT p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,007 ms",
+          "inlines": [
+            {
+              "text": "1,007 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "837 ms",
+          "inlines": [
+            {
+              "text": "837 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 16.9%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "降低 16.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 13.9% 至 19.8%",
+          "inlines": [
+            {
+              "text": "降低 13.9% 至 19.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TTFT p95",
+          "inlines": [
+            {
+              "text": "TTFT p95"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,601 ms",
+          "inlines": [
+            {
+              "text": "4,601 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,733 ms",
+          "inlines": [
+            {
+              "text": "3,733 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 18.9%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "降低 18.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 15.7% 至 21.9%",
+          "inlines": [
+            {
+              "text": "降低 15.7% 至 21.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "吞吐量 p50",
+          "inlines": [
+            {
+              "text": "吞吐量 p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "62.4 tok/s",
+          "inlines": [
+            {
+              "text": "62.4 tok/s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "72.6 tok/s",
+          "inlines": [
+            {
+              "text": "72.6 tok/s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "提高 16.3%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "提高 16.3%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "提高 13.8% 至 18.9%",
+          "inlines": [
+            {
+              "text": "提高 13.8% 至 18.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每千次请求成本",
+          "inlines": [
+            {
+              "text": "每千次请求成本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.25",
+          "inlines": [
+            {
+              "text": "$1.25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.32",
+          "inlines": [
+            {
+              "text": "$1.32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "提高 6.0%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "提高 6.0%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "提高 5.1% 至 7.0%",
+          "inlines": [
+            {
+              "text": "提高 5.1% 至 7.0%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每百万 token 成本",
+          "inlines": [
+            {
+              "text": "每百万 token 成本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.301",
+          "inlines": [
+            {
+              "text": "$0.301"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.324",
+          "inlines": [
+            {
+              "text": "$0.324"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "提高 7.3%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "提高 7.3%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "提高 4.9% 至 9.6%",
+          "inlines": [
+            {
+              "text": "提高 4.9% 至 9.6%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "调用方 TTFT p50",
+          "inlines": [
+            {
+              "text": "调用方 TTFT p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,130 ms",
+          "inlines": [
+            {
+              "text": "1,130 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "941 ms",
+          "inlines": [
+            {
+              "text": "941 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 16.7%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "降低 16.7%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 13.8% 至 19.7%",
+          "inlines": [
+            {
+              "text": "降低 13.8% 至 19.7%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "调用方 TTFT p95",
+          "inlines": [
+            {
+              "text": "调用方 TTFT p95"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6,032 ms",
+          "inlines": [
+            {
+              "text": "6,032 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,504 ms",
+          "inlines": [
+            {
+              "text": "4,504 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 25.3%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "降低 25.3%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 21.6% 至 29.0%",
+          "inlines": [
+            {
+              "text": "降低 21.6% 至 29.0%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "整个请求 p50（到最后一个 token 的时间）",
+          "inlines": [
+            {
+              "text": "整个请求 p50（到最后一个 token 的时间）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.00 秒",
+          "inlines": [
+            {
+              "text": "4.00 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.24 秒",
+          "inlines": [
+            {
+              "text": "3.24 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 19.0%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "降低 19.0%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 14.2% 至 23.6%",
+          "inlines": [
+            {
+              "text": "降低 14.2% 至 23.6%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "整个请求 p95",
+          "inlines": [
+            {
+              "text": "整个请求 p95"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "41.5 秒",
+          "inlines": [
+            {
+              "text": "41.5 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "34.9 秒",
+          "inlines": [
+            {
+              "text": "34.9 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 16.0%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "降低 16.0%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "降低 12.2% 至 19.7%",
+          "inlines": [
+            {
+              "text": "降低 12.2% 至 19.7%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "至少遇到一次 429",
+          "inlines": [
+            {
+              "text": "至少遇到一次 429"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.1%",
+          "inlines": [
+            {
+              "text": "7.1%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.8%",
+          "inlines": [
+            {
+              "text": "3.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−3.4 个百分点\n减少 67%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "−3.4 个百分点"
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "bold": true,
+              "text": "减少 67%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−4.2 至 −2.5 个百分点\n减少 62% 至 72%",
+          "inlines": [
+            {
+              "text": "−4.2 至 −2.5 个百分点\n减少 62% 至 72%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "需要重试",
+          "inlines": [
+            {
+              "text": "需要重试"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.4%",
+          "inlines": [
+            {
+              "text": "10.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6.9%",
+          "inlines": [
+            {
+              "text": "6.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−3.5 个百分点\n减少 47%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "−3.5 个百分点"
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "bold": true,
+              "text": "减少 47%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−4.4 至 −2.6 个百分点\n减少 41% 至 52%",
+          "inlines": [
+            {
+              "text": "−4.4 至 −2.6 个百分点\n减少 41% 至 52%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个请求在失败尝试上花费的时间",
+          "inlines": [
+            {
+              "text": "每个请求在失败尝试上花费的时间"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "349 毫秒",
+          "inlines": [
+            {
+              "text": "349 毫秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "242 毫秒",
+          "inlines": [
+            {
+              "text": "242 毫秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−106 毫秒\n减少 55%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "−106 毫秒"
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "bold": true,
+              "text": "减少 55%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−181 至 −35 毫秒\n减少 48% 至 60%",
+          "inlines": [
+            {
+              "text": "−181 至 −35 毫秒\n减少 48% 至 60%"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "开始使用",
+          "inlines": [
+            {
+              "text": "开始使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你用的是默认路由，那就无需再做任何事。处理每个请求的提供商信息会出现在响应中和你的活动页面上。",
+          "inlines": [
+            {
+              "text": "如果你用的是默认路由，那就无需再做任何事。处理每个请求的提供商信息会出现在响应中和你的活动页面上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果想保留原来只按价格的路由，把 provider.sort 设为 \"price\"，在模型 slug 后追加 :floor，或者在账户设置中把默认排序设为价格。想自己挑选提供商，可以用 provider.order 或 provider.only。详见提供商路由指南。",
+          "inlines": [
+            {
+              "text": "如果想保留原来只按价格的路由，把 "
+            },
+            {
+              "code": true,
+              "text": "provider.sort"
+            },
+            {
+              "text": " 设为 "
+            },
+            {
+              "code": true,
+              "text": "\"price\""
+            },
+            {
+              "text": "，在模型 slug 后追加 "
+            },
+            {
+              "code": true,
+              "text": ":floor"
+            },
+            {
+              "text": "，或者在"
+            },
+            {
+              "href": "https://openrouter.ai/settings/preferences",
+              "text": "账户设置"
+            },
+            {
+              "text": "中把默认排序设为价格。想自己挑选提供商，可以用 "
+            },
+            {
+              "code": true,
+              "text": "provider.order"
+            },
+            {
+              "text": " 或 "
+            },
+            {
+              "code": true,
+              "text": "provider.only"
+            },
+            {
+              "text": "。详见"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection",
+              "text": "提供商路由指南"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "常见问题",
+          "inlines": [
+            {
+              "text": "常见问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "使用新路由需要改代码吗？",
+          "inlines": [
+            {
+              "text": "使用新路由需要改代码吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "不需要。没有显式指定提供商排序，也没有设置提供商顺序、only 或 ignore 列表的请求，在已启用新路由的模型上会自动走新路由器。你的 API key、请求体和模型 ID 都保持不变。",
+          "inlines": [
+            {
+              "text": "不需要。没有显式指定提供商排序，也没有设置提供商顺序、only 或 ignore 列表的请求，在已启用新路由的模型上会自动走新路由器。你的 API key、请求体和模型 ID 都保持不变。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "如何保留只按价格的路由？",
+          "inlines": [
+            {
+              "text": "如何保留只按价格的路由？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在请求体里把 provider.sort 设为 price，在模型 slug 后追加 :floor，或者在账户设置中把默认提供商排序设为价格。任何显式排序都会绕过新路由器。",
+          "inlines": [
+            {
+              "text": "在请求体里把 provider.sort 设为 price，在模型 slug 后追加 :floor，或者在账户设置中把默认提供商排序设为价格。任何显式排序都会绕过新路由器。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "新路由会覆盖我的提供商顺序或 only 列表吗？",
+          "inlines": [
+            {
+              "text": "新路由会覆盖我的提供商顺序或 only 列表吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "provider.order 会绕过新路由器，按你指定的顺序路由。provider.only 和 provider.ignore 仍然会筛选候选集合，但新算法会在剩下的提供商中挑选。",
+          "inlines": [
+            {
+              "text": "provider.order 会绕过新路由器，按你指定的顺序路由。provider.only 和 provider.ignore 仍然会筛选候选集合，但新算法会在剩下的提供商中挑选。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "新路由会比只按价格的路由更贵吗？",
+          "inlines": [
+            {
+              "text": "新路由会比只按价格的路由更贵吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "有可能，因为它有时会选择更快或更可靠的提供商，而不是最便宜的那个。在我们的线上实验中，每个请求的成本上升了 6.0%，但 TTFT 改善了 16.9%，吞吐量提升了 16.3%，429 错误率下降了 67%。",
+          "inlines": [
+            {
+              "text": "有可能，因为它有时会选择更快或更可靠的提供商，而不是最便宜的那个。在我们的线上实验中，每个请求的成本上升了 6.0%，但 TTFT 改善了 16.9%，吞吐量提升了 16.3%，429 错误率下降了 67%。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "提供商怎样才能在新路由下获得更多流量？",
+          "inlines": [
+            {
+              "text": "提供商怎样才能在新路由下获得更多流量？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "提升路由器评分的各项信号：有效价格、首 token 时间、吞吐量、错误率和限流率，以及输出质量。",
+          "inlines": [
+            {
+              "text": "提升路由器评分的各项信号：有效价格、首 token 时间、吞吐量、错误率和限流率，以及输出质量。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Today we’re announcing the biggest improvement to our provider routing algorithm since the founding of OpenRouter.",
+          "inlines": [
+            {
+              "text": "Today we’re announcing the biggest improvement to our provider routing algorithm since the founding of OpenRouter."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Until now, our default router mostly rewarded providers for one thing: a low price. The new router rewards the inference that is actually best for you: cheap, but also fast, high-throughput, and reliable. Providers that deliver more value automatically win more traffic, so every provider has a reason to keep improving. That means the inference you get through OpenRouter keeps getting faster, more reliable, and more cost-effective, and you don’t have to change a line of code.",
+          "inlines": [
+            {
+              "text": "Until now, our default router mostly rewarded providers for one thing: a low price. The new router rewards the inference that is actually best for you: cheap, but also fast, high-throughput, and reliable. Providers that deliver more value automatically win more traffic, so every provider has a reason to keep improving. That means the inference you get through OpenRouter keeps getting faster, more reliable, and more cost-effective, and you don’t have to change a line of code."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "It’s already working. The new algorithm has unlocked significant improvements in TTFT (16.9%), throughput (16.3%) and capacity errors (a remarkable 67% reduction!), with only minor increases in cost (6.0%). That’s before providers have had any time to optimize for the new algorithm. See our full experimental results for more details.",
+          "inlines": [
+            {
+              "text": "It’s already working. The new algorithm has unlocked significant improvements in TTFT (16.9%), throughput (16.3%) and capacity errors (a remarkable 67% reduction!), with only minor increases in cost (6.0%). That’s "
+            },
+            {
+              "italic": true,
+              "text": "before"
+            },
+            {
+              "text": " providers have had any time to optimize for the new algorithm. See our full "
+            },
+            {
+              "href": "https://openrouter.ai/blog/announcements/how-we-rebuilt-provider-routing/#results",
+              "text": "experimental results"
+            },
+            {
+              "text": " for more details."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "How it works:",
+          "inlines": [
+            {
+              "text": "How it works:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "It measures what you actually get."
+                },
+                {
+                  "text": " For every model, it tracks each endpoint’s realized price, latency, throughput, and error rate, and picks the best blend of cost and performance for each request."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "It reacts in real time."
+                },
+                {
+                  "text": " When an endpoint has trouble, traffic moves away from it until it recovers."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "It rewards better inference."
+                },
+                {
+                  "text": " Providers that innovate are automatically rewarded with more traffic."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Routing is still cache-aware, so once we’ve sent you to a provider, your session stays put as long as the cache is warm.",
+          "inlines": [
+            {
+              "text": "Routing is still cache-aware, so once we’ve sent you to a provider, your session stays put as long as the cache is warm."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Want price-only routing? You can still have it. See pinning and sorting providers in What stays the same.",
+          "inlines": [
+            {
+              "text": "Want price-only routing? You can still have it. See pinning and sorting providers in "
+            },
+            {
+              "href": "https://openrouter.ai/blog/announcements/how-we-rebuilt-provider-routing/#what-stays-the-same",
+              "text": "What stays the same"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where we were: the limitations of Price-Only Routing",
+          "inlines": [
+            {
+              "text": "Where we were: the limitations of Price-Only Routing"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Most traffic (~77% of requests) on OpenRouter goes to models served by more than one provider. When a request doesn’t include an explicit sort or provider list, we need to pick a provider to send it to. Until now, we made that choice based almost entirely on input token price. The less expensive a provider was, the greater percentage of traffic it would receive, and any failed request was re-routed to the next cheapest option.",
+          "inlines": [
+            {
+              "text": "Most traffic (~77% of requests) on OpenRouter goes to models served by more than one provider. When a request doesn’t include an explicit sort or provider list, we need to pick a provider to send it to. Until now, we made that choice based almost entirely on input token price. The less expensive a provider was, the greater percentage of traffic it would receive, and any failed request was re-routed to the next cheapest option."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This price-only approach got users the lowest prices in the ecosystem, but it created some unintended consequences:",
+          "inlines": [
+            {
+              "text": "This price-only approach got users the lowest prices in the ecosystem, but it created some unintended consequences:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Cheap won even when it was bad."
+                },
+                {
+                  "text": " Fallbacks caught failures, but users waited through them, and speed improvements weren’t rewarded."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Static rankings."
+                },
+                {
+                  "text": " The algorithm was blind to real-time performance variations, so a provider had to degrade to the point of being de-ranked entirely before it was reflected in traffic distribution."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Vanishing margins."
+                },
+                {
+                  "text": " The only way for providers to win traffic was to cut price, putting pressure on them to reduce their investments in the very infrastructure that ensures reliability and quality."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Pricing games."
+                },
+                {
+                  "text": " The price we ranked by was almost all prompt input price, so a provider could keep traffic share with weird pricing cocktails like listing an artificially low input price and then making back the difference with overpriced cached or completion tokens."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We wanted to ensure a marketplace where competing providers won traffic by serving better inference, not just cheaper inference.",
+          "inlines": [
+            {
+              "text": "We wanted to ensure a marketplace where competing providers won traffic by serving better inference, not just cheaper inference."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The New Algorithm: optimizing for what a good answer “costs”",
+          "inlines": [
+            {
+              "text": "The New Algorithm: optimizing for what a good answer “costs”"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The new routing algorithm constantly monitors the performance of each provider to calculate a real-time Routing Cost that captures what a user pays for a good answer. The Routing Cost encompasses the price in actual dollars and cents, the cost of time spent waiting for a response, and the cost of retries when a provider fails or provides an unusable response.",
+          "inlines": [
+            {
+              "text": "The new routing algorithm constantly monitors the performance of each provider to calculate a real-time Routing Cost that captures what a user pays for a good answer. The Routing Cost encompasses the price in actual dollars and cents, the cost of time spent waiting for a response, and the cost of retries when a provider fails or provides an unusable response."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To put it simply: what does one try cost, and how often does it work?",
+          "inlines": [
+            {
+              "text": "To put it simply: what does one try cost, and how often does it work?"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2347868711b8c24b765d56ac0f5a9d9acfd1d53c437b7f36b0032936db47760b.webp",
+          "alt": "Diagram: cost of one try, $0.40 price plus 0.60 waiting, is 1.00. Divided by an 80% chance it works, that is a Routing Cost of 1.25 per good answer. Lower wins more traffic. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/29553477d8a541c0c557c22368bbd1ee62f4adf671dbd95d9aa05aed15b5f062.webp",
+          "alt": "Diagram: cost of one try, $0.40 price plus 0.60 waiting, is 1.00. Divided by an 80% chance it works, that is a Routing Cost of 1.25 per good answer. Lower wins more traffic. (dark mode)"
+        },
+        {
+          "type": "heading",
+          "text": "What one try costs: price plus waiting",
+          "inlines": [
+            {
+              "text": "What one try costs: price plus waiting"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "For each request, the router estimates how many input and output tokens it will use from the model’s recent traffic. That one estimate sets both parts of a try: the price you would pay and the time you would wait.",
+          "inlines": [
+            {
+              "text": "For each request, the router estimates how many input and output tokens it will use from the model’s recent traffic. That one estimate sets both parts of a try: the price you would pay and the time you would wait."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Effective price",
+          "inlines": [
+            {
+              "text": "Effective price"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Effective price is the price that the provider would actually charge you, calculated from recent measured traffic. It reflects the provider’s real cache hit rate and the model’s average mix of input and output tokens, so it can differ a lot from the list price. This ensures that a provider can’t win traffic by hiding expensive cached or output tokens behind a low input price.",
+          "inlines": [
+            {
+              "text": "Effective price is the price that the provider would actually charge you, calculated from recent measured traffic. It reflects the provider’s real cache hit rate and the model’s average mix of input and output tokens, so it can differ a lot from the list price. This ensures that a provider can’t win traffic by hiding expensive cached or output tokens behind a low input price."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7557c9b76b613a604d001444ba2f1018a42b13d2c130968f9f7c2684012d2a45.webp",
+          "alt": "Chart of average input and output tokens per request by prompt size, on log scales. As prompts grow from about 370 to 670K input tokens, output only grows from about 190 to 1,050 tokens, so input goes from 2 times output to 8 times at 5.7K input tokens, 90 times at 93K, and 630 times at 670K. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f17def5894f6b39393d0c1f7185efbfa1f908c6132fa5274a578d4d91f35483f.webp",
+          "alt": "Chart of average input and output tokens per request by prompt size, on log scales. As prompts grow from about 370 to 670K input tokens, output only grows from about 190 to 1,050 tokens, so input goes from 2 times output to 8 times at 5.7K input tokens, 90 times at 93K, and 630 times at 670K. (dark mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5939fcf1231aefeef1438d3981d6fc4bfc17c3f3a51b6877f5236b7c5ac27339.webp",
+          "alt": "Effective price example: 40K uncached input tokens at $2.00/M is $0.080, 60K cached input tokens at $0.50/M is $0.030, and about 4K output tokens at $8.00/M is $0.032, for an effective price of $0.142 for one request. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e2a81e9fc08dd1e0b6fe5b82157ce49ef92c6829b7a15f8a1b9ebcffe3541d84.webp",
+          "alt": "Effective price example: 40K uncached input tokens at $2.00/M is $0.080, 60K cached input tokens at $0.50/M is $0.030, and about 4K output tokens at $8.00/M is $0.032, for an effective price of $0.142 for one request. (dark mode)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The router prices your request at each provider’s effective price, and prioritizes the cheapest options.",
+          "inlines": [
+            {
+              "text": "The router prices your request at each provider’s effective price, and prioritizes the cheapest options."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Throughput",
+          "inlines": [
+            {
+              "text": "Throughput"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Throughput is what trades off against price: a faster provider can charge more and still win your request. It’s measured as output tokens per second end-to-end, so it includes the time to first token plus the time it takes the provider to stream the entire output response. The router adds that wait to the Routing Cost using a conversion rate set per model, based on what its providers typically charge and how fast they are.",
+          "inlines": [
+            {
+              "text": "Throughput is what trades off against price: a faster provider can charge more and still win your request. It’s measured as output tokens per second end-to-end, so it includes the time to first token plus the time it takes the provider to stream the entire output response. The router adds that wait to the Routing Cost using a conversion rate set per model, based on what its providers typically charge and how fast they are."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/564b3bec42b6e2ac60c3cbb93da0cab2822687051884f3892be31051a88c59a2.webp",
+          "alt": "Throughput example: a 5 second time to first token plus 500 tokens streamed in 5 seconds is 50 tokens per second end to end, with the time to first token included. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/78bad81421cc65e593e50e39accaaddff84b8ea86420bded451e306e54399b1d.webp",
+          "alt": "Throughput example: a 5 second time to first token plus 500 tokens streamed in 5 seconds is 50 tokens per second end to end, with the time to first token included. (dark mode)"
+        },
+        {
+          "type": "heading",
+          "text": "Time to first token",
+          "inlines": [
+            {
+              "text": "Time to first token"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Time to first token (TTFT) is how long you would wait before the response started streaming. It adds to the Routing Cost on its own, even though it already counts toward throughput, because interactive use depends on it most. In an agent session, the model may make many tool calls in a row, and each one waits for a first token.",
+          "inlines": [
+            {
+              "text": "Time to first token (TTFT) is how long you would wait before the response started streaming. It adds to the Routing Cost on its own, even though it already counts toward throughput, because interactive use depends on it most. In an agent session, the model may make many tool calls in a row, and each one waits for a first token."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3f2a6654d04064e37100e470fb134b450bcc67e0e4ba8434a2434ad04ef02bb9.webp",
+          "alt": "An agent session: reasoning, then five tool calls, then more reasoning and the response. Each step waits for a first token, so the tool calls are mostly waiting on time to first token. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/4b994231a2fdce85194df5ac16cdf6fa30c7be8c22950e1f06611517b14102f3.webp",
+          "alt": "An agent session: reasoning, then five tool calls, then more reasoning and the response. Each step waits for a first token, so the tool calls are mostly waiting on time to first token. (dark mode)"
+        },
+        {
+          "type": "heading",
+          "text": "Rate limits",
+          "inlines": [
+            {
+              "text": "Rate limits"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "A rate limit (HTTP 429) means the provider is out of capacity and turned your request away. You would have to wait for the rejection, then your full request would go to another provider. The router adds that wait plus a penalty to the provider’s Routing Cost, weighted by how often it rate limits requests, so the effect is usually small. Repeated rate limits matter more through the traffic caps and backoff described below.",
+          "inlines": [
+            {
+              "text": "A rate limit (HTTP 429) means the provider is out of capacity and turned your request away. You would have to wait for the rejection, then your full request would go to another provider. The router adds that wait plus a penalty to the provider’s Routing Cost, weighted by how often it rate limits requests, so the effect is usually small. Repeated rate limits matter more through the traffic caps and backoff described below."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/25d4658f8c92ba26a931ce305611bd365d00a7cf439942a7f9630358b011323c.webp",
+          "alt": "A 429 makes you wait for the rejection, then your full request goes elsewhere. Example: a 2.50 wait plus penalty times a 0.4% 429 rate adds 0.01 to the Routing Cost. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/df642d3bc08952cd137798066a34353511be9a1ccd610eedca31f9bde3831d74.webp",
+          "alt": "A 429 makes you wait for the rejection, then your full request goes elsewhere. Example: a 2.50 wait plus penalty times a 0.4% 429 rate adds 0.01 to the Routing Cost. (dark mode)"
+        },
+        {
+          "type": "heading",
+          "text": "How often it works: reliability and quality",
+          "inlines": [
+            {
+              "text": "How often it works: reliability and quality"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "A failed try still costs its price and its wait, so the Routing Cost calculates the expected cost of having to retry until one works. If 1 in 5 tries fails, you pay for 1.25 tries per good answer.",
+          "inlines": [
+            {
+              "text": "A failed try still costs its price and its wait, so the Routing Cost calculates the expected cost of having to retry until one works. If 1 in 5 tries fails, you pay for 1.25 tries per good answer."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Reliability",
+          "inlines": [
+            {
+              "text": "Reliability"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "A reliability error is a request that fails because of the provider. You would lose the attempt and have to retry, so each error carries a heavy penalty in the Routing Cost.",
+          "inlines": [
+            {
+              "text": "A reliability error is a request that fails because of the provider. You would lose the attempt and have to retry, so each error carries a heavy penalty in the Routing Cost."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b675163f29b21a4d8df1ebbb3f71441ce2921608ab8eb6996f2c05900fff84b5.webp",
+          "alt": "Reliability example: a 1% error rate times an 8x penalty per error raises the Routing Cost by about 8%. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/66ccd7a7ef70c7175b1b378b388deb58a386a64c3d06f26c4c69e538dcc52efd.webp",
+          "alt": "Reliability example: a 1% error rate times an 8x penalty per error raises the Routing Cost by about 8%. (dark mode)"
+        },
+        {
+          "type": "paragraph",
+          "text": "If a provider’s error rate climbs far above the other providers for the same model, the router stops sending it requests until it recovers.",
+          "inlines": [
+            {
+              "text": "If a provider’s error rate climbs far above the other providers for the same model, the router stops sending it requests until it recovers."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Quality",
+          "inlines": [
+            {
+              "text": "Quality"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Quality measures whether a provider’s responses are usable. Today the main check is whether tool calls come back well formed, and we’re adding more. Each bad response raises the provider’s Routing Cost, because a cheap wrong answer is expensive.",
+          "inlines": [
+            {
+              "text": "Quality measures whether a provider’s responses are usable. Today the main check is whether tool calls come back well formed, and we’re adding more. Each bad response raises the provider’s Routing Cost, because a cheap wrong answer is expensive."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f6fe5cc3ec9f34f9159eb863337a79c499fba87e5df962c3699ec19ecfbdb74e.webp",
+          "alt": "Quality example: 95% of tool calls well formed raises the Routing Cost by about 5%. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3aa8c40d663e31fda6eb8cf46d5b9cbadc9d98f783431d04fd424cf6ed706aed.webp",
+          "alt": "Quality example: 95% of tool calls well formed raises the Routing Cost by about 5%. (dark mode)"
+        },
+        {
+          "type": "paragraph",
+          "text": "A provider flagged for broken tool calls, or for benchmark accuracy well below what the model should score, drops far behind and only gets a small amount of test traffic until the flag clears.",
+          "inlines": [
+            {
+              "text": "A provider flagged for broken tool calls, or for benchmark accuracy well below what the model should score, drops far behind and only gets a small amount of test traffic until the flag clears."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sending every request to the single best provider would overload it, so traffic is shared. Faster providers can carry a higher Routing Cost and stay competitive. Everything inside the competitive edge shares most of the traffic, and being a little behind the best costs a little. Past the edge, traffic share drops off fast.",
+          "inlines": [
+            {
+              "text": "Sending every request to the single best provider would overload it, so traffic is shared. Faster providers can carry a higher Routing Cost and stay competitive. Everything inside the "
+            },
+            {
+              "bold": true,
+              "text": "competitive edge"
+            },
+            {
+              "text": " shares most of the traffic, and being a little behind the best costs a little. Past the edge, traffic share drops off fast."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/835e4c25fa952acebb1296d905c35267d5d02b0b75950c4dc174043bfc1f0118.webp",
+          "alt": "Illustrative curve of traffic share against adjusted price compared with the best provider. Share falls slowly inside the competitive zone, then drops off fast past the competitive edge into exploration, where providers still get a small trickle. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b23f604204c03892f63d8158e33f781f273e2edd4fb045fe36e6f4e3d9cf7382.webp",
+          "alt": "Illustrative curve of traffic share against adjusted price compared with the best provider. Share falls slowly inside the competitive zone, then drops off fast past the competitive edge into exploration, where providers still get a small trickle. (dark mode)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Three guardrails sit on top:",
+          "inlines": [
+            {
+              "text": "Three guardrails sit on top:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/929be5937d17c5caa1dc901cd920dcb844ff3e7bfff60b0f1a15ce80cfbd18ee.webp",
+          "alt": "Diagram of requests flowing to three providers. A is at its cap, so the extra spills over to other providers. B is struggling, so it gets less. C is furthest behind but still gets a trickle. (light mode)"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fe8a7578eefab10247cc057343ea76cd03a99beca2ff2403225db82e1640e278.webp",
+          "alt": "Diagram of requests flowing to three providers. A is at its cap, so the extra spills over to other providers. B is struggling, so it gets less. C is furthest behind but still gets a trickle. (dark mode)"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Floor:"
+                },
+                {
+                  "text": " every provider keeps a trickle of traffic, so we can notice when struggling endpoints improve. New endpoints start from the model’s typical numbers, so they don’t need a traffic history."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Back off:"
+                },
+                {
+                  "text": " a provider that starts failing or rate limiting gets less until it recovers."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Cap:"
+                },
+                {
+                  "text": " the router learns how much load each provider can take before it returns 429s, and spills the rest to others. Add capacity and the cap rises on its own."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What stays the same",
+          "inlines": [
+            {
+              "text": "What stays the same"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Requests that set "
+                },
+                {
+                  "code": true,
+                  "text": "provider.order"
+                },
+                {
+                  "text": " bypass the new routing logic, with providers ordered as specified (default is price-based as before). Setting "
+                },
+                {
+                  "code": true,
+                  "text": "provider.only"
+                },
+                {
+                  "text": " or "
+                },
+                {
+                  "code": true,
+                  "text": "provider.ignore"
+                },
+                {
+                  "text": " will use the new algorithm to select from the remaining providers if there are more than one."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "An explicit "
+                },
+                {
+                  "code": true,
+                  "text": "provider.sort"
+                },
+                {
+                  "text": " ("
+                },
+                {
+                  "code": true,
+                  "text": "price"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "throughput"
+                },
+                {
+                  "text": ", or "
+                },
+                {
+                  "code": true,
+                  "text": "latency"
+                },
+                {
+                  "text": ") uses that sort instead of the new algorithm."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Only the first request in a conversation will have a provider algorithmically selected. An ongoing conversation is pinned to its original provider so that the prompt cache stays warm. If that provider becomes unavailable, the conversation will fall back to another provider automatically."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "If a try fails, the request is retried with the next highest ranked provider."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How we measured it",
+          "inlines": [
+            {
+              "text": "How we measured it"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "In order to measure the impact of the new routing algorithm, we had to go beyond a standard A/B test, because changes in routing behavior can’t easily be isolated from the control group. For example, if the new algorithm did a better job of routing traffic away from a struggling provider, the old algorithm’s requests to that provider would find more capacity available and get faster, skewing the results. Further compounding the difficulty is the enormous variability in request shape and volume patterns. A single whale user that spins up an automated flurry of high effort requests to a single provider can artificially inflate the metrics for that provider regardless of which algorithm we used to route their requests.",
+          "inlines": [
+            {
+              "text": "In order to measure the impact of the new routing algorithm, we had to go beyond a standard A/B test, because changes in routing behavior can’t easily be isolated from the control group. For example, if the new algorithm did a better job of routing traffic away from a struggling provider, the old algorithm’s requests to that provider would find more capacity available and get faster, skewing the results. Further compounding the difficulty is the enormous variability in request shape and volume patterns. A single whale user that spins up an automated flurry of high effort requests to a single provider can artificially inflate the metrics for that provider regardless of which algorithm we used to route their requests."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So we ran a switchback experiment: We split each day into 3-hour blocks and flipped each matched pair of blocks between the new and old router, with a one-hour burn-in period of discarded data each changeover, and measured the per-model impact across a representative sample of open source models over one full week.",
+          "inlines": [
+            {
+              "text": "So we ran a switchback experiment: We split each day into 3-hour blocks and flipped each matched pair of blocks between the new and old router, with a one-hour burn-in period of discarded data each changeover, and measured the per-model impact across a representative sample of open source models over one full week."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Results",
+          "inlines": [
+            {
+              "text": "Results"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Over the week of the experiment, we split over 24 million requests with 103 billion input tokens evenly between the old and new routing algorithms, measuring the impact on key performance metrics.",
+          "inlines": [
+            {
+              "text": "Over the week of the experiment, we split over 24 million requests with 103 billion input tokens evenly between the old and new routing algorithms, measuring the impact on key performance metrics."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Measure",
+          "inlines": [
+            {
+              "text": "Measure"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Legacy",
+          "inlines": [
+            {
+              "text": "Legacy"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "New Algorithm",
+          "inlines": [
+            {
+              "text": "New Algorithm"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "New vs legacy",
+          "inlines": [
+            {
+              "text": "New vs legacy"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "95% interval",
+          "inlines": [
+            {
+              "text": "95% interval"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TTFT p50",
+          "inlines": [
+            {
+              "text": "TTFT p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,007 ms",
+          "inlines": [
+            {
+              "text": "1,007 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "837 ms",
+          "inlines": [
+            {
+              "text": "837 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16.9% lower",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "16.9% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.9% to 19.8% lower",
+          "inlines": [
+            {
+              "text": "13.9% to 19.8% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TTFT p95",
+          "inlines": [
+            {
+              "text": "TTFT p95"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,601 ms",
+          "inlines": [
+            {
+              "text": "4,601 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,733 ms",
+          "inlines": [
+            {
+              "text": "3,733 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "18.9% lower",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "18.9% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15.7% to 21.9% lower",
+          "inlines": [
+            {
+              "text": "15.7% to 21.9% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Throughput p50",
+          "inlines": [
+            {
+              "text": "Throughput p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "62.4 tok/s",
+          "inlines": [
+            {
+              "text": "62.4 tok/s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "72.6 tok/s",
+          "inlines": [
+            {
+              "text": "72.6 tok/s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16.3% higher",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "16.3% higher"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.8% to 18.9% higher",
+          "inlines": [
+            {
+              "text": "13.8% to 18.9% higher"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cost per K requests",
+          "inlines": [
+            {
+              "text": "Cost per K requests"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.25",
+          "inlines": [
+            {
+              "text": "$1.25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.32",
+          "inlines": [
+            {
+              "text": "$1.32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6.0% higher",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "6.0% higher"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5.1% to 7.0% higher",
+          "inlines": [
+            {
+              "text": "5.1% to 7.0% higher"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cost per M tokens",
+          "inlines": [
+            {
+              "text": "Cost per M tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.301",
+          "inlines": [
+            {
+              "text": "$0.301"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.324",
+          "inlines": [
+            {
+              "text": "$0.324"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.3% higher",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "7.3% higher"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.9% to 9.6% higher",
+          "inlines": [
+            {
+              "text": "4.9% to 9.6% higher"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Caller TTFT p50",
+          "inlines": [
+            {
+              "text": "Caller TTFT p50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,130 ms",
+          "inlines": [
+            {
+              "text": "1,130 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "941 ms",
+          "inlines": [
+            {
+              "text": "941 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16.7% lower",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "16.7% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.8% to 19.7% lower",
+          "inlines": [
+            {
+              "text": "13.8% to 19.7% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Caller TTFT p95",
+          "inlines": [
+            {
+              "text": "Caller TTFT p95"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6,032 ms",
+          "inlines": [
+            {
+              "text": "6,032 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,504 ms",
+          "inlines": [
+            {
+              "text": "4,504 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25.3% lower",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "25.3% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "21.6% to 29.0% lower",
+          "inlines": [
+            {
+              "text": "21.6% to 29.0% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Whole request p50 (time to last token)",
+          "inlines": [
+            {
+              "text": "Whole request p50 (time to last token)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.00 s",
+          "inlines": [
+            {
+              "text": "4.00 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.24 s",
+          "inlines": [
+            {
+              "text": "3.24 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "19.0% lower",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "19.0% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14.2% to 23.6% lower",
+          "inlines": [
+            {
+              "text": "14.2% to 23.6% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Whole request p95",
+          "inlines": [
+            {
+              "text": "Whole request p95"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "41.5 s",
+          "inlines": [
+            {
+              "text": "41.5 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "34.9 s",
+          "inlines": [
+            {
+              "text": "34.9 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16.0% lower",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "16.0% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.2% to 19.7% lower",
+          "inlines": [
+            {
+              "text": "12.2% to 19.7% lower"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hit at least one 429",
+          "inlines": [
+            {
+              "text": "Hit at least one 429"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.1%",
+          "inlines": [
+            {
+              "text": "7.1%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.8%",
+          "inlines": [
+            {
+              "text": "3.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−3.4 pt\n67% fewer",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "−3.4 pt"
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "bold": true,
+              "text": "67% fewer"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−4.2 to −2.5 pt\n62% to 72% fewer",
+          "inlines": [
+            {
+              "text": "−4.2 to −2.5 pt\n62% to 72% fewer"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Needed a retry",
+          "inlines": [
+            {
+              "text": "Needed a retry"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.4%",
+          "inlines": [
+            {
+              "text": "10.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6.9%",
+          "inlines": [
+            {
+              "text": "6.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−3.5 pt\n47% fewer",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "−3.5 pt"
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "bold": true,
+              "text": "47% fewer"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−4.4 to −2.6 pt\n41% to 52% fewer",
+          "inlines": [
+            {
+              "text": "−4.4 to −2.6 pt\n41% to 52% fewer"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Time spent in failed attempts, per req",
+          "inlines": [
+            {
+              "text": "Time spent in failed attempts, per req"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "349 ms",
+          "inlines": [
+            {
+              "text": "349 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "242 ms",
+          "inlines": [
+            {
+              "text": "242 ms"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−106 ms\n55% less",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "−106 ms"
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "bold": true,
+              "text": "55% less"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "−181 to −35 ms\n48% to 60% less",
+          "inlines": [
+            {
+              "text": "−181 to −35 ms\n48% to 60% less"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Get started",
+          "inlines": [
+            {
+              "text": "Get started"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "If you use default routing, you’re done. The provider that served each request is in the response and on your activity page.",
+          "inlines": [
+            {
+              "text": "If you use default routing, you’re done. The provider that served each request is in the response and on your activity page."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To keep the old price-only routing, set provider.sort to \"price\", append :floor to the model slug, or set your default sort to price in account settings. To pick providers yourself, use provider.order or provider.only. See the provider routing guide.",
+          "inlines": [
+            {
+              "text": "To keep the old price-only routing, set "
+            },
+            {
+              "code": true,
+              "text": "provider.sort"
+            },
+            {
+              "text": " to "
+            },
+            {
+              "code": true,
+              "text": "\"price\""
+            },
+            {
+              "text": ", append "
+            },
+            {
+              "code": true,
+              "text": ":floor"
+            },
+            {
+              "text": " to the model slug, or set your default sort to price in "
+            },
+            {
+              "href": "https://openrouter.ai/settings/preferences",
+              "text": "account settings"
+            },
+            {
+              "text": ". To pick providers yourself, use "
+            },
+            {
+              "code": true,
+              "text": "provider.order"
+            },
+            {
+              "text": " or "
+            },
+            {
+              "code": true,
+              "text": "provider.only"
+            },
+            {
+              "text": ". See the "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection",
+              "text": "provider routing guide"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Frequently asked questions",
+          "inlines": [
+            {
+              "text": "Frequently asked questions"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Do I need to change my code to use the new routing?",
+          "inlines": [
+            {
+              "text": "Do I need to change my code to use the new routing?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "No. Requests with no explicit provider sort and no provider order, only, or ignore list use the new router automatically on the models where it's enabled. Your API key, request body, and model IDs stay the same.",
+          "inlines": [
+            {
+              "text": "No. Requests with no explicit provider sort and no provider order, only, or ignore list use the new router automatically on the models where it's enabled. Your API key, request body, and model IDs stay the same."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How do I keep price-only routing?",
+          "inlines": [
+            {
+              "text": "How do I keep price-only routing?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Set provider.sort to price in the request body, append :floor to the model slug, or set your default provider sort to price in account settings. Any explicit sort bypasses the new router.",
+          "inlines": [
+            {
+              "text": "Set provider.sort to price in the request body, append :floor to the model slug, or set your default provider sort to price in account settings. Any explicit sort bypasses the new router."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Does the new routing override my provider order or only list?",
+          "inlines": [
+            {
+              "text": "Does the new routing override my provider order or only list?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "provider.order bypasses the new router and routes in the order you specify. provider.only and provider.ignore still filter the candidate set, but the new algorithm picks among the providers that remain.",
+          "inlines": [
+            {
+              "text": "provider.order bypasses the new router and routes in the order you specify. provider.only and provider.ignore still filter the candidate set, but the new algorithm picks among the providers that remain."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Will the new routing cost more than price-only routing?",
+          "inlines": [
+            {
+              "text": "Will the new routing cost more than price-only routing?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "It can, since it will sometimes pick a faster or more reliable provider over the cheapest one. In our live experiment, cost per request increased by 6.0%, while realizing a 16.9% improvement in TTFT, a 16.3% improvement in throughput, and a 67% decrease in 429 error rate.",
+          "inlines": [
+            {
+              "text": "It can, since it will sometimes pick a faster or more reliable provider over the cheapest one. In our live experiment, cost per request increased by 6.0%, while realizing a 16.9% improvement in TTFT, a 16.3% improvement in throughput, and a 67% decrease in 429 error rate."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How does a provider get more traffic under the new routing?",
+          "inlines": [
+            {
+              "text": "How does a provider get more traffic under the new routing?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Improve the signals the router scores: effective price, time to first token, throughput, error and rate-limit rates, and output quality.",
+          "inlines": [
+            {
+              "text": "Improve the signals the router scores: effective price, time to first token, throughput, error and rate-limit rates, and output quality."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-30T01:12:17.514113Z",
+  "contentMode": "full"
+}
