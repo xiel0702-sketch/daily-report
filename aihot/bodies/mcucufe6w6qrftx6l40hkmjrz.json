@@ -1,0 +1,2944 @@
+{
+  "schemaVersion": 1,
+  "id": "mcucufe6w6qrftx6l40hkmjrz",
+  "status": "available",
+  "provenance": "source-public-page",
+  "sourceURL": "https://pydantic.dev/articles/why-code-mode-is-the-future",
+  "fetchedAt": "2026-10-31T01:11:22.664629Z",
+  "label": "正文 · 原文来源",
+  "notice": "AI HOT 页面未提供完整正文，以下内容抓取自原始来源。",
+  "topics": [],
+  "tags": [],
+  "languages": {
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Code mode: make your agents 2x faster and 2x cheaper on long tasks",
+          "inlines": [
+            {
+              "text": "Code mode: make your agents 2x faster and 2x cheaper on long tasks"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ac803d4a1237a272317f0843b5fe2b01135050d9da696fe8d4541dff8702baae.avif",
+          "alt": "Michael Pfaffenberger avatar",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "type": "paragraph",
+          "text": "Michael Pfaffenberger",
+          "inlines": [
+            {
+              "href": "https://pydantic.dev/authors/michael-pfaffenberger",
+              "text": "Michael Pfaffenberger"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mpfaffenberger",
+          "inlines": [
+            {
+              "text": "mpfaffenberger"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "21 mins",
+          "inlines": [
+            {
+              "text": "21 mins"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026/10/28",
+          "inlines": [
+            {
+              "text": "2026/10/28"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As Markdown",
+          "inlines": [
+            {
+              "href": "https://pydantic.dev/articles/why-code-mode-is-the-future.md",
+              "text": "As Markdown"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Everyone I talk to has an opinion about code mode right now. Mine was lit by Prime Intellect's Prime Agent, a coding harness built around a persistent REPL, and by Alex Zhang's speculative programmatic tool calling, which (among other things) can run tools while the model is still streaming code. Cloudflare has one. Anthropic has one. We've had a few of our own, from MCP code execution to Pydantic Monty. Coding agents are moving the same way: OpenCode 2 now sends MCP tools through Code Mode by default, and Pi ships a codemode tool. The pitch usually goes like this: stop making the model call your tools one at a time, let it write a little program that calls them instead, and everything gets cheaper, faster and better.",
+          "inlines": [
+            {
+              "text": "Everyone I talk to has an opinion about code mode right now. Mine was lit by Prime Intellect's "
+            },
+            {
+              "href": "https://www.primeintellect.ai/blog/prime-agent",
+              "text": "Prime Agent"
+            },
+            {
+              "text": ", a coding harness built around a persistent REPL, and by Alex Zhang's "
+            },
+            {
+              "href": "https://alexzhang13.github.io/blog/2026/spec-ptc/",
+              "text": "speculative programmatic tool calling"
+            },
+            {
+              "text": ", which (among other things) can run tools while the model is still streaming code. "
+            },
+            {
+              "href": "https://blog.cloudflare.com/code-mode/",
+              "text": "Cloudflare"
+            },
+            {
+              "text": " has one. "
+            },
+            {
+              "href": "https://www.anthropic.com/research/code-execution-with-mcp",
+              "text": "Anthropic"
+            },
+            {
+              "text": " has one. We've had a few of our own, from "
+            },
+            {
+              "href": "https://pydantic.dev/articles/your-agent-would-rather-write-code",
+              "text": "MCP code execution"
+            },
+            {
+              "text": " to "
+            },
+            {
+              "href": "https://pydantic.dev/articles/pydantic-monty",
+              "text": "Pydantic Monty"
+            },
+            {
+              "text": ". Coding agents are moving the same way: "
+            },
+            {
+              "href": "https://opencode.ai/v2/docs/mcp-servers/",
+              "text": "OpenCode 2"
+            },
+            {
+              "text": " now sends MCP tools through Code Mode by default, and "
+            },
+            {
+              "href": "https://pi.dev/docs/latest/codemode",
+              "text": "Pi"
+            },
+            {
+              "text": " ships a "
+            },
+            {
+              "code": true,
+              "text": "codemode"
+            },
+            {
+              "text": " tool. The pitch usually goes like this: stop making the model call your tools one at a time, let it write a little program that calls them instead, and everything gets cheaper, faster and better."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "I believe that. But almost every number I'd seen came from agents with hundreds of tools or huge payloads, and many agents in the wild are boring: a handful of CRUD tools and a job to do. So I built a benchmark out of exactly that. Five small Pydantic AI apps, single-item tools only, and three kinds of work: everyday requests, long multi-step jobs, and five tasks I could dial from 5 items to 200. Eight models, code mode off and on, 5,276 graded runs on an internal benchmark.",
+          "inlines": [
+            {
+              "text": "I believe that. But almost every number I'd seen came from agents with hundreds of tools or huge payloads, and many agents in the wild are boring: a handful of CRUD tools and a job to do. So I built a benchmark out of exactly that. Five small "
+            },
+            {
+              "href": "https://pydantic.dev/docs/ai/overview/",
+              "text": "Pydantic AI"
+            },
+            {
+              "text": " apps, single-item tools only, and three kinds of work: everyday requests, long multi-step jobs, and five tasks I could dial from 5 items to 200. Eight models, code mode off and on, 5,276 graded runs on an internal benchmark."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The short version: the longer the task, the bigger the win. And it gets big.",
+          "inlines": [
+            {
+              "text": "The short version: the longer the task, the bigger the win. And it gets big."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TL;DR",
+          "inlines": [
+            {
+              "text": "TL;DR"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "On long tasks, code mode roughly halved cost and wall time."
+                },
+                {
+                  "text": " Across all eight models: cost "
+                },
+                {
+                  "bold": true,
+                  "text": "-58%"
+                },
+                {
+                  "text": ", wall time "
+                },
+                {
+                  "bold": true,
+                  "text": "-51%"
+                },
+                {
+                  "text": ", success "
+                },
+                {
+                  "bold": true,
+                  "text": "+16.0 points"
+                },
+                {
+                  "text": ". Without code mode 67 of 288 runs failed; with it, 21."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "It scales."
+                },
+                {
+                  "text": " For gpt-6.1-sol, every 100 extra items cost 30 to 79 seconds and $0.04 to $0.07 per run without code mode. With it: 4 to 9 seconds on four of the five tasks, and under a cent on three. At 200 items, code mode was 47% to 75% cheaper."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Correctness falls off without it."
+                },
+                {
+                  "text": " From 5 items to 200, success without code mode dropped from 92-100% to 62-79%. With code mode it was 92-100% at 200."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "It isn't about round trips."
+                },
+                {
+                  "text": " Models already batch: one response carried 200 tool calls. At 200 items, averaged over the eight models, model requests fell by between 1% and 22% per task; deepseek-v4.1-flash on its own fell much further. What code mode cuts is what goes "
+                },
+                {
+                  "italic": true,
+                  "text": "into"
+                },
+                {
+                  "text": " each request."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Small jobs pay a tax."
+                },
+                {
+                  "text": " At 5 items code mode cost more on three of the five tasks (+21% to +38%). On the 50 everyday tasks it was 16% cheaper overall, but success was flat (+1.6 points, noise)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "It's sandboxed, and it leaves a trail."
+                },
+                {
+                  "text": " In Pydantic AI Harness the model's code runs in Monty, which starts with no access to the host and, by default, stops any snippet after 30 seconds of execution time or at a 256 MiB heap. With Pydantic "
+                },
+                {
+                  "href": "https://pydantic.dev/logfire",
+                  "text": "Logfire"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "href": "https://pydantic.dev/logfire/llm-observability",
+                  "text": "tracing the agent"
+                },
+                {
+                  "text": ", every tool call that code makes shows up as its own span."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "How much faster and cheaper each extra 100 items are with code mode on, for gpt-6.1-sol:",
+          "inlines": [
+            {
+              "text": "How much faster and cheaper each extra 100 items are with code mode on, for gpt-6.1-sol:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Task",
+          "inlines": [
+            {
+              "text": "Task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Faster",
+          "inlines": [
+            {
+              "text": "Faster"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cheaper",
+          "inlines": [
+            {
+              "text": "Cheaper"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "cart",
+          "inlines": [
+            {
+              "text": "cart"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7x",
+          "inlines": [
+            {
+              "text": "7x"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8x",
+          "inlines": [
+            {
+              "text": "8x"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "calendar",
+          "inlines": [
+            {
+              "text": "calendar"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9x",
+          "inlines": [
+            {
+              "text": "9x"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25x+",
+          "inlines": [
+            {
+              "text": "25x+"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "chat",
+          "inlines": [
+            {
+              "text": "chat"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5x",
+          "inlines": [
+            {
+              "text": "5x"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.4x",
+          "inlines": [
+            {
+              "text": "2.4x"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "kanban",
+          "inlines": [
+            {
+              "text": "kanban"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20x",
+          "inlines": [
+            {
+              "text": "20x"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11x",
+          "inlines": [
+            {
+              "text": "11x"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "inventory",
+          "inlines": [
+            {
+              "text": "inventory"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.2x",
+          "inlines": [
+            {
+              "text": "2.2x"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "My read: models are much better at writing a loop than at being one, and the gap grows with the length of the task.",
+          "inlines": [
+            {
+              "text": "My read: models are much better at writing a loop than at being one, and the gap grows with the length of the task."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Building agents in production?",
+          "inlines": [
+            {
+              "text": "Building agents in production?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "See what they're actually doing with Logfire — traces, evals, cost, and behavior in one view.",
+          "inlines": [
+            {
+              "text": "See what they're actually doing with Logfire — traces, evals, cost, and behavior in one view."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Try Logfire free",
+          "inlines": [
+            {
+              "href": "https://pydantic.dev/signup",
+              "text": "Try Logfire free"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The loop, and why it hurts",
+          "inlines": [
+            {
+              "text": "The loop, and why it hurts"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "In a normal tool-calling agent, the model picks a tool, emits some JSON, stops, waits for the harness to run it, reads the result, and picks again. The model sits in the middle of every step, and the costs compound: tool definitions crowd the context, every intermediate result flows through the model, and, the usual story goes, every tool call is another model turn that resends the whole growing context.",
+          "inlines": [
+            {
+              "text": "In a normal tool-calling agent, the model picks a tool, emits some JSON, stops, waits for the harness to run it, reads the result, and picks again. The model sits in the middle of every step, and the costs compound: tool definitions crowd the context, every intermediate result flows through the model, and, the usual story goes, every tool call is another model turn that resends the whole growing context."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Code mode flips it. The tools become functions inside a sandbox, the model writes one program that loops and branches over them, and only the result comes back. In Pydantic AI Harness that sandbox is Monty, our Python interpreter written in Rust, and the model sees a single run_code tool.",
+          "inlines": [
+            {
+              "text": "Code mode flips it. The tools become functions inside a sandbox, the model writes one program that loops and branches over them, and only the result comes back. In "
+            },
+            {
+              "href": "https://pydantic.dev/docs/ai/harness/code-mode/",
+              "text": "Pydantic AI Harness"
+            },
+            {
+              "text": " that sandbox is "
+            },
+            {
+              "href": "https://pydantic.dev/articles/pydantic-monty",
+              "text": "Monty"
+            },
+            {
+              "text": ", our Python interpreter written in Rust, and the model sees a single "
+            },
+            {
+              "code": true,
+              "text": "run_code"
+            },
+            {
+              "text": " tool."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Here's one of the 50 tasks, verbatim: \"can you get rid of everything in my cart that costs more than $50 a piece? it's getting out of hand\". The cart has 122 lines, a list tool that returns at most 50 per page, and a remove tool that takes one id. 22 lines need to go. Without code mode that's three pages of listing and 22 removes, every one of them chosen by the model. With code mode, it's this:",
+          "inlines": [
+            {
+              "text": "Here's one of the 50 tasks, verbatim: "
+            },
+            {
+              "italic": true,
+              "text": "\"can you get rid of everything in my cart that costs more than $50 a piece? it's getting out of hand\""
+            },
+            {
+              "text": ". The cart has 122 lines, a list tool that returns at most 50 per page, and a remove tool that takes one id. 22 lines need to go. Without code mode that's three pages of listing and 22 removes, every one of them chosen by the model. With code mode, it's this:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import asyncio\n\nitems, offset = [], 0\nwhile offset is not None:\n    page = await list_items(offset=offset, limit=50)\n    items += page[\"items\"]\n    offset = page[\"next_offset\"]\n\npricey = [i for i in items if i[\"unit_price\"] > 50]\nawait asyncio.gather(*(remove_item(item_id=i[\"id\"]) for i in pricey))\nlen(pricey)\n",
+          "language": "python"
+        },
+        {
+          "type": "paragraph",
+          "text": "The model never reads the 100 cheap lines. It doesn't have to remember which ids it already removed. The comparison > 50 is done by Python, not by a language model squinting at a float.",
+          "inlines": [
+            {
+              "text": "The model never reads the 100 cheap lines. It doesn't have to remember which ids it already removed. The comparison "
+            },
+            {
+              "code": true,
+              "text": "> 50"
+            },
+            {
+              "text": " is done by Python, not by a language model squinting at a float."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Code mode with guardrails",
+          "inlines": [
+            {
+              "text": "Code mode with guardrails"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "That program is code a model wrote, and something has to run it. What that something lets the code touch is the biggest design decision in code mode.",
+          "inlines": [
+            {
+              "text": "That program is code a model wrote, and something has to run it. What that something lets the code touch is the biggest design decision in code mode."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Prime Agent makes the open choice. Its model's only tool is a persistent IPython kernel, and the rest of the harness, sub-agents included, lives in that kernel as functions. An IPython kernel is a full Python process: unless something around it says otherwise, the code can import any library, read and write files and open network connections. For a coding assistant on your own machine, that's what you want. It's not something I'd put in a web server and let every user's prompt drive.",
+          "inlines": [
+            {
+              "text": "Prime Agent makes the open choice. Its model's only tool is a persistent IPython kernel, and the rest of the harness, sub-agents included, lives in that kernel as functions. An IPython kernel is a full Python process: unless something around it says otherwise, the code can import any library, read and write files and open network connections. For a coding assistant on your own machine, that's what you want. It's not something I'd put in a web server and let every user's prompt drive."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pydantic AI Harness makes the opposite choice. CodeMode runs the model's program in Monty, our Python interpreter written in Rust, which starts from nothing and adds only what you allow:",
+          "inlines": [
+            {
+              "text": "Pydantic AI Harness makes the opposite choice. "
+            },
+            {
+              "code": true,
+              "text": "CodeMode"
+            },
+            {
+              "text": " runs the model's program in "
+            },
+            {
+              "href": "https://pydantic.dev/articles/pydantic-monty",
+              "text": "Monty"
+            },
+            {
+              "text": ", our Python interpreter written in Rust, which starts from nothing and adds only what you allow:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "No host access by default."
+                },
+                {
+                  "text": " Sandboxed code "
+                },
+                {
+                  "href": "https://pydantic.dev/docs/ai/harness/code-mode/#filesystem-and-os-access",
+                  "text": "starts with no access"
+                },
+                {
+                  "text": " to the host's files, environment or clock, and there is no network. If the agent needs a directory, an environment variable or the time, you grant it per request. This benchmark granted the built-in "
+                },
+                {
+                  "code": true,
+                  "text": "OSAccess"
+                },
+                {
+                  "text": " handler: an in-memory filesystem and environment, and the host clock."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Your tools are the way out."
+                },
+                {
+                  "text": " The program reaches the world through the functions you register, plus any OS access you grant it, and each tool call goes through Pydantic AI to your real tool. It can do what those allow, and nothing else."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Hard limits."
+                },
+                {
+                  "text": " By default each "
+                },
+                {
+                  "code": true,
+                  "text": "run_code"
+                },
+                {
+                  "text": " snippet gets 30 seconds of execution time and a 256 MiB heap ("
+                },
+                {
+                  "href": "https://pydantic.dev/docs/ai/harness/code-mode/",
+                  "text": "details"
+                },
+                {
+                  "text": "), which is what stops a runaway loop."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fast to start."
+                },
+                {
+                  "text": " Each Monty session runs in a local worker process, and a "
+                },
+                {
+                  "href": "https://github.com/pydantic/monty",
+                  "text": "new sandbox"
+                },
+                {
+                  "text": " takes under a millisecond from a running pool, so the guardrails don't add a container start to every snippet."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So you get code mode with guardrails. Every code mode run in this benchmark ran in Monty.",
+          "inlines": [
+            {
+              "text": "So you get code mode with guardrails. Every code mode run in this benchmark ran in Monty."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The code is the graph",
+          "inlines": [
+            {
+              "text": "The code is the graph"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Samuel wrote a whole post about this, The code is the graph, and if you build agents you should read it. His argument is that graph libraries rebuild control flow badly: \"if is a branch. for is a loop. A function call is an edge\", and asyncio.gather is a fan-out and a join. Or in his words about a five-line example: \"Fan out, join, branch. That is a graph, and it's also a Python function.\"",
+          "inlines": [
+            {
+              "text": "Samuel wrote a whole post about this, "
+            },
+            {
+              "href": "https://pydantic.dev/articles/the-code-is-the-graph",
+              "text": "The code is the graph"
+            },
+            {
+              "text": ", and if you build agents you should read it. His argument is that graph libraries rebuild control flow badly: \""
+            },
+            {
+              "code": true,
+              "text": "if"
+            },
+            {
+              "text": " is a branch. "
+            },
+            {
+              "code": true,
+              "text": "for"
+            },
+            {
+              "text": " is a loop. A function call is an edge\", and "
+            },
+            {
+              "code": true,
+              "text": "asyncio.gather"
+            },
+            {
+              "text": " is a fan-out and a join. Or in his words about a five-line example: \"Fan out, join, branch. That is a graph, and it's also a Python function.\""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The program above is exactly that. Here's the graph it encodes:",
+          "inlines": [
+            {
+              "text": "The program above is exactly that. Here's the graph it encodes:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "I wrote that program for the figure, but the models write the same shape on their own in the benchmark, at run time, for a task they've never seen (in one cart run, gpt-6.1-sol spread it over three run_code calls). Nobody drew that graph in advance. That's the bit that makes me think code mode is where agents are going: the model isn't just calling your tools more cheaply, it's designing the workflow on the fly.",
+          "inlines": [
+            {
+              "text": "I wrote that program for the figure, but the models write the same shape on their own in the benchmark, at run time, for a task they've never seen (in one cart run, gpt-6.1-sol spread it over three "
+            },
+            {
+              "code": true,
+              "text": "run_code"
+            },
+            {
+              "text": " calls). Nobody drew that graph in advance. That's the bit that makes me think code mode is where agents are going: the model isn't just calling your tools more cheaply, it's designing the workflow on the fly."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "But this is a blog post with a benchmark in it, so let's find out whether any of that is true.",
+          "inlines": [
+            {
+              "text": "But this is a blog post with a benchmark in it, so let's find out whether any of that is true."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The benchmark",
+          "inlines": [
+            {
+              "text": "The benchmark"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The benchmark is trivial on purpose. Five tiny Pydantic AI apps: a shopping cart, a calendar, a chatroom, a kanban board and an inventory system. Each one has only single-item CRUD tools (list, get, create, update, delete), with paginated lists. No shell, no filesystem, no bulk endpoints. If the agent wants to change 200 things, it has to make 200 calls, or write a loop.",
+          "inlines": [
+            {
+              "text": "The benchmark is trivial on purpose. Five tiny Pydantic AI apps: a shopping cart, a calendar, a chatroom, a kanban board and an inventory system. Each one has only single-item CRUD tools (list, get, create, update, delete), with paginated lists. No shell, no filesystem, no bulk endpoints. If the agent wants to change 200 things, it has to make 200 calls, or write a loop."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "No single step here is hard. What's hard is doing an easy step a few hundred times, in the right order, without losing count, and that's the part I wanted to isolate: iteration over a long horizon. The code is the graph. Let your agent write the graph.",
+          "inlines": [
+            {
+              "text": "No single step here is hard. What's hard is doing an easy step a few hundred times, in the right order, without losing count, and that's the part I wanted to isolate: iteration over a long horizon. The code is the graph. Let your agent write the graph."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On top of those apps sit three tiers of work:",
+          "inlines": [
+            {
+              "text": "On top of those apps sit three tiers of work:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Everyday:"
+                },
+                {
+                  "text": " 50 tests, ten per app. Single edits, bulk changes, rules with branches, lookups and sums. Without code mode, a run made about 13 tool calls."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Long horizon:"
+                },
+                {
+                  "text": " 12 multi-step jobs over 60 to 500 records, two per app and two that cross apps. "
+                },
+                {
+                  "italic": true,
+                  "text": "\"Alex is leaving the team. go through Alex's open tasks (not done) in order of id: if it's urgent or high priority, give it to whoever has the fewest open points at that moment...\""
+                },
+                {
+                  "text": " About 68 tool calls per run."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Scaling:"
+                },
+                {
+                  "text": " one task per app, with the same rule at N = 5, 20, 50, 100 and 200 items. "
+                },
+                {
+                  "italic": true,
+                  "text": "\"I have a pile of meeting invites I never answered. for each one: accept it if it's on a weekday and ends by 5pm, decline it if it's on a weekend or ends after 5pm.\""
+                },
+                {
+                  "text": " At N = 200, runs without code mode averaged 168 tool calls."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each app is a Pydantic AI agent. With code mode on, it gets Pydantic AI Harness's CodeMode capability with eager execution, which can start running a complete statement before the model finishes writing the run_code call. With code mode off, the same agent calls the same tools directly. Everything was pinned to one commit, and code mode was flipped with a single setting, so the only difference between arms is code mode itself. The prompts are written the way a person actually types, and every run is graded by a deterministic oracle: the app's end state has to match the expected state exactly (money within a cent), and the reply has to contain the right numbers. No LLM judge.",
+          "inlines": [
+            {
+              "text": "Each app is a Pydantic AI agent. With code mode on, it gets Pydantic AI Harness's "
+            },
+            {
+              "href": "https://pydantic.dev/docs/ai/harness/code-mode/",
+              "code": true,
+              "text": "CodeMode"
+            },
+            {
+              "text": " capability with "
+            },
+            {
+              "href": "https://pydantic.dev/docs/ai/harness/code-mode/#eager-execution",
+              "text": "eager execution"
+            },
+            {
+              "text": ", which can start running a complete statement before the model finishes writing the "
+            },
+            {
+              "code": true,
+              "text": "run_code"
+            },
+            {
+              "text": " call. With code mode off, the same agent calls the same tools directly. Everything was pinned to one commit, and code mode was flipped with a single setting, so the only difference between arms is code mode itself. The prompts are written the way a person actually types, and every run is graded by a deterministic oracle: the app's end state has to match the expected state exactly (money within a cent), and the reply has to contain the right numbers. No LLM judge."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Methodology",
+          "inlines": [
+            {
+              "text": "Methodology"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Availability:"
+                },
+                {
+                  "text": " the benchmark code isn't public, so this note gives the full setup: versions, models, cost, arms, runs, validation and statistics, plus its known warts."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "System under test:"
+                },
+                {
+                  "text": " Pydantic AI "
+                },
+                {
+                  "code": true,
+                  "text": "2.56.1.dev13"
+                },
+                {
+                  "text": " and Pydantic AI Harness "
+                },
+                {
+                  "code": true,
+                  "text": "0.56.1.dev13"
+                },
+                {
+                  "text": ", both built from "
+                },
+                {
+                  "code": true,
+                  "text": "pydantic/pydantic-ai"
+                },
+                {
+                  "text": " commit "
+                },
+                {
+                  "code": true,
+                  "text": "b82f0f258f4d"
+                },
+                {
+                  "text": ", the same settings in every arm apart from code mode."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Models:"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "gpt-6.1-sol"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "gpt-6-luna"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "gpt-6-astra"
+                },
+                {
+                  "text": " through a Codex subscription, "
+                },
+                {
+                  "code": true,
+                  "text": "claude-sonnet-5-5"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "claude-haiku-5-5"
+                },
+                {
+                  "text": " through a Claude Code subscription, "
+                },
+                {
+                  "code": true,
+                  "text": "muse-spark-1.3-contributor"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "muse-wonder-1.0-contributor"
+                },
+                {
+                  "text": " through Meta's contributor API, and "
+                },
+                {
+                  "code": true,
+                  "text": "deepseek-v4.1-flash"
+                },
+                {
+                  "text": " on our own vLLM server. All eight ran every tier, each with its provider's default settings."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Cost:"
+                },
+                {
+                  "text": " API list prices from "
+                },
+                {
+                  "code": true,
+                  "text": "genai-prices"
+                },
+                {
+                  "text": " for the GPT and Claude models. It has no prices for the other three, so their runs are priced from their recorded tokens: the Muse models at Meta's standard list prices for "
+                },
+                {
+                  "code": true,
+                  "text": "muse-spark-1.3"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "muse-wonder-1.0"
+                },
+                {
+                  "text": " (not the cheaper contributor rates), and "
+                },
+                {
+                  "code": true,
+                  "text": "deepseek-v4.1-flash"
+                },
+                {
+                  "text": " at its price in OpenRouter's model catalog on October 22, 2026 ("
+                },
+                {
+                  "href": "https://web.archive.org/web/20261023141351/https://openrouter.ai/api/v1/models",
+                  "text": "archived copy"
+                },
+                {
+                  "text": "): $0.30 per million input tokens, $0.006 cached and $1.20 output. That's also the most common rate across the model's 40 provider endpoints there (12 charge it). Input prices ranged from $0.07 to $0.60, so your deepseek bill depends on where you run it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Arms:"
+                },
+                {
+                  "text": " code mode off (plain tool calling) and code mode on ("
+                },
+                {
+                  "code": true,
+                  "text": "CodeMode(eager=True)"
+                },
+                {
+                  "text": " with the default resource limits and the built-in "
+                },
+                {
+                  "code": true,
+                  "text": "OSAccess"
+                },
+                {
+                  "text": " handler: an in-memory filesystem and environment, and the host clock). The first everyday batch also ran code mode with speculative execution."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Runs:"
+                },
+                {
+                  "text": " everyday 3,500 (50 tests × 2 arms × 8 models × 4 reps, plus a third arm in the first batch); long horizon 576 (12 tests × 2 arms × 8 models × 3 reps); scaling 1,200 (25 tests × 2 arms × 8 models × 3 reps). 5,276 graded runs in randomized blocks. 27 infrastructure failures were retried. No run timed out, and no cell is missing."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Validation before any model run:"
+                },
+                {
+                  "text": " for every test, the untouched seed fails its grader, a scripted reference solution passes, and a deliberately wrong one (a missed page, an off-by-one boundary) fails."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Statistics:"
+                },
+                {
+                  "text": " task-balanced means and 95% bootstrap intervals over tests, planned before each batch ran. The benchmark grew in stages, each planned after the previous results were in: the GPT models first, then the Claude models and the long and scaling tiers, then the Muse and deepseek models. Pooling all eight models in every tier was decided before their last batches ran, and the Muse and deepseek prices were added after every run had finished. deepseek-v4.1-flash's everyday runs shared its server with up to 15 others, so compare its wall time across arms, not across tiers."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Known warts:"
+                },
+                {
+                  "text": " two prompts are ambiguous, one everyday and one long (\"how many lines are still in the cart\"). Both are graded as frozen. Leaving them out changes no headline by more than a point."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Everything below compares code mode on to code mode off.",
+          "inlines": [
+            {
+              "text": "Everything below compares code mode on to code mode off."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The longer the task, the bigger the gap",
+          "inlines": [
+            {
+              "text": "The longer the task, the bigger the gap"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Start with the scaling tier, because it's the cleanest experiment in the whole benchmark: same app, same rule, same prompt, and the only thing that changes is how many items the rule touches. Here's gpt-6.1-sol on all five tasks, wall time on top and cost below:",
+          "inlines": [
+            {
+              "text": "Start with the scaling tier, because it's the cleanest experiment in the whole benchmark: same app, same rule, same prompt, and the only thing that changes is how many items the rule touches. Here's gpt-6.1-sol on all five tasks, wall time on top and cost below:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Without code mode, both lines climb with every item. That's what tool calling is: every item is a call the model has to write, and every result is something it has to read back. For gpt-6.1-sol, each extra 100 items added 30 to 79 seconds and $0.04 to $0.07 per run.",
+          "inlines": [
+            {
+              "text": "Without code mode, both lines climb with every item. That's what tool calling "
+            },
+            {
+              "italic": true,
+              "text": "is"
+            },
+            {
+              "text": ": every item is a call the model has to write, and every result is something it has to read back. For gpt-6.1-sol, each extra 100 items added 30 to 79 seconds and $0.04 to $0.07 per run."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With code mode, four of the five lines are close to flat. Closing out a sprint of 200 cards took 166.6 seconds without code mode and 26.6 seconds with it. Each extra 100 cards added 79 seconds without code mode and 4 seconds with it.",
+          "inlines": [
+            {
+              "text": "With code mode, four of the five lines are close to flat. Closing out a sprint of 200 cards took 166.6 seconds without code mode and 26.6 seconds with it. Each extra 100 cards added 79 seconds without code mode and 4 seconds with it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What each extra 100 items cost gpt-6.1-sol, per task:",
+          "inlines": [
+            {
+              "text": "What each extra 100 items cost gpt-6.1-sol, per task:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Code mode off",
+          "inlines": [
+            {
+              "text": "Code mode off"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Code mode on",
+          "inlines": [
+            {
+              "text": "Code mode on"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+66 s, +$0.065",
+          "inlines": [
+            {
+              "text": "+66 s, +$0.065"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+9 s, +$0.008",
+          "inlines": [
+            {
+              "text": "+9 s, +$0.008"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+54 s, +$0.068",
+          "inlines": [
+            {
+              "text": "+54 s, +$0.068"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+6 s, +$0.002",
+          "inlines": [
+            {
+              "text": "+6 s, +$0.002"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+30 s, +$0.039",
+          "inlines": [
+            {
+              "text": "+30 s, +$0.039"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+6 s, +$0.016",
+          "inlines": [
+            {
+              "text": "+6 s, +$0.016"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+79 s, +$0.067",
+          "inlines": [
+            {
+              "text": "+79 s, +$0.067"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+4 s, +$0.006",
+          "inlines": [
+            {
+              "text": "+4 s, +$0.006"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+63 s, +$0.061",
+          "inlines": [
+            {
+              "text": "+63 s, +$0.061"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+29 s, +$0.028",
+          "inlines": [
+            {
+              "text": "+29 s, +$0.028"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Inventory is the exception, and it's a fair one: the delivery is pasted into the prompt as a list of N lines, so with or without code mode, the model has to read all of it.",
+          "inlines": [
+            {
+              "text": "Inventory is the exception, and it's a fair one: the delivery is pasted into the prompt as a list of N lines, so with or without code mode, the model has to read all of it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Across all eight models, here's where code mode starts to pay:",
+          "inlines": [
+            {
+              "text": "Across all eight models, here's where code mode starts to pay:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At 5 items, code mode costs more on three of the five tasks, by 21% to 38%. Its guidance rides along on every request, and five calls is not much work to fold into a loop. By 50 items it's cheaper on four of the five, and by 200 it saves 47% to 75% of the cost and 42% to 67% of the wall time on every task.",
+          "inlines": [
+            {
+              "text": "At 5 items, code mode costs more on three of the five tasks, by 21% to 38%. Its guidance rides along on every request, and five calls is not much work to fold into a loop. By 50 items it's cheaper on four of the five, and by 200 it saves 47% to 75% of the cost and 42% to 67% of the wall time on every task."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Look at the bottom panel, though: even at 200 items, model requests barely move on average, down 1% to 22%. More on that below.",
+          "inlines": [
+            {
+              "text": "Look at the bottom panel, though: even at 200 items, model requests barely move on average, down 1% to 22%. More on that below."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "And then there's correctness:",
+          "inlines": [
+            {
+              "text": "And then there's correctness:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Without code mode, success slides as N grows: from 92-100% at 5 items to 62-79% at 200. With code mode it ends at 92-100%. Across every size, that's 518 of 600 runs right without code mode and 577 of 600 with it. Per size the samples are small (24 runs per arm), and only 5 of the 25 gaps clear zero on their own, but the direction is the same on all five tasks: at 200 items, code mode was ahead on every one.",
+          "inlines": [
+            {
+              "text": "Without code mode, success slides as N grows: from 92-100% at 5 items to 62-79% at 200. With code mode it ends at 92-100%. Across every size, that's 518 of 600 runs right without code mode and 577 of 600 with it. Per size the samples are small (24 runs per arm), and only 5 of the 25 gaps clear zero on their own, but the direction is the same on all five tasks: at 200 items, code mode was ahead on every one."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The weakest model shows it most. At 200 items gpt-6-luna got 0 of 15 runs right without code mode, and in 7 of them it never changed anything. It just explained why it couldn't:",
+          "inlines": [
+            {
+              "text": "The weakest model shows it most. At 200 items gpt-6-luna got "
+            },
+            {
+              "bold": true,
+              "text": "0 of 15"
+            },
+            {
+              "text": " runs right without code mode, and in 7 of them it never changed anything. It just explained why it couldn't:"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "I found 200 cards labelled sprint-42, but I haven't changed them yet: the board tools require updating each card individually, and the card list is too large to safely process in a single operation here."
+        },
+        {
+          "type": "paragraph",
+          "text": "With code mode, the same model got 8 of those 15 right. It wasn't a crash, a timeout or a context overflow: no run without code mode had any of those. It's a model looking at 200 calls and declining to make them.",
+          "inlines": [
+            {
+              "text": "With code mode, the same model got 8 of those 15 right. It wasn't a crash, a timeout or a context overflow: no run without code mode had any of those. It's a model looking at 200 calls and declining to make them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Some models never missed with code mode. Across all five tasks, muse-spark-1.3-contributor, muse-wonder-1.0-contributor and deepseek-v4.1-flash got all 225 of their code mode runs right, against 202 of 225 without.",
+          "inlines": [
+            {
+              "text": "Some models never missed with code mode. Across all five tasks, muse-spark-1.3-contributor, muse-wonder-1.0-contributor and deepseek-v4.1-flash got all 225 of their code mode runs right, against 202 of 225 without."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model",
+          "inlines": [
+            {
+              "text": "Model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Correct runs, off → on",
+          "inlines": [
+            {
+              "text": "Correct runs, off → on"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wall time at 200 items",
+          "inlines": [
+            {
+              "text": "Wall time at 200 items"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "muse-spark-1.3-contributor",
+          "inlines": [
+            {
+              "text": "muse-spark-1.3-contributor"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "65 → 75 of 75",
+          "inlines": [
+            {
+              "text": "65 → 75 of 75"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-28% to -50%",
+          "inlines": [
+            {
+              "text": "-28% to -50%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "muse-wonder-1.0-contributor",
+          "inlines": [
+            {
+              "text": "muse-wonder-1.0-contributor"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "75 → 75 of 75",
+          "inlines": [
+            {
+              "text": "75 → 75 of 75"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-41% to -61%",
+          "inlines": [
+            {
+              "text": "-41% to -61%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "deepseek-v4.1-flash",
+          "inlines": [
+            {
+              "text": "deepseek-v4.1-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "62 → 75 of 75",
+          "inlines": [
+            {
+              "text": "62 → 75 of 75"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-58% to -87%",
+          "inlines": [
+            {
+              "text": "-58% to -87%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Eight of muse-spark-1.3-contributor's ten failures were one habit: it triaged the chat correctly, then posted a summary as a new message in #support, which the prompt didn't ask for. As graded, those runs are wrong. Ignore the posted messages and it got 14 of 15 chat runs right without code mode. With code mode it never posted one.",
+          "inlines": [
+            {
+              "text": "Eight of muse-spark-1.3-contributor's ten failures were one habit: it triaged the chat correctly, then posted a summary as a new message in #support, which the prompt didn't ask for. As graded, those runs are wrong. Ignore the posted messages and it got 14 of 15 chat runs right without code mode. With code mode it never posted one."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "One task at 200 items",
+          "inlines": [
+            {
+              "text": "One task at 200 items"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "One of those runs, up close: gpt-6.1-sol answering 200 invites, both arms graded correct.",
+          "inlines": [
+            {
+              "text": "One of those runs, up close: gpt-6.1-sol answering 200 invites, both arms graded correct."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Without code mode it made 205 tool calls, packed into 7 responses, up to 43 in one. The batching was already good. The trouble is what each request carries: the conversation so far, including every tool result. By the end it had read 183,723 input tokens, written 4,430 output tokens to spell out those 205 calls and the answer, and taken two minutes.",
+          "inlines": [
+            {
+              "text": "Without code mode it made 205 tool calls, packed into 7 responses, up to 43 in one. The batching was already good. The trouble is what each request carries: the conversation so far, including every tool result. By the end it had read 183,723 input tokens, written 4,430 output tokens to spell out those 205 calls and the answer, and taken two minutes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With code mode it wrote 5 snippets, the calendar served 215 calls, and the model read 34,461 tokens and wrote 573. Wall time fell 76%, cost 84%. Requests went from 8 to 6.",
+          "inlines": [
+            {
+              "text": "With code mode it wrote 5 snippets, the calendar served 215 calls, and the model read 34,461 tokens and wrote 573. Wall time fell 76%, cost 84%. Requests went from 8 to 6."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Models already batch",
+          "inlines": [
+            {
+              "text": "Models already batch"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "I assumed going in that \"remove 22 items\" meant 22 round trips without code mode. It doesn't. Modern models emit parallel tool calls, and they emit a lot of them. In the long tier, the busiest single response carried 77 calls from gpt-6.1-sol and 119 from both Claude models. At 200 items, claude-haiku-5-5 put all 200 calls in one response.",
+          "inlines": [
+            {
+              "text": "I assumed going in that \"remove 22 items\" meant 22 round trips without code mode. It doesn't. Modern models emit "
+            },
+            {
+              "href": "https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling",
+              "text": "parallel tool calls"
+            },
+            {
+              "text": ", and they emit a lot of them. In the long tier, the busiest single response carried 77 calls from gpt-6.1-sol and 119 from both Claude models. At 200 items, claude-haiku-5-5 put all 200 calls in one response."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So round trips don't fall the way the pitch says, at least not for the models that batch hardest. Across the long tier, model requests fell 22%, but it depends on the model. The GPT models made a third fewer requests (-33%), and the Claude models made more, +24% for claude-haiku-5-5 and +26% for claude-sonnet-5-5. Without code mode they fire one huge burst; with it they write about five short snippets per run and read each result before writing the next. They still cost 67% and 70% less. The models that batch least gained the most: muse-spark-1.3-contributor, muse-wonder-1.0-contributor and deepseek-v4.1-flash put at most 25 to 50 calls in one response, made 13 to 22 requests per run without code mode, and 27% to 52% fewer with it (muse-spark-1.3-contributor's drop is within noise).",
+          "inlines": [
+            {
+              "text": "So round trips don't fall the way the pitch says, at least not for the models that batch hardest. Across the long tier, model requests fell 22%, but it depends on the model. The GPT models made a third fewer requests (-33%), and the Claude models made "
+            },
+            {
+              "italic": true,
+              "text": "more"
+            },
+            {
+              "text": ", +24% for claude-haiku-5-5 and +26% for claude-sonnet-5-5. Without code mode they fire one huge burst; with it they write about five short snippets per run and read each result before writing the next. They still cost 67% and 70% less. The models that batch least gained the most: muse-spark-1.3-contributor, muse-wonder-1.0-contributor and deepseek-v4.1-flash put at most 25 to 50 calls in one response, made 13 to 22 requests per run without code mode, and 27% to 52% fewer with it (muse-spark-1.3-contributor's drop is within noise)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This is where I'd push on the usual pitch, that every tool call costs another model turn. For independent calls on current models, that mostly isn't true. What still costs a turn is a dependent step: you can't answer an invite until you've listed the page it's on. What code mode removes is the part of each turn that grows with the work: the calls the model has to write out, and the results it has to read back in.",
+          "inlines": [
+            {
+              "text": "This is where I'd push on the usual pitch, that every tool call costs another model turn. For independent calls on current models, that mostly isn't true. What still costs a turn is a "
+            },
+            {
+              "italic": true,
+              "text": "dependent"
+            },
+            {
+              "text": " step: you can't answer an invite until you've listed the page it's on. What code mode removes is the part of each turn that grows with the work: the calls the model has to write out, and the results it has to read back in."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The exception is deepseek-v4.1-flash. It does batch, up to 80 calls in one response, but at 200 items without code mode it averaged 64 requests per run (up to 171) and read 2.8 million input tokens. With code mode: 11 requests and 86,000 tokens. Answering 200 invites took it 1,070 seconds per run without code mode and 138 with it. It ran on one vLLM server whose load we didn't control, so read its seconds loosely; the requests and tokens don't depend on the server.",
+          "inlines": [
+            {
+              "text": "The exception is deepseek-v4.1-flash. It does batch, up to 80 calls in one response, but at 200 items without code mode it averaged 64 requests per run (up to 171) and read 2.8 million input tokens. With code mode: 11 requests and 86,000 tokens. Answering 200 invites took it 1,070 seconds per run without code mode and 138 with it. It ran on one vLLM server whose load we didn't control, so read its seconds loosely; the requests and tokens don't depend on the server."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Long-horizon tasks: cheaper, faster, and right more often",
+          "inlines": [
+            {
+              "text": "Long-horizon tasks: cheaper, faster, and right more often"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The long tier is the closest thing here to real agent work: a dozen steps, rules that interact, and a few hundred records to keep straight. \"supplier price update plus some housekeeping, in this order: 1. raise the unit cost of every fastener and every electrical product by 6%...\"",
+          "inlines": [
+            {
+              "text": "The long tier is the closest thing here to real agent work: a dozen steps, rules that interact, and a few hundred records to keep straight. "
+            },
+            {
+              "italic": true,
+              "text": "\"supplier price update plus some housekeeping, in this order: 1. raise the unit cost of every fastener and every electrical product by 6%...\""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Code mode was right at least as often on every model, and the weaker the model, the bigger the jump: gpt-6-luna went from 14% to 58%, claude-haiku-5-5 from 64% to 94%, deepseek-v4.1-flash from 81% to 100%. gpt-6.1-sol and claude-sonnet-5-5 reached 100% too, and muse-wonder-1.0-contributor didn't miss in either arm.",
+          "inlines": [
+            {
+              "text": "Code mode was right at least as often on every model, and the weaker the model, the bigger the jump: gpt-6-luna went from 14% to "
+            },
+            {
+              "bold": true,
+              "text": "58%"
+            },
+            {
+              "text": ", claude-haiku-5-5 from 64% to "
+            },
+            {
+              "bold": true,
+              "text": "94%"
+            },
+            {
+              "text": ", deepseek-v4.1-flash from 81% to "
+            },
+            {
+              "bold": true,
+              "text": "100%"
+            },
+            {
+              "text": ". gpt-6.1-sol and claude-sonnet-5-5 reached 100% too, and muse-wonder-1.0-contributor didn't miss in either arm."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "And it did that while cutting cost and wall time on every model, every interval clear of zero:",
+          "inlines": [
+            {
+              "text": "And it did that while cutting cost and wall time on every model, every interval clear of zero:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In dollars and seconds per run:",
+          "inlines": [
+            {
+              "text": "In dollars and seconds per run:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cost per run",
+          "inlines": [
+            {
+              "text": "Cost per run"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wall time",
+          "inlines": [
+            {
+              "text": "Wall time"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "gpt-6.1-sol",
+          "inlines": [
+            {
+              "text": "gpt-6.1-sol"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.074 → $0.033 (-55%)",
+          "inlines": [
+            {
+              "text": "$0.074 → $0.033 ("
+            },
+            {
+              "bold": true,
+              "text": "-55%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "75.0 → 28.2 s (-62%)",
+          "inlines": [
+            {
+              "text": "75.0 → 28.2 s ("
+            },
+            {
+              "bold": true,
+              "text": "-62%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "gpt-6-luna",
+          "inlines": [
+            {
+              "text": "gpt-6-luna"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0029 → $0.0021 (-30%)",
+          "inlines": [
+            {
+              "text": "$0.0029 → $0.0021 ("
+            },
+            {
+              "bold": true,
+              "text": "-30%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48.5 → 38.2 s (-21%)",
+          "inlines": [
+            {
+              "text": "48.5 → 38.2 s ("
+            },
+            {
+              "bold": true,
+              "text": "-21%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "gpt-6-astra",
+          "inlines": [
+            {
+              "text": "gpt-6-astra"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.365 → $0.149 (-59%)",
+          "inlines": [
+            {
+              "text": "$0.365 → $0.149 ("
+            },
+            {
+              "bold": true,
+              "text": "-59%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "72.8 → 28.4 s (-61%)",
+          "inlines": [
+            {
+              "text": "72.8 → 28.4 s ("
+            },
+            {
+              "bold": true,
+              "text": "-61%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "claude-haiku-5-5",
+          "inlines": [
+            {
+              "text": "claude-haiku-5-5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0127 → $0.0042 (-67%)",
+          "inlines": [
+            {
+              "text": "$0.0127 → $0.0042 ("
+            },
+            {
+              "bold": true,
+              "text": "-67%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "55.2 → 23.0 s (-58%)",
+          "inlines": [
+            {
+              "text": "55.2 → 23.0 s ("
+            },
+            {
+              "bold": true,
+              "text": "-58%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "claude-sonnet-5-5",
+          "inlines": [
+            {
+              "text": "claude-sonnet-5-5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.176 → $0.053 (-70%)",
+          "inlines": [
+            {
+              "text": "$0.176 → $0.053 ("
+            },
+            {
+              "bold": true,
+              "text": "-70%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "56.7 → 21.6 s (-62%)",
+          "inlines": [
+            {
+              "text": "56.7 → 21.6 s ("
+            },
+            {
+              "bold": true,
+              "text": "-62%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.245 → $0.110 (-55%)",
+          "inlines": [
+            {
+              "text": "$0.245 → $0.110 ("
+            },
+            {
+              "bold": true,
+              "text": "-55%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "137.0 → 84.1 s (-39%)",
+          "inlines": [
+            {
+              "text": "137.0 → 84.1 s ("
+            },
+            {
+              "bold": true,
+              "text": "-39%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.470 → $0.207 (-56%)",
+          "inlines": [
+            {
+              "text": "$0.470 → $0.207 ("
+            },
+            {
+              "bold": true,
+              "text": "-56%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "57.8 → 29.1 s (-50%)",
+          "inlines": [
+            {
+              "text": "57.8 → 29.1 s ("
+            },
+            {
+              "bold": true,
+              "text": "-50%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.027 → $0.0072 (-73%)",
+          "inlines": [
+            {
+              "text": "$0.027 → $0.0072 ("
+            },
+            {
+              "bold": true,
+              "text": "-73%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "311.9 → 136.4 s (-56%)",
+          "inlines": [
+            {
+              "text": "311.9 → 136.4 s ("
+            },
+            {
+              "bold": true,
+              "text": "-56%"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "all models",
+          "inlines": [
+            {
+              "text": "all models"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-58%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "-58%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-51%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "-51%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The failures without code mode are the same kind I saw on the everyday tasks, just more of them: arithmetic and bookkeeping over hundreds of records. In the supplier-price test, 16 of 24 runs without code mode failed, against 1 of 24 with it. Six of those runs, from three different models, reported a stock value of $1,671,683.13. The right answer was $1,671,682.13, and their own end states were worth exactly that. The edits were fine; the sum in the reply was not. Every code mode run that gave a value gave $1,671,682.13.",
+          "inlines": [
+            {
+              "text": "The failures without code mode are the same kind I saw on the everyday tasks, just more of them: arithmetic and bookkeeping over hundreds of records. In the supplier-price test, 16 of 24 runs without code mode failed, against 1 of 24 with it. Six of those runs, from three different models, reported a stock value of $1,671,683.13. The right answer was $1,671,682.13, and their own end states were worth exactly that. The edits were fine; the sum in the reply was not. Every code mode run that gave a value gave $1,671,682.13."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Counting every failure in the long tier, without code mode: 52 wrong end states, 11 right end states with a wrong reply, and 4 runs that changed nothing (all gpt-6-luna). With code mode: 16, 5 and 0.",
+          "inlines": [
+            {
+              "text": "Counting every failure in the long tier, without code mode: 52 wrong end states, 11 right end states with a wrong reply, and 4 runs that changed nothing (all gpt-6-luna). With code mode: 16, 5 and 0."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where the tokens go",
+          "inlines": [
+            {
+              "text": "Where the tokens go"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The token picture is what explains the cost:",
+          "inlines": [
+            {
+              "text": "The token picture is what explains the cost:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Output tokens fell 66% across the eight models, from -43% on gpt-6-luna to -80% on claude-sonnet-5-5. Output is the slow, expensive part, and it's what the model spends writing out every call and every intermediate value. Input tokens fell 53% too, because fewer results pile up in the context.",
+          "inlines": [
+            {
+              "text": "Output tokens fell 66% across the eight models, from -43% on gpt-6-luna to -80% on claude-sonnet-5-5. Output is the slow, expensive part, and it's what the model spends writing out every call and every intermediate value. Input tokens fell 53% too, because fewer results pile up in the context."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On short tasks the input side goes the other way. Code mode's guidance (how run_code works, what's available in the sandbox) adds about 2,600 characters to every request, a flat fee you pay per request no matter how small the job. On the everyday tasks input rose 29% while output fell 37%. At 5 items in the scaling tier total tokens rose 65% to 114%. That flat fee is most of the tax, and on long work it disappears into the savings.",
+          "inlines": [
+            {
+              "text": "On short tasks the input side goes the other way. Code mode's guidance (how "
+            },
+            {
+              "code": true,
+              "text": "run_code"
+            },
+            {
+              "text": " works, what's available in the sandbox) adds about 2,600 characters to every request, a flat fee you pay per request no matter how small the job. On the everyday tasks input rose 29% while output fell 37%. At 5 items in the scaling tier total tokens rose 65% to 114%. That flat fee is most of the tax, and on long work it disappears into the savings."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Everyday tasks: cheaper, about as correct",
+          "inlines": [
+            {
+              "text": "Everyday tasks: cheaper, about as correct"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The 50 everyday tests are short: four or five requests and a dozen tool calls each. This is where I started, and where code mode's case is quietest.",
+          "inlines": [
+            {
+              "text": "The 50 everyday tests are short: four or five requests and a dozen tool calls each. This is where I started, and where code mode's case is quietest."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model (4 reps, 3,200 runs)",
+          "inlines": [
+            {
+              "text": "Model (4 reps, 3,200 runs)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Success",
+          "inlines": [
+            {
+              "text": "Success"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "96% → 98% (noise)",
+          "inlines": [
+            {
+              "text": "96% → 98% (noise)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-9%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "-9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "66% → 85%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "66% → 85%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+19%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "+19%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "94% → 98%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "94% → 98%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-7% (noise)",
+          "inlines": [
+            {
+              "text": "-7% (noise)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "96% → 96% (noise)",
+          "inlines": [
+            {
+              "text": "96% → 96% (noise)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-40%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "-40%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "97% → 95% (noise)",
+          "inlines": [
+            {
+              "text": "97% → 95% (noise)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-38%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "-38%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98% → 92% (worse)",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98% → 92%"
+            },
+            {
+              "text": " (worse)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-13%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "-13%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98% → 94% (noise)",
+          "inlines": [
+            {
+              "text": "98% → 94% (noise)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-8% (noise)",
+          "inlines": [
+            {
+              "text": "-8% (noise)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "96% → 95% (noise)",
+          "inlines": [
+            {
+              "text": "96% → 95% (noise)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-34%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "-34%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+1.6 pts (noise)",
+          "inlines": [
+            {
+              "text": "+1.6 pts (noise)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-16%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "-16%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Across all eight models, code mode was 16% cheaper and 11% faster, and right about as often. The average hides a split. Most of the models were already right 94% to 98% of the time without code mode, and stayed there. gpt-6-luna is the exception, and most of its gain is on questions. In the first batch, twelve of the tests asked for a number (\"what's my cart total going to be if dairy is 10% off?\"), and gpt-6-luna got 38% of them right without code mode and 88% with it. Without code mode the models added up 30 to 120 rows in their heads and missed, stopped after two of three pages, or just declined: \"I can't reliably calculate the total from this many cart lines.\" In the other direction, muse-spark-1.3-contributor was right less often with code mode, and every one of those misses left the app in the wrong state.",
+          "inlines": [
+            {
+              "text": "Across all eight models, code mode was 16% cheaper and 11% faster, and right about as often. The average hides a split. Most of the models were already right 94% to 98% of the time without code mode, and stayed there. gpt-6-luna is the exception, and most of its gain is on questions. In the first batch, twelve of the tests asked for a number (\"what's my cart total going to be if dairy is 10% off?\"), and gpt-6-luna got 38% of them right without code mode and 88% with it. Without code mode the models added up 30 to 120 rows in their heads and missed, stopped after two of three pages, or just declined: "
+            },
+            {
+              "italic": true,
+              "text": "\"I can't reliably calculate the total from this many cart lines.\""
+            },
+            {
+              "text": " In the other direction, muse-spark-1.3-contributor was right less often with code mode, and every one of those misses left the app in the wrong state."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Splitting by kind of task shows where the tax lands:",
+          "inlines": [
+            {
+              "text": "Splitting by kind of task shows where the tax lands:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Aggregates (questions over many rows) are where code mode shines: 90% to 98% correct, 27% cheaper, 26% faster. Then there's the control group, five tests that are a single operation (\"change the sourdough to 2 please\"). There code mode cost 8% more and took 16% longer, because the model paid for the guidance and wrote a program to make one call. Bulk edits were cheaper too, but less often right (95% to 90%), and the Muse models account for most of that drop. Categories have 5 to 10 tests each, too few for intervals, so treat those bars as direction.",
+          "inlines": [
+            {
+              "text": "Aggregates (questions over many rows) are where code mode shines: 90% to 98% correct, 27% cheaper, 26% faster. Then there's the control group, five tests that are a single operation (\"change the sourdough to 2 please\"). There code mode cost 8% more and took 16% longer, because the model paid for the guidance and wrote a program to make one call. Bulk edits were cheaper too, but less often right (95% to 90%), and the Muse models account for most of that drop. Categories have 5 to 10 tests each, too few for intervals, so treat those bars as direction."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where code mode costs",
+          "inlines": [
+            {
+              "text": "Where code mode costs"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The honest list, because there is one:",
+          "inlines": [
+            {
+              "text": "The honest list, because there is one:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Small jobs."
+                },
+                {
+                  "text": " At 5 items, code mode cost more on three of the five scaling tasks; by 20 it was cheaper on three and level on one. Chat triage crossed over last: it cost more at 5 and 20 messages and only got cheaper from 100. Telling a refund request from other messages means reading the text, so with code mode the messages still pass through the model."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Small models that write buggy code."
+                },
+                {
+                  "text": " gpt-6-luna paid 19% more on the everyday tasks, with 0.56 failed "
+                },
+                {
+                  "code": true,
+                  "text": "run_code"
+                },
+                {
+                  "text": " snippets per run, and every failure is another round trip. Per correct run it still came out cheaper: $0.00121 against $0.00130. On the inventory scaling task its cost grew "
+                },
+                {
+                  "italic": true,
+                  "text": "faster"
+                },
+                {
+                  "text": " with code mode than without, while it got 9 of 15 runs right instead of 3."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Models that print the data back."
+                },
+                {
+                  "text": " muse-spark-1.3-contributor's code mode runs printed much of the data into the conversation, so at 200 items its tokens fell only 5% to 64%. For muse-wonder-1.0-contributor and deepseek-v4.1-flash they fell 57% to 99%."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Retries can repeat writes."
+                },
+                {
+                  "text": " A snippet that fails halfway and gets rerun can do its first half twice. Three of gpt-6-luna's failures in the long tier created the same records twice."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "It can still get things wrong."
+                },
+                {
+                  "text": " On the everyday tasks, muse-spark-1.3-contributor was right 92% of the time with code mode and 98% without, the one drop whose interval clears zero. Most of its misses were bulk edits that left the app in the wrong state. In the scaling tier, two cells went the wrong way, both within noise. In calendar invites at N = 20 (92% → 83%), gpt-6-luna left invites unanswered and claude-haiku-5-5 miscounted its own work. In inventory at N = 5 (100% → 92%), claude-haiku-5-5 twice left a required number out of its reply."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So code mode earns its keep once the data or the task grows past what plain tool calling handles well. On these apps, for most tasks, that point was somewhere between 20 and 50 items.",
+          "inlines": [
+            {
+              "text": "So code mode earns its keep once the data or the task grows past what plain tool calling handles well. On these apps, for most tasks, that point was somewhere between 20 and 50 items."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "So why is it the future?",
+          "inlines": [
+            {
+              "text": "So why is it the future?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Because the curve is real, and it points one way. Code mode charges a flat fee: a couple of thousand characters of guidance per request. Tool calling charges per item: every call written out, every result read back in, every running total held in the model's head. On a single edit the flat fee loses. A few dozen items in, it starts winning, and by 200 items it's not close. I expect agent tasks to keep getting longer. I haven't measured that, but if they do, more and more of them will land on the right side of that curve.",
+          "inlines": [
+            {
+              "text": "Because the curve is real, and it points one way. Code mode charges a flat fee: a couple of thousand characters of guidance per request. Tool calling charges per item: every call written out, every result read back in, every running total held in the model's head. On a single edit the flat fee loses. A few dozen items in, it starts winning, and by 200 items it's not close. I expect agent tasks to keep getting longer. I haven't measured that, but if they do, more and more of them will land on the right side of that curve."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The tradeoffs are real, and worth taking seriously:",
+          "inlines": [
+            {
+              "text": "The tradeoffs are real, and worth taking seriously:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "You're running LLM-generated code."
+                },
+                {
+                  "text": " Yes, which is why the sandbox matters as much as the model. Generated code can only reach what you hand it, and it runs inside time and memory limits. Your tools are what you hand it, and they run with your app's authority, so they still need their own validation and authorization. "
+                },
+                {
+                  "href": "https://pydantic.dev/articles/pydantic-monty",
+                  "text": "Samuel's Monty post"
+                },
+                {
+                  "text": " explains why we built an interpreter that starts from nothing instead of locking down a full Python."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "It's harder to debug."
+                },
+                {
+                  "text": " Also yes. A failing program hides its intermediate values in the sandbox, and as gpt-6-luna showed, a rerun snippet can repeat its writes. You do have to read code now, not just JSON. What helps is that the program's calls still go through Pydantic AI to your real tools, so with "
+                },
+                {
+                  "href": "https://pydantic.dev/docs/ai/integrations/logfire/",
+                  "text": "Logfire"
+                },
+                {
+                  "text": " or any OpenTelemetry backend instrumenting the agent, each "
+                },
+                {
+                  "code": true,
+                  "text": "run_code"
+                },
+                {
+                  "text": " call is a span and every tool call inside it "
+                },
+                {
+                  "href": "https://pydantic.dev/docs/ai/harness/code-mode/#observability",
+                  "text": "gets its own span"
+                },
+                {
+                  "text": " underneath."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "You may not need it at all."
+                },
+                {
+                  "text": " True, and our small-N results back it up. The answer there is less code mode, not none. Pydantic AI's "
+                },
+                {
+                  "code": true,
+                  "text": "CodeMode"
+                },
+                {
+                  "text": " takes a "
+                },
+                {
+                  "href": "https://pydantic.dev/docs/ai/harness/code-mode/#selective-tool-sandboxing",
+                  "text": "tool selector"
+                },
+                {
+                  "text": ", so you can sandbox the tools that get looped over and leave the rest as plain tool calls."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Code mode is also just where the models are heading: writing code looks like the skill they're improving at fastest. My guess is that's because code is checkable, which makes it easy to train on. Either way, giving the model a programming language to drive your tools plays to the strength that's improving fastest.",
+          "inlines": [
+            {
+              "text": "Code mode is also just where the models are heading: writing code looks like the skill they're improving at fastest. My guess is that's because code is checkable, which makes it easy to train on. Either way, giving the model a programming language to drive your tools plays to the strength that's improving fastest."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "It also has to be safe to run. Every result above came from code mode inside a sandbox that could reach these apps' tools, an in-memory filesystem and environment, and the clock, and nothing else: no host files and no network. That's the setup we built Monty for.",
+          "inlines": [
+            {
+              "text": "It also has to be safe to run. Every result above came from code mode inside a sandbox that could reach these apps' tools, an in-memory filesystem and environment, and the clock, and nothing else: no host files and no network. That's the setup we built Monty for."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The next step is the same idea one level up. In dynamic workflows, the functions in the sandbox are sub-agents instead of tools, and the program the model writes is the orchestration. Samuel's graph, written by the model, at runtime, with agents as the nodes. That's the future I mean.",
+          "inlines": [
+            {
+              "text": "The next step is the same idea one level up. In "
+            },
+            {
+              "href": "https://pydantic.dev/articles/dynamic-workflows",
+              "text": "dynamic workflows"
+            },
+            {
+              "text": ", the functions in the sandbox are sub-agents instead of tools, and the program the model writes is the orchestration. Samuel's graph, written by the model, at runtime, with agents as the nodes. That's the future I mean."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Try it",
+          "inlines": [
+            {
+              "text": "Try it"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "In your own Pydantic AI agent, code mode is one capability from Pydantic AI Harness:",
+          "inlines": [
+            {
+              "text": "In your own Pydantic AI agent, code mode is one capability from Pydantic AI Harness:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "uv add \"pydantic-ai-harness[codemode]\" \"pydantic-ai-slim[openai]\"\nexport OPENAI_API_KEY=\"your-api-key\"\n",
+          "language": "bash"
+        },
+        {
+          "type": "paragraph",
+          "text": "Then give the agent its tools:",
+          "inlines": [
+            {
+              "text": "Then give the agent its tools:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from pydantic_ai import Agent\nfrom pydantic_ai_harness import CodeMode\n\nCART = {\n    1: {'name': 'Espresso machine', 'unit_price': 249.00},\n    2: {'name': 'Oat milk', 'unit_price': 3.49},\n    3: {'name': 'Cast iron pan', 'unit_price': 64.95},\n}\n\nagent = Agent(\n    'openai:gpt-6.1-sol',\n    instructions='You help the user manage their shopping cart. Prices are in US dollars.',\n    capabilities=[CodeMode()],\n)\n\n\n@agent.tool_plain\ndef list_items(offset: int = 0, limit: int = 20) -> dict:\n    \"\"\"List cart items in id order, one page at a time.\"\"\"\n    ids = sorted(CART)[offset : offset + limit]\n    next_offset = offset + limit if offset + limit < len(CART) else None\n    return {'items': [{'id': i, **CART[i]} for i in ids], 'next_offset': next_offset}\n\n\n@agent.tool_plain\ndef remove_item(item_id: int) -> str:\n    \"\"\"Remove one item from the cart.\"\"\"\n    return f'removed {CART.pop(item_id)[\"name\"]}'\n\n\nresult = agent.run_sync(\n    'can you get rid of everything in my cart that costs more than $50 a piece?'\n)\nprint(result.output)\n",
+          "language": "python"
+        },
+        {
+          "type": "paragraph",
+          "text": "The model sees one tool, run_code, and calls list_items and remove_item as async functions from inside it. That code runs in Monty, so those two functions are all it can reach. The benchmark ran it with eager=True. The code mode docs cover eager and speculative execution, tool selection, resource limits and the rest.",
+          "inlines": [
+            {
+              "text": "The model sees one tool, "
+            },
+            {
+              "code": true,
+              "text": "run_code"
+            },
+            {
+              "text": ", and calls "
+            },
+            {
+              "code": true,
+              "text": "list_items"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "remove_item"
+            },
+            {
+              "text": " as async functions from inside it. That code runs in Monty, so those two functions are all it can reach. The benchmark ran it with "
+            },
+            {
+              "code": true,
+              "text": "eager=True"
+            },
+            {
+              "text": ". The "
+            },
+            {
+              "href": "https://pydantic.dev/docs/ai/harness/code-mode/",
+              "text": "code mode docs"
+            },
+            {
+              "text": " cover eager and "
+            },
+            {
+              "href": "https://pydantic.dev/docs/ai/harness/code-mode/#speculative-execution",
+              "text": "speculative execution"
+            },
+            {
+              "text": ", tool selection, resource limits and the rest."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What about speculation?",
+          "inlines": [
+            {
+              "text": "What about speculation?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Pydantic AI Harness's CodeMode also has speculative execution: the speculative programmatic tool calling from the top of this post, which starts calls to tools you've declared safe to run early while the model is still writing the run_code call. None of these apps' tools were declared for it, so speculation had nothing to start early. In the first everyday batch it differed from plain code mode only in its longer guidance, and it showed: +7.7 points of success instead of +10.3, and +4% cost instead of -2%. The later batches skipped it. That's not a test of speculation, so I'm not drawing conclusions from it.",
+          "inlines": [
+            {
+              "text": "Pydantic AI Harness's "
+            },
+            {
+              "code": true,
+              "text": "CodeMode"
+            },
+            {
+              "text": " also has "
+            },
+            {
+              "href": "https://pydantic.dev/docs/ai/harness/code-mode/#speculative-execution",
+              "text": "speculative execution"
+            },
+            {
+              "text": ": the speculative programmatic tool calling from the top of this post, which starts calls to tools you've declared safe to run early while the model is still writing the "
+            },
+            {
+              "code": true,
+              "text": "run_code"
+            },
+            {
+              "text": " call. None of these apps' tools were declared for it, so speculation had nothing to start early. In the first everyday batch it differed from plain code mode only in its longer guidance, and it showed: +7.7 points of success instead of +10.3, and +4% cost instead of -2%. The later batches skipped it. That's not a test of speculation, so I'm not drawing conclusions from it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Thank you for reading!",
+          "inlines": [
+            {
+              "text": "Thank you for reading!"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgements",
+          "inlines": [
+            {
+              "text": "Acknowledgements"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://pydantic.dev/articles/the-code-is-the-graph",
+                  "text": "Samuel Colvin"
+                },
+                {
+                  "text": " for the graph argument, and for pushing me to find bigger differences."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Maverick ("
+                },
+                {
+                  "href": "https://github.com/maverick-jackson",
+                  "text": "@maverick-jackson"
+                },
+                {
+                  "text": "), whose code mode study set the A/B method this benchmark follows."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Ruben, for spotting that the first version of my success chart had \"more correct\" pointing the wrong way."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "See more from Pydantic in Google Search",
+          "inlines": [
+            {
+              "text": "See more from Pydantic in Google Search"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Add Pydantic as a preferred source so our latest articles are easier to find.",
+          "inlines": [
+            {
+              "text": "Add Pydantic as a preferred source so our latest articles are easier to find."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Choose Pydantic as a preferred source on Google (opens in a new tab)",
+          "inlines": [
+            {
+              "href": "https://www.google.com/preferences/source?q=pydantic.dev",
+              "text": "Choose Pydantic as a preferred source on Google (opens in a new tab)"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Ready to see what your agents are actually doing?",
+          "inlines": [
+            {
+              "text": "Ready to see what your agents are actually doing?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Start free Talk to us",
+          "inlines": [
+            {
+              "href": "https://pydantic.dev/signup",
+              "text": "Start free "
+            },
+            {
+              "href": "https://pydantic.dev/contact",
+              "text": "Talk to us"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Explore our open source packages",
+          "inlines": [
+            {
+              "href": "https://github.com/pydantic",
+              "text": "Explore our open source packages"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Related content",
+          "inlines": [
+            {
+              "text": "Related content"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "View all articles",
+          "inlines": [
+            {
+              "href": "https://pydantic.dev/articles",
+              "text": "View all articles"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "/Pydantic AIRun Pydantic AI coding agents in E2B sandboxes",
+          "inlines": [
+            {
+              "href": "https://pydantic.dev/articles/pydantic-ai-e2b-sandboxes",
+              "text": "/Pydantic AIRun Pydantic AI coding agents in E2B sandboxes"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Laís Carvalho2026/10/22/Pydantic MontyThe code is the graph",
+          "inlines": [
+            {
+              "href": "https://pydantic.dev/articles/pydantic-ai-e2b-sandboxes",
+              "text": "Laís Carvalho2026/10/22"
+            },
+            {
+              "href": "https://pydantic.dev/articles/the-code-is-the-graph",
+              "text": "/Pydantic MontyThe code is the graph"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Samuel Colvin2026/10/13",
+          "inlines": [
+            {
+              "href": "https://pydantic.dev/articles/the-code-is-the-graph",
+              "text": "Samuel Colvin2026/10/13"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-31T01:11:22.728369Z",
+  "contentMode": "full"
+}

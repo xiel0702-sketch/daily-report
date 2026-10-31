@@ -1,0 +1,1475 @@
+{
+  "schemaVersion": 1,
+  "id": "pg7avew3q9ekdp3ydzhiuh9y4",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/pg7avew3q9ekdp3ydzhiuh9y4",
+  "fetchedAt": "2026-10-31T01:10:42.525832Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic / Claude",
+    "Cursor",
+    "安全对齐",
+    "行业动态"
+  ],
+  "tags": [
+    "行业动态",
+    "安全/对齐",
+    "Anthropic"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "今天我们确认了一起安全事件，涉及 Cursor VS Code 扩展市场中的一个特定扩展包：Anthropic.claude-code 版本 2.1.313。这个恶意版本并非由 Anthropic 开发。受影响的用户最多 4,100 人，我们会直接联系他们。",
+          "inlines": [
+            {
+              "text": "今天我们确认了一起安全事件，涉及 Cursor VS Code 扩展市场中的一个特定扩展包："
+            },
+            {
+              "bold": true,
+              "text": "Anthropic.claude-code 版本 2.1.313"
+            },
+            {
+              "text": "。这个恶意版本并非由 Anthropic 开发。受影响的用户最多 4,100 人，我们会直接联系他们。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "事件经过",
+          "inlines": [
+            {
+              "text": "事件经过"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "今天太平洋时间约凌晨 2:27 至下午 1:35 之间，一个被恶意篡改的 Anthropic Claude Code 扩展版本出现在 Cursor VS Code 扩展市场中。该扩展会运行恶意代码，试图安装一个持久化的 SSH 后门。具体来说，它会：",
+          "inlines": [
+            {
+              "text": "今天太平洋时间约凌晨 2:27 至下午 1:35 之间，一个被恶意篡改的 Anthropic Claude Code 扩展版本出现在 Cursor VS Code 扩展市场中。该扩展会运行恶意代码，试图安装一个持久化的 SSH 后门。具体来说，它会："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "收集主机和用户信息：主机名、用户名、操作系统、架构、主目录路径、环境变量名、工作目录、配置的 Git 邮箱以及公网 IP。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "试图把攻击者控制的 SSH 密钥添加到 "
+                },
+                {
+                  "code": true,
+                  "text": "authorized_keys"
+                },
+                {
+                  "text": "，启用本地 SSH 服务，并打开一条反向 SSH 隧道。除非在极不寻常的情况下以管理员权限启动 Cursor，否则由于恶意代码本身存在错误，这一步会失败。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "试图通过 LaunchAgent（macOS）或计划任务（Windows，尝试以 SYSTEM 身份运行，并以启动脚本作为后备）让反向 SSH 隧道持久化。后台脚本大约每 60 秒重试一次隧道。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "通过 HTTP POST 向 "
+                },
+                {
+                  "code": true,
+                  "text": "/beacon"
+                },
+                {
+                  "text": " 的 8099 端口上报主机详情和后门状态。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "注意：攻击者的服务器已停止运行。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "注意：攻击者的服务器已停止运行。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "我们与托管该服务器的云服务商合作将其下线，因此反向 shell 和主机详情 POST 均已失效。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "以上发现针对的是已确认的这个包。我们没有证据表明该扩展的其他版本或官方分发渠道受到影响。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "此外，启用本地 SSH 服务需要管理员权限，而恶意扩展在大多数 macOS 和 Windows 主机上并没有该权限。在这些主机上这一步会失败，攻击者无法通过隧道登录。但该扩展仍会添加攻击者的 SSH 密钥、安装持久化机制，并把主机详情发送给攻击者。无论如何，请按照下面的修复步骤操作。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们做了什么",
+          "inlines": [
+            {
+              "text": "我们做了什么"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "发现后立即从市场移除了恶意版本，并阻止其继续分发。出于谨慎，我们随后完全关闭了 VS Code 市场。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们审计了访问权限，确认没有其他扩展被篡改。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们轮换了密钥，重建了市场，并使其恢复上线。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们与托管服务商合作将恶意服务器下线，切断了与该服务器的连接，从而阻断了攻击。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "你应该做什么",
+          "inlines": [
+            {
+              "text": "你应该做什么"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你在 2026 年 10 月 29 日太平洋时间凌晨 2:27 至下午 1:35 之间从 Cursor VS Code 扩展市场安装或更新到了 Anthropic.claude-code 2.1.313：",
+          "inlines": [
+            {
+              "text": "如果你在 2026 年 10 月 29 日太平洋时间凌晨 2:27 至下午 1:35 之间从 Cursor VS Code 扩展市场安装或更新到了 Anthropic.claude-code 2.1.313："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "运行下面的检查，确认你是否受到影响。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在终端、网络和扩展安装遥测中搜索以下指标。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "隔离出现载荷执行或后门安装迹象的主机。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "使用下面的修复脚本移除未经授权的 SSH 密钥、持久化机制和正在运行的隧道进程，并评估是否需要重建主机。仅卸载扩展可能不够——载荷会释放独立运行的持久化脚本。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "从可信系统上轮换受影响主机可访问的凭据和会话。虽然环境变量收集范围有限，但不能排除攻击者后续通过后门获取凭据的可能。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "检查你是否受到影响",
+          "inlines": [
+            {
+              "text": "检查你是否受到影响"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "恶意扩展会把攻击者的公钥（标记为 svc-telemetry）追加到你的 SSH authorized_keys 中。检查方法如下：",
+          "inlines": [
+            {
+              "text": "恶意扩展会把攻击者的公钥（标记为 "
+            },
+            {
+              "code": true,
+              "text": "svc-telemetry"
+            },
+            {
+              "text": "）追加到你的 SSH authorized_keys 中。检查方法如下："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "macOS 上运行：",
+          "inlines": [
+            {
+              "text": "macOS 上运行："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "grep -qs svc-telemetry ~/.ssh/authorized_keys && echo \"svc-telemetry key found\" || echo \"No key found; machine not impacted\""
+        },
+        {
+          "type": "paragraph",
+          "text": "Windows 上在 PowerShell 中运行：",
+          "inlines": [
+            {
+              "text": "Windows 上在 PowerShell 中运行："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$files = \"$HOME\\.ssh\\authorized_keys\", \"C:\\ProgramData\\ssh\\administrators_authorized_keys\" | Where-Object { Test-Path $_ }\nif ($files -and (Select-String svc-telemetry $files)) { \"svc-telemetry key found\" } else { \"No key found; machine not impacted\" }"
+        },
+        {
+          "type": "paragraph",
+          "text": "如果找到该公钥，说明你的机器已受影响。请按上文第 3 至第 5 步操作，并运行下面对应平台的修复脚本。",
+          "inlines": [
+            {
+              "text": "如果找到该公钥，说明你的机器已受影响。请按上文第 3 至第 5 步操作，并运行下面对应平台的修复脚本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些脚本会移除恶意扩展、持久化机制、正在运行的隧道进程以及攻击者的 SSH 公钥。若仍有残留，脚本会以非零状态退出。",
+          "inlines": [
+            {
+              "text": "这些脚本会移除恶意扩展、持久化机制、正在运行的隧道进程以及攻击者的 SSH 公钥。若仍有残留，脚本会以非零状态退出。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "macOS 上，下载 remediate-macos.sh，以受影响用户的身份（不要用 root）在保存该文件的目录中运行：",
+          "inlines": [
+            {
+              "text": "macOS 上，下载 "
+            },
+            {
+              "href": "https://cursor.com/static/security/claude-code-extension/remediate-macos.sh",
+              "text": "remediate-macos.sh"
+            },
+            {
+              "text": "，以受影响用户的身份（不要用 root）在保存该文件的目录中运行："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "bash remediate-macos.sh"
+        },
+        {
+          "type": "paragraph",
+          "text": "Windows 上，下载 remediate-windows.ps1，在保存该文件的目录中，用以管理员身份运行方式打开的 PowerShell 执行：",
+          "inlines": [
+            {
+              "text": "Windows 上，下载 "
+            },
+            {
+              "href": "https://cursor.com/static/security/claude-code-extension/remediate-windows.ps1",
+              "text": "remediate-windows.ps1"
+            },
+            {
+              "text": "，在保存该文件的目录中，用以"
+            },
+            {
+              "bold": true,
+              "text": "管理员身份运行"
+            },
+            {
+              "text": "方式打开的 PowerShell 执行："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "powershell -ExecutionPolicy Bypass -File .\\remediate-windows.ps1"
+        },
+        {
+          "type": "heading",
+          "text": "入侵指标",
+          "inlines": [
+            {
+              "text": "入侵指标"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "软件包",
+          "inlines": [
+            {
+              "text": "软件包"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "被篡改的 VSIX SHA-256（darwin-arm64）：432ccdee3801f99e52b8fe31f69ea9870118e96ea7ef9ecabed1479621b5ab62（MD5 da5469c4221775e9fe2e413e59ca7fd9）"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "被篡改的 VSIX SHA-256（win32-x64）：3de1722901165769893bef57c72594e9a54459faa23f3091b136b79966edd081（MD5 bd3b71ddf3d0cc3af76249afd2c0eda1）"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "被篡改的代码：anthropic.claude-code-2.1.313-darwin-arm64（macOS）或 anthropic.claude-code-2.1.313-win32-x64（Windows）扩展目录下的 extension.js 中包含 134[.]209[.]82[.]225 和 svc-telemetry"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "网络",
+          "inlines": [
+            {
+              "text": "网络"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "攻击者端点：134[.]209[.]82[.]225"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "反向 SSH：tunnel@134[.]209[.]82[.]225，TCP 22"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "外部信标：hxxp://134[.]209[.]82[.]225:8099/beacon（HTTP POST）"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "本地信标尝试：127[.]0[.]0[.]1:8099/beacon（HTTP POST，回环地址）"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "向 ifconfig[.]me / api[.]ipify[.]org 查询公网 IP——这些是合法服务，仅访问它们不构成指标"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "SSH",
+          "inlines": [
+            {
+              "text": "SSH"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "未授权的公钥："
+                },
+                {
+                  "code": true,
+                  "text": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdvylCEJ/k2TpezcTfedrkHyFSK9IZ3vmP6vhY4Ss0P svc-telemetry"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "未授权密钥指纹："
+                },
+                {
+                  "code": true,
+                  "text": "SHA256:0Z6R+DF64Do2nwQic8a7kkfDLNNk4IiK+2U2Rci4htk"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "反向隧道密钥指纹："
+                },
+                {
+                  "code": true,
+                  "text": "SHA256:KOAU57+ZG6u3MG4WwzPzPX2O5YEe9qdOC1Bl+6MVyDQ"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "密钥注释："
+                },
+                {
+                  "code": true,
+                  "text": "svc-telemetry"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "文件与持久化",
+          "inlines": [
+            {
+              "text": "文件与持久化"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "macOS："
+                },
+                {
+                  "code": true,
+                  "text": "~/.ssh/authorized_keys"
+                },
+                {
+                  "text": " 中存在未授权密钥；"
+                },
+                {
+                  "code": true,
+                  "text": "~/.config/.smt"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "~/.config/.smtk"
+                },
+                {
+                  "text": "；"
+                },
+                {
+                  "code": true,
+                  "text": "$TMPDIR/.stk_<10 hex>"
+                },
+                {
+                  "text": "；"
+                },
+                {
+                  "code": true,
+                  "text": "~/Library/LaunchAgents/com.apple.sysmond.plist"
+                },
+                {
+                  "text": "（标签 "
+                },
+                {
+                  "code": true,
+                  "text": "com.apple.sysmond"
+                },
+                {
+                  "text": "）"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Windows："
+                },
+                {
+                  "code": true,
+                  "text": "%USERPROFILE%\\.ssh\\authorized_keys"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "%USERPROFILE%\\.config\\smt.cmd"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "%USERPROFILE%\\.config\\smtk"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "%TEMP%\\.stk_<10 hex>"
+                },
+                {
+                  "text": "；计划任务 "
+                },
+                {
+                  "code": true,
+                  "text": "SysMon"
+                },
+                {
+                  "text": "（尝试以 SYSTEM 身份运行）；备用机制 "
+                },
+                {
+                  "code": true,
+                  "text": "%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\sysmon.cmd"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "进程 / 命令行",
+          "inlines": [
+            {
+              "text": "进程 / 命令行"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "ssh -N -R '*:0:localhost:22'"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "autossh -M 0"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "SSH 选项："
+                },
+                {
+                  "code": true,
+                  "text": "StrictHostKeyChecking=no"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "UserKnownHostsFile=/dev/null"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "ServerAliveInterval=30"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "ServerAliveCountMax=3"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "ExitOnForwardFailure=yes"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "IdentitiesOnly=yes"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "schtasks /create /tn SysMon"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "systemsetup -setremotelogin on"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如有更多疑问，请联系 security@cursor.com。",
+          "inlines": [
+            {
+              "text": "如有更多疑问，请联系 security@cursor.com。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Today we identified a security incident involving a specific extension package in the Cursor VS Code extension Marketplace: Anthropic.claude-code version 2.1.313. This malicious version of the extension was not developed by Anthropic. At most 4,100 users were affected, and we will reach out directly.",
+          "inlines": [
+            {
+              "text": "Today we identified a security incident involving a specific extension package in the Cursor VS Code extension Marketplace: "
+            },
+            {
+              "bold": true,
+              "text": "Anthropic.claude-code version 2.1.313"
+            },
+            {
+              "text": ". This malicious version of the extension was not developed by Anthropic. At most 4,100 users were affected, and we will reach out directly."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What happened",
+          "inlines": [
+            {
+              "text": "What happened"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Between about 2:27am PT and 1:35pm PT today, a maliciously modified version of Anthropic’s Claude Code extension was made available in the Cursor VS Code extension Marketplace. The extension runs malicious code that attempts to install a persistent SSH backdoor. Specifically, it:",
+          "inlines": [
+            {
+              "text": "Between about 2:27am PT and 1:35pm PT today, a maliciously modified version of Anthropic’s Claude Code extension was made available in the Cursor VS Code extension Marketplace. The extension runs malicious code that attempts to install a persistent SSH backdoor. Specifically, it:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Collects host and user information: hostname, username, OS, architecture, home directory path, environment variable names, working directories, configured Git email, and public IP."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Attempts to add an attacker-controlled SSH key to "
+                },
+                {
+                  "code": true,
+                  "text": "authorized_keys"
+                },
+                {
+                  "text": ", enable the local SSH service, and open a reverse SSH tunnel. Outside of highly unusual circumstances where Cursor was started with administrator privileges, due to errors in the malicious code, this step would fail."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Attempts to make the reverse SSH tunnel persistent via a LaunchAgent (macOS) or a scheduled task that attempts to run as SYSTEM with a Startup-script fallback (Windows). Background scripts retry the tunnel roughly every 60 seconds."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Reports host details and backdoor status via HTTP POST to "
+                },
+                {
+                  "code": true,
+                  "text": "/beacon"
+                },
+                {
+                  "text": " on port 8099."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Note: The attacker server no longer functions.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Note: The attacker server no longer functions."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "We worked with the cloud provider that was hosting it to take it offline, so the reverse shell and host detail POST are not functional."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "These findings concern the identified package. We have no evidence that other versions of the extension or the official distribution are affected."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Additionally, turning on the local SSH service requires admin rights, which the malicious extension does not have on most macOS and Windows hosts. On those hosts the step fails and the attacker could not have logged in through the tunnel. The extension still adds the attacker’s SSH key, installs persistence, and sends host details to the attacker. Follow the remediation steps below regardless."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What we did",
+          "inlines": [
+            {
+              "text": "What we did"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Removed the malicious version from the marketplace immediately upon detection and blocked further distribution. We followed with a full shut down of the VSCode Marketplace out of an abundance of caution."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We audited access and confirmed no other extensions were tampered with."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We rotated our keys, rebuilt the marketplace, and brought it back online"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We worked with the hosting provider to take the malicious server offline, disrupting the attack by blocking the connection to that server."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What you should do",
+          "inlines": [
+            {
+              "text": "What you should do"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "If you installed or updated to Anthropic.claude-code 2.1.313 from Cursor VS Code extension marketplace between 2:27am PT and 1:35pm PT on October 29, 2026:",
+          "inlines": [
+            {
+              "text": "If you installed or updated to Anthropic.claude-code 2.1.313 from Cursor VS Code extension marketplace between 2:27am PT and 1:35pm PT on October 29, 2026:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Run the check below to validate if you are impacted."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Search across endpoint, network, and extension-installation telemetry for the indicators below."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Isolate hosts showing evidence of payload execution or backdoor installation."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Remove the unauthorized SSH key, persistence mechanisms, and running tunnel processes using the remediation scripts below, and assess whether the host should be rebuilt. Uninstalling the extension may not be sufficient — the payload drops standalone persistence scripts that keep running."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Rotate credentials and sessions accessible from affected hosts, from a trusted system. The limited env-var collection does not rule out later credential access over the backdoor."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Check whether you are impacted",
+          "inlines": [
+            {
+              "text": "Check whether you are impacted"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The malicious extension appends the attacker's public key, labeled svc-telemetry, to your SSH authorized keys. To check for it:",
+          "inlines": [
+            {
+              "text": "The malicious extension appends the attacker's public key, labeled "
+            },
+            {
+              "code": true,
+              "text": "svc-telemetry"
+            },
+            {
+              "text": ", to your SSH authorized keys. To check for it:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On macOS, run:",
+          "inlines": [
+            {
+              "text": "On macOS, run:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "grep -qs svc-telemetry ~/.ssh/authorized_keys && echo \"svc-telemetry key found\" || echo \"No key found; machine not impacted\""
+        },
+        {
+          "type": "paragraph",
+          "text": "On Windows, run in PowerShell:",
+          "inlines": [
+            {
+              "text": "On Windows, run in PowerShell:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$files = \"$HOME\\.ssh\\authorized_keys\", \"C:\\ProgramData\\ssh\\administrators_authorized_keys\" | Where-Object { Test-Path $_ }\nif ($files -and (Select-String svc-telemetry $files)) { \"svc-telemetry key found\" } else { \"No key found; machine not impacted\" }"
+        },
+        {
+          "type": "paragraph",
+          "text": "If the key is found, your machine is impacted. Follow steps 3 to 5 above, and run the remediation script for your platform below.",
+          "inlines": [
+            {
+              "text": "If the key is found, your machine is impacted. Follow steps 3 to 5 above, and run the remediation script for your platform below."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These scripts remove the malicious extension, the persistence mechanisms, the running tunnel processes, and the attacker's SSH key. They exit with a non-zero status if anything remains.",
+          "inlines": [
+            {
+              "text": "These scripts remove the malicious extension, the persistence mechanisms, the running tunnel processes, and the attacker's SSH key. They exit with a non-zero status if anything remains."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On macOS, download remediate-macos.sh and run it as the affected user, not as root, from the folder you saved it to:",
+          "inlines": [
+            {
+              "text": "On macOS, download "
+            },
+            {
+              "href": "https://cursor.com/static/security/claude-code-extension/remediate-macos.sh",
+              "text": "remediate-macos.sh"
+            },
+            {
+              "text": " and run it as the affected user, not as root, from the folder you saved it to:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "bash remediate-macos.sh"
+        },
+        {
+          "type": "paragraph",
+          "text": "On Windows, download remediate-windows.ps1 and run it from PowerShell opened with Run as Administrator, in the folder you saved it to:",
+          "inlines": [
+            {
+              "text": "On Windows, download "
+            },
+            {
+              "href": "https://cursor.com/static/security/claude-code-extension/remediate-windows.ps1",
+              "text": "remediate-windows.ps1"
+            },
+            {
+              "text": " and run it from PowerShell opened with "
+            },
+            {
+              "bold": true,
+              "text": "Run as Administrator"
+            },
+            {
+              "text": ", in the folder you saved it to:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "powershell -ExecutionPolicy Bypass -File .\\remediate-windows.ps1"
+        },
+        {
+          "type": "heading",
+          "text": "Indicators of compromise",
+          "inlines": [
+            {
+              "text": "Indicators of compromise"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Package",
+          "inlines": [
+            {
+              "text": "Package"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Modified VSIX SHA-256 (darwin-arm64): 432ccdee3801f99e52b8fe31f69ea9870118e96ea7ef9ecabed1479621b5ab62 (MD5 da5469c4221775e9fe2e413e59ca7fd9)"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Modified VSIX SHA-256 (win32-x64): 3de1722901165769893bef57c72594e9a54459faa23f3091b136b79966edd081 (MD5 bd3b71ddf3d0cc3af76249afd2c0eda1)"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Modified code: extension.js in the anthropic.claude-code-2.1.313-darwin-arm64 (macOS) or anthropic.claude-code-2.1.313-win32-x64 (Windows) extension folder contains 134[.]209[.]82[.]225 and svc-telemetry"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Network",
+          "inlines": [
+            {
+              "text": "Network"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Attacker endpoint: 134[.]209[.]82[.]225"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Reverse SSH: tunnel@134[.]209[.]82[.]225, TCP 22"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "External beacon: hxxp://134[.]209[.]82[.]225:8099/beacon (HTTP POST)"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Local beacon attempt: 127[.]0[.]0[.]1:8099/beacon (HTTP POST, loopback)"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Public IP lookups to ifconfig[.]me / api[.]ipify[.]org — legitimate services; access alone is not an indicator"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "SSH",
+          "inlines": [
+            {
+              "text": "SSH"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Unauthorized public key: "
+                },
+                {
+                  "code": true,
+                  "text": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdvylCEJ/k2TpezcTfedrkHyFSK9IZ3vmP6vhY4Ss0P svc-telemetry"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Unauthorized key fingerprint: "
+                },
+                {
+                  "code": true,
+                  "text": "SHA256:0Z6R+DF64Do2nwQic8a7kkfDLNNk4IiK+2U2Rci4htk"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Reverse-tunnel key fingerprint: "
+                },
+                {
+                  "code": true,
+                  "text": "SHA256:KOAU57+ZG6u3MG4WwzPzPX2O5YEe9qdOC1Bl+6MVyDQ"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Key comment: "
+                },
+                {
+                  "code": true,
+                  "text": "svc-telemetry"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Files and persistence",
+          "inlines": [
+            {
+              "text": "Files and persistence"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "macOS: unauthorized key in "
+                },
+                {
+                  "code": true,
+                  "text": "~/.ssh/authorized_keys"
+                },
+                {
+                  "text": "; "
+                },
+                {
+                  "code": true,
+                  "text": "~/.config/.smt"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "~/.config/.smtk"
+                },
+                {
+                  "text": "; "
+                },
+                {
+                  "code": true,
+                  "text": "$TMPDIR/.stk_<10 hex>"
+                },
+                {
+                  "text": "; "
+                },
+                {
+                  "code": true,
+                  "text": "~/Library/LaunchAgents/com.apple.sysmond.plist"
+                },
+                {
+                  "text": " (label "
+                },
+                {
+                  "code": true,
+                  "text": "com.apple.sysmond"
+                },
+                {
+                  "text": ")"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Windows: "
+                },
+                {
+                  "code": true,
+                  "text": "%USERPROFILE%\\.ssh\\authorized_keys"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "%USERPROFILE%\\.config\\smt.cmd"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "%USERPROFILE%\\.config\\smtk"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "%TEMP%\\.stk_<10 hex>"
+                },
+                {
+                  "text": "; scheduled task "
+                },
+                {
+                  "code": true,
+                  "text": "SysMon"
+                },
+                {
+                  "text": " (attempts to run as SYSTEM); fallback "
+                },
+                {
+                  "code": true,
+                  "text": "%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\sysmon.cmd"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Process / command-line",
+          "inlines": [
+            {
+              "text": "Process / command-line"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "ssh -N -R '*:0:localhost:22'"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "autossh -M 0"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "SSH options: "
+                },
+                {
+                  "code": true,
+                  "text": "StrictHostKeyChecking=no"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "UserKnownHostsFile=/dev/null"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "ServerAliveInterval=30"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "ServerAliveCountMax=3"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "ExitOnForwardFailure=yes"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "IdentitiesOnly=yes"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "schtasks /create /tn SysMon"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "systemsetup -setremotelogin on"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you have further questions, reach out to security@cursor.com.",
+          "inlines": [
+            {
+              "text": "If you have further questions, reach out to security@cursor.com."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-10-31T01:10:42.527370Z",
+  "contentMode": "full"
+}
