@@ -1,0 +1,2574 @@
+{
+  "schemaVersion": 1,
+  "id": "zdwho66dczydnc8nq5fs3rrx9",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/zdwho66dczydnc8nq5fs3rrx9",
+  "fetchedAt": "2026-11-02T01:10:39.057824Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenAI / ChatGPT",
+    "安全对齐",
+    "论文研究"
+  ],
+  "tags": [
+    "论文/研究",
+    "安全/对齐",
+    "OpenAI"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "2026年10月，我们发现了一种方法，可以把一个普通的公开 ChatGPT 分享链接变成攻击者控制的 JavaScript，在打开该链接的已登录用户的会话中运行。",
+          "inlines": [
+            {
+              "text": "2026年10月，我们发现了一种方法，可以把一个普通的公开 ChatGPT 分享链接变成攻击者控制的 JavaScript，在打开该链接的已登录用户的会话中运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "攻击者可以创建一个恶意对话，用 ChatGPT 正常的分享功能发布，再把链接发给其他用户。受害者打开分享内容时，载荷就会以 chatgpt.com 的身份执行，并能访问受害者的已认证网页会话。",
+          "inlines": [
+            {
+              "text": "攻击者可以创建一个恶意对话，用 ChatGPT 正常的分享功能发布，再把链接发给其他用户。受害者打开分享内容时，载荷就会以 "
+            },
+            {
+              "code": true,
+              "text": "chatgpt.com"
+            },
+            {
+              "text": " 的身份执行，并能访问受害者的已认证网页会话。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们确认，这段代码可以枚举受害者的对话列表，从一段从未分享给攻击者的私密对话中获取内容，并把该对话中的数据发送到外部服务器。载荷并不局限于修改页面或弹出提示——它能以受害者身份直接调用 ChatGPT 的已认证 API，实际上等于让我们接管了受害者的 ChatGPT 账户。",
+          "inlines": [
+            {
+              "text": "我们确认，这段代码可以枚举受害者的对话列表，从一段从未分享给攻击者的私密对话中获取内容，并把该对话中的数据发送到外部服务器。载荷并不局限于修改页面或弹出提示——它能以受害者身份直接调用 ChatGPT 的已认证 API，实际上等于让我们接管了受害者的 ChatGPT 账户。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "受害者无需安装 App、加入 Project、粘贴代码或打开开发者工具，唯一要做的动作就是打开分享链接。",
+          "inlines": [
+            {
+              "text": "受害者无需安装 App、加入 Project、粘贴代码或打开开发者工具，唯一要做的动作就是打开分享链接。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 于10月26日修复了该问题，并将报告定为 P1。",
+          "inlines": [
+            {
+              "text": "OpenAI 于10月26日修复了该问题，并将报告定为 P1。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这条攻击链始于两个单独看都无害的功能：一个图表和一个 HTML 预览。",
+          "inlines": [
+            {
+              "text": "这条攻击链始于两个单独看都无害的功能：一个图表和一个 HTML 预览。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "flowchart TD\n  A[\"Attacker publishes a ChatGPT conversation\"] --> B[\"Victim opens the public share\"]\n  B --> C[\"HTML Preview crosses into the main chatgpt.com page\"]\n  C --> D[\"JavaScript runs in the victim's signed-in session\"]\n  D --> E[\"Any action on chatgpt.com as the victim:<br/>read private chats and files, change the account\"]"
+        },
+        {
+          "type": "heading",
+          "text": "技术详解",
+          "inlines": [
+            {
+              "text": "技术详解"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "heading",
+          "text": "起点：一个图表和一个预览",
+          "inlines": [
+            {
+              "text": "起点：一个图表和一个预览"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "这项研究最初的问题很简单：如果预览代码被关在另一个网站里，它还能和谁通信？",
+          "inlines": [
+            {
+              "text": "这项研究最初的问题很简单：如果预览代码被关在另一个网站里，它还能和谁通信？"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ChatGPT 的预览功能可以把一个 HTML 代码块变成一个小型可运行网页。由于这个页面可能包含任意代码，ChatGPT 很合理地把它放在另一个网址下的受限框架中运行。预览可以执行 JavaScript，但浏览器把它当作另一个网站，因此它无法直接查看周围已登录的 ChatGPT 页面。",
+          "inlines": [
+            {
+              "text": "ChatGPT 的预览功能可以把一个 HTML 代码块变成一个小型可运行网页。由于这个页面可能包含任意代码，ChatGPT 很合理地把它放在另一个网址下的受限框架中运行。预览可以执行 JavaScript，但浏览器把它当作另一个网站，因此它无法直接查看周围已登录的 ChatGPT 页面。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "起初，这种隔离看起来完全按预期工作。预览中的代码无法读取 parent.document，也就是 ChatGPT 主页面。事情本应到此为止。",
+          "inlines": [
+            {
+              "text": "起初，这种隔离看起来完全按预期工作。预览中的代码无法读取 "
+            },
+            {
+              "code": true,
+              "text": "parent.document"
+            },
+            {
+              "text": "，也就是 ChatGPT 主页面。事情本应到此为止。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对话中还包含一个普通的交互式图表。在后台，这个图表加载了一个名为 MathLive 的数学库。加载它不只是绘制图表：它还在 ChatGPT 主页面中安装了一个监听器，用来接收与 MathLive 屏幕键盘相关的消息。",
+          "inlines": [
+            {
+              "text": "对话中还包含一个普通的交互式图表。在后台，这个图表加载了一个名为 MathLive 的数学库。加载它不只是绘制图表：它还在 ChatGPT 主页面中安装了一个监听器，用来接收与 MathLive 屏幕键盘相关的消息。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "浏览器把相关 API 称为 postMessage。这是两个框架交换信息的正当方式，即使浏览器阻止它们读取彼此的页面。可以把它想象成一个投信口：受限的预览无法走进主页面，但仍可以把消息从投信口投进去。",
+          "inlines": [
+            {
+              "text": "浏览器把相关 API 称为 "
+            },
+            {
+              "code": true,
+              "text": "postMessage"
+            },
+            {
+              "text": "。这是两个框架交换信息的正当方式，即使浏览器阻止它们读取彼此的页面。可以把它想象成一个投信口：受限的预览无法走进主页面，但仍可以把消息从投信口投进去。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "只有当接收方检查消息是谁发来的时候，这种做法才安全。",
+          "inlines": [
+            {
+              "text": "只有当接收方检查消息是谁发来的时候，这种做法才安全。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对于我们关注的那个设置，MathLive 没有做这项检查。它的监听器接受了一条会更改虚拟键盘布局的消息，而该布局允许包含 HTML。图表安装了接收方，预览则给了我们一个不可信的发送方。两个互不相关的功能意外地打通了一条穿越沙箱的路径。",
+          "inlines": [
+            {
+              "text": "对于我们关注的那个设置，MathLive 没有做这项检查。它的监听器接受了一条会更改虚拟键盘布局的消息，而该布局允许包含 HTML。图表安装了接收方，预览则给了我们一个不可信的发送方。两个互不相关的功能意外地打通了一条穿越沙箱的路径。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "本不该生效的那条消息",
+          "inlines": [
+            {
+              "text": "本不该生效的那条消息"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "预览发送了两条消息。第一条用我们的 HTML 替换了虚拟键盘布局。第二条告诉 MathLive 显示键盘，促使它渲染新布局：",
+          "inlines": [
+            {
+              "text": "预览发送了两条消息。第一条用我们的 HTML 替换了虚拟键盘布局。第二条告诉 MathLive 显示键盘，促使它渲染新布局："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "top.postMessage({\n  type: \"mathlive#virtual-keyboard-message\",\n  action: \"update-setting\",\n  layouts: [{\n    label: \"Compatibility\",\n    layers: [{ id: \"compatibility\", markup }]\n  }]\n}, \"*\");\n\ntop.postMessage({\n  type: \"mathlive#virtual-keyboard-message\",\n  action: \"show\",\n  animate: false\n}, \"*\");"
+        },
+        {
+          "type": "paragraph",
+          "text": "MathLive 识别出了这个公开的消息类型，但它的顶层控制器使用的来源策略是 none，这意味着它接受来自任何网址的消息。它也没有要求 update-setting 消息必须来自此前已获批准的窗口。任何能触达该监听器并知道消息格式的人，都可以替换布局。",
+          "inlines": [
+            {
+              "text": "MathLive 识别出了这个公开的消息类型，但它的顶层控制器使用的来源策略是 "
+            },
+            {
+              "code": true,
+              "text": "none"
+            },
+            {
+              "text": "，这意味着它接受来自任何网址的消息。它也没有要求 "
+            },
+            {
+              "code": true,
+              "text": "update-setting"
+            },
+            {
+              "text": " 消息必须来自此前已获批准的窗口。任何能触达该监听器并知道消息格式的人，都可以替换布局。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "键盘打开时，MathLive 会把传入的布局拼成一个 HTML 字符串，并把它赋给真实 ChatGPT 页面中的 innerHTML。一个名为 createHTML 的辅助函数起初看起来像是会对这个值做净化处理，实际并没有；它只是把该字符串标记为可信，然后原样放行了我们的 HTML。",
+          "inlines": [
+            {
+              "text": "键盘打开时，MathLive 会把传入的布局拼成一个 HTML 字符串，并把它赋给真实 ChatGPT 页面中的 "
+            },
+            {
+              "code": true,
+              "text": "innerHTML"
+            },
+            {
+              "text": "。一个名为 "
+            },
+            {
+              "code": true,
+              "text": "createHTML"
+            },
+            {
+              "text": " 的辅助函数起初看起来像是会对这个值做净化处理，实际并没有；它只是把该字符串标记为可信，然后原样放行了我们的 HTML。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这已经很让人兴奋了，但我们仍然没有拿到 JavaScript 执行能力。通过 innerHTML 插入的 script 标签并不会自动运行。",
+          "inlines": [
+            {
+              "text": "这已经很让人兴奋了，但我们仍然没有拿到 JavaScript 执行能力。通过 "
+            },
+            {
+              "code": true,
+              "text": "innerHTML"
+            },
+            {
+              "text": " 插入的 script 标签并不会自动运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下一步是用 srcdoc 构造一个 iframe。这是浏览器的一项特性，可以让内嵌框架把 HTML 直接写在属性里：",
+          "inlines": [
+            {
+              "text": "下一步是用 "
+            },
+            {
+              "code": true,
+              "text": "srcdoc"
+            },
+            {
+              "text": " 构造一个 "
+            },
+            {
+              "code": true,
+              "text": "iframe"
+            },
+            {
+              "text": "。这是浏览器的一项特性，可以让内嵌框架把 HTML 直接写在属性里："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "<iframe srcdoc=\"...\"></iframe>"
+        },
+        {
+          "type": "paragraph",
+          "text": "MathLive 把这个框架插入了 ChatGPT 主文档，却没有加 sandbox 属性。这给了我们两个有用的特性。第一，srcdoc 会创建一个全新的文档，外部脚本可以在其中执行。第二，由于这个框架是 ChatGPT 主页面创建的，浏览器赋予了它 https://chatgpt.com 的 Web 身份。因此，新框架里的代码可以访问父页面。",
+          "inlines": [
+            {
+              "text": "MathLive 把这个框架插入了 ChatGPT 主文档，却没有加 "
+            },
+            {
+              "code": true,
+              "text": "sandbox"
+            },
+            {
+              "text": " 属性。这给了我们两个有用的特性。第一，"
+            },
+            {
+              "code": true,
+              "text": "srcdoc"
+            },
+            {
+              "text": " 会创建一个全新的文档，外部脚本可以在其中执行。第二，由于这个框架是 ChatGPT 主页面创建的，浏览器赋予了它 "
+            },
+            {
+              "code": true,
+              "text": "https://chatgpt.com"
+            },
+            {
+              "text": " 的 Web 身份。因此，新框架里的代码可以访问父页面。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "用 YouTube JSONP 绕过 CSP",
+          "inlines": [
+            {
+              "text": "用 YouTube JSONP 绕过 CSP"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "ChatGPT 的内容安全策略（CSP）又一次拦住了我们。CSP 控制页面可以加载哪些脚本，而该策略正确地拦截了内联 JavaScript。不过，它允许加载来自 YouTube 的脚本。",
+          "inlines": [
+            {
+              "text": "ChatGPT 的内容安全策略（CSP）又一次拦住了我们。CSP 控制页面可以加载哪些脚本，而该策略正确地拦截了内联 JavaScript。不过，它允许加载来自 YouTube 的脚本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "YouTube 的 oEmbed 端点支持一种 JSONP 风格的 callback 参数。JSONP 响应是 JavaScript，而不是普通 JSON。该端点试图拒绝非法的 callback，但它在返回校验错误之前，就已经把 callback 放进了响应里：",
+          "inlines": [
+            {
+              "text": "YouTube 的 oEmbed 端点支持一种 JSONP 风格的 callback 参数。JSONP 响应是 JavaScript，而不是普通 JSON。该端点试图拒绝非法的 callback，但它在返回校验错误之前，就已经把 callback 放进了响应里："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "https://www.youtube.com/oembed?callback=globalThis.__marker=31337;void"
+        },
+        {
+          "type": "paragraph",
+          "text": "响应开头是这样的：",
+          "inlines": [
+            {
+              "text": "响应开头是这样的："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "// API callback\nglobalThis.__marker=31337;void({\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Invalid JSONP callback name: ...\"\n  }\n});"
+        },
+        {
+          "type": "paragraph",
+          "text": "让 callback 以 ;void 结尾，YouTube 追加的那个对象就变得无害了。由于 ChatGPT 的 CSP 本来就允许 YouTube，浏览器把这个响应当作脚本加载，并在新框架里执行了我们的 callback。",
+          "inlines": [
+            {
+              "text": "让 callback 以 "
+            },
+            {
+              "code": true,
+              "text": ";void"
+            },
+            {
+              "text": " 结尾，YouTube 追加的那个对象就变得无害了。由于 ChatGPT 的 CSP 本来就允许 YouTube，浏览器把这个响应当作脚本加载，并在新框架里执行了我们的 callback。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "至此，我们拿到了以 chatgpt.com 身份运行的任意 JavaScript。原来的 Preview 仍然隔离在它自己的独立网址上；我们是通过诱骗主页面中一个受信任的组件为我们创建一个新的、未加沙箱的文档，才越过了这道边界。",
+          "inlines": [
+            {
+              "text": "至此，我们拿到了以 chatgpt.com 身份运行的任意 JavaScript。原来的 Preview 仍然隔离在它自己的独立网址上；我们是通过诱骗主页面中一个受信任的组件为我们创建一个新的、未加沙箱的文档，才越过了这道边界。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "把一个实验室漏洞变成一条公开链接",
+          "inlines": [
+            {
+              "text": "把一个实验室漏洞变成一条公开链接"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "到目前为止，这只是一个有用的沙箱逃逸，但第一个能用的版本还称不上有说服力的真实攻击。它使用由研究者控制的 ChatGPT App 作为发送方，受害者必须先连接或调用那个 App 才行。",
+          "inlines": [
+            {
+              "text": "到目前为止，这只是一个有用的沙箱逃逸，但第一个能用的版本还称不上有说服力的真实攻击。它使用由研究者控制的 ChatGPT App 作为发送方，受害者必须先连接或调用那个 App 才行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "接下来我们尝试通过原生 HTML 附件投递载荷。ChatGPT 会在同一个沙箱化的 Preview 中打开附件，因此它可以发送恶意的 MathLive 消息。",
+          "inlines": [
+            {
+              "text": "接下来我们尝试通过原生 HTML 附件投递载荷。ChatGPT 会在同一个沙箱化的 Preview 中打开附件，因此它可以发送恶意的 MathLive 消息。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "然而，当我们把对话导出为公开分享时，附件还在，之前的图表却没了。图表是关键，因为它会加载 MathLive，并在主页面中安装存在漏洞的消息监听器。没有它，附件仍然可以发送消息，但没有任何东西在监听或处理这些消息。",
+          "inlines": [
+            {
+              "text": "然而，当我们把对话导出为公开分享时，附件还在，之前的图表却没了。图表是关键，因为它会加载 MathLive，并在主页面中安装存在漏洞的消息监听器。没有它，附件仍然可以发送消息，但没有任何东西在监听或处理这些消息。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "突破点在于把两部分直接放进一个普通的公开对话里：",
+          "inlines": [
+            {
+              "text": "突破点在于把两部分直接放进一个普通的公开对话里："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "一个真实的图表在主页面中初始化了 MathLive。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "随后由助手编写的 HTML Preview 发送了那两条消息。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "最终得到的 /share/<id> 链接为其他用户保留了完整的攻击链。攻击者可以像发送任何共享的 ChatGPT 对话一样投递它——通过电子邮件、聊天、支持工单或社交帖子。受害者无需安装任何东西，无需加入攻击者的工作区，也无需通过攻击者控制的流程进行身份验证。他们只需要访问攻击者分享的 ChatGPT URL。",
+          "inlines": [
+            {
+              "text": "最终得到的 "
+            },
+            {
+              "code": true,
+              "text": "/share/<id>"
+            },
+            {
+              "text": " 链接为其他用户保留了完整的攻击链。攻击者可以像发送任何共享的 ChatGPT 对话一样投递它——通过电子邮件、聊天、支持工单或社交帖子。受害者无需安装任何东西，无需加入攻击者的工作区，也无需通过攻击者控制的流程进行身份验证。他们只需要访问攻击者分享的 ChatGPT URL。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们观察到了两种交互版本。在最稳定的复现中，受害者打开分享链接并点击了一次 ChatGPT 正常的预览按钮。后来我们把 HTML 块标记为可预览，让 ChatGPT 自动打开它。在那个版本里，打开链接是受害者唯一的一次点击。我们在另一个账号中复现了自动路径三次，包括强制刷新之后，警报大约在 4.5 秒后出现。",
+          "inlines": [
+            {
+              "text": "我们观察到了两种交互版本。在最稳定的复现中，受害者打开分享链接并点击了一次 ChatGPT 正常的"
+            },
+            {
+              "bold": true,
+              "text": "预览"
+            },
+            {
+              "text": "按钮。后来我们把 HTML 块标记为可预览，让 ChatGPT 自动打开它。在那个版本里，打开链接是受害者唯一的一次点击。我们在另一个账号中复现了自动路径三次，包括强制刷新之后，警报大约在 4.5 秒后出现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "图表和预览是独立加载的，所以载荷有时会在 MathLive 就绪之前就发出消息。最终的载体通过在一段有限时间内重试同样的两条消息来处理这个竞态。主页面中的一个防护机制确保私密对话证明和对外请求只执行一次。",
+          "inlines": [
+            {
+              "text": "图表和预览是独立加载的，所以载荷有时会在 MathLive 就绪之前就发出消息。最终的载体通过在一段有限时间内重试同样的两条消息来处理这个竞态。主页面中的一个防护机制确保私密对话证明和对外请求只执行一次。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3167066eec5695445631a98a3c1903d697c941f0f60eff725d7c5716575dbbd8.webp",
+          "alt": "The public share modified the real ChatGPT page"
+        },
+        {
+          "type": "paragraph",
+          "text": "公开分享篡改了真实的 ChatGPT 页面",
+          "inlines": [
+            {
+              "text": "公开分享篡改了真实的 ChatGPT 页面"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "此时，公开分享已经能显示一个被浏览器识别为来自 chatgpt.com 的警报，还能往主页面添加一条横幅。这证明了我们的代码在哪里运行，但还没说明这个漏洞为什么重要。",
+          "inlines": [
+            {
+              "text": "此时，公开分享已经能显示一个被浏览器识别为来自 "
+            },
+            {
+              "code": true,
+              "text": "chatgpt.com"
+            },
+            {
+              "text": " 的警报，还能往主页面添加一条横幅。这证明了我们的代码在哪里运行，但还没说明这个漏洞为什么重要。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "光有警报还不够",
+          "inlines": [
+            {
+              "text": "光有警报还不够"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "此时，弹个警报已经是这个漏洞利用能做的最无聊的事。JavaScript 是以 chatgpt.com 的身份运行的，这意味着它能用与正常 Web 应用相同的已认证上下文与 ChatGPT 交互。",
+          "inlines": [
+            {
+              "text": "此时，弹个警报已经是这个漏洞利用能做的最无聊的事。JavaScript 是以 "
+            },
+            {
+              "code": true,
+              "text": "chatgpt.com"
+            },
+            {
+              "text": " 的身份运行的，这意味着它能用与正常 Web 应用相同的已认证上下文与 ChatGPT 交互。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "载荷读取了页面已经可用的会话信息，并用它调用 ChatGPT 的对话 API。首先，它枚举了受害者最近的对话。然后，它可以请求某个选定的私密对话的消息数据：",
+          "inlines": [
+            {
+              "text": "载荷读取了页面已经可用的会话信息，并用它调用 ChatGPT 的对话 API。首先，它枚举了受害者最近的对话。然后，它可以请求某个选定的私密对话的消息数据："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "GET /backend-api/conversations?...&limit=20&order=updated&offset=0\nGET /backend-api/conversations/<conversation-id>?num_turns=2"
+        },
+        {
+          "type": "paragraph",
+          "text": "这是直接的已认证 API 访问，而不是抓取屏幕上恰好可见的文本。目标对话与恶意分享无关，也从未分享给攻击者。",
+          "inlines": [
+            {
+              "text": "这是直接的已认证 API 访问，而不是抓取屏幕上恰好可见的文本。目标对话与恶意分享无关，也从未分享给攻击者。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一旦响应对注入的 JavaScript 可用，把数据发到站外就很简单了。载荷向我们控制的服务器创建了一个普通的图片请求。",
+          "inlines": [
+            {
+              "text": "一旦响应对注入的 JavaScript 可用，把数据发到站外就很简单了。载荷向我们控制的服务器创建了一个普通的图片请求。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们故意只把响应的一小部分发到站外。注入的代码已经收到了已认证的对话响应，能读取其内容，所以这个漏洞并不局限于那个值。",
+          "inlines": [
+            {
+              "text": "我们故意只把响应的一小部分发到站外。注入的代码已经收到了已认证的对话响应，能读取其内容，所以这个漏洞并不局限于那个值。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/bf3f79ca8a1ed0b563ead5783b85e96b04a6e6e952ba04122a6799aa64ce9f4f.webp",
+          "alt": "Controlled proof that private conversation data could leave the victim's session"
+        },
+        {
+          "type": "paragraph",
+          "text": "受控证明：私密对话数据可以离开受害者的会话",
+          "inlines": [
+            {
+              "text": "受控证明：私密对话数据可以离开受害者的会话"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "结果是一个实用的跨用户数据窃取原语。一个恶意的公开对话可以在另一个用户已登录的 ChatGPT 会话中执行，枚举私密对话，获取私密消息内容，并把选定的数据发送到攻击者控制的服务器。",
+          "inlines": [
+            {
+              "text": "结果是一个实用的跨用户数据窃取原语。一个恶意的公开对话可以在另一个用户已登录的 ChatGPT 会话中执行，枚举私密对话，获取私密消息内容，并把选定的数据发送到攻击者控制的服务器。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "由于代码是以 Web 应用的已认证访问权限运行的，它的影响范围本质上并不局限于我们证明中使用的对话端点。通过 ChatGPT 已认证前端 API 暴露的其他数据和操作都处在同一个安全边界内。基本上，我们可以代表受害者的 ChatGPT 账号执行任何操作。",
+          "inlines": [
+            {
+              "text": "由于代码是以 Web 应用的已认证访问权限运行的，它的影响范围本质上并不局限于我们证明中使用的对话端点。通过 ChatGPT 已认证前端 API 暴露的其他数据和操作都处在同一个安全边界内。基本上，我们可以代表受害者的 ChatGPT 账号执行任何操作。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "出了什么问题，OpenAI 修了什么",
+          "inlines": [
+            {
+              "text": "出了什么问题，OpenAI 修了什么"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "预览沙箱本身是有效的。预览中的代码无法直接读取 ChatGPT 页面。问题在于主页面中的另一个组件愿意接受它的指令。",
+          "inlines": [
+            {
+              "text": "预览沙箱本身是有效的。预览中的代码无法直接读取 ChatGPT 页面。问题在于主页面中的另一个组件愿意接受它的指令。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "三个设计决策把这个错误变成了完整的漏洞利用：",
+          "inlines": [
+            {
+              "text": "三个设计决策把这个错误变成了完整的漏洞利用："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "MathLive 接受了一条会改变状态的消息，却没有证明是哪个框架发送的。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "消息格式允许把原始 HTML 作为键盘布局数据提供。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "那段 HTML 可以创建一个未沙箱化的文档，继承 "
+                },
+                {
+                  "code": true,
+                  "text": "chatgpt.com"
+                },
+                {
+                  "text": " 的身份。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "YouTube 那个接口只是绕开 CSP 的最后一步，并不是漏洞的根源。只封掉这个接口，等于堵住了一条通往 JavaScript 的路径，但不受信任的 Preview 仍然能把 HTML 注入 ChatGPT。",
+          "inlines": [
+            {
+              "text": "YouTube 那个接口只是绕开 CSP 的最后一步，并不是漏洞的根源。只封掉这个接口，等于堵住了一条通往 JavaScript 的路径，但不受信任的 Preview 仍然能把 HTML 注入 ChatGPT。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 复现了 JavaScript 执行和私密对话泄露这两点。修复分两个版本在 ChatGPT 网页前端上线。推送期间，CSP 的改动拦住了原攻击链的一部分，但还有一个版本需要更新。10 月 26 日，OpenAI 确认两个版本都已拒绝报告中使用的跨框架 MathLive 消息，并将该问题标记为已解决。",
+          "inlines": [
+            {
+              "text": "OpenAI 复现了 JavaScript 执行和私密对话泄露这两点。修复分两个版本在 ChatGPT 网页前端上线。推送期间，CSP 的改动拦住了原攻击链的一部分，但还有一个版本需要更新。10 月 26 日，OpenAI 确认两个版本都已拒绝报告中使用的跨框架 MathLive 消息，并将该问题标记为已解决。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "防御上的经验其实很简单：",
+          "inlines": [
+            {
+              "text": "防御上的经验其实很简单："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "消息接收方既要校验发送方的网址，也要校验被授权的具体窗口。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "跨窗口的设置不应包含原始 HTML。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "动态创建的文档，如果内容可能受不受信任的框架影响，就应保持沙箱隔离。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "CSP 应当作为兜底控制，而不是攻击者可控的 HTML 进入主站之后的唯一屏障。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这个漏洞有意思的地方在于，每个单独的功能看起来都合理。Preview 是隔离的；图表可以加载数学键盘；框架之间可以交换消息；CSP 允许了一家大型媒体服务商；公开对话可以分享。只有当这些功能全部出现在同一个页面上时，漏洞才显现出来。",
+          "inlines": [
+            {
+              "text": "这个漏洞有意思的地方在于，每个单独的功能看起来都合理。Preview 是隔离的；图表可以加载数学键盘；框架之间可以交换消息；CSP 允许了一家大型媒体服务商；公开对话可以分享。只有当这些功能全部出现在同一个页面上时，漏洞才显现出来。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "时间线",
+          "inlines": [
+            {
+              "text": "时间线"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "日期",
+          "inlines": [
+            {
+              "text": "日期"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "事件",
+          "inlines": [
+            {
+              "text": "事件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026 年 10 月 13 日",
+          "inlines": [
+            {
+              "text": "2026 年 10 月 13 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 ChatGPT 生产代码上确认了 MathLive 消息转 HTML 的路径。",
+          "inlines": [
+            {
+              "text": "在 ChatGPT 生产代码上确认了 MathLive 消息转 HTML 的路径。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 14 日",
+          "inlines": [
+            {
+              "text": "10 月 14 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "通过正常界面复现了整条攻击链，并把固定的弹窗升级为任意 JavaScript 执行。",
+          "inlines": [
+            {
+              "text": "通过正常界面复现了整条攻击链，并把固定的弹窗升级为任意 JavaScript 执行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 16 日",
+          "inlines": [
+            {
+              "text": "10 月 16 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "确认在不同账户、不同工作区之间，只需点击一次 Preview 就能完成公开分享投递。",
+          "inlines": [
+            {
+              "text": "确认在不同账户、不同工作区之间，只需点击一次 Preview 就能完成公开分享投递。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 17 日",
+          "inlines": [
+            {
+              "text": "10 月 17 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "确认通过分享导航可自动触发 Preview，并在强制刷新后复现。",
+          "inlines": [
+            {
+              "text": "确认通过分享导航可自动触发 Preview，并在强制刷新后复现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 18 日",
+          "inlines": [
+            {
+              "text": "10 月 18 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "向 OpenAI 漏洞赏金计划提交报告。",
+          "inlines": [
+            {
+              "text": "向 OpenAI 漏洞赏金计划提交报告。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 19 日",
+          "inlines": [
+            {
+              "text": "10 月 19 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "补充了受控的私密聊天泄露证明。",
+          "inlines": [
+            {
+              "text": "补充了受控的私密聊天泄露证明。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 21 日",
+          "inlines": [
+            {
+              "text": "10 月 21 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 复现了该问题；严重级别从最初的 P2 分诊提升到 P1。",
+          "inlines": [
+            {
+              "text": "OpenAI 复现了该问题；严重级别从最初的 P2 分诊提升到 P1。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 22 日",
+          "inlines": [
+            {
+              "text": "10 月 22 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 表示一个网页前端已修复，另一个仍在更新中。",
+          "inlines": [
+            {
+              "text": "OpenAI 表示一个网页前端已修复，另一个仍在更新中。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 23 日",
+          "inlines": [
+            {
+              "text": "10 月 23 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CSP 改动拦住了攻击链的一部分，但仍有一个前端更新未完成。",
+          "inlines": [
+            {
+              "text": "CSP 改动拦住了攻击链的一部分，但仍有一个前端更新未完成。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 26 日",
+          "inlines": [
+            {
+              "text": "10 月 26 日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 确认两个前端都已拒绝报告中的消息，问题已解决，并发放了总计 5000 美元的赏金。",
+          "inlines": [
+            {
+              "text": "OpenAI 确认两个前端都已拒绝报告中的消息，问题已解决，并发放了总计 5000 美元的赏金。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "技术说明",
+          "inlines": [
+            {
+              "text": "技术说明"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "上面的正文包含了完整的漏洞利用链。以下细节是给想进一步了解生产代码和载荷变换过程的读者准备的。",
+          "inlines": [
+            {
+              "text": "上面的正文包含了完整的漏洞利用链。以下细节是给想进一步了解生产代码和载荷变换过程的读者准备的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "相关的反混淆控制流大致相当于：",
+          "inlines": [
+            {
+              "text": "相关的反混淆控制流大致相当于："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "window.addEventListener(\"message\", (event) => {\n  if (event.data?.type !== \"mathlive#virtual-keyboard-message\") return;\n  if (!validateOrigin(event.origin, this.originValidator)) return;\n  this.handleMessage(event.data, event.source);\n});\n\nif (message.action === \"update-setting\" && message.layouts) {\n  this.layouts = message.layouts;\n}"
+        },
+        {
+          "type": "paragraph",
+          "text": "布局归一化保留了 layouts[].layers[].markup。显示键盘最终执行的操作相当于：",
+          "inlines": [
+            {
+              "text": "布局归一化保留了 "
+            },
+            {
+              "code": true,
+              "text": "layouts[].layers[].markup"
+            },
+            {
+              "text": "。显示键盘最终执行的操作相当于："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "keyboardContainer.innerHTML = MathfieldElement.createHTML(keyboardHTML);"
+        },
+        {
+          "type": "paragraph",
+          "text": "createHTML 起的是恒等或 Trusted Types 包装的作用，而不是净化器。Trusted Types 可以限制谁向 HTML 接收点赋值，但恒等策略并不能让攻击者可控的字符串变安全。",
+          "inlines": [
+            {
+              "code": true,
+              "text": "createHTML"
+            },
+            {
+              "text": " 起的是恒等或 Trusted Types 包装的作用，而不是净化器。Trusted Types 可以限制谁向 HTML 接收点赋值，但恒等策略并不能让攻击者可控的字符串变安全。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "解析器与 CSP 的转换。 innerHTML 操作可以创建一个 iframe，但以这种方式直接插入的脚本会保持惰性。未加沙箱的 srcdoc 会触发一次全新的 HTML 文档解析，并继承嵌入方 ChatGPT 的源。该文档还继承了测试期间捕获的有效 CSP，它阻止内联代码，但允许 script-src-elem 中的 www.youtube.com。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "解析器与 CSP 的转换。"
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "text": "innerHTML"
+            },
+            {
+              "text": " 操作可以创建一个 iframe，但以这种方式直接插入的脚本会保持惰性。未加沙箱的 "
+            },
+            {
+              "code": true,
+              "text": "srcdoc"
+            },
+            {
+              "text": " 会触发一次全新的 HTML 文档解析，并继承嵌入方 ChatGPT 的源。该文档还继承了测试期间捕获的有效 CSP，它阻止内联代码，但允许 "
+            },
+            {
+              "code": true,
+              "text": "script-src-elem"
+            },
+            {
+              "text": " 中的 "
+            },
+            {
+              "code": true,
+              "text": "www.youtube.com"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "oEmbed 响应返回了 HTTP 200，带有 Content-Type: text/javascript; charset=UTF-8 和 X-Content-Type-Options: nosniff；未观察到 Cross-Origin-Resource-Policy 响应头。Google 在回调中改写了尖括号，因此载荷使用了经典的 function 语法，而不是箭头函数。用 ;void 结束程序，消耗了端点附加的错误对象。",
+          "inlines": [
+            {
+              "text": "oEmbed 响应返回了 HTTP 200，带有 "
+            },
+            {
+              "code": true,
+              "text": "Content-Type: text/javascript; charset=UTF-8"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "X-Content-Type-Options: nosniff"
+            },
+            {
+              "text": "；未观察到 Cross-Origin-Resource-Policy 响应头。Google 在回调中改写了尖括号，因此载荷使用了经典的 "
+            },
+            {
+              "code": true,
+              "text": "function"
+            },
+            {
+              "text": " 语法，而不是箭头函数。用 "
+            },
+            {
+              "code": true,
+              "text": ";void"
+            },
+            {
+              "text": " 结束程序，消耗了端点附加的错误对象。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了验证私有会话，函数被用 toString() 转换为源码，双引号被转换为单引号，空白被折叠。然后 URLSearchParams 将其编码进回调，脚本 URL 在 <script src> 内被 HTML 转义，整个元素又被再次转义进 iframe 的 srcdoc 属性。最终回调为 5,533 个字符；YouTube URL 为 7,309 个字符；脚本元素为 7,337 个字符；最终 iframe 标记为 7,390 个字符。",
+          "inlines": [
+            {
+              "text": "为了验证私有会话，函数被用 "
+            },
+            {
+              "code": true,
+              "text": "toString()"
+            },
+            {
+              "text": " 转换为源码，双引号被转换为单引号，空白被折叠。然后 "
+            },
+            {
+              "code": true,
+              "text": "URLSearchParams"
+            },
+            {
+              "text": " 将其编码进回调，脚本 URL 在 "
+            },
+            {
+              "code": true,
+              "text": "<script src>"
+            },
+            {
+              "text": " 内被 HTML 转义，整个元素又被再次转义进 iframe 的 "
+            },
+            {
+              "code": true,
+              "text": "srcdoc"
+            },
+            {
+              "text": " 属性。最终回调为 5,533 个字符；YouTube URL 为 7,309 个字符；脚本元素为 7,337 个字符；最终 iframe 标记为 7,390 个字符。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "经过身份验证的读取。同源框架从父文档中解析出 #client-bootstrap，提取了会话访问令牌和账户 ID，并要求当两者都存在时，令牌中的账户 ID 必须与会话一致。它使用了这些内存中的请求头：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "经过身份验证的读取。"
+            },
+            {
+              "text": "同源框架从父文档中解析出 "
+            },
+            {
+              "code": true,
+              "text": "#client-bootstrap"
+            },
+            {
+              "text": "，提取了会话访问令牌和账户 ID，并要求当两者都存在时，令牌中的账户 ID 必须与会话一致。它使用了这些内存中的请求头："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "Authorization: Bearer <victim token>\nChatGPT-Account-ID: <victim account>\nAccept: application/json"
+        },
+        {
+          "type": "paragraph",
+          "text": "主要请求是：",
+          "inlines": [
+            {
+              "text": "主要请求是："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "GET /backend-api/conversations?exclude_conversation_origin=tpp&expand=false&is_archived=false&is_starred=false&limit=20&order=updated&offset=0\nGET /backend-api/conversations/<id>?num_turns=2&include_has_versions=true"
+        },
+        {
+          "type": "paragraph",
+          "text": "只有在详情请求返回 403、404 或 405 时，代码才会尝试旧版 /backend-api/conversation/<id>?include_full_conversation=true 路由。验证只传输了响应中一个小的选定值。在发起外部图片请求之前，它清除了对令牌、账户、引导、会话和请求头的引用。",
+          "inlines": [
+            {
+              "text": "只有在详情请求返回 403、404 或 405 时，代码才会尝试旧版 "
+            },
+            {
+              "code": true,
+              "text": "/backend-api/conversation/<id>?include_full_conversation=true"
+            },
+            {
+              "text": " 路由。验证只传输了响应中一个小的选定值。在发起外部图片请求之前，它清除了对令牌、账户、引导、会话和请求头的引用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "关键要点",
+          "inlines": [
+            {
+              "text": "关键要点"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "隔离的强度取决于跨越它的每一座桥。当特权监听器信任来自错误发送者的消息时，沙箱化框架仍然可能危及父页面。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "postMessage"
+                },
+                {
+                  "text": " 接收方在接受改变状态的指令之前，必须同时验证 "
+                },
+                {
+                  "code": true,
+                  "text": "event.origin"
+                },
+                {
+                  "text": " 和 "
+                },
+                {
+                  "code": true,
+                  "text": "event.source"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "HTML 注入可以通过一个全新的、未沙箱化的文档和一个允许的第三方脚本端点，变成 JavaScript 执行。CSP 是有价值的纵深防御，但它无法让不安全的渲染路径变得安全。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "同源 JavaScript 的影响必须在受害者的已认证上下文中衡量。一旦代码以 "
+                },
+                {
+                  "code": true,
+                  "text": "chatgpt.com"
+                },
+                {
+                  "text": " 身份运行，它就能访问正常前端可访问的相同私有数据和账户操作——而不仅仅是弹出一个警告框。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "跨功能测试很重要。这条攻击链存在于公共分享、Preview、MathLive、框架创建和 CSP 之间的接缝中，而不是在单独查看的任何一个功能中。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "更广泛的教训是，安全边界必须在整个产品中成立，而不仅仅是在单个组件内部。任何公开或可分享的表面都应被视为攻击者控制的输入，每条跨框架消息都应经过身份验证，不受信任的标记应在整个渲染路径中保持沙箱化。",
+          "inlines": [
+            {
+              "text": "更广泛的教训是，安全边界必须在整个产品中成立，而不仅仅是在单个组件内部。任何公开或可分享的表面都应被视为攻击者控制的输入，每条跨框架消息都应经过身份验证，不受信任的标记应在整个渲染路径中保持沙箱化。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "In October 2026, we found a way to turn an ordinary public ChatGPT share into attacker-controlled JavaScript running inside the signed-in session of whoever opened it.",
+          "inlines": [
+            {
+              "text": "In October 2026, we found a way to turn an ordinary public ChatGPT share into attacker-controlled JavaScript running inside the signed-in session of whoever opened it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "An attacker could create a malicious conversation, publish it using ChatGPT's normal sharing feature, and send the link to another user. When the victim opened the share, the payload executed as chatgpt.com with access to the victim's authenticated web session.",
+          "inlines": [
+            {
+              "text": "An attacker could create a malicious conversation, publish it using ChatGPT's normal sharing feature, and send the link to another user. When the victim opened the share, the payload executed as "
+            },
+            {
+              "code": true,
+              "text": "chatgpt.com"
+            },
+            {
+              "text": " with access to the victim's authenticated web session."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We confirmed that this code could enumerate the victim's conversation list, retrieve content from a private conversation that had never been shared with the attacker, and send data from that conversation to an external server. The payload was not limited to modifying the page or displaying an alert—it could directly call ChatGPT's authenticated APIs as the victim, essentially allowing us to take over the victim's ChatGPT account.",
+          "inlines": [
+            {
+              "text": "We confirmed that this code could enumerate the victim's conversation list, retrieve content from a private conversation that had never been shared with the attacker, and send data from that conversation to an external server. The payload was not limited to modifying the page or displaying an alert—it could directly call ChatGPT's authenticated APIs as the victim, essentially allowing us to take over the victim's ChatGPT account."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The victim did not need to install an App, join a Project, paste code, or open developer tools. Opening the shared link was the only required action.",
+          "inlines": [
+            {
+              "text": "The victim did not need to install an App, join a Project, paste code, or open developer tools. Opening the shared link was the only required action."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI fixed the issue on October 26 and classified the report as P1.",
+          "inlines": [
+            {
+              "text": "OpenAI fixed the issue on October 26 and classified the report as P1."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The chain started with two features that looked harmless on their own: a graph and an HTML Preview.",
+          "inlines": [
+            {
+              "text": "The chain started with two features that looked harmless on their own: a graph and an HTML Preview."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "flowchart TD\n  A[\"Attacker publishes a ChatGPT conversation\"] --> B[\"Victim opens the public share\"]\n  B --> C[\"HTML Preview crosses into the main chatgpt.com page\"]\n  C --> D[\"JavaScript runs in the victim's signed-in session\"]\n  D --> E[\"Any action on chatgpt.com as the victim:<br/>read private chats and files, change the account\"]"
+        },
+        {
+          "type": "heading",
+          "text": "Technical walkthrough",
+          "inlines": [
+            {
+              "text": "Technical walkthrough"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "heading",
+          "text": "It started with a graph and a Preview",
+          "inlines": [
+            {
+              "text": "It started with a graph and a Preview"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The question that started this research was simple: if Preview code was boxed into a different website, what could it still talk to?",
+          "inlines": [
+            {
+              "text": "The question that started this research was simple: if Preview code was boxed into a different website, what could it still talk to?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ChatGPT can turn an HTML code block into a small working webpage using its Preview feature. Since that page may contain arbitrary code, ChatGPT sensibly runs it inside a restricted frame on a different web address. The Preview can run JavaScript, but the browser treats it as a different website, so it cannot directly inspect the signed-in ChatGPT page around it.",
+          "inlines": [
+            {
+              "text": "ChatGPT can turn an HTML code block into a small working webpage using its Preview feature. Since that page may contain arbitrary code, ChatGPT sensibly runs it inside a restricted frame on a different web address. The Preview can run JavaScript, but the browser treats it as a different website, so it cannot directly inspect the signed-in ChatGPT page around it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At first, this isolation appeared to work exactly as intended. Code inside the Preview could not read parent.document, which is the main ChatGPT page. That should have been the end of it.",
+          "inlines": [
+            {
+              "text": "At first, this isolation appeared to work exactly as intended. Code inside the Preview could not read "
+            },
+            {
+              "code": true,
+              "text": "parent.document"
+            },
+            {
+              "text": ", which is the main ChatGPT page. That should have been the end of it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The conversation also contained a normal interactive graph. Behind the scenes, the graph loaded a math library called MathLive. Loading it did more than draw the graph: it also installed a listener in the main ChatGPT page for messages related to MathLive's on-screen keyboard.",
+          "inlines": [
+            {
+              "text": "The conversation also contained a normal interactive graph. Behind the scenes, the graph loaded a math library called MathLive. Loading it did more than draw the graph: it also installed a listener in the main ChatGPT page for messages related to MathLive's on-screen keyboard."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Browsers call the relevant API postMessage. It is a legitimate way for two frames to exchange information even when the browser prevents them from reading each other's pages. You can think of it as a mail slot: the restricted Preview cannot walk into the main page, but it can still drop a message through the slot.",
+          "inlines": [
+            {
+              "text": "Browsers call the relevant API "
+            },
+            {
+              "code": true,
+              "text": "postMessage"
+            },
+            {
+              "text": ". It is a legitimate way for two frames to exchange information even when the browser prevents them from reading each other's pages. You can think of it as a mail slot: the restricted Preview cannot walk into the main page, but it can still drop a message through the slot."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That is safe only if the receiver checks who sent the message.",
+          "inlines": [
+            {
+              "text": "That is safe only if the receiver checks who sent the message."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MathLive did not make that check for the setting we were interested in. Its listener accepted a message that changed the virtual keyboard layout, and that layout was allowed to contain HTML. The graph had installed the receiver; the Preview gave us an untrusted sender. Two unrelated features had accidentally created a path across the sandbox.",
+          "inlines": [
+            {
+              "text": "MathLive did not make that check for the setting we were interested in. Its listener accepted a message that changed the virtual keyboard layout, and that layout was allowed to contain HTML. The graph had installed the receiver; the Preview gave us an untrusted sender. Two unrelated features had accidentally created a path across the sandbox."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The message that should not have worked",
+          "inlines": [
+            {
+              "text": "The message that should not have worked"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The Preview sent two messages. The first replaced a virtual keyboard layout with our HTML. The second told MathLive to show the keyboard, causing it to render the new layout:",
+          "inlines": [
+            {
+              "text": "The Preview sent two messages. The first replaced a virtual keyboard layout with our HTML. The second told MathLive to show the keyboard, causing it to render the new layout:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "top.postMessage({\n  type: \"mathlive#virtual-keyboard-message\",\n  action: \"update-setting\",\n  layouts: [{\n    label: \"Compatibility\",\n    layers: [{ id: \"compatibility\", markup }]\n  }]\n}, \"*\");\n\ntop.postMessage({\n  type: \"mathlive#virtual-keyboard-message\",\n  action: \"show\",\n  animate: false\n}, \"*\");"
+        },
+        {
+          "type": "paragraph",
+          "text": "MathLive recognized the public message type, but its top-level controller used an origin policy of none, which meant it accepted messages from any web address. It also did not require the update-setting message to come from a previously approved window. Anyone who could reach the listener and knew the message format could replace the layout.",
+          "inlines": [
+            {
+              "text": "MathLive recognized the public message type, but its top-level controller used an origin policy of "
+            },
+            {
+              "code": true,
+              "text": "none"
+            },
+            {
+              "text": ", which meant it accepted messages from any web address. It also did not require the "
+            },
+            {
+              "code": true,
+              "text": "update-setting"
+            },
+            {
+              "text": " message to come from a previously approved window. Anyone who could reach the listener and knew the message format could replace the layout."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When the keyboard opened, MathLive joined the supplied layout into an HTML string and assigned it to innerHTML in the real ChatGPT page. A helper named createHTML initially looked like it might sanitize the value. It did not; it marked the string as trusted and passed our HTML through unchanged.",
+          "inlines": [
+            {
+              "text": "When the keyboard opened, MathLive joined the supplied layout into an HTML string and assigned it to "
+            },
+            {
+              "code": true,
+              "text": "innerHTML"
+            },
+            {
+              "text": " in the real ChatGPT page. A helper named "
+            },
+            {
+              "code": true,
+              "text": "createHTML"
+            },
+            {
+              "text": " initially looked like it might sanitize the value. It did not; it marked the string as trusted and passed our HTML through unchanged."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This was exciting, but we still did not have JavaScript execution. Script tags inserted through innerHTML do not automatically run.",
+          "inlines": [
+            {
+              "text": "This was exciting, but we still did not have JavaScript execution. Script tags inserted through "
+            },
+            {
+              "code": true,
+              "text": "innerHTML"
+            },
+            {
+              "text": " do not automatically run."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The next step was an iframe using srcdoc, a browser feature that lets an embedded frame carry its HTML directly in an attribute:",
+          "inlines": [
+            {
+              "text": "The next step was an "
+            },
+            {
+              "code": true,
+              "text": "iframe"
+            },
+            {
+              "text": " using "
+            },
+            {
+              "code": true,
+              "text": "srcdoc"
+            },
+            {
+              "text": ", a browser feature that lets an embedded frame carry its HTML directly in an attribute:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "<iframe srcdoc=\"...\"></iframe>"
+        },
+        {
+          "type": "paragraph",
+          "text": "MathLive inserted this frame into the main ChatGPT document without a sandbox attribute. That gave us two useful properties. First, srcdoc created a fresh document where an external script could execute. Second, because the main ChatGPT page created the frame, the browser gave it the https://chatgpt.com web identity. Code inside the new frame could therefore access the parent page.",
+          "inlines": [
+            {
+              "text": "MathLive inserted this frame into the main ChatGPT document without a "
+            },
+            {
+              "code": true,
+              "text": "sandbox"
+            },
+            {
+              "text": " attribute. That gave us two useful properties. First, "
+            },
+            {
+              "code": true,
+              "text": "srcdoc"
+            },
+            {
+              "text": " created a fresh document where an external script could execute. Second, because the main ChatGPT page created the frame, the browser gave it the "
+            },
+            {
+              "code": true,
+              "text": "https://chatgpt.com"
+            },
+            {
+              "text": " web identity. Code inside the new frame could therefore access the parent page."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Bypassing CSP with YouTube JSONP",
+          "inlines": [
+            {
+              "text": "Bypassing CSP with YouTube JSONP"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "ChatGPT's Content Security Policy, or CSP, stopped us again. CSP controls which scripts a page may load, and the policy correctly blocked inline JavaScript. It did, however, allow scripts from YouTube.",
+          "inlines": [
+            {
+              "text": "ChatGPT's Content Security Policy, or CSP, stopped us again. CSP controls which scripts a page may load, and the policy correctly blocked inline JavaScript. It did, however, allow scripts from YouTube."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "YouTube's oEmbed endpoint supported a JSONP-style callback parameter. JSONP responses are JavaScript rather than ordinary JSON. The endpoint tried to reject an invalid callback, but it placed the callback into the response before returning its validation error:",
+          "inlines": [
+            {
+              "text": "YouTube's oEmbed endpoint supported a JSONP-style callback parameter. JSONP responses are JavaScript rather than ordinary JSON. The endpoint tried to reject an invalid callback, but it placed the callback into the response before returning its validation error:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "https://www.youtube.com/oembed?callback=globalThis.__marker=31337;void"
+        },
+        {
+          "type": "paragraph",
+          "text": "The response began like this:",
+          "inlines": [
+            {
+              "text": "The response began like this:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "// API callback\nglobalThis.__marker=31337;void({\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Invalid JSONP callback name: ...\"\n  }\n});"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ending our callback with ;void made the object appended by YouTube harmless. Since YouTube was already allowed by ChatGPT's CSP, the browser loaded this response as a script and ran our callback inside the new frame.",
+          "inlines": [
+            {
+              "text": "Ending our callback with "
+            },
+            {
+              "code": true,
+              "text": ";void"
+            },
+            {
+              "text": " made the object appended by YouTube harmless. Since YouTube was already allowed by ChatGPT's CSP, the browser loaded this response as a script and ran our callback inside the new frame."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We now had arbitrary JavaScript running as chatgpt.com. The original Preview was still isolated on its separate web address; we had crossed the boundary by convincing a trusted component in the main page to create a new, unsandboxed document for us.",
+          "inlines": [
+            {
+              "text": "We now had arbitrary JavaScript running as chatgpt.com. The original Preview was still isolated on its separate web address; we had crossed the boundary by convincing a trusted component in the main page to create a new, unsandboxed document for us."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Turning a lab bug into one public link",
+          "inlines": [
+            {
+              "text": "Turning a lab bug into one public link"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "So far, this was a useful sandbox escape, but the first working version was not a convincing real-world attack. It used a researcher-controlled ChatGPT App as the sender. A victim would have needed to connect or invoke that App first.",
+          "inlines": [
+            {
+              "text": "So far, this was a useful sandbox escape, but the first working version was not a convincing real-world attack. It used a researcher-controlled ChatGPT App as the sender. A victim would have needed to connect or invoke that App first."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We next tried delivering the payload through a native HTML attachment. ChatGPT opened the attachment inside the same sandboxed Preview, so it could send the malicious MathLive messages.",
+          "inlines": [
+            {
+              "text": "We next tried delivering the payload through a native HTML attachment. ChatGPT opened the attachment inside the same sandboxed Preview, so it could send the malicious MathLive messages."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "However, when we exported the conversation as a public share, the attachment remained but the earlier graph did not. The graph was essential because it loaded MathLive and installed the vulnerable message listener in the main page. Without it, the attachment could still send the messages, but nothing was listening to or processing them.",
+          "inlines": [
+            {
+              "text": "However, when we exported the conversation as a public share, the attachment remained but the earlier graph did not. The graph was essential because it loaded MathLive and installed the vulnerable message listener in the main page. Without it, the attachment could still send the messages, but nothing was listening to or processing them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The breakthrough was putting both pieces directly into one ordinary public conversation:",
+          "inlines": [
+            {
+              "text": "The breakthrough was putting both pieces directly into one ordinary public conversation:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "A genuine graph initialized MathLive in the main page."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A later assistant-authored HTML Preview sent the two messages."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The resulting /share/<id> link preserved the complete chain for another user. The attacker could deliver it the same way they would send any shared ChatGPT conversation—through email, chat, a support ticket, or a social post. The victim did not need to install anything, join the attacker's workspace, or authenticate through an attacker-controlled flow. They just had to visit the attacker's shared ChatGPT URL.",
+          "inlines": [
+            {
+              "text": "The resulting "
+            },
+            {
+              "code": true,
+              "text": "/share/<id>"
+            },
+            {
+              "text": " link preserved the complete chain for another user. The attacker could deliver it the same way they would send any shared ChatGPT conversation—through email, chat, a support ticket, or a social post. The victim did not need to install anything, join the attacker's workspace, or authenticate through an attacker-controlled flow. They just had to visit the attacker's shared ChatGPT URL."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We observed two versions of the interaction. In the most stable reproduction, the victim opened the share and clicked ChatGPT's normal Preview button once. We later marked the HTML block as previewable so that ChatGPT opened it automatically. In that version, opening the link was the victim's only click. We reproduced the automatic path three times in a separate account, including after a hard refresh, with the alert appearing after roughly 4.5 seconds.",
+          "inlines": [
+            {
+              "text": "We observed two versions of the interaction. In the most stable reproduction, the victim opened the share and clicked ChatGPT's normal "
+            },
+            {
+              "bold": true,
+              "text": "Preview"
+            },
+            {
+              "text": " button once. We later marked the HTML block as previewable so that ChatGPT opened it automatically. In that version, opening the link was the victim's only click. We reproduced the automatic path three times in a separate account, including after a hard refresh, with the alert appearing after roughly 4.5 seconds."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The graph and Preview loaded independently, so the payload could occasionally send its message before MathLive was ready. The final carrier handled that race by retrying the same two messages for a limited period. A guard in the main page ensured that the private-conversation proof and outbound request ran only once.",
+          "inlines": [
+            {
+              "text": "The graph and Preview loaded independently, so the payload could occasionally send its message before MathLive was ready. The final carrier handled that race by retrying the same two messages for a limited period. A guard in the main page ensured that the private-conversation proof and outbound request ran only once."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3167066eec5695445631a98a3c1903d697c941f0f60eff725d7c5716575dbbd8.webp",
+          "alt": "The public share modified the real ChatGPT page"
+        },
+        {
+          "type": "paragraph",
+          "text": "The public share modified the real ChatGPT page",
+          "inlines": [
+            {
+              "text": "The public share modified the real ChatGPT page"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At this point, the public share could display an alert identified by the browser as coming from chatgpt.com and could add a banner to the main page. That proved where our code was running. It did not yet show why the bug mattered.",
+          "inlines": [
+            {
+              "text": "At this point, the public share could display an alert identified by the browser as coming from "
+            },
+            {
+              "code": true,
+              "text": "chatgpt.com"
+            },
+            {
+              "text": " and could add a banner to the main page. That proved where our code was running. It did not yet show why the bug mattered."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "An alert was not enough",
+          "inlines": [
+            {
+              "text": "An alert was not enough"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "At this point, displaying an alert was the least interesting thing the exploit could do. The JavaScript was running as chatgpt.com, which meant it could interact with ChatGPT using the same authenticated context as the normal web application.",
+          "inlines": [
+            {
+              "text": "At this point, displaying an alert was the least interesting thing the exploit could do. The JavaScript was running as "
+            },
+            {
+              "code": true,
+              "text": "chatgpt.com"
+            },
+            {
+              "text": ", which meant it could interact with ChatGPT using the same authenticated context as the normal web application."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The payload read the session information already available to the page and used it to call ChatGPT's conversation APIs. First, it enumerated the victim's recent conversations. It could then request message data for a selected private conversation:",
+          "inlines": [
+            {
+              "text": "The payload read the session information already available to the page and used it to call ChatGPT's conversation APIs. First, it enumerated the victim's recent conversations. It could then request message data for a selected private conversation:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "GET /backend-api/conversations?...&limit=20&order=updated&offset=0\nGET /backend-api/conversations/<conversation-id>?num_turns=2"
+        },
+        {
+          "type": "paragraph",
+          "text": "This was direct authenticated API access, not scraping text that happened to be visible on screen. The target conversation was unrelated to the malicious share and had never been shared with the attacker.",
+          "inlines": [
+            {
+              "text": "This was direct authenticated API access, not scraping text that happened to be visible on screen. The target conversation was unrelated to the malicious share and had never been shared with the attacker."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Once the response was available to the injected JavaScript, sending data off-site was straightforward. The payload created an ordinary image request to a server we controlled.",
+          "inlines": [
+            {
+              "text": "Once the response was available to the injected JavaScript, sending data off-site was straightforward. The payload created an ordinary image request to a server we controlled."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We deliberately sent only a small piece of the response off-site. The injected code had already received the authenticated conversation response and could read its contents, so the vulnerability was not limited to that value.",
+          "inlines": [
+            {
+              "text": "We deliberately sent only a small piece of the response off-site. The injected code had already received the authenticated conversation response and could read its contents, so the vulnerability was not limited to that value."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/bf3f79ca8a1ed0b563ead5783b85e96b04a6e6e952ba04122a6799aa64ce9f4f.webp",
+          "alt": "Controlled proof that private conversation data could leave the victim's session"
+        },
+        {
+          "type": "paragraph",
+          "text": "Controlled proof that private conversation data could leave the victim's session",
+          "inlines": [
+            {
+              "text": "Controlled proof that private conversation data could leave the victim's session"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The result was a practical cross-user data-theft primitive. A malicious public conversation could execute inside another user's signed-in ChatGPT session, enumerate private conversations, retrieve private message content, and send selected data to an attacker-controlled server.",
+          "inlines": [
+            {
+              "text": "The result was a practical cross-user data-theft primitive. A malicious public conversation could execute inside another user's signed-in ChatGPT session, enumerate private conversations, retrieve private message content, and send selected data to an attacker-controlled server."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Because the code ran with the web application's authenticated access, its reach was not inherently limited to the conversation endpoints used in our proof. Other data and actions exposed through ChatGPT's authenticated frontend APIs sat inside the same security boundary. Essentially, we could perform any action on behalf of the victim's ChatGPT account.",
+          "inlines": [
+            {
+              "text": "Because the code ran with the web application's authenticated access, its reach was not inherently limited to the conversation endpoints used in our proof. Other data and actions exposed through ChatGPT's authenticated frontend APIs sat inside the same security boundary. Essentially, we could perform any action on behalf of the victim's ChatGPT account."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What went wrong and what OpenAI fixed",
+          "inlines": [
+            {
+              "text": "What went wrong and what OpenAI fixed"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The Preview sandbox itself worked. Code inside Preview could not directly read the ChatGPT page. The problem was that another component in the main page was willing to accept its instructions.",
+          "inlines": [
+            {
+              "text": "The Preview sandbox itself worked. Code inside Preview could not directly read the ChatGPT page. The problem was that another component in the main page was willing to accept its instructions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Three design decisions turned that mistake into a full exploit:",
+          "inlines": [
+            {
+              "text": "Three design decisions turned that mistake into a full exploit:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "MathLive accepted a state-changing message without proving which frame sent it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The message format allowed raw HTML to be supplied as keyboard-layout data."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "That HTML could create an unsandboxed document that inherited the "
+                },
+                {
+                  "code": true,
+                  "text": "chatgpt.com"
+                },
+                {
+                  "text": " identity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The YouTube response was the final workaround for CSP, not the root cause. Blocking only that endpoint would have removed one path to JavaScript while still leaving an untrusted Preview able to insert HTML into ChatGPT.",
+          "inlines": [
+            {
+              "text": "The YouTube response was the final workaround for CSP, not the root cause. Blocking only that endpoint would have removed one path to JavaScript while still leaving an untrusted Preview able to insert HTML into ChatGPT."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI reproduced both the JavaScript execution and the private-conversation proof. The fix was rolled out across two versions of ChatGPT's web frontend. During the rollout, CSP changes blocked part of the original chain while one version still needed an update. On October 26, OpenAI confirmed that both versions now rejected the cross-frame MathLive messages used by the report and marked the issue resolved.",
+          "inlines": [
+            {
+              "text": "OpenAI reproduced both the JavaScript execution and the private-conversation proof. The fix was rolled out across two versions of ChatGPT's web frontend. During the rollout, CSP changes blocked part of the original chain while one version still needed an update. On October 26, OpenAI confirmed that both versions now rejected the cross-frame MathLive messages used by the report and marked the issue resolved."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The defensive lessons are fairly simple:",
+          "inlines": [
+            {
+              "text": "The defensive lessons are fairly simple:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "A message receiver should verify both the sender's web address and the exact window that was given permission."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Cross-window settings should not contain raw HTML."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Dynamically created documents should remain sandboxed when their content can be influenced by an untrusted frame."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "CSP should be a backup control, not the only barrier after attacker-controlled HTML reaches the main site."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This bug was interesting because every individual feature looked reasonable. Preview was isolated. Graphs could load a math keyboard. Frames could exchange messages. CSP allowed a major media provider. Public conversations could be shared. The vulnerability appeared only when all of those features were combined in one page.",
+          "inlines": [
+            {
+              "text": "This bug was interesting because every individual feature looked reasonable. Preview was isolated. Graphs could load a math keyboard. Frames could exchange messages. CSP allowed a major media provider. Public conversations could be shared. The vulnerability appeared only when all of those features were combined in one page."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Timeline",
+          "inlines": [
+            {
+              "text": "Timeline"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Date",
+          "inlines": [
+            {
+              "text": "Date"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Event",
+          "inlines": [
+            {
+              "text": "Event"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 13, 2026",
+          "inlines": [
+            {
+              "text": "October 13, 2026"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Confirmed the MathLive message-to-HTML path against ChatGPT's production code.",
+          "inlines": [
+            {
+              "text": "Confirmed the MathLive message-to-HTML path against ChatGPT's production code."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 14",
+          "inlines": [
+            {
+              "text": "October 14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reproduced the chain through the normal UI and upgraded the fixed alert to arbitrary JavaScript.",
+          "inlines": [
+            {
+              "text": "Reproduced the chain through the normal UI and upgraded the fixed alert to arbitrary JavaScript."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 16",
+          "inlines": [
+            {
+              "text": "October 16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Confirmed public-share delivery between separate accounts and workspaces with one Preview click.",
+          "inlines": [
+            {
+              "text": "Confirmed public-share delivery between separate accounts and workspaces with one Preview click."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 17",
+          "inlines": [
+            {
+              "text": "October 17"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Confirmed automatic Preview from share navigation and reproduced it after a hard refresh.",
+          "inlines": [
+            {
+              "text": "Confirmed automatic Preview from share navigation and reproduced it after a hard refresh."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 18",
+          "inlines": [
+            {
+              "text": "October 18"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Submitted the report to OpenAI's bug bounty program.",
+          "inlines": [
+            {
+              "text": "Submitted the report to OpenAI's bug bounty program."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 19",
+          "inlines": [
+            {
+              "text": "October 19"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Added the controlled private-chat disclosure proof.",
+          "inlines": [
+            {
+              "text": "Added the controlled private-chat disclosure proof."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 21",
+          "inlines": [
+            {
+              "text": "October 21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI reproduced the issue; severity was raised from the initial P2 triage to P1.",
+          "inlines": [
+            {
+              "text": "OpenAI reproduced the issue; severity was raised from the initial P2 triage to P1."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 22",
+          "inlines": [
+            {
+              "text": "October 22"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI reported one web frontend fixed while the second was still being updated.",
+          "inlines": [
+            {
+              "text": "OpenAI reported one web frontend fixed while the second was still being updated."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 23",
+          "inlines": [
+            {
+              "text": "October 23"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CSP changes blocked part of the chain while one frontend update remained.",
+          "inlines": [
+            {
+              "text": "CSP changes blocked part of the chain while one frontend update remained."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October 26",
+          "inlines": [
+            {
+              "text": "October 26"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI confirmed both frontends rejected the reported messages, resolved the issue, and awarded a total bounty of $5,000.",
+          "inlines": [
+            {
+              "text": "OpenAI confirmed both frontends rejected the reported messages, resolved the issue, and awarded a total bounty of $5,000."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Technical notes",
+          "inlines": [
+            {
+              "text": "Technical notes"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The main story above contains the complete exploit chain. The details below are included for readers who want to follow the production code and payload transformations more closely.",
+          "inlines": [
+            {
+              "text": "The main story above contains the complete exploit chain. The details below are included for readers who want to follow the production code and payload transformations more closely."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The relevant deminified control flow was equivalent to:",
+          "inlines": [
+            {
+              "text": "The relevant deminified control flow was equivalent to:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "window.addEventListener(\"message\", (event) => {\n  if (event.data?.type !== \"mathlive#virtual-keyboard-message\") return;\n  if (!validateOrigin(event.origin, this.originValidator)) return;\n  this.handleMessage(event.data, event.source);\n});\n\nif (message.action === \"update-setting\" && message.layouts) {\n  this.layouts = message.layouts;\n}"
+        },
+        {
+          "type": "paragraph",
+          "text": "Layout normalization preserved layouts[].layers[].markup. Showing the keyboard eventually performed the equivalent of:",
+          "inlines": [
+            {
+              "text": "Layout normalization preserved "
+            },
+            {
+              "code": true,
+              "text": "layouts[].layers[].markup"
+            },
+            {
+              "text": ". Showing the keyboard eventually performed the equivalent of:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "keyboardContainer.innerHTML = MathfieldElement.createHTML(keyboardHTML);"
+        },
+        {
+          "type": "paragraph",
+          "text": "createHTML acted as an identity or Trusted Types wrapper, not a sanitizer. Trusted Types can restrict who assigns to an HTML sink, but an identity policy does not make an attacker-controlled string safe.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "createHTML"
+            },
+            {
+              "text": " acted as an identity or Trusted Types wrapper, not a sanitizer. Trusted Types can restrict who assigns to an HTML sink, but an identity policy does not make an attacker-controlled string safe."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The parser and CSP transition. The innerHTML operation could create an iframe, but a script inserted directly that way would remain inert. The unsandboxed srcdoc caused a fresh HTML document parse and inherited the embedding ChatGPT origin. That document also inherited the effective CSP captured during testing, which blocked inline code but permitted www.youtube.com in script-src-elem.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The parser and CSP transition."
+            },
+            {
+              "text": " The "
+            },
+            {
+              "code": true,
+              "text": "innerHTML"
+            },
+            {
+              "text": " operation could create an iframe, but a script inserted directly that way would remain inert. The unsandboxed "
+            },
+            {
+              "code": true,
+              "text": "srcdoc"
+            },
+            {
+              "text": " caused a fresh HTML document parse and inherited the embedding ChatGPT origin. That document also inherited the effective CSP captured during testing, which blocked inline code but permitted "
+            },
+            {
+              "code": true,
+              "text": "www.youtube.com"
+            },
+            {
+              "text": " in "
+            },
+            {
+              "code": true,
+              "text": "script-src-elem"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The oEmbed response returned HTTP 200 with Content-Type: text/javascript; charset=UTF-8 and X-Content-Type-Options: nosniff; no Cross-Origin-Resource-Policy header was observed. Google rewrote angle brackets in the callback, so the payload used classic function syntax instead of arrow functions. Ending the program with ;void consumed the error object appended by the endpoint.",
+          "inlines": [
+            {
+              "text": "The oEmbed response returned HTTP 200 with "
+            },
+            {
+              "code": true,
+              "text": "Content-Type: text/javascript; charset=UTF-8"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "X-Content-Type-Options: nosniff"
+            },
+            {
+              "text": "; no Cross-Origin-Resource-Policy header was observed. Google rewrote angle brackets in the callback, so the payload used classic "
+            },
+            {
+              "code": true,
+              "text": "function"
+            },
+            {
+              "text": " syntax instead of arrow functions. Ending the program with "
+            },
+            {
+              "code": true,
+              "text": ";void"
+            },
+            {
+              "text": " consumed the error object appended by the endpoint."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For the private-conversation proof, the function was converted to source with toString(), double quotes were converted to single quotes, and whitespace was collapsed. URLSearchParams then encoded it into the callback, the script URL was HTML-escaped inside <script src>, and that entire element was escaped again into the iframe's srcdoc attribute. The final callback was 5,533 characters; the YouTube URL was 7,309 characters; the script element was 7,337 characters; and the final iframe markup was 7,390 characters.",
+          "inlines": [
+            {
+              "text": "For the private-conversation proof, the function was converted to source with "
+            },
+            {
+              "code": true,
+              "text": "toString()"
+            },
+            {
+              "text": ", double quotes were converted to single quotes, and whitespace was collapsed. "
+            },
+            {
+              "code": true,
+              "text": "URLSearchParams"
+            },
+            {
+              "text": " then encoded it into the callback, the script URL was HTML-escaped inside "
+            },
+            {
+              "code": true,
+              "text": "<script src>"
+            },
+            {
+              "text": ", and that entire element was escaped again into the iframe's "
+            },
+            {
+              "code": true,
+              "text": "srcdoc"
+            },
+            {
+              "text": " attribute. The final callback was 5,533 characters; the YouTube URL was 7,309 characters; the script element was 7,337 characters; and the final iframe markup was 7,390 characters."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The authenticated read. The same-origin frame parsed #client-bootstrap from the parent document, extracted the session access token and account ID, and required the account ID in the token to agree with the session when both were present. It used these in-memory headers:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The authenticated read."
+            },
+            {
+              "text": " The same-origin frame parsed "
+            },
+            {
+              "code": true,
+              "text": "#client-bootstrap"
+            },
+            {
+              "text": " from the parent document, extracted the session access token and account ID, and required the account ID in the token to agree with the session when both were present. It used these in-memory headers:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "Authorization: Bearer <victim token>\nChatGPT-Account-ID: <victim account>\nAccept: application/json"
+        },
+        {
+          "type": "paragraph",
+          "text": "The primary requests were:",
+          "inlines": [
+            {
+              "text": "The primary requests were:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "GET /backend-api/conversations?exclude_conversation_origin=tpp&expand=false&is_archived=false&is_starred=false&limit=20&order=updated&offset=0\nGET /backend-api/conversations/<id>?num_turns=2&include_has_versions=true"
+        },
+        {
+          "type": "paragraph",
+          "text": "Only a 403, 404, or 405 on the detail request caused the code to try the legacy /backend-api/conversation/<id>?include_full_conversation=true route. The validation transmitted only a small selected value from the response. Before the external image request, it cleared references to the token, account, bootstrap, session, and request headers.",
+          "inlines": [
+            {
+              "text": "Only a 403, 404, or 405 on the detail request caused the code to try the legacy "
+            },
+            {
+              "code": true,
+              "text": "/backend-api/conversation/<id>?include_full_conversation=true"
+            },
+            {
+              "text": " route. The validation transmitted only a small selected value from the response. Before the external image request, it cleared references to the token, account, bootstrap, session, and request headers."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Key takeaways",
+          "inlines": [
+            {
+              "text": "Key takeaways"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Isolation is only as strong as every bridge across it. A sandboxed frame can still compromise its parent when a privileged listener trusts messages from the wrong sender."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "postMessage"
+                },
+                {
+                  "text": " receivers must authenticate both "
+                },
+                {
+                  "code": true,
+                  "text": "event.origin"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "event.source"
+                },
+                {
+                  "text": " before accepting state-changing instructions."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "HTML injection can become JavaScript execution through a fresh, unsandboxed document and an allowed third-party script endpoint. CSP is valuable defense in depth, but it cannot make an unsafe rendering path safe."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The impact of same-origin JavaScript must be measured in the victim's authenticated context. Once code ran as "
+                },
+                {
+                  "code": true,
+                  "text": "chatgpt.com"
+                },
+                {
+                  "text": ", it could reach the same private data and account actions available to the normal frontend—not merely display an alert."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Cross-feature testing matters. This chain existed in the seams between public sharing, Preview, MathLive, frame creation, and CSP rather than in any one feature viewed alone."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The broader lesson is that security boundaries have to hold across the complete product, not just inside individual components. Any public or shareable surface should be treated as attacker-controlled input, every cross-frame message should be authenticated, and untrusted markup should remain sandboxed throughout its entire rendering path.",
+          "inlines": [
+            {
+              "text": "The broader lesson is that security boundaries have to hold across the complete product, not just inside individual components. Any public or shareable surface should be treated as attacker-controlled input, every cross-frame message should be authenticated, and untrusted markup should remain sandboxed throughout its entire rendering path."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-02T01:10:41.165899Z",
+  "contentMode": "full"
+}
