@@ -100,6 +100,7 @@ const REPORT_DATA = [
 
 // 投研周报数据
 const WEEKLY_DATA = [
+  {"week": "W44", "label": "2026 Week 44", "coverage": "10月26日 — 11月1日", "file": "weekly-reports/2026-W44.md"},
   {"week": "W43", "label": "2026 Week 43", "coverage": "10月19日 — 10月25日", "file": "weekly-reports/2026-W43.md"},
   {"week": "W42", "label": "2026 Week 42", "coverage": "10月12日 — 10月18日", "file": "weekly-reports/2026-W42.md"},
   {"week": "W41", "label": "2026 Week 41", "coverage": "10月5日 — 10月11日", "file": "weekly-reports/2026-W41.md"},
