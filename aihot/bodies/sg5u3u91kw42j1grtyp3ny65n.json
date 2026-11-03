@@ -1,0 +1,320 @@
+{
+  "schemaVersion": 1,
+  "id": "sg5u3u91kw42j1grtyp3ny65n",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/sg5u3u91kw42j1grtyp3ny65n",
+  "fetchedAt": "2026-11-03T01:10:11.167047Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic / Claude",
+    "Agent 智能体",
+    "产品更新"
+  ],
+  "tags": [
+    "产品更新",
+    "Agent",
+    "Anthropic"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "消息线程功能现已在 Claude 平台开启公开测试。借助消息线程，智能体不必在每一轮都重新发送完整的对话历史，从而降低长时间会话的延迟。",
+          "inlines": [
+            {
+              "text": "消息线程功能现已在 Claude 平台开启公开测试。借助消息线程，智能体不必在每一轮都重新发送完整的对话历史，从而降低长时间会话的延迟。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "消息线程的工作原理",
+          "inlines": [
+            {
+              "text": "消息线程的工作原理"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "一个编程智能体在一次会话中可能发出数百个请求，而每个请求都会重新发送此前所有的消息和工具结果。当对话达到数十万 token 时，重发全部内容会让 Claude 开始响应前的等待时间变长。使用消息线程后，智能体只发送自上一轮以来的新增内容，从而缩短首 token 延迟（TTFT）。",
+          "inlines": [
+            {
+              "text": "一个编程智能体在一次会话中可能发出数百个请求，而每个请求都会重新发送此前所有的消息和工具结果。当对话达到数十万 token 时，重发全部内容会让 Claude 开始响应前的等待时间变长。使用消息线程后，智能体只发送自上一轮以来的新增内容，从而缩短首 token 延迟（TTFT）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "大多数 Claude Code 用户默认开启消息线程后，50 万至 100 万 token 的请求首 token 延迟中位数下降约 35%。",
+          "inlines": [
+            {
+              "text": "大多数 Claude Code 用户默认开启消息线程后，50 万至 100 万 token 的请求首 token 延迟中位数下降约 35%。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要使用消息线程，请在 Messages API 请求中添加 thread 参数。第一个请求包含完整对话并开启一个线程，此后每个请求只包含新消息和上一条响应的 ID。在两轮之间，我们会把每个线程保存在内存中，加密存储且不写入磁盘。线程在最后一次请求后 5 分钟过期，之后客户端会重新发送完整对话以开启新线程。虽然使用消息线程后每个请求更小，但 Claude 在每一轮仍会读取完整对话，因此 token 用量保持不变。",
+          "inlines": [
+            {
+              "text": "要使用消息线程，请在 Messages API 请求中添加 "
+            },
+            {
+              "code": true,
+              "text": "thread"
+            },
+            {
+              "text": " 参数。第一个请求包含完整对话并开启一个线程，此后每个请求只包含新消息和上一条响应的 ID。在两轮之间，我们会把每个线程保存在内存中，加密存储且不写入磁盘。线程在最后一次请求后 5 分钟过期，之后客户端会重新发送完整对话以开启新线程。虽然使用消息线程后每个请求更小，但 Claude 在每一轮仍会读取完整对话，因此 token 用量保持不变。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "消息线程最适合对延迟敏感的活跃会话，包括：",
+          "inlines": [
+            {
+              "text": "消息线程最适合对延迟敏感的活跃会话，包括："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "长时间运行的编程智能体"
+                },
+                {
+                  "text": "，每个工具结果或文件编辑都会增加对话内容。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "计算机使用智能体"
+                },
+                {
+                  "text": "，截图保留在线程中，无需每轮重新上传。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "文档和图片密集型工作流"
+                },
+                {
+                  "text": "，请求体积得以减小。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "智能体携带的上下文越多，消息线程能缩短的首 token 延迟就越多。",
+          "inlines": [
+            {
+              "text": "智能体携带的上下文越多，消息线程能缩短的首 token 延迟就越多。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "开始使用",
+          "inlines": [
+            {
+              "text": "开始使用"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "消息线程现已在原生 Claude 平台开启公开测试，同时也已在 AWS 上的 Claude 平台、Microsoft Foundry 中的 Claude，以及 Google Cloud 上的 Claude 模型（Anthropic 托管）上线。适用标准 Claude token 费率和现有速率限制。请参阅文档开始使用。",
+          "inlines": [
+            {
+              "text": "消息线程现已在原生 Claude 平台开启公开测试，同时也已在 AWS 上的 Claude 平台、Microsoft Foundry 中的 Claude，以及 Google Cloud 上的 Claude 模型（Anthropic 托管）上线。适用标准 Claude token 费率和现有速率限制。请参阅"
+            },
+            {
+              "href": "http://platform.claude.com/docs/en/build-with-claude/message-threads",
+              "text": "文档"
+            },
+            {
+              "text": "开始使用。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Message threads is now available in public beta on the Claude Platform. With message threads, agents no longer need to resend the full conversation history on every turn, reducing latency for long-running sessions.",
+          "inlines": [
+            {
+              "text": "Message threads is now available in public beta on the Claude Platform. With message threads, agents no longer need to resend the full conversation history on every turn, reducing latency for long-running sessions."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How message threads works",
+          "inlines": [
+            {
+              "text": "How message threads works"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "A coding agent might make hundreds of requests in one session, and each request resends every earlier message and tool result. Once a conversation reaches hundreds of thousands of tokens, resending all of it adds time before Claude starts responding. With message threads, agents send only what’s new since the last turn, which reduces time to first token (TTFT).",
+          "inlines": [
+            {
+              "text": "A coding agent might make hundreds of requests in one session, and each request resends every earlier message and tool result. Once a conversation reaches hundreds of thousands of tokens, resending all of it adds time before Claude starts responding. With message threads, agents send only what’s new since the last turn, which reduces time to first token (TTFT)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With message threads on by default for most Claude Code users, requests with 500k to 1M tokens see median TTFT drop by about 35%.",
+          "inlines": [
+            {
+              "text": "With message threads on by default for most Claude Code users, requests with 500k to 1M tokens see median TTFT drop by about 35%."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To use message threads, add the thread parameter to Messages API requests. The first request includes the full conversation and starts a thread. Each request after that includes only the new messages and the ID of the previous response. Between turns, we hold each thread in memory, where it’s encrypted and not written to disk. A thread expires 5 minutes after its last request and your client then resends the full conversation to start a new one. While each request is smaller with message threads, Claude still reads the full conversation on every turn, so token usage stays the same.",
+          "inlines": [
+            {
+              "text": "To use message threads, add the "
+            },
+            {
+              "code": true,
+              "text": "thread"
+            },
+            {
+              "text": " parameter to Messages API requests. The first request includes the full conversation and starts a thread. Each request after that includes only the new messages and the ID of the previous response. Between turns, we hold each thread in memory, where it’s encrypted and not written to disk. A thread expires 5 minutes after its last request and your client then resends the full conversation to start a new one. While each request is smaller with message threads, Claude still reads the full conversation on every turn, so token usage stays the same."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Message threads is best for active sessions where latency matters, including:",
+          "inlines": [
+            {
+              "text": "Message threads is best for active sessions where latency matters, including:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Long-running coding agents"
+                },
+                {
+                  "text": ","
+                },
+                {
+                  "bold": true,
+                  "text": " "
+                },
+                {
+                  "text": "where each tool result or file edit adds to the conversation."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Computer use agents"
+                },
+                {
+                  "text": ","
+                },
+                {
+                  "bold": true,
+                  "text": " "
+                },
+                {
+                  "text": "where screenshots stay with the thread instead of being re-uploaded on every turn."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Document and image-heavy workflows"
+                },
+                {
+                  "text": ", where requests are made smaller."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The more context an agent carries, the more message threads can reduce time to first token.",
+          "inlines": [
+            {
+              "text": "The more context an agent carries, the more message threads can reduce time to first token."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Getting started",
+          "inlines": [
+            {
+              "text": "Getting started"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Message threads is available now in public beta on the native Claude Platform, and on Claude Platform on AWS, Claude in Microsoft Foundry, and on Claude Models on Google Cloud (Anthropic managed). Standard Claude token rates and existing rate limits apply. See the documentation to get started.",
+          "inlines": [
+            {
+              "text": "Message threads is available now in public beta on the native Claude Platform, and on Claude Platform on AWS, Claude in Microsoft Foundry, and on Claude Models on Google Cloud (Anthropic managed). Standard Claude token rates and existing rate limits apply. See the "
+            },
+            {
+              "href": "http://platform.claude.com/docs/en/build-with-claude/message-threads",
+              "text": "documentation"
+            },
+            {
+              "text": " to get started."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-03T01:10:11.167427Z",
+  "contentMode": "full"
+}
