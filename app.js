@@ -324,6 +324,7 @@
           };
         }).filter(Boolean);
       }).filter(function (row) { return row.some(function (cell) { return cell.text; }); });
+      rows = rows.map(mergeSemiTableRow);
       return rows.length ? { type: 'table', header: block.header === true, rows: rows } : null;
     }
     if (block.type === 'image') {
@@ -332,6 +333,49 @@
       return { type: 'image', src: src, alt: cleanString(block.alt, 1000), caption: cleanString(block.caption, 2000), width: Number.isInteger(block.width) && block.width > 0 && block.width < 30000 ? block.width : null, height: Number.isInteger(block.height) && block.height > 0 && block.height < 30000 ? block.height : null };
     }
     return null;
+  }
+  function mergeSemiTableRow(row) {
+    var output = [];
+    var index = 0;
+    while (index < row.length) {
+      var cell = row[index];
+      var text = String(cell.text || '').trim();
+      if (/^[)）%％]+$/.test(text)) {
+        var span = cell.colspan || 1;
+        var position = output.length - 1;
+        while (position >= 0 && !String(output[position].text || '').trim()) {
+          span += output[position].colspan || 1;
+          output.pop();
+          position -= 1;
+        }
+        if (position >= 0) {
+          output[position].text = String(output[position].text || '').replace(/\s+$/, '') + text;
+          output[position].colspan = (output[position].colspan || 1) + span;
+          index += 1;
+          continue;
+        }
+      }
+      if (/^[(（$€£¥]+$/.test(text)) {
+        var prefixSpan = cell.colspan || 1;
+        var next = index + 1;
+        while (next < row.length && !String(row[next].text || '').trim()) {
+          prefixSpan += row[next].colspan || 1;
+          next += 1;
+        }
+        if (next < row.length) {
+          output.push({
+            text: text + String(row[next].text || '').replace(/^\s+/, ''),
+            colspan: (row[next].colspan || 1) + prefixSpan,
+            rowspan: row[next].rowspan || 1
+          });
+          index = next + 1;
+          continue;
+        }
+      }
+      output.push(cell);
+      index += 1;
+    }
+    return output;
   }
   function normalizeSemiContent(value) {
     if (!value || value.schemaVersion !== 1 || !value.languages) return null;
