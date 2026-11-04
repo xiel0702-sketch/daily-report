@@ -152,8 +152,11 @@
     }).filter(function (entry) { return entry && entry.text; }) : [];
     var axes = {};
     ['IMP', 'NOV', 'EVI', 'REL', 'ACT'].forEach(function (axis) { if (value.axes && Number.isInteger(value.axes[axis]) && value.axes[axis] >= 0 && value.axes[axis] <= 10) axes[axis] = value.axes[axis]; });
+    var articleContent = normalizeSemiContent(value.articleContent);
+    var articleBodyZh = cleanString(value.articleBodyZh, 120000);
     return { id: 'semiconductor-' + value.id, semiconductorId: value.id, provider: 'semiconductor', category: 'semi',
       title: cleanString(value.title, 800), summary: summary, body: summary, articleBody: cleanString(value.articleBody, 120000),
+      articleBodyZh: articleBodyZh, articleContent: articleContent, semiSearchText: semiContentText(articleContent),
       sourceURL: safeURL(value.sourceURL), sourceName: cleanString(value.sourceName, 180),
       publishedAt: validISO(value.publishedAt), date: chinaDate(value.publishedAt), score: score, selected: value.selected, status: value.status,
       relevance: ['PASS', 'RISK'].includes(value.relevance) ? value.relevance : '',
@@ -296,6 +299,55 @@
       return code ? { type: 'code', text: code, language: cleanString(block.language, 80) } : null;
     }
     return block.type === 'rule' ? { type: 'rule' } : null;
+  }
+  function normalizeSemiBlock(block) {
+    if (!block || typeof block !== 'object') return null;
+    if (['paragraph', 'heading', 'quote'].includes(block.type)) {
+      var inlines = normalizeInlines(block.inlines, block.text);
+      if (!inlines.length) return null;
+      return { type: block.type, inlines: inlines, level: Number.isInteger(block.level) && block.level >= 2 && block.level <= 4 ? block.level : 2 };
+    }
+    if (block.type === 'list' && Array.isArray(block.items)) {
+      var items = block.items.slice(0, 1000).map(function (entry) { return normalizeInlines(entry && entry.inlines, entry && entry.text); }).filter(function (parts) { return parts.length; });
+      return items.length ? { type: 'list', ordered: block.ordered === true, items: items } : null;
+    }
+    if (block.type === 'table' && Array.isArray(block.rows)) {
+      var rows = block.rows.slice(0, 500).map(function (row) {
+        return Array.isArray(row) ? row.slice(0, 30).map(function (cell) { return typeof cell === 'string' ? cell.slice(0, 5000) : ''; }) : [];
+      }).filter(function (row) { return row.some(Boolean); });
+      return rows.length ? { type: 'table', header: block.header === true, rows: rows } : null;
+    }
+    if (block.type === 'image') {
+      var src = typeof block.src === 'string' ? block.src : '';
+      if (!/^semiconductor\/media\/[a-f0-9]{64}\.(?:jpg|jpeg|png|webp|gif)$/.test(src)) return null;
+      return { type: 'image', src: src, alt: cleanString(block.alt, 1000), caption: cleanString(block.caption, 2000), width: Number.isInteger(block.width) && block.width > 0 && block.width < 30000 ? block.width : null, height: Number.isInteger(block.height) && block.height > 0 && block.height < 30000 ? block.height : null };
+    }
+    return null;
+  }
+  function normalizeSemiContent(value) {
+    if (!value || value.schemaVersion !== 1 || !value.languages) return null;
+    var languages = {};
+    ['zh', 'original'].forEach(function (key) {
+      var language = value.languages[key];
+      if (!language || !Array.isArray(language.blocks)) return;
+      var blocks = language.blocks.slice(0, 1000).map(normalizeSemiBlock).filter(Boolean);
+      if (blocks.length) languages[key] = { label: cleanString(language.label, 40) || (key === 'zh' ? '中文' : '原文'), blocks: blocks };
+    });
+    if (!Object.keys(languages).length) return null;
+    return { schemaVersion: 1, status: 'available', provenance: 'source-public-page', label: '正文', notice: '', languages: languages };
+  }
+  function semiContentText(content) {
+    if (!content) return '';
+    var parts = [];
+    Object.keys(content.languages).forEach(function (key) {
+      content.languages[key].blocks.forEach(function (block) {
+        if (block.inlines) parts.push(block.inlines.map(function (part) { return part.text; }).join(''));
+        if (block.items) block.items.forEach(function (item) { parts.push(item.map(function (part) { return part.text; }).join('')); });
+        if (block.rows) block.rows.forEach(function (row) { parts.push(row.join(' ')); });
+        if (block.alt) parts.push(block.alt);
+      });
+    });
+    return parts.join(' ');
   }
   function normalizeLocalBody(value, id) {
     if (!value || value.schemaVersion !== 1 || value.id !== id || !['aihot-public-page', 'source-public-page'].includes(value.provenance) || !['available', 'partial', 'unavailable', 'error'].includes(value.status)) return null;
@@ -1102,7 +1154,7 @@
     var source = displayedItems();
     var query = currentRoute.q.trim().toLocaleLowerCase();
     var filtered = source.filter(function (item) {
-      return (currentRoute.category === 'all' || item.category === currentRoute.category) && (!query || [item.title, item.originalTitle, item.body, item.articleBody, item.signal, item.sourceName, (item.topics || []).join(' '), (item.tags || []).join(' '), item.date, CATEGORIES[item.category].name].join(' ').toLocaleLowerCase().includes(query));
+      return (currentRoute.category === 'all' || item.category === currentRoute.category) && (!query || [item.title, item.originalTitle, item.body, item.articleBody, item.articleBodyZh, item.semiSearchText, item.signal, item.sourceName, (item.topics || []).join(' '), (item.tags || []).join(' '), item.date, CATEGORIES[item.category].name].join(' ').toLocaleLowerCase().includes(query));
     });
     clear(ui.feedList); clear(ui.feedStatus);
     ui.feedList.classList.add('news-list');
@@ -1442,6 +1494,19 @@
       } else if (block.type === 'list') {
         node = element(block.ordered ? 'ol' : 'ul', 'article-body-list');
         block.items.forEach(function (parts) { var li = element('li'); appendInlines(li, parts); node.appendChild(li); });
+      } else if (block.type === 'table') {
+        node = element('div', 'article-body-table-wrap');
+        var table = element('table', 'article-body-table');
+        block.rows.forEach(function (row, rowIndex) {
+          var tr = element('tr');
+          row.forEach(function (cell) {
+            var td = element(block.header && rowIndex === 0 ? 'th' : 'td');
+            td.textContent = cell;
+            tr.appendChild(td);
+          });
+          table.appendChild(tr);
+        });
+        node.appendChild(table);
       } else if (block.type === 'image') {
         node = element('figure', 'article-body-figure');
         var picture = element('img');
@@ -1570,7 +1635,9 @@
       main.appendChild(state);
       if (item.relevance === 'RISK') main.appendChild(element('p', 'article-note semi-observation-note', '本条为待核风险线索，原始披露或报道尚需复核，不代表已确认的风险结论。'));
       else if (item.sourceMode !== 'CORE' || !item.selected) main.appendChild(element('p', 'article-note semi-observation-note', '本条为观察线索，尚未作为已确认产业结论入选。请结合原始披露与后续核验判断。'));
-      if (item.articleBody) {
+      if (item.articleContent) {
+        appendLocalBody(main, item.articleContent, 'snapshot', item);
+      } else if (item.articleBody) {
         var bodySection = element('section', 'article-section semi-article-body');
         bodySection.appendChild(element('h2', 'article-section-label', '正文'));
         // Rendered as plain text nodes only: publisher markup must never execute.
