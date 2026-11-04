@@ -313,8 +313,17 @@
     }
     if (block.type === 'table' && Array.isArray(block.rows)) {
       var rows = block.rows.slice(0, 500).map(function (row) {
-        return Array.isArray(row) ? row.slice(0, 30).map(function (cell) { return typeof cell === 'string' ? cell.slice(0, 5000) : ''; }) : [];
-      }).filter(function (row) { return row.some(Boolean); });
+        if (!Array.isArray(row)) return [];
+        return row.slice(0, 30).map(function (cell) {
+          if (typeof cell === 'string') return { text: cell.slice(0, 5000), colspan: 1, rowspan: 1 };
+          if (!cell || typeof cell !== 'object' || typeof cell.text !== 'string') return null;
+          return {
+            text: cell.text.slice(0, 5000),
+            colspan: Number.isInteger(cell.colspan) && cell.colspan >= 1 && cell.colspan <= 100 ? cell.colspan : 1,
+            rowspan: Number.isInteger(cell.rowspan) && cell.rowspan >= 1 && cell.rowspan <= 100 ? cell.rowspan : 1
+          };
+        }).filter(Boolean);
+      }).filter(function (row) { return row.some(function (cell) { return cell.text; }); });
       return rows.length ? { type: 'table', header: block.header === true, rows: rows } : null;
     }
     if (block.type === 'image') {
@@ -343,7 +352,7 @@
       content.languages[key].blocks.forEach(function (block) {
         if (block.inlines) parts.push(block.inlines.map(function (part) { return part.text; }).join(''));
         if (block.items) block.items.forEach(function (item) { parts.push(item.map(function (part) { return part.text; }).join('')); });
-        if (block.rows) block.rows.forEach(function (row) { parts.push(row.join(' ')); });
+        if (block.rows) block.rows.forEach(function (row) { parts.push(row.map(function (cell) { return cell.text || ''; }).join(' ')); });
         if (block.alt) parts.push(block.alt);
       });
     });
@@ -1497,11 +1506,20 @@
       } else if (block.type === 'table') {
         node = element('div', 'article-body-table-wrap');
         var table = element('table', 'article-body-table');
+        var maxSpan = 1;
+        block.rows.forEach(function (row) {
+          var span = 0;
+          row.forEach(function (cell) { span += cell.colspan || 1; });
+          maxSpan = Math.max(maxSpan, span);
+        });
+        table.style.minWidth = Math.min(2600, Math.max(520, maxSpan * 64)) + 'px';
         block.rows.forEach(function (row, rowIndex) {
           var tr = element('tr');
           row.forEach(function (cell) {
             var td = element(block.header && rowIndex === 0 ? 'th' : 'td');
-            td.textContent = cell;
+            td.textContent = cell.text;
+            if (cell.colspan > 1) td.setAttribute('colspan', String(cell.colspan));
+            if (cell.rowspan > 1) td.setAttribute('rowspan', String(cell.rowspan));
             tr.appendChild(td);
           });
           table.appendChild(tr);
