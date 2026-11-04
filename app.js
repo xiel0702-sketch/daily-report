@@ -153,7 +153,8 @@
     var axes = {};
     ['IMP', 'NOV', 'EVI', 'REL', 'ACT'].forEach(function (axis) { if (value.axes && Number.isInteger(value.axes[axis]) && value.axes[axis] >= 0 && value.axes[axis] <= 10) axes[axis] = value.axes[axis]; });
     return { id: 'semiconductor-' + value.id, semiconductorId: value.id, provider: 'semiconductor', category: 'semi',
-      title: cleanString(value.title, 800), summary: summary, body: summary, sourceURL: safeURL(value.sourceURL), sourceName: cleanString(value.sourceName, 180),
+      title: cleanString(value.title, 800), summary: summary, body: summary, articleBody: cleanString(value.articleBody, 120000),
+      sourceURL: safeURL(value.sourceURL), sourceName: cleanString(value.sourceName, 180),
       publishedAt: validISO(value.publishedAt), date: chinaDate(value.publishedAt), score: score, selected: value.selected, status: value.status,
       relevance: ['PASS', 'RISK'].includes(value.relevance) ? value.relevance : '',
       sourceTier: cleanString(value.sourceTier, 32), sourceMode: sourceMode, reason: cleanString(value.reason, 2400), tags: cleanList(value.tags), topics: [],
@@ -697,7 +698,7 @@
       sources.appendChild(sourceLink(item.aihotURL, 'AI HOT ↗', 'source-link'));
     } else if (item.provider === 'semiconductor') {
       sources.appendChild(element('span', 'source-label', '来源 · ' + (item.sourceName || new URL(item.sourceURL).hostname)));
-      sources.appendChild(routeLink(detailHref, '查看摘要与证据 →', 'report-link'));
+      sources.appendChild(routeLink(detailHref, '阅读正文与证据 →', 'report-link'));
       sources.appendChild(sourceLink(item.sourceURL, '原文 ↗', 'source-link'));
     } else if (links.length) links.forEach(function (link, index) {
       var domain = '';
@@ -1101,7 +1102,7 @@
     var source = displayedItems();
     var query = currentRoute.q.trim().toLocaleLowerCase();
     var filtered = source.filter(function (item) {
-      return (currentRoute.category === 'all' || item.category === currentRoute.category) && (!query || [item.title, item.originalTitle, item.body, item.signal, item.sourceName, (item.topics || []).join(' '), (item.tags || []).join(' '), item.date, CATEGORIES[item.category].name].join(' ').toLocaleLowerCase().includes(query));
+      return (currentRoute.category === 'all' || item.category === currentRoute.category) && (!query || [item.title, item.originalTitle, item.body, item.articleBody, item.signal, item.sourceName, (item.topics || []).join(' '), (item.tags || []).join(' '), item.date, CATEGORIES[item.category].name].join(' ').toLocaleLowerCase().includes(query));
     });
     clear(ui.feedList); clear(ui.feedStatus);
     ui.feedList.classList.add('news-list');
@@ -1569,6 +1570,17 @@
       main.appendChild(state);
       if (item.relevance === 'RISK') main.appendChild(element('p', 'article-note semi-observation-note', '本条为待核风险线索，原始披露或报道尚需复核，不代表已确认的风险结论。'));
       else if (item.sourceMode !== 'CORE' || !item.selected) main.appendChild(element('p', 'article-note semi-observation-note', '本条为观察线索，尚未作为已确认产业结论入选。请结合原始披露与后续核验判断。'));
+      if (item.articleBody) {
+        var bodySection = element('section', 'article-section semi-article-body');
+        bodySection.appendChild(element('h2', 'article-section-label', '正文'));
+        // Rendered as plain text nodes only: publisher markup must never execute.
+        var bodyText = element('div', 'semi-body-text');
+        bodyText.appendChild(document.createTextNode(item.articleBody));
+        bodySection.appendChild(bodyText);
+        main.appendChild(bodySection);
+      } else {
+        main.appendChild(element('p', 'article-note semi-body-missing', '未取得完整正文，未用事实摘要替代正文。'));
+      }
       appendArticleSection(main, '事实摘要', item.summary);
       if (!item.summary) main.appendChild(element('p', 'article-note', '暂无可展示的事实摘要，请查看原始来源。'));
       appendArticleSection(main, '筛选说明', item.reason || (item.score === null ? '评分尚未完成，当前仅保留采集线索。' : '本次快照未提供进一步筛选说明。'));
@@ -1611,7 +1623,7 @@
       sourceSection.appendChild(sourceLink(item.sourceURL, '打开原始披露 ↗', 'article-source-button'));
       var relatedSeen = new Set([item.sourceURL]);
       (item.relatedSources || []).forEach(function (source) { if (!relatedSeen.has(source.url)) { sourceSection.appendChild(sourceLink(source.url, (source.name || '关联来源') + ' ↗', 'article-source-button')); relatedSeen.add(source.url); } });
-      sourceSection.appendChild(element('p', 'article-note', '本站展示采集后整理的事实摘要、筛选说明与短证据引用。完整报道请访问原始来源。'));
+      sourceSection.appendChild(element('p', 'article-note', '本站展示采集到的原文正文、事实摘要、筛选说明与短证据引用；未能取得正文的条目会明确标注。完整报道请访问原始来源。'));
     } else if (isAIHOT) {
       if (item.sourceURL) sourceSection.appendChild(sourceLink(item.sourceURL, '打开原文 ↗', 'article-source-button'));
       sourceSection.appendChild(sourceLink(item.aihotURL, '查看 AI HOT ↗', 'article-source-button'));
