@@ -3,9 +3,9 @@
   'use strict';
 
   var CATEGORIES = {
-    ai: { name: '人工智能', short: 'AI', heading: 'AI 技术-资本信号' },
-    semi: { name: '半导体', short: '半导体', heading: '半导体周期-供需信号' },
-    robot: { name: '机器人', short: '机器人', heading: '机器人资本-落地信号' }
+    ai: { name: '人工智能', short: 'AI', heading: 'AI板块' },
+    semi: { name: '半导体', short: '半导体', heading: '半导体板块' },
+    robot: { name: '机器人', short: '机器人', heading: '机器人板块' }
   };
   var CATEGORY_KEYS = ['ai', 'semi', 'robot'];
   var BATCH_SIZE = 6;
@@ -519,7 +519,7 @@
   }
   function categoryOfHeading(value) {
     var clean = stripMarkdown(value).replace(/^#+\s*/, '').replace(/[—–·\s]/g, '');
-    if (/^(?:AI|人工智能)(?:技术|资本|信号|$)/i.test(clean)) return 'ai';
+    if (/^(?:AI|人工智能)(?:技术|资本|信号|板块|$)/i.test(clean)) return 'ai';
     if (/^半导体/.test(clean)) return 'semi';
     if (/^(?:机器人|具身智能)/.test(clean)) return 'robot';
     return '';
@@ -570,7 +570,7 @@
         return;
       }
       var category = categoryOfHeading(value);
-      if (category && (/^#|^—|^–/.test(value) || /信号/.test(value) && value.length < 65)) {
+      if (category && (/^#|^—|^–/.test(value) || /(?:信号|板块)/.test(value) && value.length < 65)) {
         finish(); currentCategory = category; return;
       }
       if (/^#{1,6}\s/.test(value)) { finish(); currentCategory = ''; return; }
