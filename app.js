@@ -840,10 +840,10 @@
     return amount.toLocaleString('zh-CN') + '元';
   }
   function financingIndustry(item) {
-    return [item.industryL1, item.industryL2, item.industryL3].filter(function (value, index, list) { return value && list.indexOf(value) === index; }).join(' / ');
+    return item.industryL2 || '';
   }
   function financingIndustryTags(item) {
-    return [item.industryL1, item.industryL2, item.industryL3].filter(function (value, index, list) { return value && list.indexOf(value) === index; });
+    return item.industryL2 ? [item.industryL2] : [];
   }
   function financingCityPath(value) {
     var path = String(value || '').split('>').map(function (part) { return part.trim(); }).filter(Boolean);
@@ -1084,7 +1084,7 @@
     items.sort(function (a, b) { return b.archiveDate.localeCompare(a.archiveDate); });
     var known = items.filter(function (item) { return Number.isFinite(item.estimatedInvestmentCny); });
     var industries = new Map();
-    items.forEach(function (item) { if (item.industryL1) industries.set(item.industryL1, (industries.get(item.industryL1) || 0) + 1); });
+    items.forEach(function (item) { if (item.industryL2) industries.set(item.industryL2, (industries.get(item.industryL2) || 0) + 1); });
     return {
       items: items,
       summary: {
