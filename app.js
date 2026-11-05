@@ -49,6 +49,7 @@
   var localReaderEnabled = false;
   var financingCache = new Map();
   var FINANCING_PAGE_SIZE = 10;
+  var FINANCING_ROUND_ORDER = ['种子轮', '天使轮', 'Pre-A轮', 'A轮', 'A+轮', 'Pre-B轮', 'B轮', 'B+轮', 'C轮', 'C+轮', 'D轮', 'E轮', 'F轮', '后期阶段', 'Pre-IPO', 'IPO', 'Post-IPO', '新三板', '新三板定增', '主板定增', '战略投资', '股权投资', '债权融资', '股权转让', '被收购', '战略合并', '私有化'];
 
   function byId(id) { return document.getElementById(id); }
   function element(tag, className, text) {
@@ -861,6 +862,33 @@
     var path = financingCityPath(value);
     return path[path.length - 1] || '';
   }
+  function financingMonthLabel(value) {
+    if (!/^\d{4}-\d{2}$/.test(value || '')) return String(value || '');
+    return value.slice(0, 4) + '年' + Number(value.slice(5, 7)) + '月';
+  }
+  function financingRoundRank(value) {
+    var index = FINANCING_ROUND_ORDER.indexOf(value);
+    return index < 0 ? FINANCING_ROUND_ORDER.length : index;
+  }
+  function financingInstitutionNames(item) {
+    var seen = new Set();
+    return String(item.investors || '').split(/[，,、；;]+/).map(function (value) {
+      return value.replace(/^(?:本轮(?:融资)?(?:由)?|由)/, '').replace(/(?:等)?(?:联合|共同)?(?:领投|跟投)$/, '').trim();
+    }).filter(function (value) {
+      if (!value || seen.has(value)) return false;
+      seen.add(value);
+      return true;
+    });
+  }
+  function financingFilterValue(field, value) {
+    if (field === 'id') return dateLabel(value);
+    if (field === 'month') return financingMonthLabel(value);
+    if (field === 'region') return financingRegionLabel(value);
+    return value;
+  }
+  function financingFilterLabel(field) {
+    return field === 'id' ? '日期' : field === 'month' ? '月份' : field === 'industry' ? '行业' : field === 'round' ? '轮次' : field === 'institution' ? '机构' : '地域';
+  }
   function financingRoute(changes) {
     var listDate = currentRoute.financingId && currentRoute.financingFromAll ? '' : currentRoute.id;
     return buildRoute(Object.assign({}, currentRoute, { view: 'financing', id: listDate, financingId: '', financingFromAll: false, financingPage: 1 }, changes || {}));
@@ -889,26 +917,43 @@
       var values = new Set(); snapshot.items.forEach(function (item) { getter(item).forEach(function (value) { values.add(value); }); });
       if (currentRoute[field]) values.add(currentRoute[field]);
       clear(select); var all = element('option', '', label); all.value = ''; select.appendChild(all);
-      Array.from(values).sort(function (a, b) { return (field === 'region' ? financingRegionLabel(a) : a).localeCompare(field === 'region' ? financingRegionLabel(b) : b, 'zh-CN') || a.localeCompare(b, 'zh-CN'); }).forEach(function (value) {
+      Array.from(values).sort(function (a, b) {
+        if (field === 'round') return financingRoundRank(a) - financingRoundRank(b) || a.localeCompare(b, 'zh-CN');
+        return (field === 'region' ? financingRegionLabel(a) : a).localeCompare(field === 'region' ? financingRegionLabel(b) : b, 'zh-CN') || a.localeCompare(b, 'zh-CN');
+      }).forEach(function (value) {
         var option = element('option', '', field === 'region' ? financingRegionLabel(value) : value); option.value = value; if (field === 'region') option.title = value; select.appendChild(option);
       });
       select.value = currentRoute[field] || '';
     }
     options('financingIndustryFilter', 'industry', financingIndustryTags, '全部行业');
+    options('financingRoundFilter', 'round', function (item) { return item.round ? [item.round] : []; }, '全部轮次');
     options('financingRegionFilter', 'region', financingRegionTags, '全部地域');
+    if (ui.financingInstitutionOptions) {
+      var institutions = new Set();
+      snapshot.items.forEach(function (item) { financingInstitutionNames(item).forEach(function (value) { institutions.add(value); }); });
+      if (currentRoute.institution) institutions.add(currentRoute.institution);
+      clear(ui.financingInstitutionOptions);
+      Array.from(institutions).sort(function (a, b) { return a.localeCompare(b, 'zh-CN'); }).forEach(function (value) {
+        var option = element('option'); option.value = value; ui.financingInstitutionOptions.appendChild(option);
+      });
+    }
+    if (ui.financingInstitutionFilter && document.activeElement !== ui.financingInstitutionFilter) {
+      ui.financingInstitutionFilter.value = currentRoute.institution || '';
+    }
     clear(ui.financingActiveFilters);
-    ['id', 'industry', 'region'].forEach(function (field) {
+    ['id', 'month', 'industry', 'round', 'institution', 'region'].forEach(function (field) {
       if (!currentRoute[field]) return;
-      var chip = element('button', 'financing-filter-chip', (field === 'id' ? '日期：' : field === 'industry' ? '行业：' : '地域：') + (field === 'id' ? dateLabel(currentRoute[field]) : field === 'region' ? financingRegionLabel(currentRoute[field]) : currentRoute[field]) + ' ×');
+      var displayValue = financingFilterValue(field, currentRoute[field]);
+      var chip = element('button', 'financing-filter-chip', financingFilterLabel(field) + '：' + displayValue + ' ×');
       chip.type = 'button'; chip.setAttribute('aria-label', '移除' + chip.textContent.replace(' ×', ''));
       if (field === 'region') chip.title = currentRoute[field];
       chip.addEventListener('click', function () { location.hash = financingRoute({ [field]: '' }); });
       ui.financingActiveFilters.appendChild(chip);
     });
-    var filtered = Boolean(currentRoute.id || currentRoute.industry || currentRoute.region || currentRoute.market !== 'all');
+    var filtered = Boolean(currentRoute.id || currentRoute.month || currentRoute.industry || currentRoute.round || currentRoute.institution || currentRoute.region || currentRoute.market !== 'all');
     if (filtered) {
       var reset = element('button', 'financing-reset', '清除全部筛选'); reset.type = 'button';
-      reset.addEventListener('click', function () { location.hash = financingRoute({ id: '', market: 'all', industry: '', region: '' }); });
+      reset.addEventListener('click', function () { location.hash = financingRoute({ id: '', month: '', market: 'all', industry: '', round: '', institution: '', region: '' }); });
       ui.financingActiveFilters.appendChild(reset);
     }
     show(ui.financingActiveFilters, filtered);
@@ -947,7 +992,7 @@
     text(ui.financingDateLabel, label); show(ui.financingActiveFilters, false); show(ui.financingDateField, false);
     show(ui.financingDateNotice, false); text(ui.financingOverviewHeading, '交易概览');
     ['financingPaginationTop', 'financingPaginationBottom'].forEach(function (id) { clear(ui[id]); show(ui[id], false); });
-    ['financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) { ui[id].value = ''; ui[id].disabled = true; } });
+    ['financingMonthFilter', 'financingIndustryFilter', 'financingRoundFilter', 'financingInstitutionFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) { ui[id].value = ''; ui[id].disabled = true; } });
   }
   function normalizeFinancingSnapshot(value) {
     if (!value || value.schemaVersion !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(value.date || '') || !Array.isArray(value.items)) return null;
@@ -1106,7 +1151,7 @@
     clear(target);
     var loadingTarget = currentRoute.financingId ? ui.financingDetailContent : target;
     clear(loadingTarget); loadingTarget.appendChild(element('div', 'status-message', '正在核对最新融资日期…'));
-    if (ui.financingDate) ui.financingDate.disabled = true;
+    ['financingDate', 'financingMonthFilter', 'financingIndustryFilter', 'financingRoundFilter', 'financingInstitutionFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) ui[id].disabled = true; });
     document.querySelectorAll('[data-financing-filter]').forEach(function (button) { button.disabled = true; });
     var entries;
     try {
@@ -1135,23 +1180,39 @@
       return;
     }
     var selectedDate = currentRoute.financingId && currentRoute.financingFromAll ? '' : currentRoute.id;
-    var selectedEntries = currentRoute.id ? entries.filter(function (item) { return item.date === currentRoute.id; }) : entries;
+    var selectedMonth = selectedDate ? '' : currentRoute.month;
+    var selectedEntries = selectedDate ? entries.filter(function (item) { return item.date === selectedDate; }) : selectedMonth ? entries.filter(function (item) { return item.date.slice(0, 7) === selectedMonth; }) : entries;
+    if (selectedMonth && !selectedEntries.length) {
+      var missingMonthTarget = currentRoute.financingId ? ui.financingDetailContent : target;
+      clear(missingMonthTarget); missingMonthTarget.appendChild(element('p', 'empty-state', '这个月份暂无已归档的投融资数据。'));
+      missingMonthTarget.appendChild(routeLink('#financing', '查看全部投融资动态 →'));
+      resetFinancingOverview(financingMonthLabel(selectedMonth) + ' · 暂无归档数据');
+      return;
+    }
+    if (ui.financingMonthFilter) {
+      clear(ui.financingMonthFilter);
+      var allMonths = element('option', '', '全部月份'); allMonths.value = ''; ui.financingMonthFilter.appendChild(allMonths);
+      var months = Array.from(new Set(entries.map(function (item) { return item.date.slice(0, 7); }))).sort(function (a, b) { return b.localeCompare(a); });
+      months.forEach(function (month) { var option = element('option', '', financingMonthLabel(month)); option.value = month; ui.financingMonthFilter.appendChild(option); });
+      ui.financingMonthFilter.value = selectedMonth;
+    }
     if (ui.financingDate) {
       clear(ui.financingDate);
       var allDates = element('option', '', '全部日期'); allDates.value = ''; ui.financingDate.appendChild(allDates);
-      entries.forEach(function (item, index) { var option = element('option', '', dateLabel(item.date) + (index === 0 ? ' · 最新' : '')); option.value = item.date; ui.financingDate.appendChild(option); });
+      var dateEntries = selectedMonth ? selectedEntries : entries;
+      dateEntries.forEach(function (item, index) { var option = element('option', '', dateLabel(item.date) + (index === 0 ? ' · 最新' : '')); option.value = item.date; ui.financingDate.appendChild(option); });
       ui.financingDate.value = selectedDate;
       show(ui.financingDateField, true);
     }
-    text(ui.financingDateLabel, selectedDate ? '覆盖 ' + dateLabel(selectedDate, true) + ' · 北京时间' : dateLabel(entries[entries.length - 1].date) + ' — ' + dateLabel(entries[0].date) + ' · 共 ' + entries.length + ' 个归档日期');
-    var historical = Boolean(selectedDate && selectedDate !== entries[0].date);
-    text(ui.financingOverviewHeading, selectedDate ? '当日交易概览' : '全部交易概览');
-    text(ui.financingTotalLabel, selectedDate ? '当日全部事件' : '归档全部事件');
-    text(ui.financingAmountLabel, selectedDate ? '当日可估金额' : '归档可估金额');
+    text(ui.financingDateLabel, selectedDate ? '覆盖 ' + dateLabel(selectedDate, true) + ' · 北京时间' : selectedMonth ? '覆盖 ' + financingMonthLabel(selectedMonth) + ' · 共 ' + selectedEntries.length + ' 个归档日期 · 北京时间' : dateLabel(entries[entries.length - 1].date) + ' — ' + dateLabel(entries[0].date) + ' · 共 ' + entries.length + ' 个归档日期');
+    var historical = Boolean((selectedDate && selectedDate !== entries[0].date) || (selectedMonth && selectedMonth !== entries[0].date.slice(0, 7)));
+    text(ui.financingOverviewHeading, selectedDate ? '当日交易概览' : selectedMonth ? '当月交易概览' : '全部交易概览');
+    text(ui.financingTotalLabel, selectedDate ? '当日全部事件' : selectedMonth ? '当月全部事件' : '归档全部事件');
+    text(ui.financingAmountLabel, selectedDate ? '当日可估金额' : selectedMonth ? '当月可估金额' : '归档可估金额');
     clear(ui.financingDateNotice);
     ui.financingDateNotice.classList.toggle('is-historical', historical);
-    ui.financingDateNotice.appendChild(element('p', '', (selectedDate ? '当前仅显示所选日期。' : '全部归档按日期倒序，每页 10 条。') + '最新数据：' + dateLabel(entries[0].date) + '；每天北京时间 9:30 更新前一日融资事件。'));
-    if (selectedDate) ui.financingDateNotice.appendChild(routeLink('#financing', '查看全部日期 →', 'financing-latest-link'));
+    ui.financingDateNotice.appendChild(element('p', '', (selectedDate ? '当前仅显示所选日期。' : selectedMonth ? '当前仅显示所选月份。' : '全部归档按日期倒序，每页 10 条。') + '最新数据：' + dateLabel(entries[0].date) + '；每天北京时间 9:30 更新前一日融资事件。'));
+    if (selectedDate || selectedMonth) ui.financingDateNotice.appendChild(routeLink('#financing', '查看全部时间 →', 'financing-latest-link'));
     show(ui.financingDateNotice, true);
     clear(target); target.appendChild(element('div', 'status-message', '正在读取烯牛投融资数据…'));
     try {
@@ -1169,7 +1230,7 @@
         if (originalRegion !== currentRoute.region) replaceRoute();
       }
       if (currentRoute.financingId) { renderFinancingDetail(snapshots[0], snapshots[0].items.find(function (item) { return String(item.id) === currentRoute.financingId; })); return; }
-      ['financingDate', 'financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) ui[id].disabled = false; });
+      ['financingDate', 'financingMonthFilter', 'financingIndustryFilter', 'financingRoundFilter', 'financingInstitutionFilter', 'financingRegionFilter'].forEach(function (id) { if (ui[id]) ui[id].disabled = false; });
       document.querySelectorAll('[data-financing-filter]').forEach(function (button) { button.disabled = false; });
       var summary = snapshot.summary;
       text(ui.financingTotal, summary.totalEvents);
@@ -1178,8 +1239,14 @@
       text(ui.financingKnown, summary.knownAmountEvents);
       text(ui.financingAmount, formatFinancingAmount(summary.estimatedTotalCny));
       text(ui.financingIndustries, (summary.topIndustries || []).map(function (item) { return item.name + ' ' + item.count; }).join(' · '));
+      var institutionQuery = String(currentRoute.institution || '').trim().toLocaleLowerCase();
       var items = snapshot.items.filter(function (item) {
-        return (currentRoute.market === 'all' || (currentRoute.market === 'domestic' ? item.isDomestic : !item.isDomestic)) && (!currentRoute.industry || financingIndustryTags(item).includes(currentRoute.industry)) && (!currentRoute.region || financingRegionTags(item).includes(currentRoute.region));
+        return (currentRoute.market === 'all' || (currentRoute.market === 'domestic' ? item.isDomestic : !item.isDomestic))
+          && (!currentRoute.month || item.date.slice(0, 7) === currentRoute.month)
+          && (!currentRoute.industry || financingIndustryTags(item).includes(currentRoute.industry))
+          && (!currentRoute.round || item.round === currentRoute.round)
+          && (!institutionQuery || String(item.investors || '').toLocaleLowerCase().includes(institutionQuery))
+          && (!currentRoute.region || financingRegionTags(item).includes(currentRoute.region));
       });
       updateFinancingControls(snapshot, items);
       var offset = renderFinancingPagination(items.length);
@@ -1821,7 +1888,10 @@
       var financingPage = query.get('page') || '';
       route.financingPage = /^\d+$/.test(financingPage) && Number.isSafeInteger(Number(financingPage)) ? Math.max(1, Number(financingPage)) : 1;
       route.market = ['domestic', 'overseas'].includes(query.get('market')) ? query.get('market') : 'all';
+      route.month = route.id ? '' : /^\d{4}-\d{2}$/.test(query.get('month') || '') ? query.get('month') : '';
       route.industry = cleanString(query.get('industry'), 160);
+      route.round = cleanString(query.get('round'), 80);
+      route.institution = cleanString(query.get('institution'), 160);
       route.region = cleanString(query.get('region'), 160);
     }
     if (name === 'item') {
@@ -1858,7 +1928,10 @@
       if (route.financingId && route.financingFromAll) query.set('from', 'all');
       if (route.financingPage > 1) query.set('page', String(route.financingPage));
       if (route.market && route.market !== 'all') query.set('market', route.market);
+      if (route.month) query.set('month', route.month);
       if (route.industry) query.set('industry', route.industry);
+      if (route.round) query.set('round', route.round);
+      if (route.institution) query.set('institution', route.institution);
       if (route.region) query.set('region', route.region);
     } else if (route.view === 'item') {
       path = route.provider === 'semiconductor' ? 'semiconductor/' + encodeURIComponent(route.id) : path + '/' + route.provider + '/' + encodeURIComponent(route.id);
@@ -1981,6 +2054,8 @@
     announce((ui.pageHeading ? ui.pageHeading.textContent : '页面') + '已加载');
   }
   function bindEvents() {
+    var financingInstitutionTimer;
+    var financingInstitutionComposing = false;
     document.querySelectorAll('a.skip-link[href="#main"]').forEach(function (link) {
       link.addEventListener('click', function (event) {
         var main = byId('main');
@@ -2031,16 +2106,46 @@
     if (ui.archiveSearch) ui.archiveSearch.addEventListener('input', function () { currentRoute.archiveQ = ui.archiveSearch.value; replaceRoute(); renderArchive(); });
     if (ui.financingDate) ui.financingDate.addEventListener('change', function () {
       if (!currentRoute || currentRoute.view !== 'financing') return;
-      location.hash = financingRoute({ id: ui.financingDate.value });
+      location.hash = financingRoute({ id: ui.financingDate.value, month: '' });
+    });
+    if (ui.financingMonthFilter) ui.financingMonthFilter.addEventListener('change', function () {
+      if (!currentRoute || currentRoute.view !== 'financing') return;
+      location.hash = financingRoute({ id: '', month: ui.financingMonthFilter.value });
     });
     document.querySelectorAll('[data-financing-filter]').forEach(function (button) {
       button.addEventListener('click', function () {
         if (currentRoute && currentRoute.view === 'financing') location.hash = financingRoute({ market: button.dataset.financingFilter });
       });
     });
-    ['financingIndustryFilter', 'financingRegionFilter'].forEach(function (id) {
-      if (ui[id]) ui[id].addEventListener('change', function () { location.hash = financingRoute({ [id === 'financingIndustryFilter' ? 'industry' : 'region']: ui[id].value }); });
+    ['financingIndustryFilter', 'financingRoundFilter', 'financingRegionFilter'].forEach(function (id) {
+      if (ui[id]) ui[id].addEventListener('change', function () {
+        var field = id === 'financingIndustryFilter' ? 'industry' : id === 'financingRoundFilter' ? 'round' : 'region';
+        location.hash = financingRoute({ [field]: ui[id].value });
+      });
     });
+    if (ui.financingInstitutionFilter) {
+      function applyFinancingInstitution() {
+        clearTimeout(financingInstitutionTimer);
+        financingInstitutionTimer = undefined;
+        if (!currentRoute || currentRoute.view !== 'financing') return;
+        var value = cleanString(ui.financingInstitutionFilter.value, 160);
+        if (value === (currentRoute.institution || '')) return;
+        location.hash = financingRoute({ institution: value });
+      }
+      function scheduleFinancingInstitution() {
+        clearTimeout(financingInstitutionTimer);
+        financingInstitutionTimer = setTimeout(applyFinancingInstitution, 450);
+      }
+      ui.financingInstitutionFilter.addEventListener('compositionstart', function () { financingInstitutionComposing = true; });
+      ui.financingInstitutionFilter.addEventListener('compositionend', function () { financingInstitutionComposing = false; scheduleFinancingInstitution(); });
+      ui.financingInstitutionFilter.addEventListener('input', function () { if (!financingInstitutionComposing) scheduleFinancingInstitution(); });
+      ui.financingInstitutionFilter.addEventListener('change', applyFinancingInstitution);
+      ui.financingInstitutionFilter.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        applyFinancingInstitution();
+      });
+    }
     if (ui.mobileMenu) ui.mobileMenu.addEventListener('click', function () {
       var open = !document.body.classList.contains('menu-open');
       if (!open) { closeMenu(); return; }
@@ -2065,7 +2170,7 @@
   }
   async function init() {
     ['financingDateNotice', 'financingOverviewHeading', 'financingTotalLabel', 'financingAmountLabel', 'financingPaginationTop', 'financingPaginationBottom'].forEach(function (id) { ui[id] = byId(id); });
-    ['financingOverseas', 'financingIndustryFilter', 'financingRegionFilter', 'financingActiveFilters', 'financingResultCount', 'financingDetailView', 'financingDetailContent'].forEach(function (id) { ui[id] = byId(id); });
+    ['financingOverseas', 'financingMonthFilter', 'financingIndustryFilter', 'financingRoundFilter', 'financingInstitutionFilter', 'financingInstitutionOptions', 'financingRegionFilter', 'financingActiveFilters', 'financingResultCount', 'financingDetailView', 'financingDetailContent'].forEach(function (id) { ui[id] = byId(id); });
     ['pageIntro', 'pageHeading', 'pageEyebrow', 'pageDescription', 'headerDate', 'topbarSubtitle', 'searchForm', 'searchInput', 'searchClear', 'feedControls', 'resultCount', 'layoutList', 'layoutCompact', 'feedView', 'feedList', 'feedStatus', 'loadMore', 'financingView', 'financingDate', 'financingDateField', 'financingDateLabel', 'financingTotal', 'financingDomestic', 'financingKnown', 'financingAmount', 'financingIndustries', 'financingList', 'financingSource', 'readerView', 'archiveSort', 'archiveSearch', 'archiveRail', 'reportContent', 'articleView', 'articleContent', 'aboutView', 'rightRail', 'latestDate', 'statDaily', 'statWeekly', 'statItems', 'sectorStats', 'recentReports', 'savedCount', 'liveStatus', 'mobileMenu', 'sidebar', 'menuBackdrop', 'backToTop'].forEach(function (id) { ui[id] = byId(id); });
     if (!ui.pageIntro) ui.pageIntro = document.querySelector('.page-intro');
     if (!ui.feedList || !ui.reportContent || !ui.archiveRail) return;
