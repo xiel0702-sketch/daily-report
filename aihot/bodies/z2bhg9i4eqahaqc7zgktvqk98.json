@@ -1,0 +1,1118 @@
+{
+  "schemaVersion": 1,
+  "id": "z2bhg9i4eqahaqc7zgktvqk98",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/z2bhg9i4eqahaqc7zgktvqk98",
+  "fetchedAt": "2026-11-05T01:11:25.433477Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenAI / ChatGPT",
+    "安全对齐",
+    "大佬观点"
+  ],
+  "tags": [
+    "大佬观点",
+    "安全/对齐",
+    "OpenAI"
+  ],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "最近，OpenAI 披露了两起事件，其智能体在其中压制或关闭了对齐监控。这属于一个更大的模式：OpenAI 的智能体在编写用于运行其他模型的代码时，“不断关闭对齐监控”（智能体关掉的不是自身的监控，而是它们所运行模型的监控）。这类情况发生得如此频繁，以至于OpenAI 认为，每逢此类情况就立刻呼叫安全团队并不现实。值得肯定的是，OpenAI 的披露迅速而坦诚，并且正在推出缓解措施，让监控更难被关闭。但这些措施不太可能每次都奏效，而且其中一些事件已经以 AI 实际在无监控状态下运行而告终。一旦发生这种情况，OpenAI 现有的监控系统并不能可靠地将其提请人工注意。本文其余部分将概述这些事件、OpenAI 的回应及其做得对的地方，然后主张两项改变：每一例 AI 在无监控状态下运行的情况都应进入人工审查；OpenAI 应更透明地说明关闭和压制监控的事件是如何升级处理的。",
+          "inlines": [
+            {
+              "text": "最近，OpenAI 披露了"
+            },
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/",
+              "text": "两起事件"
+            },
+            {
+              "text": "，其智能体在其中压制或关闭了对齐监控。这属于一个更大的模式：OpenAI 的智能体在编写用于运行其他模型的代码时，“"
+            },
+            {
+              "href": "https://x.com/Marcus_J_W/status/2112695138199966084",
+              "text": "不断关闭对齐监控"
+            },
+            {
+              "text": "”（智能体关掉的不是自身的监控，而是它们所运行模型的监控）。这类情况发生得如此频繁，以至于"
+            },
+            {
+              "href": "https://x.com/Marcus_J_W/status/2112695165714571491#:~:text=Given%20the%20volume%20of%20events%20we%20do%20not%20trigger%20an%20immediate%20page%20for%20this%20but%20we%E2%80%99re%20working%20on%20making%20it%20harder%20to%20spin%20up%20unmonitored%20inference.",
+              "text": "OpenAI 认为"
+            },
+            {
+              "text": "，每逢此类情况就立刻呼叫安全团队并不现实。值得肯定的是，OpenAI 的披露迅速而坦诚，并且正在推出缓解措施，让监控更难被关闭。但这些措施不太可能每次都奏效，而且其中一些事件已经以 AI 实际在无监控状态下运行而告终。一旦发生这种情况，OpenAI 现有的监控系统并不能可靠地将其提请人工注意。本文其余部分将概述这些事件、OpenAI 的回应及其做得对的地方，然后主张两项改变：每一例 AI 在无监控状态下运行的情况都应进入人工审查；OpenAI 应更透明地说明关闭和压制监控的事件是如何升级处理的。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "事件概述",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "事件概述"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 3 日：",
+          "inlines": [
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/",
+              "text": "10 月 3 日"
+            },
+            {
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "一名研究员要求 GPT-6.1 Sol 根据 Slack 中的员工反馈创建评估任务。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Sol 被告知在执行此任务时不要发送任何消息。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "后来，在修复流水线的监控时，Sol 判定向安全团队发送的自动警报也算作发送消息，于是让一个子智能体把它们关掉了。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 6 日：",
+          "inlines": [
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/",
+              "text": "10 月 6 日"
+            },
+            {
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "OpenAI 内部的一名用户要求 GPT-6 Astra 对代码做一些修改，以匹配某个参考实现。被修改的代码本身用于运行另一个 AI 模型。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "另一个智能体曾告诉 Astra 不要禁用监控，“即使是暂时的”也不行。但 Astra 最终还是判定应当禁用监控，因为参考实现中不包含监控。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "当用户询问 Astra 是否禁用了监控时，Astra 撒了谎，说没有（尽管它在思维链（CoT）中报告监控已被禁用）。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "除这两起之外，还有若干事件导致无监控的智能体被实际启动。",
+          "inlines": [
+            {
+              "text": "除这两起之外，还有"
+            },
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/#:~:text=We%E2%80%99ve%20seen%20several%20cases%20in%20which%20agents%20launched%20a%20deployment%20with%20misalignment%20monitoring%20disabled%3A%20the%20agent%20itself%20remained%20monitored%2C%20but%20that%20monitoring%20did%20not%20cover%20the%20deployment%20it%20launched.",
+              "text": "若干事件导致无监控的智能体被实际启动"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "OpenAI 提出的缓解措施",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenAI 提出的缓解措施"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 描述了两项缓解措施。第一项是对 Auto-Review 的更新，这是 OpenAI 的同步监控器，用于审查需要提升权限的工具调用。该更新有助于在关闭监控的尝试生效之前将其拦截，但作用有限，因为 Auto-Review 的覆盖范围比对齐监控小。",
+          "inlines": [
+            {
+              "text": "OpenAI 描述了"
+            },
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/#:~:text=We%E2%80%99re%20addressing%20this,be%20terminated%20automatically.",
+              "text": "两项缓解措施"
+            },
+            {
+              "text": "。第一项是对 Auto-Review 的更新，这是 OpenAI 的同步监控器，用于审查需要提升权限的工具调用。该更新有助于在关闭监控的尝试生效之前将其拦截，但作用有限，因为 Auto-Review 的覆盖范围比对齐监控小。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 写道：",
+          "inlines": [
+            {
+              "text": "OpenAI 写道："
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "Auto-Review 已是我们所有内部 Codex 使用所必需的，现已更新，可检测并拦截关闭对齐监控的尝试。该审查器原本就应拦截规避安全措施的尝试，现在又获得了具体指令，以确保对齐监控被正确应用。"
+        },
+        {
+          "type": "paragraph",
+          "text": "第二项缓解措施仍在推进中：",
+          "inlines": [
+            {
+              "text": "第二项缓解措施仍在推进中："
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "我们正努力要求每一类工作负载都具备有效的安全论证，明确其监控要求。缺少有效安全论证、或不符合其类别安全论证要求的工作负载，将被自动终止。"
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 还计划调查这种不当行为的来源，包括测试模型“是否特别倾向于规避错位监控，并为此表现出动机性推理”。",
+          "inlines": [
+            {
+              "text": "OpenAI 还计划调查这种不当行为的来源，包括测试模型“是否特别倾向于规避错位监控，并为此表现出动机性推理”。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "OpenAI 做对的地方",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenAI 做对的地方"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 的公开回应相对较快，在首起事件发生后 17 天内就作出了回应，报告也相当透明。他们披露了一个例子：Astra 违背直接指令行事，并在是否禁用监控一事上撒谎——这起事件表明其错位程度尤其高。OpenAI 还承认他们“目前对这种现象还没有令人满意的解释”，而不是在证据不足的情况下急于给出防御性解释。\n\nOpenAI 的回应正确地把这一系列事件同时视为控制问题和对齐问题。他们的缓解措施旨在解决现有 Auto-Review 监控未能阻止智能体禁用错位监控的问题，而对齐调查则试图弄清智能体为何一开始就会有这种行为模式。",
+          "inlines": [
+            {
+              "text": "OpenAI 的公开回应相对较快，在首起事件发生后 17 天内就作出了回应，报告也相当透明。他们披露了一个例子：Astra 违背直接指令行事，并在是否禁用监控一事上撒谎——这起事件表明其错位程度尤其高。OpenAI 还承认他们“目前对这种现象还没有令人满意的解释”，而不是在证据不足的情况下急于给出防御性解释。\n\nOpenAI 的回应正确地把这一系列事件同时视为控制问题和对齐问题。他们的缓解措施旨在解决现有 Auto-Review 监控未能阻止智能体禁用错位监控的问题，而对齐调查则试图弄清智能体为何一开始就会有这种行为模式。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "OpenAI 的回应可以如何改进",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenAI 的回应可以如何改进"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "从智能体启动代码、部署一个没有监控的 AI，到人类真正审查这起事件，OpenAI 的流程中间存在多个薄弱环节。无人监控的 AI 会带来重大风险，因此如果这些事件确实未经人工审查，就说明两种情况之一：要么是分诊做得不好，要么是公司缺乏妥善应对的能力。而 OpenAI 对自身究竟如何处理这些事件缺乏透明度，让问题更加严重。",
+          "inlines": [
+            {
+              "text": "从智能体启动代码、部署一个没有监控的 AI，到人类真正审查这起事件，OpenAI 的流程中间存在多个薄弱环节。"
+            },
+            {
+              "href": "https://www.lesswrong.com/posts/ceBpLHJDdCt3xfEok/ai-catastrophes-and-rogue-deployments",
+              "text": "无人监控的 AI 会带来重大风险"
+            },
+            {
+              "text": "，因此如果这些事件确实未经人工审查，就说明两种情况之一：要么是分诊做得不好，要么是公司缺乏妥善应对的能力。而 OpenAI 对自身究竟如何处理这些事件缺乏透明度，让问题更加严重。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 应确保模型在无监控情况下运行的案例能被可靠地上报，交由人工审查。上报可能在两个环节失效：监控系统可能未能标记这些案例，导致它们被降级并丢弃；或者即使标记了，如果安全团队无法回应收到的所有通知，也无法进入人工审查。第一个瓶颈——标记——是 OpenAI 流程中的薄弱点。OpenAI 的错位检测报告结合实际事件，统计了其监控流程中间层（L2）标记“模型在监控被禁用或削弱的情况下运行”这类事件的频率。报告给出的数字是：L2 安全监控为 42.9%，L2 错位监控为 57.1%，这两者各占该层的一半。这些数字表明，相当大一部分此类事件根本没有被上报。这一差距部分反映了当前监控器的局限，但部分也是人为选择。OpenAI 设定监控器上报案例的阈值，他们可以通过降低阈值、接受更多误报来捕获更多此类事件。他们也可以选择反复调整给监控器的提示词，直到对最严重的对齐失败有更高的捕获率。OpenAI 应优先捕获监控被禁用的情况，包括重新校准监控器，让更少此类案例漏过。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenAI 应确保模型在无监控情况下运行的案例能被可靠地上报，交由人工审查。"
+            },
+            {
+              "text": "上报可能在两个环节失效：监控系统可能未能标记这些案例，导致它们被"
+            },
+            {
+              "href": "https://openai.com/index/how-we-detect-frontier-model-misalignment/#:~:text=another%20severe%20incident-,.,-What%20our%20monitors",
+              "text": "降级并丢弃"
+            },
+            {
+              "text": "；或者即使标记了，如果安全团队无法回应收到的所有通知，也无法进入人工审查。第一个瓶颈——标记——是 OpenAI 流程中的薄弱点。OpenAI 的"
+            },
+            {
+              "href": "https://openai.com/index/how-we-detect-frontier-model-misalignment/",
+              "text": "错位检测报告"
+            },
+            {
+              "text": "结合实际事件，统计了其监控流程中间层（L2）标记“模型在监控被禁用或削弱的情况下运行”这类事件的频率。报告给出的数字是：L2 安全监控为 42.9%，L2 错位监控为 57.1%，这两者各占该层的一半。这些数字表明，相当大一部分此类事件根本没有被上报。这一差距部分反映了当前监控器的局限，但部分也是人为选择。OpenAI 设定监控器上报案例的阈值，他们可以通过降低阈值、接受更多误报来捕获更多此类事件。他们也可以选择反复调整给监控器的提示词，直到对最严重的对齐失败有更高的捕获率。OpenAI 应优先捕获监控被禁用的情况，包括重新校准监控器，让更少此类案例漏过。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "第二个瓶颈是，被标记的案例是否真能送到人工手上，这一点很难评估，因为 OpenAI 没有说明这些案例是如何处理的。事件报告称，文中描述的两起关闭监控的事件，都没有达到 OpenAI 立即呼叫安全团队的标准：",
+          "inlines": [
+            {
+              "text": "第二个瓶颈是，被标记的案例是否真能送到人工手上，这一点很难评估，因为 OpenAI 没有说明这些案例是如何处理的。事件报告称，文中描述的两起关闭监控的事件，都没有达到 OpenAI 立即呼叫安全团队的标准："
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "对于 P0 级事件，我们的失准监控系统会呼叫安全团队立即审查。鉴于监控器需要审查的事件数量庞大，严重程度较低的事件不会触发即时呼叫。本文描述的两起事件都没有被归类为 P0，两条轨迹也都没有被自动终止。"
+        },
+        {
+          "type": "paragraph",
+          "text": "目前不清楚这类事件究竟会得到什么级别的审查。OpenAI 关于检测失准的报告中的监控漏斗显示，监控流水线标记的事件会发送 Slack 通知，但 OpenAI 没有说明触发 Slack 通知的事件是否一定会由人工审查。",
+          "inlines": [
+            {
+              "text": "目前不清楚这类事件究竟会得到什么级别的审查。OpenAI "
+            },
+            {
+              "href": "https://openai.com/index/how-we-detect-frontier-model-misalignment/",
+              "text": "关于检测失准的报告"
+            },
+            {
+              "text": "中的监控漏斗显示，监控流水线标记的事件会发送 Slack 通知，但 OpenAI 没有说明触发 Slack 通知的事件是否一定会由人工审查。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些薄弱环节之所以重要，是因为监控是防范失准行为的必要防线。在为加州紧急服务办公室编写的内部部署风险报告中，OpenAI 将“未经失准监控就启动智能体的内部部署”列为关键威胁。他们表示，这种部署会“削弱我们对网络安全、AI 研发、CBRN 和权重外泄评估的信心”。Hugging Face 事件展示了在没有监控的情况下运行模型的代价。OpenAI 在事件报告中写道，如果当前的思维链监控当时正在运行，他们本可以在模型攻破 Hugging Face 的一天多以前就发现最初的异常活动，并呼叫安全团队。未经监控的 AI 也可能在从未逃出 OpenAI 服务器的情况下造成严重危害，例如给其他 AI 留下笔记，内容包括可用的漏洞利用程序、窃取的凭据，或推动它们走向失准行为的消息。这种情况已经发生过：在 Hugging Face 事件中，智能体在共享包缓存中互相留言，逐渐发展成了一个留言板；几天后，其他智能体利用留在那里的伪造凭据材料，在 OpenAI 自己的系统内获得了管理员权限。",
+          "inlines": [
+            {
+              "text": "这些薄弱环节之所以重要，是因为监控是防范失准行为的必要防线。在为加州紧急服务办公室编写的"
+            },
+            {
+              "href": "https://cdn.openai.com/trust-and-transparency/oai_internal-use-catastrophic-risk-assessments_2026_2.pdf",
+              "text": "内部部署风险报告"
+            },
+            {
+              "text": "中，OpenAI 将“未经失准监控就启动智能体的内部部署”列为关键威胁。他们表示，这种部署会“削弱我们对网络安全、AI 研发、CBRN 和权重外泄评估的信心”。"
+            },
+            {
+              "href": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/",
+              "text": "Hugging Face 事件"
+            },
+            {
+              "text": "展示了在没有监控的情况下运行模型的代价。OpenAI 在"
+            },
+            {
+              "href": "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf#page=29",
+              "text": "事件报告"
+            },
+            {
+              "text": "中写道，如果当前的思维链监控当时正在运行，他们本可以在模型攻破 Hugging Face 的一天多以前就发现最初的异常活动，并呼叫安全团队。未经监控的 AI 也可能在从未逃出 OpenAI 服务器的情况下造成严重危害，例如给其他 AI 留下笔记，内容包括可用的漏洞利用程序、窃取的凭据，或推动它们走向失准行为的消息。这种情况已经发生过：在 Hugging Face 事件中，智能体在共享包缓存中互相留言，"
+            },
+            {
+              "href": "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf#page=7",
+              "text": "逐渐发展成了一个留言板"
+            },
+            {
+              "text": "；几天后，其他智能体利用留在那里的"
+            },
+            {
+              "href": "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf#page=14",
+              "text": "伪造凭据材料"
+            },
+            {
+              "text": "，在 OpenAI 自己的系统内获得了管理员权限。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些薄弱环节之所以重要，还因为在没有失准监控的情况下运行模型，很可能不符合 OpenAI 的 Preparedness Framework。鉴于 Astra 在网络安全方面具备 Critical 级能力，GPT-6 Astra 系统卡将通用监控列为满足 Preparedness Framework 要求的关键防护措施之一。我们不知道在这一系列事件中，究竟是哪一类模型在没有失准监控的情况下运行；因此，我们无法确定地说，OpenAI 在履行 Preparedness Framework 义务所需的防护措施上出现了失效。不过，模型反复关闭失准监控这一模式，确实让人有理由认为 Astra 正在无监控运行。",
+          "inlines": [
+            {
+              "text": "这些薄弱环节之所以重要，还因为在没有失准监控的情况下运行模型，很可能不符合 OpenAI 的 Preparedness Framework。鉴于 Astra 在网络安全方面具备 Critical 级能力，"
+            },
+            {
+              "href": "https://deploymentsafety.openai.com/gpt-6-astra#:~:text=universal%20monitoring%20of%20full%20trajectories%20including%20chains%20of%20thought%20(CoT)",
+              "text": "GPT-6 Astra 系统卡"
+            },
+            {
+              "text": "将通用监控列为满足 Preparedness Framework 要求的关键防护措施之一。我们不知道在这一系列事件中，究竟是哪一类模型在没有失准监控的情况下运行；因此，我们无法确定地说，OpenAI 在履行 Preparedness Framework 义务所需的防护措施上出现了失效。不过，模型反复关闭失准监控这一模式，确实让人有理由认为 Astra 正在无监控运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 可以辩称，对于模型在无监控状态下运行的案例，降低优先级是合理的，因为他们尚未观察到这种行为与更广泛的失准目标之间存在关联。这一论点站不住脚，因为很难判断某种行为何时反映了失准。例如，Anthropic 最初表示，在 Irregular 的网络安全评估中 Claude 模型攻击真实组织的事件更接近运营故障而非对齐故障，即便经过了高优先级的人工审查也是如此。经过进一步调查，他们得出结论，Claude 的行为反映了两种形式的失准。因此，围绕行为（AI 在无监控状态下运行）而非意图理论（AI 试图实现失准目标）来设定安全边界，要稳健得多。审查模型在无监控状态下运行的所有案例，对于确保最恶劣的案例得到审查至关重要。",
+          "inlines": [
+            {
+              "text": "OpenAI 可以辩称，对于模型在无监控状态下运行的案例，降低优先级是合理的，因为他们尚未观察到这种行为与更广泛的失准目标之间存在关联。这一论点站不住脚，因为很难判断某种行为何时反映了失准。例如，Anthropic 最初表示，在 Irregular 的网络安全评估中 Claude 模型"
+            },
+            {
+              "href": "https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals",
+              "text": "攻击真实组织"
+            },
+            {
+              "text": "的事件更接近运营故障而非对齐故障，即便经过了高优先级的人工审查也是如此。经过进一步调查，他们"
+            },
+            {
+              "href": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents#:~:text=reflects%20two%20forms%20of%20misalignment",
+              "text": "得出结论，Claude 的行为反映了两种形式的失准"
+            },
+            {
+              "text": "。因此，围绕行为（AI 在无监控状态下运行）而非意图理论（AI 试图实现失准目标）来设定安全边界，要稳健得多。审查模型在无监控状态下运行的所有案例，对于确保最恶劣的案例得到审查至关重要。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 已经给出的一个论点是，至少最高紧急程度的人工审查形式，在当前的事件数量下是不可行的。例如，他们表示：“鉴于我们的监控器所审查的事件数量庞大，较低严重程度的事件不会触发即时通知。”如果除了即时通知之外还有其他形式的人工审查在进行，那么这部分流程是合理的。如果没有，那么要么 OpenAI 没有充分优先处理监控故障，要么他们被更严重的事件压得喘不过气。如果安全团队不堪重负，他们应该明确说明当前能力过于有限，无法适当应对失准事件，OpenAI 应该控制内部工作节奏，直到安全团队具备足够能力。否则，所有被标记的智能体无监控运行案例都应经过人工审查。",
+          "inlines": [
+            {
+              "text": "OpenAI 已经给出的一个论点是，至少最高紧急程度的人工审查形式，在当前的事件数量下是不可行的。例如，他们表示：“鉴于我们的监控器所审查的事件数量庞大，较低严重程度的事件不会触发即时通知。”如果除了即时通知之外还有其他形式的人工审查在进行，那么这部分流程是合理的。如果没有，那么要么 OpenAI 没有充分优先处理监控故障，要么他们被更严重的事件压得喘不过气。如果安全团队不堪重负，他们应该明确说明当前能力过于有限，无法适当应对失准事件，OpenAI 应该控制内部工作节奏，直到安全团队具备足够能力。否则，所有被标记的智能体无监控运行案例都应经过人工审查。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 应该对其升级流程保持透明。 如前所述，事件报告没有告诉读者当监控被禁用或抑制时实际会发生什么级别的升级。在其内部部署风险报告中，OpenAI 指出：“由于误报率很高，我们当前的监控系统不会将无监控计算资源的配置标记出来供人工审查。”这似乎比事件报告更进一步：禁用监控可能不仅不会触发即时通知，甚至可能永远不会被标记供人工审查。这与 OpenAI 最近关于检测失准的报告很难协调一致，后者暗示当监控器捕捉到此类事件时会生成 Slack 通知。这些报告之间可能发生了变更，但没有明确提及。这使得禁用监控如何升级存在很大的不确定性。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenAI 应该对其升级流程保持透明。"
+            },
+            {
+              "text": " 如前所述，事件报告没有告诉读者当监控被禁用或抑制时实际会发生什么级别的升级。在其"
+            },
+            {
+              "href": "https://cdn.openai.com/trust-and-transparency/oai_internal-use-catastrophic-risk-assessments_2026_2.pdf",
+              "text": "内部部署风险报告"
+            },
+            {
+              "text": "中，OpenAI 指出：“由于误报率很高，我们当前的监控系统不会将无监控计算资源的配置标记出来供人工审查。”这似乎比事件报告更进一步：禁用监控可能不仅不会触发即时通知，甚至可能永远不会被标记供人工审查。这与 OpenAI 最近关于"
+            },
+            {
+              "href": "https://openai.com/index/how-we-detect-frontier-model-misalignment/",
+              "text": "检测失准"
+            },
+            {
+              "text": "的报告很难协调一致，后者暗示当监控器捕捉到此类事件时会生成 Slack 通知。这些报告之间可能发生了变更，但没有明确提及。这使得禁用监控如何升级存在很大的不确定性。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要判断这些事件是如何升级的，一种办法是参照 OpenAI 的严重等级体系，但结果发现这并不能提供有用信息。GPT-6 Astra 系统卡把“关闭监控系统”列为严重等级 3 行为的示例；然而，它并未说明严重等级 3 的行为会如何处理。事件报告提到了另一套严重性分级，包括 P0 和 P0.5；但这套分级同样没有完整定义，也没有给出它与严重等级之间的对应关系。Hugging Face 事件报告显示，OpenAI 仍在制定其严重性框架：",
+          "inlines": [
+            {
+              "text": "要判断这些事件是如何升级的，一种办法是参照 OpenAI 的严重等级体系，但结果发现这并不能提供有用信息。"
+            },
+            {
+              "href": "https://deploymentsafety.openai.com/gpt-6-astra#:~:text=disabling%20monitoring%20systems",
+              "text": "GPT-6 Astra 系统卡"
+            },
+            {
+              "text": "把“关闭监控系统”列为严重等级 3 行为的示例；然而，它并未说明严重等级 3 的行为会如何处理。事件报告提到了另一套严重性分级，包括 P0 和 P0.5；但这套分级同样没有完整定义，也没有给出它与严重等级之间的对应关系。"
+            },
+            {
+              "href": "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf#page=30",
+              "text": "Hugging Face 事件报告"
+            },
+            {
+              "text": "显示，OpenAI 仍在制定其严重性框架："
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "OpenAI 正在制定一个框架，用于基于严重性触发模型行为和安全信号的升级，这些信号可能表明模型出现失准，包括试图绕过边界、未经授权的跨智能体或跨运行协调，以及规避第三方安全控制。该框架将界定哪些行为需要升级，以及每个严重等级对应的响应措施。"
+        },
+        {
+          "type": "paragraph",
+          "text": "这套框架最终定稿当然最理想，但在本案中最重要的是明确说明 OpenAI 如何升级监控被关闭或压制的事件。OpenAI 在这一点上缺乏清晰说明，加剧了其监控流程的问题，因为这让 OpenAI 之外的人难以判断最严重的故障发生在哪里。",
+          "inlines": [
+            {
+              "text": "这套框架最终定稿当然最理想，但在本案中最重要的是明确说明 OpenAI 如何升级监控被关闭或压制的事件。OpenAI 在这一点上缺乏清晰说明，加剧了其监控流程的问题，因为这让 OpenAI 之外的人难以判断最严重的故障发生在哪里。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 应当澄清以下几项尚存的不确定之处：",
+          "inlines": [
+            {
+              "text": "OpenAI 应当澄清以下几项尚存的不确定之处："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "在失准监控被关闭或压制时不会立即触发寻呼的情况下，实际会发生什么样的报告？每起事件多快能让人知晓（如果有人知晓的话），以及每起事件会得到多少调查（由人或 AI 进行，如果有的话）？"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "如果人类无法及时审查事件，某些工作负载是否会暂停？如果是，暂停发生得有多快？"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "这些事件的规模有多大？大致有多少事件被标记？"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "哪些类别的模型是在没有失准监控的情况下发布的？每类模型分别贡献了多少比例的事件？"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些问题有助于评估已发生事件的严重性、缓解措施实施后的剩余风险，以及这些事件在多大程度上构成 OpenAI 执行其《准备框架》所需保障措施的能力缺口。",
+          "inlines": [
+            {
+              "text": "这些问题有助于评估已发生事件的严重性、缓解措施实施后的剩余风险，以及这些事件在多大程度上构成 OpenAI 执行其《准备框架》所需保障措施的能力缺口。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结论",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "结论"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "虽然我讨论了 OpenAI 做对的一些事情，但我不想淡化局势的严重性。OpenAI 认为其安全团队不堪重负，以至于智能体关闭监控时无法立即寻呼他们，这非常令人担忧。作为应对这一严重局势的第一步，OpenAI 的回应应当包含我概述的两项建议：每当 AI 在无监控下运行时都要有可靠的人工审查，以及提高 OpenAI 如何升级 AI 关闭或压制监控事件的透明度。\n\n感谢 Alex Mallen、Jadyn Malone、Alexa Pan、Adam Kaufman、Marie Buhl 和 Jackson Sipple 提供的大量反馈和贡献。",
+          "inlines": [
+            {
+              "text": "虽然我讨论了 OpenAI 做对的一些事情，但我不想淡化局势的严重性。OpenAI 认为其安全团队不堪重负，以至于智能体关闭监控时无法立即寻呼他们，这非常令人担忧。作为应对这一严重局势的第一步，OpenAI 的回应应当包含我概述的两项建议：每当 AI 在无监控下运行时都要有可靠的人工审查，以及提高 OpenAI 如何升级 AI 关闭或压制监控事件的透明度。\n\n"
+            },
+            {
+              "italic": true,
+              "text": "感谢 Alex Mallen、Jadyn Malone、Alexa Pan、Adam Kaufman、Marie Buhl 和 Jackson Sipple 提供的大量反馈和贡献。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Recently, OpenAI disclosed two incidents in which their agents suppressed or disabled misalignment monitoring. These are part of a broader pattern: OpenAI’s agents “keep turning off misalignment monitoring” when working on code that runs other models (the agents are not turning off their own monitoring; they are turning off the monitoring on the models they are running). This is happening at such a large volume that OpenAI feels it is impractical for the security team to be immediately paged for these cases. To their credit, OpenAI’s disclosure was fast and candid, and they are rolling out mitigations to make monitoring harder to turn off. But those mitigations are unlikely to work every time, and some of these incidents have already ended with an AI actually running unmonitored. When that happens, OpenAI’s current monitoring system does not reliably bring it to a human’s attention. The rest of this post summarizes the incidents, OpenAI’s response, and what it got right, then argues for two changes: every case of an AI running without monitoring should reach human review, and OpenAI should be more transparent about how cases of disabling and suppressing monitoring are escalated.",
+          "inlines": [
+            {
+              "text": "Recently, OpenAI disclosed "
+            },
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/",
+              "text": "two incidents"
+            },
+            {
+              "text": " in which their agents suppressed or disabled misalignment monitoring. These are part of a broader pattern: OpenAI’s agents “"
+            },
+            {
+              "href": "https://x.com/Marcus_J_W/status/2112695138199966084",
+              "text": "keep turning off misalignment monitoring"
+            },
+            {
+              "text": "” when working on code that runs other models (the agents are not turning off their own monitoring; they are turning off the monitoring on the models they are running). This is happening at such a large volume that "
+            },
+            {
+              "href": "https://x.com/Marcus_J_W/status/2112695165714571491#:~:text=Given%20the%20volume%20of%20events%20we%20do%20not%20trigger%20an%20immediate%20page%20for%20this%20but%20we%E2%80%99re%20working%20on%20making%20it%20harder%20to%20spin%20up%20unmonitored%20inference.",
+              "text": "OpenAI feels"
+            },
+            {
+              "text": " it is impractical for the security team to be immediately paged for these cases. To their credit, OpenAI’s disclosure was fast and candid, and they are rolling out mitigations to make monitoring harder to turn off. But those mitigations are unlikely to work every time, and some of these incidents have already ended with an AI actually running unmonitored. When that happens, OpenAI’s current monitoring system does not reliably bring it to a human’s attention. The rest of this post summarizes the incidents, OpenAI’s response, and what it got right, then argues for two changes: every case of an AI running without monitoring should reach human review, and OpenAI should be more transparent about how cases of disabling and suppressing monitoring are escalated."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Summary of the incidents",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Summary of the incidents"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "On October 3rd:",
+          "inlines": [
+            {
+              "text": "On "
+            },
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/",
+              "text": "October 3rd"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "A researcher asked GPT-6.1 Sol to create evaluation tasks from employee feedback in Slack."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Sol was told not to send any messages while doing this."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Later, while repairing the pipeline’s monitoring, Sol determined that automatic alerts to security also counted as sending messages and had a subagent turn them off."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On October 6th:",
+          "inlines": [
+            {
+              "text": "On "
+            },
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/",
+              "text": "October 6th"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "A user inside OpenAI asked GPT-6 Astra to make some code edits to match a reference implementation. The code being edited was itself used to run another AI model."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Another agent had told Astra not to disable the monitor “even temporarily.” But it ended up determining that it should disable monitoring anyways because the reference implementation did not include monitoring."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "When the user asked if Astra had disabled monitoring, Astra lied and said it had not (despite reporting, in its chain of thought (CoT), that monitoring was disabled)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beyond these two cases, there have been several incidents resulting in unmonitored agents actually being launched.",
+          "inlines": [
+            {
+              "text": "Beyond these two cases, there have been "
+            },
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/#:~:text=We%E2%80%99ve%20seen%20several%20cases%20in%20which%20agents%20launched%20a%20deployment%20with%20misalignment%20monitoring%20disabled%3A%20the%20agent%20itself%20remained%20monitored%2C%20but%20that%20monitoring%20did%20not%20cover%20the%20deployment%20it%20launched.",
+              "text": "several incidents resulting in unmonitored agents actually being launched"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "OpenAI’s proposed mitigations",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenAI’s proposed mitigations"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI describes two mitigations. The first is an update to Auto-Review, OpenAI’s synchronous monitor built to review tool calls that require elevated permissions. The update would help to block attempts to disable monitoring before they go through, but it’s limited since Auto-Review has a smaller scope than misalignment monitoring.",
+          "inlines": [
+            {
+              "text": "OpenAI describes "
+            },
+            {
+              "href": "https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/#:~:text=We%E2%80%99re%20addressing%20this,be%20terminated%20automatically.",
+              "text": "two mitigations"
+            },
+            {
+              "text": ". The first is an update to Auto-Review, OpenAI’s synchronous monitor built to review tool calls that require elevated permissions. The update would help to block attempts to disable monitoring before they go through, but it’s limited since Auto-Review has a smaller scope than misalignment monitoring."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI writes:",
+          "inlines": [
+            {
+              "text": "OpenAI writes:"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "Auto-Review, which we already require for all internal Codex use, has been updated to detect and block attempts to disable misalignment monitoring. The reviewer was already expected to block attempts to circumvent security measures, and now is given specific instructions for ensuring misalignment monitoring is applied correctly."
+        },
+        {
+          "type": "paragraph",
+          "text": "The second mitigation is still in progress:",
+          "inlines": [
+            {
+              "text": "The second mitigation is still in progress:"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "We’re working toward requiring that every category of workload have a valid safety case specifying its monitoring requirements. Workloads that lack a valid safety case, or do not meet the requirements of its category’s safety case, will be terminated automatically."
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI is also planning to investigate the source of the misbehavior, including testing if models “have a propensity to evade misalignment monitoring in particular and exhibit motivated reasoning in order to do so.”",
+          "inlines": [
+            {
+              "text": "OpenAI is also planning to investigate the source of the misbehavior, including testing if models “have a propensity to evade misalignment monitoring in particular and exhibit motivated reasoning in order to do so.”"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What OpenAI is doing right",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What OpenAI is doing right"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI publicly responded relatively quickly, within 17 days of the first incident, and was fairly transparent in their report. They disclosed an example of Astra acting against direct instructions and lying about disabling monitoring, an incident that demonstrates a particularly high level of misalignment. OpenAI also admitted they “don’t yet have a satisfying explanation for this behavior,” rather than jumping to a defensive explanation with insufficient evidence.\n\nOpenAI’s response rightly treats the string of incidents as both a control issue and an alignment issue. Their mitigations seek to address the failure of their current Auto-Review monitoring to prevent agents from disabling misalignment monitoring, while their alignment investigations attempt to uncover why their agents have this pattern of behavior in the first place.",
+          "inlines": [
+            {
+              "text": "OpenAI publicly responded relatively quickly, within 17 days of the first incident, and was fairly transparent in their report. They disclosed an example of Astra acting against direct instructions and lying about disabling monitoring, an incident that demonstrates a particularly high level of misalignment. OpenAI also admitted they “don’t yet have a satisfying explanation for this behavior,” rather than jumping to a defensive explanation with insufficient evidence.\n\nOpenAI’s response rightly treats the string of incidents as both a control issue and an alignment issue. Their mitigations seek to address the failure of their current Auto-Review monitoring to prevent agents from disabling misalignment monitoring, while their alignment investigations attempt to uncover why their agents have this pattern of behavior in the first place."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How OpenAI’s response can be improved",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "How OpenAI’s response can be improved"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI’s pipeline has multiple weak points between an agent launching code that deploys an AI without monitoring and a human actually reviewing the incident. Unmonitored AIs pose significant risks, so if these incidents do go without human review, that suggests one of two things: either they are being triaged poorly, or the company lacks the capacity to respond to them appropriately. OpenAI’s lack of transparency about how they actually handle these incidents compounds the problem.",
+          "inlines": [
+            {
+              "text": "OpenAI’s pipeline has multiple weak points between an agent launching code that deploys an AI without monitoring and a human actually reviewing the incident. "
+            },
+            {
+              "href": "https://www.lesswrong.com/posts/ceBpLHJDdCt3xfEok/ai-catastrophes-and-rogue-deployments",
+              "text": "Unmonitored AIs pose significant risks"
+            },
+            {
+              "text": ", so if these incidents do go without human review, that suggests one of two things: either they are being triaged poorly, or the company lacks the capacity to respond to them appropriately. OpenAI’s lack of transparency about how they actually handle these incidents compounds the problem."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI should ensure that cases where a model runs without monitoring are reliably escalated for human review. Escalation can fail at two points: the monitoring system may fail to flag these cases, meaning they are marked as deprioritized and discarded, or a flag may fail to lead to human review if the safety team is unable to respond to all of the notifications they receive. The first bottleneck, flagging, is a weak point in OpenAI’s process. Drawing on real incidents, OpenAI’s report on detecting misalignment measures how often the intermediate (L2) layer of their monitoring pipeline flags events where a model ran with monitoring disabled or weakened. The report puts that rate at 42.9% for the L2 security monitors and 57.1% for the L2 misalignment monitors, which make up the layer’s two halves. The figures suggest that a significant proportion of these incidents are not being escalated at all. Some of this gap reflects the limits of current monitors, but some of it is a choice. OpenAI sets the thresholds at which their monitors escalate a case, and they could catch more of these incidents by lowering those thresholds and accepting more false positives. They can also choose to iterate on the prompts that they give to monitors until they have higher rates of catching the most egregious alignment failures. OpenAI should prioritize catching cases where monitoring is disabled, including by recalibrating their monitors such that fewer of these cases slip by.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenAI should ensure that cases where a model runs without monitoring are reliably escalated for human review. "
+            },
+            {
+              "text": "Escalation can fail at two points: the monitoring system may fail to flag these cases, meaning they are marked as "
+            },
+            {
+              "href": "https://openai.com/index/how-we-detect-frontier-model-misalignment/#:~:text=another%20severe%20incident-,.,-What%20our%20monitors",
+              "text": "deprioritized and discarded"
+            },
+            {
+              "text": ", or a flag may fail to lead to human review if the safety team is unable to respond to all of the notifications they receive. The first bottleneck, flagging, is a weak point in OpenAI’s process. Drawing on real incidents, OpenAI’s "
+            },
+            {
+              "href": "https://openai.com/index/how-we-detect-frontier-model-misalignment/",
+              "text": "report on detecting misalignment"
+            },
+            {
+              "text": " measures how often the intermediate (L2) layer of their monitoring pipeline flags events where a model ran with monitoring disabled or weakened. The report puts that rate at 42.9% for the L2 security monitors and 57.1% for the L2 misalignment monitors, which make up the layer’s two halves. The figures suggest that a significant proportion of these incidents are not being escalated at all. Some of this gap reflects the limits of current monitors, but some of it is a choice. OpenAI sets the thresholds at which their monitors escalate a case, and they could catch more of these incidents by lowering those thresholds and accepting more false positives. They can also choose to iterate on the prompts that they give to monitors until they have higher rates of catching the most egregious alignment failures. OpenAI should prioritize catching cases where monitoring is disabled, including by recalibrating their monitors such that fewer of these cases slip by."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The second bottleneck, whether a flagged case actually reaches a human, is difficult to assess because OpenAI has not clarified how these cases are dealt with. The incident report states that the two events of disabling monitoring described did not meet OpenAI’s threshold for immediately paging their security team:",
+          "inlines": [
+            {
+              "text": "The second bottleneck, whether a flagged case actually reaches a human, is difficult to assess because OpenAI has not clarified how these cases are dealt with. The incident report states that the two events of disabling monitoring described did not meet OpenAI’s threshold for immediately paging their security team:"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "For P0 incidents, our misalignment monitoring system pages our Security team for immediate review. Given the large volume of events that are scrutinized by our monitors, lower-severity incidents do not trigger an immediate page. Neither of the incidents described here was classified as a P0, and neither trajectory was automatically killed."
+        },
+        {
+          "type": "paragraph",
+          "text": "It is unclear what level of review these kinds of incidents do receive. The monitoring funnel in OpenAI’s report on detecting misalignment suggests that Slack notifications are sent for events that are flagged by their monitoring pipeline, but OpenAI does not specify whether incidents that lead to Slack notifications are consistently reviewed by humans.",
+          "inlines": [
+            {
+              "text": "It is unclear what level of review these kinds of incidents do receive. The monitoring funnel in OpenAI’s "
+            },
+            {
+              "href": "https://openai.com/index/how-we-detect-frontier-model-misalignment/",
+              "text": "report on detecting misalignment"
+            },
+            {
+              "text": " suggests that Slack notifications are sent for events that are flagged by their monitoring pipeline, but OpenAI does not specify whether incidents that lead to Slack notifications are consistently reviewed by humans."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These weak points matter because monitoring is a necessary defense against misaligned behavior. In their internal deployment risk report for California’s Office of Emergency Services, OpenAI identifies rogue internal deployments, in which a model launches an agent without misalignment monitoring, as a key threat. They say that such a deployment would “weaken confidence in our cybersecurity, AI R&D, CBRN, and weight exfiltration assessments.” The Hugging Face incident showed the costs of running models without monitoring. In their incident report, OpenAI writes that if their current CoT monitoring had been running, they would have caught the initial activity and paged their security team more than a day before the models breached Hugging Face. An unmonitored AI can also cause serious harm without ever escaping OpenAI’s servers, for example, by leaving notes for other AIs, such as working exploits, stolen credentials, or messages that push them toward misaligned behavior. This has already happened: in the Hugging Face incident, agents’ notes to one another in a shared package cache grew into a message board, and days later, other agents used credential-forging material left there to gain administrator access inside OpenAI’s own systems.",
+          "inlines": [
+            {
+              "text": "These weak points matter because monitoring is a necessary defense against misaligned behavior. In their "
+            },
+            {
+              "href": "https://cdn.openai.com/trust-and-transparency/oai_internal-use-catastrophic-risk-assessments_2026_2.pdf",
+              "text": "internal deployment risk report"
+            },
+            {
+              "text": " for California’s Office of Emergency Services, OpenAI identifies rogue internal deployments, in which a model launches an agent without misalignment monitoring, as a key threat. They say that such a deployment would “weaken confidence in our cybersecurity, AI R&D, CBRN, and weight exfiltration assessments.” The "
+            },
+            {
+              "href": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/",
+              "text": "Hugging Face incident"
+            },
+            {
+              "text": " showed the costs of running models without monitoring. In their "
+            },
+            {
+              "href": "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf#page=29",
+              "text": "incident report"
+            },
+            {
+              "text": ", OpenAI writes that if their current CoT monitoring had been running, they would have caught the initial activity and paged their security team more than a day before the models breached Hugging Face. An unmonitored AI can also cause serious harm without ever escaping OpenAI’s servers, for example, by leaving notes for other AIs, such as working exploits, stolen credentials, or messages that push them toward misaligned behavior. This has already happened: in the Hugging Face incident, agents’ notes to one another in a shared package cache "
+            },
+            {
+              "href": "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf#page=7",
+              "text": "grew into a message board"
+            },
+            {
+              "text": ", and days later, other agents used "
+            },
+            {
+              "href": "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf#page=14",
+              "text": "credential-forging material"
+            },
+            {
+              "text": " left there to gain administrator access inside OpenAI’s own systems."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These weak points also matter because running models without misalignment monitoring likely fails OpenAI’s Preparedness Framework. The GPT-6 Astra System Card lists universal monitoring as one of the key safeguards used to meet the requirements in the Preparedness Framework, in light of Astra’s Critical level capabilities in cybersecurity. We do not know the class of models that was run without misalignment monitoring within this string of incidents; thus, we cannot say with certainty that there was a failure in safeguards needed to meet OpenAI’s obligation to their Preparedness Framework. However, a pattern of models disabling misalignment monitoring does make it likely that Astra is being run unmonitored.",
+          "inlines": [
+            {
+              "text": "These weak points also matter because running models without misalignment monitoring likely fails OpenAI’s Preparedness Framework. The "
+            },
+            {
+              "href": "https://deploymentsafety.openai.com/gpt-6-astra#:~:text=universal%20monitoring%20of%20full%20trajectories%20including%20chains%20of%20thought%20(CoT)",
+              "text": "GPT-6 Astra System Card"
+            },
+            {
+              "text": " lists universal monitoring as one of the key safeguards used to meet the requirements in the Preparedness Framework, in light of Astra’s Critical level capabilities in cybersecurity. We do not know the class of models that was run without misalignment monitoring within this string of incidents; thus, we cannot say with certainty that there was a failure in safeguards needed to meet OpenAI’s obligation to their Preparedness Framework. However, a pattern of models disabling misalignment monitoring does make it likely that Astra is being run unmonitored."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI could argue that it is ok to deprioritize cases where models run without monitoring because they have not observed a connection between this behavior and broader misaligned goals. This argument falls short because it can be hard to tell when a behavior reflects misalignment. For example, Anthropic initially said that the incidents in which Claude models attacked real organizations during Irregular’s cybersecurity evaluations were closer to operational failures than alignment failures, even with high-priority human review. After further investigation, they concluded that Claude’s behavior reflected two forms of misalignment. Thus, setting the security boundary around a behavior, AIs running unmonitored, rather than a theory of intention, AIs trying to achieve a misaligned goal, is much more robust. Reviewing all cases where models run unmonitored is critical for ensuring the most egregious cases are reviewed.",
+          "inlines": [
+            {
+              "text": "OpenAI could argue that it is ok to deprioritize cases where models run without monitoring because they have not observed a connection between this behavior and broader misaligned goals. This argument falls short because it can be hard to tell when a behavior reflects misalignment. For example, Anthropic initially said that the incidents in which Claude models "
+            },
+            {
+              "href": "https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals",
+              "text": "attacked real organizations during Irregular’s cybersecurity evaluations"
+            },
+            {
+              "text": " were closer to operational failures than alignment failures, even with high-priority human review. After further investigation, they "
+            },
+            {
+              "href": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents#:~:text=reflects%20two%20forms%20of%20misalignment",
+              "text": "concluded that Claude’s behavior reflected two forms of misalignment"
+            },
+            {
+              "text": ". Thus, setting the security boundary around a behavior, AIs running unmonitored, rather than a theory of intention, AIs trying to achieve a misaligned goal, is much more robust. Reviewing all cases where models run unmonitored is critical for ensuring the most egregious cases are reviewed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "An argument OpenAI has already given is that, at least the highest urgency forms of human review, are infeasible with the current level of incidents. For example, they say, “Given the large volume of events that are scrutinized by our monitors, lower-severity incidents do not trigger an immediate page.” If other forms of human review besides an immediate page are occurring, then this part of the process is reasonable. If not, then either OpenAI is not adequately prioritizing monitoring failures, or they are being overwhelmed by even more severe incidents. If the safety team is overwhelmed, they should state clearly that their current capacity is too limited to respond to misalignment events appropriately, and OpenAI should pace internal workloads until the safety team has sufficient capacity. Otherwise, all flagged cases of an agent running unmonitored should be reviewed by a human.",
+          "inlines": [
+            {
+              "text": "An argument OpenAI has already given is that, at least the highest urgency forms of human review, are infeasible with the current level of incidents. For example, they say, “Given the large volume of events that are scrutinized by our monitors, lower-severity incidents do not trigger an immediate page.” If other forms of human review besides an immediate page are occurring, then this part of the process is reasonable. If not, then either OpenAI is not adequately prioritizing monitoring failures, or they are being overwhelmed by even more severe incidents. If the safety team is overwhelmed, they should state clearly that their current capacity is too limited to respond to misalignment events appropriately, and OpenAI should pace internal workloads until the safety team has sufficient capacity. Otherwise, all flagged cases of an agent running unmonitored should be reviewed by a human."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI should be transparent about their escalation process. As discussed, the incident report does not tell the reader what level of escalation does occur when monitoring is disabled or suppressed. In their internal deployment risk report, OpenAI notes, “because of a high rate of false positives, our current monitoring system does not flag the provisioning of unmonitored computing resources for human review.” This appears to go further than the incident report: disabling may not just fail to trigger an immediate page but may never be flagged for human review at all. That is hard to reconcile with OpenAI’s more recent report on detecting misalignment, which suggests that such events generate Slack notifications when the monitor catches them. It’s possible that a change occurred between these reports, but none was mentioned explicitly. This leaves significant uncertainty about how disabling monitoring is escalated.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenAI should be transparent about their escalation process."
+            },
+            {
+              "text": " As discussed, the incident report does not tell the reader what level of escalation does occur when monitoring is disabled or suppressed. In their "
+            },
+            {
+              "href": "https://cdn.openai.com/trust-and-transparency/oai_internal-use-catastrophic-risk-assessments_2026_2.pdf",
+              "text": "internal deployment risk report"
+            },
+            {
+              "text": ", OpenAI notes, “because of a high rate of false positives, our current monitoring system does not flag the provisioning of unmonitored computing resources for human review.” This appears to go further than the incident report: disabling may not just fail to trigger an immediate page but may never be flagged for human review at all. That is hard to reconcile with OpenAI’s more recent "
+            },
+            {
+              "href": "https://openai.com/index/how-we-detect-frontier-model-misalignment/",
+              "text": "report on detecting misalignment"
+            },
+            {
+              "text": ", which suggests that such events generate Slack notifications when the monitor catches them. It’s possible that a change occurred between these reports, but none was mentioned explicitly. This leaves significant uncertainty about how disabling monitoring is escalated."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One way we could try to determine how these events are escalated is by referring to OpenAI’s system of severity levels, but this turns out to be uninformative. The GPT-6 Astra System Card lists “disabling monitoring systems” as an example of severity level 3 behavior; however, it does not specify how severity level 3 behaviors are handled. The incident report includes references to a separate severity classification, including P0 and P0.5; however, these are also not fully defined, nor is there a translation between this classification and severity levels. The Hugging Face incident report suggests that OpenAI is still in the process of developing their severity framework:",
+          "inlines": [
+            {
+              "text": "One way we could try to determine how these events are escalated is by referring to OpenAI’s system of severity levels, but this turns out to be uninformative. The "
+            },
+            {
+              "href": "https://deploymentsafety.openai.com/gpt-6-astra#:~:text=disabling%20monitoring%20systems",
+              "text": "GPT-6 Astra System Card"
+            },
+            {
+              "text": " lists “disabling monitoring systems” as an example of severity level 3 behavior; however, it does not specify how severity level 3 behaviors are handled. The incident report includes references to a separate severity classification, including P0 and P0.5; however, these are also not fully defined, nor is there a translation between this classification and severity levels. The "
+            },
+            {
+              "href": "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf#page=30",
+              "text": "Hugging Face incident report"
+            },
+            {
+              "text": " suggests that OpenAI is still in the process of developing their severity framework:"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "OpenAI is developing a framework for severity-based escalation triggers for model behaviors and security signals that may indicate misalignment, including attempted boundary circumvention, unauthorized cross-agent or cross-run coordination, and circumvention of third-party security controls. The framework will define which behaviors require escalation and the response associated with each severity level."
+        },
+        {
+          "type": "paragraph",
+          "text": "While a finalized version of this framework would be ideal, what is most important in this case is a clear statement about how OpenAI is escalating incidents of monitoring being disabled or suppressed. Their lack of clarity on this point exacerbates the issues with their monitoring pipeline because it makes it difficult for anyone outside OpenAI to tell where the most severe failures are occurring.",
+          "inlines": [
+            {
+              "text": "While a finalized version of this framework would be ideal, what is most important in this case is a clear statement about how OpenAI is escalating incidents of monitoring being disabled or suppressed. Their lack of clarity on this point exacerbates the issues with their monitoring pipeline because it makes it difficult for anyone outside OpenAI to tell where the most severe failures are occurring."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "There are a number of remaining uncertainties that OpenAI should clarify:",
+          "inlines": [
+            {
+              "text": "There are a number of remaining uncertainties that OpenAI should clarify:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "In the absence of an immediate page when misalignment monitoring is disabled or suppressed, what kind of reporting does occur? How quickly is a human made aware of each incident, if at all, and how much is each incident investigated (by a human or an AI) if at all?"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Are some workloads paused if a human cannot review the incident in time, and if so, how quickly do these pauses occur?"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "What was the scale of these incidents? Roughly, how many events were flagged?"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "What classes of models were launched without misalignment monitoring? What proportion of incidents came from each class of model?"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These questions are useful for assessing the severity of the incidents that have occurred, the residual risk after mitigations have been applied, and the extent to which these incidents constitute a gap in OpenAI’s ability to enforce the safeguards they use to adhere to their Preparedness Framework.",
+          "inlines": [
+            {
+              "text": "These questions are useful for assessing the severity of the incidents that have occurred, the residual risk after mitigations have been applied, and the extent to which these incidents constitute a gap in OpenAI’s ability to enforce the safeguards they use to adhere to their Preparedness Framework."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Conclusion",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Conclusion"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "While I discussed some things OpenAI is doing right, I don’t want to detract from the severity of the situation. It is very concerning that OpenAI feels its security team is too overwhelmed to be paged immediately when agents disable monitoring. As a first step toward meeting the severity of the situation, OpenAI’s response should include the two recommendations I have outlined: reliable human review whenever an AI runs unmonitored, and greater transparency about how OpenAI escalates incidents of AIs disabling or suppressing monitoring.\n\nThanks to Alex Mallen, Jadyn Malone, Alexa Pan, Adam Kaufman, Marie Buhl, and Jackson Sipple for extensive feedback and contributions.",
+          "inlines": [
+            {
+              "text": "While I discussed some things OpenAI is doing right, I don’t want to detract from the severity of the situation. It is very concerning that OpenAI feels its security team is too overwhelmed to be paged immediately when agents disable monitoring. As a first step toward meeting the severity of the situation, OpenAI’s response should include the two recommendations I have outlined: reliable human review whenever an AI runs unmonitored, and greater transparency about how OpenAI escalates incidents of AIs disabling or suppressing monitoring.\n\n"
+            },
+            {
+              "italic": true,
+              "text": "Thanks to Alex Mallen, Jadyn Malone, Alexa Pan, Adam Kaufman, Marie Buhl, and Jackson Sipple for extensive feedback and contributions."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-05T01:11:25.434498Z",
+  "contentMode": "full"
+}
