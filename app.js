@@ -50,6 +50,7 @@
   var financingCache = new Map();
   var FINANCING_PAGE_SIZE = 10;
   var FINANCING_ROUND_ORDER = ['种子轮', '天使轮', 'Pre-A轮', 'A轮', 'A+轮', 'Pre-B轮', 'B轮', 'B+轮', 'C轮', 'C+轮', 'D轮', 'E轮', 'F轮', '后期阶段', 'Pre-IPO', 'IPO', 'Post-IPO', '新三板', '新三板定增', '主板定增', '战略投资', '股权投资', '债权融资', '股权转让', '被收购', '战略合并', '私有化'];
+  var FINANCING_INSTITUTION_ALIASES = { '深创投': '深创投', '深圳市创新投资集团有限公司': '深创投' };
 
   function byId(id) { return document.getElementById(id); }
   function element(tag, className, text) {
@@ -880,6 +881,20 @@
       return true;
     });
   }
+  function financingInstitutionCanonical(value) {
+    var clean = String(value || '').trim();
+    var match = Object.keys(FINANCING_INSTITUTION_ALIASES).find(function (name) { return name.toLocaleLowerCase() === clean.toLocaleLowerCase(); });
+    return match ? FINANCING_INSTITUTION_ALIASES[match] : clean;
+  }
+  function financingInstitutionMatches(item, query) {
+    var needle = String(query || '').trim().toLocaleLowerCase();
+    if (!needle) return true;
+    var canonicalNeedle = financingInstitutionCanonical(needle).toLocaleLowerCase();
+    return financingInstitutionNames(item).some(function (name) {
+      var canonical = financingInstitutionCanonical(name).toLocaleLowerCase();
+      return name.toLocaleLowerCase().includes(needle) || canonical.includes(needle) || canonical === canonicalNeedle;
+    });
+  }
   function financingFilterValue(field, value) {
     if (field === 'id') return dateLabel(value);
     if (field === 'month') return financingMonthLabel(value);
@@ -887,7 +902,7 @@
     return value;
   }
   function financingFilterLabel(field) {
-    return field === 'id' ? '日期' : field === 'month' ? '月份' : field === 'industry' ? '行业' : field === 'round' ? '轮次' : field === 'institution' ? '机构' : '地域';
+    return field === 'id' ? '日期' : field === 'month' ? '月份' : field === 'industry' ? '行业' : field === 'round' ? '轮次' : field === 'institution' ? '投资机构' : '地域';
   }
   function financingRoute(changes) {
     var listDate = currentRoute.financingId && currentRoute.financingFromAll ? '' : currentRoute.id;
@@ -930,8 +945,8 @@
     options('financingRegionFilter', 'region', financingRegionTags, '全部地域');
     if (ui.financingInstitutionOptions) {
       var institutions = new Set();
-      snapshot.items.forEach(function (item) { financingInstitutionNames(item).forEach(function (value) { institutions.add(value); }); });
-      if (currentRoute.institution) institutions.add(currentRoute.institution);
+      snapshot.items.forEach(function (item) { financingInstitutionNames(item).forEach(function (value) { institutions.add(financingInstitutionCanonical(value)); }); });
+      if (currentRoute.institution) institutions.add(financingInstitutionCanonical(currentRoute.institution));
       clear(ui.financingInstitutionOptions);
       Array.from(institutions).sort(function (a, b) { return a.localeCompare(b, 'zh-CN'); }).forEach(function (value) {
         var option = element('option'); option.value = value; ui.financingInstitutionOptions.appendChild(option);
@@ -957,7 +972,11 @@
       ui.financingActiveFilters.appendChild(reset);
     }
     show(ui.financingActiveFilters, filtered);
-    text(ui.financingResultCount, (filtered ? '筛选结果 ' : currentRoute.id ? '当日共 ' : '全部归档共 ') + items.length + ' 条 · 国内 ' + items.filter(function (item) { return item.isDomestic; }).length + ' / 国外 ' + items.filter(function (item) { return !item.isDomestic; }).length);
+    var resultLabel;
+    if (currentRoute.institution) resultLabel = (currentRoute.month ? financingMonthLabel(currentRoute.month) + ' · ' : '') + '投资机构“' + currentRoute.institution + '”命中 ' + items.length + ' 个项目';
+    else if (currentRoute.month) resultLabel = financingMonthLabel(currentRoute.month) + '共 ' + items.length + ' 个项目';
+    else resultLabel = (filtered ? '筛选结果 ' : currentRoute.id ? '当日共 ' : '全部归档共 ') + items.length + ' 个项目';
+    text(ui.financingResultCount, resultLabel + ' · 国内 ' + items.filter(function (item) { return item.isDomestic; }).length + ' / 国外 ' + items.filter(function (item) { return !item.isDomestic; }).length);
   }
   function renderFinancingPagination(total) {
     var pages = Math.max(1, Math.ceil(total / FINANCING_PAGE_SIZE));
@@ -1239,13 +1258,12 @@
       text(ui.financingKnown, summary.knownAmountEvents);
       text(ui.financingAmount, formatFinancingAmount(summary.estimatedTotalCny));
       text(ui.financingIndustries, (summary.topIndustries || []).map(function (item) { return item.name + ' ' + item.count; }).join(' · '));
-      var institutionQuery = String(currentRoute.institution || '').trim().toLocaleLowerCase();
       var items = snapshot.items.filter(function (item) {
         return (currentRoute.market === 'all' || (currentRoute.market === 'domestic' ? item.isDomestic : !item.isDomestic))
           && (!currentRoute.month || item.date.slice(0, 7) === currentRoute.month)
           && (!currentRoute.industry || financingIndustryTags(item).includes(currentRoute.industry))
           && (!currentRoute.round || item.round === currentRoute.round)
-          && (!institutionQuery || String(item.investors || '').toLocaleLowerCase().includes(institutionQuery))
+          && financingInstitutionMatches(item, currentRoute.institution)
           && (!currentRoute.region || financingRegionTags(item).includes(currentRoute.region));
       });
       updateFinancingControls(snapshot, items);
