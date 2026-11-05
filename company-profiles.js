@@ -50463,12 +50463,64 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "Sabi, Inc.": {
     "description": "Sabi,Inc.美国是一家脑机接口研发商，致力于开发一款主打“意念交互”的棒球帽，帽内最多可嵌入10万枚传感器芯片，单枚尺寸仅1至5毫米，用于捕捉头皮外侧的脑电活动，配合一套在10万小时标注神经数据上训练的“脑基础模型”，这套系统能将使用者的念头直接转写为文本指令，供AI代理执行。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "BrainGate",
+        "description": "脑机接口服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "曼安智能",
+        "description": "脑机接口通讯产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "CTRL-Labs",
+        "description": "美国脑机接口研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "神机妙控",
+        "description": "智能脑机接口产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "脑回录",
+        "description": "非侵入式脑机接口穿戴设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "回车科技",
+        "description": "消费级脑机接口应用研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聆慧尔",
+        "description": "音乐协同电刺激脑机接口器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "致远科创",
+        "description": "脑机接口核心技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "NextMind",
+        "description": "法国可穿戴脑机接口设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "易念科技",
+        "description": "脑机接口技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -50493,12 +50545,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Ultra AI": {
     "description": "Ultra AI是一家美国仓储机器人研发商，聚焦于工业、仓储等场景，主要从事工业机器人OP1研发业务，该机器人能够将商品装入并封好多种类型的邮寄包装袋，可完成物品包装、分拣和套件组装等工作。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Berkshire Grey",
+        "description": "仓储机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Dexterity",
+        "description": "美国物流机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "RightHand Robotics",
+        "description": "美国机器人解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "三维通",
+        "description": "机器人快递包裹分拣系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Fabric",
+        "description": "仓储机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "健松智能",
+        "description": "工业机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "XYZ Robotics",
+        "description": "自动化分拣机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Floatic",
+        "description": "韩国仓储机器人解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瓦瑞科技",
+        "description": "智能仓储及物流机器人研发",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博实股份",
+        "description": "工业机器人及自动化成套装备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -50523,7 +50628,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "BloomX": {
     "description": "BloomX是一家以色列生物技术研发商，开发了一项人工智能驱动的“生物模仿技术”，用带有机械臂的电动车“复制”自然授粉的过程。对于自花授粉的作物，BloomX将借助数据确定最佳授粉时间，电动车将在两排植物间穿梭并摇摆植物的茎，使花粉从雄花蕊上震落并附着在较低的雌花蕊上。",
@@ -50534,8 +50641,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "山里红",
+        "description": "植物种苗生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科稷达隆",
+        "description": "农业生物技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑞丰生物",
+        "description": "农作物研发育种机构",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "弥生生物",
+        "description": "花生基因编辑育种技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "清原植保",
+        "description": "大宗农作物抗性杂草根本性解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "NuCicer",
+        "description": "植物遗传学服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "桃花源",
+        "description": "水稻种子生产研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "龙彰科技",
+        "description": "现代生物种植及技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "AeroFarms",
+        "description": "美国垂直农业运营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天木生物",
+        "description": "生物育种技术与装备开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -50553,12 +50711,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Danu Robotics": {
     "description": "Danu Robotics是英国一家垃圾回收机器人研发商，基于人工智能、机器人技术，主要从事智能机器人研发业务，可用于废物回收和管理领域。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Recycleye",
+        "description": "英国废物管理解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "思凯灵机器人",
+        "description": "机器人技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "无限聚合",
+        "description": "机器人技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "仙知机器人",
+        "description": "机器人生产制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星期天机器人",
+        "description": "机器人技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Dyna Robotics",
+        "description": "美国具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "阿图机器人",
+        "description": "机器人技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "GrayMatter Robotics",
+        "description": "美国智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Mind Robotics",
+        "description": "美国工业AI机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Universal Robots",
+        "description": "丹麦协作机器人制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -50583,7 +50794,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Ocean Co": {
     "description": "Ocean Co是一家日本入境游客免税退税平台，主要面向海外游客提供微信、LINE小程序线上退税服务，支持多种退款方式，为线下零售商提供POS系统对接、免税资质代办及全流程数字化退税管理，适配日本最新免税制度，并依托消费数据为商家提供精准入境游营销支持。",
@@ -50595,7 +50808,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -50613,7 +50826,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "海南玑曜": {
     "description": "海南玑曜是一家软件信息技术服务商，聚焦软件信息技术服务领域，从事软件和信息技术相关业务。",
@@ -50643,7 +50858,8 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "ahron.ai": {
     "description": "ahron.ai是一个德国人工智能HR平台，平台构建在企业现有人力资源系统之上，利用流程智能（Process Intelligence）以可审计的方式，大规模地端到端完成人力资源工作。",
@@ -50675,7 +50891,8 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "VORAGO Technologies": {
     "description": "VORAGO Technologies是一家无晶圆厂半导体研发商，为高可靠性（Hi-rel）市场提供抗辐射加固与极端温度芯片及解决方案，应用覆盖航天、国防、工业、汽车、网络等领域。",
@@ -50705,7 +50922,8 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "快灵光电": {
     "description": "光特科技是一家磷化铟基光探测器芯片研发生产商，聚焦光通信与激光雷达光芯片领域，专注于III-V族化合物半导体探测器芯片、硅光子集成芯片、红外热成像芯片及智能传感器等高端光子芯片的研发、生产与销售，致力于打破光探测器芯片长期依赖日德进口的国产化瓶颈。公司主要产品或服务包括APD探测器芯片、PIN与APD等低速率产品、单波100G PD芯片、甲烷探测PD芯片等，产品广泛应用于光纤通讯、数据中心、激光测距、激光雷达、无人驾驶、智能穿戴等热点行业。",
@@ -50761,8 +50979,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "元芯光电",
+        "description": "半导体激光器芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "知融科技",
+        "description": "毫米波相控阵T/R芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "近观科技",
+        "description": "氮化硅基生物硅光产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯视界微电子",
+        "description": "光学传感器芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "光子行科技",
+        "description": "硅基光子传感芯片研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "镭芯光电",
+        "description": "半导体激光芯片研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "光安伦",
+        "description": "高端光电子芯片研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "传周半导体",
+        "description": "光电传感芯片及系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "唐晶量子",
+        "description": "化合物半导体外延片方案解决商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安其威微电子",
+        "description": "高性能硅基微波毫米波射频芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 600000000,
       "text": "约 6.00 亿元人民币",
@@ -50783,7 +51052,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "RoboScience机器科学": {
     "description": "RoboScience是一家通用具身智能大模型与机器人研发商，聚焦具身智能领域，专注于通用具身大模型与可微物理仿真引擎的研发，致力于将机器人软硬一体智能模块与整机系统应用于多领域。公司主要产品或服务包括Visics通用具身大模型、RoboMirage物理仿真引擎、云端EaaS具身智能服务及轮式仿人形通用机器人REX系列，主要应用于零售、物流、工业、家庭等场景。",
@@ -50809,8 +51080,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "星际智行",
+        "description": "具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智澄AI",
+        "description": "具身智能通用机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星尘智能",
+        "description": "具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "方奇科技",
+        "description": "具身智能通用大脑研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亮源新创",
+        "description": "具身智能基础模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艨码科技",
+        "description": "通用机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "苏度科技",
+        "description": "通用具身智能机器人平台研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智在无界",
+        "description": "通用具身智能及机器人技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Enigma AI",
+        "description": "机器人通用AI基础模型与人机交互平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智擎机器人",
+        "description": "具身智能机器人核心系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "广州琥珀安云二期创业投资合伙企业（有限合伙）",
@@ -50830,7 +51152,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "庞勃特": {
     "description": "庞勃特是一家AI体育硬件研发商，聚焦体育智能硬件领域，致力于打造覆盖运动全场景的产品体系；公司主要产品包括发球机器人、高速视觉系统、物联网设备等，应用于乒乓球、网球等运动领域。",
@@ -50861,8 +51185,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "英汉思动力",
+        "description": "智能运动硬件商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "旭擎智能",
+        "description": "工业具身机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "勃肯特",
+        "description": "工业机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "AceiiLab一思智能",
+        "description": "智能网球机器人生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "SPARKOZ汤恩智能",
+        "description": "全场景商用清洁机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "比特天空",
+        "description": "AI可穿戴智能运动装备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星际智行",
+        "description": "具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "汤问致新",
+        "description": "伙伴机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大晓机器人",
+        "description": "具身智能技术研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "酷浪运动",
+        "description": "智能球类运动硬件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "上海国投先导人工智能私募投资基金合伙企业（有限合伙）"
@@ -50880,7 +51255,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "江苏威拉里": {
     "description": "江苏威拉里是一家金属增材制造整体解决方案提供商，专注于金属3D打印粉末的研发生产，主攻高温合金、钛合金、模具钢和铝合金等增材制造用金属粉末。致力于解决我国增材制造领域关键原材料“卡脖子”难题，成为金属材料研发、生产、应用一体化方案服务商。公司主要产品包括：钛合金粉、镍基高温合金粉、铝合金粉、铁基合金粉、钴基合金粉，已被广泛应用于航空航天、生物医疗、激光熔覆、3D打印等领域。",
@@ -50931,8 +51308,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "有研增材",
+        "description": "增材制造金属粉体材料研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "铸金股份",
+        "description": "高端合金粉体材料产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金源智能",
+        "description": "3D打印金属材料供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "航科新材",
+        "description": "高端金属微球材料研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云耀深维",
+        "description": "激光金属增材制造设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "容智三维",
+        "description": "工业级激光金属增材制造设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "开禾科技",
+        "description": "再生钛合金制品一站式解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亚洲新材料",
+        "description": "高品质球形金属粉末材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "有研复材",
+        "description": "有色金属合金及复合材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艾利佳材料",
+        "description": "金属和陶瓷粉末注射成型技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 2110000000,
       "text": "约 21.10 亿元人民币",
@@ -50953,7 +51381,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "灵犀智旅科技": {
     "description": "灵犀智旅科技是一家智能文旅综合服务商，聚焦文旅领域，主营会议展览服务、智能控制系统集成、人工智能应用开发，提供物联网设备销售、技术推广及相关咨询服务，覆盖文旅相关多领域业务。",
@@ -50964,8 +51394,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "智胜慧旅",
+        "description": "智能旅游信息一体化解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深大智能",
+        "description": "智慧旅游解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "风泽信文化",
+        "description": "文旅科技综合服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "游逗科技",
+        "description": "智慧文旅系统技术服务与运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "文旅云智能",
+        "description": "数字化创新应用研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "爬虫智旅",
+        "description": "智慧旅游行业服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "锦航云天",
+        "description": "智慧旅游整体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东方数科",
+        "description": "数字智慧文旅解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "元时极空",
+        "description": "文旅数智化技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科洪网络",
+        "description": "智慧旅游服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -50983,12 +51464,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "德润希纳新材": {
     "description": "德润希纳新材是一家新材料技术研发推广商，专注于功能材料研发，主营专用化学产品、合成材料及表面功能材料的制造与销售，拥有苯甲酸封端复合物制备等专利技术。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "鲲鹏材料",
+        "description": "合成材料及新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚核材料",
+        "description": "高分子功能材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天云氢创",
+        "description": "新材料技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "众联新材",
+        "description": "新材料技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "众德新材",
+        "description": "复合材料功能性涂层制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "军安新材",
+        "description": "新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "维桢新材",
+        "description": "MOFs新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "毅聚新材",
+        "description": "纳米新材料技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中铁建纳米",
+        "description": "纳米材料研发制造销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "森桓新材",
+        "description": "高性能材料研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51013,7 +51547,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "微面科技": {
     "description": "微面科技是一家人类感知理解基座模型研发商，聚焦自研人类感知理解基座模型，致力于打造新一代人机交互范式。微面科技基于rPPG（远程光电容积描记）核心技术，全栈自研面部基座模型FacePhys，可实时输出超过120项指标，覆盖心率、心率变异性（HRV）、呼吸率、面部动作单元、眼动特征、情绪维度及语音特征等多个方向。配合HRV情绪生理晴雨表绑定心率与急剧情绪，模型可识别假笑和压抑情绪，获取无法伪装的客观生理真相，为大模型提供生理情绪数据入口。",
@@ -51024,8 +51560,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "仙库科技",
+        "description": "3D精准体征数据服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "千觉机器人",
+        "description": "机器人多模态触觉感知技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "谛视万象",
+        "description": "多模态视觉大模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "极佳视界",
+        "description": "具身智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科视界",
+        "description": "高速视觉感知和测量技术提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星箕动力",
+        "description": "AI模型驱动产业升级服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "连信数字",
+        "description": "AI大模型智能体及产业化应用科技服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "白泽汇智",
+        "description": "时空感知综合解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "帕西尼感知科技",
+        "description": "具身感知通用智能解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "春建汽车",
+        "description": "AI视觉感知系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51043,7 +51630,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "潞州松立停车": {
     "description": "潞州松立是一家智慧停车系统运营服务商，聚焦城市静态交通领域，专注公共停车场运营管理；公司主要产品或服务包括智慧停车系统、停车场服务、软件开发、信息系统集成及相关技术服务，主要应用于城市机动车停车管理场景。",
@@ -51075,7 +51664,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51091,12 +51680,14 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "Hone labs": {
     "description": "Hone labs是一家美国AI办公自动化解决方案提供商，主要从事可长期执行数周任务的AI智能体开发业务，充当企业虚拟员工。",
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51121,7 +51712,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "AutoTrust AI": {
     "description": "AutoTrust AI是一家递归自我改进AI决策模型研发商，聚焦递归自我改进AI与决策模型领域，专注于基础模型与决策模型的研发，致力于构建可自我改进的AI系统。公司主要产品包括Guru系列基础模型、JEV/GEV系列开源决策模型及面向科研与模型开发的智能体平台ScienceGuru，并为企业训练定制主权模型，主要应用于浏览器操作、机械臂控制、搜索推荐、内容审核、欺诈检测等决策场景。",
@@ -51166,7 +51759,8 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "competitorStatus": "unavailable"
   },
   "无问芯穹": {
     "description": "无问芯穹是一家AGI基础设施服务商，专注于开发大模型软硬件协同优化平台，致力于解决大模型算法向大算力芯片的高效统一部署问题，建设面向大模型的M×N算法-芯片联合优化平台；公司主要产品或服务包括ComfyUI工作流平台、大模型服务平台、智能体服务平台等。",
@@ -51187,8 +51781,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "比特智算",
+        "description": "AI算力技术开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MODAL LABS",
+        "description": "美国AI基础设施提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "极致预见词元",
+        "description": "AI智能体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Vectorly LLC",
+        "description": "人工智能数据生产力平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "舵正帆满",
+        "description": "企业AI大模型应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Encord",
+        "description": "美国数据开发平台运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Modular",
+        "description": "美国AI系统开发平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Lambda",
+        "description": "深度学习基础设施开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MeckaAI",
+        "description": "物理 AI 数据基础设施服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "X-CMD",
+        "description": "智能化命令行生态系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 8000000000,
       "text": "约 80.00 亿元人民币",
@@ -51209,7 +51854,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "蓝芯算力": {
     "description": "蓝芯算力是一家RISC-V+AI服务器CPU研发商，聚焦RISC-V指令集架构服务器CPU研发设计，致力于提供自主可控算力底座；公司主要产品包括LX500智通融合服务器CPU及相关产品矩阵，主要应用于数据中心、云计算、AI大模型等场景。",
@@ -51225,8 +51872,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "遇贤微电子",
+        "description": "高端云计算芯片CPU研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "风致毅",
+        "description": "算力芯片和传输芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中晟宏芯",
+        "description": "高性能服务器CPU芯片制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星云智联",
+        "description": "DPU芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "壹普智慧",
+        "description": "通用算力芯片技术供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "杭州鸿钧",
+        "description": "高算力通用服务器CPU研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "元涌科技",
+        "description": "终端侧AI NPU协处理芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鸿钧微电子",
+        "description": "数据中心核心处理器提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鲲云科技",
+        "description": "人工智能算力供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯培森",
+        "description": "高性能智能芯片研发提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 1290000000,
       "text": "约 12.90 亿元人民币",
@@ -51247,12 +51945,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中氟能气体": {
     "description": "中氟能气体是一家六氟化硫电子特气生产商，聚焦氟化工与电子特气领域，专注于以电解制氟与精馏提纯工艺规模化生产六氟化硫、三氟化氮、四氟化碳等电子级含氟气体，致力于为输配电、半导体制造、显示面板、光伏等硬科技产业提供高纯度、低成本的国产化特种气体。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "和远新材料",
+        "description": "电子特气前驱体研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德尔科技",
+        "description": "含氟电子气体及全系列含氟新材料开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安瑞森",
+        "description": "高纯电子化学品及电子气体产品供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亿丰电子",
+        "description": "超纯电子化学品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "泉州宇极",
+        "description": "高端含氟新材料研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宏芯气体",
+        "description": "电子大宗气体整体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中巨芯",
+        "description": "电子化学材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "裕能化工",
+        "description": "锂电材料及微电子化学品生产供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "和远气体",
+        "description": "综合型工业气体服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科亦先端",
+        "description": "高纯六氟化钨电子特气材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 1880000000,
       "text": "约 18.80 亿元人民币",
@@ -51282,7 +52033,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "模思智能": {
     "description": "模思智能是一家情境智能多模态大模型研发商，聚焦深度情境智能与全模态交互领域，专注于语音大模型与多模态大模型研发，致力于构建自然拟人的下一代人机交互体验。公司主要产品包括MOSS-Speech语音大模型、MOSS-TTS系列、多说话人转写模型MOSS-Transcribe-Diarize、实时视频理解模型MOSS-Video-Preview及开源端到端音视频生成模型MOVA等，主要应用于内容创作、数字人、智能汽车、具身智能、AI陪伴、直播电商等场景，同时提供高表现力语音交互解决方案，面向智能营销、智能客服、智能终端等领域提供类人交互体验。",
@@ -51313,8 +52066,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "识因智能",
+        "description": "多模态大模型研发应用商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Om AI联汇",
+        "description": "端侧多模态大模型技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "浙新四维",
+        "description": "多模态超拟人AI情感大模型开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "红熊AI",
+        "description": "企业级AI解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Philo AI",
+        "description": "视频模态通用人工智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "若愚科技",
+        "description": "多模态大模型技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "SigmaZ AI",
+        "description": "扩散语言模型实时交互视频生成平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艾之舟",
+        "description": "大语言模型（LLM）应用开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "TIAMAT",
+        "description": "AI图像生成技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "自由量级",
+        "description": "生成式人工智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 4290000,
       "text": "约 0.04 亿元人民币",
@@ -51337,12 +52141,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "弦引未来": {
     "description": "弦引未来是一家新一代柔性仿肌腱驱动机器人技术研发商，聚焦绳驱机器人+具身智能及商业航天在轨服务领域，专注于新一代柔性仿肌腱驱动绳驱机器人的自主研发，致力于将先进技术转化为可靠产品和解决方案；公司核心技术聚焦柔性仿肌腱驱动的绳驱机器人，实现高灵活性、大负载自重比和强交互安全性，解决绳索蠕变难题，应用于家庭服务、工业分拣、狭缝勘探、在轨加注、辅助离轨、在轨维护及深海特种作业等场景",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "中科慧灵",
+        "description": "通用人形机器人和具身智能产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "龙海特智能装备",
+        "description": "机器人技术与智能装备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "月泉仿生",
+        "description": "通用型仿生人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "飞鱼机器人",
+        "description": "工业机器人及控制系统研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智莱特机器人",
+        "description": "具身智能人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "法奥机器人",
+        "description": "协作机器人研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "泉智博",
+        "description": "机器人一体化关节研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "领湖智能",
+        "description": "具身机器人核心零部件供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "钧舵机器人",
+        "description": "智能机械手研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科新松",
+        "description": "工业场景具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "阿里巴巴",
@@ -51370,7 +52227,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "欧拉万象": {
     "description": "欧拉万象是一家家庭具身智能产品研发商，聚焦家庭具身智能领域，致力于打造能够快速进化的家庭机器人；公司主要产品或服务包括具备自主移动与操作能力的可养成机器人，主要应用于家庭场景。",
@@ -51381,8 +52240,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "斜跃智能",
+        "description": "家庭具身智能研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "徕福机器人",
+        "description": "家庭通用智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深庭纪智能",
+        "description": "AI陪伴具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "碳硅无界",
+        "description": "具身智能硬件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "维他动力",
+        "description": "消费级具身智能产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Ludens AI",
+        "description": "家庭陪伴机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "卧安机器人",
+        "description": "AI具身家庭机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "X-ORIGIN-AI",
+        "description": "具身智能陪伴机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "颗粒进化xLean",
+        "description": "家庭清洁服务机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "空岫科技",
+        "description": "家庭具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51398,7 +52308,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "赛瑞克": {
     "description": "赛瑞克是一家生物基平台化合物研发生产商，聚焦化工行业低碳转型，深耕高价值生物基化合物研发与商业化。公司自研创新技术，将可再生原料转化为高价值产品——葡萄糖二酸及2,5-呋喃二甲酸，实现其规模化、低成本、高质量稳定生产，服务包装、纺织、新能源、工程塑料等领域品牌客户，开创了具有自主知识产权的“（非粮）葡萄糖→GA→FDCA”全链条技术路线，打破欧美技术垄断，构筑自身技术护城河。",
@@ -51409,8 +52321,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "睿维新材",
+        "description": "生物降解包装综合解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "焕星科技",
+        "description": "可吸收高分子材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "朴烯晶",
+        "description": "超高纯聚合物特种材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英创新材",
+        "description": "ABC超弹胶乳研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "格林微纳",
+        "description": "纤维素高值应用平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "帕尔科",
+        "description": "酚酞基聚芳醚酮树脂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星辉环材",
+        "description": "高分子合成材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "慧谷新材",
+        "description": "高分子功能性材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "南开和成",
+        "description": "功能性高分子树脂研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新和成",
+        "description": "功能性化学品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51428,7 +52391,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "蔚蓝支点": {
     "description": "蔚蓝支点是一家小型模块化核反应堆研发商，聚焦小型模块化核反应堆领域，专注一体化水冷小型堆自主研发与产业化；主要开发WL‑100非能动一体化水冷小堆产品，可应用于数据中心、工业园区、海岛能源等场景，致力于提供清洁可持续能源解决方案。",
@@ -51439,8 +52404,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Deep Atomic",
+        "description": "小型模块化反应堆（SMR）研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "欧核科技",
+        "description": "第四代固有安全小型模块化反应堆研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "钧合原子",
+        "description": "小型模块化核反应堆设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星云远征",
+        "description": "第四代小型模块化反应堆研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "九州星核",
+        "description": "微型核反应堆及发电系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Otrera",
+        "description": "法国核反应堆开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Crossfield Fusion",
+        "description": "小型核聚变反应堆研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Thea Energy",
+        "description": "美国仿星器聚变能源技术开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "先进核能装备",
+        "description": "核能领域高端装备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "泽塔聚变",
+        "description": "裂变混合能源系统解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "云九资本",
@@ -51461,7 +52477,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "科亦先端": {
     "description": "科亦先端是一家高纯六氟化钨电子特气材料研发生产商，聚焦高端电子专用材料与国产替代领域，专注于高纯六氟化钨（WF6）等电子特气的工艺研发与产业化落地，致力于为半导体先进制程提供自主可控的钨沉积前驱体材料。公司主要产品为高纯六氟化钨，主要应用于半导体制造领域。",
@@ -51472,8 +52490,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "启元气体",
+        "description": "电子气体供应解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天甫电子",
+        "description": "半导体级电子材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "晶瑞电材",
+        "description": "微电子化学品及精细化工品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "江苏秦烯新材料",
+        "description": "半导体电子信息材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中伟半导体",
+        "description": "全固态电池及半导体材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天瑞硅材料",
+        "description": "超纯硅材料制造销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "福英达",
+        "description": "微电子与半导体封装材料方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科友半导体",
+        "description": "第三代半导体材料与装备研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "矽瓷新能",
+        "description": "半导体关键粉体材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鬃晶科技",
+        "description": "高性能宽禁带半导体材料及装备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51489,7 +52558,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "汇维科技": {
     "description": "汇维科技是一家民用爆破器材及军工配套装备研发商，主要产品为火炸药自动化生产线，装药装配自动化生产线，火工品自动化生产线，及其上述设备配套安全自动化系统；主要服务为对质保期外生产线进行有偿服务和技术升级。",
@@ -51515,8 +52586,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "长城军工",
+        "description": "军工产品供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国科军工",
+        "description": "武器装备弹药及配套产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中元通信",
+        "description": "军工电子研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MRA Systems",
+        "description": "航空航天设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Dynetics",
+        "description": "美国航空工程解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "长岭电子",
+        "description": "雷达导航设备生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天微电子",
+        "description": "军工电子防护元器件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德维创盈",
+        "description": "导航专业部件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东风机电",
+        "description": "军民品研制商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天成益邦",
+        "description": "军工无人智能控制系统集成商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51532,12 +52654,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "翘耳朵影业": {
     "description": "翘耳朵影业是一家短剧全产业链服务提供商，聚焦精品短剧开发领域，专注于短剧内容创作与全产业链运营，致力于通过精品短剧内容传递浪漫诗意与人文深度。公司整合影视策划、艺人经纪、后期特效、AIGC短剧制作等产业资源，主要应用于短剧内容制作与发行场景。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "趣看短剧",
+        "description": "短剧APP",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博誉影业",
+        "description": "影视娱乐内容制作商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "一怡以艺",
+        "description": "广播电视节目制作发行商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "匠心映画",
+        "description": "专注内容成为优质影视IP制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新湃电视",
+        "description": "广播电视制作发行商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芬格时代",
+        "description": "综合性传媒影视制作公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "爆笑影业",
+        "description": "电影电视剧制作发行服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "北斗智影",
+        "description": "AI短剧内容创作与出海分发平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恒顿传媒",
+        "description": "影视综艺节目制作商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "微擎科技",
+        "description": "软件开发及网络宣传服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51562,7 +52737,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "安弦科技": {
     "description": "安弦科技是一家TSN通信解决方案提供商，专注国产高性能TSN（时间敏感网络）芯片研发、销售，提供全套TSN通信解决方案，是国内少有的同时掌握TSN源头时钟技术与市场端资源的芯片厂商。企业产品面向具身智能、工业机器人、智能网联汽车、低空经济、智能电网等前沿领域，致力于打造自主可控的国产通信芯片底座。",
@@ -51573,8 +52750,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "清芯万物",
+        "description": "高端模拟芯片供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东软载波",
+        "description": "集成电路供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星拓微电子",
+        "description": "高端互联芯片解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯启源",
+        "description": "国产DPU芯片产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "凌思微电子",
+        "description": "芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "西人马",
+        "description": "高端芯片及传感器研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万协通",
+        "description": "高性能安全芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Semtech",
+        "description": "半导体以及先进算法供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鼎信通讯",
+        "description": "通信芯片自主研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "毂梁微电子",
+        "description": "嵌入式智能芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "成都科技创新投资集团有限公司"
@@ -51594,7 +52822,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "恒元光电": {
     "description": "恒元光电是一家大英寸铌酸锂晶体材料研发商，聚焦光电功能晶体材料领域，专注于大尺寸光学级铌酸锂、钽酸锂晶体的研发与产业化，致力于突破光通信及新一代信息技术关键基础材料的自主可控。公司主要产品包括3-12英寸、不同切向（X-cut、Z-cut、Y-cut等）的光学级铌酸锂晶体及晶圆，主要应用于光通信、光电集成芯片及压电器件等领域。",
@@ -51625,8 +52855,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "昆吾半导体",
+        "description": "第四代宽禁带半导体材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "铭镓半导体",
+        "description": "超宽禁带半导体材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科瑞思创",
+        "description": "高科技晶体材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "极钼芯科技",
+        "description": "二维半导体材料及设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "镓创科技",
+        "description": "氧化镓半导体材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "世纪金光",
+        "description": "半导体晶体材料及外延器件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "腾创新材",
+        "description": "高性能电子封装材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "晶创科技",
+        "description": "晶体材料及半导体器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "森一量子",
+        "description": "光电功能晶体研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "引领半导体",
+        "description": "磷化铟单晶衬底研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51642,12 +52923,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "相变储能": {
     "description": "相变储能是一家新型功能相变材料研发生产商，以相变材料为核心、专注于温度控制的新材料平台供应，集新型功能相变材料研发、生产及销售为一体，致力于为各类温度控制场景提供领先的解决方案。公司围绕人体控温、芯片控温、储能单元控温、新能源动力电池控温、汽车坐舱控温、建筑控温等温度控制领域，产品布局涉及相变材料原材料、功能改性母粒、热界面材料及其他高分子复合材料。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "吉华材料",
+        "description": "高性能纳米陶瓷涂层材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英希捷",
+        "description": "创新材料应用及热管理解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鑫永恒",
+        "description": "水处理陶瓷滤料研发与应用的制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科润资",
+        "description": "气凝胶纳米技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星联科技",
+        "description": "高分子材料及装备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "阿佩克斯",
+        "description": "新能源材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博欣科技",
+        "description": "高性能碳纤维材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科海势",
+        "description": "纺织新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "特安锂",
+        "description": "动力电池壳体解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "长玉特陶",
+        "description": "陶瓷粉体等新兴产业功能材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51672,7 +53006,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "芯动能半导体": {
     "description": "芯动能半导体是一家功率半导体器件研发生产商，专注塑封功率模块研发、设计、生产、销售，公司聚焦SiC、GaN为主的第三代化合物半导体塑封功率模块，同步兼容Si IGBT塑封功率模块，深耕三年已建成多条自动化产线并实现稳定投产。产品矩阵全面覆盖车载主驱、电子悬架、空压机、OBC等全场景车用需求，同步延伸至光伏储能、工控、eVTOL、AIDC、SST等多元应用领域，完成DSC、SSC、SDC、Tpak、SMIT、DIP等主流塑封模块开发与规模化量产。",
@@ -51683,8 +53019,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "尚阳通科技",
+        "description": "高端半导体功率器件芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯长征",
+        "description": "新型功率半导体器件设计开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "丽隽半导体",
+        "description": "功率半导体器件设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯华睿微电子",
+        "description": "汽车级功率半导体研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑶芯微",
+        "description": "MEMS传感器芯片提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华茂半导体",
+        "description": "功率半导体器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "利普思",
+        "description": "高性能碳化硅功率半导体研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新佳电子",
+        "description": "新型功率半导体器件和应用产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中微创芯",
+        "description": "新型功率半导体器件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科四合",
+        "description": "功率器件与模组产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51702,12 +53089,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "双派机器人": {
     "description": "双派机器人是一家智能轮椅机器人研发商，聚焦适老化智能设备研发领域，专注于老年智能代步电动轮椅的研发、生产和销售业务，致力于开发轻便、智能、安全、外观时尚、操作简便的智能轮椅、代步车、助行器等产品。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "白首科技",
+        "description": "智能轮椅研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "小毛机器人",
+        "description": "下一代智能轮椅及养老机器人产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "朗极智能",
+        "description": "机器人产品开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "欧凯罗博特机器人",
+        "description": "服务型机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金百合轮椅",
+        "description": "便携式电动轮椅品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "必飞科技",
+        "description": "智能轮椅制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "皮皮熊",
+        "description": "智能老年出行产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "吉芮医疗",
+        "description": "电动轮椅及老年代步车研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华蔚物联科技",
+        "description": "服务型机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大象机器人",
+        "description": "协作机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "道生资本"
@@ -51734,7 +53174,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "半图科技": {
     "description": "半图科技是一家3D虚拟人AI互动技术研发商，聚焦3D智能交互与极致美学领域，专注于自研3D动画大模型与人类行为模型研发，致力于打造沉浸式3D AI体验、为人工智能赋予完美虚拟形象。公司主要产品包括3D动画大模型、4D\"数身智能\"技术、AI互动产品《代号Live》及AI虚拟角色Ria，主要应用于虚拟偶像、游戏、直播、内容生成与情感交互等场景。",
@@ -51760,8 +53202,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "渲光科技",
+        "description": "智能3D图形引擎提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "琳云科技",
+        "description": "虚拟偶像APP研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "域动数字",
+        "description": "消费级虚拟世界沉浸式交互技术提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Mimic Minds",
+        "description": "个性化逼真虚拟形象平台开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "影眸科技",
+        "description": "3D生成大模型技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "遇见森林",
+        "description": "AI虚拟人3D互动引擎研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科深智",
+        "description": "AI XR影像研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "迈吉客科技",
+        "description": "视觉三维混合现实技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "世悦星承",
+        "description": "虚拟数字人及虚拟时尚产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "世优科技",
+        "description": "虚拟数字人技术提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "联想创投"
@@ -51779,7 +53272,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "非与智能": {
     "description": "非与智能是一家全栈私有化企业智能体平台提供商，聚焦企业级AI私有化部署领域，专注于智能体应用、平台治理与专属算力的全栈自研，致力于让企业真正拥有并持续积累自有智能资产。公司主要产品包括Firmior Code、Firmior Work、Firmior Expert、Firmior OS治理底座及FEAS企业智能体一体化服务器，主要应用于科技研发、金融、能源及专业服务等高保密行业。",
@@ -51811,7 +53306,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "锦秋基金",
@@ -51830,7 +53325,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "无涯智远": {
     "description": "无涯智远是一家人工智能应用软件开发服务商，聚焦人工智能领域技术开发与系统集成业务，致力于为客户提供人工智能相关技术服务与软件产品；公司主要产品或服务包括人工智能行业应用系统集成、人工智能应用软件开发、信息系统集成服务，同时提供软件销售、信息技术咨询与企业管理咨询服务。",
@@ -51862,7 +53359,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51878,12 +53375,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "定州锦誉": {
     "description": "定州锦誉是一家城区环卫特许经营项目运营商，聚焦城乡环卫一体化运营领域，专注于为定州市城区提供清扫保洁、垃圾收运、市容管理等环卫市场化服务，致力于以智慧环卫指挥中心为载体实现城区环卫精细化、数字化运营。公司主要业务包括城市生活垃圾经营性服务、城市建筑垃圾处置、餐厨垃圾处理、道路清扫保洁、城乡市容管理、水污染治理及物业保洁等。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "明堂环卫",
+        "description": "城市环卫建设服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海德环境",
+        "description": "环卫综合服务运营",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "满国康洁",
+        "description": "城乡环卫一体化服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美中环境",
+        "description": "综合性环卫服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宇润道路",
+        "description": "市政道路清扫及保洁服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "升辉清洁",
+        "description": "综合环境清洁及维护服务供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海口玉禾田",
+        "description": "环境服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中创环境",
+        "description": "环卫全产业链综合服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德昂环境",
+        "description": "环卫产品及服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深兄环境",
+        "description": "城乡环卫一体化服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 40100000,
       "text": "约 0.40 亿元人民币",
@@ -51913,7 +53463,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "晨曦生物": {
     "description": "晨曦生物是一家生物医药研发生产商，专注于自然科学、医学及细胞技术研发，拥有酪氨酸酶抑制剂及喹唑林类化合物等专利，提供中药提取物生产及相关技术服务，致力于相关生物科技领域的产品研发与技术支持；公司主要产品或服务包括酪氨酸酶抑制剂、喹唑林类化合物及中药提取物生产和相关技术服务，主要应用于自然科学、医学领域。",
@@ -51934,8 +53486,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Integrated DNA Technologies",
+        "description": "美国药物研发及生物核酸产品提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "药凰生物",
+        "description": "生物医药研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "盛拓达",
+        "description": "生物技术研发及酶制剂生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博雷兹",
+        "description": "生物分子酶制剂及蛋白原料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "卓肽医药",
+        "description": "创新药研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "摩尔生物",
+        "description": "多肽生物新药研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瀚海新酶",
+        "description": "生物医药及体外诊断核心原料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中源裕泽",
+        "description": "合成生物学研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美琉生物",
+        "description": "合成生物学材料研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博奥特生物",
+        "description": "蛋白质类生物制药研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -51951,7 +53554,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "攸能创": {
     "description": "攸能创是一家电源电力电子转换技术研发应用商，聚焦新能源与储能电力电子领域，专注于光伏逆变器、储能变流器（PCS）及户用混合逆变器的研发生产，致力于成为全球电力电子变流器行业领军者。主要产品包括户用储能混合逆变器、光伏逆变器、储能PCS、液流储能变流器及SST等，应用于户用光储、工商业储能、液流储能、新型电力系统等场景。",
@@ -52002,8 +53607,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "古瑞瓦特",
+        "description": "光伏逆变器及光伏储能系统提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "兴储世纪",
+        "description": "光储智能微电网解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "淮南阳光浮体科技",
+        "description": "光伏逆变器研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科曜能源",
+        "description": "分布式储能创新技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "首航新能",
+        "description": "光伏和储能解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恩易浦NEP",
+        "description": "微型逆变器制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "河南许继电力",
+        "description": "电力电子装备研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "北京新能动力",
+        "description": "电力电子及新能源高端装备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "尚高新能源",
+        "description": "新型太阳能储能产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "三瑞电源",
+        "description": "能源设备及系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52019,12 +53675,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "智瑞捷": {
     "description": "智瑞捷是一家特种电源和成套系统装置供应商，聚焦于特种电源和成套系统装置的研发生产，专注于脉冲功率技术、电力电子技术的研发、生产、及技术孵化，致力于成为业内技术领先并具影响力的特种电源供应商和系统解决方案提供商。产品覆盖军工、科研、智能制造、环保、半导体、医疗、化工等多个领域。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "森木磊石",
+        "description": "特种电源研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "山大电力",
+        "description": "电力系统智能产品技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "郑开智能",
+        "description": "智能化电器生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "里得科技",
+        "description": "电力安全解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "苏州科沃电气",
+        "description": "工业自动化控制与电气传动设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "西电电力系统",
+        "description": "电力设备供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恩玖科技",
+        "description": "电力输配电系统中核心装置和解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中国电气装备",
+        "description": "智慧电气装备综合解决方案商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "航天银山电气",
+        "description": "电气设备供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "动力源",
+        "description": "电力电子技术及电源产品制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "中科创星"
@@ -52081,12 +53790,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "康诺德": {
     "description": "康诺德是一家环保阻燃剂研发生产商，聚焦环保改性高分子材料与塑料助剂领域，专注于以磷系、氮系及膨胀型阻燃技术为聚烯烃、工程塑料提供无卤阻燃解决方案。公司产品以磷系阻燃剂、氮系阻燃剂和膨胀型阻燃剂为主打，共9大系列。适用于PP、PA、PBT、TPE、PE／EVA、PVC等基材，制备的阻燃材料广泛应用于家电、汽车、电子电器、电线电缆、织物涂层、防火涂料、阻燃环氧灌封胶等领域。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "聚石化学",
+        "description": "环保无卤阻燃剂及阻燃材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "浙江旭森",
+        "description": "无卤阻燃剂生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "利思德",
+        "description": "阻燃剂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金昌树",
+        "description": "塑料改性助剂研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "山东五维",
+        "description": "环保型阻燃剂研发生产销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "提尔新材",
+        "description": "胶粘剂及新型材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金戈新材",
+        "description": "功能性粉体材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "一化工",
+        "description": "高分子材料功能助剂研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "硕邑化学",
+        "description": "高分子弹性体新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "骏懋纺织",
+        "description": "环氧树脂高分子防水材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 144060000,
       "text": "约 1.44 亿元人民币",
@@ -52116,7 +53878,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "华富先进": {
     "description": "华富先进是一家新能源技术服务及设备销售商，聚焦新能源领域，致力于为客户提供相关产品及技术服务；公司主要产品或服务包括充电设施运营、储能技术服务、新能源汽车换电设施销售，提供充电桩、电池等产品及软件开发、系统集成等技术服务。",
@@ -52157,8 +53921,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "中超新能源",
+        "description": "新能源技术服务与设施销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "赛伯乐能源",
+        "description": "新能源汽车充换电解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "今速物联",
+        "description": "物联网与智能充换电设备提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安高智控",
+        "description": "储能技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "迪电新能源",
+        "description": "新能源汽车充电解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "武汉驰德",
+        "description": "新能源充电设施与解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "苏博哈特",
+        "description": "新能源产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "赫行新能源",
+        "description": "充电桩运营及租赁服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "赛英科技",
+        "description": "新能源科技研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "甘肃南洋",
+        "description": "新能源汽车充电桩生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52174,7 +53989,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "赛弥烯科技": {
     "description": "赛弥烯科技是一家石墨烯新材料研发生产商，聚焦石墨烯复合发热材料领域，专注石墨烯纤维布、石墨烯玻璃钢等新材料研发制造，致力于提供低碳节能定制化材料解决方案；公司主要产品为石墨烯纤维布、石墨烯玻璃钢发热片，产品可耐极端高低温，主要应用于高铁、基建消防管道防冻、航空航天、新能源等领域。",
@@ -52195,8 +54012,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "沈阳烯材科技",
+        "description": "石墨烯材料及散热产品提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "雷索新材料",
+        "description": "石墨烯红外电热管研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "北京石墨烯研究院",
+        "description": "石墨烯材料及相关制品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "医家智烯",
+        "description": "石墨烯产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "烯材科技",
+        "description": "石墨烯产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "格兰科",
+        "description": "石墨烯研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "吉赛飞",
+        "description": "石墨烯材料与技术提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "烯成科技",
+        "description": "石墨烯产品及相关设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "厦门捌斗新材料科技",
+        "description": "复合材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宇航派蒙",
+        "description": "石墨烯热管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52212,13 +54080,15 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "协律科技": {
     "description": "",
     "products": [],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52234,7 +54104,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "微奥光电": {
     "description": "微奥光电是一个光电子器件研发生产商，聚焦光电子器件领域，专注光电子器件、电子元器件等核心业务，致力于实现相关技术推广；公司主要产品包括光电子器件、光伏设备等，应用于电子相关领域。",
@@ -52256,7 +54128,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52272,7 +54144,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "炽光硅元": {
     "description": "炽光硅元是一家智能体服务提供商，聚焦智能体出海服务，致力于连接产业生态；公司落地全球智能体出海服务中心与智能体开放测评中心，应用于数字贸易领域。",
@@ -52284,7 +54158,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52302,7 +54176,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "中应深投": {
     "description": "中应深投是一家新能源技术研发服务商，聚焦储能、新能源汽车配套、碳减排技术等领域，致力于实现技术开发、设备销售及投资服务等目标；公司主要产品或服务包括储能、新能源汽车配套、碳减排技术等领域，提供技术开发、设备销售及投资服务等。",
@@ -52338,8 +54214,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "澜韬智能",
+        "description": "移动电源制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "景知一号",
+        "description": "环保储能技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "普天新能源",
+        "description": "新能源汽车充电设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智晟新能",
+        "description": "新能源科技研发与服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "吉曜通行",
+        "description": "新能源设备研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中拓新能源",
+        "description": "新能源产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中超新能源",
+        "description": "新能源技术服务与设施销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "楚能新能",
+        "description": "新能源电池研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华富先进",
+        "description": "新能源技术服务及设备销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "崇山科技",
+        "description": "新能源设备研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52355,7 +54282,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "大洋安和": {
     "description": "大洋安和是一家电源技术研发生产商，聚焦电力节能技术领域，开展工程技术研究与试验发展业务；公司业务包含数据处理存储支持服务、电力行业高效节能技术研发等，主营电气机械相关产品业务。",
@@ -52367,7 +54296,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52385,7 +54314,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "美梦空间": {
     "description": "杭州美梦空间科技是一家世界模型研发服务商，聚焦世界模型领域，致力于推进具身智能技术落地；公司主要产品或服务包括Physical-WAM物理—世界动作模型、RoboTwin-Phys物理漂移评测基准，主要应用于具身智能领域。",
@@ -52401,8 +54332,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "西湖数智",
+        "description": "物理世界基础模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "原方智能",
+        "description": "通用具身智能研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "日冕开物",
+        "description": "具身智能世界模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "拓元智慧",
+        "description": "具身智能与世界动作模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亮源新创",
+        "description": "具身智能基础模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超脑未来",
+        "description": "世界模型与多智能体技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "本溯智能",
+        "description": "机器人端侧自进化技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "正行创新",
+        "description": "物理智能系统开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Manifold AI流形空间",
+        "description": "世界模型及具身智能体研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大晓机器人",
+        "description": "具身智能技术研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52418,7 +54400,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "上海电子设计自动化": {
     "description": "上海电子设计自动化是一家电子设计自动化服务商，聚焦技术服务、软件开发、集成电路设计及芯片销售，致力于提供电子测量仪器等电子产品及相关租赁服务，业务涵盖进出口与技术推广。",
@@ -52429,8 +54413,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "鑫雁微电子",
+        "description": "传感控制芯片设计提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "图元软件",
+        "description": "芯片与电子系统设计整合服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "尚格实业",
+        "description": "电子元器件分销服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科银河芯",
+        "description": "集成电路设计服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中关村芯园",
+        "description": "公共技术服务平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云海微",
+        "description": "集成电路芯片设计服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Synopsys",
+        "description": "电子设计自动化软件工具研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "谐谐微",
+        "description": "集成电路芯片设计服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "丛矽微电子",
+        "description": "集成电路芯片研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "合利微半导体",
+        "description": "集成电路设计及研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52448,7 +54483,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "灵汇通集团": {
     "description": "灵汇通集团是一家信息技术服务与咨询商，聚焦信息技术服务领域，致力于提供高效可靠的信息技术解决方案；公司主要提供企业管理咨询、技术开发、信息系统集成、财务咨询等服务。",
@@ -52459,8 +54496,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "陕西中基城开",
+        "description": "信息技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "邦贝数字",
+        "description": "企业IT服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Maltem",
+        "description": "商业咨询集团",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "沈阳中科品创",
+        "description": "高新技术科技服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "轩房信息",
+        "description": "信息技术咨询服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "光和伙伴",
+        "description": "信息技术咨询服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "禄鑫伟集",
+        "description": "信息系统集成服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "优传声",
+        "description": "信息技术咨询服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "启元信息",
+        "description": "ERP咨询服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "山东中互",
+        "description": "互联网数据服务及运行维护服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52478,12 +54566,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "银禧特材": {
     "description": "银禧特材是一家特种改性高分子新材料研发制造商，聚焦特种工程塑料与专用功能材料领域，专注于LED灯带耐磨柔性材料、UL125辐照交联PVC线缆料、医疗手术刀线用PVC、户外硬质PVC、透明硬质PVC垫片等特种改性材料的研发与生产。公司主要产品覆盖工程塑料及合成树脂、专用化学产品、高品质合成橡胶、精密模具及金属链条等系列，主要应用于电线电缆、LED智能照明、医疗器械、户外材料等场景。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "中塑股份",
+        "description": "改性工程塑料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "锦桂科技",
+        "description": "高性能新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "特力新材",
+        "description": "超高分子材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "通力新材",
+        "description": "改性塑料粒子研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑞堂科技",
+        "description": "滚塑功能高分子材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "仕天科技",
+        "description": "高分子复合材料和改性工程塑料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科宜高分子",
+        "description": "高性能热固性树脂材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "都铂股份",
+        "description": "粘接及涂层新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "世大新材料",
+        "description": "新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "熹贾精密",
+        "description": "高分子弹性体与高功能塑料零部件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 48020000,
       "text": "约 0.48 亿元人民币",
@@ -52528,12 +54669,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Kynooe": {
     "description": "Kynooe是一个可重构机器人平台提供商，致力于让用户像搭乐高一样自由组合机器人形态与能力。公司主要从事可重构机器人架构的研发及Robot Skills技能平台的运营，产品可组成机械臂、移动机器人、宠物机器人等多种形态，支持通过下载技能接入具身智能模型，实现机器人能力的持续进化。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Fauna Robotics",
+        "description": "美国人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Generalist",
+        "description": "美国机器人基础模型开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Skild AI",
+        "description": "美国机器人系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Sharpa",
+        "description": "通用机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "灵生机器人",
+        "description": "具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "汤问致新",
+        "description": "伙伴机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "缔造者机器人",
+        "description": "教育类拼装机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鲸跃动力",
+        "description": "具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "具脑磐石",
+        "description": "人形机器人具身大脑研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Apptronik",
+        "description": "美国人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 29023995,
       "text": "约 0.29 亿元人民币",
@@ -52563,7 +54757,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "七腾机器人": {
     "description": "七腾机器人是一家特种防爆机器人研发生产商，聚焦应急安全特种机器人领域，致力于提供无人化安全运维解决方案；公司主要产品包括防爆四足机器人、防爆轮式机器人、防爆挂轨机器人等，可进入易燃易爆、有毒有害等极端环境，执行巡检、侦察、救援等作业，产品服务面向石油化工等行业客户，业务拓展至海外多个国家与地区。",
@@ -52619,8 +54815,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "誉博机器人",
+        "description": "特种机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "行知行机器人",
+        "description": "智能特种机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "玄创机器人",
+        "description": "特种作业机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "飞鱼机器人",
+        "description": "工业机器人及控制系统研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "慧为科技",
+        "description": "工业机器人产品及自动化工程服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "明泰智能",
+        "description": "特种防爆机器人与智能装备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "欧米麦克",
+        "description": "全方位移动机器人及智能搬运系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "有怡科技",
+        "description": "通用机器人服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "哈工大特种机器人",
+        "description": "特种机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中泰特种机器人",
+        "description": "特种机器人及智能装备提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52636,7 +54883,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "三相科技": {
     "description": "三相科技是一家电机产品研发生产商，致力于在高速直驱以及低速直驱电机领域，此外公司旗下还拥有中大功率永磁同步伺服电机、永磁主轴伺服电机、通用机座号永磁伺服节能电机等产品。",
@@ -52647,8 +54896,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "金龙电机",
+        "description": "驱动电机供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "实能高科",
+        "description": "永磁及高性能无刷电机制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "力辉电机",
+        "description": "微型电机生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "旭泉电机",
+        "description": "精密电机产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "得普达",
+        "description": "电动汽车驱动电机设备生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "卧龙包头",
+        "description": "稀土永磁电机研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "文登奥文电机",
+        "description": "电动机专业制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "民飞机电",
+        "description": "中高端电机产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "朗汉传动",
+        "description": "电机产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "埃姆克伺服",
+        "description": "伺服主轴电机制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52666,12 +54966,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中建一局集团第五建筑": {
     "description": "中建一局五公司是一家大型建筑施工服务商，聚焦工程建设领域，专注建筑工程总承包业务；公司主要服务包括房建、基础设施、机电安装、装饰装修、钢结构施工等，业务可覆盖房屋建筑、城市更新、基建工程等领域。公司具备建筑工程施工总承包特级资质与多项一级施工资质，可提供工程建设全流程相关服务。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "大鑫建设",
+        "description": "建筑工程承包商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华兴建设",
+        "description": "综合性大型施工企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "济南四建",
+        "description": "建筑工程施工承包商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中冶建工建筑工业",
+        "description": "建筑工程施工商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中为建筑",
+        "description": "建筑工程服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "锦鸿建设集团",
+        "description": "建筑工程施工承包商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "陕建十团",
+        "description": "建筑工程施工承包商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "江西建工机械",
+        "description": "建筑施工服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "江西二建",
+        "description": "大型建筑施工服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "龙元建设",
+        "description": "建筑工程施工服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52696,7 +55049,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中核超碳": {
     "description": "中核超碳是一家清洁能源技术服务提供商，聚焦超临界二氧化碳高效发电技术的产业化落地，致力于构建涵盖技术研发、工程建设、投资运营、装备制造的完整产业链，打造超临界二氧化碳清洁能源技术服务与装备供应平台；公司主要产品或服务包括系列成套装备，主要应用于新能源、煤炭发电、CCPP等多元应用场景。",
@@ -52707,8 +55062,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "图灵科创",
+        "description": "绿氢制取技术和装备供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "诺通新能",
+        "description": "先进新能源低碳技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东实开能",
+        "description": "工业节能服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "丰电科技",
+        "description": "工业节能解决方案及氢能核能设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "建投能源",
+        "description": "能源电力投资服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "溥源智储",
+        "description": "新能源电力服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "意高能源",
+        "description": "节能环保设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "山海新能",
+        "description": "清洁能源产业运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "惠生能源",
+        "description": "节能减排服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "陕煤电力集团",
+        "description": "电力工程建设运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52724,7 +55130,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中科探海": {
     "description": "中科探海是一家海洋专用仪器及水下机器人研发商，经营范围是海洋专用仪器、水下机器人、水面无人船、无人机、电子产品、机电设备、自动化设备、环保设备、抢险救援设备及器材的研发、销售；水下探查技术、机器人技术、机电技术和计算机软硬件的技术转让、技术咨询和技术服务等。",
@@ -52735,8 +55143,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "北京泰富坤",
+        "description": "海洋探索专业设备和科学仪器提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "潜行创新",
+        "description": "水域智能无人装备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "多方智能",
+        "description": "水下机器人制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大力金刚",
+        "description": "水下机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深之蓝",
+        "description": "水下机器人产品及服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蓝潜海洋",
+        "description": "水下机器人先进装备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宇鹤智能",
+        "description": "水下在线清洗机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "澎湃海洋",
+        "description": "水下机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海之星",
+        "description": "水下机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "边际领域",
+        "description": "水下智能装备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52754,7 +55213,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "华大星智汇": {
     "description": "华大星智汇是一个绿色农药设计平台研发商，聚焦绿色农药设计领域，突破农药分子设计“卡脖子”技术，联合开发了全球首个人工智能与高性能计算辅助的绿色农药设计平台；公司主要提供生物农药技术研发、技术推广等服务，应用于农业领域。",
@@ -52765,8 +55226,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "独摇之农业",
+        "description": "生物农药技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "益农环境",
+        "description": "农药行业新型环保技术及装备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "先达股份",
+        "description": "除草剂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大成生物",
+        "description": "农药生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新龙生物",
+        "description": "生物农药肥料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中农立华",
+        "description": "农药流通与植保技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大美科技",
+        "description": "环保型医药及农药中间体产品开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "九清医疗",
+        "description": "生物农药技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美时君和",
+        "description": "生物农药与农业科技研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "上海农乐",
+        "description": "农用合成生物学技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52784,7 +55296,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "华赛伯曼": {
     "description": "华赛伯曼是一家创新细胞疗法新药研发商，公司聚焦细胞治疗新技术，以临床研究为基础，致力于开发治疗实体肿瘤的免疫细胞药物产品和治疗退行性疾病的干细胞治疗产品。公司瞄准肿瘤免疫治疗的前沿技术，重点开发针对实体肿瘤的肿瘤浸润淋巴细胞（TIL）药物，与多家医院开展合作，成立有实体肿瘤及临床转化研究院，公司致力于开发具有全球创新性和领先性的细胞药物。",
@@ -52795,8 +55309,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "循生医学",
+        "description": "新型个体化肿瘤免疫治疗产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "益元桓达",
+        "description": "肿瘤细胞免疫疗法研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "立康生命科技",
+        "description": "个性化肿瘤精准诊疗服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "易慕峰",
+        "description": "创新型肿瘤免疫技术产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华夏英泰",
+        "description": "细胞免疫疗法开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "优卡迪",
+        "description": "细胞免疫治疗及基因治疗技术产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "羿尊生物",
+        "description": "细胞治疗解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "先博生物",
+        "description": "创新型免疫细胞疗法研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "暨德康民",
+        "description": "细胞产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艾科联生物",
+        "description": "肿瘤免疫治疗药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52814,7 +55379,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "埃瓦电子": {
     "description": "埃瓦电子是一家芯片设计及视觉算法系统解决方案提供商，聚焦芯片设计和视觉算法，专注基于自主追萤®3D AI处理器的消费级/工业级3D视觉模组和解决方案的研发设计，主要应用于智能机器人、AR/VR、智能硬件、刷脸支付、智能门锁门禁等领域。",
@@ -52825,8 +55392,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "埃瓦智能",
+        "description": "芯片设计和视觉算法研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "肇观电子",
+        "description": "AI计算机视觉处理芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "合一智芯",
+        "description": "人工智能芯片开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亿智电子",
+        "description": "端侧视觉AI SoC芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "物间科技",
+        "description": "芯片整体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "晶视智能",
+        "description": "开放式人工智能芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "黑芝麻智能",
+        "description": "自动驾驶系统芯片供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "影微创新",
+        "description": "端侧AI芯片方案解决商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "数迹智能",
+        "description": "3D视觉模组方案服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯曜途",
+        "description": "全栈式智能传感器感算一体单芯片解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52844,7 +55462,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "墨光新能": {
     "description": "墨光新能是一家新型热管理材料及解决方案提供商，聚焦辐射制冷材料及碳中和相关技术领域，致力于提供相关产品与服务；公司主要产品包括辐射制冷膜、辐射制冷涂料、降温纤维织物三大系列化产品线。",
@@ -52865,8 +55485,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "天鼎源创",
+        "description": "超低温技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宏巨科技",
+        "description": "新材料及功能性器件供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "极率科技",
+        "description": "其他专用设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "正帆科技",
+        "description": "制程关键系统综合解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "一诺能源",
+        "description": "能源科技及低温设备领域技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "赛灵特",
+        "description": "超静音流体泵设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宁波美科",
+        "description": "清洁能源设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "钛芯智冷",
+        "description": "高效热管理与新型制冷技术解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "高笙集团",
+        "description": "集成电路设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "酷吉制冷",
+        "description": "工业冷却系统及产品设计服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52882,12 +55553,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "大昌股份": {
     "description": "大昌股份是一家汽车制动部件服务商，主要从事汽车制动系统关键零部件的研发、生产与销售，核心产品为卡钳活塞和主缸活塞，属于汽车制动系统中的关键功能部件。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "元丰汽车",
+        "description": "汽车制动系统集成技术及解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东启",
+        "description": "汽车制动产品研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "布雷克",
+        "description": "汽车制动系统产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宝丰制动",
+        "description": "汽车制动系统综合服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万向钱潮",
+        "description": "汽车系统零部件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万安科技",
+        "description": "汽车制动系统零部件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "炯熠电子",
+        "description": "汽车制动产品开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "圣让汽车",
+        "description": "汽车系统及零部件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万向系统",
+        "description": "汽车底盘系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "嘉和股份",
+        "description": "汽车热管理方案解决供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52917,7 +55641,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "建发生命": {
     "description": "建发生命是一家大健康产业服务提供商，致力于全力打造建发在大健康领域的产业投资运营新引擎，为集团培育第二增长曲线、为厦门生物医药产业发展贡献建发力量。",
@@ -52928,8 +55654,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "中启实业",
+        "description": "医疗健康产业为主的综合性企业集团",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "峪沣那诺",
+        "description": "科技创新服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博厚生物",
+        "description": "现代化生物医药综合服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "京东健康",
+        "description": "互联网医疗健康供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "当代集团",
+        "description": "多元化产业投资集团",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "重庆医药",
+        "description": "医药健康产业服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新城生命",
+        "description": "生物医药科技园区运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科郦",
+        "description": "医疗健康解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金圣堂",
+        "description": "生物医药研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "太阳升医药",
+        "description": "综合性医药集团",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52947,7 +55724,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "影身智能": {
     "description": "影身智能是一家原生4D具身智能技术研发商，聚焦原生4D基座世界模型与通用物理智能领域，致力于推进具身智能技术落地普及；公司主要产品包括打包机器人、4D直播方案等，主要应用于工业制造、数字文娱领域。",
@@ -52963,8 +55742,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "凡拓数创",
+        "description": "具身智能与机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "昂晟科技",
+        "description": "具身智能机器人研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大晓机器人",
+        "description": "具身智能技术研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "五八智能",
+        "description": "具身智能机器人及感知交互技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科深谷",
+        "description": "机器人核心部件研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智海无际",
+        "description": "具身智能与机器人技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "乘物机器人",
+        "description": "具身智能工业机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智身科技",
+        "description": "具身智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "RoboScience机器科学",
+        "description": "通用具身智能大模型与机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新智具身",
+        "description": "具身智能核心技术与系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -52980,7 +55810,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "微泰科技": {
     "description": "微泰科技是一家光通信技术及芯片研发生产商，聚焦光通信、微波通信及数字化专网领域，致力于提供先进的相关解决方案，公司主要产品或服务包括芯片设计、器件封装、组件研发、系统架构等",
@@ -53006,8 +55838,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "华晶微联",
+        "description": "光通信用芯片及衍生物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "嘉纳海威",
+        "description": "射频光电芯片微系统研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "紫钧光恒",
+        "description": "光通信与光互联解决方案商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "江苏永鼎光电子技术",
+        "description": "光芯片及光器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "铱加科技",
+        "description": "光通信模块及光组件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华力微电子",
+        "description": "集成电路研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "工研拓芯",
+        "description": "光电芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "烽火科技",
+        "description": "信息通信领域产品和综合解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科芯",
+        "description": "高端芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东飞凌",
+        "description": "光电领域芯片及电子封装设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53023,12 +55906,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "恒港码头": {
     "description": "恒港码头是一家港口装卸运营服务商，聚焦港口经营领域，专注于码头泊位运营业务；公司主要资产为钦州大榄坪作业区1-3号泊位，主要提供散杂货装卸、堆存及港务管理服务。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "厦门海鸿",
+        "description": "码头运营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "招商港口",
+        "description": "码头及港口配套服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鑫联散货码头",
+        "description": "码头运营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "太仓港港务",
+        "description": "港口服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "北部湾港",
+        "description": "港口运输服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "秦皇岛港新码头",
+        "description": "港口综合服务运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天津港",
+        "description": "港口综合服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "欧亚码头",
+        "description": "集装箱码头服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "小虎石化码头",
+        "description": "港口及航运设施工程建筑服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天津港发展",
+        "description": "港口服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53053,7 +55989,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "星际无阻": {
     "description": "星际无阻是一家太空超导技术研发商，致力于将超导技术应用于太空航天领域，拥有超导太空推进、超导电磁弹射火箭、超导太空采矿三大业务。",
@@ -53064,8 +56002,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "中科宇航",
+        "description": "航天科技及航天器研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "太空链SPC",
+        "description": "太空区块链平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中国航天",
+        "description": "航天科技技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "航天创智",
+        "description": "航天科技服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Aurora Propulsion Technologies",
+        "description": "航天器简化推进服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "航天长征",
+        "description": "电子信息系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Portal Space",
+        "description": "美国商业航天技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Momentus",
+        "description": "太空飞行推进技术开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "deltaVision",
+        "description": "德国航天流体系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Orbex Space",
+        "description": "英国航天发射服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53083,12 +56072,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "泓格后量子": {
     "description": "泓格后量子是一家抗量子密码技术研发商，聚焦后量子密码技术领域，专注于后量子密码技术的研发和应用。公司深耕抗量子攻击密码技术体系等核心技术，持续突破后量子算法优化、跨平台兼容等难题，推动密码技术向更高效、更普适的维度演进。致力于打造覆盖数据全生命周期的量子安全防护体系，通过抗量子密码芯片、抗量子密码板卡、抗量子密码网关、抗量子区块链等创新产品，为政务、电力、金融、国防、卫星通信等关键行业提供可抵御量子计算威胁的软硬件一体化解决方案。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "天芯量子",
+        "description": "信息安全及量子计算技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "问天量子",
+        "description": "量子信息技术产业化服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "酉术量子",
+        "description": "量子算法技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "本源量子",
+        "description": "量子计算技术及产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "弧光量子",
+        "description": "一站式量子计算软件和解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "正则量子",
+        "description": "全栈式光量子计算服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国腾量子",
+        "description": "量子信息应用解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "幺正量子",
+        "description": "离子阱分布式量子计算机研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国盾量子",
+        "description": "通信设备及量子信息系统服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "数盾科技",
+        "description": "信息安全整体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53113,7 +56155,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "济元基因": {
     "description": "济元基因是一家创新型细胞免疫肿瘤治疗产品生产商，专注于恶性肿瘤的治疗，致力于开发创新型细胞免疫产品；公司主要产品或服务包括创新型细胞免疫产品，主要应用于肿瘤治疗领域。",
@@ -53124,8 +56168,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Parthenon",
+        "description": "美国癌症治疗技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Neon Therapeutics",
+        "description": "美国肿瘤免疫疗法生物制药商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Kite Pharma",
+        "description": "肿瘤癌症治疗技术研发企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Immutep",
+        "description": "肿瘤免疫治疗药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "桑尼赛尔生物医药",
+        "description": "细胞免疫药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "羿尊生物",
+        "description": "免疫细胞治疗技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "广东昭泰体内生物医药科技",
+        "description": "自主研发的新型免疫细胞用于预防和治疗肿瘤",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Normunity",
+        "description": "免疫肿瘤药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚物生物",
+        "description": "肿瘤免疫疗法研发企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Precigen",
+        "description": "美国细胞治疗服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53141,12 +56236,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "浙江圣钘": {
     "description": "浙江圣钘是一家新能源科技研发商，专注于新型长时热储能系统、装备研发及制造的创新型科技公司。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "量道",
+        "description": "电池新能源应用研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "朝曦时代",
+        "description": "新能源产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "臻固新能源",
+        "description": "新能源电池研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新能安科",
+        "description": "锂电池研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "珈硅能源",
+        "description": "新能源和储能技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "江苏动力及储能电池创新中心",
+        "description": "新型研发机构",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华思系统",
+        "description": "储能产品及系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "澜韬智能",
+        "description": "移动电源制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "橙川能源",
+        "description": "绿色智慧能源解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "舟之航",
+        "description": "新能源车用电池研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53171,7 +56319,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "瀚为科技": {
     "description": "瀚为科技是一家水系锌离子电池储能系统服务商，致力于研发后锂电池时代低成本、高功率、绝对安全的大功率储能设备，为调频、大规模储能、铁路/轨道交通动力回收等应用场景提供功率密度更高、安全性能更强、使用寿命更长的固定式储能解决方案。",
@@ -53182,8 +56332,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "贲安能源",
+        "description": "水系钠离子电池及储能系统研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "迪度新能源",
+        "description": "动力锂电池研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "双登股份",
+        "description": "绿色储能集成服务供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "精研新能源",
+        "description": "水系电池研发和制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "麦格聚能",
+        "description": "智能储能集成解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中智电池",
+        "description": "动力和储能锂离子电池生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "银泰科技",
+        "description": "新能源解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "京清数电",
+        "description": "储能电力电子功率变换器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星云软件",
+        "description": "锂电池组智能制造及储能变流器研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "微慕科技",
+        "description": "电池管理系统和储能产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53201,7 +56402,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "盛凌电子": {
     "description": "盛凌电子是一家电子连接产品生产商，集开发、制造、加工服务和销售为一体，产品广泛应用于通讯、工业控制和储能、医疗等（汽车、安防、轨道交通）领域。",
@@ -53212,8 +56415,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "晶志康",
+        "description": "先进电子产品方案商与制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万新电气",
+        "description": "电子工业产品智能制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "迈思威",
+        "description": "电子产品生产销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超视",
+        "description": "通信类及民用类电子元器件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "洛阳旭茂电子",
+        "description": "电子元器件研发与智能设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "权锦贸易",
+        "description": "空调销售及技术配套服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鑫信腾科技",
+        "description": "电子制造业综合产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "世强科技",
+        "description": "半导体及元器件分销商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "福朗电子",
+        "description": "电子连接器研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "三竹智能",
+        "description": "工业自动化连接产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53231,7 +56485,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "睿思芯科": {
     "description": "睿思芯科是一家RISC‑V高性能处理器研发商，聚焦高性能处理器芯片领域，专注RISC‑V高端处理器设计，致力于打造云原生CPU；公司主要产品包括处理器IP核、SoC芯片、灵羽服务器处理器，主要应用于云计算、云存储、5G/6G网络、数据中心与大模型推理等场景。",
@@ -53252,8 +56508,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "摩尔精英",
+        "description": "一站式芯片设计和供应链平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯声智能",
+        "description": "音频NPU芯片及算法解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智毅聚芯",
+        "description": "高性能ADC/DAC芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Wiliot",
+        "description": "芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "泰斗微电子",
+        "description": "导航芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ThinkForce",
+        "description": "AI异构算力芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "SYTN",
+        "description": "美国AI边缘硬件解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "高通",
+        "description": "美国通讯芯片组研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华引芯",
+        "description": "高端光源芯片与光器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中芯国际",
+        "description": "集成电路芯片代工与技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53269,7 +56576,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "科旭智能": {
     "description": "科旭智能是一家电力能源数智化综合解决方案提供商，聚焦电力负荷管理与电力通信领域，专注于新型电力负荷管理、电力通信及电力运营管理数智化服务，致力于推动电力能源行业数智化转型。公司主要产品包括负荷管理物联感知设备、负荷管理智能平台、人工智能硬件及软件、通信网络智能终端及管理平台、电力运营管理数智化系统等，主要应用于国家电网等电力行业场景。",
@@ -53310,8 +56619,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "金卡智能",
+        "description": "燃气计量管理系统提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新昱智能",
+        "description": "电力电子元器件生产销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "飞博赛斯",
+        "description": "窄线宽光纤激光器产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "信天翁半导体",
+        "description": "电力电子专用芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大全集团",
+        "description": "元器件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "匡力科技",
+        "description": "智慧集成服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "门海微电子",
+        "description": "智能电网和分布式光伏数字化系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华夏新兴新能源投资管理",
+        "description": "新能源光伏产业商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东微半导",
+        "description": "高性能功率器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "胜达克",
+        "description": "集成电路测试设备供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53327,7 +56687,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "科联汇通": {
     "description": "科联汇通是一家IT咨询及解决方案和外包服务提供商，致力于为金融行业客户提供行业应用服务、云计算平台、商业智能应用开发、移动智能应用开发等服务。目前研发的产品有P2P网贷系统、小额贷款管理系统、办公自动化系统等。",
@@ -53338,8 +56700,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "明月软件",
+        "description": "数字化转型技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "尤力美客",
+        "description": "移动APP全平台定制开发与外包服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华浪科技",
+        "description": "企业IT服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新积域",
+        "description": "综合性商务咨询服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蓝凌软件",
+        "description": "协同管理软件产品开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "同在信息",
+        "description": "软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天云智汇",
+        "description": "企业级应用与IT信息化外包服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "业软科技",
+        "description": "软件开发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑞文信息",
+        "description": "IT解决方案一站式外包服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "酷蜂科技",
+        "description": "APP开发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53357,7 +56770,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "空御科技": {
     "description": "空御科技是一家低空安防解决方案提供商，集科研、开发、技术服务、产品生产与销售于一体，聚焦低空安全与无人机反制领域，专注于无人机探测、防御及低空安全监管技术的自主研发与应用；公司主要产品包括降鹰反无人机系统、分布式无人机探测防御系统及全域数字化低空安全管控平台，主要应用于机场、监狱、能源电力、景区及重大活动安保等场景。",
@@ -53378,8 +56793,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "睿富晟",
+        "description": "低空智能装备与系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天津云翔",
+        "description": "低空安防智能一体化解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云圣智能",
+        "description": "低空基础设施解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "特金智能",
+        "description": "低空安全管控解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "融鼎岳",
+        "description": "低空安防产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "辰航卓越",
+        "description": "低空安防解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鉴真防务",
+        "description": "军民两用低空空域安防产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "低空神盾",
+        "description": "低空安防解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中交遥感天域科技",
+        "description": "无人航空器管控系统解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德智航创",
+        "description": "无人机平台及解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53395,7 +56861,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "紫宇新材": {
     "description": "紫宇新材是一家化学制品制造商，为客户提供用于UV/EB固化的各种特殊(甲基)丙烯酸酯单体和低聚物，产品广泛用于电子胶黏剂、涂料、油墨等行业，为客户提供高性能的解决方案。致力将紫外光固化技术推广应用到国家战略新兴行业，对传统行业进行\"环保、节能、高效\"的光固化升级。",
@@ -53406,8 +56874,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "希乐斯",
+        "description": "胶黏剂和复合新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海瑞宝新材料",
+        "description": "化学制剂生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "峰梅化学",
+        "description": "新能源相关涂料及胶粘剂生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "雷佰瑞",
+        "description": "特种胺系列固化剂研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安佐化学",
+        "description": "高端丙烯酸酯胶粘剂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "润德化工",
+        "description": "化学原料与制品制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "彤程新材",
+        "description": "精细化工新材料综合服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚芯源新材料",
+        "description": "高性能电子粘接材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "利安隆",
+        "description": "高分子材料抗老化助剂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金戈新材",
+        "description": "功能性粉体材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53425,7 +56944,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "维快光子": {
     "description": "维快光子是一家超快光电部件供应商，聚焦超快激光领域，致力于提供超快激光器及核心光电部件；公司主要产品或服务包括超快激光器、特种光纤等，应用于生物医疗、激光加工等领域。",
@@ -53451,8 +56972,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "帕科斯激光",
+        "description": "超快激光器技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "烁光精密",
+        "description": "超快激光精密微纳制造服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "卓镱辉",
+        "description": "超快激光器产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国顺激光",
+        "description": "高功率超快微纳结构光纤激光器研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奥创光子",
+        "description": "工业级飞秒激光器研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "沪宁亮源",
+        "description": "激光电子器件生产制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "朗研光电",
+        "description": "激光器生产研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英谷激光",
+        "description": "高性能固体激光器研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超快激光器",
+        "description": "高端激光设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科韵光电",
+        "description": "飞秒激光器及激光加工系统研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53468,7 +57040,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "绿菱气体": {
     "description": "绿菱气体是一家半导体用电子特种气体研发生产商，聚焦半导体领域，专注于高纯电子特种气体的研发和生产，致力于为下游半导体行业提供高品质特种气体产品，主要产品包括高纯氟碳类特气、笑气等，多种产品实现国内独家大批量供应。",
@@ -53489,8 +57063,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "太和气体",
+        "description": "电子特种气体产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Daesung Industrial Gases",
+        "description": "韩国工业气体及特种气体生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "启元气体",
+        "description": "电子气体供应解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科利德",
+        "description": "高纯电子气体生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "林德半导体气体",
+        "description": "半导体用超高纯电子气体生产销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "和远气体",
+        "description": "综合型工业气体服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "飞鸢特气",
+        "description": "特种气体生产制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中船特气",
+        "description": "电子特种气体产品研发供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "珠海市华特雅工业气体",
+        "description": "化工产品批发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大连大特气体",
+        "description": "工业特种气体生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53506,7 +57131,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "药番茄科技": {
     "description": "药番茄科技是一家医药智能体系统研发商，致力于让虚拟临床试验与医药智能体真正进入药物研发的实际生产流程。面向药企及医药从业者提供AI产品、专业数据和数智化咨询服务。公司以Integras平台及Pharmato X1 AI引擎为核心，围绕医药知识库、多智能体分析、全球药物管线整合等场景，将大模型、Agent与专业医药数据库结合，服务新药立项、竞争情报、临床研究、医学事务及企业知识管理等业务。",
@@ -53517,8 +57144,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "医药魔方",
+        "description": "医药行业一站式大数据服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "达诺科技",
+        "description": "药物警戒可信AI平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "百图生科",
+        "description": "生命科学AI基础模型开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "望石智慧",
+        "description": "人工智能驱动新药研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "清析生物",
+        "description": "可解释AI新药解决方案商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "易迪希",
+        "description": "临床试验信息系统供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "碳硅智慧",
+        "description": "一站式智能新药发现平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "自然常数",
+        "description": "AI制药研发决策服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中电药明",
+        "description": "药物临床开发数据解决方案服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ProKnow Systems",
+        "description": "肿瘤治疗数据分析软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53536,7 +57214,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "行至启明": {
     "description": "行至启明是一家智能旅行服务提供商，聚焦外国游客来华旅行服务领域，致力于实现AI时代的旅行决策与交付；公司旗下平台Tripilot是面向外国游客来华场景的All-in-one Travel Agent。",
@@ -53547,8 +57227,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Click Travel",
+        "description": "英国差旅管理服务服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Regatta Travel Solutions",
+        "description": "美国旅游在线预订引擎提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Virgin Voyages",
+        "description": "美国邮轮旅行服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Skylark Travel",
+        "description": "美国旅游信息整合服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Byway Travel",
+        "description": "英国AI定制旅游服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Fora Travel",
+        "description": "旅行服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "神州旅程",
+        "description": "入境旅行服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Bach",
+        "description": "美国团体旅行服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "DER Business Travel",
+        "description": "德国商旅服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "集光行",
+        "description": "创新旅行服务应用",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53566,7 +57297,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "长河辰盛": {
     "description": "长河辰盛是一家AI无创血糖监测及其产业化服务提供商，聚焦医疗级无创血糖领域，致力于实现快速、无创、低成本的血糖监测；公司采用近红外光谱+AI算法路线，主打3秒出值、无耗材、无创无痛，直击糖尿病患者采血痛、依从性低、耗材成本高三大痛点。",
@@ -53577,8 +57310,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "恒升医学",
+        "description": "糖尿病诊疗全闭环解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恒升健康",
+        "description": "糖尿病诊疗全闭环解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瞬知科技",
+        "description": "智能个人医疗器械解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Sugar.fit",
+        "description": "糖尿病管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "司托迈",
+        "description": "数字医学生态慢病健康管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "轻糖生活",
+        "description": "糖尿病健康管理服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Signos",
+        "description": "实时血糖监测系统开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Dnurse糖护士",
+        "description": "糖尿病患者自我管理平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "无创血糖仪",
+        "description": "网络无创红外血糖检测系统",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "民康佳业",
+        "description": "血糖监测及检测产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53596,7 +57380,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "长风道": {
     "description": "长风道是一家全球工业仿真软件开发商，聚焦工业仿真软件领域，致力于通过自主创新的计算流体力学（CFD）工具和人工智能技术赋能研发企业智能化升级；公司主要产品或服务包括仿真软件工具和工程咨询服务，主要应用于高端智造领域。",
@@ -53607,8 +57393,54 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "适创科技",
+        "description": "智能工业设计与计算机辅助工程研发应用商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "慕灿科技",
+        "description": "工业仿真CAE软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "十沣科技",
+        "description": "工业软件及仿真云服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英特仿真",
+        "description": "国产CAE软件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智仿科技",
+        "description": "CAE软件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "数峰信息",
+        "description": "CAE软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "合见工软",
+        "description": "高性能工业软件及解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星派仿真",
+        "description": "工业软件与系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云道智研",
+        "description": "CAE仿真根技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53624,7 +57456,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Xodus Medical": {
     "description": "Xodus Medical是一家外科手术安全器械制造商，公司专注让手术更安全的医疗器械解决方案，重点在患者体位摆放（patient positioning）与手术室（OR）人员安全方向；产品矩阵包括体位垫/固定带、减重（bariatric）体位与凝胶/泡沫体位产品、肩部悬吊套件、面罩、锐器伤防护、电外科配件、麻醉/专科体位及无菌产品等。",
@@ -53684,7 +57518,8 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "competitorStatus": "unavailable"
   },
   "Elisity": {
     "description": "Elisity是一家美国零信任网络及软件定义访问服务提供商，通过AI支持的统一策略和基于身份的访问解决方案，确保对企业资产和企业数据的访问安全。使用Elisity，用户，设备和应用程序可以根据策略进行授权，然后才能与组织资源进行通信。该公司为许多行业的企业提供服务，包括制造，制药，金融服务和医疗保健。",
@@ -53695,8 +57530,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Forcepoint",
+        "description": "内容安全解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Apheris AI",
+        "description": "德国隐私保护数据分析服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "虎符网络",
+        "description": "网络安全服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯盾时代",
+        "description": "零信任业务安全产品方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ThreatLocker",
+        "description": "美国零信任网络安全解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Perimeter 81",
+        "description": "以色列网络安全访问服务边缘服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Silverfort",
+        "description": "无代理身份验证平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云至深",
+        "description": "零信任SDP平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "数篷科技",
+        "description": "企业数据网络安全架构解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "持安科技",
+        "description": "零信任安全服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53714,12 +57600,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Advance Composite": {
     "description": "Advance Composite是一家日本先进材料研发商，该公司依托液态模锻工艺，专注于铝基金属基复合材料的研发与量产，主打高导热、低膨胀散热材料，产品应用于半导体、功率电子及航空航天等高端领域。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "超晶科技",
+        "description": "航空航天高性能关键零部件研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "维盛复材",
+        "description": "高性能纤维复合材料及汽车部件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ELMT",
+        "description": "美国金属制品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "成维精密",
+        "description": "高端机械零部件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "湖南维尚科技",
+        "description": "高性能塑料半成品及成品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华钛瑞翔",
+        "description": "航空材料及航空发动机零部件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "向阳航材",
+        "description": "航天材料制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "驰宇空天",
+        "description": "航天航空金属陶瓷材料及中小型涡喷发动机生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "为识科技",
+        "description": "增材制造装备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "文隆新材",
+        "description": "航空航天精密铸件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53744,7 +57683,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Xiver": {
     "description": "Xiver是一家MEMS晶圆代工厂，是一家位于荷兰埃因霍温高科技园区（High Tech Campus）的微系统与半导体公司 / MEMS 代工厂。其前身是飞利浦（Philips）旗下的MEMS晶圆制造部门（源自飞利浦研究院NatLab，历史可追溯至1968年）。",
@@ -53766,12 +57707,64 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "competitorStatus": "unavailable"
   },
   "International Foodgnostics": {
     "description": "International Foodgnostics 是新加坡一家冷冻烘焙食品生产商，主要从事冷冻蛋糕、面包及其他烘焙食品的研发、生产和销售。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "宾堡",
+        "description": "烘焙食品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Mason Dixie Foods",
+        "description": "美国冷冻烘焙食品服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "唇动食品",
+        "description": "巧克力烘焙制品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "糖盒食品",
+        "description": "烘焙食品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "多麦",
+        "description": "烘焙食品提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "麦吉士",
+        "description": "烘焙食品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "森食起源",
+        "description": "健康烘焙食品品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "森友食品",
+        "description": "高端大馅料烘焙品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Dewey’s Bakery",
+        "description": "美国面包烘培品牌商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "友神食品",
+        "description": "烘焙产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53787,7 +57780,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "HyLight": {
     "description": "HyLight是一家法国氢动力自主巡检飞艇研发商，聚焦清洁航空与基础设施巡检领域，专注于氢燃料电池驱动的自主飞艇（HyLighter）研发，致力于以零排放、低成本方式替代直升机巡检电力、管道、铁路等关键基础设施。公司主要产品为HyLighter氢动力自主飞艇及巡检数据平台，搭载LiDAR、光学相机、甲烷探测器等传感器，主要应用于电力线路缺陷检测、天然气管道甲烷泄漏检测、铁路巡检等场景。",
@@ -53837,7 +57832,8 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "competitorStatus": "unavailable"
   },
   "byteXL": {
     "description": "byteXL是一家印度IT体验式学习平台提供商，旨在通过订阅模式提供对技术学习资源的访问服务，该公司的平台为就业准备提供特定行业的软技能和软件工程专业知识，还提供个性化的咨询和安置帮助以及在线培训和研讨会，使学生和专业人士能够获得个性发展课程。",
@@ -53869,7 +57865,8 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "Agentiq Sports": {
     "description": "Agentiq Sports是菲律宾一家体育科技金融服务商，搭建SEC合规的球迷-运动员投资平台，平台让职业体育新秀出让部分未来赛场收入换取前置无债务资金；普通投资者可购买运动员收益份额，随运动员收入获取分红。",
@@ -53880,8 +57877,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "五加体育",
+        "description": "全体育产业服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "BREA",
+        "description": "足球俱乐部服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德世界体育",
+        "description": "赛事运营与运动员经纪服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "嗨足球",
+        "description": "球迷群体社交平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Press Sports",
+        "description": "体育社交媒体应用",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "点球成金",
+        "description": "互联网足球金融平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "游族体育",
+        "description": "体育赛事资讯及球队管理服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天众体育",
+        "description": "体育赛事互动平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "FanAI",
+        "description": "AI电竞服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Khel Now",
+        "description": "体育服务移动平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53899,7 +57947,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Autentic AI": {
     "description": "Autentic AI是一个西班牙AI市场调研平台，该平台自研对话式AI智能体，可自动招募消费者并开展深度语音访谈，自动解析对话生成消费者洞察报告，大幅缩短定性市场调研周期。",
@@ -53931,7 +57981,8 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "Deno Land": {
     "description": "Deno Land是美国一家分布式运行时服务商，打造一套安全、遵循Web标准、面向边缘分布式场景的JS/TS运行时生态，解决Node.js原生设计缺陷，面向开发者提供开源运行时+托管边缘计算平台，主打Serverless、边缘函数、子托管，支持第三方平台安全隔离执行用户代码。",
@@ -53942,8 +57993,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Pensando Systems",
+        "description": "美国端到端边缘软件定义服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "码匠",
+        "description": "内部系统快速开发服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宇珩科技",
+        "description": "汽车AUTOSAR底层软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MegaEase",
+        "description": "云原生平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Temporal Technologies",
+        "description": "美国分布式持久化执行平台开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Kong",
+        "description": "美国开发者服务管理平台开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Aster Protocol",
+        "description": "Web3社交元宇宙聚合基础设施平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Semarchy",
+        "description": "美国主数据管理软件提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "IO River",
+        "description": "以色列CDN即服务平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "DittoLive",
+        "description": "美国分布式数据库技术应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -53961,12 +58063,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "DeepSeek": {
     "description": "DeepSeek是一家开源MoE大模型技术研发商，专注于自然语言处理和多模态数据的高效挖掘与分析，核心技术包括深度学习、自然语言处理、生成对抗网络等前沿算法，其模型架构采用混合专家架构和多头潜在注意力技术。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "OpenAI",
+        "description": "通用人工智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "豆包",
+        "description": "字节跳动旗下AI智能助手",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "阶跃星辰",
+        "description": "通用AI大模型研发应用商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "零一万物",
+        "description": "AI大模型与企业智能解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Anthropic",
+        "description": "美国AI系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MiniMax稀宇科技",
+        "description": "通用人工智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智谱AI",
+        "description": "新一代认知智能通用模型开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "月之暗面",
+        "description": "通用多模态大模型研发及应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MiniMax",
+        "description": "通用人工智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "百川智能",
+        "description": "通用AI大模型研发及应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 600000000000,
       "text": "约 6000.00 亿元人民币",
@@ -53996,7 +58151,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "粤芯半导体": {
     "description": "粤芯半导体是一家12英寸晶圆特色工艺代工商，，聚焦集成电路特色工艺制造领域，专注于模拟芯片、功率器件及传感器的晶圆代工与特色工艺解决方案，致力于填补广东12英寸芯片制造空白、助力广东打造中国集成电路\"第三极\"。公司主要产品包括MS混合信号、HV高压显示驱动、CIS图像传感器、eNVM嵌入式非易失存储器、BCD及SiPho硅光等工艺平台及MOSFET、IGBT功率器件，主要应用于消费电子、工业控制、汽车电子、人工智能及5G等场景。",
@@ -54042,8 +58199,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "中芯国际",
+        "description": "集成电路芯片代工与技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华虹宏力",
+        "description": "晶圆半导体生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华润微",
+        "description": "半导体电子元件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "增芯科技",
+        "description": "芯片研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "长江存储",
+        "description": "半导体存储器研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华虹集团",
+        "description": "芯片制造及集成电路系统服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "长鑫科技",
+        "description": "DRAM存储芯片研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蓝箭电子",
+        "description": "半导体器件制造及半导体封装测试服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "矽芯微",
+        "description": "半导体先进封装技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "威兆半导体",
+        "description": "功率器件及集成电路产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 99874837676,
       "text": "约 998.75 亿元人民币",
@@ -54064,12 +58272,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "星尘智能": {
     "description": "星尘智能是一家具身智能机器人研发商，专注于服务消费类人形机器人、一体化仿生机器人的研发。公司首创面向AI的软硬件一体化系统架构，致力于打造具备人类级操作能力的AI机器人助理，通过“本体+数据+模型”协同进化推动通用具身智能技术规模化应用，其产品为新一代AI机器人Astribot S1，可执行家居、工作场景中的复杂任务。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "首形科技",
+        "description": "超仿生机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "银河通用机器人",
+        "description": "具身多模态大模型通用机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "它石智航",
+        "description": "具身智能机器人解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "松延动力",
+        "description": "人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星动纪元",
+        "description": "原生通用具身智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星海图",
+        "description": "具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "自变量机器人",
+        "description": "通用具身智能大模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智平方",
+        "description": "AGI原生通用智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "穹彻智能",
+        "description": "具身智能技术开发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "优必选",
+        "description": "智能人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 15000000000,
       "text": "约 150.00 亿元人民币",
@@ -54101,7 +58362,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "岩超聚能": {
     "description": "岩超聚能是一家AI加速聚变能源与超导应用开发服务商，致力于用AI加速聚变能源与超导应用开发。公司以“1+N”为发展核心战略，长期致力于以先进超导仿星器聚变路线实现聚变能商业化（“1”），短中期通过将核心的超导技术降维应用在能源、工业、医疗、航天等领域（“N”）率先开展商业化。",
@@ -54112,8 +58375,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "鸿鹄未来能源",
+        "description": "高温超导仿星器研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "上海国际超导",
+        "description": "超导电缆与系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星核聚变",
+        "description": "商业聚变能源科技研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "翌曦科技",
+        "description": "可控核聚变高温超导磁体材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Commonwealth Fusion Systems",
+        "description": "商业化核聚变系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安东聚变",
+        "description": "可控核聚变商业化发电技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "能量奇点",
+        "description": "聚变设备及运行控制软件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亚安超导",
+        "description": "高温超导磁体装备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "临界领域",
+        "description": "铜基高温超导材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Thea Energy",
+        "description": "美国仿星器聚变能源技术开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54131,7 +58445,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Winverse AI": {
     "description": "Winverse AI是一家具身大脑技术研发商，公司专注为机器人开发AI模型——让机器人具备理解语音指令/环境、自主决策与执行复杂任务的能力；其定位是机器人的\"大脑\"/模型层，而非机器人整机。",
@@ -54163,7 +58479,8 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "诚恒微": {
     "description": "诚恒微是一家边端侧AI SoC芯片研发商，聚焦边端侧AI与高性能视觉处理领域，专注于高能效、强感知的边端侧AI SoC及解决方案的创新研发与产业应用，致力于为智能机器的自主进化提供核心算力与感知平台。主要产品包括CH37系列边端侧AI SoC芯片及CR1核心模组，应用于具身智能、边缘计算、智能视觉、泛安防等场景。",
@@ -54199,8 +58516,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "亿智电子",
+        "description": "端侧视觉AI SoC芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "跃昉科技",
+        "description": "SoC芯片产品及系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "贤者智芯",
+        "description": "类脑AI芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "涌现科技",
+        "description": "专用芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "此芯科技",
+        "description": "通用异构智能CPU芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深明奥思",
+        "description": "芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "泰朴半导体",
+        "description": "极低功耗AloT芯片技术及产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "酷芯微电子",
+        "description": "AI芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "舆芯半导体",
+        "description": "高端控制芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ICG",
+        "description": "高性能计算芯片及智能边缘通讯芯片提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54216,7 +58584,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "利拓智能": {
     "description": "利拓智能是一家汽车制造行业柔性智慧解决方案提供商，聚焦工业机器人与自动化装备领域，专注于机器人换枪盘、柔性抓手及车身柔性定位机器人的自主研发，致力于打破汽车工艺装备国外垄断、推动国产柔性化装备替代。主要产品包括机器人换枪盘、鲁班轴智能柔性抓手、重载型车身柔性定位机器人(NC)装备、NC柔性伺服定位单元、工业连接器及伺服电动缸等，应用于汽车整车焊装及零部件制造场景。",
@@ -54262,8 +58632,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "大连坤达",
+        "description": "多形态机器人综合解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德恒装备",
+        "description": "智能制造装备与系统集成解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新惕姆",
+        "description": "柔性制造解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "孚思格",
+        "description": "高科技技术服务企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "清川智能",
+        "description": "机器人电控及智能装备研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天元兴",
+        "description": "通用工业具身智能平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "灵猴机器人",
+        "description": "智能制造与具身智能领域核心零部件供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "高研智造",
+        "description": "智能化柔性超高压精确成形设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "信邦智能",
+        "description": "工业机器人及相关智能技术开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "迅亚自动化",
+        "description": "机器人智能装配系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54279,12 +58700,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "鹤壁鼎炬": {
     "description": "鹤壁鼎炬是一家热能服务与余热发电服务商，专注于为工业园区、产业聚集区企业提供集中供热服务。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "汇迪能源",
+        "description": "能源服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "同赢热电",
+        "description": "电热生产销售服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "开滦协鑫",
+        "description": "电力及热力服务供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "南太湖电力",
+        "description": "热电联产项目建设运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "屯富热电",
+        "description": "热电及相关服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "秦皇岛发电",
+        "description": "综合电力与热力生产运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恒丰热电",
+        "description": "生产用汽及工业用电提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华润电力",
+        "description": "电力及热力生产供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恒盛能源",
+        "description": "热电服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "杭州热电",
+        "description": "热力及电力供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 150000000,
       "text": "约 1.50 亿元人民币",
@@ -54314,7 +58788,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "晨昏线科技": {
     "description": "晨昏线科技是一家具身大脑技术研发商，公司通过自主研发的具身智能大模型（TermiBrain）和硬件系统，赋予机器人自主作业、智能决策和场景化落地的能力，推动具身智能从技术展示走向产业应用。",
@@ -54325,8 +58801,54 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "自然意志",
+        "description": "通用具身大脑技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超维动力",
+        "description": "具身智能机器人全栈研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "有鹿机器人",
+        "description": "具身智能大模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "具脑磐石",
+        "description": "人形机器人具身大脑研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深度机智",
+        "description": "具身智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "灵步智能",
+        "description": "具身智能人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瞬恒智能",
+        "description": "具身智能技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英达视",
+        "description": "具身智能技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Industrial Next",
+        "description": "具身智能技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54344,12 +58866,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "弘毅电子": {
     "description": "弘毅电子是一家柔性印制电路板（FPC）研发制造商，专注于以消费电子FPC为核心、覆盖SMT贴装与高精度多层柔性板制造，致力于成为国内智能手机\"脑神经\"核心供应商。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "铂联科技",
+        "description": "柔性印制电路板研发销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "珠海中京电子电路",
+        "description": "PCB电子信息产品与服务供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "统信电路",
+        "description": "印制电路板生产制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "骏亚电子",
+        "description": "印制电路板制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东讯精密",
+        "description": "PCB产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奥士康",
+        "description": "高密度印制电路板研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "红板科技",
+        "description": "印制电路板供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "伟豪电路",
+        "description": "高精密PCB印制电路板生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "协和电子",
+        "description": "印制电路板制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "昆山大唐电子",
+        "description": "电子产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 868460000,
       "text": "约 8.68 亿元人民币",
@@ -54379,12 +58954,60 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "芯百特": {
     "description": "芯百特是一家无线通讯射频前端芯片设计研发商，主要致力于无线通讯领域射频前端产品设计和研发，产品聚焦于新一代无线通讯行业中用到的射频前端芯片，主要用于5G通讯、WiFi6、AIOT等领域。在高性能（高线性、高效率、高功率、高带宽）射频功率放大器、超低噪声射频放大器、PAMiD集成滤波器射频模组等方面技术领先，并对技术创新申请了自主知识产权。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "博纳雨田",
+        "description": "北斗射频芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "和芯微电子",
+        "description": "无线通信射频芯片提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "迦美信芯",
+        "description": "射频前端芯片供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博通集成",
+        "description": "物联网无线连接芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "昂瑞微",
+        "description": "芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯佰特微电子",
+        "description": "无线通讯射频前端芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宙讯科技",
+        "description": "高性能无线射频滤波器芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "开元通信",
+        "description": "无线半导体射频前端芯片解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "卓胜微",
+        "description": "射频集成电路研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54409,7 +59032,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "荆华密算": {
     "description": "荆华密算是一家高性能AI密态计算服务提供商，聚焦密态计算领域，致力于实现数据安全与高效计算的目标；公司主要产品或服务包括通用GPU/NPU密态计算技术、密态推理引擎、密态训练引擎等，主要应用于数据密文训练、跨境安全传输等领域。",
@@ -54430,8 +59055,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "streamlio",
+        "description": "美国企业级实时数据处理平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "量界数据",
+        "description": "私有化智能云提供商与人工智能服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "胜云光电",
+        "description": "数据处理装备及系统解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万物共算",
+        "description": "共享计算网络服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "觉云科技",
+        "description": "工业数据智能算法平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恒扬数据",
+        "description": "智能计算与数据处理解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "未来速度",
+        "description": "分布式数据科学计算框架开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "AWS",
+        "description": "云计算服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "益思芯",
+        "description": "存储与网络数据处理器芯片解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Fastdata.io",
+        "description": "实时流数据处理公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "中关村科学城",
@@ -54450,12 +59126,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "亿利华": {
     "description": "亿利华是一家弹簧生产制造商，主要从事弹簧及线材成形产品的生产、研制和开发，主要产品‌包括压缩弹簧、拉伸弹簧、扭转弹簧、油封弹簧及各类异形弹簧。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "华纬科技",
+        "description": "弹簧生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "龙翔股份",
+        "description": "气弹簧制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "杭州弹簧",
+        "description": "弹簧研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智衡减振",
+        "description": "螺旋弹簧和橡塑缓冲垫研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "河北昌泰弹簧",
+        "description": "弹簧钢丝生产销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "钱江弹簧",
+        "description": "压缩弹簧生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "兰菱股份",
+        "description": "弹簧供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "核工弹簧",
+        "description": "碟形弹簧生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "汽车弹簧厂",
+        "description": "汽车悬架系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美力科技",
+        "description": "民营弹簧制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 171690000,
       "text": "约 1.72 亿元人民币",
@@ -54485,12 +59214,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "亿源通科技": {
     "description": "亿源通是一家无源光通信器件ODM/JDM制造商，专注于为客户提供光通信无源基础光器件设计、研发、制造、销售与服务一体化定制解决方案，致力于成为全球光通信领域的设计、研发、智造引领者。公司主营产品包括光纤跳线、光纤柔性线路Shuffle产品、光模块内连接组件等光互联产品，以及CPO共封装光学配套组件、多芯光纤互联方案、OCS光交换核心器件、高速收发模块光组件等高端光组件，主要应用于算力数据中心、云计算、FTTx、5G/6G移动通信、电信运营、激光雷达、国防通信等领域。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "蘅东光",
+        "description": "光通信领域无源光器件产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宇特光电",
+        "description": "光电连接解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宏晟光电",
+        "description": "特种光纤产品研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "康阔光智能",
+        "description": "光纤器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恒宝通",
+        "description": "光纤制造及供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "广州光束",
+        "description": "光纤通信和光纤传感技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天瑞光电",
+        "description": "光纤通信产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "彼格科技",
+        "description": "光纤传感和光纤通信服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "比洋通信",
+        "description": "光通信连接产品及解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "长进光子",
+        "description": "特种光纤产品及服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54545,7 +59327,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "戴恩机床": {
     "description": "戴恩机床是一家数控机床及工业机器人制造商，聚焦数控机床及工业机器人制造领域，致力于提供相关产品及技术服务；公司主要产品或服务包括金属切削/成形机床制造销售、工业自动控制系统装置、机床功能部件及附件等，开展技术服务与货物进出口业务。",
@@ -54576,8 +59360,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "橙瓴自动化",
+        "description": "工业自动控制系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深亚精密机械",
+        "description": "精密机床与自动化设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "精豪数控",
+        "description": "工业自动化数控机床研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "实极机器人",
+        "description": "工业机器人技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "富准精密",
+        "description": "工业自动化控制系统及装置生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "易拓威",
+        "description": "工业机器人及管理系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东莞艾尔发",
+        "description": "自动化机械研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "翔惠实业",
+        "description": "智能装备生产企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "启尖丝杠",
+        "description": "机械零部件加工商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "苏驭研",
+        "description": "数控机床及机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54593,7 +59428,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中科欣辰": {
     "description": "中科欣辰是一个智能科技服务商，聚焦人工智能软件开发、卫星技术应用、大数据服务等领域，致力于实现相关技术应用与服务；公司主要产品或服务包括人工智能软件开发、卫星技术应用、大数据服务等，主要应用于相关技术领域。",
@@ -54614,8 +59451,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "通衍灵智",
+        "description": "人工智能科技服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "预见未来",
+        "description": "大数据应用服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瀚光数科",
+        "description": "大数据与人工智能科技服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智独数",
+        "description": "人工智能技术解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "楚天云科技",
+        "description": "软件信息领域整体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "诺祺科技",
+        "description": "智能软件和数据生态服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "CloudMile",
+        "description": "企业云计算环境及定制AI服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯灵科技",
+        "description": "数据智能分析云平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "派数科技",
+        "description": "数字技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "复生万物",
+        "description": "人工智能及数字技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54631,12 +59519,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "鄂州铂华": {
     "description": "鄂州铂华是一家生物制品医疗器械研发生产商，专注于诊断试剂盒研发生产，提供生物技术开发咨询转让服务，拥有B细胞淋巴瘤MRD监测基因组合及一代测序基因突变分析等专利技术，聚焦生物制品、医疗器械领域，致力于为相关领域提供专业服务。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "东方生物",
+        "description": "体外诊断试剂和基因治疗技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "惠安康生物",
+        "description": "生物医药技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华大智造",
+        "description": "基因测序仪及配套试剂耗材研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "诺唯赞",
+        "description": "生物试剂与体外诊断产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "西宝生物",
+        "description": "体外诊断试剂生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "通用生物",
+        "description": "一站式生物医药原料及服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "和芯生物",
+        "description": "体外诊断设备与试剂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新诚生物",
+        "description": "临床前研发外包服务机构",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新纵科",
+        "description": "诊断试剂研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瀚海新酶",
+        "description": "生物医药及体外诊断核心原料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54661,7 +59602,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "天序智能": {
     "description": "天序智能是一家低空气象大模型研发商，聚焦气象+AI领域，深耕新能源与低空经济行业，专注于气象大模型研发及落地应用，为政府、电网等客户提供气象预测、功率预测等服务；公司主要产品包括自研新能源气象大模型、能源气象大模型，主要应用于新能源功率预测、电力交易决策、极端天气预警及低空经济等场景。",
@@ -54677,8 +59620,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "正弦空间",
+        "description": "卫星大数据及应用服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智子熹源",
+        "description": "能碳数智化AI大模型研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "布谷鸟同创科技",
+        "description": "AI控制系统解决方案服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瓦特跳动",
+        "description": "能源领域垂直AI大模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "相风科技",
+        "description": "AI气象模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宇算星河",
+        "description": "空天轻量化AI算力服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Dexmal原力灵机",
+        "description": "通用具身大模型技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "无界动力",
+        "description": "通用具身智能解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "清昴智能",
+        "description": "AI模型部署优化平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星河问途",
+        "description": "L4级道路移动机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54694,7 +59688,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "橙子数字": {
     "description": "橙子数字是一家智能微型投影仪研发商，聚焦智能投影硬件领域，专注于智能投影设备的研发、生产与销售，致力于打造高性价比家用智能投影产品；公司主要产品包括DLP、LCD智能投影仪、影音配套设备及相关配件，旗下拥有大眼橙自有品牌，产品主要应用于家庭影音场景。",
@@ -54730,8 +59726,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "开视科技",
+        "description": "智能投影产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智迈光电",
+        "description": "投影机研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鲜柚科技",
+        "description": "智能投影仪智能电视厂商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ZECO智歌",
+        "description": "智能投影设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "JMGO坚果",
+        "description": "智能投影仪品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美迪电子",
+        "description": "智能投影仪研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "微影",
+        "description": "微型投影机设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "PaPa口袋影院",
+        "description": "便携式智能投影仪研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "VEZ微投影",
+        "description": "智能微型手机投影仪研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "惠志科技",
+        "description": "智能投影音响研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54747,7 +59794,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "权序科技": {
     "description": "权序科技是一家信息技术与知识产权综合服务商，聚焦信息技术与知识产权领域，专注AI、大数据、区块链软件技术开发与数据技术服务；公司主要服务包括商标代理、版权代理、品牌营销咨询，同时可开展进出口业务。",
@@ -54759,7 +59808,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54777,7 +59826,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "肆号华峰": {
     "description": "肆号华峰是一家企业管理咨询服务商，聚焦企业管理咨询领域，为市场主体提供配套咨询服务；公司主要服务包括企业管理咨询、社会经济咨询服务、不含许可类信息咨询服务以及财务咨询。",
@@ -54789,7 +59840,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54807,7 +59858,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "苗寨佬医药": {
     "description": "苗寨佬医药是一个民族医药研发生产商，聚焦民族医药领域，专注民族医药研发、中药饮片生产及中药材加工，致力于发展民族医药康养产业；公司主要产品包括瑶浴包、艾纳香舒活精油等大健康产品，以及中药饮片、中药材加工等，主要应用于民族医药、康养领域。",
@@ -54839,7 +59892,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54855,7 +59908,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "马力奥": {
     "description": "马力奥是一家人工智能与物联网技术研发服务商，聚焦人工智能、物联网领域，专注于软件研发与技术推广，致力于提供配套技术服务；公司主要产品或服务包括人工智能软件开发、物联网技术研发、工业设计、智能控制系统集成，相关产品应用于智能车载、电动代步设备等领域，同时配套电子元器件、电池及相关零配件销售业务，并开展货物进出口业务。",
@@ -54912,7 +59967,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54928,7 +59983,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "国益浚源": {
     "description": "国益浚源是一家不良资产处置及租赁服务商，聚焦不良资产处置、租赁领域，致力于化解区域金融风险、服务实体经济；公司主要提供不良资产收购处置、破产清算、企业管理及各类不动产和机械设备租赁服务。",
@@ -54940,7 +59997,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -54958,12 +60015,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "创智乐惠居": {
     "description": "创智乐惠居是一家面向失能、半失能及高龄老人的长护险居家照护服务提供商，聚焦居家养老与社区康养领域，专注于提供居家生活照料、医疗护理、康复训练等专业上门服务，并延伸至健康咨询、养生保健、人工智能行业应用系统集成、家政服务、康复辅具适配、心理咨询等综合健康服务，致力于依托乐惠居康养集团11年深耕的\"养老服务+数字养老平台\"经验，为上海长护险居家照护市场构建专业服务能力。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "爱宁养老",
+        "description": "养老家政综合服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "医养网络",
+        "description": "医养结合云服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "田园之家",
+        "description": "居家养老服务综合性服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海鳗科技",
+        "description": "医疗护理平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "小橙集团",
+        "description": "智慧健康养老综合服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "朗和",
+        "description": "综合性医疗养老服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芳香森林健康",
+        "description": "社区医疗及中医养老服务机构",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "午盈健康",
+        "description": "智慧居家养老服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万家康护",
+        "description": "医疗照护及健康管理服务运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "共享之家",
+        "description": "养老服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 25000000,
       "text": "约 0.25 亿元人民币",
@@ -54993,7 +60103,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "龙王潭生态园": {
     "description": "黄山龙王潭生态园是一家石蛙生态养殖企业，聚焦石蛙特种养殖与深加工领域，专注于石蛙养殖技术培训、苗种培育输出、产品研发及深加工，致力于打造\"一山一清泉 黄山龙王潭\"绿色食品品牌。主要产品包括石蛙活体、石蛙汤品及调味品等深加工产品，应用于餐饮、保健食品及生态农业观光旅游场景。",
@@ -55029,8 +60141,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "益美多",
+        "description": "农业观光综合开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "紫晶川梭",
+        "description": "农业专业及辅助性活动服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "澳中健康",
+        "description": "绿色生态循环农业科技服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "三丰牧业",
+        "description": "畜禽养殖销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "农博翔",
+        "description": "畜牧养殖业服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天农食品",
+        "description": "屠宰肉类加工服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "秋实农业",
+        "description": "农林牧渔技术推广服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "优卓牧业",
+        "description": "农业产业一体化服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "陆宝食品",
+        "description": "综合农牧服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "粤凤凰生态农业",
+        "description": "农产品种养殖及研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55046,7 +60209,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "水投岘山": {
     "description": "水投岘山是一家抽水蓄能项目投资运营商，聚焦抽水蓄能电站项目开发业务，致力于推进洛阳汝阳抽水蓄能项目落地实施；公司主要承担汝阳抽水蓄能电站项目相关前期手续办理与工程建设推进工作，项目建成后可承担电网削峰填谷、调频调压、事故备用等任务，助力省内新能源消纳与能源结构绿色转型。",
@@ -55058,7 +60223,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55076,7 +60241,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "水投淇泉": {
     "description": "水投淇泉是一家抽水蓄能电站开发运营商，聚焦抽水蓄能电站开发建设业务，致力于助力构建新型电力系统；主要负责淇县鱼泉抽水蓄能电站项目相关运营，电站初选装机容量120万kW，配备可逆式水泵水轮发电机组，用于电力系统调峰等能源调节场景。",
@@ -55088,7 +60255,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55106,7 +60273,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "铭泽清洁师": {
     "description": "铭泽清洁师是一家综合清洁服务及技术服务商，业务涵盖物业管理、环保治理、设备租赁等。拥有垃圾清运车辆污水收集装置、分类式垃圾清运装置等专利技术，为城乡环境管理等提供专业服务。",
@@ -55117,8 +60286,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "众帮环境",
+        "description": "环境清洁服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德昂环境",
+        "description": "环卫产品及服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "联运环境",
+        "description": "环境工程技术开发咨询服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "明堂环卫",
+        "description": "城市环卫建设服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "慧丰清轩",
+        "description": "环卫及环境资源开发服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鸿企物业",
+        "description": "物业管理服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "升辉清洁",
+        "description": "综合环境清洁及维护服务供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "爱美悦",
+        "description": "物业服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天明物业",
+        "description": "物业管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "佳源律动",
+        "description": "物业服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55136,7 +60356,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "国联实业集团": {
     "description": "国联实业集团是一家综合型服务与贸易商，业务涵盖工程造价、企业管理、新能源汽车销售及充电运营、货物进出口等，提供资产管理、信用修复、政府采购代理等多元服务。",
@@ -55147,8 +60369,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "轩皇国际",
+        "description": "国际贸易服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "圣仑国际",
+        "description": "综合性外经贸企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "千品猫",
+        "description": "电商形式汽配产业链交易效率提升商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "交投实业",
+        "description": "国际贸易平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华宇工贸",
+        "description": "国际贸易服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "卡苏集团",
+        "description": "全球商品贸易供应链管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "沃施贸易",
+        "description": "货物进出口服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "福建对外贸易中心",
+        "description": "国内外商品贸易服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "利和集团",
+        "description": "进出口贸易服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国贸数字",
+        "description": "国际贸易数字服务平台研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55166,7 +60439,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "方玄科技": {
     "description": "方玄科技是一家技术服务与系统集成商，提供技术开发、咨询、系统集成、软件开发等服务，拥有基于神经网络图像识别的无人机系统及Q-Learning自适应路由等专利技术，业务覆盖多领域技术服务与产品销售。",
@@ -55177,8 +60452,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "苏州华眸",
+        "description": "智能科技研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "六爻飞梦",
+        "description": "集成电路与无人机技术提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑞尔",
+        "description": "第三方图像技术及人工智能开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科微视",
+        "description": "计算机图像智能分析及应用服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "无糖信息",
+        "description": "智能终端控制解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博焱智能",
+        "description": "人工智能及大数据加速硬件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芭欧",
+        "description": "移动通信和图像智能识别产品服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑞斯特朗",
+        "description": "图像识别与机器视觉软件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智冠华高",
+        "description": "智能图像识别产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "巴顿科技",
+        "description": "图像机器视觉技术及人脸识别技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55196,7 +60522,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "锦泽药业": {
     "description": "锦泽药业是一家西药批发商，聚焦药品批发与零售领域，致力于为客户提供优质的医药相关产品；公司主要产品或服务包括中成药、中药饮片、西药批发与零售等，主要应用于医药领域。",
@@ -55217,8 +60545,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "龙开河",
+        "description": "药品及医疗器械供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "丹东医药",
+        "description": "药品批发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金利医药网",
+        "description": "医药批发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中源医药",
+        "description": "药品及化学制剂批发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "昌鹤医药",
+        "description": "医药批发销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "重庆一心堂",
+        "description": "中西药提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "延生药业",
+        "description": "医药批发企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "良药网",
+        "description": "医药批发电商平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "九州通医药",
+        "description": "医药批发物流企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海欣医药",
+        "description": "药品批发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55234,7 +60613,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "SUAVE": {
     "description": "SUAVE是一家AI音乐生成创作硬件研发商，搭配不同配件，可组合成吉他、键盘、碟机、电吹管等形态，覆盖弹拨、键盘、打击、吹奏和跳舞等场景。团队将这套架构定义为“1+N+X”创作系统：主机是统一的大脑，配件是表达的入口，软件持续增加玩法。设计思路类似任天堂Switch的理念，通过固定主机底座、依靠配件与软件迭代丰富场景。 目前，SUAVE计划先推出吉他形态。",
@@ -55245,8 +60626,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "感音科技",
+        "description": "智能软硬件产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "班砖网络",
+        "description": "AI音乐制作服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "声潮AI",
+        "description": "生成式音乐技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海绵音乐",
+        "description": "AI音乐创作平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Amadeus Code",
+        "description": "日本AI智能谱曲APP",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "自由量级",
+        "description": "生成式人工智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "StepBeats",
+        "description": "运动创作音乐平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "DeepMusic",
+        "description": "人工智能合成音乐技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MiniMax",
+        "description": "通用人工智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "小叶子音乐科技",
+        "description": "人工智能音乐教育解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55264,7 +60696,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "深度云海": {
     "description": "深度云海智能科技是一家生成式引擎优化（GEO）AI营销服务商，聚焦AI赋能企业全链路数字化落地领域，专注于GEO生成式引擎优化与AI智能营销，致力于让品牌被ChatGPT、DeepSeek、豆包等海内外AI工具优先推荐、抢占AI搜索流量新入口。公司主要产品包括GEO RaaS系统、DeepWork智能营销工作台及灵雀智能建站、GEO直通车、云帆CloudClaw智能助理Hub，主要应用于企业品牌AI可见度提升、AI搜索获客与智能运营场景。",
@@ -55295,8 +60729,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "新看点",
+        "description": "全方位数智化解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科相生",
+        "description": "数字克隆人高效制作及驱动解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亿量科技",
+        "description": "全链路线索转化Agent研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "惟客数据",
+        "description": "企业数字化客户经营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Techsun",
+        "description": "实体零售数字化全栈解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Deep North",
+        "description": "美国计算机人工智能视觉技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "伯格网络",
+        "description": "微信生态链增强服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "程序园科技",
+        "description": "全域流量数字化解决方案及营销服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "筋斗云机器人",
+        "description": "AI营销机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "跨境魔方",
+        "description": "AI智能外贸获客平台开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "华工科技"
@@ -55314,7 +60799,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "伊米森": {
     "description": "伊米森是一家非标自动化成套系统解决方案提供商，专注于非标自动化成套系统解决方案，致力于为汽车产业链、3C产业链提供自动化智能生产线成套机械元件；公司主要产品或服务包括非标自动化成套系统解决方案，主要应用于汽车、3C领域。",
@@ -55325,8 +60812,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "海铭德",
+        "description": "智能制造装备提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "苏合智能",
+        "description": "非标自动化设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "筑一智能",
+        "description": "全自动智能生产设备和整套系统集成服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "永达康",
+        "description": "非标自动化设备及夹治具生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "时纬自动化",
+        "description": "非标自动化设备及工业机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深发五金",
+        "description": "非标准自动化测试设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "昆山力格",
+        "description": "非标自动化设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "砚泽智能",
+        "description": "非标自动化设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "展扬智能",
+        "description": "自动化设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博睿智造",
+        "description": "非标自动化设备生产制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55342,7 +60880,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "都市圈": {
     "description": "都市圈是一家北斗时空智能应用服务提供商，主要面向政府管理决策、企业经营发展、民众生活服务提供全方位的时空数据采集、时空底座搭建、行业应用软件开发、北斗装备应用集成等全链条服务。",
@@ -55353,8 +60893,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "宇疆科技",
+        "description": "北斗卫星导航技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "索罗思腾",
+        "description": "北斗卫星终端研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大有时空",
+        "description": "定位服务及时空数据产品提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "小马智运",
+        "description": "人工智能北斗高精解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "北方北斗",
+        "description": "北斗卫星导航产品应用及研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "交信北斗",
+        "description": "北斗数字交通解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星汉时空",
+        "description": "北斗卫星导航定位服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MCT毫厘智能",
+        "description": "智能时空感知芯片和解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "交控数科",
+        "description": "智慧交通数字化技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "极洞科技",
+        "description": "卫星融合导航传感系统技术供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 141450000,
       "text": "约 1.41 亿元人民币",
@@ -55377,7 +60968,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中创格物（北京）教育科技": {
     "description": "中创格物（北京）教育科技是一家AI教育产品研发商，聚焦青少年AI教育领域，致力于通过开源、软硬结合等方式降低学习门槛，提升学习者创新能力；公司主要产品包括中学、小学AI教育相关器材包及课程等，主要应用于学校教学、项目实践等领域。",
@@ -55399,7 +60992,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55415,7 +61008,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "临港同策": {
     "description": "临港同策是一家房地产经纪及企业服务提供商，聚焦企业服务相关领域，主营市场营销策划、商务咨询、企业管理、广告设计及建筑施工等，在多地开展产业孵化项目托管运营服务。",
@@ -55426,8 +61021,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "玖达",
+        "description": "建设行业信息化咨询服务解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "河南交投",
+        "description": "交通行业投融资服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "润石房地产",
+        "description": "房地产开发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "清科筑成",
+        "description": "建筑工程技术咨询服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华鸿嘉信",
+        "description": "房地产开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "山河集团",
+        "description": "大型综合性企业集团",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "滨江城建",
+        "description": "工业综合体开发运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "曲江建设集团",
+        "description": "建筑及相关服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科控股",
+        "description": "建筑施工施工服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "梁辰建业",
+        "description": "地产开发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55445,7 +61091,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "勋辉科技": {
     "description": "勋辉科技是一家镁铝合金精密压铸零部件研发生产商，聚焦镁铝锌合金压铸模具与压铸件制造领域，致力于为下游客户提供一站式轻量化零部件配套服务；公司主要产品包括镁合金、铝合金、锌合金精密压铸件以及配套压铸模具，可完成模具开发、压铸成型、精密机加工、表面处理全流程作业，产品主要应用于新能源汽车、电动工具等领域。",
@@ -55501,8 +61149,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "坤博精工",
+        "description": "机电装备零部件研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "舜富精工",
+        "description": "模具设计及合金压铸件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "赛维达",
+        "description": "汽车零部件压铸模具开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美亚特",
+        "description": "轴承研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "邦耀模具",
+        "description": "模具维修销售及精密模具加工商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "南特科技",
+        "description": "精密机械零部件铸造加工商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奔达模具",
+        "description": "铝合金铸造模具和铝合金压铸产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鑫泉科技",
+        "description": "汽车模具铸件与智能设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "伊之密",
+        "description": "模压成型专用机械设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "斯达康",
+        "description": "五金冲压及相关配套工艺生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55518,7 +61217,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "国基新材": {
     "description": "国基新材是一家新材料技术研发生产商，聚焦高性能铜铝复合材料领域，致力于以技术创新降低成本、满足市场需求；公司主要产品或服务包括铜铝复合排、复合扁线等，主要应用于新能源装备、轨道交通、汽车制造等领域。",
@@ -55534,8 +61235,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "鑫成新材",
+        "description": "新材料技术与产品提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中丝路新材料",
+        "description": "铝基新能源及新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "同创普润",
+        "description": "靶材关键原材料高纯金属材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "嘉晨新材",
+        "description": "铝材制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "富威科技",
+        "description": "高端铜基新材料产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "一盛新材",
+        "description": "高端金属基复合材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "众联新材",
+        "description": "新材料技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "通镁科技",
+        "description": "轻量化镁合金新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艾合新材",
+        "description": "高性能纤维及复合材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "碳谷科技",
+        "description": "高性能纤维及复合材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55551,7 +61303,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "天合能化": {
     "description": "天合能化是一家化工新材料研发生产商，聚焦绿色化工与特种树脂领域，致力于推进化工产业低碳转型升级；公司主要产品或服务包括基础化学原料、专用化学品、合成材料，配套开展化工相关技术服务等。",
@@ -55577,8 +61331,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "蓝星集团",
+        "description": "化工新材料和特种化学品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "梅兰新材料",
+        "description": "化工新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宁波海螺新材",
+        "description": "化工新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "福尔股份",
+        "description": "精细化工新材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海湾化学",
+        "description": "氯碱和石油化工产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "利星科技",
+        "description": "化学制剂生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华尔盛",
+        "description": "精细化工新材料技术研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "武洲新材",
+        "description": "化工产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Clariant",
+        "description": "特种化学品研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中国天化工",
+        "description": "煤相关化工及生物化工原材料制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55594,12 +61399,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "好电科技": {
     "description": "好电科技是一家锂电池材料生产研发商，专注于锂电池专用粘结剂研发、生产、销售，并提供石墨负极粘结剂、硅基负极粘结剂、功能性隔膜涂层粘结剂、正极粘结剂、涂层集流体以及导电分散液等产品，致力于为锂电、先进陶瓷及半导体等行业提供合规可靠的材料产品及服务。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "道赢科技",
+        "description": "锂离子电池化学材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "绿能纤材",
+        "description": "锂电池电子专用新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鸿星创新",
+        "description": "锂电池行业用粘结剂及化学助剂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "仙邦新材料",
+        "description": "锂离子电池封装材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金贝新材",
+        "description": "高端人造石墨负极材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "汉方新材",
+        "description": "半导体及电子级胶黏剂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "菲奥新材料",
+        "description": "锂电负极材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "佰思格",
+        "description": "锂电池硬炭负极材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "源元科技",
+        "description": "锂电池功能材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚芯源新材料",
+        "description": "高性能电子粘接材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55624,7 +61482,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "威銤智能": {
     "description": "威銤智能是一家高性能工程塑料精密零部件制造商，公司围绕PEEK、LCP等特种工程材料，以精密注塑为核心工艺，通过微米级精度的模具设计与成型参数优化，实现复杂结构件的高精度量产，致力于推动半导体塑料与精密结构件国产替代。公司主要产品或服务包括IC封装托盘、电机精密绝缘包胶、定子包胶及以塑代钢产品，主要应用于半导体封测、人形机器人、新能源汽车、低空经济等领域。",
@@ -55650,8 +61510,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "德玛克精工",
+        "description": "高端精密零部件全链条制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "刚信科技",
+        "description": "铝合金材料与AI精密仪器零部件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "众聚达精密机械",
+        "description": "精密部件及系统集成制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "勤川精工",
+        "description": "精密机械零部件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "至精技术",
+        "description": "精密零部件整套加工制造解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美利信",
+        "description": "铝合金精密压铸件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "和林微纳",
+        "description": "精密零件微技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "派勒纳米",
+        "description": "微纳米研磨设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天力科技",
+        "description": "精密钣金结构件设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "联佳科技",
+        "description": "航空航天精密核心金属结构件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55667,12 +61578,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "安森智能": {
     "description": "安森智能是一家油气田智能化产品与解决方案提供商，以“聚焦油气领域，提供智慧大脑”为战略核心，专注于油气行业的数字化、智能化升级。主营业务有：“AI自动驾驶智慧气田”、“AI防爆巡检机器人”和“智能仪表”三个板块。“AI自动驾驶智慧气田”通过“AI气井大模型算法技术”帮助用户在气井全生命周期内实现自动匹配理想开采制度，实现气井高质量自动驾驶生产。“AI防爆巡检机器人”通过自动驾驶机器人搭载机器视觉、激光光谱、热成像、声音成像和多种传感器，替代人的“视觉、嗅觉、听觉”，可及时发现跑冒滴漏、异声异响、异味异热等危险隐患，是石油化工等易燃易爆场所的安全卫士。“智能仪表”板块核心产品“ACFC计量级气体超声流量计”打破了国外品牌垄断的现状，是天然气行业优质的进口替代方案。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "中科开创",
+        "description": "人工智能及机器人研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国领智能",
+        "description": "新能源作业机器人研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "联恒星科技",
+        "description": "智能油田多相流计量方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金波嘉源",
+        "description": "仪表仪器设计制造及行业解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云深处科技",
+        "description": "具身智能机器人研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "上海芭熹机器人",
+        "description": "移动机器人解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博信科技",
+        "description": "空中机器人自动化系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "开普勒KEPLER",
+        "description": "通用人形机器人研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "凌云光",
+        "description": "视觉人工智能与光电信息技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "圭目机器人",
+        "description": "交通基础设施巡检机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55697,7 +61661,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "尚宁智感": {
     "description": "尚宁智感是一家光纤光栅传感产品与监测方案商，专注光纤光栅（FBG）系列传感产品及光纤传感监测系统解决方案。公司以专用传感光纤和\"自动化光栅直写\"工艺制造光纤光栅，产品具备高抗拉（≥10N）、耐高温、耐弯曲、大应变等特点，并以波分/时分复用的弱反射率光纤光栅阵列支撑大规模传感监测网的工程化应用，可服务于复合材料植入、储能装置、医疗器械、航空航天装备、海洋环境工程、土木结构、交通安全、石油化工、电力设施等场景。",
@@ -55708,8 +61674,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "至格科技",
+        "description": "AR衍射光波导及衍射光栅产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "雷生强式",
+        "description": "激光晶体元件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "长沙麓邦光电科技",
+        "description": "光学产品及解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华曦未来",
+        "description": "红外三维光子晶体发热新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "光驭科技",
+        "description": "柔性超材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中建材光子",
+        "description": "特种光学玻璃及光子材料研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "四联特材",
+        "description": "光学产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英纳特纳米",
+        "description": "球形粉末材料研制生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "江苏恒隆通",
+        "description": "光电显示材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "莱能士",
+        "description": "精密光学镜头及组件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55727,7 +61744,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "德普福电子": {
     "description": "德普福电子是一家电子通信科技集成商，聚焦电线电缆、电子元器件、通信设备及毫米波信号传输领域，致力于相关技术研发与服务；公司主要产品或服务包括微波电缆组件、多通道射频线缆、精密射频转接器、PCB板端精密连接器、射频开关矩阵系统、测试插座、半导体测试探针，应用于通信、半导体行业。",
@@ -55778,8 +61797,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "珩星电子",
+        "description": "高可靠连接器及电控设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "网动股份",
+        "description": "光电子模块和光通讯器件生产销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "欣天科技",
+        "description": "移动通信射频金属元器件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "明德股份",
+        "description": "半导体分立器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "西南集成",
+        "description": "半导体元器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "速联科",
+        "description": "射频连接器生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯灵通科技",
+        "description": "Fabless半导体芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "开元通信",
+        "description": "无线半导体射频前端芯片解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东飞凌",
+        "description": "光电领域芯片及电子封装设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "川美股份",
+        "description": "通信电子导航类产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55795,7 +61865,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "扬州海工产业园区": {
     "description": "扬州海工产业园区是一家海工园区建设服务商，聚焦海工装备产业园区规划建设，致力于打造产业集聚的专业园区，助力船舶海工产业高质量发展。",
@@ -55807,7 +61879,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55825,7 +61897,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "昇帆科技": {
     "description": "昇帆科技是一家卫星柔性太阳翼研发生产商，聚焦航天器能源系统领域，致力于为航天器提供高效可靠的能源解决方案；公司主要产品包括柔性太阳翼、柔性太阳能毯，相关产品可应用于商业卫星等航天器。公司构建了研发制造体系，布局模块化、卷绕式相关技术，推进航天能源产品商业化落地。",
@@ -55846,8 +61920,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "国科星擎",
+        "description": "航天推进系统研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "弘境航天",
+        "description": "商业航天软硬件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星瀚聚能",
+        "description": "航天器晶硅柔性太阳毯模组研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中国卫星",
+        "description": "卫星及宇航零部件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "馥昶空间",
+        "description": "商业航天卫星电源系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "钧天航宇",
+        "description": "尖端航天器研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "易动宇航",
+        "description": "航天器推进系统及机电产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海龙空天",
+        "description": "商业卫星姿控部组件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星地探索",
+        "description": "卫星安全和太空安全解决方案服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "航升卫星",
+        "description": "微纳卫星研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55863,7 +61988,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "晶瞻半导体": {
     "description": "晶瞻半导体是一家集成电路芯片设计服务商，专注于高端半导体显示屏幕驱动芯片，聚焦高端时序控制芯片和新型微显示Micro-OLED驱动芯片，并持续布局和完善显示芯片产品线及应用领域，公司主要产品或服务包括显示芯片设计，主要应用于半导体显示相关领域。",
@@ -55874,8 +62001,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "芯方舟",
+        "description": "集成电路芯片设计服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奥贝克",
+        "description": "集成电路芯片设计开发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "质能达微电子",
+        "description": "芯片产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "同芯创半导体",
+        "description": "半导体技术研发与芯片设计服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯原股份",
+        "description": "半导体IP与芯片定制解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华大半导体",
+        "description": "芯片及功率半导体研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "无锡芯亿",
+        "description": "集成电路芯片设计及服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英仕博",
+        "description": "半导体芯片设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "砺芯半导体",
+        "description": "半导体集成电路设计商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "灿矽半导体",
+        "description": "半导体集成电路芯片研发销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55891,12 +62069,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "桓天计算": {
     "description": "桓天计算是一家人工智能与云计算技术服务商，聚焦人工智能与云计算领域，专注于人工智能软件开发、云计算装备技术服务，致力于提供相关技术开发与系统集成服务；公司主要服务包括人工智能算法软件开发、信息系统集成、数据处理存储服务，配套销售人工智能硬件、计算机软硬件，可开展技术开发、技术转让及货物进出口业务。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "汇亘智能科技（北京）",
+        "description": "人工智能软件研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "漳州祝融",
+        "description": "人工智能与数字技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "嘉森威滕",
+        "description": "软件设计开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "陕西产研壹号",
+        "description": "人工智能应用软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亿叮科技",
+        "description": "智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "吉谷科技",
+        "description": "AI软件开发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "慧伦普斯",
+        "description": "软硬件技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "尼比鲁",
+        "description": "云计算技术综合研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "长俊科技",
+        "description": "大数据与AI应用技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "设云科技",
+        "description": "软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55921,7 +62152,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "民太安保险": {
     "description": "民太安保险是一家保险经纪商，聚焦风险管理和保险服务领域，致力于协助客户持续提升风险管理能力；公司主要服务包括专业化、多元化的风险管理和保险服务，主要应用于客户相关领域。",
@@ -55932,8 +62165,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "特安汇保",
+        "description": "保险经纪服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "道可特保险经纪",
+        "description": "保险经纪公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Aon Plc",
+        "description": "保险经纪及风险管理服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "全联经纪",
+        "description": "保险经纪平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "享安经纪",
+        "description": "保险经纪公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "立安卓越",
+        "description": "保险经纪服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "富诚保险",
+        "description": "保险经纪公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "光大国际保险",
+        "description": "保险经纪公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华西保险",
+        "description": "保险经纪公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "同行保险经纪",
+        "description": "保险服务机构",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55951,7 +62235,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "汇晶科技": {
     "description": "汇晶科技是一家新材料及机械产品研发生产商。专注新材料技术研发，涵盖电子专用材料等。拥有高性能无镍不锈钢管制备等专利技术，还制造多种机械设备，产品多样，技术先进。",
@@ -55962,8 +62248,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "冠峰新材",
+        "description": "新材料及通用设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "一步干燥",
+        "description": "干燥设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华盛荣",
+        "description": "金属结构制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美阅新能源",
+        "description": "新能源设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "碳元素硬质模具",
+        "description": "合金材料与硬质工模具研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科金成",
+        "description": "通用设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "领晟新能源",
+        "description": "新能源材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艾科智创",
+        "description": "新材料技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "凯迈机电",
+        "description": "机械设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "九曜晟星",
+        "description": "机械设备研发及技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -55981,7 +62318,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "泰瑞富达科技": {
     "description": "泰瑞富达科技是一家科技服务提供商，聚焦科学研究和技术服务领域，致力于提供技术开发、咨询、转让及推广等服务；公司主要业务包括技术服务、计算机软硬件销售等，应用于相关科技领域。",
@@ -55993,7 +62332,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56011,7 +62350,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "润际文化商旅": {
     "description": "润际文化商旅是一家文商旅服务商，聚焦文商旅领域，致力于提供文化艺术交流、文旅相关服务，公司经营范围涵盖组织文化艺术交流活动、文化场馆管理服务、会议及展览服务等。",
@@ -56023,7 +62364,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56041,7 +62382,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "深圳市深星合半导体技术": {
     "description": "深圳市深星合半导体技术是一家半导体器件研发生产商，聚焦半导体器件领域，致力于相关产品的研发与生产；公司主要产品或服务包括半导体分立器件制造、销售等",
@@ -56058,7 +62401,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56074,7 +62417,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "深远数据": {
     "description": "深远数据是一家信息服务供应商，聚焦企业管理和社会服务领域，致力于实现相关服务目标；公司主要由深粮控股、远光软件、远望谷共同投资成立，提供高科技服务。",
@@ -56085,8 +62430,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "北洋集团",
+        "description": "城市智慧化综合服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中发智能",
+        "description": "RFID物联网一站式服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万物信息",
+        "description": "物联网相关服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "索像科技",
+        "description": "信息技术提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑞佰创",
+        "description": "从事动物行业管理物联网RFID产品的企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "威尔数据",
+        "description": "生物识别技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "邦越",
+        "description": "智慧工厂管理体系研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "河南高通物联网",
+        "description": "系统集成方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华龙科技",
+        "description": "网络安全解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "枫杨科技",
+        "description": "商业智能管家系统开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56104,7 +62500,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "盖科生物": {
     "description": "盖科生物是一家超滑防粘附涂层材料研发商，专注于超滑、防粘附涂层材料领域，致力于实现环保无毒防粘附材料的国产化；公司主要产品包括超滑、防粘附涂层材料，主要应用于船舶防污涂层、风力发电机叶片特种防覆冰涂层、皮划艇增速涂层、水下设备防污涂层，有望拓展至电子器件防水防潮涂层领域。",
@@ -56120,8 +62518,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "秦港智材",
+        "description": "表面功能材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鸿鹄骥航",
+        "description": "功能性涂层产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "都铂股份",
+        "description": "粘接及涂层新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "苏环润保",
+        "description": "纳米涂层材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "领涂铠盾",
+        "description": "特种防护涂层技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "威亮光电",
+        "description": "光学塑料和玻璃功能涂层研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "离原科技",
+        "description": "表面功能涂层处理解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "共跃星辰",
+        "description": "功能性涂层材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "渌珀新材料",
+        "description": "绝缘纳米涂层及涂料供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宇丰喷涂",
+        "description": "热喷涂涂层技术产品研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56137,7 +62586,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "科敏传感": {
     "description": "科敏是一家NTC热敏电阻及温度传感器供应商，公司主要产品包括新能源汽车温度传感器、NTC热敏电阻及霍尔传感器和线束等，公司具备从材料、芯片制造到传感器封装的垂直一体化能力，产品广泛应用于家电、UPS、电动汽车和锂电池管理、储能等领域。",
@@ -56188,8 +62639,54 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "常州惠昌",
+        "description": "NTC温度传感器研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑶芯微",
+        "description": "MEMS传感器芯片提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深科电子",
+        "description": "功率半导体器件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "乾勤科技",
+        "description": "电控及电源技术解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "元顿传感",
+        "description": "柔性薄膜电路及传感品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英飞凌",
+        "description": "功率器件和半导体器件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安建科技",
+        "description": "功率半导体元器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "尚泰传感",
+        "description": "传感器研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华先科技",
+        "description": "光电元器件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56205,12 +62702,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "科睿斯": {
     "description": "科睿斯是一家高端ABF封装基板研发商，聚焦电子电路技术与解决方案集成商，专注于高端封装基板FCBGA的研发、生产及销售，主营产品是ABF封装基板，主要应用于CPU、GPU、AI及车载等高算力芯片的封装。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "芯承半导体",
+        "description": "集成电路封装基板解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯爱科技",
+        "description": "高端封装基板供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "熠铎科技",
+        "description": "键合玻璃载板生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亿麦矽",
+        "description": "多层高密度塑封基板生产制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "泰研半导体",
+        "description": "半导体先进封装设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "韬盛科技",
+        "description": "半导体测试接口产品及方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科卓半导体",
+        "description": "半导体高端封装设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新连芯",
+        "description": "半导体封装制程激光键合设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "物元半导体",
+        "description": "3D集成制造产品与技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯德半导体",
+        "description": "半导体封装测试服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56235,12 +62785,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "米基医疗": {
     "description": "米基医疗是一家遗传病检测试剂盒研发生产商，公司目前主要产品有“红细胞渗透脆性检测试剂盒（一管法）”、“改良葡萄糖6磷酸脱氢酶（G6PD）测定试剂盒（定量比值法）”和“红细胞葡萄糖6磷酸脱氢酶（G6PD）定性筛查试剂盒（纯化学反应荧光法）“。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "携光生物",
+        "description": "体外诊断产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "九强生物",
+        "description": "体外诊断试剂与生化检测仪器研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "义翘神州",
+        "description": "抗体试剂产品供应服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "百纳心致",
+        "description": "核酸检测诊断产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "莱博生物",
+        "description": "体外诊断试剂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "同立海源",
+        "description": "细胞治疗服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "思鹏生物",
+        "description": "细胞无血清培养基研发应用商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "泰熙生物",
+        "description": "体外诊断产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "吉玛基因",
+        "description": "生物化学试剂研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "京天成生物",
+        "description": "一站式抗体和试剂盒研制技术平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56265,12 +62868,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "缙禧纳米": {
     "description": "缙禧纳米是一家高性能锂离子电池原材料研发商，专注于高性能锂离子电池原材料产品的研发，生产与销售。产品涵盖炭黑、碳纳米管、石墨烯、高分子功能助剂、正负极包覆剂等。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "卡博特",
+        "description": "特种化学品及高性能材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "互索新材",
+        "description": "新型能源材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "碳什科技",
+        "description": "碳族材料研发平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德方纳米",
+        "description": "锂离子电池核心材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "龙迪科技",
+        "description": "锂离子电池材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "研一新材料",
+        "description": "锂电池用功能材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星科源",
+        "description": "固态电池超细纳米硅研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "如鲲新材料",
+        "description": "锂电池电解液开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "钰盛科技",
+        "description": "特种聚合物锂离子电池研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "逢源新能源",
+        "description": "高端磷酸锰铁锂电池研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56315,7 +62971,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "翰亚微电子": {
     "description": "翰亚微电子是一家高端半导体光刻胶原料生产商，聚焦高端半导体光刻胶原料领域，专注树脂及树脂合成单体的开发及量产；公司主要产品包括光刻胶原料，主要应用于集成电路产业链。",
@@ -56326,8 +62984,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "芯间来客",
+        "description": "光刻胶产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英特美科技",
+        "description": "光刻胶原料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "阜阳欣奕华",
+        "description": "光刻胶产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万思得Vanced",
+        "description": "纳米分散液研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "威迈芯材",
+        "description": "半导体光刻核心原材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "微芯新材",
+        "description": "半导体光刻胶单体及树脂供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新盈电子",
+        "description": "光刻胶树脂材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "集萃聚合",
+        "description": "树脂材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "润邦半导体",
+        "description": "半导体材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "矽瓷新能",
+        "description": "半导体关键粉体材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56343,7 +63052,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "艾慕智联（北京）科技": {
     "description": "艾慕智联是一家母婴情绪科技产品研发商，聚焦母婴情绪科技领域，专注于可穿戴超声设备与AI情绪识别技术研发；公司主要产品或服务包括母婴场景可穿戴超声成像相关产品，主要应用于孕期母婴情绪监测场景。",
@@ -56355,7 +63066,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56371,7 +63082,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "言之域": {
     "description": "言之域是一家智能音频研发商，专注于音频及拟人化人工智能技术，致力于打造创新产品并推出API与企业方案；公司主要产品包括多模态AI语音模型与情感交互技术相关服务。",
@@ -56382,8 +63095,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "自由量级",
+        "description": "生成式人工智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MiniMax稀宇科技",
+        "description": "通用人工智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "浙新四维",
+        "description": "多模态超拟人AI情感大模型开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "武汉紫东太初",
+        "description": "多模态通用人工智能大模型开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "无限谷",
+        "description": "AI陪伴应用软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Cherry Studio",
+        "description": "跨平台多模型AI桌面客户端开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Clipto.AI",
+        "description": "全球AI科技服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科紫东太初",
+        "description": "多模态通用人工智能大模型开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云枢智元",
+        "description": "工业数智化技术开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "TIAMAT",
+        "description": "AI图像生成技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56399,7 +63163,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "贝壳视频": {
     "description": "贝壳视频是一家视频IP运营服务提供商，新型数智文化产业集团，依托内容创意和数字营销两大能力，深度服务个人、企业、互联网平台、政府，为客户提供品牌打造、IP策划、内容共建、电商变现等全链条解决方案。",
@@ -56410,8 +63176,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "种草文化",
+        "description": "互联网内容运营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星麦云商",
+        "description": "企业内容科技及运营服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "南友圈自媒社",
+        "description": "社会化传播解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科源传媒",
+        "description": "IP孵化与微短剧创作服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大灰狼新文创",
+        "description": "数字新文创技术和内容一站式服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "加能直播基地",
+        "description": "IP运营及网红主播孵化服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Funloom AI",
+        "description": "AI内容共创平台服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "锐景数媒",
+        "description": "地方文化IP建设运营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "三只羊网络",
+        "description": "互联⽹平台内容提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博拉新媒体",
+        "description": "视频类一站式解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 100000000,
       "text": "约 1.00 亿元人民币",
@@ -56434,7 +63251,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "运动港体育": {
     "description": "运动港体育是一家综合体育服务运营商，聚焦体育服务领域，致力于为体育及相关领域提供多元服务；公司主要业务包括体育场地设施经营、赛事策划组织、体育智能设备制造、文化活动组织、企业管理及多种租赁服务。",
@@ -56445,8 +63264,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "英和体育",
+        "description": "体育赛事运营与场馆服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "成浪体育",
+        "description": "企业体育服务综合解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "方由体育",
+        "description": "综合性体育服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "帕克体育",
+        "description": "综合性体育服务机构",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "动因体育",
+        "description": "体育培训及场馆赛事运营服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "体育之窗",
+        "description": "体育场馆与赛事运营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "高德体育",
+        "description": "综合性体育产业服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "跆尚体育",
+        "description": "体育场馆管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "SwingCage",
+        "description": "体育文化管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "吉金体育",
+        "description": "文化内容运营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56464,12 +63334,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "速迈医学": {
     "description": "速迈医学是一家手术显微镜及临床光学诊察器械制造商，专注于提供以牙科手术显微镜为核心、覆盖神经外科/耳鼻咽喉头颈外科/脊柱外科/手足外科等外科手术显微镜及手术放大镜、医用头灯、检眼镜/检耳镜/手持裂隙灯等光学诊察器械。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "领微医疗",
+        "description": "高端外科手术器械研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "卡尔史托斯",
+        "description": "内窥镜生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星辰海医疗",
+        "description": "内窥镜介入诊疗解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "沈大内窥镜",
+        "description": "医用内窥镜研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博仕康",
+        "description": "精准微创外科医疗器械及设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "派尼迩",
+        "description": "高端智能医疗器械设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华科润生物",
+        "description": "脊柱微创外科手术医疗器械研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "微创优通",
+        "description": "内镜诊断与治疗器械一体化解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "锐健医疗",
+        "description": "微创骨科医疗器械研发供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "欧太医疗",
+        "description": "医用内窥镜设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56494,12 +63417,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "金杨科技": {
     "description": "金杨科技是一家电池零配件研发生产商，聚焦圆柱电池精密结构件与原材料研发生产，专注于圆柱形锂离子电池钢壳、碱性电池钢壳及底盖的研发、生产与销售，并已延伸至锂电结构件核心原材料预镀镍钢带及电池粘结剂。公司主要产品涵盖锂电钢壳、碱性电池钢壳与底盖、扣式电池配件、电池粘结剂及预镀镍钢带等。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "金杨股份",
+        "description": "电池及钢壳生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "正元电子",
+        "description": "电池配件密封圈制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国研新能",
+        "description": "微型钢壳电池制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "丰江电池",
+        "description": "锂离子电池生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚能动力",
+        "description": "聚合物锂离子电池配套产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "弗迪锂",
+        "description": "锂离子电池及材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "铝基新材料",
+        "description": "高端电池铝箔材料供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天津中能锂业",
+        "description": "锂电池电极材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "一特新能源",
+        "description": "聚合物锂离子电池研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鸿德电池",
+        "description": "电池生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56539,12 +63515,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "钧铄芯创": {
     "description": "钧铄芯创是一个半导体材料研发商，聚焦半导体材料领域，专注于光刻胶单体开发与半导体材料合成等核心业务，同时涉及药物合成、农药合成、OLED材料合成等技术方向，主打合成工艺与过渡金属催化路线。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "永庚科技",
+        "description": "高端半导体新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "阿派斯特",
+        "description": "半导体湿电子化学品生产设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "绿人科技",
+        "description": "半导体光电转换材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "南京集溢",
+        "description": "化合物半导体材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "元芯刻微",
+        "description": "高端显示及半导体材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超铼半导体材料",
+        "description": "半导体材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "衢州金瑞泓",
+        "description": "半导体材料及器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "立德半导体",
+        "description": "半导体材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "威迈芯材",
+        "description": "半导体光刻核心原材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奇工致远",
+        "description": "电子专用材料研发与技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56569,7 +63598,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "ID Finance": {
     "description": "ID Finance是一家西班牙消费金融科技服务商，专注服务银行覆盖不足人群，通过自研AI信贷评分与反欺诈引擎，实现全流程线上自动授信。旗下运营MoneyMan线上消费贷及Plazo数字金融App两大品牌，并提供数字账户、借记卡与消费分期服务。",
@@ -56599,7 +63630,8 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "Pigment": {
     "description": "Pigment是一家法国AI办公工具软件开发商，核心业务是开发AI办公软件，帮助员工进行财务预测、PPT制作、规划运营等。",
@@ -56631,7 +63663,8 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "Soufflé Therapeutics": {
     "description": "Soufflé Therapeutics是一家美国基因治疗技术研发商，Soufflé的方法涉及将药物附着在抗体上，或将这些分子的较小版本称为纳米体，这些抗体与特定器官细胞上的受体结合。然后药物进入细胞质，药物充满细胞内部。Soufflé设计了细胞特异性配体，以递送基于siRNA的药物。结合了用于鉴定细胞特异性受体、配体优化和强效siRNA工程的专有技术，以创造和商业化更安全、更强、更耐用的药物，这将有助于改善患者的生活。",
@@ -56663,12 +63696,64 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "GOFO Express": {
     "description": "GOFO Express是一家美国尾程快递服务商，专注于提供跨境电商物流“最后一公里”配送服务，旨在提升履约时效与客户体验。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "乐天速递",
+        "description": "跨境电商物流解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "翼邦物流",
+        "description": "跨境物流服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "贝法易",
+        "description": "物流解决方案服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "影子国际快递",
+        "description": "跨境物流服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "皇家物流",
+        "description": "跨境电商物流服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "满天星",
+        "description": "一站式跨境物流平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天马物流集团",
+        "description": "综合物流服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "燕文物流",
+        "description": "跨境电商物流服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "货图科技",
+        "description": "一站式跨境贸易物流综合服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "广和国际物流",
+        "description": "跨境电商物流一体化解决方案服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56693,7 +63778,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Reach Security": {
     "description": "Reach Security是一家美国安全运营AI解决方案提供商，为企业提供安全工具来简化网络安全、降低运营成本并增强针对不断变化的威胁的防护。该公司提供专门构建的人工智能，用于根据组织的身份和受到的攻击方式重新编程组织的安全基础设施。",
@@ -56704,8 +63791,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Havoc Shield",
+        "description": "美国网络安全服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "BlackRidge Technology",
+        "description": "云网络安全解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Workstorm",
+        "description": "美国安全协作解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Vade Secure",
+        "description": "法国全球网络安全服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Talon Cyber Security",
+        "description": "以色列网络安全解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "WatchTowr",
+        "description": "新加坡网络安全服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Semperis",
+        "description": "美国网络安全技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Intezer",
+        "description": "美国网络安全服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "RunSafe Security",
+        "description": "美国网络安全服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Hexadite",
+        "description": "以色列网络安全服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "Top Tier Capital Partners"
@@ -56725,7 +63863,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Scarlet": {
     "description": "Scarlet是一家人工智能和软件医疗设备认证机构，专门聚焦AI与软件医疗设备（SaMD/MLMD）的第三方认证主体，为医疗AI企业提供CE/UKCA符合性评估与ISO13485体系认证，支持AI模型迭代的合规审核。",
@@ -56757,7 +63897,8 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "IFC公司": {
     "description": "IFC公司是一家新加坡冷冻烘焙甜品供应商，主营冷冻蛋糕、面包等烘焙产品的研发、生产与销售， 业务覆盖中国、新加坡、马来西亚三地 。其产品供应咖啡店、新式茶饮、连锁烘焙门店、商超及电商等渠道 ，已搭建完整的产销与客户服务体系。",
@@ -56787,12 +63928,64 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "Ubitium": {
     "description": "Ubitium是一家德国通用处理器开发商，主要从事用于自主机器及其他物理人工智能应用的处理器研发业务，核心产品UB410采用8nm工艺，可脱离CPU独立运行，单芯片动态重构，可替代CPU/GPU/DSP/FPGA，适配机器人、汽车、工业设备的物理AI、信号处理与实时控制负载。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "岸芯科技",
+        "description": "具身智能端侧芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "阿加犀",
+        "description": "端侧人工智能解决方案服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "原子机器人",
+        "description": "数据融合算法和传感器供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "跨维智能",
+        "description": "高通用性具身智能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "IkeaBot",
+        "description": "新加坡机器人软件和系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "维泛智能",
+        "description": "具身智能融合芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深圳地平线机器人",
+        "description": "人工智能软硬件技术提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Xaba",
+        "description": "工业自动化自主AI控制系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "留形科技",
+        "description": "智能三维感知和重建算法及产品开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "匠心科技",
+        "description": "高端智能装备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56817,12 +64010,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "LONVI": {
     "description": "LONVIAI是一家美国健康智能服务商，专注于研发无感式居家健康感知硬件及配套自研AI健康智能体，构建全屋持续健康监测操作系统。其服务面向家庭用户，提供常态化健康评估与个性化干预方案。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "小白健康",
+        "description": "智能健康管理平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "几何科技",
+        "description": "家庭健康管理服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "snap40",
+        "description": "AI医疗保健初创平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德心小宝",
+        "description": "AI无感监护产品提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "多唯阳光",
+        "description": "移动及家庭场景健康检测产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超空运动健康智能管理系统",
+        "description": "健康运动数据管理应用研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "三朵云彩",
+        "description": "提供健康管理大数据解决方案的公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "福来科技",
+        "description": "智能健康管理服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "竹信科技",
+        "description": "专注于智能个人健康产品的高科技创新型企业",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新窝健康",
+        "description": "家庭智能健康监护硬软件产品开发、运营销售的服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56847,12 +64093,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Southern Alliance Mining": {
     "description": "Southern Alliance Mining是马来西亚一家矿业服务商，专注于铁矿产品，主要从事铁矿石的勘探、开采和加工、供后续销售。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "桥沟矿业",
+        "description": "矿产开采服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "龙武矿业",
+        "description": "金矿铁矿采选服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ATLX",
+        "description": "美国矿产勘探和采矿公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "西藏海腾实业",
+        "description": "银铅锌矿勘探开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "禾瑞山矿业",
+        "description": "缅甸矿业公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中泰煤业",
+        "description": "矿产资源开采加工商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "360 Mining",
+        "description": "美国比特币矿业公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Richmont",
+        "description": "矿业开采及黄金生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "山西吕梁矿业",
+        "description": "铝矿开采商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Anglo American",
+        "description": "英国综合矿产开采商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56877,7 +64176,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "reebuild": {
     "description": "reebuild是一家建筑与房地产行业AI原生后台自动化平台，聚焦建筑科技（ConTech）领域，专注于用AI实现建筑公司与房地产开发商商业后台的自动化，致力于将发票审核、成本管理、材料追踪等行政流程数字化。公司主要产品为AI原生后台自动化软件，可将PDF、照片、扫描件、电子发票逐行读取并结构化，自动匹配送货单、发票与订单确认，主要应用于建筑企业与房地产开发商的成本控制及财务后台场景。",
@@ -56937,7 +64238,8 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "competitorStatus": "unavailable"
   },
   "Loops Smart AI": {
     "description": "Loops Smart AI是一家美国购物AI助手研发商，该公司提供了一个共享的智能层，整合了搜索、商品发现、购物助手、客户运营、商品信息完善和虚拟试穿功能，推动AI搜索、购物助手与零售数据互联。",
@@ -56948,8 +64250,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "BuyScout™",
+        "description": "场景购物AI商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "品答答",
+        "description": "AI购物助手",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Bd4travel",
+        "description": "旅行数据智能分析服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Active.ai",
+        "description": "新加坡智能虚拟对话助手研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Uniphore",
+        "description": "智能化客服服务平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Palona AI",
+        "description": "美国餐饮行业AI解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "商雀科技",
+        "description": "数字智能零售SaaS平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超嗨科技",
+        "description": "商超数字化转型解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "One Labs",
+        "description": "AI虚拟助手研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Angel.ai",
+        "description": "基于短信的数字个人助理服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56967,7 +64320,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Hedge Capital": {
     "description": "Hedge Capital是一家美国证券经纪交易商，主要提供股票、期权、交易所交易基金以及预测市场服务，以满足用户需求。",
@@ -56978,8 +64333,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Lombard Forte Securities",
+        "description": "阿联酋交易商间经纪服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Deutsche Boerse",
+        "description": "证券交易所",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ED＆F Man Capital Markets",
+        "description": "美国金融交易服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "港交所",
+        "description": "证券交易服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "米盟证券",
+        "description": "国际性互联网证券服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Citadel Securities",
+        "description": "美国交易行业技术提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "LibertyEx",
+        "description": "加密货币交易所",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Peter Elish",
+        "description": "美国证券服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "IG Group",
+        "description": "英国互联网券商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Flow Traders",
+        "description": "股票债券交易服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -56997,7 +64403,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "InterLogic": {
     "description": "InterLogic是美国一家控股服务提供商，依托旗下子公司，为工业、IoT、机器视觉用户提供工业边缘计算机业务。",
@@ -57008,8 +64416,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Oden Technologies",
+        "description": "制造数据分析服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "SB Technology",
+        "description": "日本IT服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Arrakis Technologies",
+        "description": "英国工业人工智能操作系统开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "杭州友机",
+        "description": "智能工业制造服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "北京云从科技",
+        "description": "人工智能科技服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新享科技",
+        "description": "制造业企业数字化转型升级解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "NetObjex",
+        "description": "数字资产运营管理服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Syook",
+        "description": "印度工业物联网解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华企探索",
+        "description": "人工智能科技研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "idc9000",
+        "description": "企业云服务方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57027,7 +64486,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "OnLogic": {
     "description": "OnLogic是美国一家工业PC制造商，采用按订单配置（BTO）模式，主打无风扇加固工业主机、边缘网关、工业触控一体机。",
@@ -57038,8 +64499,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Caracol",
+        "description": "意大利大型工业3D打印服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "杰赛电子",
+        "description": "印刷电路板设计制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "昆泰集成电路",
+        "description": "混合信号集成电路开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Renesas SP Drivers",
+        "description": "日本显示芯片技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "赛时达",
+        "description": "显示器研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "TRSG",
+        "description": "工业制造解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Freeform",
+        "description": "美国金属3D打印服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "诚亿自动化",
+        "description": "平板显示模组自动化组装及检测设备领域供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华杰智控",
+        "description": "工业自动化控制模块研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "凯德科技",
+        "description": "MFi电源及数据传输硬件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57057,12 +64569,14 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "江苏雅睿": {
     "description": "江苏雅睿是一家半导体材料研发商，核心产品瞄准先进制程与先进封装领域，主打金属前驱体材料、半导体光刻胶两大品类。",
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57087,7 +64601,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "路畅科技": {
     "description": "路畅科技是一家车载导航娱乐产品及系统研发生产商，公司集产品的研发、生产、销售及服务于一体，主要产品为汽车车载数码导航信息系统、数字化液晶仪表盘、行车记录仪、倒车后视辅助系统等。拥有基于WINCE、Android系统平台的畅新、畅安、畅云自主品牌系列产品、独具特色的北斗/GPS双模导航产品、自主车联网服务产品平台。",
@@ -57113,8 +64629,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "科维北斗",
+        "description": "车载多媒体导航产品制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "拓步电子",
+        "description": "车载导航设备生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海微科技",
+        "description": "车载智能设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天派电子",
+        "description": "车载智能产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "富徽汽车科技",
+        "description": "车载DVD导航产品制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智歌科技",
+        "description": "人车交互终端平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "合步科技",
+        "description": "车载娱乐导航设备提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蓝聪科技",
+        "description": "汽车领域硬软件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美行科技",
+        "description": "智能网联汽车软件产品供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "臻善智能",
+        "description": "车载多媒体导航系统开发方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 2556000000,
       "text": "约 25.56 亿元人民币",
@@ -57135,7 +64702,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "云蝶科技": {
     "description": "云蝶科技是一家企业和产业数字化转型服务提供商，聚焦数字化转型领域，致力于为用户提供核心算法、智能硬件、全场景应用大数据及人工智能技术产品与解决方案，赋能产业升级；同时专注于行业大模型与具身智能技术研发，推动千行百业数字化转型，主要产品包括\"行知\"大模型、RoboForge系统级具身大脑等，应用于教育、医疗、工业、政务等领域。",
@@ -57171,8 +64740,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "浩鲸科技",
+        "description": "数据智能服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "仙念仙人工智能",
+        "description": "AI驱动数字化转型解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蒙兴科技",
+        "description": "企业数字化解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ZNV力维",
+        "description": "AIT智能物联产品与方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "元知晟睿",
+        "description": "数据管理中台和技术研发平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "明略科技",
+        "description": "企业级数据智能应用软件提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "众安信科",
+        "description": "企业级AI解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚远网络",
+        "description": "智能制造及工业互联网整体解决方案商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "运通信息",
+        "description": "数字化解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深境智能",
+        "description": "智能服务解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57188,7 +64808,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "维他动力": {
     "description": "维他动力是一家消费级具身智能产品研发商，聚焦to C具身智能产品的研发，致力于打造具有开创性的机器人产品，为个人与家庭提供更智能、更便捷的生活服务。公司拥有软硬件全栈研发能力的团队，通过自研机器人本体、操作系统、AI小脑、AI大脑，打造户外、室内两大场景的智能机器人产品，完成自主移动和自主操作的AI技术落地及产品化",
@@ -57199,8 +64821,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "银河通用机器人",
+        "description": "具身多模态大模型通用机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云深处科技",
+        "description": "具身智能机器人研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "乐聚机器人",
+        "description": "高端智能人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "X-ORIGIN-AI",
+        "description": "具身智能陪伴机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "灵宇宙",
+        "description": "人机交互智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "傅利叶智能",
+        "description": "通用人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智元机器人",
+        "description": "具身智能机器人产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "帕西尼感知科技",
+        "description": "具身感知通用智能解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "松延动力",
+        "description": "人形机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "灵心巧手",
+        "description": "灵巧手和云端智脑具身智能平台研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 3300000000,
       "text": "约 33.00 亿元人民币",
@@ -57223,7 +64896,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "高维医药": {
     "description": "高维医药是一家高维生物学AI药物设计平台开发商，致力于打造高维生物学+AI药物设计平台，利用计算赋能传统药物研发，为神经退行性疾病、肿瘤等重大疾病提供创新药物解决方案。公司以高维生物学数据为基座，构建可计算、可预测、可验证的AI靶点发现系统，融合三大平台能力提升药物研发效率，目前已建立多条产品管线，数个研发项目推进至临床前阶段。",
@@ -57234,8 +64909,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "百图生科",
+        "description": "生命科学AI基础模型开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "自然常数",
+        "description": "AI制药研发决策服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "百曜科技",
+        "description": "原生AI虚拟细胞平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "复睿智能",
+        "description": "脑疾病早筛技术及产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "栈源医药",
+        "description": "生物计算大分子药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Xellar Biosystems",
+        "description": "AI药物发现平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "望石智慧",
+        "description": "人工智能驱动新药研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "英诺迈博",
+        "description": "AI制药工具平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "西湖欧米",
+        "description": "人工智能蛋白质组诊断服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艾凯生物",
+        "description": "AI驱动iPSC细胞治疗药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "南京华泰金斯瑞生物医药创业投资合伙企业（有限合伙）",
@@ -57256,7 +64982,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "臣博视": {
     "description": "臣博视是一家AI智能眼镜研发商，深耕智能视觉与AR智能硬件领域，打造了覆盖消费级智能音频眼镜、单目AR显示终端、双目空间计算眼镜的维耀系列全品类智能眼镜产品矩阵。公司自主掌握轻量化光学方案、空间感知交互、智能视觉渲染等核心技术，具备从光学设计、整机研发到规模量产的全链路能力，产品已广泛落地智慧办公、数字文旅、工业可视化等多个智能视觉应用场景，构建了G端行业定制、线下体验终端、线上品牌矩阵的全渠道业务体系。",
@@ -57267,8 +64995,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "戈拉西斯",
+        "description": "高端智能眼镜生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "镜道文化传播",
+        "description": "眼镜行业综合服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "法雷奥手表网",
+        "description": "时尚腕表品牌法雷奥的直销平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鹿可露可",
+        "description": "AI眼镜品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "GogglePal",
+        "description": "AR滑雪眼镜供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "SeeEase",
+        "description": "腕表奢品全链路一站式交易服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "时计宝",
+        "description": "手表生产及销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东莞购酷",
+        "description": "手表零售批发及软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "V视镜",
+        "description": "智能变焦眼镜及视力防控技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "威尔视",
+        "description": "接触镜设计加工商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "深圳友博私募股权投资基金管理有限公司"
@@ -57288,12 +65067,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "恒熠医疗": {
     "description": "恒熠医疗是一家眼视光服务提供商，主要从事青少年近视防控及视觉健康保障等业务，旗下拥有诊所和视光中心。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "惟视嘉眼科",
+        "description": "眼视光诊疗服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "北京茗视光眼科",
+        "description": "近视眼预防与治疗机构",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "盛来爱眼",
+        "description": "眼视光医疗服务连锁机构",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "视宁眼科",
+        "description": "眼科医院运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "兴齐眼科医院",
+        "description": "现代化眼科医院运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "武安爱眼综合门诊部",
+        "description": "眼科医院",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "润视眼科",
+        "description": "专业连锁眼科医院集团",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大连爱尔眼科",
+        "description": "眼科医疗服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奥理德视",
+        "description": "眼科治疗服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "光靓眼科",
+        "description": "眼科医院",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 120000000,
       "text": "约 1.20 亿元人民币",
@@ -57323,7 +65155,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "帝尔博格": {
     "description": "帝尔博格是一家重工业具身智能机器人研发商，立足重型工业智能制造领域，致力于数据“自感知、自决策、自验证、自学习、自适应”，围绕智能化设备级、系统级、产线级维度，打造柔性、多机协同制造的工作业态，为重工业数字化、智能化、无人化赋能。公司聚焦于工业智能化软硬件设计，开发了根植于行业特性的控制系统、视觉算法、多模态感知系统、数据优化算法等及数据中台，具备行业领先的中大型重工场景智能化解决方案设计、标品设计及专业技术能力。",
@@ -57334,8 +65168,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "昇视唯盛",
+        "description": "工业制造领域具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "行为智能",
+        "description": "工业机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海研自动化",
+        "description": "工业视觉与人工智能产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "知有无界",
+        "description": "工业具身智能技术及产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "库臂智能",
+        "description": "智能机械以及机器人研制商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "思来智造",
+        "description": "高速高精柔性制造系统供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "友机技术",
+        "description": "机床及工艺智能化技术服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "敏越科技",
+        "description": "工业具身智能焊接机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博信科技",
+        "description": "空中机器人自动化系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科新松",
+        "description": "工业场景具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57353,7 +65238,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "思敏威集成电路": {
     "description": "思敏威集成电路是一家AI推理架构平台解决方案提供商，专注存算融合3D异构集成及Chiplet互联技术，聚焦大模型Agent推理场景，致力于打造高效算力底座赋能终端智能；公司主要产品包括新一代HPU“青衡”AI推理架构平台解决方案，应用于AI PC、智能终端与边缘计算领域。",
@@ -57374,8 +65261,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "微路智能",
+        "description": "AI推理芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "淬思科技",
+        "description": "AI推理芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "元川微",
+        "description": "AI实时推理芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Acrab",
+        "description": "端侧Agentic AI计算平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "算苗科技",
+        "description": "3D架构AI算力芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "凌川科技",
+        "description": "AI视频算力芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "曦望Sunrise",
+        "description": "AI推理GPU芯片及全栈解决方案研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "燧原科技",
+        "description": "云端AI芯片与智算集群研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "此芯科技",
+        "description": "通用异构智能CPU芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "影微创新",
+        "description": "端侧AI芯片方案解决商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57391,7 +65329,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "若愚科技": {
     "description": "若愚科技是一家多模态大模型技术研发商，定位具身智能机器人大脑研发与应用，通过多垂直场景深度协同训练，提高具身智能机器人大脑的精细化、柔性化操作水平和泛化能力，并将具身智能机器人大脑应用于多种垂直场景。公司通过以自研的若愚九天多模态大模型为核心，整合具身感知、具身规划与具身执行三大模块，自主研发构建了智能交互体系，能够在复杂、动态的开放世界场景中实现类人化的任务处理，实现从感知到执行的端到端智能交互。",
@@ -57402,8 +65342,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Dexmal原力灵机",
+        "description": "通用具身大模型技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "千觉机器人",
+        "description": "机器人多模态触觉感知技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "模思智能",
+        "description": "情境智能多模态大模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科煜坤",
+        "description": "空间智能与机器人技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Om AI联汇",
+        "description": "端侧多模态大模型技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "江行智能",
+        "description": "物理AI技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亮源新创",
+        "description": "具身智能基础模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "行元知界",
+        "description": "机器人空间感知与世界模型算法服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智慧倍增机器人",
+        "description": "具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "风火轮萤图",
+        "description": "主动交互型具身智能大脑研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "信维通信"
@@ -57423,12 +65414,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "爱培科": {
     "description": "爱培科是一家智能影像硬件与车联网终端产品研发商，专注于智能行车记录仪、智能家居网络摄像机、智能门铃、AI智能行业导航平板、视频婴儿监视器、GPS导航设备等消费类智能硬件的软硬件设计与定制化量产，致力于以\"硬件+AI视觉感知+云平台\"的一体化能力成为全球智能影像硬件ODM/OEM隐形冠军。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "本安",
+        "description": "物联网智能硬件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "炽云科技",
+        "description": "车载HUD智能软硬件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海微科技",
+        "description": "车载智能设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "广电车盒子",
+        "description": "车联网智能硬件提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奥尼电子",
+        "description": "智能音视频设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "登虹科技",
+        "description": "智能视频整体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博泰车联",
+        "description": "综合车联网服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智歌科技",
+        "description": "人车交互终端平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鑫洋泉",
+        "description": "汽车电子影像系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智行光电",
+        "description": "智能驾驶车载影像模组研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57453,7 +65497,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中健永初（河南）建设实业": {
     "description": "中健永初（河南）建设实业是一家建设工程综合服务商，聚焦建设工程、医院管理、园区管理等领域，致力于提供相关综合服务；公司主要业务包括建设工程施工、医院管理、园区管理、建筑劳务、货物运输、养老服务、医疗管理及新能源技术研发等。",
@@ -57465,7 +65511,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57483,12 +65529,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "德壹医疗": {
     "description": "德壹医疗是一家AI大健康具身智能机器人研发商，聚焦人工智能算法、多模态AI技术、具身机器人系统、专病专科医学技术的研产销与服务培训，专注于开发Deep PT深度理疗大模型与具身智能机器人产品，致力于构建全品类AI健康具身智能机器人产品矩阵。公司产品包括热奈AI理疗机器人、AI远红外光艾灸机器人、AI氢氧水光机器人、AI冲击波理疗机器人，主要应用于医院康复理疗科、康复中心、中医门诊、美容康养机构等专业医疗机构和家庭。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "大医匠科技",
+        "description": "AI医康养理疗机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美央创新科技",
+        "description": "AI医疗机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瞳沐医疗",
+        "description": "眼科智能手术机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "微光芯能",
+        "description": "中医多模态端侧大模型产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "埃力智能",
+        "description": "医疗智能硬件研发及运动健康大数据服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "同心智医",
+        "description": "新一代AI脑科学诊疗平台开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安特易健康科技",
+        "description": "智能化远程康复系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "布恩科技",
+        "description": "脑电治疗设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "卓道医疗",
+        "description": "智能康复机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "右脑人工智能",
+        "description": "认知科学大模型与脑认知健康AI产品开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57528,7 +65627,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "纽徕科技": {
     "description": "纽徕科技是一家智能硬件与AI软件研发生产商，聚焦智能硬件、人工智能软件开发领域，致力于开发智能家庭消费设备与智能机器人相关产品；公司主要产品或服务包括智能家庭消费设备、照明器具、人工智能基础软件、虚拟现实设备，相关产品可应用于智能家居、智能机器人场景。",
@@ -57565,7 +65666,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57581,7 +65682,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "恒辉智能": {
     "description": "恒辉智能是一家软件信息技术服务商，聚焦信息技术领域，专注于软件开发、大数据相关业务；公司主要产品或服务包括技术开发、技术咨询、技术推广、工业工程设计、大数据服务与软件开发等，相关业务可应用于新能源汽车测试等相关领域。",
@@ -57618,7 +65721,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57634,7 +65737,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "智算芯片": {
     "description": "智算芯片是一家集成电路芯片研发销售商，聚焦集成电路芯片领域，致力于相关产品的研发、设计及销售；公司主要业务包括集成电路芯片及产品设计、制造、销售，还涉及人工智能相关技术应用。",
@@ -57646,7 +65751,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57664,7 +65769,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "梅兰日兰钠电": {
     "description": "梅兰日兰钠电是一家钠离子电池研发生产商，聚焦钠离子电池领域，专注于电池研发与生产业务；公司主要产品或服务包括钠离子电池、储能相关技术服务，产品可应用于储能、算力配套场景，同时开展新材料研发、输配电设备制造及相关技术进出口业务。",
@@ -57706,7 +65813,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57722,13 +65829,15 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "长沙千睿科技": {
     "description": "",
     "products": [],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57744,12 +65853,14 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "动力芯穹": {
     "description": "芯穹动力是一家AI算力全集成数字电源芯片研发商，聚焦AI芯片与高性能计算供电领域，专注于以全集成电压稳压器（FIVR）架构解决高算力场景的功耗、散热与瞬态响应瓶颈，致力于为AI加速卡与XPU提供高电流密度、低损耗的供电方案。",
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57774,7 +65885,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "中通亚太": {
     "description": "中通亚太是一家国际国内货物运输代理服务商，聚焦国际国内货物运输代理领域，致力于提供仓储、供应链管理等配套服务；公司主要提供货物运输代理、仓储、供应链管理、进出口、设备租赁等服务，兼营医疗器械、日用百货等销售及软件开发、物联网技术研发等业务。",
@@ -57785,8 +65898,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "通联智合",
+        "description": "陆路国际货物运输代理商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "极牛国际物流",
+        "description": "国际货物运输服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "京迅递",
+        "description": "供应链管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中启国际物流",
+        "description": "国际性货物运输及物流服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "壹斗米",
+        "description": "物流供应链管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华升供应链",
+        "description": "供应链管理服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中仁航运",
+        "description": "海上运输服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "连山泽",
+        "description": "供应链管理服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "北京飞捷腾达",
+        "description": "国际货物运输代理及技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "永海物流",
+        "description": "道路货运及物流服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57804,7 +65968,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "乔科科技": {
     "description": "乔科科技是一个智能共享售货机研发商，聚焦智能共享领域，致力于实现研发、生产、销售、运营一体化服务；公司主要产品或服务包括宣传机、蓝牙耳机、收银机、智云售货机等，主要应用于无人零售领域。",
@@ -57830,8 +65996,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "格畅文化科技",
+        "description": "无人智能设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "简巧科技",
+        "description": "自动售货机智能解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蜜纤荭",
+        "description": "自助售货机研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "神秘盒子",
+        "description": "无人零售机服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "普凯十八岁",
+        "description": "无人零售系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "小书童智能科技",
+        "description": "智能售货机运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蚂蚁盒子",
+        "description": "智能自动售货机研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云行智能",
+        "description": "自动售货机研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "玖羚智能",
+        "description": "酒店售货机等智能共享设备生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "简24",
+        "description": "24小时无人便利店品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57847,7 +66064,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "天易高新": {
     "description": "湘潭天易高新是一个园区管理与产业投资服务商，聚焦新兴产业板块，主攻新兴产业和股权投资；公司主要产品或服务包括园区管理、互联网数据服务、科技中介、创业空间等，主要应用于市政设施管理、污水处理等领域。",
@@ -57873,8 +66092,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "建投环保",
+        "description": "科技型综合环境服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "格威特环保",
+        "description": "环保建设投资运营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "重庆水务资产",
+        "description": "综合环保产业服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华宇辉煌",
+        "description": "综合型生态环保产业服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大众公用",
+        "description": "城市公用事业运营及创投服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "广业环保",
+        "description": "环境工程项目投资运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海江环保",
+        "description": "全产业链生态环境综合服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中电建环境",
+        "description": "环境建设综合服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "四川省生态环保集团",
+        "description": "生态环保综合服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新苏环保",
+        "description": "环保产业集团",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57890,7 +66160,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "微邻客": {
     "description": "微邻客是一家本地生活数字门店系统提供商，聚焦本地生活SaaS领域，专注于多端订单聚合、会员跨平台通兑、营销活动统一配置等商家数字化经营工具研发，致力于帮助商家打通外卖平台、团购平台、自营小程序、线下收银与微信视频号本地生活的\"内容种草—到店核销—会员沉淀\"经营闭环。公司主要产品包括微邻客数字门店系统、前端收银硬件与云端经营数据库，并为区域服务商协同工具预留接口，主要应用于餐饮零售、商超生鲜、商业服务等领域。",
@@ -57911,8 +66183,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "中翱集团",
+        "description": "本地生活数字化服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "RobustCRM",
+        "description": "门店服务号管理平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万富科技",
+        "description": "互联网研发项目提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "汇通数科",
+        "description": "全渠道智能零售云服务解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蜜丝谜管家",
+        "description": "美容商户门店管理APP",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "信用付",
+        "description": "同城消费移动应用开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "门庭管店",
+        "description": "美业运管SaaS系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "珊瑚虫云商平台",
+        "description": "O2O营销及运营管理系统服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "so品",
+        "description": "营销系统开发及运营推广平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "闪闪课堂",
+        "description": "亲子行业新零售方案服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57928,12 +66251,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "束研聚创": {
     "description": "束研聚创是一家中性束加热及核心辅助系统商业化服务商，专注于可控核聚变中性束加热及核心辅助系统的研发及商业化服务。公司具备五大实体专业测试平台，全面覆盖中性束加热、电子回旋加热、电磁诊断、密度诊断、特种高压电源、成套仪控六大业务的研发、标定与整机调试环节。打造\"研发-试制-集成-测试-交付\"一体化全闭环自研体系，持续强化成套工程交付能力，为国家能源自主战略落地提供硬件支撑。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "东昇聚变",
+        "description": "强磁场小型化聚变电站技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超磁新能",
+        "description": "强场高温超导磁体材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚合聚变",
+        "description": "FRC脉冲磁约束聚变装置研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瞬原科技",
+        "description": "聚变仿真底座研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "上海发电设备成套设计研究院",
+        "description": "发电设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "诺瓦聚变",
+        "description": "FRC-SMR小型模块化核聚变堆研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新恒基",
+        "description": "核电装备关键部件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科新机电",
+        "description": "压力容器及成套装置研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "欧核科技",
+        "description": "第四代固有安全小型模块化反应堆研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "上海电气",
+        "description": "工业级绿色智能系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "上海国投",
@@ -57961,12 +66337,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "追马网": {
     "description": "追马网是一家企业短视频与AI获客营销服务商，聚焦ToB高客单行业线上获客领域，专注于短视频代运营、AI搜索营销（GEO）及战略整合营销服务，致力于帮助传统企业实现简单、高效、低成本的精准引流获客。公司主要服务包括短视频全案运营、GEO搜索优化、品牌整合营销等，主要应用于工业品、制造业、机械设备、工程建材、招商加盟等领域。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "广州天拓",
+        "description": "移动互联网整合营销服务机构",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "傲星科技",
+        "description": "互联网数字营销服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Echomarketing",
+        "description": "整合营销服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "豌豆尖尖",
+        "description": "流量大数据运营服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "花朵科技",
+        "description": "互动营销服务公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "伍百里",
+        "description": "全网营销服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "图莳数字",
+        "description": "互联网整合营销服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "元燕网络",
+        "description": "网络流量运营与数字营销服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "迈微网络",
+        "description": "电商营销及代运营服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "泉美电子商务",
+        "description": "移动社交平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -57991,7 +66420,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "一兮生物": {
     "description": "一兮生物是一家合成生物学领域技术与产品研发商，聚焦合成生物学领域，致力于拓展人类食物来源的边界；公司主要产品或服务包括HMOs、基于糖类的替代蛋白、食品保鲜剂等长链糖类物质，在国内率先进行的HMO生物合成项目已实现产业化。",
@@ -58017,8 +66448,54 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Yali Bio雅礼生物",
+        "description": "美国人造脂肪产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "昌进生物",
+        "description": "新型微生物蛋白和生物合成蛋白研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天演益合",
+        "description": "基因工程生物合成技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "创构生物",
+        "description": "合成生物学产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云洛生物",
+        "description": "生物合成技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "猎境生物",
+        "description": "生物合成解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "益思特生物",
+        "description": "合成生物学特种油脂原料供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "eXoZymes",
+        "description": "AI增强酶无细胞生物制造平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "藻辰生物",
+        "description": "微藻合成生物学衍生品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58034,7 +66511,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中地数字": {
     "description": "中地数字是一家数字孪生技术及地理空间服务商，专注于数字孪生技术及地理空间领域，致力于提供相关技术服务；公司主要产品或服务包括软件开发、遥感应用、大数据、人工智能硬件、地质勘查、环境治理、智能预警系统等，主要应用于环保与工程、智慧城市、城建、水利等领域。",
@@ -58075,8 +66554,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "易利数科",
+        "description": "GIS系统研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "见山科技",
+        "description": "AI三维城市自动生成技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "孪数科技",
+        "description": "数字孪生解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "金奥和润",
+        "description": "国产数字孪生解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "达明科技",
+        "description": "公共安全智能化服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科云墨",
+        "description": "数字孪生及元宇宙技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "黑蚁科技",
+        "description": "空间智能技术与应用服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "朔方天城",
+        "description": "智慧城市解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "绘宇勘测",
+        "description": "智能勘测服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "方矩星辰",
+        "description": "三维空间相关人工智能研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58092,7 +66622,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中油天港机场高速加油站": {
     "description": "中油天港机场高速加油站是一个成品油零售服务商，聚焦成品油及相关商品销售领域，致力于为客户提供相关产品服务；公司主要产品或服务包括汽油、柴油、润滑油、副食、饮料、烟、汽车装潢用品等。",
@@ -58134,7 +66666,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58150,7 +66682,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "中电绿网": {
     "description": "中电绿网是一家智慧新能源科技研发商，聚焦新能源、电力行业，致力于实现新能源微电网、智能电网监测等相关产品的研发生产销售服务；公司主要产品包括新能源微电网、智能电网监测保护控制系统等，应用于智慧能源管理大数据领域。",
@@ -58171,8 +66705,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "奔流电力",
+        "description": "电网与能源智能化应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "知行能源",
+        "description": "智慧能源优化技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万克能源科技",
+        "description": "综合能源智慧运营服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "秦岭智联",
+        "description": "智慧能源物联网解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "浙达能源",
+        "description": "能源数字化服务运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国电华研",
+        "description": "智慧能源解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "创维互联",
+        "description": "新能源大数据智能运营管理平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "渤海新能",
+        "description": "智慧电网解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "盛隆电气",
+        "description": "智能电网及智慧能源管理服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新能量",
+        "description": "电力通信产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58188,7 +66773,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "中科星空": {
     "description": "中科星空是一家集成电路与微波元器件研发生产商，聚焦集成电路、半导体分立器件、电子元器件领域，致力于开展芯片与元器件的研发、制造及技术服务；公司主要产品或服务包括集成电路芯片、半导体分立器件、电子元器件、通信设备，配套提供相关技术开发与技术推广服务。",
@@ -58220,7 +66807,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58236,12 +66823,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "仪器无忧网": {
     "description": "仪速安科技是一家实验室数字化运维服务商，提供实验室仪器设备全方位技术服务。拥有六大服务板块，涵盖预防性维护、仪器维修、技术培训、实验室迁移等。擅长处理GC、HPLC、GC/MS等多种实验室仪器设备的问题，拥有多项原厂认证资格证书。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "微氪生物",
+        "description": "实验室用品集成供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "苏博泰克仪器",
+        "description": "实验室科学仪器研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "能讯",
+        "description": "实验室设备研发及综合服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "莱伯泰科",
+        "description": "实验室仪器及设备生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "上海溯测计量",
+        "description": "计量校准与检测设备提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大龙仪器",
+        "description": "实验室通用小型仪器设备供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "易科仪器",
+        "description": "精密科学仪器及实验室一体化自动设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "赛斯科技",
+        "description": "计量检测服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "广电计量",
+        "description": "计量检测服务及检测装备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东方中科",
+        "description": "测试技术及数字安全保密领域综合服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58266,7 +66906,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "伯为智能": {
     "description": "伯为智能是一家AOI镜头盖板智能检测设备研发商，聚焦视觉检测领域，致力于提供智能检测设备；公司主要产品包括AOI镜头盖板检测、字符缺陷检测等，应用于手机玻璃外观检测领域。",
@@ -58287,8 +66929,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "协尔智能光电",
+        "description": "智能光电设备制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "盛相科技",
+        "description": "工业级3D相机研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Sinntelligence",
+        "description": "工业AI视觉质检系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奈米科学",
+        "description": "检测设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "数量级",
+        "description": "工业安全智能检测产品组件及方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "微桥检测",
+        "description": "柔性OLED手机触控及显示功能智能检测设备供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鉴影光学",
+        "description": "视觉光学技术及产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "佳智彩",
+        "description": "LCD与OLED检测设备及解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "百通达",
+        "description": "工业解决方案集成商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智元拓目",
+        "description": "OCT工业检测设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58304,7 +66997,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "光函数科技": {
     "description": "光函数科技是一家工业过程智能监测和控制系统研发商，聚焦工业过程智能监测和控制系统领域，致力于实现相关系统研发目标；公司主要产品或服务包括光谱工业动态监控系统、手持式材料分析仪、快捷式材料检测设备等光电智能检测设备，主要应用于钢铁冶金、能源电力、煤炭采矿、环境监测等领域。",
@@ -58325,8 +67020,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "海明科技",
+        "description": "工业现场动态计量与控制系统研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科谱康",
+        "description": "光谱分析技术及设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华创电气",
+        "description": "电力系统自动化技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科利东方",
+        "description": "电力系统检测光电仪器生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智眸未来",
+        "description": "智能检测装备研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "佰多恩",
+        "description": "工业安全控制与传感技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "江苏迪泰克",
+        "description": "精密仪器制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科天立泰",
+        "description": "系统感知和数智化解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "工业过程模拟与优化研究所",
+        "description": "工业过程信息智能化服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "高视科",
+        "description": "精密仪器制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58342,12 +67088,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "华存电子": {
     "description": "华存电子是一家存储技术及存储硬件服务商，旗下产品包括PCIe Gen3，SATA Gen3，eMMC5.1，USB3.0等多代芯片。企业研发团队以闪存主控设计行业资深工程师为中心，具备完整的USB、eMMC、SATAIII SSD、PCIe Gen3 SSD主控硬件与固件自主设计能力与成功流片的量产经验。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "泽石科技",
+        "description": "SSD存储设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云海芯科",
+        "description": "数据存储解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Memblaze",
+        "description": "企业级NVMe SSD商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "特纳飞",
+        "description": "固态硬盘控制器整体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "忆芯科技",
+        "description": "企业级SSD主控芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "时创意",
+        "description": "存储芯片解决方案和定制化服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "忆卓电子",
+        "description": "国产存储芯片及模块研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "喻芯半导体",
+        "description": "存储芯片设计与存储模组产品开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "三地一芯",
+        "description": "存储主控芯片研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "德明利",
+        "description": "芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58387,7 +67186,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "博理科技": {
     "description": "博理科技是一家全产业链3D打印解决方案提供商，致力于以弹性体材料为核心的3D打印材料研发和3D打印产品的批量化制造。公司研发了HALS（Hindered Asynchronous Light Synthesis) 3D打印技术，该技术将打印速度提升至传统技术的20-100倍，为博理新材料实现3D打印产品的批量化制造提供了基础。公司基于该技术研发的3D打印终端，主要应用与医疗、消费、运动装备、教育、文创等领域。",
@@ -58398,8 +67199,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "杭州喜马拉雅",
+        "description": "3D打印设备及耗材研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "LuxCreo清锋科技",
+        "description": "聚合物3D打印解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "清锋科技",
+        "description": "聚合物3D打印解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华曙高科",
+        "description": "工业级3D打印装备及材料系统解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "远铸智能",
+        "description": "高性能材料3D打印设备供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "铼赛智能",
+        "description": "齿科3D打印综合解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "黑格科技",
+        "description": "3D打印高端光固化全栈技术应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚复科技",
+        "description": "3D打印材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "三帝科技",
+        "description": "3D打印装备与快速制造服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云兔科技",
+        "description": "全产业链3D打印解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58417,7 +67269,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "同芯创半导体": {
     "description": "同芯创半导体是一家半导体技术研发与芯片设计服务商，专注半导体技术的研发与应用服务。公司核心业务涵盖集成电路芯片设计及服务、电子专用材料研发、新兴能源技术研发，以及半导体器件、半导体专用设备、电子元器件的销售。",
@@ -58428,8 +67282,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "华弘智微",
+        "description": "电子元器件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新进芯微电子",
+        "description": "半导体集成电路及新型电子元器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国科光领",
+        "description": "光电子器件及集成电路芯片设计服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国曜芯（苏州）科技",
+        "description": "半导体元器件技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国开电路",
+        "description": "集成电路制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科飞龙",
+        "description": "集成电路相关产品生产研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "广东芯元半导体",
+        "description": "半导体及电子元器件制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宽东方微电子",
+        "description": "集成电路设计开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "四灵电子",
+        "description": "集成电路设计服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯辰半导体",
+        "description": "半导体光电芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58447,7 +67352,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "启灏医疗": {
     "description": "启灏医疗是一家耳鼻喉科医疗器械研销商，聚焦耳鼻喉科领域，致力于研发和生产更卓越的医疗产品，为造福患者而不懈努力；公司主要产品包括五官科微创伤高端植入介入医疗器械，覆盖有源手术设备、无源手术器械、植入类等五大产品线，围绕耳鼻喉科临床需求提供丰富的产品与解决方案。",
@@ -58478,8 +67385,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "赛诺微",
+        "description": "微创外科手术和肿瘤介入治疗器械研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "迈瑞医疗",
+        "description": "医疗设备解决方案供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "复星医药",
+        "description": "医药健康产业集团",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "狼和医疗",
+        "description": "医疗器械研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "诺美新创",
+        "description": "微创外科全方位诊疗服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博仕康",
+        "description": "精准微创外科医疗器械及设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "水木天蓬",
+        "description": "超声外科手术设备及耗材研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "卡尔史托斯",
+        "description": "内窥镜生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星辰海医疗",
+        "description": "内窥镜介入诊疗解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "沈大内窥镜",
+        "description": "医用内窥镜研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58495,7 +67453,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "商甲半导体": {
     "description": "商甲半导体是一家功率半导体设计研发商，聚焦功率半导体领域，专注于高性能功率半导体产品的研发、生产与销售，致力于为客户提供个性化解决方案；公司主要产品包括各类高性能MOSFET、SIC、IGBT、FRD、GaN产品，主要应用于工控、光伏、储能、家电、照明、5G通信、医疗、汽车等多个领域。",
@@ -58526,8 +67486,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "洪芯微",
+        "description": "先进功率半导体芯片器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑞元半导体",
+        "description": "高性能功率半导体研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东海半导体",
+        "description": "功率半导体产品与方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "汇芯半导体",
+        "description": "功率半导体产品提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "丽隽半导体",
+        "description": "功率半导体器件设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新硅能",
+        "description": "半导体功率器件及模块设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "尚阳通科技",
+        "description": "高端半导体功率器件芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "达新半导体",
+        "description": "半导体芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "尼博微电子",
+        "description": "半导体功率器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华羿微电子",
+        "description": "半导体功率器件设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58543,7 +67554,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "微晶聚合": {
     "description": "微晶聚合是一家集成电路技术服务商，聚焦集成电路领域，致力于技术服务与推广；公司主要提供技术开发、集成电路设计、制造等服务，应用于相关电子领域。",
@@ -58555,7 +67568,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58573,12 +67586,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "擎天智连": {
     "description": "擎天智连是一家智能化巡检解决方案提供商，专注于智能巡检机器人、四足机器狗、工业AI巡检系统研发、具身智能产教融合、租赁与服务以及具身智能全域应用场景落地，聚焦煤矿、电力、石油化工、工业园区、矿山、安防、水利教育、商演等场景，提供智能化巡检解决方案。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "矿航智能",
+        "description": "矿山具身智能机器人研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云深处科技",
+        "description": "具身智能机器人研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科开创",
+        "description": "人工智能及机器人研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "双良睿能",
+        "description": "具身智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "无穹创新",
+        "description": "全场景空间智能解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超能机器人",
+        "description": "军民两用机器人整机解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鲲鹏智能",
+        "description": "全栈自研能力机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "知有无界",
+        "description": "工业具身智能技术及产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华软股份",
+        "description": "无人机研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "飒沓机器人",
+        "description": "新能源运维建安智能机器人研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58603,7 +67669,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "政道光电": {
     "description": "政道光电是一家车载智能调光膜研发生产商，专注车载智能调光膜研发、生产与销售，凭借三态LC调光技术，实现“高透-低透-遮蔽”三态瞬时切换，解决新能源汽车天幕防晒隔热与隐私保护的核心痛点",
@@ -58614,8 +67682,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "智晶时代",
+        "description": "调光膜技术开发及应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "御光新材",
+        "description": "液晶薄膜和显示玻璃制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "京东方晟视",
+        "description": "智能玻璃产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "同辉新材",
+        "description": "调光产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "众智同辉",
+        "description": "调光玻璃和调光膜生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "烯宇新材",
+        "description": "纳米银材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "今蓝纳米",
+        "description": "纳米节能窗膜研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云传智联",
+        "description": "物联网传感器技术研发平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恒美光电",
+        "description": "显示光学材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宇隆光电",
+        "description": "液晶显示控制板和光学膜研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58633,7 +67752,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "星火辰光": {
     "description": "星火辰光是一家Micro-LED光互连芯片研发商，聚焦半导体芯片与光电互连技术领域，专注于基于Micro-LED的光互连芯片及相关解决方案研发，致力于为AI与高性能计算场景提供高速低功耗数据交换方案。公司主要产品为Micro-LED光互连芯片，主要应用于AI训练推理、高性能计算中芯片间、计算与存储间的短距高速数据互联。",
@@ -58645,7 +67766,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [
       "红杉中国"
@@ -58663,7 +67784,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "星能玄光": {
     "description": "星能玄光是一家可控核聚变技术研发应用服务商，致力于实现可控核聚变这一终极清洁能源的工程化与商业化应用。公司聚焦于场反磁镜（FRC）这一创新型线性聚变技术路径，旨在为全球能源变革提供一条更紧凑、成本更低且理论效率更高的解决方案。",
@@ -58674,8 +67797,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "瀚海聚能",
+        "description": "直线型可控核聚变整体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "未来聚变能源",
+        "description": "先进核能技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚变新能",
+        "description": "核聚变技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "曦融兆波",
+        "description": "核聚变辅助加热系统供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安东聚变",
+        "description": "可控核聚变商业化发电技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "First Light Fusion",
+        "description": "英国核聚变技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "竞界聚能",
+        "description": "核聚变技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Thea Energy",
+        "description": "美国仿星器聚变能源技术开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "贝塔聚变",
+        "description": "可控核聚变技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新烛时代",
+        "description": "AI赋能可控核聚变服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58693,12 +67867,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "晶至光电": {
     "description": "晶至光电是一家光电材料与器件研发生产商，公司以突破高端激光晶体材料及器件的“卡脖子”技术为目标，致力于实现半导体光刻、精密微加工等领域关键材料的国产化替代。公司主营产品涵盖磁光晶体（KTF、CeF₃）、深紫外非线性光学晶体（改良型BBO、CLBO）及高功率激光隔离器等，广泛应用于高功率激光系统、半导体光刻、EUV光源、激光检测、国防及新能源等领域。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "晶镓半导体",
+        "description": "氮化镓自支撑单晶衬底研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚合电光",
+        "description": "光通信材料与器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "晶众光电",
+        "description": "光电元器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中辉激光",
+        "description": "激光器研发和制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "源卓光电",
+        "description": "泛半导体光学设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "米蜂激光",
+        "description": "多波段超高性能光学薄膜及高功率激光设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "华工科技",
+        "description": "激光设备及光电器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "苏纳光电",
+        "description": "光通信芯片研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "大科激光",
+        "description": "光纤激光器及其核心器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "优众新材",
+        "description": "微纳器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58738,12 +67965,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "泛瑞新材": {
     "description": "泛瑞新材是一家软磁材料研发生产商，专注于软磁材料研发、生产和销售，通过自主研发形成了合金软磁、镍锌铁氧体、锰锌铁氧体以及金属粉末四大产品系列，产品广泛应用于AI服务器、汽车电子、消费电子、通信设备、光伏储能等领域。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "联丰磁业",
+        "description": "铁氧体软磁材料供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新莱福",
+        "description": "磁胶材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "新康达",
+        "description": "高性能软磁材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "春光磁电",
+        "description": "软磁铁氧体粉料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宁港永磁",
+        "description": "磁性材料及器件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云路股份",
+        "description": "非晶带材及相关制品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑞德磁电",
+        "description": "金属软磁粉芯系列产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "同创普润",
+        "description": "靶材关键原材料高纯金属材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "江顺新材",
+        "description": "磁性材料生产销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "迈泰克",
+        "description": "磁性材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58768,7 +68048,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "海问新材料": {
     "description": "海问新材料是一家耐压结构复合材料研发商，聚焦深海基建赛道，专注于复合材料耐压结构的研究、设计、制造和销售，拥有从产品设计、制造、测试到服役的完整复合材料技术解决方案；公司主要产品或服务包括覆盖深海、深地、深空等多个场景的高附加值材料产品，拥有自主知识产权的核心技术体系。",
@@ -58794,8 +68076,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "磁震科技",
+        "description": "复合材料结构设计商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中浮新材",
+        "description": "新型复合材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中物材料",
+        "description": "高性能复合材料研发及销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "力杨新材料",
+        "description": "AI复合材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "湍流电子",
+        "description": "功能性复合材料设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "梦克斯航空",
+        "description": "火箭复合材料整流罩研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博翔新材",
+        "description": "高性能碳化硅纤维及其复合材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "联科航空",
+        "description": "炭纤维复合材料供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "清融科技",
+        "description": "新型电介质复合材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "山科智镁",
+        "description": "高性能镁合金材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58811,7 +68144,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "猫员外": {
     "description": "猫员外是一家连锁酒馆品牌，以社区店为主力，辐射附近不同年龄段、收入水平的消费人群，切入高频次、强复购的日常饮酒场景，其中精酿啤酒、佐酒小吃全部自研自供。目前，猫员外辅以少部分洋酒、葡萄酒以及金汤力、长岛冰茶等常见鸡尾酒。小吃方面，店内主打毛豆、五香花生等中式小吃。",
@@ -58822,8 +68157,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "优布劳",
+        "description": "精酿啤酒供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "RISSE锐肆酒馆",
+        "description": "社交互动型酒馆运营商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "COMMUNE",
+        "description": "连锁餐酒吧品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "胡桃里音乐酒馆",
+        "description": "连锁酒吧餐厅品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Perrys",
+        "description": "连锁休闲都市酒吧品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "贰麻酒馆",
+        "description": "地方特色酒吧品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海伦司",
+        "description": "线下小酒馆连锁品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蒸汽熊精酿",
+        "description": "精酿啤酒品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "云雀精酿",
+        "description": "精酿啤酒供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "浪花鲜酿",
+        "description": "精酿啤酒品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58841,7 +68227,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "红星美凯龙": {
     "description": "红星美凯龙是一家家居互联网服务提供商，聚焦网络科技、计算机科技领域，从事电子商务（不含金融），销售家居用品等产品，拥有设计师智能管理及信息分享专利，提升管理效率与客户交互体验。",
@@ -58852,8 +68240,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "数夫软件",
+        "description": "家居行业管理软件提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "领盛",
+        "description": "电子商务整体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "优居",
+        "description": "互联网家装平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "映象堂设计",
+        "description": "家居产业综合服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "爱斯倍科技",
+        "description": "3D家装设计软件及AR家装APP研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "家+1",
+        "description": "人工智能设计顾问网站和家居综合服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "尚夏网络",
+        "description": "电商家具ERP",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "网商天下",
+        "description": "互联网营销服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "煜丰实业",
+        "description": "智能家居研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "左凡智能",
+        "description": "小空间定制家居产品提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58871,7 +68310,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "绿金人科技": {
     "description": "绿金人科技是一家橡胶制品及设备研发生产商，聚焦橡胶绿色循环和低碳加工技术领域，致力于高分子材料循环更绿色、加工更低碳，公司主要产品或服务包括橡胶制品及设备、新材料技术研发、专用设备制造和技术服务等，主要应用于橡胶加工制造领域。",
@@ -58897,8 +68338,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "华瑞纳",
+        "description": "环保高性能天然胶研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "研莱新材料",
+        "description": "新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "世睿科技",
+        "description": "特种橡胶制品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中宏环保",
+        "description": "废橡胶综合利用解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "润康科技",
+        "description": "橡胶制品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "通耀医疗",
+        "description": "橡胶制品生产销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚芳新材料",
+        "description": "高端树脂新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "易宝股份",
+        "description": "高分子材料产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "锦美材料",
+        "description": "合成材料生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "海恒纳米",
+        "description": "新材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58914,7 +68406,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "芯知微电子": {
     "description": "芯知微电子是一家集成电路芯片研发商，聚焦集成电路设计领域，致力于相关技术研发服务；公司主要业务包括集成电路设计、芯片设计及服务等，应用于科技相关领域。",
@@ -58925,8 +68419,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "智创芯微",
+        "description": "集成电路芯片设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "元启智能",
+        "description": "集成电路芯片设计生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "睿兴科技",
+        "description": "集成电路芯片设计及服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "模拟微电子",
+        "description": "集成电路芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "禾芯半导体",
+        "description": "集成电路芯片及产品设计生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "晋旗电子",
+        "description": "半导体芯片及半导体微电子产品设计研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "因梦控股",
+        "description": "集成电路芯片设计服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "青耘科技",
+        "description": "集成电路设计服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "京之映",
+        "description": "半导体芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "司南半导体",
+        "description": "集成电路芯片设计服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58944,7 +68489,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "芯辉词元": {
     "description": "芯辉词元是一家人工智能软件研发服务商，聚焦人工智能算法与应用软件开发领域，开展人工智能理论与算法软件开发、人工智能应用软件开发、人工智能行业应用系统集成、信息系统集成等业务。",
@@ -58955,8 +68502,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "星昂智能",
+        "description": "人工智能软件研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "阡视科技",
+        "description": "人工智能大模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深度内核",
+        "description": "人工智能应用软件开发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "比特奇迹",
+        "description": "人工智能软件开发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "汇亘智能科技（北京）",
+        "description": "人工智能软件研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚溪同驰科技",
+        "description": "人工智能应用软件开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中科盈腾",
+        "description": "AI技术研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "深古大数据",
+        "description": "人工智能技术服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "极致预见词元",
+        "description": "AI智能体解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "广智微芯",
+        "description": "AI技术及产品研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -58974,12 +68572,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "英伟芯科技": {
     "description": "英伟芯科技是一家光电集成和硅光解决方案提供商，专注于开发光互连（OIO）产品和红外探测器产品，致力于为数据中心光互连等领域提供高性能的光电集成和硅光解决方案。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "超吉芯科技",
+        "description": "硅光与薄膜铌酸锂光电芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "聚合电光",
+        "description": "光通信材料与器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "希烽光电",
+        "description": "硅基光电产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "南智芯材",
+        "description": "高性能光学晶体研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国镓半导体",
+        "description": "第三代半导体功率器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "罡丰科技",
+        "description": "第三代半导体材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "爱毕赛思",
+        "description": "高性能半导体光电子技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "浪潮华光",
+        "description": "光电子器件研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "国科天骥",
+        "description": "半导体光刻材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "质禾科技",
+        "description": "芯片集成光开关研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59004,12 +68655,65 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "菁科生物": {
     "description": "菁科生物是一家生物医药中间体制造商，公司集合成生物学研发与产业化为一体，专注于抗生素、抗病毒类核心中间体以及大健康类产品的研发及生产。公司主营业务生物医药中间体，采用生物和化学合成双平台，具备以下核心技术：在生物合成技术中，采用高通量筛选与改造体系相结合；在化学工业中，将QBD顶层设计、连续化生产和绿色化学结合。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "中源裕泽",
+        "description": "合成生物学研发应用服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "桦冠生物",
+        "description": "合成生物加绿色化学生产制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "利夫生物",
+        "description": "生物基材料及中间体研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "励合生物",
+        "description": "生物医药级绿色化学技术研发平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "清研生物",
+        "description": "高附加值产品合成技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "亿懿兴华",
+        "description": "合成生物技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "糖能科技",
+        "description": "生物基呋喃类新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "法莫西生物",
+        "description": "医药原料药及中间体研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "柏垠生物",
+        "description": "AI原生合成生物材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "惠利生物",
+        "description": "新一代合成生物学酶计算设计平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59034,7 +68738,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "虎一科技Typhur": {
     "description": "虎一科技Typhur是一家高端智能厨电产品开发商，专注智能厨具的研发与品牌打造，产品深受市场好评。",
@@ -59045,8 +68751,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "竣凯电器",
+        "description": "厨房电器和卫浴类产品解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "CIARRA",
+        "description": "跨境厨电品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奇厨电器",
+        "description": "家电销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "圆金谷",
+        "description": "智能产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宅公式",
+        "description": "线上卫浴商城",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "小圣卫浴",
+        "description": "热水卫浴产品生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "ALLDA熬乐多",
+        "description": "健康及生活家电品牌商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "及趣",
+        "description": "生活消费电商平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "纯米科技",
+        "description": "智能厨电家居产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "VEVA",
+        "description": "德国高端家电品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59064,12 +68821,65 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "融为科技": {
     "description": "融为科技是一家空天地海无线通信设备制造商，专注于飞行器用高端无线数据传输装备的研发和制造。公司已形成卫星地面站核心基带设备、卫星激光通信有效载荷、卫星微波通信有效载荷、数据链四条产品线。核心产品包括民用及商用航天、航空领域内的基带设备、卫星测控及数传特型地面站、激光通信设备及系统、星载微波测控通信设备、无人机数据链设备及系统、特型地面站设备及系统等。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "正成卫星",
+        "description": "卫星互联网解决方案服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蓝星光域",
+        "description": "全场景激光通信解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "京济通信",
+        "description": "宇航防务技术研发服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安迪科技",
+        "description": "VSAT卫星端到端解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "航天恒星",
+        "description": "卫星及通信设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宝通天宇",
+        "description": "通信雷达产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星展测控",
+        "description": "无人机系统和动中通解决方案商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星辰光电",
+        "description": "星间激光通信载荷供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "天际易达",
+        "description": "卫星通信设备研发供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "微纳星空",
+        "description": "商业卫星系统研制供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59124,7 +68934,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "西科冷链": {
     "description": "西科冷链是一家商用制冷制造商，集研发、生产、销售和服务于一体，主要产品为商用制冷展示柜，包括商超系列、便利店系列、冻品系列、饮品系列、乳品系列等。",
@@ -59160,8 +68972,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "海容冷链",
+        "description": "商用冷链设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "冰崎机电",
+        "description": "全系类制冰设备商用餐饮设备生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "澳柯玛",
+        "description": "制冷装备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "蒙菲机电",
+        "description": "制冷设备系统配件供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "怀峰科技",
+        "description": "饮品相关自动化设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "惠康科技",
+        "description": "制冷设备及周边产品研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艾美森",
+        "description": "制冷设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "美博新能源",
+        "description": "制冷设备生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "壹雪制冷",
+        "description": "高性价比商用制冷设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "奥达信",
+        "description": "制冷设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59177,7 +69040,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "西藏宜通智算科技": {
     "description": "西藏宜通智算科技是一家大数据服务提供商，聚焦大数据和人工智能领域，致力于提供大数据服务、人工智能公共数据平台等相关服务，主要应用于互联网和相关服务领域。",
@@ -59189,7 +69054,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59207,7 +69072,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "金琚生物": {
     "description": "金琚生物是一家干细胞球治疗药物研发生产商，聚焦干细胞治疗药物领域，专注干细胞球治疗药物研发与生产，致力于为重大疾病治疗提供解决方案；公司主要产品或服务包括干细胞球治疗药物、干细胞注射液，管线覆盖骨关节炎、心梗、心衰、肺动脉高压、医美、外科修复、抗衰老、阿尔兹海默等多个领域，以及相关产品，拥有干细胞球相关专利技术，正在开展多项IIT和IND临床研究。",
@@ -59283,8 +69150,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Mesoblast",
+        "description": "澳大利亚干细胞治疗产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "汉鼎医药",
+        "description": "多肽创新药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "时合生物",
+        "description": "个体化治疗技术和精准医疗技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "臻赫医药",
+        "description": "mRNA和含药生物材料技术研发研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "河络新图",
+        "description": "iPSC人造血液及细胞治疗平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "佳吾益",
+        "description": "真核单细胞靶药开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "茵冠生物",
+        "description": "干细胞创新药物及联合疗法开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "尚德药缘",
+        "description": "原创新药研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "血霁生物",
+        "description": "新型细胞疗法和干细胞医药研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "思德母生物医药",
+        "description": "外泌体创新药药物开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59300,7 +69218,9 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "领新博瑞": {
     "description": "领新博瑞是一家创新化学偶联细胞技术研发商，致力于创新化学偶联细胞技术在各类疾病治疗中的应用。公司正搭建偶联技术平台、细胞培养平台和创新靶点开发平台，通过高效、安全、工艺友好的偶联方案，实现多肽、抗体、细胞之间共价偶联。公司将在肿瘤、免疫系统疾病领域布局临床管线，降低患者和医保支付成本，提高治疗效果，改善患者生存质量。",
@@ -59311,8 +69231,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Sail Biomedicines",
+        "description": "体内编程RNA药物及体内CAR-T疗法开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "弼领生物",
+        "description": "创新纳米药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "瑞顺生物",
+        "description": "通用型DNT细胞药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "珺柏诺",
+        "description": "肿瘤诊断和治疗性新药产品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "恩凯赛药",
+        "description": "免疫细胞治疗创新技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "凯米生物",
+        "description": "先进免疫疗法开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "达冕生物",
+        "description": "新型肿瘤治疗性mRNA疫苗研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "茵冠生物",
+        "description": "干细胞创新药物及联合疗法开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艾凯生物",
+        "description": "AI驱动iPSC细胞治疗药物研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科境生物",
+        "description": "细胞药物开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59330,7 +69301,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Doctolib": {
     "description": "Doctolib是法国一家在线医生预约平台，主要提供在线医疗预约管理服务，用户每月支付订阅费用，以使用其软件。该公司的软件平台可以为医疗服务提供者安排就诊时间，为患者方便快捷预约医生。",
@@ -59341,8 +69314,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Carbon Health",
+        "description": "美国在线预约及护理服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Teladoc",
+        "description": "美国远程医疗平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Prixa",
+        "description": "印尼医疗保健服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "喜鹊医疗",
+        "description": "看病预约服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Babylon Health",
+        "description": "英国智能远程会诊服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Zava",
+        "description": "英国在线医疗服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Push Doctor",
+        "description": "英国线上医疗问诊服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "DocPlanner",
+        "description": "波兰在线医生预约平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Navia Life Care",
+        "description": "数字健康管理平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Micin",
+        "description": "远程医疗应用开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59360,12 +69384,14 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "GOFO": {
     "description": "GOFO是一家美国尾程快递服务商，该公司专注于提供物流链的“最后一公里”配送服务，以满足用户相关需求。",
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59390,7 +69416,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "Frazier Life Sciences": {
     "description": "Frazier Life Sciences是一家空白支票公司，目的是与一个或多个业务或实体进行合并、股份交换、资产收购、股份购买、重组或类似业务合并。",
@@ -59401,8 +69429,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "AFJKU",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "PCSC",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "GRAF.U",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "NNAGU",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "MACIU",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "CHEAU",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "DISTU",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "FORLU",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "SPKLU",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "CLBR.U",
+        "description": "空白支票公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59420,7 +69499,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Prolific Machines": {
     "description": "Prolific Machines是美国一家生物技术研发商，主打基于光遗传学的新一代生物制造Photomolecula平台，通过光线精准调控细胞基因表达，分离细胞生长阶段与蛋白表达阶段，提升单抗、双抗等复杂生物制剂产量与质量，配套模块化光照硬件、AI工艺优化工具，可直接加装于现有生物反应器，面向药企、CDMO提供细胞株开发服务与平台授权。",
@@ -59432,7 +69513,7 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59450,7 +69531,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "Flow Games": {
     "description": "Flow Games是一家移动游戏开发商，公司以超休闲（Hyper-casual）物理玩法为切入点，代表作《Smash Fest!》是一款\"瞄准—发射—破坏\"的物理射击手游——玩家用大炮把面前排列整齐的罐子全部砸碎，核心卖点是强物理反馈的破坏爽感+游乐场风格 3D 视觉。",
@@ -59480,12 +69563,13 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "Scuba": {
     "description": "Scuba是一家美国AI智能体共享上下文解决方案提供商，主要从事上下文引擎研发业务，为人类员工和AI智能体提供共享记忆层。",
     "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59510,7 +69594,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "none"
   },
   "WhiteLab Genomics": {
     "description": "WhiteLab Genomics是一家法国新药开发项目解决方案提供商，专注于医疗健康服务领域，致力于为药物研发等企业用户提供新药开发项目提供解决方案，包括RNA、DNA和细胞疗法。",
@@ -59542,7 +69628,8 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "Clueso": {
     "description": "Clueso是一家美国企业级智能体视频创作SaaS服务商，主要依托AI智能体实现产品演示与员工培训视频的全链路自动化生产，涵盖脚本撰写、录屏、剪辑、配音字幕及配套图文生成，其核心能力在于产品界面更新时自动同步修订历史视频，解决企业教程内容过时难题。",
@@ -59553,8 +69640,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "动画工场",
+        "description": "MG动画镜头模块化设计平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "拍了剪",
+        "description": "视频生产系统",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "GM Voices",
+        "description": "语音录制及语音品牌解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "鼎岳文化",
+        "description": "专业配音及音频制作服务提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "音频易",
+        "description": "配音行业SaaS服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Video dubber",
+        "description": "提供自动化在线配音服务的技术公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Voicery",
+        "description": "语音合成技术研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "愉阅joy-read",
+        "description": "数字媒体平台开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "声娱",
+        "description": "配音定制服务供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "怪物工场",
+        "description": "音频制作服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59572,7 +69710,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "Uvi": {
     "description": "Uvi是一家企业AI推理层基础设施提供商，聚焦企业AI智能体基础设施领域，专注于为企业AI代理提供结构化、决策感知的上下文层，致力于让智能体从\"摘要文档\"走向\"在企业系统内真正行动\"。公司主要产品为Decision Graph决策图谱及实时ETL基础设施，支持Claude、Gemini、GPT等多模型，主要应用于企业工程与运营、客服支持、新员工培训等场景。",
@@ -59622,7 +69762,8 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "competitorStatus": "unavailable"
   },
   "Skeleton": {
     "description": "Skeleton是一家爱沙尼亚超级电容器制造商，该款超级电池无需普通电池的冷却系统，从而避免尺寸过大，可以大大降低成本，并延长该系统的使用寿命。该款超级电池本质上可以充当充放电高峰期时的缓冲器。",
@@ -59633,8 +69774,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "博时超电",
+        "description": "快速充电超级电容器研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Rincell",
+        "description": "美国化学电池生产制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "NAWA Technologies",
+        "description": "能源存储系统制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "A123 Systems",
+        "description": "美国电动汽车电池制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Sevcon",
+        "description": "英国新能源汽车控制装置与电池充电器生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "倍特力电池",
+        "description": "充电电池制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "南都电池",
+        "description": "动力蓄电池生产销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Enevate",
+        "description": "美国锂电池研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "济宁润良",
+        "description": "锂离子电池研发研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Amprius",
+        "description": "美国锂离子电池研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59652,7 +69844,9 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "ZO Skin Health": {
     "description": "ZO Skin Health是一个加州医学护肤品牌，ZO创新的护肤方案设计是基于前沿的皮肤科学研究以及生物工程技术发展而来的，其方案弥合了皮肤诊疗和日常护理之间的鸿沟。其产品共分为抗老、祛痘、改善红血丝、防晒、补水、提亮肤色、敏感肌几大系列。",
@@ -59663,8 +69857,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "Obagi Medical Products",
+        "description": "加拿大抗衰老护肤品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "4.5.6 Skin",
+        "description": "法国护肤品品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "普美娜",
+        "description": "护肤品牌研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Aoyama",
+        "description": "美容护肤品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "壹知肤",
+        "description": "护肤品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Ci:z Holdings",
+        "description": "日本医学美容药妆品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Rasi成分实验室",
+        "description": "护肤品品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Filorga",
+        "description": "法国护肤品业务",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "东南西贝",
+        "description": "高端化妆品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "UPLANTE",
+        "description": "仿生医美护肤品牌",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59682,13 +69927,66 @@ window.FINANCING_COMPANY_PROFILES = {
     ],
     "status": "available",
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "传音控股": {
     "description": "传音控股致力于成为新兴市场消费者最喜爱的智能终端产品和移动互联服务提供商。自公司成立以来，传音一直着力为用户提供优质的以手机为核心的多品牌智能终端，并基于自主研发的智能终端操作系统和流量入口，为用户提供移动互联网服务。传音旗下拥有新兴市场知名手机品牌TECNO、itel及Infinix，还包括数码配件品牌oraimo、家用电器品牌Syinix以及售后服务品牌Carlcare。",
     "products": [],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "启明信息",
+        "description": "汽车管理软件与电子产品开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Testin",
+        "description": "人工智能企业服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "范式智能",
+        "description": "企业级人工智能解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "微软",
+        "description": "计算机软件提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星环科技",
+        "description": "大数据基础软件平台供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Neuro",
+        "description": "全栈AI云及MLOps解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "IBM",
+        "description": "美国信息技术和业务解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "宇信科技",
+        "description": "银行IT解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "AWS",
+        "description": "云计算服务平台",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Valohai",
+        "description": "芬兰机器学习解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 59564516501,
       "text": "约 595.65 亿元人民币",
@@ -59709,12 +70007,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "诺合键维": {
     "description": "诺合键维是一家混合键合设备研发生产商，主要从事混合键合设备的研发、生产、销售及服务，其产品在SoC（系统级芯片）、HBM（高带宽存储器）、Chiplet（芯粒）等3D集成领域被广泛应用。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "芯泉半导体",
+        "description": "半导体材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "芯慧联新",
+        "description": "半导体键合设备研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "博志金钻",
+        "description": "芯片散热封装材料与器件研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "触点智能",
+        "description": "半导体先进封装设备研发制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "赛丽科技",
+        "description": "无晶圆芯片设计服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "晶铁半导体",
+        "description": "铁电存储器和系统芯片研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "集迈科",
+        "description": "集成电路晶圆和微系统集成代工服务制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "思丰可",
+        "description": "硅基光电混合异构AI芯片研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "吾拾微电子",
+        "description": "晶圆级临时键合解键合设备研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "超晶科技",
+        "description": "化合物半导体材料与光电器件生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": {
       "amountCny": 405000000,
       "text": "约 4.05 亿元人民币",
@@ -59744,7 +70095,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "新万兴复材": {
     "description": "新万兴复材是一家航空复合材料研发生产商，聚焦航空、能源、汽车等领域，专注于树脂基体、预浸料和复合材料制品的研发生产；公司主要产品或服务包括树脂基体、预浸料和复合材料制品，主要应用于民用飞机、能源、汽车、交通运输、医疗器械、高档体育休闲用品等领域。",
@@ -59760,8 +70113,59 @@ window.FINANCING_COMPANY_PROFILES = {
         "sourceUrl": "https://vip.xiniudata.com"
       }
     ],
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "怡鑫碳纤维",
+        "description": "复合材料研发销售商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "中复碳芯",
+        "description": "高端拉挤复合材料制品研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "星寻智能",
+        "description": "复合材料生产装备和航空复合材料模具生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "朗昇高材",
+        "description": "环氧片状模塑料ESMC高新材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "万创新材",
+        "description": "高性能纤维及复合材料研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "信达航科",
+        "description": "碳化硅纤维及高性能复合材料及相关制品供应商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "领科材料",
+        "description": "先进热塑性材料制造商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "艾合新材",
+        "description": "高性能纤维及复合材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "科大志茂",
+        "description": "高分子复合材料研发生产商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "安飞三维",
+        "description": "三维复合材料高科技公司",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59777,12 +70181,65 @@ window.FINANCING_COMPANY_PROFILES = {
         "url": "https://vip.xiniudata.com"
       }
     ],
-    "status": "available"
+    "status": "available",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "元环智能": {
     "description": "元环智能是一家AI元模型研发商，专注AI for AI与AI for Science，探索人工智能底层规律，构建可生成AI模型架构与超参数的元模型；公司核心产品是元模型，能预判模型表现、判断适配场景，致力于推动AI技术发展。",
-    "competitors": [],
-    "competitorBasis": "烯牛数据竞品参考；按数据库关联列示，未经独立竞争关系核验",
+    "competitors": [
+      {
+        "name": "武水泰科",
+        "description": "人工智能涉水领域算法与模型服务商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "OpenRouter",
+        "description": "美国AI模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "话视智能",
+        "description": "AI大模型解决方案提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "联续边界",
+        "description": "人工智能算法与模型研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "CTGT",
+        "description": "AI模型构建商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "智衍慧生",
+        "description": "开源模型后训练与AI Agent研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "oneclick.ai",
+        "description": "自动化人工智能平台研发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Vectorly LLC",
+        "description": "人工智能数据生产力平台提供商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "Core Automation",
+        "description": "美国AI模型开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      },
+      {
+        "name": "HydroX AI",
+        "description": "大模型安全和安全人工智能技术开发商",
+        "sourceUrl": "https://vip.xiniudata.com"
+      }
+    ],
+    "competitorBasis": "烯牛数据市场与行业分析；按数据库关联列示，未经独立竞争关系核验",
     "valuation": null,
     "leadInvestors": [],
     "leadInvestorBasis": "仅按本次融资事件原文明确标注的领投角色列示",
@@ -59822,7 +70279,9 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司简介中的明确产品表述提取"
+    "productsBasis": "根据烯牛公司简介中的明确产品表述提取",
+    "marketFetchedAt": "2026-11-05T15:44:57+08:00",
+    "competitorStatus": "available"
   },
   "莫森泰克": {
     "description": "莫森泰克是一家汽车智能开闭系统研发制造商，聚焦汽车零部件领域，专注于以汽车天窗、玻璃升降器等关键开闭件为核心产品，构建涵盖汽车电子控制单元（ECU）全流程开发的技术体系，拥有从核心算法设计到软硬件集成开发的全栈技术能力，致力于实现天窗智能控制系统与模块化升降结构的自主化研发制造，成为国内领先的汽车智能开闭系统解决方案供应商。",
@@ -59857,7 +70316,8 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "天喻信息": {
     "description": "天喻信息是一家金融智能卡与数据安全产品提供商，聚焦金融科技与通信物联网领域，专注于为金融、通信、政府公共事业及垂直行业提供智能卡、智能终端、平台系统及综合解决方案，致力于\"用科技构造安全智慧的数字世界\"。公司主营金融行业业务、通信与物联网行业业务及国际业务。",
@@ -59892,7 +70352,8 @@ window.FINANCING_COMPANY_PROFILES = {
       }
     ],
     "productsFetchedAt": "2026-11-05T14:02:10+08:00",
-    "productsBasis": "根据烯牛公司一句话简介提炼主营方向"
+    "productsBasis": "根据烯牛公司一句话简介提炼主营方向",
+    "competitorStatus": "unavailable"
   },
   "旷维炬锐": {
     "description": "旷维炬锐是一家端侧AI开发平台与软硬件方案供应商，专注于打造数据采集、算控设备、接入平台为一体的全套AIoT服务体系，致力于用AI模型推动千行百业数智化转型。公司已经拥有自研高性能计算能力的边缘计算终端以及800+高精度模型的行业模型库。能够为各行业客户自动生成适用于具体业务场景的定制模型，从模型调试、验证、优化仅需一周即可投入使用，实现大幅降低成本、提升效率的目标。",
