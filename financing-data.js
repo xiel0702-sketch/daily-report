@@ -55,5 +55,85 @@ const FINANCING_DATA = [
   {
     "date": "2026-10-21",
     "file": "data/financings/2026-10-21.json"
+  },
+  {
+    "date": "2026-10-20",
+    "file": "data/financings/2026-10-20.json"
+  },
+  {
+    "date": "2026-10-19",
+    "file": "data/financings/2026-10-19.json"
+  },
+  {
+    "date": "2026-10-18",
+    "file": "data/financings/2026-10-18.json"
+  },
+  {
+    "date": "2026-10-17",
+    "file": "data/financings/2026-10-17.json"
+  },
+  {
+    "date": "2026-10-16",
+    "file": "data/financings/2026-10-16.json"
+  },
+  {
+    "date": "2026-10-15",
+    "file": "data/financings/2026-10-15.json"
+  },
+  {
+    "date": "2026-10-14",
+    "file": "data/financings/2026-10-14.json"
+  },
+  {
+    "date": "2026-10-13",
+    "file": "data/financings/2026-10-13.json"
+  },
+  {
+    "date": "2026-10-12",
+    "file": "data/financings/2026-10-12.json"
+  },
+  {
+    "date": "2026-10-11",
+    "file": "data/financings/2026-10-11.json"
+  },
+  {
+    "date": "2026-10-10",
+    "file": "data/financings/2026-10-10.json"
+  },
+  {
+    "date": "2026-10-09",
+    "file": "data/financings/2026-10-09.json"
+  },
+  {
+    "date": "2026-10-08",
+    "file": "data/financings/2026-10-08.json"
+  },
+  {
+    "date": "2026-10-07",
+    "file": "data/financings/2026-10-07.json"
+  },
+  {
+    "date": "2026-10-06",
+    "file": "data/financings/2026-10-06.json"
+  },
+  {
+    "date": "2026-10-05",
+    "file": "data/financings/2026-10-05.json"
+  },
+  {
+    "date": "2026-10-04",
+    "file": "data/financings/2026-10-04.json"
+  },
+  {
+    "date": "2026-10-03",
+    "file": "data/financings/2026-10-03.json"
+  },
+  {
+    "date": "2026-10-02",
+    "file": "data/financings/2026-10-02.json"
+  },
+  {
+    "date": "2026-10-01",
+    "file": "data/financings/2026-10-01.json"
   }
 ];
