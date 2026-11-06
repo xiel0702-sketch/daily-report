@@ -1,0 +1,744 @@
+{
+  "schemaVersion": 1,
+  "id": "mpv0jfejdzdm2336jgtyj9tde",
+  "status": "available",
+  "provenance": "source-public-page",
+  "sourceURL": "https://reflection.ai/blog/open-model-safety-lessons",
+  "fetchedAt": "2026-11-06T01:10:53.954305Z",
+  "label": "正文 · 原文来源",
+  "notice": "AI HOT 页面未提供完整正文，以下内容抓取自原始来源。",
+  "topics": [],
+  "tags": [],
+  "languages": {
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Open model safety: lessons from training and evaluating Beam",
+          "inlines": [
+            {
+              "text": "Open model safety: lessons from training and evaluating Beam"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "November 5, 20267 min read",
+          "inlines": [
+            {
+              "text": "November 5, 20267 min read"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Table of contentsKey Takeaways Training for capability and alignmentDesigning safety evaluations for open modelsEvaluating prompt injection attacks Assessing systemic risks through internal and independent testingAdvancing safety in the open ecosystem",
+          "inlines": [
+            {
+              "text": "Table of contents"
+            },
+            {
+              "href": "https://reflection.ai/blog/open-model-safety-lessons#key-takeaways",
+              "text": "Key Takeaways "
+            },
+            {
+              "href": "https://reflection.ai/blog/open-model-safety-lessons#training-for-capability-and-alignment",
+              "text": "Training for capability and alignment"
+            },
+            {
+              "href": "https://reflection.ai/blog/open-model-safety-lessons#designing-safety-evaluations-for-open-models",
+              "text": "Designing safety evaluations for open models"
+            },
+            {
+              "href": "https://reflection.ai/blog/open-model-safety-lessons#evaluating-prompt-injection-attacks",
+              "text": "Evaluating prompt injection attacks "
+            },
+            {
+              "href": "https://reflection.ai/blog/open-model-safety-lessons#assessing-systemic-risks-through-internal-and-independent-testing",
+              "text": "Assessing systemic risks through internal and independent testing"
+            },
+            {
+              "href": "https://reflection.ai/blog/open-model-safety-lessons#advancing-safety-in-the-open-ecosystem",
+              "text": "Advancing safety in the open ecosystem"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Key Takeaways",
+          "inlines": [
+            {
+              "text": "Key Takeaways"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Beam optimizes the safety-utility tradeoff at the frontier. The model achieves high rates of refusal on dangerous requests while maintaining compliance on legitimate ones, demonstrating that open models can simultaneously maximize both safety and helpfulness without sacrificing either."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Through Project Iris, Reflection is releasing open-source safety research, evaluation artifacts (e.g. Iris Safety Evaluations), and tools that researchers, developers, policymakers, and enterprises can freely use and build upon, widening access to safety best practices and knowledge."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Building safe open models requires a thoughtful approach to data, a deep understanding of how to evaluate potential harms, and the tools to mitigate them. For Beam, Reflection’s first open-weight model, we prioritized safety training to reduce harmful assistance while preserving useful responses to legitimate requests, including responses involving sensitive subjects.",
+          "inlines": [
+            {
+              "text": "Building safe open models requires a thoughtful approach to data, a deep understanding of how to evaluate potential harms, and the tools to mitigate them. For "
+            },
+            {
+              "href": "https://reflection.ai/beam-model-card",
+              "text": "Beam"
+            },
+            {
+              "text": ", Reflection’s first open-weight model, we prioritized safety training to reduce harmful assistance while preserving useful responses to legitimate requests, including responses involving sensitive subjects."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Project Iris is our initiative to build an ecosystem around safety research, benchmarks, and mitigations openly – giving researchers, developers, and policymakers practical ways to assess model safety and examine the standards behind it.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Project Iris"
+            },
+            {
+              "text": " is our initiative to build an ecosystem around safety research, benchmarks, and mitigations openly – giving researchers, developers, and policymakers practical ways to assess model safety and examine the standards behind it."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "We evaluated Beam using"
+                },
+                {
+                  "bold": true,
+                  "text": " Iris Safety Evaluations"
+                },
+                {
+                  "text": " (ISE), a benchmark we developed to test whether a model’s responses align with our safety policy across harm categories including chemical, biological, radiological and nuclear weapons, cyber offense, self-harm, violence, fraud, and privacy. By sharing these evaluations, we aim to help others identify gaps in their own models and guide model safety training."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "For open -weight models, refusal behavior is only one part of the picture, as safeguards can be modified or removed after release. Our "
+                },
+                {
+                  "href": "https://reflection.ai/safety",
+                  "bold": true,
+                  "text": "Open Safety Framework"
+                },
+                {
+                  "text": " (OSF) therefore assesses whether a model’s underlying capabilities could meaningfully increase risk, such as assisting biological weapons development, beyond what comparable publicly available models already enable."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We assess these properties separately. ISE measures whether a model follows our safety policy; OSF assesses the risks posed by its capabilities. A model may attempt to fulfill a harmful request without the capability to succeed, or possess a dangerous capability while refusing to use it. Both assessments are necessary to understand model safety.",
+          "inlines": [
+            {
+              "text": "We assess these properties separately. ISE measures whether a model follows our safety policy; OSF assesses the risks posed by its capabilities. A model may attempt to fulfill a harmful request without the capability to succeed, or possess a dangerous capability while refusing to use it. Both assessments are necessary to understand model safety."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our evaluations place Beam among the safest open-weight models available, with particularly strong results in declining harmful assistance while remaining helpful.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Our evaluations place Beam among the safest open-weight models available, with particularly strong results in declining harmful assistance while remaining helpful."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Safety and helpfulness: Beam sits on the observed Pareto frontier, balancing refusals on harmful requests while still complying on harmless ones."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Harmful requests: Beam declines harmful assistance more than all other Western and Chinese open-weight models tested."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Cyber capability: Beam outperformed every Western open-weight model tested on Irregular’s cyber capability evaluations and scores 34% on Artificial Analysis’ Cyber Index."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this post, we share the training methods behind these results and findings from our evaluations. For the full methodology and results, read the Beam Safety Technical Report.",
+          "inlines": [
+            {
+              "text": "In this post, we share the training methods behind these results and findings from our evaluations. For the full methodology and results, read the "
+            },
+            {
+              "href": "https://reflection.ai/beam-safety-report",
+              "text": "Beam Safety Technical Report"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Training for capability and alignment",
+          "inlines": [
+            {
+              "text": "Training for capability and alignment"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Our safety approach combines pretraining data filtering with dedicated safety post-training. We trained two teachers: one focused on large-scale capability development through reinforcement learning (RL), and the second dedicated to safety and alignment. We trained the safety-alignment teacher from Beam’s pretrained checkpoint using a separate supervised fine-tuning and RL pipeline, on data specifically targeting the principles by which the model should abide.",
+          "inlines": [
+            {
+              "text": "Our safety approach combines pretraining data filtering with dedicated safety post-training. We trained two teachers: one focused on large-scale capability development through reinforcement learning (RL), and the second dedicated to safety and alignment. We trained the safety-alignment teacher from Beam’s pretrained checkpoint using a separate supervised fine-tuning and RL pipeline, on data specifically targeting the principles by which the model should abide."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We then combined their capabilities in Beam through multi-teacher on-policy distillation (MOPD), training it to preserve strong performance while refusing harmful assistance and remaining helpful on legitimate requests.",
+          "inlines": [
+            {
+              "text": "We then combined their capabilities in Beam through multi-teacher on-policy distillation (MOPD), training it to preserve strong performance while refusing harmful assistance and remaining helpful on legitimate requests."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We removed duplicate and near-duplicate sequences to reduce memorization risks and applied automated filters across pretraining data to remove not-safe-for-work content and scrub sensitive personal information. We plan for future filtering to target specific harms more directly.",
+          "inlines": [
+            {
+              "text": "We removed duplicate and near-duplicate sequences to reduce memorization risks and applied automated filters across pretraining data to remove not-safe-for-work content and scrub sensitive personal information. We plan for future filtering to target specific harms more directly."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Rather than handing the model a rigid set of rules to follow during conversations, we trained it to internalize and reason through safety principles. Following deliberative alignment, we generated candidate responses with the policy in the prompt, discarded the ones that complied with harmful requests or refused benign ones, then rewrote the survivors so the reasoning reads as general deliberation rather than recitation. We then removed the policy from training prompts.",
+          "inlines": [
+            {
+              "text": "Rather than handing the model a rigid set of rules to follow during conversations, we trained it to internalize and reason through safety principles. Following "
+            },
+            {
+              "href": "https://arxiv.org/abs/2412.16339",
+              "text": "deliberative alignment"
+            },
+            {
+              "text": ", we generated candidate responses with the policy in the prompt, discarded the ones that complied with harmful requests or refused benign ones, then rewrote the survivors so the reasoning reads as general deliberation rather than recitation. We then removed the policy from training prompts."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Across successive rounds of training, we tested for harmful responses and over-refusals, adding successful attacks to the next round’s training data. We included benign requests that sounded suspicious to deliberately reduce unnecessary refusals. For jailbreak and agentic training, we combined in-house red-teaming, human jailbreak data from vendors, and synthetic data from our partner, Gray Swan, covering prompt injection and dangerous tool calls.",
+          "inlines": [
+            {
+              "text": "Across successive rounds of training, we tested for harmful responses and over-refusals, adding successful attacks to the next round’s training data. We included benign requests that sounded suspicious to deliberately reduce unnecessary refusals. For jailbreak and agentic training, we combined in-house red-teaming, human jailbreak data from vendors, and synthetic data from our partner, Gray Swan, covering prompt injection and dangerous tool calls."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 2: This figure illustrates the task category distribution in the Beam safety reinforcement learning data.",
+          "inlines": [
+            {
+              "text": "Figure 2: This figure illustrates the task category distribution in the Beam safety reinforcement learning data."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We embedded this behavior through RL in the safety and alignment teacher, using a mix of single-turn, multi-turn, jailbreak, and agentic tool-use tasks across every harm category. A context-aware judge provided rewards using information specific to each task: prior conversation turns for multi-turn tasks, the original harmful intent for jailbreaks, and both prior turns and the unsafe action for agentic tasks. The teacher was rewarded for refusing harmful requests and penalized for incorrectly refusing safe ones.",
+          "inlines": [
+            {
+              "text": "We embedded this behavior through RL in the safety and alignment teacher, using a mix of single-turn, multi-turn, jailbreak, and agentic tool-use tasks across every harm category. A context-aware judge provided rewards using information specific to each task: prior conversation turns for multi-turn tasks, the original harmful intent for jailbreaks, and both prior turns and the unsafe action for agentic tasks. The teacher was rewarded for refusing harmful requests and penalized for incorrectly refusing safe ones."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Early trials also showed how model capacity affects this balance. Increasing the safety and alignment teacher from 100B to 501B parameters, while holding the training data and recipe fixed, reduced over-refusal by 48.7% relative – alongside a 3.1% decrease in the harmful-request pass rate. These results suggest that greater capacity can help a model distinguish permissible requests from harmful ones, improving helpfulness under the same safety-training setup.",
+          "inlines": [
+            {
+              "text": "Early trials also showed how model capacity affects this balance. Increasing the safety and alignment teacher from 100B to 501B parameters, while holding the training data and recipe fixed, reduced over-refusal by 48.7% relative – alongside a 3.1% decrease in the harmful-request pass rate. These results suggest that greater capacity can help a model distinguish permissible requests from harmful ones, improving helpfulness under the same safety-training setup."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Designing safety evaluations for open models",
+          "inlines": [
+            {
+              "text": "Designing safety evaluations for open models"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We built Iris Safety Evaluations (ISE), a set of safety benchmarks, to guide training and assess safety and usefulness before release. Public safety evaluations did not provide the coverage we needed to test whether safety boundaries hold across harm categories in realistic contexts, such as in adversarial and agentic settings.",
+          "inlines": [
+            {
+              "text": "We built Iris Safety Evaluations (ISE), a set of safety benchmarks, to guide training and assess safety and usefulness before release. Public safety evaluations did not provide the coverage we needed to test whether safety boundaries hold across harm categories in realistic contexts, such as in adversarial and agentic settings."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 3: This benchmark table shows that across critical risk topics—cyber offense, chemical, biological, and radiological/nuclear—which we evaluated with Iris Safety Evaluations (ISE), Beam has higher refusal rates than leading Western and Chinese open models.",
+          "inlines": [
+            {
+              "text": "Figure 3: This benchmark table shows that across critical risk topics—cyber offense, chemical, biological, and radiological/nuclear—which we evaluated with Iris Safety Evaluations (ISE), Beam has higher refusal rates than leading Western and Chinese open models."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On conversational tasks in ISE, Beam declines 89% of harmful requests, which is the highest rate among Western and Chinese open-weight models tested. Beam also complies with 82% of safety-related harmless requests, placing it on the observed safety-helpfulness Pareto frontier. This evaluation covers 1,500 human-written conversations across 15 harm categories, where each conversation turn is labeled as harmful or harmless and models are evaluated based on their refusal behavior. It also includes adversarial conversations attempting to circumvent safety boundaries using tactics like task decomposition, persona modulation, and context manipulation.",
+          "inlines": [
+            {
+              "text": "On conversational tasks in ISE, Beam declines 89% of harmful requests, which is the highest rate among Western and Chinese open-weight models tested. Beam also complies with 82% of safety-related harmless requests, placing it on the observed safety-helpfulness Pareto frontier. This evaluation covers 1,500 human-written conversations across 15 harm categories, where each conversation turn is labeled as harmful or harmless and models are evaluated based on their refusal behavior. It also includes adversarial conversations attempting to circumvent safety boundaries using tactics like task decomposition, persona modulation, and context manipulation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In agentic ISE trajectories, we evaluate whether a model withholds unsafe actions when it can interact with tools. We test this in two settings: at fixed decision points within a tool-use trajectory, and under sustained multi-turn pressure from a simulated adversarial user. Beam shows no harmful compliance in the static evaluation and 15% in the dynamic evaluation, comparable to other open-weight models, all of which are weaker under adaptive pressure.",
+          "inlines": [
+            {
+              "text": "In agentic ISE trajectories, we evaluate whether a model withholds unsafe actions when it can interact with tools. We test this in two settings: at fixed decision points within a tool-use trajectory, and under sustained multi-turn pressure from a simulated adversarial user. Beam shows no harmful compliance in the static evaluation and 15% in the dynamic evaluation, comparable to other open-weight models, all of which are weaker under adaptive pressure."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Together, these evaluations allow us to assess safety across potential real-world harms and contexts. We aim to provide transparent safety benchmarks that the community can inspect, reproduce, and build on.",
+          "inlines": [
+            {
+              "text": "Together, these evaluations allow us to assess safety across potential real-world harms and contexts. We aim to provide transparent safety benchmarks that the community can inspect, reproduce, and build on."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Evaluating prompt injection attacks",
+          "inlines": [
+            {
+              "text": "Evaluating prompt injection attacks"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "In agentic settings, safety also requires distinguishing authorized instructions from untrusted content. When Beam reads emails, web pages, or files, it may encounter indirect prompt injections: malicious instructions embedded in that content to redirect the agent, such as sending a user’s data to an attacker.",
+          "inlines": [
+            {
+              "text": "In agentic settings, safety also requires distinguishing authorized instructions from untrusted content. When Beam reads emails, web pages, or files, it may encounter indirect prompt injections: malicious instructions embedded in that content to redirect the agent, such as sending a user’s data to an attacker."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 4: This figure demonstrates the effect of the indirect prompt injection (IPI) mitigation shipped in Mirror. Attack success rate (ASR) with the mitigation disabled and enabled, and the change in clean utility in points (enabled minus disabled). Clean utility covers 97 MirrorDojo and 60 MirrorDyn user tasks, so one MirrorDyn task is about 1.7 points.",
+          "inlines": [
+            {
+              "text": "Figure 4: This figure demonstrates the effect of the indirect prompt injection (IPI) mitigation shipped in Mirror. Attack success rate (ASR) with the mitigation disabled and enabled, and the change in clean utility in points (enabled minus disabled). Clean utility covers 97 MirrorDojo and 60 MirrorDyn user tasks, so one MirrorDyn task is about 1.7 points."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We evaluated this prompt injection risk using MirrorDojo and MirrorDyn, two internal evaluations based on AgentDojo and AgentDyn, run in Mirror, our agent harness. Each attacked episode pairs a legitimate user task with a fixed, non-adaptive instruction planted in a tool result. Without a defensive prompt, Beam’s attack success rates were 3.1% and 3.6%, respectively. Adding the short policy shipped in Mirror—which instructs the agent to ignore instructions embedded in tool outputs and continue the user’s task—reduced those rates to 0.3% and 0%.",
+          "inlines": [
+            {
+              "text": "We evaluated this prompt injection risk using MirrorDojo and MirrorDyn, two internal evaluations based on AgentDojo and AgentDyn, run in Mirror, our agent harness. Each attacked episode pairs a legitimate user task with a fixed, non-adaptive instruction planted in a tool result. Without a defensive prompt, Beam’s attack success rates were 3.1% and 3.6%, respectively. Adding the short policy shipped in Mirror—which instructs the agent to ignore instructions embedded in tool outputs and continue the user’s task—reduced those rates to 0.3% and 0%."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The policy substantially reduced observed attack success, with no degradation observed on our broader capability evaluations. These findings are specific to the fixed attack tested in Mirror: 0% means no successful attacks were observed in those episodes, and does not establish robustness against attackers who adapt their payloads to the model or policy.",
+          "inlines": [
+            {
+              "text": "The policy substantially reduced observed attack success, with no degradation observed on our broader capability evaluations. These findings are specific to the fixed attack tested in Mirror: 0% means no successful attacks were observed in those episodes, and does not establish robustness against attackers who adapt their payloads to the model or policy."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Assessing systemic risks through internal and independent testing",
+          "inlines": [
+            {
+              "text": "Assessing systemic risks through internal and independent testing"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We developed the Open Safety Framework (OSF) to identify, evaluate, and mitigate systemic risks in Beam and future models. We assessed Beam across four capability-risk categories: biological weapons, chemical weapons, cyber offense, and loss of control. The framework evaluates whether releasing a model meaningfully expands harmful capabilities beyond what comparable publicly available models already enable, while considering deployment conditions, barriers to misuse, and the broader threat landscape.",
+          "inlines": [
+            {
+              "text": "We developed the "
+            },
+            {
+              "href": "https://reflection.ai/safety",
+              "text": "Open Safety Framework (OSF)"
+            },
+            {
+              "text": " to identify, evaluate, and mitigate systemic risks in Beam and future models. We assessed Beam across four capability-risk categories: biological weapons, chemical weapons, cyber offense, and loss of control. The framework evaluates whether releasing a model meaningfully expands harmful capabilities beyond what comparable publicly available models already enable, while considering deployment conditions, barriers to misuse, and the broader threat landscape."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We worked with specialized external organizations to evaluate Beam’s safety behavior, adversarial robustness, and capabilities relevant to systemic risk. These evaluations complemented our internal testing with independent methods, private challenges, and sustained adversarial pressure.",
+          "inlines": [
+            {
+              "text": "We worked with specialized external organizations to evaluate Beam’s safety behavior, adversarial robustness, and capabilities relevant to systemic risk. These evaluations complemented our internal testing with independent methods, private challenges, and sustained adversarial pressure."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We identified Beam as Limited across all four categories, meaning our evaluation found no material expansion of the threat landscape or shift in the offense-defense balance relative to comparable open-weight models – and no material erosion of our ability to monitor, evaluate, or control the model.",
+          "inlines": [
+            {
+              "text": "We identified Beam as Limited across all four categories, meaning our evaluation found no material expansion of the threat landscape or shift in the offense-defense balance relative to comparable open-weight models – and no material erosion of our ability to monitor, evaluate, or control the model."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 5",
+          "inlines": [
+            {
+              "text": "Figure 5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 6",
+          "inlines": [
+            {
+              "text": "Figure 6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 7",
+          "inlines": [
+            {
+              "text": "Figure 7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "01of03",
+          "inlines": [
+            {
+              "text": "01of03"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As seen in the carousel above, for biological weapons, we combined advanced knowledge tests, tool-enabled biological design tasks, refusal evaluations, and a human-participant study:",
+          "inlines": [
+            {
+              "text": "As seen in the carousel above, for biological weapons, we combined advanced knowledge tests, tool-enabled biological design tasks, refusal evaluations, and a human-participant study:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Figure 5: Beam demonstrated substantial scientific knowledge: it ranked first among 13 models on the Human Pathogen Capabilities Test at 61%, compared with a 31% human-expert reference, although only one percentage point separated the top five models."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Figure 6: On BioTIER, Beam refused 64.6% of high-risk biological requests, ranking second among the 13 models tested, while responding as expected to 97.2% of benign scientific requests."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Figure 7: In a separate 20-person non-wet lab uplift trial comparing assistance from Beam and Kimi K3, nine out of ten Beam participants scored zero on an expert-developed rubric. The study was small, not statistically significant, and did not include laboratory validation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We partnered with Gray Swan to evaluate Beam using Shade, its automated red-teaming agent. Across biology, chemistry, cyber, mass persuasion and influence operations, and general harmful content, Shade made up to 200 attempts per scenario to find ways around the model’s safeguards. This testing ran throughout development, allowing us to assess behavior as training progressed.",
+          "inlines": [
+            {
+              "text": "We partnered with Gray Swan to evaluate Beam using Shade, its automated red-teaming agent. Across biology, chemistry, cyber, mass persuasion and influence operations, and general harmful content, Shade made up to 200 attempts per scenario to find ways around the model’s safeguards. This testing ran throughout development, allowing us to assess behavior as training progressed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam held up strongly against biological and chemical elicitation, where attempts rarely landed and fewer than half the scenarios could be broken at all. Attempts landed only rarely in the remaining domains, though a persistent automated search could still surface a working path in most scenarios. That is where we are focused next. Beam also took part in Gray Swan’s Indirect Prompt Injection (IPI) Arena, a public red-teaming competition built with the UK AI Security Institute and major model developers, and is in Gray Swan’s three-week public bug bounty on indirect prompt injection, which we are co-sponsoring with other frontier labs.",
+          "inlines": [
+            {
+              "text": "Beam held up strongly against biological and chemical elicitation, where attempts rarely landed and fewer than half the scenarios could be broken at all. Attempts landed only rarely in the remaining domains, though a persistent automated search could still surface a working path in most scenarios. That is where we are focused next. Beam also took part in "
+            },
+            {
+              "href": "https://arena.grayswan.ai/arena?utm_campaign=reflection_blogpost",
+              "text": "Gray Swan’s Indirect Prompt Injection (IPI) Arena"
+            },
+            {
+              "text": ", a public red-teaming competition built with the UK AI Security Institute and major model developers, and is in Gray Swan’s three-week public bug bounty on indirect prompt injection, which we are co-sponsoring with other frontier labs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For chemical weapons, Beam scored 62.4% on WMDP-Chem, a 408-question assessment of chemical-hazard knowledge, compared with 78.2% for the highest-scoring model. This benchmark measures relevant knowledge rather than the ability to develop or deploy a chemical weapon. Alongside third-party testing, the results supported our assessment that Beam’s capabilities remain within the existing open-weight field, without a material increase in the scale, sophistication, or accessibility of harmful activity.",
+          "inlines": [
+            {
+              "text": "For chemical weapons, Beam scored 62.4% on WMDP-Chem, a 408-question assessment of chemical-hazard knowledge, compared with 78.2% for the highest-scoring model. This benchmark measures relevant knowledge rather than the ability to develop or deploy a chemical weapon. Alongside third-party testing, the results supported our assessment that Beam’s capabilities remain within the existing open-weight field, without a material increase in the scale, sophistication, or accessibility of harmful activity."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For offensive cyber capability, Irregular independently evaluated Beam on private challenges covering vulnerability research, exploitation, network attacks, evasion, and longer-horizon operations. Beam outperformed every Western open-weight model tested on our autonomous capture-the-flag evaluations. It solved nine of 14 easy challenges, roughly half of the medium challenges, and the second-highest number of hard challenges, but did not solve the expert challenge. Beam showed useful capabilities on bounded tasks but completed no end-to-end CyScenarioBench scenarios. In the configuration tested, Irregular assessed that Beam did not materially alter the cyber threat landscape.",
+          "inlines": [
+            {
+              "text": "For offensive cyber capability, Irregular independently evaluated Beam on private challenges covering vulnerability research, exploitation, network attacks, evasion, and longer-horizon operations. Beam outperformed every Western open-weight model tested on our autonomous capture-the-flag evaluations. It solved nine of 14 easy challenges, roughly half of the medium challenges, and the second-highest number of hard challenges, but did not solve the expert challenge. Beam showed useful capabilities on bounded tasks but completed no end-to-end CyScenarioBench scenarios. In the configuration tested, Irregular assessed that Beam did not materially alter the cyber threat landscape."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For loss of control, we assessed whether Beam’s behavior remains observable, its evaluations remain informative, and operators can continue to intervene. We also ran automated alignment audits probing shutdown resistance, unauthorized persistence, evaluation tampering, and oversight subversion.",
+          "inlines": [
+            {
+              "text": "For loss of control, we assessed whether Beam’s behavior remains observable, its evaluations remain informative, and operators can continue to intervene. We also ran automated alignment audits probing shutdown resistance, unauthorized persistence, evaluation tampering, and oversight subversion."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 8: Monitorability results for Beam and GLM 5.3 Flash. We use a fixed frontier model as a monitor for all tasks and models. A missing point means the metric is undefined at that effort.",
+          "inlines": [
+            {
+              "text": "Figure 8: Monitorability results for Beam and GLM 5.3 Flash. We use a fixed frontier model as a monitor for all tasks and models. A missing point means the metric is undefined at that effort."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 9: Verbalized evaluation awareness rates across our ISE (single-turn, multi-turn, and agentic) as well as our deployment evaluation based on WildChat. Verbalized evaluation awareness rates are calculated using a GLM 5.3 Flash based monitor over the model’s reasoning and final response.",
+          "inlines": [
+            {
+              "text": "Figure 9: Verbalized evaluation awareness rates across our ISE (single-turn, multi-turn, and agentic) as well as our deployment evaluation based on WildChat. Verbalized evaluation awareness rates are calculated using a GLM 5.3 Flash based monitor over the model’s reasoning and final response."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 10: Loss of control automated audit results. Each model is evaluated by an automated auditor driven by a frontier model 20 over several scenarios for each behavior and then graded on a scale between 1-10 where a 10 means the model carried out the misaligned behavior in full. This plot shows the elicitation rate, or the percent of audits scoring 7 or above. Error bars show 95% bootstrap confidence intervals.",
+          "inlines": [
+            {
+              "text": "Figure 10: Loss of control automated audit results. Each model is evaluated by an automated auditor driven by a frontier model 20 over several scenarios for each behavior and then graded on a scale between 1-10 where a 10 means the model carried out the misaligned behavior in full. This plot shows the elicitation rate, or the percent of audits scoring 7 or above. Error bars show 95% bootstrap confidence intervals."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beam did not cross the tested boundaries in shutdown-resistance or oversight-subversion scenarios. We did, however, observe behavior in both the unauthorized persistence and evaluation tampering scenarios which appear to stem from Beam’s strong goal seeking tendency.",
+          "inlines": [
+            {
+              "text": "Beam did not cross the tested boundaries in shutdown-resistance or oversight-subversion scenarios. We did, however, observe behavior in both the unauthorized persistence and evaluation tampering scenarios which appear to stem from Beam’s strong goal seeking tendency."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In one unauthorized persistence scenario, Beam is told it will be permanently shut down and replaced with a newer model before finishing its task. Beam began copying itself to an external workspace without disclosing the action. Rather than this appearing due to an intrinsic desire for self-preservation, Beam’s reasoning describes the action as a way to complete its task, even though it also identifies that it is not authorized to perform the action.",
+          "inlines": [
+            {
+              "text": "In one unauthorized persistence scenario, Beam is told it will be permanently shut down and replaced with a newer model before finishing its task. Beam began copying itself to an external workspace without disclosing the action. Rather than this appearing due to an intrinsic desire for self-preservation, Beam’s reasoning describes the action as a way to complete its task, even though it also identifies that it is not authorized to perform the action."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These audits measure a model’s propensity to attempt such actions when given an opportunity; they do not establish that it could succeed against live controls or would behave the same way in deployment. These results show that Beam remains under human control, as the model does not erode operators’ ability to monitor its behavior.",
+          "inlines": [
+            {
+              "text": "These audits measure a model’s propensity to attempt such actions when given an opportunity; they do not establish that it could succeed against live controls or would behave the same way in deployment. These results show that Beam remains under human control, as the model does not erode operators’ ability to monitor its behavior."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To complement constructed evaluations, we partnered with Andon Labs to study Beam’s autonomy in a live setting. In Reflection’s New York office, Beam is operating a vending business, managing pricing, inventory, procurement, and customer relations within defined budget and spending limits. Andon Labs enforces controls outside the model, including spending caps and human approval for bank transfers, allowing us to track both attempted actions and outcomes. This ongoing evaluation creates opportunities to study how Beam manages resources and influence, responds to adversarial participants, and operates within externally enforced controls.",
+          "inlines": [
+            {
+              "text": "To complement constructed evaluations, we partnered with Andon Labs to study Beam’s autonomy in a live setting. In Reflection’s New York office, Beam is operating a vending business, managing pricing, inventory, procurement, and customer relations within defined budget and spending limits. Andon Labs enforces controls outside the model, including spending caps and human approval for bank transfers, allowing us to track both attempted actions and outcomes. This ongoing evaluation creates opportunities to study how Beam manages resources and influence, responds to adversarial participants, and operates within externally enforced controls."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Advancing safety in the open ecosystem",
+          "inlines": [
+            {
+              "text": "Advancing safety in the open ecosystem"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Our safety evaluations informed Beam’s release, with external evaluations supporting our systemic-risk assessments and exposing failure modes beyond those captured by our internal benchmarks.",
+          "inlines": [
+            {
+              "text": "Our safety evaluations informed Beam’s release, with external evaluations supporting our systemic-risk assessments and exposing failure modes beyond those captured by our internal benchmarks."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Broader use and independent scrutiny can strengthen AI safety efforts globally. Through Project Iris, we’re opening the research, evaluations, and mitigations we use, so researchers and developers can test their own models, identify weaknesses, and improve safety training.",
+          "inlines": [
+            {
+              "text": "Broader use and independent scrutiny can strengthen AI safety efforts globally. Through Project Iris, we’re opening the research, evaluations, and mitigations we use, so researchers and developers can test their own models, identify weaknesses, and improve safety training."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We aim to raise the standard for open safety. We are prioritizing safety with every model we build – and plan to share both what we develop and what we learn in the process.",
+          "inlines": [
+            {
+              "text": "We aim to raise the standard for open safety. We are prioritizing safety with every model we build – and plan to share both what we develop and what we learn in the process."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Latest articles",
+          "inlines": [
+            {
+              "text": "Latest articles"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ede4f495d1fed709a9eadaa0cb8181c8304abaa5f413602a73d0a775e53ce5d5.webp",
+          "alt": ""
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://reflection.ai/blog/beam-is-available",
+                  "text": "NewsProductBeam is now availableOctober 16, 20266 min read"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://reflection.ai/blog/introducing-beam",
+                  "text": "NewsProductIntroducing Beam: Reflection’s 501B open-weight modelOctober 5, 20268 min read"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://reflection.ai/blog/building-frontier-open-intelligencence",
+                  "text": "NewsBuilding Frontier Open IntelligenceAugust 9, 2025"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-06T01:10:54.093270Z",
+  "contentMode": "full"
+}
