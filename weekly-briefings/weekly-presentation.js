@@ -1,7 +1,7 @@
 /* Both views use the complete weekly Markdown as their content source. */
 (() => {
   'use strict';
-  const SOURCE = '../weekly-reports/2026-W45.md?v=20261109-semantic-project-weekly';
+  const SOURCE = '../weekly-reports/2026-W45.md?v=20261109-semantic-project-weekly-2';
   const deck = document.getElementById('deck');
   const modeButton = document.getElementById('presentationToggle');
   const fullButton = document.getElementById('fullscreenToggle');

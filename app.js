@@ -51,6 +51,7 @@
   var FINANCING_PAGE_SIZE = 10;
   var FINANCING_ROUND_ORDER = ['种子轮', '天使轮', 'Pre-A轮', 'A轮', 'A+轮', 'Pre-B轮', 'B轮', 'B+轮', 'C轮', 'C+轮', 'D轮', 'E轮', 'F轮', '后期阶段', 'Pre-IPO', 'IPO', 'Post-IPO', '新三板', '新三板定增', '主板定增', '战略投资', '股权投资', '债权融资', '股权转让', '被收购', '战略合并', '私有化'];
   var FINANCING_INSTITUTION_ALIASES = { '深创投': '深创投', '深圳市创新投资集团有限公司': '深创投' };
+  var REPORT_CONTENT_VERSION = '20261109-semantic-project-weekly-2';
 
   function byId(id) { return document.getElementById(id); }
   function element(tag, className, text) {
@@ -735,7 +736,8 @@
     if (force) cache.delete(meta.file);
     if (cache.has(meta.file)) return cache.get(meta.file);
     var promise = (async function () {
-      var response = await fetch(meta.file, { cache: force ? 'reload' : 'default' });
+      var reportURL = meta.file + '?v=' + encodeURIComponent(REPORT_CONTENT_VERSION);
+      var response = await fetch(reportURL, { cache: force ? 'reload' : 'default' });
       if (!response.ok) throw new Error(response.status === 404 ? '报告文件不存在（404）。' : '报告读取失败（HTTP ' + response.status + '）。');
       var markdown = await response.text();
       if (/^\s*(?:<!doctype\s+html|<html\b)/i.test(markdown)) throw new Error('服务器返回了网页，未找到报告文件。');
