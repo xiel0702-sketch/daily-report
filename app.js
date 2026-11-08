@@ -71,6 +71,10 @@
       return (parsed.protocol === 'https:' || parsed.protocol === 'http:') && !parsed.username && !parsed.password ? parsed.href : '';
     } catch (_) { return ''; }
   }
+  function safeAssetURL(value) {
+    var input = String(value || '').trim();
+    return /^assets\/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:png|jpe?g|webp)$/.test(input) ? input : '';
+  }
   function cleanString(value, max) { return typeof value === 'string' ? value.trim().slice(0, max || 2000) : ''; }
   function validAIHOTId(value) { return typeof value === 'string' && /^[A-Za-z0-9_-]{1,128}$/.test(value); }
   function validISO(value) {
@@ -627,6 +631,36 @@
       var line = lines[index].trim();
       if (!line || /^```|^~~~/.test(line)) { flush(); continue; }
       if (/^[-*_]{3,}$/.test(line)) { flush(); continue; }
+      if (/^!\[[^\]]*\]\(assets\/[^()\s]+\)$/.test(line)) {
+        flush();
+        var images = [];
+        while (index < lines.length) {
+          var imageMatch = lines[index].trim().match(/^!\[([^\]]*)\]\((assets\/[^()\s]+)\)$/);
+          if (!imageMatch) break;
+          var imageSrc = safeAssetURL(imageMatch[2]);
+          if (!imageSrc) break;
+          images.push({ src: imageSrc, alt: imageMatch[1] || '项目周跟踪长图' });
+          index++;
+        }
+        index--;
+        if (images.length) {
+          var imageGrid = element('div', images.length > 1 ? 'weekly-image-pair' : 'weekly-image-single');
+          images.forEach(function (image) {
+            var card = element('figure', 'weekly-image-card');
+            var imageLink = element('a', 'weekly-image-link');
+            imageLink.href = image.src; imageLink.target = '_blank'; imageLink.rel = 'noopener noreferrer';
+            var picture = element('img');
+            picture.src = image.src; picture.alt = image.alt; picture.width = 1540; picture.height = 3301;
+            picture.loading = 'lazy'; picture.decoding = 'async';
+            imageLink.appendChild(picture);
+            card.appendChild(imageLink);
+            card.appendChild(element('figcaption', 'weekly-image-caption', image.alt));
+            imageGrid.appendChild(card);
+          });
+          target.appendChild(imageGrid);
+          continue;
+        }
+      }
       if (line.startsWith('|')) {
         flush();
         var rows = [];

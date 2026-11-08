@@ -1,7 +1,7 @@
 /* Both views use the complete weekly Markdown as their content source. */
 (() => {
   'use strict';
-  const SOURCE = '../weekly-reports/2026-W45.md?v=20261108-full';
+  const SOURCE = '../weekly-reports/2026-W45.md?v=20261108-project-weekly';
   const deck = document.getElementById('deck');
   const modeButton = document.getElementById('presentationToggle');
   const fullButton = document.getElementById('fullscreenToggle');
@@ -22,6 +22,10 @@
   function safeURL(value) {
     try { const url = new URL(value, location.href); return /^https?:$/.test(url.protocol) ? url.href : null; }
     catch (_) { return null; }
+  }
+  function safeAssetURL(value) {
+    const input = String(value || '').trim();
+    return /^assets\/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:png|jpe?g|webp)$/.test(input) ? input : '';
   }
   function link(label, url) {
     const anchor = element('a', '', label);
@@ -82,6 +86,34 @@
           rowIndex++;
         }
         i--; table.append(head, body); section.blocks.push(table); continue;
+      }
+      if (/^!\[[^\]]*\]\(assets\/[^()\s]+\)$/.test(line)) {
+        flush();
+        const images = [];
+        while (i < lines.length) {
+          const imageMatch = lines[i].trim().match(/^!\[([^\]]*)\]\((assets\/[^()\s]+)\)$/);
+          if (!imageMatch) break;
+          const src = safeAssetURL(imageMatch[2]);
+          if (!src) break;
+          images.push({src, alt: imageMatch[1] || '项目周跟踪长图'});
+          i++;
+        }
+        i--;
+        if (images.length) {
+          const gallery = element('div', images.length > 1 ? 'weekly-image-pair' : 'weekly-image-single');
+          images.forEach(image => {
+            const card = element('figure', 'weekly-image-card');
+            const assetSrc = new URL('../' + image.src, location.href).href;
+            const anchor = link('', assetSrc);
+            const picture = element('img');
+            picture.src = assetSrc; picture.alt = image.alt; picture.width = 1540; picture.height = 3301;
+            picture.loading = 'lazy'; picture.decoding = 'async';
+            anchor.append(picture); card.append(anchor, element('figcaption', 'weekly-image-caption', image.alt));
+            gallery.append(card);
+          });
+          section.blocks.push(gallery);
+          continue;
+        }
       }
       const bullet = line.match(/^-\s+(.+)$/);
       if (bullet) {
