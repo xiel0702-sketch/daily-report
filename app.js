@@ -648,9 +648,10 @@
           images.forEach(function (image) {
             var card = element('figure', 'weekly-image-card');
             var imageLink = element('a', 'weekly-image-link');
-            imageLink.href = image.src; imageLink.target = '_blank'; imageLink.rel = 'noopener noreferrer';
+            var versionedSrc = image.src + '?v=20261109-semantic';
+            imageLink.href = versionedSrc; imageLink.target = '_blank'; imageLink.rel = 'noopener noreferrer';
             var picture = element('img');
-            picture.src = image.src; picture.alt = image.alt; picture.width = 1540; picture.height = 3301;
+            picture.src = versionedSrc; picture.alt = image.alt;
             picture.loading = 'lazy'; picture.decoding = 'async';
             imageLink.appendChild(picture);
             card.appendChild(imageLink);

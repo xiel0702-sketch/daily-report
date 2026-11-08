@@ -1,7 +1,7 @@
 /* Both views use the complete weekly Markdown as their content source. */
 (() => {
   'use strict';
-  const SOURCE = '../weekly-reports/2026-W45.md?v=20261108-project-weekly';
+  const SOURCE = '../weekly-reports/2026-W45.md?v=20261109-semantic-project-weekly';
   const deck = document.getElementById('deck');
   const modeButton = document.getElementById('presentationToggle');
   const fullButton = document.getElementById('fullscreenToggle');
@@ -103,10 +103,11 @@
           const gallery = element('div', images.length > 1 ? 'weekly-image-pair' : 'weekly-image-single');
           images.forEach(image => {
             const card = element('figure', 'weekly-image-card');
-            const assetSrc = new URL('../' + image.src, location.href).href;
-            const anchor = link('', assetSrc);
+            const assetSrc = new URL('../' + image.src, location.href);
+            assetSrc.searchParams.set('v', '20261109-semantic');
+            const anchor = link('', assetSrc.href);
             const picture = element('img');
-            picture.src = assetSrc; picture.alt = image.alt; picture.width = 1540; picture.height = 3301;
+            picture.src = assetSrc.href; picture.alt = image.alt;
             picture.loading = 'lazy'; picture.decoding = 'async';
             anchor.append(picture); card.append(anchor, element('figcaption', 'weekly-image-caption', image.alt));
             gallery.append(card);
