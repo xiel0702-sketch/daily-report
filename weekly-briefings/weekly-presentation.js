@@ -1,7 +1,7 @@
 /* Both views use the complete weekly Markdown as their content source. */
 (() => {
   'use strict';
-  const SOURCE = '../weekly-reports/2026-W45.md?v=20261109-semantic-project-weekly-2';
+  const SOURCE = '../weekly-reports/2026-W45.md?v=20261109-semantic-project-weekly-3';
   const deck = document.getElementById('deck');
   const modeButton = document.getElementById('presentationToggle');
   const fullButton = document.getElementById('fullscreenToggle');
@@ -186,6 +186,9 @@
         const block = section.blocks[i];
         if (block.matches('h3.table-caption') && section.blocks[i + 1]?.matches('table')) { appendTable(section.blocks[++i], block); continue; }
         if (block.matches('table')) { appendTable(block); continue; }
+        if (block.matches('p') && section.blocks[i + 1]?.matches('.weekly-image-pair,.weekly-image-single')) {
+          appendGroup([block, section.blocks[++i]]); continue;
+        }
         if (block.matches('h3') && section.blocks[i + 1] && !section.blocks[i + 1].matches('h3,table')) { appendGroup([block, section.blocks[++i]]); continue; }
         appendGroup([block]);
       }
