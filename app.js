@@ -5,7 +5,7 @@
   var CATEGORIES = {
     ai: { name: '人工智能', short: 'AI', heading: 'AI板块' },
     semi: { name: '半导体', short: '半导体', heading: '半导体板块' },
-    robot: { name: '机器人', short: '机器人', heading: '机器人板块' }
+    robot: { name: '机器人与具身智能', short: '机器人与具身智能', heading: '机器人与具身智能板块' }
   };
   var CATEGORY_KEYS = ['ai', 'semi', 'robot'];
   var BATCH_SIZE = 6;
@@ -40,6 +40,15 @@
   var semiconductorUpdatedAt = '';
   var semiconductorSources = [];
   var semiconductorCoverageStart = '';
+  var roboticsItems = [];
+  var roboticsById = new Map();
+  var roboticsPromise = null;
+  var roboticsLoaded = false;
+  var roboticsError = null;
+  var roboticsUpdatedAt = '';
+  var roboticsSources = [];
+  var roboticsCoverageStart = '';
+  var roboticsComplete = true;
   var itemCache = new Map();
   var localExcerptCache = new Map();
   var syncedBodyCache = new Map();
@@ -246,6 +255,112 @@
     refresh.addEventListener('click', async function () { var version = renderVersion; var pending = loadSemiconductor(true); renderFeed(); try { await pending; } catch (_) { /* Visible status retains the safe error. */ } if (version === renderVersion) { renderFeed(); updateStats(); } });
     box.appendChild(refresh); target.appendChild(box);
   }
+  function normalizeRobotics(value) {
+    if (!value || !/^robot-[a-f0-9]{24}$/.test(value.id) || !cleanString(value.title, 800) || !safeURL(value.sourceURL) || !validISO(value.publishedAt) || !/(?:Z|[+-]\d{2}:\d{2})$/.test(value.publishedAt)) return null;
+    if (!['selected', 'signal', 'review'].includes(value.status) || typeof value.selected !== 'boolean') return null;
+    var score = typeof value.score === 'number' && Number.isFinite(value.score) && value.score >= 0 && value.score <= 100 ? value.score : null;
+    var sourceMode = cleanString(value.sourceMode, 32);
+    if (!['CORE', 'SIGNAL', 'REFERENCE'].includes(sourceMode) || value.score !== null && score === null) return null;
+    if (value.selected && (value.status !== 'selected' || sourceMode !== 'CORE' || score === null)) return null;
+    var summary = cleanString(value.summary, 5000);
+    var related = Array.isArray(value.relatedSources) ? value.relatedSources.slice(0, 30).map(function (source) {
+      if (typeof source === 'string') return { name: '', url: safeURL(source) };
+      return source && typeof source === 'object' ? { name: cleanString(source.name || source.title, 200), url: safeURL(source.url || source.sourceURL) } : null;
+    }).filter(function (source) { return source && source.url; }) : [];
+    var evidence = Array.isArray(value.evidence) ? value.evidence.slice(0, 5).map(function (entry) {
+      return typeof entry === 'string' ? { text: cleanString(entry, 180), url: '' } : entry && typeof entry === 'object' ? { text: cleanString(entry.text || entry.quote, 180), url: safeURL(entry.url || entry.sourceURL) } : null;
+    }).filter(function (entry) { return entry && entry.text; }) : [];
+    var axes = {};
+    ['IMP', 'NOV', 'EVI', 'REL', 'ACT'].forEach(function (axis) { if (value.axes && Number.isInteger(value.axes[axis]) && value.axes[axis] >= 0 && value.axes[axis] <= 10) axes[axis] = value.axes[axis]; });
+    var articleContent = normalizeSemiContent(value.articleContent);
+    var articleBodyZh = cleanString(value.articleBodyZh, 120000);
+    return { id: 'robotics-' + value.id, roboticsId: value.id, provider: 'robotics', category: 'robot',
+      title: cleanString(value.title, 800), summary: summary, body: summary, articleBody: cleanString(value.articleBody, 120000),
+      articleBodyZh: articleBodyZh, articleContent: articleContent, semiSearchText: semiContentText(articleContent),
+      sourceURL: safeURL(value.sourceURL), sourceName: cleanString(value.sourceName, 180),
+      publishedAt: validISO(value.publishedAt), date: chinaDate(value.publishedAt), score: score, selected: value.selected, status: value.status,
+      relevance: ['PASS', 'RISK'].includes(value.relevance) ? value.relevance : '',
+      sourceTier: cleanString(value.sourceTier, 32), sourceMode: sourceMode, reason: cleanString(value.reason, 2400), tags: cleanList(value.tags), topics: [],
+      axes: axes, eventType: cleanString(value.eventType, 100), factKey: cleanString(value.factKey, 200), relatedSources: related, evidence: evidence,
+      signal: '', link: safeURL(value.sourceURL), links: [safeURL(value.sourceURL)], coverage: '', file: '' };
+  }
+  async function loadRobotics(force) {
+    if (roboticsPromise) return roboticsPromise;
+    var promise = (async function () {
+      try {
+        var response = await fetch('robotics/feed.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('机器人与具身智能资讯读取失败（HTTP ' + response.status + '）。');
+        var payload = await response.json();
+        if (!payload || payload.schemaVersion !== 1 || payload.provider !== 'robotics' || !Array.isArray(payload.items) || !validISO(payload.updatedAt) || payload.noItemLimit !== true) throw new Error('机器人与具身智能资讯数据格式无效，保留上次成功快照。');
+        var seen = new Set();
+        var items = payload.items.map(function (value) { var item = normalizeRobotics(value); if (!item || seen.has(item.roboticsId)) throw new Error('机器人与具身智能资讯包含无效或重复条目，保留上次成功快照。'); seen.add(item.roboticsId); return item; });
+        roboticsItems = items;
+        roboticsById = new Map(items.map(function (item) { return [item.roboticsId, item]; }));
+        roboticsUpdatedAt = payload.updatedAt;
+        roboticsCoverageStart = validISO(payload.coverageStart);
+        roboticsSources = Array.isArray(payload.sources) ? payload.sources : [];
+        roboticsComplete = payload.complete !== false;
+        items.forEach(function (item) { itemCache.set(item.id, item); });
+        roboticsLoaded = true; roboticsError = null;
+        return items;
+      } catch (error) { roboticsError = error; throw error; }
+    })();
+    roboticsPromise = promise;
+    try { return await promise; } finally { if (roboticsPromise === promise) roboticsPromise = null; }
+  }
+  async function loadRoboticsItem(id, force) {
+    if (!/^robot-[a-f0-9]{24}$/.test(id)) throw new Error('机器人与具身智能资讯编号无效。');
+    if (!force && roboticsById.has(id)) return roboticsById.get(id);
+    try { await loadRobotics(force); } catch (_) { /* Archived detail remains readable when the current feed is unavailable. */ }
+    if (roboticsById.has(id)) return roboticsById.get(id);
+    var response = await fetch('robotics/items/' + id + '.json', { cache: force ? 'reload' : 'default' });
+    if (!response.ok) throw new Error('未找到这条机器人与具身智能资讯。');
+    var payload = await response.json();
+    var item = normalizeRobotics(payload.item || payload);
+    if (!item || item.roboticsId !== id) throw new Error('机器人与具身智能历史资讯格式无效。');
+    itemCache.set(item.id, item); return item;
+  }
+  function roboticsState(item) {
+    if (item.relevance === 'RISK') return '待核风险';
+    if (item.status === 'review') return '待人工复核';
+    if (item.sourceMode !== 'CORE') return '来源观察中';
+    if (item.score === null) return '待评分';
+    return item.selected ? '已入选' : '观察线索';
+  }
+  function renderRoboticsStatus(target) {
+    var stale = roboticsUpdatedAt && Date.now() - Date.parse(roboticsUpdatedAt) > 24 * 60 * 60 * 1000;
+    var box = element('div', 'semi-sync-status' + (stale || roboticsError ? ' is-stale' : ''));
+    var copy = element('div', 'semi-sync-copy');
+    copy.appendChild(element('p', '', roboticsLoaded ? '机器人与具身智能采集时间：' + dateTimeLabel(roboticsUpdatedAt) + (stale ? ' · 已超过24小时，请留意更新状态。' : '') : '机器人与具身智能资讯尚未加载。'));
+    if (roboticsError) copy.appendChild(element('p', '', errorMessage(roboticsError) + (roboticsLoaded ? '继续展示上次成功快照。' : '请稍后重试。')));
+    var selectedCount = roboticsItems.filter(function (item) { return item.selected; }).length;
+    if (roboticsLoaded) {
+      copy.appendChild(element('p', '', '已采集 ' + roboticsItems.length + ' 条，精选 ' + selectedCount + ' 条。观察线索和待复核条目保留在全部动态，条数不设每日上限。'));
+      if (!roboticsComplete) copy.appendChild(element('p', '', '本轮部分信源尚未完成采集，当前条数不代表全部资讯。'));
+      if (currentRoute.view === 'feed') copy.appendChild(routeLink('#all/robot', '查看机器人与具身智能全部动态与观察线索 →', 'report-link'));
+      if (roboticsCoverageStart) copy.appendChild(element('p', 'semi-coverage', '采集范围自 ' + dateTimeLabel(roboticsCoverageStart) + ' 起。'));
+      if (roboticsSources.length) {
+        var details = element('details', 'semi-source-health');
+        details.appendChild(element('summary', '', '查看 ' + roboticsSources.length + ' 个信源的采集状态'));
+        var list = element('ul', '');
+        var labels = { ok: '采集正常', success: '采集正常', complete: '采集正常', partial: '部分可用', error: '采集失败', failed: '采集失败', blocked: '暂不可用', disabled: '未启用', pending: '待采集', skipped: '本轮跳过', unavailable: '暂不可用', unsupported: '待适配' };
+        roboticsSources.forEach(function (source) {
+          if (!source || typeof source !== 'object') return;
+          var name = cleanString(source.name || source.sourceName || source.id || source.sourceId, 180);
+          if (!name) return;
+          var state = labels[source.status] || '状态待确认';
+          var count = [source.itemCount, source.count, source.collected, source.articleCount, source.eligible].find(function (value) { return Number.isInteger(value) && value >= 0; });
+          list.appendChild(element('li', '', name + ' · ' + state + (count !== undefined ? ' · ' + count + ' 条' : '')));
+        });
+        details.appendChild(list); copy.appendChild(details);
+      }
+    }
+    box.appendChild(copy);
+    var refresh = element('button', '', roboticsPromise ? '正在刷新…' : '刷新机器人与具身智能资讯');
+    refresh.type = 'button'; refresh.disabled = Boolean(roboticsPromise);
+    refresh.addEventListener('click', async function () { var version = renderVersion; var pending = loadRobotics(true); renderFeed(); try { await pending; } catch (_) { /* Visible status retains the safe error. */ } if (version === renderVersion) { renderFeed(); updateStats(); } });
+    box.appendChild(refresh); target.appendChild(box);
+  }
   function normalizeLocalExcerpt(value, id) {
     if (!value || value.schemaVersion !== 1 || value.provenance !== 'user-provided-screenshot' || value.id !== id || !Array.isArray(value.blocks)) return null;
     var blocks = value.blocks.slice(0, 60).map(function (block) {
@@ -336,7 +451,7 @@
     }
     if (block.type === 'image') {
       var src = typeof block.src === 'string' ? block.src : '';
-      if (!/^semiconductor\/media\/[a-f0-9]{64}\.(?:jpg|jpeg|png|webp|gif)$/.test(src)) return null;
+      if (!/^(?:semiconductor|robotics)\/media\/[a-f0-9]{64}\.(?:jpg|jpeg|png|webp|gif)$/.test(src)) return null;
       return { type: 'image', src: src, alt: cleanString(block.alt, 1000), caption: cleanString(block.caption, 2000), width: Number.isInteger(block.width) && block.width > 0 && block.width < 30000 ? block.width : null, height: Number.isInteger(block.height) && block.height > 0 && block.height < 30000 ? block.height : null };
     }
     return null;
@@ -766,6 +881,11 @@
           if (aihotItem) { aihotItem.savedAt = Number(item.savedAt) || 0; saved.set(aihotItem.id, aihotItem); itemCache.set(aihotItem.id, aihotItem); }
           return;
         }
+        if (['semiconductor', 'robotics'].includes(item.provider)) {
+          var independentItem = item.provider === 'robotics' ? normalizeRobotics(Object.assign({}, item, { id: item.roboticsId })) : normalizeSemiconductor(Object.assign({}, item, { id: item.semiconductorId }));
+          if (independentItem) { independentItem.savedAt = Number(item.savedAt) || 0; saved.set(independentItem.id, independentItem); itemCache.set(independentItem.id, independentItem); }
+          return;
+        }
         var clean = {
           id: item.id, title: item.title, body: String(item.body || ''), category: item.category,
           date: String(item.date || ''), coverage: String(item.coverage || ''), signal: String(item.signal || ''),
@@ -805,7 +925,7 @@
     button.addEventListener('click', function () { toggleSaved(item); });
     return button;
   }
-  function itemRoute(item) { return item.provider === 'semiconductor' && validAIHOTId(item.semiconductorId) ? '#semiconductor/' + item.semiconductorId : item.provider === 'aihot' && validAIHOTId(item.aihotId) ? '#item/aihot/' + item.aihotId : '#item/report/' + encodeURIComponent(item.id); }
+  function itemRoute(item) { return item.provider === 'robotics' && /^robot-[a-f0-9]{24}$/.test(item.roboticsId) ? '#robotics/' + item.roboticsId : item.provider === 'semiconductor' && validAIHOTId(item.semiconductorId) ? '#semiconductor/' + item.semiconductorId : item.provider === 'aihot' && validAIHOTId(item.aihotId) ? '#item/aihot/' + item.aihotId : '#item/report/' + encodeURIComponent(item.id); }
   function createNews(item, number) {
     itemCache.set(item.id, item);
     var detailHref = itemRoute(item);
@@ -823,7 +943,7 @@
     var meta = element('div', 'item-meta');
     meta.appendChild(element('span', 'category-tag ' + item.category, CATEGORIES[item.category].short));
     if (item.provider === 'aihot') meta.appendChild(element('span', 'signal-tag aihot-source-tag', 'AI HOT 精选'));
-    if (item.provider === 'semiconductor') {
+    if (['semiconductor', 'robotics'].includes(item.provider)) {
       meta.appendChild(element('span', 'semi-state ' + (item.selected && item.relevance !== 'RISK' ? 'is-selected' : ''), semiconductorState(item)));
       meta.appendChild(element('span', 'semi-score', item.score === null ? '评分待完成' : '评分 ' + item.score));
     }
@@ -841,7 +961,7 @@
       sources.appendChild(element('span', 'source-label', item.sourceName ? '来源 · ' + item.sourceName : '精选来源 · AI HOT'));
       sources.appendChild(routeLink(detailHref, '站内阅读 →', 'report-link'));
       sources.appendChild(sourceLink(item.aihotURL, 'AI HOT ↗', 'source-link'));
-    } else if (item.provider === 'semiconductor') {
+    } else if (['semiconductor', 'robotics'].includes(item.provider)) {
       sources.appendChild(element('span', 'source-label', '来源 · ' + (item.sourceName || new URL(item.sourceURL).hostname)));
       sources.appendChild(routeLink(detailHref, '阅读正文与证据 →', 'report-link'));
       sources.appendChild(sourceLink(item.sourceURL, '原文 ↗', 'source-link'));
@@ -851,26 +971,36 @@
       sources.appendChild(sourceLink(link, (index ? '原文 ' + (index + 1) : '原文') + ' · ' + domain + ' ↗', 'source-link'));
     });
     else sources.appendChild(element('span', 'source-missing', '原稿未附链接'));
-    if (!['aihot', 'semiconductor'].includes(item.provider) && dailyReports.some(function (report) { return report.date === item.date; })) sources.appendChild(routeLink('#daily/' + item.date, '查看日报', 'report-link'));
+    if (!['aihot', 'semiconductor', 'robotics'].includes(item.provider) && dailyReports.some(function (report) { return report.date === item.date; })) sources.appendChild(routeLink('#daily/' + item.date, '查看日报', 'report-link'));
     footer.appendChild(sources);
     footer.appendChild(saveButton(item));
     content.appendChild(footer); card.appendChild(content);
     return card;
   }
   function savedItems() { return Array.from(saved.values()).sort(function (a, b) { return b.savedAt - a.savedAt; }); }
+  function reportRobotItems() {
+    var links = new Set(roboticsItems.map(function (item) { return item.sourceURL; }));
+    return dailyReports.slice(0, loadedCount).flatMap(function (meta) {
+      var report = loadedDaily.get(meta.date);
+      return report ? report.items.filter(function (item) {
+        return item.category === 'robot' && ![item.link].concat(item.links || []).some(function (link) { return links.has(safeURL(link)); });
+      }) : [];
+    });
+  }
   function allItems() {
-    return curatedItems.concat(semiconductorItems, dailyReports.slice(0, loadedCount).flatMap(function (meta) { var report = loadedDaily.get(meta.date); return report ? report.items.filter(function (item) { return item.category === 'robot'; }) : []; }));
+    return curatedItems.concat(semiconductorItems, roboticsItems, reportRobotItems());
   }
   function displayedItems() {
     if (currentRoute.view === 'saved') return savedItems();
-    if (currentRoute.view === 'feed') { var latest = dailyReports[0] && loadedDaily.get(dailyReports[0].date); return curatedItems.concat(semiconductorItems.filter(function (item) { return item.selected; }), latest ? latest.items.filter(function (item) { return item.category === 'robot'; }) : []); }
+    if (currentRoute.view === 'feed') return curatedItems.concat(semiconductorItems.filter(function (item) { return item.selected; }), roboticsItems.filter(function (item) { return item.selected; }));
     return allItems();
   }
   function scopeDescription() {
     if (currentRoute.view === 'saved') return '搜索范围：本地收藏';
-    if (currentRoute.category === 'semi') return currentRoute.view === 'feed' ? '搜索范围：本轮已入选的半导体资讯' : '搜索范围：本轮半导体采集资讯、观察线索及待复核信息';
-    if (currentRoute.view === 'feed') return '搜索范围：AI HOT 近7日精选、半导体精选及最新日报机器人资讯';
-    return '搜索范围：AI HOT 近7日精选、半导体采集资讯及已加载的 ' + loadedCount + ' 期日报机器人资讯';
+    if (currentRoute.category === 'semi') return currentRoute.view === 'feed' ? '搜索范围：本轮已入选的半导体资讯' : '搜索范围：半导体采集资讯、观察线索及待复核信息';
+    if (currentRoute.category === 'robot') return currentRoute.view === 'feed' ? '搜索范围：已入选的机器人与具身智能资讯' : '搜索范围：机器人与具身智能采集资讯、观察线索及已加载的历史日报';
+    if (currentRoute.view === 'feed') return '搜索范围：AI HOT 近7日精选、半导体精选、机器人与具身智能精选';
+    return '搜索范围：AI HOT 精选、半导体与机器人采集资讯及已加载的 ' + loadedCount + ' 期历史日报';
   }
   function formatFinancingAmount(value) {
     if (value === null || value === undefined || !Number.isFinite(Number(value))) return '—';
@@ -1343,7 +1473,7 @@
       if (currentRoute.view !== 'feed' && previousDate !== groupKey) {
         var group = element('div', 'feed-date-heading');
         group.appendChild(element('h2', '', groupKey === 'aihot-current' ? 'AI HOT 近7日精选' : dateLabel(item.date)));
-        if (!['aihot', 'semiconductor'].includes(item.provider) && dailyReports.some(function (report) { return report.date === item.date; })) group.appendChild(routeLink('#daily/' + item.date, '阅读日报 →'));
+        if (!['aihot', 'semiconductor', 'robotics'].includes(item.provider) && dailyReports.some(function (report) { return report.date === item.date; })) group.appendChild(routeLink('#daily/' + item.date, '阅读日报 →'));
         fragment.appendChild(group); previousDate = groupKey;
       }
       fragment.appendChild(createNews(item, index + 1));
@@ -1353,12 +1483,16 @@
     if (ui.searchInput) ui.searchInput.setAttribute('aria-description', scopeDescription());
     if (!filtered.length && !feedLoading) {
       var empty = element('div', 'empty-state');
-      var semiOnly = currentRoute.category === 'semi' && currentRoute.view !== 'saved';
-      var collectedWithoutSelected = semiOnly && currentRoute.view === 'feed' && !query && semiconductorLoaded && semiconductorItems.length > 0;
-      var allSourcesObserving = semiconductorItems.every(function (item) { return item.sourceMode !== 'CORE'; });
-      empty.appendChild(element('h2', '', collectedWithoutSelected ? '已有 ' + semiconductorItems.length + ' 条半导体产业动态' : query ? '没有找到匹配资讯' : currentRoute.view === 'saved' ? '还没有收藏资讯' : semiOnly && currentRoute.view === 'feed' ? '本轮暂无半导体精选' : '当前范围暂无资讯'));
-      empty.appendChild(element('p', '', collectedWithoutSelected ? allSourcesObserving ? '来源观察期内暂未进入精选，已采集内容可在全部动态中浏览。' : '本轮内容仍在评分或复核中，可先查看全部产业动态与观察线索。' : query ? scopeDescription() + '。可调整关键词。' : currentRoute.view === 'saved' ? '点击资讯旁的“收藏”，即可在这里继续阅读。收藏保存在当前浏览器。' : semiOnly ? semiconductorLoaded ? '来源观察和评分复核通过后，符合条件的信息会进入精选。' : '正在等待可用的半导体采集快照，可通过下方状态重试。' : '可切换赛道，或前往日报归档查看完整原稿。'));
-      if (semiOnly && currentRoute.view === 'feed') empty.appendChild(routeLink('#all/semi', '查看全部半导体动态 →', 'report-link semi-empty-link'));
+      var independentOnly = ['semi', 'robot'].includes(currentRoute.category) && currentRoute.view !== 'saved';
+      var robotOnly = currentRoute.category === 'robot';
+      var independentItems = robotOnly ? roboticsItems : semiconductorItems;
+      var independentLoaded = robotOnly ? roboticsLoaded : semiconductorLoaded;
+      var sectorName = robotOnly ? '机器人与具身智能' : '半导体';
+      var collectedWithoutSelected = independentOnly && currentRoute.view === 'feed' && !query && independentLoaded && independentItems.length > 0;
+      var allSourcesObserving = independentItems.every(function (item) { return item.sourceMode !== 'CORE'; });
+      empty.appendChild(element('h2', '', collectedWithoutSelected ? '已有 ' + independentItems.length + ' 条' + sectorName + '动态' : query ? '没有找到匹配资讯' : currentRoute.view === 'saved' ? '还没有收藏资讯' : independentOnly && currentRoute.view === 'feed' ? '本轮暂无' + sectorName + '精选' : '当前范围暂无资讯'));
+      empty.appendChild(element('p', '', collectedWithoutSelected ? allSourcesObserving ? '来源观察期内暂未进入精选，已采集内容可在全部动态中浏览。' : '本轮内容仍在评分或复核中，可先查看全部产业动态与观察线索。' : query ? scopeDescription() + '。可调整关键词。' : currentRoute.view === 'saved' ? '点击资讯旁的“收藏”，即可在这里继续阅读。收藏保存在当前浏览器。' : independentOnly ? independentLoaded ? '来源观察和评分复核通过后，符合条件的信息会进入精选。' : '正在等待可用的采集快照，可通过下方状态重试。' : '可切换赛道，或前往日报归档查看完整原稿。'));
+      if (independentOnly && currentRoute.view === 'feed') empty.appendChild(routeLink(robotOnly ? '#all/robot' : '#all/semi', '查看全部' + sectorName + '动态 →', 'report-link semi-empty-link'));
       ui.feedList.appendChild(empty);
     }
     if (feedLoading) ui.feedStatus.appendChild(element('p', 'status-message', '正在读取资讯…'));
@@ -1380,15 +1514,16 @@
       ui.feedStatus.appendChild(status);
     }
     if (currentRoute.view !== 'saved' && ['all', 'semi'].includes(currentRoute.category)) renderSemiconductorStatus(ui.feedStatus);
+    if (currentRoute.view !== 'saved' && ['all', 'robot'].includes(currentRoute.category)) renderRoboticsStatus(ui.feedStatus);
     var applicableFailures = currentRoute.view === 'feed' ? dailyReports.slice(0, 1).filter(function (meta) { return failedDaily.has(meta.date); }) : currentRoute.view === 'all' ? dailyReports.slice(0, loadedCount).filter(function (meta) { return failedDaily.has(meta.date); }) : [];
-    if (applicableFailures.length && currentRoute.category !== 'semi') {
+    if (applicableFailures.length && currentRoute.view === 'all' && ['all', 'robot'].includes(currentRoute.category)) {
       retryBox(ui.feedStatus, applicableFailures.length + ' 期日报读取失败：' + applicableFailures.map(function (meta) { return meta.date; }).join('、') + '。' + errorMessage(failedDaily.get(applicableFailures[0].date)), retryFailed);
     }
     if (currentRoute.view === 'saved' && !storageAvailable) ui.feedStatus.appendChild(element('p', 'storage-note', '浏览器未开放本地存储，当前收藏仅在本次浏览期间保留。'));
-    var more = currentRoute.view === 'all' && currentRoute.category !== 'semi' && loadedCount < dailyReports.length;
+    var more = currentRoute.view === 'all' && ['all', 'robot'].includes(currentRoute.category) && loadedCount < dailyReports.length;
     show(ui.loadMore, more);
     if (ui.loadMore) { ui.loadMore.disabled = feedLoading; ui.loadMore.textContent = feedLoading ? '加载中…' : '加载更多 · 还有 ' + (dailyReports.length - loadedCount) + ' 期'; }
-    if (currentRoute.view === 'all' && currentRoute.category !== 'semi' && loadedCount === dailyReports.length && !feedLoading) ui.feedStatus.appendChild(element('p', 'status-message', '已加载全部 ' + dailyReports.length + ' 期日报。'));
+    if (currentRoute.view === 'all' && ['all', 'robot'].includes(currentRoute.category) && loadedCount === dailyReports.length && !feedLoading) ui.feedStatus.appendChild(element('p', 'status-message', '已加载全部 ' + dailyReports.length + ' 期日报。'));
     document.querySelectorAll('#categoryFilters [data-filter]').forEach(function (button) {
       var active = button.dataset.filter === currentRoute.category;
       button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active));
@@ -1436,18 +1571,18 @@
   function updateStats() {
     text(ui.statDaily, dailyReports.length);
     text(ui.statWeekly, weeklyReports.length);
-    var latest = dailyReports[0] && loadedDaily.get(dailyReports[0].date);
     text(ui.latestDate, dailyReports[0] ? dailyReports[0].date : '暂无日报');
     var semiSelected = semiconductorItems.filter(function (item) { return item.selected; });
-    var latestItems = curatedItems.concat(semiSelected, latest ? latest.items.filter(function (item) { return item.category === 'robot'; }) : []);
-    text(ui.statItems, curatedLoaded || semiconductorLoaded || latest ? latestItems.length : '—');
-    if (ui.statItems) ui.statItems.title = 'AI HOT 当前精选、半导体精选及最新一期日报机器人资讯条数';
+    var robotSelected = roboticsItems.filter(function (item) { return item.selected; });
+    var latestItems = curatedItems.concat(semiSelected, robotSelected);
+    text(ui.statItems, curatedLoaded || semiconductorLoaded || roboticsLoaded ? latestItems.length : '—');
+    if (ui.statItems) ui.statItems.title = 'AI HOT 当前精选、半导体精选及机器人与具身智能精选条数';
     if (ui.sectorStats) {
       clear(ui.sectorStats);
       CATEGORY_KEYS.forEach(function (key) {
         var link = routeLink('#feed/' + key, '', 'sector-stat');
         link.appendChild(element('span', 'category-tag ' + key, CATEGORIES[key].short));
-        var count = key === 'ai' ? curatedLoaded ? curatedItems.length + ' 条' : '未同步' : key === 'semi' ? semiconductorLoaded ? semiSelected.length + ' 条精选 / ' + semiconductorItems.length + ' 条动态' : '未同步' : latest ? latest.sections[key].length + ' 条' : '—';
+        var count = key === 'ai' ? curatedLoaded ? curatedItems.length + ' 条' : '未同步' : key === 'semi' ? semiconductorLoaded ? semiSelected.length + ' 条精选 / ' + semiconductorItems.length + ' 条动态' : '未同步' : roboticsLoaded ? robotSelected.length + ' 条精选 / ' + roboticsItems.length + ' 条动态' : '未同步';
         link.appendChild(element('span', '', count));
         ui.sectorStats.appendChild(link);
       });
@@ -1793,7 +1928,7 @@
   }
   function renderArticle(item) {
     var isAIHOT = item.provider === 'aihot';
-    var isSemiconductor = item.provider === 'semiconductor';
+    var isSemiconductor = ['semiconductor', 'robotics'].includes(item.provider);
     var excerpt = isAIHOT && item.localExcerpt ? normalizeLocalExcerpt(Object.assign({ schemaVersion: 1 }, item.localExcerpt), item.aihotId) : null;
     var layout = element('div', 'article-layout');
     var main = element('div', 'article-main');
@@ -1803,7 +1938,7 @@
     main.appendChild(toolbar);
     var meta = element('div', 'article-meta');
     meta.appendChild(element('span', 'category-tag ' + item.category, CATEGORIES[item.category].short));
-    if (isSemiconductor) meta.appendChild(element('span', '', item.sourceName || '半导体信源采集'));
+    if (isSemiconductor) meta.appendChild(element('span', '', item.sourceName || CATEGORIES[item.category].name + '信源采集'));
     else if (isAIHOT) meta.appendChild(element('span', '', item.sourceName || 'AI HOT'));
     else meta.appendChild(element('span', '', '盈峰投资 · 投研日报归档'));
     if (item.author) meta.appendChild(element('span', '', item.author));
@@ -1866,7 +2001,7 @@
       if (item.signal) main.appendChild(element('p', 'signal-tag', item.signal));
       appendArticleSection(main, '日报摘要与点评', item.body);
       if (!item.body) main.appendChild(element('p', 'article-note', '当期原稿仅提供资讯标题，未附正文摘要。'));
-      main.appendChild(element('p', 'article-note', item.category === 'ai' ? '此内容保留自历史日报原稿；AI 板块当前精选以 AI HOT 为准，本条历史稿不计入当前精选。' : '此内容保留自当期投研日报，半导体与机器人板块的来源和筛选方式暂沿用原流程。'));
+      main.appendChild(element('p', 'article-note', item.category === 'ai' ? '此内容保留自历史日报原稿；AI 板块当前精选以 AI HOT 为准，本条历史稿不计入当前精选。' : '此内容保留自当期投研日报，不计入独立采集板块的当前精选。'));
       if (dailyReports.some(function (report) { return report.date === item.date; })) main.appendChild(routeLink('#daily/' + item.date, '阅读当期完整日报 →', 'report-link'));
     }
     var sourceSection = element('section', 'article-reading-sources article-source-actions');
@@ -1902,7 +2037,7 @@
     clear(ui.articleContent); ui.articleContent.appendChild(element('p', 'status-message', '正在读取资讯…')); ui.articleContent.setAttribute('aria-busy', 'true');
     try {
       var route = currentRoute;
-      var item = route.provider === 'semiconductor' ? await loadSemiconductorItem(route.id, force) : route.provider === 'aihot' ? await loadAIHOTItem(route.id, force) : await loadReportItem(route.id, force);
+      var item = route.provider === 'robotics' ? await loadRoboticsItem(route.id, force) : route.provider === 'semiconductor' ? await loadSemiconductorItem(route.id, force) : route.provider === 'aihot' ? await loadAIHOTItem(route.id, force) : await loadReportItem(route.id, force);
       if (version !== renderVersion) return;
       if (route.provider === 'aihot') {
         renderArticle(Object.assign({}, item, { localBodyState: 'loading' }));
@@ -1955,6 +2090,10 @@
       try { route.id = decodeURIComponent(path[2] || ''); } catch (_) { route.id = ''; }
       if ((path[1] !== 'aihot' && path[1] !== 'report') || !/^[A-Za-z0-9_-]{1,180}$/.test(route.id)) route.id = '';
     }
+    if (name === 'robotics') {
+      route.view = 'item'; route.provider = 'robotics'; route.category = 'robot';
+      route.id = /^robot-[a-f0-9]{24}$/.test(path[1] || '') ? path[1] : '';
+    }
     if (name === 'semiconductor') {
       route.view = 'item'; route.provider = 'semiconductor'; route.category = 'semi';
       route.id = validAIHOTId(path[1]) ? path[1] : '';
@@ -1990,7 +2129,7 @@
       if (route.institution) query.set('institution', route.institution);
       if (route.region) query.set('region', route.region);
     } else if (route.view === 'item') {
-      path = route.provider === 'semiconductor' ? 'semiconductor/' + encodeURIComponent(route.id) : path + '/' + route.provider + '/' + encodeURIComponent(route.id);
+      path = route.provider === 'robotics' ? 'robotics/' + encodeURIComponent(route.id) : route.provider === 'semiconductor' ? 'semiconductor/' + encodeURIComponent(route.id) : path + '/' + route.provider + '/' + encodeURIComponent(route.id);
     }
     return '#' + path + (query.size ? '?' + query.toString() : '');
   }
@@ -2045,7 +2184,7 @@
     return localReaderEnabled;
   }
   function updateHeader(route) {
-    var titles = { feed: ['每日精选', 'TODAY’S SIGNALS', '人工智能沿用 AI HOT 近7日精选；半导体展示独立采集后入选的产业信息。'], all: ['全部动态', 'RESEARCH FEED', '浏览 AI HOT 精选、半导体产业动态与观察线索，以及已归档的机器人资讯。'], daily: ['投研日报', 'DAILY ARCHIVE', '按月浏览历史日报，回到信号发生的那一天。'], financing: ['投融资动态', 'PRIMARY MARKET FINANCING', '按交易日查看烯牛数据记录的融资轮次、金额、投资方与行业分布。'], weekly: ['投研周报', 'WEEKLY ARCHIVE', '从一周资讯中观察趋势、融资与产业变化。'], saved: ['我的收藏', 'SAVED FOR LATER', '值得再读的资讯，保存在当前浏览器。'], about: ['关于投研', 'ABOUT RESEARCH', '聚焦人工智能、半导体、机器人与一级市场投融资的研究资料。'], item: ['资讯详情', 'READING', '阅读摘要、证据与原始来源。'] };
+    var titles = { feed: ['每日精选', 'TODAY’S SIGNALS', '人工智能沿用 AI HOT 精选；半导体、机器人与具身智能展示独立采集后入选的信息。'], all: ['全部动态', 'RESEARCH FEED', '浏览 AI HOT 精选、半导体、机器人与具身智能产业动态和观察线索。'], daily: ['投研日报', 'DAILY ARCHIVE', '按月浏览历史日报，回到信号发生的那一天。'], financing: ['投融资动态', 'PRIMARY MARKET FINANCING', '按交易日查看烯牛数据记录的融资轮次、金额、投资方与行业分布。'], weekly: ['投研周报', 'WEEKLY ARCHIVE', '从一周资讯中观察趋势、融资与产业变化。'], saved: ['我的收藏', 'SAVED FOR LATER', '值得再读的资讯，保存在当前浏览器。'], about: ['关于投研', 'ABOUT RESEARCH', '聚焦人工智能、半导体、机器人与具身智能，以及一级市场投融资的研究资料。'], item: ['资讯详情', 'READING', '阅读摘要、证据与原始来源。'] };
     var header = titles[route.view] || ['页面不存在', 'PAGE NOT FOUND', '请使用导航返回资讯或归档。'];
     text(ui.pageHeading, header[0]); text(ui.pageEyebrow, header[1]); text(ui.pageDescription, header[2]);
     text(ui.headerDate, dailyReports[0] ? dateLabel(dailyReports[0].date, true) : '暂无日报');
@@ -2055,7 +2194,7 @@
       if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
     });
     document.querySelectorAll('#sidebar a[data-category]').forEach(function (link) {
-      var active = (['feed', 'all'].includes(route.view) && link.dataset.category === route.category) || route.view === 'item' && (route.provider === 'aihot' && link.dataset.category === 'ai' || route.provider === 'semiconductor' && link.dataset.category === 'semi');
+      var active = (['feed', 'all'].includes(route.view) && link.dataset.category === route.category) || route.view === 'item' && (route.provider === 'aihot' && link.dataset.category === 'ai' || route.provider === 'semiconductor' && link.dataset.category === 'semi' || route.provider === 'robotics' && link.dataset.category === 'robot');
       link.classList.toggle('active', active); if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
     });
     if (ui.searchInput) { ui.searchInput.value = route.q; ui.searchInput.placeholder = route.view === 'all' ? '搜索已加载资讯…' : route.view === 'saved' ? '搜索本地收藏…' : '搜索精选资讯…'; }
@@ -2088,13 +2227,13 @@
         renderFeed();
         await Promise.all([
           curatedRequest,
-          loadSemiconductor(false).catch(function () { /* Semiconductor failure is displayed without reusing report items. */ }),
-          readDailyBatch(dailyReports.slice(0, 1).filter(function (entry) { return !loadedDaily.has(entry.date); }), false)
+          loadSemiconductor(false).catch(function () { /* Independent failure retains the previous snapshot. */ }),
+          loadRobotics(false).catch(function () { /* Independent failure retains the previous snapshot. */ })
         ]);
         if (version !== renderVersion) return;
         feedLoading = false; renderFeed(); updateStats();
       } else if (currentRoute.view === 'all') {
-        await Promise.all([loadCurated(false).catch(function () { /* The retry control is rendered below. */ }), loadSemiconductor(false).catch(function () { /* The retry control is rendered below. */ }), ensureAll(currentRoute.count, version)]);
+        await Promise.all([loadCurated(false).catch(function () { /* The retry control is rendered below. */ }), loadSemiconductor(false).catch(function () { /* The retry control is rendered below. */ }), loadRobotics(false).catch(function () { /* The retry control is rendered below. */ }), ensureAll(currentRoute.count, version)]);
         if (version !== renderVersion) return;
         renderFeed(); updateStats();
       }

@@ -1,0 +1,970 @@
+{
+  "id": "robot-e756748f59babaafe681eb4e",
+  "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos",
+  "summary": "NVIDIA 介绍 Cosmos 世界模型框架与 NIM，新增面向机器人、自动驾驶和手术场景的仿真配方与检查点，并称支持 YAM、AgiBot 双臂交互仿真及 GR00T、pi0.5 等模型。厂商自述，未见独立验证或付费部署。",
+  "reason": "材料为NVIDIA官方技术博客，披露Cosmos世界模型框架、NIM及机器人/双臂仿真检查点，属直接具身仿真工具链；但均为厂商自述，缺少客户部署和独立验证，投资行动性有限。；存在待复核项",
+  "sourceURL": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
+  "sourceName": "NVIDIA Robotics",
+  "sourceId": "robot-nvidia",
+  "sourceTier": "T1",
+  "sourceMode": "SIGNAL",
+  "publishedAt": "2026-11-02T17:00:00+00:00",
+  "fetchedAt": "2026-11-09T08:56:53.848013+00:00",
+  "articleBody": "Physical AI developers working with world models face two distinct challenges: adapting models to their sensors, tasks, and data, and getting those models into applications reliably.\n\nNVIDIA Cosmos addresses each. Cosmos is a platform of world foundation models and development tools for physical AI. Cosmos Framework provides agent skills and recipes for world model training, multimodal data processing, optimization and inference. Cosmos NIM microservices supports GPU-accelerated serving through application APIs.\n\nThis post walks through both. The simulation section shows how to use Cosmos Framework’s inference recipes and agent skills to generate synchronized camera video and LiDAR observations for AV, robot, and surgical scenarios, starting from released checkpoints you can run today. The deployment section shows how to choose a NIM configuration for your GPU, launch the container, verify readiness, and send your first inference request.\n\nWhen to use Cosmos Framework for world model development\n\nCosmos Framework is an open and fully modular framework for world model training, model optimization, and inference to support a full model development lifecycle using new agent skills. It is expanding beyond Cosmos 3 to support NVIDIA Alpamayo, GR00T, Qwen, pi0.5, and other compatible Hugging Face models.\n\nTraining\n\nTrain models on text, images, video, audio, and actions faster using new skills.\n\nUse LoRA for parameter-efficient adaptation, or full supervised fine-tuning (SFT) to update all model parameters.\n\nLoad data through JSONL, WebDataset, LeRobot, or custom adapters and train across GPUs and save checkpoints to resume runs.\n\nPoint your agent to post-training skill to accelerate and automate.\n\nApply Reinforcement Learning\n\nThe platform now covers online and offline RL paths. Newly supported pipelines include:\n\nDPO: offline preference optimization.\n\nGRPO: online RL with a rule or model reward and vLLM rollouts.\n\nPPO: actor-critic RL with frozen reference and critic, including RL for embodied policies in simulation.\n\nOPD: on-policy distillation from a frozen teacher.\n\nDiffusionNFT: online RL for diffusion world models.\n\nRun rollout, reward, and training roles on shared GPUs or separate pools.\n\nConnect supported simulators to collect experience.\n\nOptimize models and inference\n\nDistill models to reduce model size or generation steps; quantize models to reduce memory use.\n\nRun compatible checkpoints with Hugging Face Diffusers, PyTorch, SGLang, vLLM-Omni, vLLM, TRT-LLM and TRT-Edge-LLM or NVIDIA NIM.\n\nEvaluate for quality, accuracy and GPU usage and maximize compute utilization.\n\nUse agents with Cosmos Framework\n\nLoad the setup, inference, post-training, and troubleshooting skills under .agents/skills. Give the agent a bounded task:\n\nPrompt: Post-train <checkpoint> on <dataset> using <recipe>. Pin all revisions, validate the dataset, and keep training and evaluation episodes separate. Run the smoke test, save the configuration, and stop at <N> GPU-hours. Export and compare against the base model on held-out data using three seeds. Repeat evaluation at a supported lower precision; record quality, peak memory, and latency.\n\nWhich Cosmos simulation workflow should you use?\n\nCosmos Framework provides post-training and inference recipes for robot simulation, realistic scene generation, multi-camera driving simulation, and surgical policy evaluation. New Cosmos 3 Nano simulation recipes and example checkpoints enable developers to use agent runnable skills to evaluate our example checkpoints and adapt Cosmos 3 Nano to custom sensors, action space, and data domains.\n\nThese checkpoints support PyTorch and vLLM-Omni, tested on NVIDIA Hopper and Blackwell GPUs. Use the recipe to select GPU count, memory configuration, and inference settings.\n\nAutonomous vehicle simulation:\n\nBoth AV checkpoints take a prompt and World Scenario Map (WSM) controls representing lanes, objects, road markings, traffic signs, and road boundaries. Joint RGB–LiDAR generation additionally uses HD-map rangemap controls and supports optional initial LiDAR observations. Prompts describe weather, lighting, time of day, road conditions with prefixes providing camera-rig and field-of-view context. An optional initial camera images provide visual context to guide the generated scene’s appearance.\n\nCosmos3-Nano-Transfer-Auto uses bidirectional generation to denoise an entire multi-view clip at once for offline synthetic data generation. It supports 30 fps input and output video, with up to 400 frames at 480p or 720p; longer sequences can be generated through autoregressive chunking. Change the prompt to turn a daytime drive into a rainy night while keeping the same road layout and vehicle trajectories. Use these variations to train and evaluate perception and driving models across weather and lighting conditions.\n\nAfter Framework setup, run the four-GPU examples below from the repository root. For Transfer-Auto, use the published sample configuration with seven synchronized WSM videos, per-camera captions, first-frame RGB conditioning, and HD-map LiDAR controls. See the Transfer-Auto inference guide for setup, input preparation, and output details.\n\nexport COSMOS_TRAINING=0 COSMOS_INTERNAL=0\n\nhf download nvidia/Cosmos3-Nano-Transfer-Auto \\\n--local-dir checkpoints/Cosmos3-Nano-Transfer-Auto\n\nAUTO_SAMPLE_ROOT=\"$PWD/checkpoints/Cosmos3-Nano-Transfer-Auto/assets/sample_data\"\nAUTO_NEGATIVE_PROMPT=\"$(cat .agents/skills/cosmos3-nano-transfer-auto/inference/assets/negative-prompt.txt)\"\n\ntorchrun --standalone --nproc-per-node=4 \\\n-m cosmos_framework.scripts.inference \\\n-i \"$AUTO_SAMPLE_ROOT/input-transfer-auto.jsonl\" \\\n-o outputs/transfer_auto \\\n--checkpoint-path checkpoints/Cosmos3-Nano-Transfer-Auto \\\n--resolution 720 --num-steps 35 \\\n--per-view-negative-prompt \"$AUTO_NEGATIVE_PROMPT\" \\\n--cp-size 4 --cfgp-size 1 \\\n--no-use-torch-compile --no-diffusion-cache\n\nThe reference run produces seven 720p videos (297 frames at 30 FPS) and 99 LiDAR sweeps. Check sample_outputs.json for success and lidar.safetensors for finite range and intensity values, then verify WSM alignment and consistency across camera views and LiDAR.\n\nFor custom scenarios and rig adaptation, see the WSM renderer and Transfer-Auto post-training guides. For point-cloud conversion and visualization, see the LiDAR visualization utilities\n\nVideo 1. Surround-view video and LiDAR generation with Cosmos3-Nano-Transfer-Auto\n\nCosmos3-Nano-Sim-Auto is the causal, few-step-distilled variant of Cosmos3-Nano-Transfer-Auto, enabling autoregressive streaming generation. It generates observations incrementally as an AV policy or human driving input updates the scenario through a WSM renderer. Generated camera and LiDAR observations return to the policy, enabling closed-loop evaluation\n\nFor Sim-Auto, reproduce the reference rollout using the published Sim-Auto sample checkpoint and pre-rendered WSM controls to generate synchronized camera videos and LiDAR observations autoregressively. See the Sim-Auto inference guide for setup, input configuration, and output details.\n\nFigure 1. Cosmos closed-loop simulation workflow\n\nexport COSMOS_TRAINING=0 COSMOS_INTERNAL=0\n\nhf download nvidia/Cosmos3-Nano-Sim-Auto \\\n--local-dir checkpoints/Cosmos3-Nano-Sim-Auto\n\nhf download nvidia/Cosmos3-Nano-Transfer-Auto \\\n--include 'assets/sample_data/*' \\\n--local-dir checkpoints/Cosmos3-Nano-Transfer-Auto\n\nAUTO_SAMPLE_ROOT=\"$PWD/checkpoints/Cosmos3-Nano-Transfer-Auto/assets/sample_data\"\n\ntorchrun --standalone --nproc-per-node=4 \\\n-m cosmos_framework.scripts.inference \\\n-i \"$AUTO_SAMPLE_ROOT/input-sim-auto.jsonl\" \\\n-o outputs/sim_auto \\\n--checkpoint-path checkpoints/Cosmos3-Nano-Sim-Auto \\\n--cp-size 4 --cfgp-size 1 \\\n--no-use-torch-compile --no-diffusion-cache\n\nFor human-controlled rollouts, see Sim-Auto Interactive Drive.\n\nThe Sim-Auto reference run writes to outputs/sim_auto/daytime_scene/. Apply the same output checks described above for Transfer-Auto.\n\nVideo 2. Multi-view video and LiDAR generation with Cosmos3-Nano-Sim-Auto\n\nRobotics Simulation:\n\nCosmos3-Nano-Sim-Transfer converts depth video and a prompt into RGB video with varied lighting, textures, and backgrounds while preserving geometry and motion. For robot demonstrations, it changes the third-person view while retaining actions, states, and wrist-camera recordings.\n\nVideo 3. Turn depth, segmentation, edges, or blurred video into detailed RGB observations, using language prompts while the simulator maintains physical state\n\nCosmos3-Nano-Sim-Bimanual generates the next visual observation from the scene and robot actions. It supports interactive two-arm simulation for YAM and AgiBot embodiments, controlled by a policy or human-operated joysticks.\n\nHere, Sim-Transfer generates visuals from a physics simulator’s updated state; Sim-Bimanual generates the next observation directly from the scene and robot actions.\n\nSurgical Simulation:\n\nSurgical environments are among the most challenging for classical simulators due to their complex multi-physics nature. Generative simulation offers a complementary approach: rather than explicitly modeling scene geometry, tissue deformation, and physical interactions, world foundation models learn visual dynamics directly from synchronized surgical video and robot kinematics.\n\nCosmos3-H-Embodied-Nano, built on Cosmos3 and post-trained on Open-H-Embodiment, generates surgical video from robot actions, predicts actions from video, or generates both together. It takes an initial RGB frame, a task prompt, the last 16 executed actions, and subsequent robot actions. Developers can use it to generate synthetic data and evaluate policies offline without building a physics model of the surgical scene.\n\nCosmos3-H-Dreams lets developers test how a surgical policy responds as a procedure unfolds, with each action shaping what happens next. Distilled from Cosmos3-H-Embodied-Nano, this causal, few-step model generates frames from live robot kinematics for real-time, closed-loop simulation controlled by a human or learned policy. This gives developers an interactive environment to explore surgical maneuvers and evaluate policies before testing on physical hardware.\n\nWhen to use Cosmos NIM for accelerated inference\n\nAlongside the open inference tools, the new Cosmos NIM package supported models in optimized containers for accelerated inference, making Cosmos models easy to deploy.\n\nFaster inference, less memory: Accelerate inference through quantization, speculative decoding, caching, token pruning, and KV-cache-aware routing. Speculative decoding delivers measured mean speedups of roughly 2–3× on H200.\n\nCustom models and live video understanding: Serve fine-tuned Cosmos checkpoints and process live streams with streaming VLM inference, enabling sub-second alerts with 10x lower latency for faster event response.\n\nSimpler production deployment: Automatic configuration selection, validated performance and quality across supported GPUs, licensing support, and quarterly feature, optimization, and security updates.\n\nGPU memory requirements\n\nCapabilityModelRequired GPU VRAM [GiB]\n\nBF16FP8FP8 + offloading\n\nReasoningCosmos3-Edge1614.5–\n\nCosmos3-Nano23.123.1–\n\nCosmos3-Super13567–\n\nGenerationCosmos3-Edge-DROID14––\n\nCosmos3-Nano584431\n\nCosmos3-Super1509338\n\nTable 1. GPU memory requirements per model per task\n\nHow to Launch Cosmos NIM\n\nChoose a GPU and model configuration using the tables above, and follow the deployment guide to install the required NVIDIA driver, Docker, and NVIDIA Container Toolkit on Linux. Sign in to NGC API Keys, select Generate Personal Key, and enable NGC Catalog access. Set the key in your terminal as NGC_API_KEY:\n\nexport NGC_API_KEY='paste-your-key-here'\n\nThe following commands launch Nano Generator on GPU 0. Ensure curl and python3 are installed and sufficient disk space is available for the image and model cache. The cache permissions shown are for local development.\n\n: \"${NGC_API_KEY:?Export your NGC API key first}\"\nprintf '%s' \"$NGC_API_KEY\" | docker login nvcr.io \\\n--username '$oauthtoken' --password-stdin\n\nexport NIM_IMAGE='nvcr.io/nim/nvidia/cosmos3:2.0.0'\nexport LOCAL_NIM_CACHE=\"$HOME/.cache/nim/cosmos3\"\nmkdir -p \"$LOCAL_NIM_CACHE\"\nchmod a+rwX \"$LOCAL_NIM_CACHE\"\n\ndocker run -d --name cosmos3-generator \\\n--gpus '\"device=0\"' \\\n--shm-size 16g \\\n--ulimit memlock=-1 \\\n--ulimit stack=67108864 \\\n--ulimit nofile=65536:65536 \\\n-p 8000:8000 \\\n-e NGC_API_KEY \\\n-e NIM_MODEL_TYPE=generator \\\n-e NIM_MODEL_VARIANT=nano \\\n-e NIM_PERF_PROFILE=latency \\\n-v \"$LOCAL_NIM_CACHE:/opt/nim/.cache\" \\\n\"$NIM_IMAGE\"\n\nWait for readiness (~few minutes) , then inspect the selected model and profile:\n\ncurl -fsS http://localhost:8000/v1/health/ready\ncurl -fsS http://localhost:8000/v1/metadata | python3 -m json.tool\n\nTo inspect startup progress, run docker logs -f cosmos3-generator in another terminal. Now you are ready to generate.\n\nChoose latency or throughput:\n\nlatency (default): Prioritizes finishing one request sooner. Choose it for interactive experimentation; supported multi-GPU configurations use GPUs together on a request.\n\nthroughput: Prioritizes completing more requests over time. Choose it for dataset generation or concurrent users; independent replicas process requests in parallel.\n\nSet NIM_PERF_PROFILE at container launch. These settings apply to Generator; throughput benefits require concurrent requests. Latency supports 1, 2, 4, or 8 GPUs, while throughput requires 2, 4, or 8 compatible GPUs. Changing only NIM_PERF_PROFILE to throughput in the single-GPU example will fail profile selection.\n\nGet started\n\nExplore Cosmos Framework and use its agent skills and reference recipes to train, customize, and optimize models for your application. Start with a simulation checkpoint that matches your task, reproduce the reference workflow, and adapt it to your sensors, actions, and data.\n\nRead the full technical report.\n\nJoin us on Thursday, Nov. 5, for a livestream on how to use Cosmos Framework.\n\nDeploy Cosmos models for reasoning and generation using New Certified Cosmos NIM for best performance on 20+ NVIDIA GPUs.",
+  "score": 62,
+  "axes": {
+    "IMP": 6,
+    "NOV": 6,
+    "EVI": 5,
+    "REL": 8,
+    "ACT": 4
+  },
+  "selected": false,
+  "status": "review",
+  "relevance": "PASS",
+  "eventType": "technology",
+  "factKey": null,
+  "tags": [
+    "具身模型与数据"
+  ],
+  "evidence": [
+    {
+      "quote": "It supports interactive two-arm simulation for YAM and AgiBot embodiments, contr",
+      "sourceURL": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/"
+    }
+  ],
+  "relatedSources": [],
+  "verification": {
+    "publisherDateVerified": true,
+    "contentHash": "e21355df754f1ea33b2d69b6afc9b9eb5beadc40d5fc5ce01a03df8362d2978c"
+  },
+  "articleContent": {
+    "schemaVersion": 1,
+    "sourceLanguage": "en",
+    "translationStatus": "complete",
+    "languages": {
+      "original": {
+        "label": "English",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Physical AI developers working with world models face two distinct challenges: adapting models to their sensors, tasks, and data, and getting those models into applications reliably."
+          },
+          {
+            "type": "paragraph",
+            "text": "NVIDIA Cosmos addresses each. Cosmos is a platform of world foundation models and development tools for physical AI. Cosmos Framework provides agent skills and recipes for world model training, multimodal data processing, optimization and inference. Cosmos NIM microservices supports GPU-accelerated serving through application APIs."
+          },
+          {
+            "type": "paragraph",
+            "text": "This post walks through both. The simulation section shows how to use Cosmos Framework’s inference recipes and agent skills to generate synchronized camera video and LiDAR observations for AV, robot, and surgical scenarios, starting from released checkpoints you can run today. The deployment section shows how to choose a NIM configuration for your GPU, launch the container, verify readiness, and send your first inference request."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "When to use Cosmos Framework for world model development"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos Framework is an open and fully modular framework for world model training, model optimization, and inference to support a full model development lifecycle using new agent skills. It is expanding beyond Cosmos 3 to support NVIDIA Alpamayo, GR00T, Qwen, pi0.5, and other compatible Hugging Face models."
+          },
+          {
+            "type": "paragraph",
+            "text": "Training"
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "Train models on text, images, video, audio, and actions faster using new skills.",
+              "Use LoRA for parameter-efficient adaptation, or full supervised fine-tuning (SFT) to update all model parameters.",
+              "Load data through JSONL, WebDataset, LeRobot, or custom adapters and train across GPUs and save checkpoints to resume runs.",
+              "Point your agent to post-training skill to accelerate and automate."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "Apply Reinforcement Learning"
+          },
+          {
+            "type": "paragraph",
+            "text": "The platform now covers online and offline RL paths. Newly supported pipelines include:"
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "DPO: offline preference optimization.",
+              "GRPO: online RL with a rule or model reward and vLLM rollouts.",
+              "PPO: actor-critic RL with frozen reference and critic, including RL for embodied policies in simulation.",
+              "OPD: on-policy distillation from a frozen teacher.",
+              "DiffusionNFT: online RL for diffusion world models.",
+              "Run rollout, reward, and training roles on shared GPUs or separate pools.",
+              "Connect supported simulators to collect experience."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "Optimize models and inference"
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "Distill models to reduce model size or generation steps; quantize models to reduce memory use.",
+              "Run compatible checkpoints with Hugging Face Diffusers, PyTorch, SGLang, vLLM-Omni, vLLM, TRT-LLM and TRT-Edge-LLM or NVIDIA NIM.",
+              "Evaluate for quality, accuracy and GPU usage and maximize compute utilization."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "Use agents with Cosmos Framework"
+          },
+          {
+            "type": "paragraph",
+            "text": "Load the setup, inference, post-training, and troubleshooting skills under .agents/skills. Give the agent a bounded task:"
+          },
+          {
+            "type": "paragraph",
+            "text": "Prompt: Post-train <checkpoint> on <dataset> using <recipe>. Pin all revisions, validate the dataset, and keep training and evaluation episodes separate. Run the smoke test, save the configuration, and stop at <N> GPU-hours. Export and compare against the base model on held-out data using three seeds. Repeat evaluation at a supported lower precision; record quality, peak memory, and latency."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "Which Cosmos simulation workflow should you use?"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos Framework provides post-training and inference recipes for robot simulation, realistic scene generation, multi-camera driving simulation, and surgical policy evaluation. New Cosmos 3 Nano simulation recipes and example checkpoints enable developers to use agent runnable skills to evaluate our example checkpoints and adapt Cosmos 3 Nano to custom sensors, action space, and data domains."
+          },
+          {
+            "type": "paragraph",
+            "text": "These checkpoints support PyTorch and vLLM-Omni, tested on NVIDIA Hopper and Blackwell GPUs. Use the recipe to select GPU count, memory configuration, and inference settings."
+          },
+          {
+            "type": "paragraph",
+            "text": "Autonomous vehicle simulation:"
+          },
+          {
+            "type": "paragraph",
+            "text": "Both AV checkpoints take a prompt and World Scenario Map (WSM) controls representing lanes, objects, road markings, traffic signs, and road boundaries. Joint RGB–LiDAR generation additionally uses HD-map rangemap controls and supports optional initial LiDAR observations. Prompts describe weather, lighting, time of day, road conditions with prefixes providing camera-rig and field-of-view context. An optional initial camera images provide visual context to guide the generated scene’s appearance."
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-Nano-Transfer-Auto uses bidirectional generation to denoise an entire multi-view clip at once for offline synthetic data generation. It supports 30 fps input and output video, with up to 400 frames at 480p or 720p; longer sequences can be generated through autoregressive chunking. Change the prompt to turn a daytime drive into a rainy night while keeping the same road layout and vehicle trajectories. Use these variations to train and evaluate perception and driving models across weather and lighting conditions."
+          },
+          {
+            "type": "paragraph",
+            "text": "After Framework setup, run the four-GPU examples below from the repository root. For Transfer-Auto, use the published sample configuration with seven synchronized WSM videos, per-camera captions, first-frame RGB conditioning, and HD-map LiDAR controls. See the Transfer-Auto inference guide for setup, input preparation, and output details."
+          },
+          {
+            "type": "paragraph",
+            "text": "export COSMOS_TRAINING=0 COSMOS_INTERNAL=0\n\nhf download nvidia/Cosmos3-Nano-Transfer-Auto \\\n--local-dir checkpoints/Cosmos3-Nano-Transfer-Auto\n\nAUTO_SAMPLE_ROOT=\"$PWD/checkpoints/Cosmos3-Nano-Transfer-Auto/assets/sample_data\"\nAUTO_NEGATIVE_PROMPT=\"$(cat .agents/skills/cosmos3-nano-transfer-auto/inference/assets/negative-prompt.txt)\"\n\ntorchrun --standalone --nproc-per-node=4 \\\n-m cosmos_framework.scripts.inference \\\n-i \"$AUTO_SAMPLE_ROOT/input-transfer-auto.jsonl\" \\\n-o outputs/transfer_auto \\\n--checkpoint-path checkpoints/Cosmos3-Nano-Transfer-Auto \\\n--resolution 720 --num-steps 35 \\\n--per-view-negative-prompt \"$AUTO_NEGATIVE_PROMPT\" \\\n--cp-size 4 --cfgp-size 1 \\\n--no-use-torch-compile --no-diffusion-cache"
+          },
+          {
+            "type": "paragraph",
+            "text": "The reference run produces seven 720p videos (297 frames at 30 FPS) and 99 LiDAR sweeps. Check sample_outputs.json for success and lidar.safetensors for finite range and intensity values, then verify WSM alignment and consistency across camera views and LiDAR."
+          },
+          {
+            "type": "paragraph",
+            "text": "For custom scenarios and rig adaptation, see the WSM renderer and Transfer-Auto post-training guides. For point-cloud conversion and visualization, see the LiDAR visualization utilities"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-Nano-Sim-Auto is the causal, few-step-distilled variant of Cosmos3-Nano-Transfer-Auto, enabling autoregressive streaming generation. It generates observations incrementally as an AV policy or human driving input updates the scenario through a WSM renderer. Generated camera and LiDAR observations return to the policy, enabling closed-loop evaluation"
+          },
+          {
+            "type": "paragraph",
+            "text": "For Sim-Auto, reproduce the reference rollout using the published Sim-Auto sample checkpoint and pre-rendered WSM controls to generate synchronized camera videos and LiDAR observations autoregressively. See the Sim-Auto inference guide for setup, input configuration, and output details."
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：A policy model (e.g., Alpamayo) or user sends an action to the AlpaSim simulation runtime. AlpaSim updates the simulation state and forwards the context to Cosmos3-Nano-Sim-Auto, which synthesizes the next camera frames and returns them to the policy, completing the loop.）"
+          },
+          {
+            "type": "paragraph",
+            "text": "export COSMOS_TRAINING=0 COSMOS_INTERNAL=0\n\nhf download nvidia/Cosmos3-Nano-Sim-Auto \\\n--local-dir checkpoints/Cosmos3-Nano-Sim-Auto\n\nhf download nvidia/Cosmos3-Nano-Transfer-Auto \\\n--include 'assets/sample_data/*' \\\n--local-dir checkpoints/Cosmos3-Nano-Transfer-Auto\n\nAUTO_SAMPLE_ROOT=\"$PWD/checkpoints/Cosmos3-Nano-Transfer-Auto/assets/sample_data\"\n\ntorchrun --standalone --nproc-per-node=4 \\\n-m cosmos_framework.scripts.inference \\\n-i \"$AUTO_SAMPLE_ROOT/input-sim-auto.jsonl\" \\\n-o outputs/sim_auto \\\n--checkpoint-path checkpoints/Cosmos3-Nano-Sim-Auto \\\n--cp-size 4 --cfgp-size 1 \\\n--no-use-torch-compile --no-diffusion-cache"
+          },
+          {
+            "type": "paragraph",
+            "text": "For human-controlled rollouts, see Sim-Auto Interactive Drive."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Sim-Auto reference run writes to outputs/sim_auto/daytime_scene/. Apply the same output checks described above for Transfer-Auto."
+          },
+          {
+            "type": "paragraph",
+            "text": "Robotics Simulation:"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-Nano-Sim-Transfer converts depth video and a prompt into RGB video with varied lighting, textures, and backgrounds while preserving geometry and motion. For robot demonstrations, it changes the third-person view while retaining actions, states, and wrist-camera recordings."
+          },
+          {
+            "type": "paragraph",
+            "text": "Video 3. Turn depth, segmentation, edges, or blurred video into detailed RGB observations, using language prompts while the simulator maintains physical state"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-Nano-Sim-Bimanual generates the next visual observation from the scene and robot actions. It supports interactive two-arm simulation for YAM and AgiBot embodiments, controlled by a policy or human-operated joysticks."
+          },
+          {
+            "type": "paragraph",
+            "text": "Here, Sim-Transfer generates visuals from a physics simulator’s updated state; Sim-Bimanual generates the next observation directly from the scene and robot actions."
+          },
+          {
+            "type": "paragraph",
+            "text": "Surgical Simulation:"
+          },
+          {
+            "type": "paragraph",
+            "text": "Surgical environments are among the most challenging for classical simulators due to their complex multi-physics nature. Generative simulation offers a complementary approach: rather than explicitly modeling scene geometry, tissue deformation, and physical interactions, world foundation models learn visual dynamics directly from synchronized surgical video and robot kinematics."
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-H-Embodied-Nano, built on Cosmos3 and post-trained on Open-H-Embodiment, generates surgical video from robot actions, predicts actions from video, or generates both together. It takes an initial RGB frame, a task prompt, the last 16 executed actions, and subsequent robot actions. Developers can use it to generate synthetic data and evaluate policies offline without building a physics model of the surgical scene."
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-H-Dreams lets developers test how a surgical policy responds as a procedure unfolds, with each action shaping what happens next. Distilled from Cosmos3-H-Embodied-Nano, this causal, few-step model generates frames from live robot kinematics for real-time, closed-loop simulation controlled by a human or learned policy. This gives developers an interactive environment to explore surgical maneuvers and evaluate policies before testing on physical hardware."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "When to use Cosmos NIM for accelerated inference"
+          },
+          {
+            "type": "paragraph",
+            "text": "Alongside the open inference tools, the new Cosmos NIM package supported models in optimized containers for accelerated inference, making Cosmos models easy to deploy."
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "Faster inference, less memory: Accelerate inference through quantization, speculative decoding, caching, token pruning, and KV-cache-aware routing. Speculative decoding delivers measured mean speedups of roughly 2–3× on H200.",
+              "Custom models and live video understanding: Serve fine-tuned Cosmos checkpoints and process live streams with streaming VLM inference, enabling sub-second alerts with 10x lower latency for faster event response.",
+              "Simpler production deployment: Automatic configuration selection, validated performance and quality across supported GPUs, licensing support, and quarterly feature, optimization, and security updates."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "GPU memory requirements"
+          },
+          {
+            "type": "table",
+            "header": true,
+            "rows": [
+              [
+                {
+                  "text": "Capability",
+                  "colspan": 1,
+                  "rowspan": 2
+                },
+                {
+                  "text": "Model",
+                  "colspan": 1,
+                  "rowspan": 2
+                },
+                {
+                  "text": "Required GPU VRAM [GiB]",
+                  "colspan": 3,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "BF16",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "FP8",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "FP8 + offloading",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Reasoning",
+                  "colspan": 1,
+                  "rowspan": 3
+                },
+                {
+                  "text": "Cosmos3-Edge",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "16",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "14.5",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Cosmos3-Nano",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "23.1",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "23.1",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Cosmos3-Super",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "135",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "67",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Generation",
+                  "colspan": 1,
+                  "rowspan": 3
+                },
+                {
+                  "text": "Cosmos3-Edge-DROID",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "14",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Cosmos3-Nano",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "58",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "44",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "31",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Cosmos3-Super",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "150",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "93",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "38",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "How to Launch Cosmos NIM"
+          },
+          {
+            "type": "paragraph",
+            "text": "Choose a GPU and model configuration using the tables above, and follow the deployment guide to install the required NVIDIA driver, Docker, and NVIDIA Container Toolkit on Linux. Sign in to NGC API Keys, select Generate Personal Key, and enable NGC Catalog access. Set the key in your terminal as NGC_API_KEY:"
+          },
+          {
+            "type": "paragraph",
+            "text": "export NGC_API_KEY='paste-your-key-here'"
+          },
+          {
+            "type": "paragraph",
+            "text": "The following commands launch Nano Generator on GPU 0. Ensure curl and python3 are installed and sufficient disk space is available for the image and model cache. The cache permissions shown are for local development."
+          },
+          {
+            "type": "paragraph",
+            "text": ": \"${NGC_API_KEY:?Export your NGC API key first}\"\nprintf '%s' \"$NGC_API_KEY\" | docker login nvcr.io \\\n--username '$oauthtoken' --password-stdin\n\nexport NIM_IMAGE='nvcr.io/nim/nvidia/cosmos3:2.0.0'\nexport LOCAL_NIM_CACHE=\"$HOME/.cache/nim/cosmos3\"\nmkdir -p \"$LOCAL_NIM_CACHE\"\nchmod a+rwX \"$LOCAL_NIM_CACHE\"\n\ndocker run -d --name cosmos3-generator \\\n--gpus '\"device=0\"' \\\n--shm-size 16g \\\n--ulimit memlock=-1 \\\n--ulimit stack=67108864 \\\n--ulimit nofile=65536:65536 \\\n-p 8000:8000 \\\n-e NGC_API_KEY \\\n-e NIM_MODEL_TYPE=generator \\\n-e NIM_MODEL_VARIANT=nano \\\n-e NIM_PERF_PROFILE=latency \\\n-v \"$LOCAL_NIM_CACHE:/opt/nim/.cache\" \\\n\"$NIM_IMAGE\""
+          },
+          {
+            "type": "paragraph",
+            "text": "Wait for readiness (~few minutes) , then inspect the selected model and profile:"
+          },
+          {
+            "type": "paragraph",
+            "text": "curl -fsS http://localhost:8000/v1/health/ready\ncurl -fsS http://localhost:8000/v1/metadata | python3 -m json.tool"
+          },
+          {
+            "type": "paragraph",
+            "text": "To inspect startup progress, run docker logs -f cosmos3-generator in another terminal. Now you are ready to generate."
+          },
+          {
+            "type": "paragraph",
+            "text": "Choose latency or throughput:"
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "latency (default): Prioritizes finishing one request sooner. Choose it for interactive experimentation; supported multi-GPU configurations use GPUs together on a request.",
+              "throughput: Prioritizes completing more requests over time. Choose it for dataset generation or concurrent users; independent replicas process requests in parallel."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "Set NIM_PERF_PROFILE at container launch. These settings apply to Generator; throughput benefits require concurrent requests. Latency supports 1, 2, 4, or 8 GPUs, while throughput requires 2, 4, or 8 compatible GPUs. Changing only NIM_PERF_PROFILE to throughput in the single-GPU example will fail profile selection."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "Get started"
+          },
+          {
+            "type": "paragraph",
+            "text": "Explore Cosmos Framework and use its agent skills and reference recipes to train, customize, and optimize models for your application. Start with a simulation checkpoint that matches your task, reproduce the reference workflow, and adapt it to your sensors, actions, and data."
+          },
+          {
+            "type": "paragraph",
+            "text": "Read the full technical report."
+          },
+          {
+            "type": "paragraph",
+            "text": "Join us on Thursday, Nov. 5, for a livestream on how to use Cosmos Framework."
+          },
+          {
+            "type": "paragraph",
+            "text": "Deploy Cosmos models for reasoning and generation using New Certified Cosmos NIM for best performance on 20+ NVIDIA GPUs."
+          }
+        ]
+      },
+      "zh": {
+        "label": "中文",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "从事世界模型开发的物理 AI 开发者面临两个不同挑战：使模型适配其传感器、任务和数据，以及将这些模型可靠地投入应用。"
+          },
+          {
+            "type": "paragraph",
+            "text": "NVIDIA Cosmos 分别解决这两个问题。Cosmos 是一个面向物理 AI 的世界基础模型与开发工具平台。Cosmos Framework 提供用于世界模型训练、多模态数据处理、优化和推理的智能体技能与配方。Cosmos NIM 微服务通过应用 API 支持 GPU 加速的服务化部署。"
+          },
+          {
+            "type": "paragraph",
+            "text": "本文会介绍这两部分。仿真部分展示如何使用 Cosmos Framework 的推理配方和智能体技能，从当前可运行的已发布检查点出发，为自动驾驶汽车、机器人和外科手术场景生成同步的摄像头视频与激光雷达观测。部署部分展示如何为你的 GPU 选择 NIM 配置、启动容器、验证就绪状态，并发送首个推理请求。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "何时使用 Cosmos Framework 进行世界模型开发"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos Framework 是一个开放且完全模块化的框架，用于世界模型训练、模型优化和推理，并通过新的智能体技能支持完整的模型开发生命周期。它正从 Cosmos 3 扩展，以支持 NVIDIA Alpamayo、GR00T、Qwen、pi0.5 及其他兼容的 Hugging Face 模型。"
+          },
+          {
+            "type": "paragraph",
+            "text": "训练"
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "使用新技能，在文本、图像、视频、音频和动作数据上更快地训练模型。",
+              "使用 LoRA 进行参数高效适配，或使用全监督微调（SFT）更新全部模型参数。",
+              "通过 JSONL、WebDataset、LeRobot 或自定义适配器加载数据，跨 GPU 训练并保存检查点以恢复运行。",
+              "将智能体指向后训练技能，以加速并实现自动化。"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "应用强化学习"
+          },
+          {
+            "type": "paragraph",
+            "text": "该平台现在覆盖在线和离线强化学习路径。新支持的流水线包括："
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "DPO：离线偏好优化。",
+              "GRPO：使用规则或模型奖励以及 vLLM 轨迹采样的在线强化学习。",
+              "PPO：带有冻结参考模型和评论家的演员-评论家强化学习，包括在仿真中对具身策略进行强化学习。",
+              "OPD：从冻结教师模型进行同策略蒸馏。",
+              "DiffusionNFT：面向扩散世界模型的在线强化学习。",
+              "在共享 GPU 或独立资源池上运行轨迹采样、奖励和训练角色。",
+              "连接支持的仿真器以收集经验。"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "优化模型与推理"
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "蒸馏模型以减小模型规模或生成步数；量化模型以减少内存占用。",
+              "使用 Hugging Face Diffusers、PyTorch、SGLang、vLLM-Omni、vLLM、TRT-LLM 和 TRT-Edge-LLM 或 NVIDIA NIM 运行兼容的检查点。",
+              "评估质量、准确性和 GPU 使用情况，并最大化计算利用率。"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "在 Cosmos Framework 中使用智能体"
+          },
+          {
+            "type": "paragraph",
+            "text": "加载 .agents/skills 下的设置、推理、后训练和故障排除技能。给智能体一个边界明确的任务："
+          },
+          {
+            "type": "paragraph",
+            "text": "提示词：使用 <recipe> 在 <dataset> 上对 <checkpoint> 进行后训练。固定所有修订版本，验证数据集，并保持训练和评估回合分离。运行冒烟测试，保存配置，并在 <N> GPU 小时处停止。导出模型，并使用三个随机种子在留出数据上与基础模型比较。在支持的较低精度下重复评估；记录质量、峰值内存和延迟。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "应使用哪种 Cosmos 仿真工作流？"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos Framework 为机器人仿真、逼真场景生成、多摄像头驾驶仿真和外科手术策略评估提供后训练与推理配方。新的 Cosmos 3 Nano 仿真配方和示例检查点使开发者能够使用可由智能体运行的技能来评估我们的示例检查点，并使 Cosmos 3 Nano 适配自定义传感器、动作空间和数据领域。"
+          },
+          {
+            "type": "paragraph",
+            "text": "这些检查点支持 PyTorch 和 vLLM-Omni，已在 NVIDIA Hopper 和 Blackwell GPU 上测试。使用该配方选择 GPU 数量、内存配置和推理设置。"
+          },
+          {
+            "type": "paragraph",
+            "text": "自动驾驶汽车仿真："
+          },
+          {
+            "type": "paragraph",
+            "text": "两个 AV 检查点均接收提示词和世界场景地图（WSM）控制，这些控制表示车道、物体、道路标线、交通标志和道路边界。联合 RGB–LiDAR 生成还使用 HD 地图测距图控制，并支持可选的初始 LiDAR 观测。提示词描述天气、光照、一天中的时间、道路状况，并带有提供相机装置和视场角上下文的前缀。可选的初始相机图像提供视觉上下文，以引导生成场景的外观。"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-Nano-Transfer-Auto 使用双向生成一次性对整个多视角片段进行去噪，用于离线合成数据生成。它支持 30 fps 的输入和输出视频，在 480p 或 720p 下最多支持 400 帧；更长的序列可通过自回归分块生成。更改提示词可将白天行驶变为雨夜，同时保持相同的道路布局和车辆轨迹。使用这些变化来训练和评估跨天气和光照条件的感知与驾驶模型。"
+          },
+          {
+            "type": "paragraph",
+            "text": "完成 Framework 设置后，从仓库根目录运行下面的四 GPU 示例。对于 Transfer-Auto，使用已发布的示例配置，其中包含七个同步的 WSM 视频、每相机说明文字、首帧 RGB 条件和 HD 地图 LiDAR 控制。有关设置、输入准备和输出细节，请参阅 Transfer-Auto 推理指南。"
+          },
+          {
+            "type": "paragraph",
+            "text": "export COSMOS_TRAINING=0 COSMOS_INTERNAL=0\n\nhf download nvidia/Cosmos3-Nano-Transfer-Auto \\\n--local-dir checkpoints/Cosmos3-Nano-Transfer-Auto\n\nAUTO_SAMPLE_ROOT=\"$PWD/checkpoints/Cosmos3-Nano-Transfer-Auto/assets/sample_data\"\nAUTO_NEGATIVE_PROMPT=\"$(cat .agents/skills/cosmos3-nano-transfer-auto/inference/assets/negative-prompt.txt)\"\n\ntorchrun --standalone --nproc-per-node=4 \\\n-m cosmos_framework.scripts.inference \\\n-i \"$AUTO_SAMPLE_ROOT/input-transfer-auto.jsonl\" \\\n-o outputs/transfer_auto \\\n--checkpoint-path checkpoints/Cosmos3-Nano-Transfer-Auto \\\n--resolution 720 --num-steps 35 \\\n--per-view-negative-prompt \"$AUTO_NEGATIVE_PROMPT\" \\\n--cp-size 4 --cfgp-size 1 \\\n--no-use-torch-compile --no-diffusion-cache"
+          },
+          {
+            "type": "paragraph",
+            "text": "参考运行会生成七个 720p 视频（30 FPS 下 297 帧）和 99 次 LiDAR 扫描。检查 sample_outputs.json 以确认成功，并检查 lidar.safetensors 中的距离和强度值是否为有限值，然后验证 WSM 对齐以及相机视角与 LiDAR 之间的一致性。"
+          },
+          {
+            "type": "paragraph",
+            "text": "有关自定义场景和相机装置适配，请参阅 WSM 渲染器和 Transfer-Auto 后训练指南。有关点云转换和可视化，请参阅 LiDAR 可视化工具"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-Nano-Sim-Auto 是 Cosmos3-Nano-Transfer-Auto 的因果、少步蒸馏变体，可支持自回归流式生成。当 AV 策略或人类驾驶输入通过 WSM 渲染器更新场景时，它会增量生成观测。生成的相机和 LiDAR 观测会返回给策略，从而支持闭环评估"
+          },
+          {
+            "type": "paragraph",
+            "text": "对于 Sim-Auto，使用已发布的 Sim-Auto 示例检查点和预渲染的 WSM 控制来复现参考 rollout，以自回归方式生成同步的相机视频和 LiDAR 观测。有关设置、输入配置和输出细节，请参阅 Sim-Auto 推理指南。"
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：策略模型（例如 Alpamayo）或用户向 AlpaSim 仿真运行时发送动作。AlpaSim 更新仿真状态，并将上下文转发给 Cosmos3-Nano-Sim-Auto；后者合成下一批相机帧并将其返回给策略，从而完成闭环。）"
+          },
+          {
+            "type": "paragraph",
+            "text": "export COSMOS_TRAINING=0 COSMOS_INTERNAL=0\n\nhf download nvidia/Cosmos3-Nano-Sim-Auto \\\n--local-dir checkpoints/Cosmos3-Nano-Sim-Auto\n\nhf download nvidia/Cosmos3-Nano-Transfer-Auto \\\n--include 'assets/sample_data/*' \\\n--local-dir checkpoints/Cosmos3-Nano-Transfer-Auto\n\nAUTO_SAMPLE_ROOT=\"$PWD/checkpoints/Cosmos3-Nano-Transfer-Auto/assets/sample_data\"\n\ntorchrun --standalone --nproc-per-node=4 \\\n-m cosmos_framework.scripts.inference \\\n-i \"$AUTO_SAMPLE_ROOT/input-sim-auto.jsonl\" \\\n-o outputs/sim_auto \\\n--checkpoint-path checkpoints/Cosmos3-Nano-Sim-Auto \\\n--cp-size 4 --cfgp-size 1 \\\n--no-use-torch-compile --no-diffusion-cache"
+          },
+          {
+            "type": "paragraph",
+            "text": "有关人工控制的 rollout，请参见 Sim-Auto Interactive Drive。"
+          },
+          {
+            "type": "paragraph",
+            "text": "Sim-Auto 参考运行会将结果写入 outputs/sim_auto/daytime_scene/。请对 Transfer-Auto 应用上文所述的相同输出检查。"
+          },
+          {
+            "type": "paragraph",
+            "text": "机器人仿真："
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-Nano-Sim-Transfer 将深度视频和提示词转换为具有多样化光照、纹理和背景的 RGB 视频，同时保留几何结构和运动。对于机器人演示，它会改变第三人称视角，同时保留动作、状态和腕部相机记录。"
+          },
+          {
+            "type": "paragraph",
+            "text": "视频 3。利用语言提示词，将深度、分割、边缘或模糊视频转换为详细的 RGB 观测，同时由仿真器维持物理状态"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-Nano-Sim-Bimanual 根据场景和机器人动作生成下一视觉观测。它支持面向 YAM 和 AgiBot 本体的交互式双臂仿真，可由策略或人工操作的操纵杆控制。"
+          },
+          {
+            "type": "paragraph",
+            "text": "在此，Sim-Transfer 根据物理仿真器的更新状态生成视觉内容；Sim-Bimanual 直接根据场景和机器人动作生成下一观测。"
+          },
+          {
+            "type": "paragraph",
+            "text": "手术仿真："
+          },
+          {
+            "type": "paragraph",
+            "text": "由于手术环境具有复杂的多物理场特性，它们对经典仿真器而言是最具挑战性的环境之一。生成式仿真提供了一种互补方法：世界基础模型不显式建模场景几何、组织形变和物理交互，而是直接从同步的手术视频和机器人运动学中学习视觉动力学。"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-H-Embodied-Nano 基于 Cosmos3 构建，并在 Open-H-Embodiment 上进行后训练，可根据机器人动作生成手术视频、根据视频预测动作，或同时生成二者。它接收初始 RGB 帧、任务提示词、最近 16 个已执行动作以及后续机器人动作。开发者可用它生成合成数据，并在无需构建手术场景物理模型的情况下离线评估策略。"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cosmos3-H-Dreams 让开发者测试手术策略在手术过程展开时的响应，其中每个动作都会影响接下来发生的情况。该因果式少步模型从 Cosmos3-H-Embodied-Nano 蒸馏而来，可根据实时机器人运动学生成帧，用于由人工或学习到的策略控制的实时闭环仿真。这为开发者提供了一个交互式环境，可在物理硬件上测试之前探索手术操作并评估策略。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "何时使用 Cosmos NIM 进行加速推理"
+          },
+          {
+            "type": "paragraph",
+            "text": "除开放式推理工具外，新的 Cosmos NIM 包还在经过优化的容器中支持模型，以加速推理，使 Cosmos 模型易于部署。"
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "更快推理、更少内存：通过量化、投机解码、缓存、token 剪枝和 KV 缓存感知路由来加速推理。投机解码在 H200 上实测平均提速约 2–3 倍。",
+              "定制模型与实时视频理解：提供微调后的 Cosmos 检查点，并通过流式 VLM 推理处理实时流，实现亚秒级告警，延迟降低 10 倍，从而更快响应事件。",
+              "更简单的生产部署：自动配置选择、在受支持的 GPU 上经过验证的性能与质量、许可支持，以及每季度功能、优化和安全更新。"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "GPU 显存要求"
+          },
+          {
+            "type": "table",
+            "header": true,
+            "rows": [
+              [
+                {
+                  "text": "能力",
+                  "colspan": 1,
+                  "rowspan": 2
+                },
+                {
+                  "text": "模型",
+                  "colspan": 1,
+                  "rowspan": 2
+                },
+                {
+                  "text": "所需 GPU 显存 [GiB]",
+                  "colspan": 3,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "BF16",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "FP8",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "FP8 + 卸载",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "推理",
+                  "colspan": 1,
+                  "rowspan": 3
+                },
+                {
+                  "text": "Cosmos3-Edge",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "16",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "14.5",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Cosmos3-Nano",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "23.1",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "23.1",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Cosmos3-Super",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "135",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "67",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "生成",
+                  "colspan": 1,
+                  "rowspan": 3
+                },
+                {
+                  "text": "Cosmos3-Edge-DROID",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "14",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "–",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Cosmos3-Nano",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "58",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "44",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "31",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ],
+              [
+                {
+                  "text": "Cosmos3-Super",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "150",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "93",
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                {
+                  "text": "38",
+                  "colspan": 1,
+                  "rowspan": 1
+                }
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "如何启动 Cosmos NIM"
+          },
+          {
+            "type": "paragraph",
+            "text": "使用上表选择 GPU 和模型配置，并遵循部署指南，在 Linux 上安装所需的 NVIDIA 驱动、Docker 和 NVIDIA Container Toolkit。登录 NGC API Keys，选择 Generate Personal Key，并启用 NGC Catalog 访问权限。在终端中将密钥设置为 NGC_API_KEY："
+          },
+          {
+            "type": "paragraph",
+            "text": "export NGC_API_KEY='paste-your-key-here'"
+          },
+          {
+            "type": "paragraph",
+            "text": "以下命令在 GPU 0 上启动 Nano Generator。请确保已安装 curl 和 python3，并且有足够的磁盘空间用于镜像和模型缓存。所示缓存权限适用于本地开发。"
+          },
+          {
+            "type": "paragraph",
+            "text": ": \"${NGC_API_KEY:?Export your NGC API key first}\"\nprintf '%s' \"$NGC_API_KEY\" | docker login nvcr.io \\\n--username '$oauthtoken' --password-stdin\n\nexport NIM_IMAGE='nvcr.io/nim/nvidia/cosmos3:2.0.0'\nexport LOCAL_NIM_CACHE=\"$HOME/.cache/nim/cosmos3\"\nmkdir -p \"$LOCAL_NIM_CACHE\"\nchmod a+rwX \"$LOCAL_NIM_CACHE\"\n\ndocker run -d --name cosmos3-generator \\\n--gpus '\"device=0\"' \\\n--shm-size 16g \\\n--ulimit memlock=-1 \\\n--ulimit stack=67108864 \\\n--ulimit nofile=65536:65536 \\\n-p 8000:8000 \\\n-e NGC_API_KEY \\\n-e NIM_MODEL_TYPE=generator \\\n-e NIM_MODEL_VARIANT=nano \\\n-e NIM_PERF_PROFILE=latency \\\n-v \"$LOCAL_NIM_CACHE:/opt/nim/.cache\" \\\n\"$NIM_IMAGE\""
+          },
+          {
+            "type": "paragraph",
+            "text": "等待就绪（约几分钟），然后检查所选模型和配置文件："
+          },
+          {
+            "type": "paragraph",
+            "text": "curl -fsS http://localhost:8000/v1/health/ready\ncurl -fsS http://localhost:8000/v1/metadata | python3 -m json.tool"
+          },
+          {
+            "type": "paragraph",
+            "text": "要查看启动进度，请在另一个终端中运行 docker logs -f cosmos3-generator。现在可以开始生成了。"
+          },
+          {
+            "type": "paragraph",
+            "text": "选择延迟或吞吐量："
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "延迟（latency，默认）：优先让单个请求更快完成。交互式实验可选择此项；受支持的多 GPU 配置会在单个请求中共同使用多个 GPU。",
+              "吞吐量（throughput）：优先在单位时间内完成更多请求。数据集生成或并发用户可选择此项；独立副本会并行处理请求。"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "在启动容器时设置 NIM_PERF_PROFILE。这些设置适用于 Generator；要获得吞吐量优势需要并发请求。延迟模式支持 1、2、4 或 8 个 GPU，而吞吐量模式需要 2、4 或 8 个兼容 GPU。在单 GPU 示例中仅将 NIM_PERF_PROFILE 改为 throughput 会导致配置文件选择失败。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "开始使用"
+          },
+          {
+            "type": "paragraph",
+            "text": "探索 Cosmos Framework，并使用其 agent skills 和参考配方（reference recipes）为你的应用训练、定制和优化模型。从与你的任务匹配的仿真检查点开始，复现参考工作流，并使其适配你的传感器、动作和数据。"
+          },
+          {
+            "type": "paragraph",
+            "text": "阅读完整技术报告。"
+          },
+          {
+            "type": "paragraph",
+            "text": "欢迎参加 11 月 5 日（周四）的直播，了解如何使用 Cosmos Framework。"
+          },
+          {
+            "type": "paragraph",
+            "text": "使用全新认证的 Cosmos NIM 部署 Cosmos 模型进行推理和生成，在 20 多款 NVIDIA GPU 上获得最佳性能。"
+          }
+        ]
+      }
+    },
+    "updatedAt": "2026-11-09T08:56:44.794042+00:00"
+  },
+  "articleBodyZh": "从事世界模型开发的物理 AI 开发者面临两个不同挑战：使模型适配其传感器、任务和数据，以及将这些模型可靠地投入应用。\n\nNVIDIA Cosmos 分别解决这两个问题。Cosmos 是一个面向物理 AI 的世界基础模型与开发工具平台。Cosmos Framework 提供用于世界模型训练、多模态数据处理、优化和推理的智能体技能与配方。Cosmos NIM 微服务通过应用 API 支持 GPU 加速的服务化部署。\n\n本文会介绍这两部分。仿真部分展示如何使用 Cosmos Framework 的推理配方和智能体技能，从当前可运行的已发布检查点出发，为自动驾驶汽车、机器人和外科手术场景生成同步的摄像头视频与激光雷达观测。部署部分展示如何为你的 GPU 选择 NIM 配置、启动容器、验证就绪状态，并发送首个推理请求。\n\n何时使用 Cosmos Framework 进行世界模型开发\n\nCosmos Framework 是一个开放且完全模块化的框架，用于世界模型训练、模型优化和推理，并通过新的智能体技能支持完整的模型开发生命周期。它正从 Cosmos 3 扩展，以支持 NVIDIA Alpamayo、GR00T、Qwen、pi0.5 及其他兼容的 Hugging Face 模型。\n\n训练\n\n使用新技能，在文本、图像、视频、音频和动作数据上更快地训练模型。\n\n使用 LoRA 进行参数高效适配，或使用全监督微调（SFT）更新全部模型参数。\n\n通过 JSONL、WebDataset、LeRobot 或自定义适配器加载数据，跨 GPU 训练并保存检查点以恢复运行。\n\n将智能体指向后训练技能，以加速并实现自动化。\n\n应用强化学习\n\n该平台现在覆盖在线和离线强化学习路径。新支持的流水线包括：\n\nDPO：离线偏好优化。\n\nGRPO：使用规则或模型奖励以及 vLLM 轨迹采样的在线强化学习。\n\nPPO：带有冻结参考模型和评论家的演员-评论家强化学习，包括在仿真中对具身策略进行强化学习。\n\nOPD：从冻结教师模型进行同策略蒸馏。\n\nDiffusionNFT：面向扩散世界模型的在线强化学习。\n\n在共享 GPU 或独立资源池上运行轨迹采样、奖励和训练角色。\n\n连接支持的仿真器以收集经验。\n\n优化模型与推理\n\n蒸馏模型以减小模型规模或生成步数；量化模型以减少内存占用。\n\n使用 Hugging Face Diffusers、PyTorch、SGLang、vLLM-Omni、vLLM、TRT-LLM 和 TRT-Edge-LLM 或 NVIDIA NIM 运行兼容的检查点。\n\n评估质量、准确性和 GPU 使用情况，并最大化计算利用率。\n\n在 Cosmos Framework 中使用智能体\n\n加载 .agents/skills 下的设置、推理、后训练和故障排除技能。给智能体一个边界明确的任务：\n\n提示词：使用 <recipe> 在 <dataset> 上对 <checkpoint> 进行后训练。固定所有修订版本，验证数据集，并保持训练和评估回合分离。运行冒烟测试，保存配置，并在 <N> GPU 小时处停止。导出模型，并使用三个随机种子在留出数据上与基础模型比较。在支持的较低精度下重复评估；记录质量、峰值内存和延迟。\n\n应使用哪种 Cosmos 仿真工作流？\n\nCosmos Framework 为机器人仿真、逼真场景生成、多摄像头驾驶仿真和外科手术策略评估提供后训练与推理配方。新的 Cosmos 3 Nano 仿真配方和示例检查点使开发者能够使用可由智能体运行的技能来评估我们的示例检查点，并使 Cosmos 3 Nano 适配自定义传感器、动作空间和数据领域。\n\n这些检查点支持 PyTorch 和 vLLM-Omni，已在 NVIDIA Hopper 和 Blackwell GPU 上测试。使用该配方选择 GPU 数量、内存配置和推理设置。\n\n自动驾驶汽车仿真：\n\n两个 AV 检查点均接收提示词和世界场景地图（WSM）控制，这些控制表示车道、物体、道路标线、交通标志和道路边界。联合 RGB–LiDAR 生成还使用 HD 地图测距图控制，并支持可选的初始 LiDAR 观测。提示词描述天气、光照、一天中的时间、道路状况，并带有提供相机装置和视场角上下文的前缀。可选的初始相机图像提供视觉上下文，以引导生成场景的外观。\n\nCosmos3-Nano-Transfer-Auto 使用双向生成一次性对整个多视角片段进行去噪，用于离线合成数据生成。它支持 30 fps 的输入和输出视频，在 480p 或 720p 下最多支持 400 帧；更长的序列可通过自回归分块生成。更改提示词可将白天行驶变为雨夜，同时保持相同的道路布局和车辆轨迹。使用这些变化来训练和评估跨天气和光照条件的感知与驾驶模型。\n\n完成 Framework 设置后，从仓库根目录运行下面的四 GPU 示例。对于 Transfer-Auto，使用已发布的示例配置，其中包含七个同步的 WSM 视频、每相机说明文字、首帧 RGB 条件和 HD 地图 LiDAR 控制。有关设置、输入准备和输出细节，请参阅 Transfer-Auto 推理指南。\n\nexport COSMOS_TRAINING=0 COSMOS_INTERNAL=0\n\nhf download nvidia/Cosmos3-Nano-Transfer-Auto \\\n--local-dir checkpoints/Cosmos3-Nano-Transfer-Auto\n\nAUTO_SAMPLE_ROOT=\"$PWD/checkpoints/Cosmos3-Nano-Transfer-Auto/assets/sample_data\"\nAUTO_NEGATIVE_PROMPT=\"$(cat .agents/skills/cosmos3-nano-transfer-auto/inference/assets/negative-prompt.txt)\"\n\ntorchrun --standalone --nproc-per-node=4 \\\n-m cosmos_framework.scripts.inference \\\n-i \"$AUTO_SAMPLE_ROOT/input-transfer-auto.jsonl\" \\\n-o outputs/transfer_auto \\\n--checkpoint-path checkpoints/Cosmos3-Nano-Transfer-Auto \\\n--resolution 720 --num-steps 35 \\\n--per-view-negative-prompt \"$AUTO_NEGATIVE_PROMPT\" \\\n--cp-size 4 --cfgp-size 1 \\\n--no-use-torch-compile --no-diffusion-cache\n\n参考运行会生成七个 720p 视频（30 FPS 下 297 帧）和 99 次 LiDAR 扫描。检查 sample_outputs.json 以确认成功，并检查 lidar.safetensors 中的距离和强度值是否为有限值，然后验证 WSM 对齐以及相机视角与 LiDAR 之间的一致性。\n\n有关自定义场景和相机装置适配，请参阅 WSM 渲染器和 Transfer-Auto 后训练指南。有关点云转换和可视化，请参阅 LiDAR 可视化工具\n\nCosmos3-Nano-Sim-Auto 是 Cosmos3-Nano-Transfer-Auto 的因果、少步蒸馏变体，可支持自回归流式生成。当 AV 策略或人类驾驶输入通过 WSM 渲染器更新场景时，它会增量生成观测。生成的相机和 LiDAR 观测会返回给策略，从而支持闭环评估\n\n对于 Sim-Auto，使用已发布的 Sim-Auto 示例检查点和预渲染的 WSM 控制来复现参考 rollout，以自回归方式生成同步的相机视频和 LiDAR 观测。有关设置、输入配置和输出细节，请参阅 Sim-Auto 推理指南。\n\n（原文配图未能获取：策略模型（例如 Alpamayo）或用户向 AlpaSim 仿真运行时发送动作。AlpaSim 更新仿真状态，并将上下文转发给 Cosmos3-Nano-Sim-Auto；后者合成下一批相机帧并将其返回给策略，从而完成闭环。）\n\nexport COSMOS_TRAINING=0 COSMOS_INTERNAL=0\n\nhf download nvidia/Cosmos3-Nano-Sim-Auto \\\n--local-dir checkpoints/Cosmos3-Nano-Sim-Auto\n\nhf download nvidia/Cosmos3-Nano-Transfer-Auto \\\n--include 'assets/sample_data/*' \\\n--local-dir checkpoints/Cosmos3-Nano-Transfer-Auto\n\nAUTO_SAMPLE_ROOT=\"$PWD/checkpoints/Cosmos3-Nano-Transfer-Auto/assets/sample_data\"\n\ntorchrun --standalone --nproc-per-node=4 \\\n-m cosmos_framework.scripts.inference \\\n-i \"$AUTO_SAMPLE_ROOT/input-sim-auto.jsonl\" \\\n-o outputs/sim_auto \\\n--checkpoint-path checkpoints/Cosmos3-Nano-Sim-Auto \\\n--cp-size 4 --cfgp-size 1 \\\n--no-use-torch-compile --no-diffusion-cache\n\n有关人工控制的 rollout，请参见 Sim-Auto Interactive Drive。\n\nSim-Auto 参考运行会将结果写入 outputs/sim_auto/daytime_scene/。请对 Transfer-Auto 应用上文所述的相同输出检查。\n\n机器人仿真：\n\nCosmos3-Nano-Sim-Transfer 将深度视频和提示词转换为具有多样化光照、纹理和背景的 RGB 视频，同时保留几何结构和运动。对于机器人演示，它会改变第三人称视角，同时保留动作、状态和腕部相机记录。\n\n视频 3。利用语言提示词，将深度、分割、边缘或模糊视频转换为详细的 RGB 观测，同时由仿真器维持物理状态\n\nCosmos3-Nano-Sim-Bimanual 根据场景和机器人动作生成下一视觉观测。它支持面向 YAM 和 AgiBot 本体的交互式双臂仿真，可由策略或人工操作的操纵杆控制。\n\n在此，Sim-Transfer 根据物理仿真器的更新状态生成视觉内容；Sim-Bimanual 直接根据场景和机器人动作生成下一观测。\n\n手术仿真：\n\n由于手术环境具有复杂的多物理场特性，它们对经典仿真器而言是最具挑战性的环境之一。生成式仿真提供了一种互补方法：世界基础模型不显式建模场景几何、组织形变和物理交互，而是直接从同步的手术视频和机器人运动学中学习视觉动力学。\n\nCosmos3-H-Embodied-Nano 基于 Cosmos3 构建，并在 Open-H-Embodiment 上进行后训练，可根据机器人动作生成手术视频、根据视频预测动作，或同时生成二者。它接收初始 RGB 帧、任务提示词、最近 16 个已执行动作以及后续机器人动作。开发者可用它生成合成数据，并在无需构建手术场景物理模型的情况下离线评估策略。\n\nCosmos3-H-Dreams 让开发者测试手术策略在手术过程展开时的响应，其中每个动作都会影响接下来发生的情况。该因果式少步模型从 Cosmos3-H-Embodied-Nano 蒸馏而来，可根据实时机器人运动学生成帧，用于由人工或学习到的策略控制的实时闭环仿真。这为开发者提供了一个交互式环境，可在物理硬件上测试之前探索手术操作并评估策略。\n\n何时使用 Cosmos NIM 进行加速推理\n\n除开放式推理工具外，新的 Cosmos NIM 包还在经过优化的容器中支持模型，以加速推理，使 Cosmos 模型易于部署。\n\n更快推理、更少内存：通过量化、投机解码、缓存、token 剪枝和 KV 缓存感知路由来加速推理。投机解码在 H200 上实测平均提速约 2–3 倍。\n\n定制模型与实时视频理解：提供微调后的 Cosmos 检查点，并通过流式 VLM 推理处理实时流，实现亚秒级告警，延迟降低 10 倍，从而更快响应事件。\n\n更简单的生产部署：自动配置选择、在受支持的 GPU 上经过验证的性能与质量、许可支持，以及每季度功能、优化和安全更新。\n\nGPU 显存要求\n\n能力 | 模型 | 所需 GPU 显存 [GiB]\n\nBF16 | FP8 | FP8 + 卸载\n\n推理 | Cosmos3-Edge | 16 | 14.5 | –\n\nCosmos3-Nano | 23.1 | 23.1 | –\n\nCosmos3-Super | 135 | 67 | –\n\n生成 | Cosmos3-Edge-DROID | 14 | – | –\n\nCosmos3-Nano | 58 | 44 | 31\n\nCosmos3-Super | 150 | 93 | 38\n\n如何启动 Cosmos NIM\n\n使用上表选择 GPU 和模型配置，并遵循部署指南，在 Linux 上安装所需的 NVIDIA 驱动、Docker 和 NVIDIA Container Toolkit。登录 NGC API Keys，选择 Generate Personal Key，并启用 NGC Catalog 访问权限。在终端中将密钥设置为 NGC_API_KEY：\n\nexport NGC_API_KEY='paste-your-key-here'\n\n以下命令在 GPU 0 上启动 Nano Generator。请确保已安装 curl 和 python3，并且有足够的磁盘空间用于镜像和模型缓存。所示缓存权限适用于本地开发。\n\n: \"${NGC_API_KEY:?Export your NGC API key first}\"\nprintf '%s' \"$NGC_API_KEY\" | docker login nvcr.io \\\n--username '$oauthtoken' --password-stdin\n\nexport NIM_IMAGE='nvcr.io/nim/nvidia/cosmos3:2.0.0'\nexport LOCAL_NIM_CACHE=\"$HOME/.cache/nim/cosmos3\"\nmkdir -p \"$LOCAL_NIM_CACHE\"\nchmod a+rwX \"$LOCAL_NIM_CACHE\"\n\ndocker run -d --name cosmos3-generator \\\n--gpus '\"device=0\"' \\\n--shm-size 16g \\\n--ulimit memlock=-1 \\\n--ulimit stack=67108864 \\\n--ulimit nofile=65536:65536 \\\n-p 8000:8000 \\\n-e NGC_API_KEY \\\n-e NIM_MODEL_TYPE=generator \\\n-e NIM_MODEL_VARIANT=nano \\\n-e NIM_PERF_PROFILE=latency \\\n-v \"$LOCAL_NIM_CACHE:/opt/nim/.cache\" \\\n\"$NIM_IMAGE\"\n\n等待就绪（约几分钟），然后检查所选模型和配置文件：\n\ncurl -fsS http://localhost:8000/v1/health/ready\ncurl -fsS http://localhost:8000/v1/metadata | python3 -m json.tool\n\n要查看启动进度，请在另一个终端中运行 docker logs -f cosmos3-generator。现在可以开始生成了。\n\n选择延迟或吞吐量：\n\n延迟（latency，默认）：优先让单个请求更快完成。交互式实验可选择此项；受支持的多 GPU 配置会在单个请求中共同使用多个 GPU。\n\n吞吐量（throughput）：优先在单位时间内完成更多请求。数据集生成或并发用户可选择此项；独立副本会并行处理请求。\n\n在启动容器时设置 NIM_PERF_PROFILE。这些设置适用于 Generator；要获得吞吐量优势需要并发请求。延迟模式支持 1、2、4 或 8 个 GPU，而吞吐量模式需要 2、4 或 8 个兼容 GPU。在单 GPU 示例中仅将 NIM_PERF_PROFILE 改为 throughput 会导致配置文件选择失败。\n\n开始使用\n\n探索 Cosmos Framework，并使用其 agent skills 和参考配方（reference recipes）为你的应用训练、定制和优化模型。从与你的任务匹配的仿真检查点开始，复现参考工作流，并使其适配你的传感器、动作和数据。\n\n阅读完整技术报告。\n\n欢迎参加 11 月 5 日（周四）的直播，了解如何使用 Cosmos Framework。\n\n使用全新认证的 Cosmos NIM 部署 Cosmos 模型进行推理和生成，在 20 多款 NVIDIA GPU 上获得最佳性能。"
+}
