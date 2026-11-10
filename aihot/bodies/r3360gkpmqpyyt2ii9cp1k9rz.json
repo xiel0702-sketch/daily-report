@@ -1,0 +1,2590 @@
+{
+  "schemaVersion": 1,
+  "id": "r3360gkpmqpyyt2ii9cp1k9rz",
+  "status": "available",
+  "provenance": "source-public-page",
+  "sourceURL": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-base/",
+  "fetchedAt": "2026-11-10T05:26:47.202375Z",
+  "label": "正文 · 原文来源",
+  "notice": "AI HOT 页面未提供完整正文，以下内容抓取自原始来源。 不支持的图片地址",
+  "topics": [],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "ERNIE5.5FlashBase",
+          "inlines": [
+            {
+              "text": "ERNIE5.5"
+            },
+            {
+              "italic": true,
+              "text": "Flash"
+            },
+            {
+              "text": "Base"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "为下一步创新，开放更高效的起点",
+          "inlines": [
+            {
+              "text": "为下一步创新，开放更高效的起点"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HuggingFace",
+          "inlines": [
+            {
+              "href": "https://huggingface.co/baidu/ERNIE-5.5-Flash-Base",
+              "text": "HuggingFace"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "目录 01引言02模型结构03预训练04评测05快速开始06总结与展望07引用",
+          "inlines": [
+            {
+              "text": "目录 "
+            },
+            {
+              "href": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-base/#introduction",
+              "text": "01引言"
+            },
+            {
+              "href": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-base/#architecture",
+              "text": "02模型结构"
+            },
+            {
+              "href": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-base/#pretraining",
+              "text": "03预训练"
+            },
+            {
+              "href": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-base/#evaluation",
+              "text": "04评测"
+            },
+            {
+              "href": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-base/#quick-start",
+              "text": "05快速开始"
+            },
+            {
+              "href": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-base/#outlook",
+              "text": "06总结与展望"
+            },
+            {
+              "href": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-base/#citation",
+              "text": "07引用"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "1. 引言",
+          "inlines": [
+            {
+              "text": "1. 引言"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "一个 Base 模型的价值，既在于预训练建立了怎样的能力基础，也在于它为后续训练提供了怎样的起点。不同的领域、推理任务和 Agent 应用，需要不同的数据、训练目标与行为策略。开放预训练终点权重，让开发者能够在已有的通用能力之上，自行选择模型下一阶段的训练方向。",
+          "inlines": [
+            {
+              "text": "一个 Base 模型的价值，既在于预训练建立了怎样的能力基础，也在于它为后续训练提供了怎样的起点。不同的领域、推理任务和 Agent 应用，需要不同的数据、训练目标与行为策略。开放预训练终点权重，让开发者能够在已有的通用能力之上，自行选择模型下一阶段的训练方向。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "今天，我们发布 ERNIE-5.5-Flash-Base，向社区开放这一阶段的成果。它是一个稀疏 MoE 语言模型，总参数 280B，每 token 激活 14B，在 33.5T tokens 上从零完成预训练；最长训练上下文为 128K，微调与推理支持 1M tokens 上下文。本次发布的权重是预训练终点的 checkpoint，未经中训练与后训练，可作为领域适配、指令微调和强化学习研究的共同起点。",
+          "inlines": [
+            {
+              "text": "今天，我们发布 "
+            },
+            {
+              "bold": true,
+              "text": "ERNIE-5.5-Flash-Base"
+            },
+            {
+              "text": "，向社区开放这一阶段的成果。它是一个稀疏 MoE 语言模型，总参数 "
+            },
+            {
+              "bold": true,
+              "text": "280B"
+            },
+            {
+              "text": "，每 token 激活 "
+            },
+            {
+              "bold": true,
+              "text": "14B"
+            },
+            {
+              "text": "，在 "
+            },
+            {
+              "bold": true,
+              "text": "33.5T tokens"
+            },
+            {
+              "text": " 上从零完成预训练；最长训练上下文为 "
+            },
+            {
+              "bold": true,
+              "text": "128K"
+            },
+            {
+              "text": "，微调与推理支持 "
+            },
+            {
+              "bold": true,
+              "text": "1M tokens"
+            },
+            {
+              "text": " 上下文。本次发布的权重是预训练终点的 checkpoint，未经中训练与后训练，可作为领域适配、指令微调和强化学习研究的共同起点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了让这个起点具有长期使用的价值，我们从模型设计之初就把效率作为重要目标。后续训练中的反复采样，以及 Agent 应用中的多步交互和长上下文处理，都会持续累积计算与存储开销。因此，ERNIE 5.5 Flash 从注意力、残差连接到 MoE 层和输出头，逐个组件审视能力与效率的关系，将激活计算、KV cache 和长上下文处理开销纳入整体设计。",
+          "inlines": [
+            {
+              "text": "为了让这个起点具有长期使用的价值，我们从模型设计之初就把效率作为重要目标。后续训练中的反复采样，以及 Agent 应用中的多步交互和长上下文处理，都会持续累积计算与存储开销。因此，ERNIE 5.5 Flash 从注意力、残差连接到 MoE 层和输出头，逐个组件审视能力与效率的关系，将激活计算、KV cache 和长上下文处理开销纳入整体设计。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "同样的长期视角也贯穿数据与训练系统。预训练数据决定了后续一切训练所依托的能力底座，因此语料着重加强那些事后难以补足的能力，如仓库级代码与长上下文理解；而架构上的效率设计，只有在大规模训练中同样高效才真正有意义，因此模型与训练系统是协同设计的。",
+          "inlines": [
+            {
+              "text": "同样的长期视角也贯穿数据与训练系统。预训练数据决定了后续一切训练所依托的能力底座，因此语料着重加强那些事后难以补足的能力，如仓库级代码与长上下文理解；而架构上的效率设计，只有在大规模训练中同样高效才真正有意义，因此模型与训练系统是协同设计的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们希望，这次发布能让更多开发者复用大规模预训练的成果，将资源投入各自关心的能力、任务与训练方法。",
+          "inlines": [
+            {
+              "text": "我们希望，这次发布能让更多开发者复用大规模预训练的成果，将资源投入各自关心的能力、任务与训练方法。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "核心亮点：",
+          "inlines": [
+            {
+              "text": "核心亮点："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "开放后续训练的起点。"
+                },
+                {
+                  "text": " 提供未经中训练与后训练的 Base 权重，支持社区自行探索领域适配、推理强化和 Agent 训练路线。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "面向持续训练与推理的效率设计。"
+                },
+                {
+                  "text": " 结合稀疏 MoE 与混合稀疏注意力，在架构层面统筹模型容量、激活计算和长上下文开销。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "全面的数据，高效的训练。"
+                },
+                {
+                  "text": " 广覆盖、高质量的预训练数据为后续训练打下全面的能力底座；与模型结构协同设计的训练系统，保证大规模预训练高效进行。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "阶段明确的研究基线。"
+                },
+                {
+                  "text": " 以预训练终点的统一 checkpoint，支持不同训练方法的对照评估与增益分析。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2. 模型结构",
+          "inlines": [
+            {
+              "text": "2. 模型结构"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE 5.5 Flash 模型结构",
+          "inlines": [
+            {
+              "text": "ERNIE 5.5 Flash 模型结构"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE 5.5 Flash 共 43 层 Transformer，hidden size 4096，64 个注意力头。",
+          "inlines": [
+            {
+              "text": "ERNIE 5.5 Flash 共 43 层 Transformer，hidden size 4096，64 个注意力头。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2.1 Latent-Gated Sparse Attention",
+          "inlines": [
+            {
+              "text": "2.1 Latent-Gated Sparse Attention"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "MLA + HCA 混合注意力： 大多数层只需要对远距离历史有一个粗粒度的视野，因此我们每七层中只保留一层对全上下文做 token 级访问，这些层采用多头潜在注意力（MLA）。其余各层采用重度压缩注意力（HCA）：每 128 个 token 压缩为一条缓存条目，对这些压缩条目以及最近一小段未压缩 token 构成的窗口做稠密注意力。这样，HCA 层只需全上下文层 KV cache 的一小部分，就能保留对整个序列的全局视野。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "MLA + HCA 混合注意力："
+            },
+            {
+              "text": " 大多数层只需要对远距离历史有一个粗粒度的视野，因此我们每七层中只保留一层对全上下文做 token 级访问，这些层采用多头潜在注意力（MLA）。其余各层采用重度压缩注意力（HCA）：每 128 个 token 压缩为一条缓存条目，对这些压缩条目以及最近一小段未压缩 token 构成的窗口做稠密注意力。这样，HCA 层只需全上下文层 KV cache 的一小部分，就能保留对整个序列的全局视野。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "按层类型设置头维度： 头维度并非全模型统一，而是与各层的注意力计算量相匹配：计算量小的层用大头，计算量大的层用小头。HCA 层在 128 倍压缩后的序列上做注意力，计算量小，因此可以使用 512 维的宽头，额外计算很少；MLA 层逐 token 访问上下文，计算量更大，因此 query/key 与 value 均使用较窄的 256 维头。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "按层类型设置头维度："
+            },
+            {
+              "text": " 头维度并非全模型统一，而是与各层的注意力计算量相匹配：计算量小的层用大头，计算量大的层用小头。HCA 层在 128 倍压缩后的序列上做注意力，计算量小，因此可以使用 512 维的宽头，额外计算很少；MLA 层逐 token 访问上下文，计算量更大，因此 query/key 与 value 均使用较窄的 256 维头。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "KV cache 预算向 MLA 层倾斜： 绝大多数层采用 HCA 之后，关键的设计问题在于剩余的 KV cache 预算如何分配。一种做法是分给大量压缩稀疏注意力（CSA）层：这类层先将历史压缩 4 倍，再从中稀疏选取一部分做注意力。我们则将这部分预算集中用于少数保留全部 token 的 MLA 层。在 KV cache 预算相当的预训练对比中，HCA 搭配 MLA 优于搭配 CSA。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "KV cache 预算向 MLA 层倾斜："
+            },
+            {
+              "text": " 绝大多数层采用 HCA 之后，关键的设计问题在于剩余的 KV cache 预算如何分配。一种做法是分给大量压缩稀疏注意力（CSA）层：这类层先将历史压缩 4 倍，再从中稀疏选取一部分做注意力。我们则将这部分预算集中用于少数保留全部 token 的 MLA 层。在 KV cache 预算相当的预训练对比中，HCA 搭配 MLA 优于搭配 CSA。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "全上下文层采用稀疏注意力： 只有 MLA 层逐个访问远距离的历史 token。若做稠密注意力，长上下文下的注意力计算量会主要集中在这些层，因此它们采用稀疏注意力（DSA）：一个轻量级 indexer 为每个 query 给历史位置打分，核心注意力只在得分最高的 top-k 个位置上计算，每个 query 的核心注意力开销由此不再随上下文长度增长。采用 DSA 后，这些层的预训练 loss 与稠密注意力持平，训练速度显著提升。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "全上下文层采用稀疏注意力："
+            },
+            {
+              "text": " 只有 MLA 层逐个访问远距离的历史 token。若做稠密注意力，长上下文下的注意力计算量会主要集中在这些层，因此它们采用稀疏注意力（DSA）：一个轻量级 indexer 为每个 query 给历史位置打分，核心注意力只在得分最高的 top-k 个位置上计算，每个 query 的核心注意力开销由此不再随上下文长度增长。采用 DSA 后，这些层的预训练 loss 与稠密注意力持平，训练速度显著提升。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "注意力层内部还有两项改进：",
+          "inlines": [
+            {
+              "text": "注意力层内部还有两项改进："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "低秩门控注意力（Low-Rank Gated Attention）："
+                },
+                {
+                  "text": " 门控注意力在注意力输出上施加一个可学习的输出门，已被证明能同时提升模型效果和训练稳定性。按照常规做法，门由该层的隐状态计算。我们改为用每个注意力层本来就会生成的低秩 query latent 来计算门。由于 query latent 的维度只有隐状态的四分之一，门投影的权重参数量在 ERNIE 5.5 Flash 中减少了 75%，同时在消融实验中效果也有所提升。ERNIE 5.5 Flash 的所有注意力层都采用了低秩门控注意力，MLA 层和 HCA 层均包括在内。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "href": "https://arxiv.org/abs/2610.17959",
+                  "text": "Virtual Head Attention（VHA）"
+                },
+                {
+                  "text": "：在注意力之后施加一个带恒等跳连的轻量跨头低秩混合，增强跨头信息融合，提升模型表达力与训练质量；推理时融合进注意力算子，开销几乎可忽略。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2.2 Multi-Router Latent MoE",
+          "inlines": [
+            {
+              "text": "2.2 Multi-Router Latent MoE"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "传统 MoE 只用一个路由器给专家打分，再通过一次硬 top-k 选出专家。但我们发现，这个打分与专家的实际效用只是弱相关，中深层尤其明显；而落选的专家拿不到该 token 的梯度，一旦选错就很难纠正，错误会不断自我强化。",
+          "inlines": [
+            {
+              "text": "传统 MoE 只用一个路由器给专家打分，再通过一次硬 top-k 选出专家。但我们发现，"
+            },
+            {
+              "bold": true,
+              "text": "这个打分与专家的实际效用只是弱相关，中深层尤其明显"
+            },
+            {
+              "text": "；而落选的专家拿不到该 token 的梯度，一旦选错就很难纠正，错误会不断自我强化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Multi-Router 不再只靠一个路由器，而是让多个独立初始化的 sigmoid 路由器一起给专家打分。这些路由器的偏好会明显分化：一个专家只要被某个路由器强烈看好，或者被几个路由器同时看好，就有机会入选，选错后也更容易被纠正。这样，单个路由器打错分不会直接左右路由结果，路由对噪声特征和分布变化也更稳健；激活专家数、专家 FLOPs 和通信量则与单路由器完全相同。与单路由器相比，路由打分与专家实际效用的相关性明显提升，原本相关性最弱的中深层提升最大。",
+          "inlines": [
+            {
+              "href": "https://arxiv.org/abs/2610.40577",
+              "text": "Multi-Router"
+            },
+            {
+              "text": " 不再只靠一个路由器，而是让多个独立初始化的 sigmoid 路由器一起给专家打分。"
+            },
+            {
+              "bold": true,
+              "text": "这些路由器的偏好会明显分化"
+            },
+            {
+              "text": "：一个专家只要被某个路由器强烈看好，或者被几个路由器同时看好，就有机会入选，选错后也更容易被纠正。这样，单个路由器打错分不会直接左右路由结果，路由对噪声特征和分布变化也更稳健；激活专家数、专家 FLOPs 和通信量则与单路由器完全相同。与单路由器相比，"
+            },
+            {
+              "bold": true,
+              "text": "路由打分与专家实际效用的相关性明显提升"
+            },
+            {
+              "text": "，原本相关性最弱的中深层提升最大。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "除第一层外，各层 FFN 均为 MoE 块：",
+          "inlines": [
+            {
+              "text": "除第一层外，各层 FFN 均为 MoE 块："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "512 个路由专家选 10，外加 1 个共享专家"
+                },
+                {
+                  "text": "，负载均衡采用无辅助损失的 bias 修正方案。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "隐空间专家。"
+                },
+                {
+                  "text": " 每个 MoE 层先把 token 从 4096 维投影到 2048 维隐空间，专家（中间维 2048）在该空间内计算，最后经一次共享的上投影映射回原空间。相对全宽专家，dispatch/combine 通信量与专家 FLOPs 约减半。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Stable LatentMoE 设计与可学习标量。"
+                },
+                {
+                  "text": " MoE 块采用 Stable LatentMoE 的设计（上投影前的 RMSNorm 与 SiTU-GLU 专家激活），使专家输出在 43 层中保持合适的尺度，也让优化更稳定。在这一 RMSNorm 的基础上，每个路由专家的路由权重还会乘以该专家自己的可学习标量（learnable scalar）。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2.3 流形约束超连接（mHC）",
+          "inlines": [
+            {
+              "text": "2.3 流形约束超连接（mHC）"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "模型采用 mHC 替代标准残差连接：每层通过受约束的混合矩阵读写 4 条并行残差流，以几乎可忽略的额外计算拓宽层间残差带宽。",
+          "inlines": [
+            {
+              "text": "模型采用 mHC 替代标准残差连接：每层通过受约束的混合矩阵读写 4 条并行残差流，以几乎可忽略的额外计算拓宽层间残差带宽。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2.4 MultiMax 输出头",
+          "inlines": [
+            {
+              "text": "2.4 MultiMax 输出头"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "单一的 softmax 温度难以兼顾两头：调低温度让分布变稀疏，但会把其他合理候选一起压掉；调高温度能保留多个候选，又会抬高不合理 token 的长尾。MultiMax 用可学习的分段温度打破这一取舍：在词表输出头上，它压制不合理 token 的长尾，同时保留合理候选 token 的多样性。logits 在分块、Triton 融合的交叉熵 kernel 内、softmax 之前逐元素调制，训练开销可以忽略、不增加显存，同时显著降低预训练 loss。",
+          "inlines": [
+            {
+              "text": "单一的 softmax 温度难以兼顾两头：调低温度让分布变稀疏，但会把其他合理候选一起压掉；调高温度能保留多个候选，又会抬高不合理 token 的长尾。MultiMax 用可学习的分段温度打破这一取舍：在词表输出头上，它压制不合理 token 的长尾，同时保留合理候选 token 的多样性。logits 在分块、Triton 融合的交叉熵 kernel 内、softmax 之前逐元素调制，训练开销可以忽略、不增加显存，同时显著降低预训练 loss。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2.5 ECHO：取代 MTP 模块",
+          "inlines": [
+            {
+              "text": "2.5 ECHO：取代 MTP 模块"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "传统多 token 预测（MTP）在主干上额外挂接专用模块来预测未来 token，多步损失主要监督这些模块，主干各层仍只为下一个 token 服务。ERNIE 5.5 Flash 用 ECHO 取代 MTP 模块：直接复用主干自身的最后一层做未来预测，不再需要独立的 MTP Transformer 层，多步损失直接作用于生成下一个 token 的参数。让这些参数预测更远的 token，促使主干提前规划序列的后续展开，在推理与代码等任务上带来明显收益。ERNIE 5.5 Flash 以单步 ECHO 预训练；该层作为投机解码的草稿模型涌现外推特性：同样只训练一步，多步起草质量大幅优于辅助 MTP。",
+          "inlines": [
+            {
+              "text": "传统多 token 预测（MTP）在主干上额外挂接专用模块来预测未来 token，多步损失主要监督这些模块，主干各层仍只为下一个 token 服务。ERNIE 5.5 Flash 用 "
+            },
+            {
+              "href": "https://arxiv.org/abs/2610.24766",
+              "text": "ECHO"
+            },
+            {
+              "text": " 取代 MTP 模块："
+            },
+            {
+              "bold": true,
+              "text": "直接复用主干自身的最后一层"
+            },
+            {
+              "text": "做未来预测，不再需要独立的 MTP Transformer 层，多步损失直接作用于生成下一个 token 的参数。让这些参数预测更远的 token，促使主干提前规划序列的后续展开，在推理与代码等任务上带来明显收益。ERNIE 5.5 Flash 以单步 ECHO 预训练；该层作为投机解码的草稿模型涌现外推特性：同样只训练一步，多步起草质量大幅优于辅助 MTP。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2.6 分词器",
+          "inlines": [
+            {
+              "text": "2.6 分词器"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE 5.5 Flash 使用全新的 BPE 分词器，词表约 200K。数字采用从右到左（R2L）、最多三位一组的切分方式，使不同长度数字的数位对齐（如 1,234,567 → 1 234 567），有利于算术与数字密集文本。",
+          "inlines": [
+            {
+              "text": "ERNIE 5.5 Flash 使用全新的 BPE 分词器，词表约 200K。数字采用"
+            },
+            {
+              "bold": true,
+              "text": "从右到左（R2L）、最多三位一组"
+            },
+            {
+              "text": "的切分方式，使不同长度数字的数位对齐（如 1,234,567 → "
+            },
+            {
+              "code": true,
+              "text": "1"
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "text": "234"
+            },
+            {
+              "text": " "
+            },
+            {
+              "code": true,
+              "text": "567"
+            },
+            {
+              "text": "），有利于算术与数字密集文本。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "3. 预训练",
+          "inlines": [
+            {
+              "text": "3. 预训练"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE-5.5-Flash-Base 在 33.5T tokens 上从零完成预训练，采用 Muon 优化器与 FP8 混合精度。训练上下文在预训练过程中逐步扩展至 128K tokens，微调与推理支持 1M tokens 上下文。本次发布的 checkpoint 为预训练终点的 Base 模型，未经过任何中训练与后训练。",
+          "inlines": [
+            {
+              "text": "ERNIE-5.5-Flash-Base 在 "
+            },
+            {
+              "bold": true,
+              "text": "33.5T tokens"
+            },
+            {
+              "text": " 上从零完成预训练，采用 Muon 优化器与 FP8 混合精度。训练上下文在预训练过程中逐步扩展至 "
+            },
+            {
+              "bold": true,
+              "text": "128K tokens"
+            },
+            {
+              "text": "，微调与推理支持 "
+            },
+            {
+              "bold": true,
+              "text": "1M tokens"
+            },
+            {
+              "text": " 上下文。本次发布的 checkpoint 为预训练终点的 Base 模型，未经过任何中训练与后训练。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "3.1 数据",
+          "inlines": [
+            {
+              "text": "3.1 数据"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "预训练语料覆盖广泛的领域与语言，兼顾知识广度与数据质量。在此基础上，我们在数据上重点建设了三个方向：",
+          "inlines": [
+            {
+              "text": "预训练语料覆盖广泛的领域与语言，兼顾知识广度与数据质量。在此基础上，我们在数据上重点建设了三个方向："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "网页数据。"
+                },
+                {
+                  "text": " 结合大规模多语言网页抓取、高保真文本抽取与模型驱动的多维质量过滤，获得知识覆盖广、有效学习信号密度高的网页语料。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "代码数据。"
+                },
+                {
+                  "text": " 来自代码仓库与网页的代码经过非代码过滤、面向召回的去重与多粒度质量分级。在静态代码之外，补充软件演化与执行验证类数据：commit、issue、pull request、代码评审、需求→PR 与多 commit 轨迹、自动生成的测试，以及经 CI 验证的修复，用于增强仓库级推理与 Agent 软件工程能力。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "长文数据。"
+                },
+                {
+                  "text": " 由三部分互补构成：经长程依赖筛选、基于 embedding 的去重、LLM 质量打分与规则清洗得到的天然长文档；将天然文本与检索到的语义相近干扰文本拼接构造的长序列；以及合成的 MRCR 式检索、基于引用的问答与多跳问答数据。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "3.2 训练基建",
+          "inlines": [
+            {
+              "text": "3.2 训练基建"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "本次训练配套了两项基建工作：在数千卡规模下保持高效的分布式 Muon 优化器，以及面向大 Head Dim 的注意力算子 FlashMask-4。",
+          "inlines": [
+            {
+              "text": "本次训练配套了两项基建工作：在数千卡规模下保持高效的分布式 Muon 优化器，以及面向大 Head Dim 的注意力算子 "
+            },
+            {
+              "href": "https://github.com/PaddlePaddle/FlashMask",
+              "text": "FlashMask-4"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "分布式 Muon 优化器。 与 Adam 等逐元素优化器不同，Muon 采用逐张量（tensor-wise）的正交化更新，这同时改变了分布式训练的通信模式与显存分布。我们通过两项优化使 Muon 在数千卡规模下真正可用：",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "分布式 Muon 优化器。"
+            },
+            {
+              "text": " 与 Adam 等逐元素优化器不同，Muon 采用逐张量（tensor-wise）的正交化更新，这同时改变了分布式训练的通信模式与显存分布。我们通过两项优化使 Muon 在数千卡规模下真正可用："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "通信高效的 Muon 更新。"
+                },
+                {
+                  "text": " 传统方案中，Dense 参数依赖跨机大环通信（千卡大环），跨机链路长、小消息多，链路利用率低，时延与抖动随集群规模显著上升；MoE 参数则走跨机同号卡通信。我们将 Dense 通信也统一改走跨机同号卡路径，并把 Dense 与 MoE 的同号卡通信融合为单次集合通信。有效 message size 因此大幅提升，带宽利用率随之提高；拓扑更规整，更契合专家并行通信；在不改变优化器语义的前提下，跨机时延与抖动显著降低。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "面向显存均衡的切分优化。"
+                },
+                {
+                  "text": " Muon 的通信效率依赖足够大的 message size，朴素切分会把大量参数张量堆叠到靠前的卡上，造成节点间优化器状态存储严重失衡：少数节点显存压力过高、易触发 OOM，其 checkpoint 保存与远端上传/下载也会变慢，极大拉长故障恢复时间；卡数越多，影响越明显。我们提出节点间均衡切分方案，将相同的优化器状态向更靠后、更多的卡上摊开，在保持大 message size 以维持高效通信的同时，使各节点显存占用接近均衡。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FlashMask-4：面向大 Head Dim 的高效注意力。 FlashAttention 类算子的效率高度受制于 shared memory、tensor memory 等片上存储资源，大 Head Dim 下容易出现算力利用率不足，部分配置甚至难以实现。FlashMask-4 基于 CuTe-DSL 实现，同时支持 SM90 与 SM100 架构；在 SM100 上通过 2-CTA 分块并行计算与 Tensor Memory 双 Buffer 轮换实现大 Head Dim 下的高效计算，同时保留 O(N) 列式稀疏掩码表示与全掩码块跳过等原有优势。它支持高至 qk_head_dim = 576、v_head_dim = 512 的规模，这一规模 FlashAttention-4 并不支持。在 SM100 GPU 上，FlashMask-4 相比 FlashAttention-4 MaskMod 前向性能提升高至 175%，反向提升高至 74%。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "FlashMask-4：面向大 Head Dim 的高效注意力。"
+            },
+            {
+              "text": " FlashAttention 类算子的效率高度受制于 shared memory、tensor memory 等片上存储资源，大 Head Dim 下容易出现算力利用率不足，部分配置甚至难以实现。FlashMask-4 基于 CuTe-DSL 实现，同时支持 SM90 与 SM100 架构；在 SM100 上通过 2-CTA 分块并行计算与 Tensor Memory 双 Buffer 轮换实现大 Head Dim 下的高效计算，同时保留 O(N) 列式稀疏掩码表示与全掩码块跳过等原有优势。它支持高至 qk_head_dim = 576、v_head_dim = 512 的规模，这一规模 FlashAttention-4 并不支持。在 SM100 GPU 上，FlashMask-4 相比 FlashAttention-4 MaskMod 前向性能提升高至 175%，反向提升高至 74%。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "4. 评测",
+          "inlines": [
+            {
+              "text": "4. 评测"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "4.1 设置",
+          "inlines": [
+            {
+              "text": "4.1 设置"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "对比模型选取截至发布时我们能找到的、规模相近的最新开源 Base 模型：DeepSeek-V4-Flash-Base（284B-A13B）、Hy3-preview-Base（295B-A21B）与 MiMo-V2.5-Base（310B-A15B）。四个模型均基于各自公开发布的 checkpoint 评测，使用同一套评测框架、相同的 prompt 与 few-shot 样例，自由问答题则使用同一个裁判模型。",
+          "inlines": [
+            {
+              "text": "对比模型选取截至发布时我们能找到的、规模相近的最新开源 Base 模型：DeepSeek-V4-Flash-Base（284B-A13B）、Hy3-preview-Base（295B-A21B）与 MiMo-V2.5-Base（310B-A15B）。四个模型均基于各自公开发布的 checkpoint 评测，使用同一套评测框架、相同的 prompt 与 few-shot 样例，自由问答题则使用同一个裁判模型。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "4.2 总体结果",
+          "inlines": [
+            {
+              "text": "4.2 总体结果"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE 5.5 Flash Base 总体评测结果",
+          "inlines": [
+            {
+              "text": "ERNIE 5.5 Flash Base 总体评测结果"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE-5.5-Flash-Base 在各类能力维度上均取得了不错的效果，其中推理、代码与综合类 Benchmark 尤为突出。长上下文方面，尽管 43 层中有 37 层在 128 倍压缩后的序列上做注意力，仅 6 层 MLA-DSA 即可保证长上下文效果，ERNIE-5.5-Flash-Base 在 6 项长上下文 Benchmark 上均取得了不错的效果。",
+          "inlines": [
+            {
+              "text": "ERNIE-5.5-Flash-Base 在各类能力维度上均取得了不错的效果，其中推理、代码与综合类 Benchmark 尤为突出。长上下文方面，尽管 43 层中有 37 层在 128 倍压缩后的序列上做注意力，仅 6 层 MLA-DSA 即可保证长上下文效果，ERNIE-5.5-Flash-Base 在 6 项长上下文 Benchmark 上均取得了不错的效果。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "4.3 详细结果",
+          "inlines": [
+            {
+              "text": "4.3 详细结果"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "同一评测框架、相同 prompt 与 few-shot 样例",
+          "inlines": [
+            {
+              "text": "同一评测框架、相同 prompt 与 few-shot 样例"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE 5.5 Flash Base 与同级 Base 模型的完整评测",
+          "inlines": [
+            {
+              "text": "ERNIE 5.5 Flash Base 与同级 Base 模型的完整评测"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Benchmark (Metric)",
+          "inlines": [
+            {
+              "text": "Benchmark (Metric)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "# Shots",
+          "inlines": [
+            {
+              "text": "# Shots"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE 5.5 Flash\nBase",
+          "inlines": [
+            {
+              "text": "ERNIE 5.5 Flash\nBase"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "DeepSeek V4 Flash\nBase",
+          "inlines": [
+            {
+              "text": "DeepSeek V4 Flash\nBase"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hy3 preview\nBase",
+          "inlines": [
+            {
+              "text": "Hy3 preview\nBase"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MiMo V2.5\nBase",
+          "inlines": [
+            {
+              "text": "MiMo V2.5\nBase"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "# Total Params",
+          "inlines": [
+            {
+              "text": "# Total Params"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "-",
+          "inlines": [
+            {
+              "text": "-"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "280B",
+          "inlines": [
+            {
+              "text": "280B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "284B",
+          "inlines": [
+            {
+              "text": "284B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "295B",
+          "inlines": [
+            {
+              "text": "295B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "310B",
+          "inlines": [
+            {
+              "text": "310B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "# Activated Params",
+          "inlines": [
+            {
+              "text": "# Activated Params"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14B",
+          "inlines": [
+            {
+              "text": "14B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13B",
+          "inlines": [
+            {
+              "text": "13B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "21B",
+          "inlines": [
+            {
+              "text": "21B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "15B",
+          "inlines": [
+            {
+              "text": "15B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "综合",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "综合"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MMLU (EM)",
+          "inlines": [
+            {
+              "text": "MMLU (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5-shot",
+          "inlines": [
+            {
+              "text": "5-shot"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "93.3",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "93.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.4",
+          "inlines": [
+            {
+              "text": "89.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "87.5",
+          "inlines": [
+            {
+              "text": "87.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "87.6",
+          "inlines": [
+            {
+              "text": "87.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MMLU-Redux (EM)",
+          "inlines": [
+            {
+              "text": "MMLU-Redux (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "94.1",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "94.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "90.9",
+          "inlines": [
+            {
+              "text": "90.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88.7",
+          "inlines": [
+            {
+              "text": "88.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MMLU-Pro (EM)",
+          "inlines": [
+            {
+              "text": "MMLU-Pro (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "78.4",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "78.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "69.2",
+          "inlines": [
+            {
+              "text": "69.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "66.9",
+          "inlines": [
+            {
+              "text": "66.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "65.7",
+          "inlines": [
+            {
+              "text": "65.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CMMLU (EM)",
+          "inlines": [
+            {
+              "text": "CMMLU (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "90.0",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "90.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.7",
+          "inlines": [
+            {
+              "text": "89.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.3",
+          "inlines": [
+            {
+              "text": "89.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "87.7",
+          "inlines": [
+            {
+              "text": "87.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "知识",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "知识"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SimpleQA (LLM-Judge)",
+          "inlines": [
+            {
+              "text": "SimpleQA (LLM-Judge)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10-shot",
+          "inlines": [
+            {
+              "text": "10-shot"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "34.1",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "34.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29.1",
+          "inlines": [
+            {
+              "text": "29.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25.9",
+          "inlines": [
+            {
+              "text": "25.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20.8",
+          "inlines": [
+            {
+              "text": "20.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ChineseSimpleQA (LLM-Judge)",
+          "inlines": [
+            {
+              "text": "ChineseSimpleQA (LLM-Judge)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "73.0",
+          "inlines": [
+            {
+              "text": "73.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "75.3",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "75.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "73.2",
+          "inlines": [
+            {
+              "text": "73.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "68.8",
+          "inlines": [
+            {
+              "text": "68.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PreciseWikiQA (LLM-Judge)",
+          "inlines": [
+            {
+              "text": "PreciseWikiQA (LLM-Judge)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "59.3",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "59.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "52.0",
+          "inlines": [
+            {
+              "text": "52.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50.3",
+          "inlines": [
+            {
+              "text": "50.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "46.0",
+          "inlines": [
+            {
+              "text": "46.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HotpotQA (LLM-Judge)",
+          "inlines": [
+            {
+              "text": "HotpotQA (LLM-Judge)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "57.3",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "57.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "51.8",
+          "inlines": [
+            {
+              "text": "51.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50.9",
+          "inlines": [
+            {
+              "text": "50.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50.1",
+          "inlines": [
+            {
+              "text": "50.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PopQA (LLM-Judge)",
+          "inlines": [
+            {
+              "text": "PopQA (LLM-Judge)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "52.2",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "52.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48.7",
+          "inlines": [
+            {
+              "text": "48.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49.3",
+          "inlines": [
+            {
+              "text": "49.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "45.7",
+          "inlines": [
+            {
+              "text": "45.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "理科",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "理科"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPQA (EM)",
+          "inlines": [
+            {
+              "text": "GPQA (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "60.2",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "60.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "55.9",
+          "inlines": [
+            {
+              "text": "55.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50.2",
+          "inlines": [
+            {
+              "text": "50.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "51.4",
+          "inlines": [
+            {
+              "text": "51.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MGSM (EM)",
+          "inlines": [
+            {
+              "text": "MGSM (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8-shot CoT",
+          "inlines": [
+            {
+              "text": "8-shot CoT"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "87.0",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "87.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "84.6",
+          "inlines": [
+            {
+              "text": "84.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "76.9",
+          "inlines": [
+            {
+              "text": "76.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "83.8",
+          "inlines": [
+            {
+              "text": "83.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MathBench-CN (LLM-Judge)",
+          "inlines": [
+            {
+              "text": "MathBench-CN (LLM-Judge)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "80.8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "80.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "78.0",
+          "inlines": [
+            {
+              "text": "78.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "65.6",
+          "inlines": [
+            {
+              "text": "65.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "推理",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "推理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "BBH (EM, direct)",
+          "inlines": [
+            {
+              "text": "BBH (EM, direct)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3-shot",
+          "inlines": [
+            {
+              "text": "3-shot"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "77.1",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "77.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "69.0",
+          "inlines": [
+            {
+              "text": "69.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "67.5",
+          "inlines": [
+            {
+              "text": "67.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "68.0",
+          "inlines": [
+            {
+              "text": "68.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "BBH (EM, CoT)",
+          "inlines": [
+            {
+              "text": "BBH (EM, CoT)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3-shot CoT",
+          "inlines": [
+            {
+              "text": "3-shot CoT"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.2",
+          "inlines": [
+            {
+              "text": "89.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "89.8",
+          "inlines": [
+            {
+              "text": "89.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "WinoGrande (EM)",
+          "inlines": [
+            {
+              "text": "WinoGrande (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "87.8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "87.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "84.9",
+          "inlines": [
+            {
+              "text": "84.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "82.4",
+          "inlines": [
+            {
+              "text": "82.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "85.2",
+          "inlines": [
+            {
+              "text": "85.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PIQA (EM)",
+          "inlines": [
+            {
+              "text": "PIQA (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "96.0",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "96.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "95.0",
+          "inlines": [
+            {
+              "text": "95.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "95.2",
+          "inlines": [
+            {
+              "text": "95.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "93.6",
+          "inlines": [
+            {
+              "text": "93.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "多语言",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "多语言"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MMMLU-lite (EM)",
+          "inlines": [
+            {
+              "text": "MMMLU-lite (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "81.0",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "81.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "78.5",
+          "inlines": [
+            {
+              "text": "78.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "76.1",
+          "inlines": [
+            {
+              "text": "76.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "72.2",
+          "inlines": [
+            {
+              "text": "72.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "INCLUDE-lite (EM)",
+          "inlines": [
+            {
+              "text": "INCLUDE-lite (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "79.5",
+          "inlines": [
+            {
+              "text": "79.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "79.8",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "79.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "77.7",
+          "inlines": [
+            {
+              "text": "77.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "74.5",
+          "inlines": [
+            {
+              "text": "74.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MultiLoKo (LLM-Judge)",
+          "inlines": [
+            {
+              "text": "MultiLoKo (LLM-Judge)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "43.3",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "43.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "42.8",
+          "inlines": [
+            {
+              "text": "42.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "39.5",
+          "inlines": [
+            {
+              "text": "39.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "36.3",
+          "inlines": [
+            {
+              "text": "36.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "代码",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "代码"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HumanEval+ (Pass@1)",
+          "inlines": [
+            {
+              "text": "HumanEval+ (Pass@1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1-shot",
+          "inlines": [
+            {
+              "text": "1-shot"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "82.3",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "82.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "69.5",
+          "inlines": [
+            {
+              "text": "69.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "74.4",
+          "inlines": [
+            {
+              "text": "74.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MBPP+ (Pass@1)",
+          "inlines": [
+            {
+              "text": "MBPP+ (Pass@1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0-shot",
+          "inlines": [
+            {
+              "text": "0-shot"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "81.5",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "81.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "67.2",
+          "inlines": [
+            {
+              "text": "67.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "78.3",
+          "inlines": [
+            {
+              "text": "78.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "74.3",
+          "inlines": [
+            {
+              "text": "74.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LiveCodeBench (Pass@1)",
+          "inlines": [
+            {
+              "text": "LiveCodeBench (Pass@1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40.1",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "40.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "31.9",
+          "inlines": [
+            {
+              "text": "31.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "33.5",
+          "inlines": [
+            {
+              "text": "33.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32.4",
+          "inlines": [
+            {
+              "text": "32.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "FullStackBench (Pass@1)",
+          "inlines": [
+            {
+              "text": "FullStackBench (Pass@1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "54.6",
+          "inlines": [
+            {
+              "text": "54.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "56.7",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "56.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "54.1",
+          "inlines": [
+            {
+              "text": "54.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "RepoBench (EM)",
+          "inlines": [
+            {
+              "text": "RepoBench (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49.1",
+          "inlines": [
+            {
+              "text": "49.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48.9",
+          "inlines": [
+            {
+              "text": "48.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "长上下文",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "长上下文"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HELMET-RAG (SubEM)",
+          "inlines": [
+            {
+              "text": "HELMET-RAG (SubEM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2-shot",
+          "inlines": [
+            {
+              "text": "2-shot"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "71.5",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "71.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "68.9",
+          "inlines": [
+            {
+              "text": "68.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HELMET-Rerank (NDCG@10)",
+          "inlines": [
+            {
+              "text": "HELMET-Rerank (NDCG@10)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "56.2",
+          "inlines": [
+            {
+              "text": "56.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "60.0",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "60.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "55.7",
+          "inlines": [
+            {
+              "text": "55.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "56.6",
+          "inlines": [
+            {
+              "text": "56.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HELMET-ICL (EM)",
+          "inlines": [
+            {
+              "text": "HELMET-ICL (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "many-shot",
+          "inlines": [
+            {
+              "text": "many-shot"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "85.9",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "85.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "83.0",
+          "inlines": [
+            {
+              "text": "83.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "80.2",
+          "inlines": [
+            {
+              "text": "80.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "RepoQA (Pass@1)",
+          "inlines": [
+            {
+              "text": "RepoQA (Pass@1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "91.7",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "91.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "91.3",
+          "inlines": [
+            {
+              "text": "91.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "56.5",
+          "inlines": [
+            {
+              "text": "56.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "LongBench-v2 (EM)",
+          "inlines": [
+            {
+              "text": "LongBench-v2 (EM)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "44.5",
+          "inlines": [
+            {
+              "text": "44.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "39.8",
+          "inlines": [
+            {
+              "text": "39.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "44.6",
+          "inlines": [
+            {
+              "text": "44.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "InfiniteBench (Avg)",
+          "inlines": [
+            {
+              "text": "InfiniteBench (Avg)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "46.5",
+          "inlines": [
+            {
+              "text": "46.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48.0",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "48.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "33.0",
+          "inlines": [
+            {
+              "text": "33.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "46.7",
+          "inlines": [
+            {
+              "text": "46.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每行最优结果加粗。手机端可左右滑动查看完整表格。",
+          "inlines": [
+            {
+              "text": "每行最优结果加粗。手机端可左右滑动查看完整表格。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "5. 快速开始",
+          "inlines": [
+            {
+              "text": "5. 快速开始"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "FP8 权重 BF16 权重",
+          "inlines": [
+            {
+              "href": "https://huggingface.co/baidu/ERNIE-5.5-Flash-Base",
+              "text": "FP8 权重 "
+            },
+            {
+              "href": "https://huggingface.co/baidu/ERNIE-5.5-Flash-Base-BF16",
+              "text": "BF16 权重"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE-5.5-Flash-Base 已在 Hugging Face 以 ERNIE 5.5 Flash Base Model License Agreement v1.0 发布，提供 FP8 与 BF16 两种 safetensors 权重（BF16 版本为 ERNIE-5.5-Flash-Base-BF16）。Base 模型要求每条输入以 BOS token 开头，分词时请保持 add_special_tokens=True。",
+          "inlines": [
+            {
+              "text": "ERNIE-5.5-Flash-Base 已在 "
+            },
+            {
+              "href": "https://huggingface.co/baidu/ERNIE-5.5-Flash-Base",
+              "text": "Hugging Face"
+            },
+            {
+              "text": " 以 "
+            },
+            {
+              "href": "https://huggingface.co/baidu/ERNIE-5.5-Flash-Base/blob/main/LICENSE",
+              "text": "ERNIE 5.5 Flash Base Model License Agreement v1.0"
+            },
+            {
+              "text": " 发布，提供 FP8 与 BF16 两种 safetensors 权重（BF16 版本为 "
+            },
+            {
+              "href": "https://huggingface.co/baidu/ERNIE-5.5-Flash-Base-BF16",
+              "text": "ERNIE-5.5-Flash-Base-BF16"
+            },
+            {
+              "text": "）。Base 模型要求每条输入以 BOS token 开头，分词时请保持 "
+            },
+            {
+              "code": true,
+              "text": "add_special_tokens=True"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Python · Transformers",
+          "inlines": [
+            {
+              "text": "Python · Transformers"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from transformers import AutoModelForCausalLM, AutoTokenizer\nimport torch\n\nmodel_name = \"baidu/ERNIE-5.5-Flash-Base-BF16\"\ntokenizer = AutoTokenizer.from_pretrained(model_name)\nmodel = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map=\"auto\")\nmodel_inputs = tokenizer([\"ERNIE 5.5 Flash 的混合注意力结构\"], add_special_tokens=True, return_tensors=\"pt\").to(model.device)\nprint(tokenizer.decode(model.generate(**model_inputs, max_new_tokens=256)[0], skip_special_tokens=True))"
+        },
+        {
+          "type": "paragraph",
+          "text": "SGLang 与 vLLM 均可通过 completions API 提供服务，部署方法见模型卡。微调请参考 ERNIE 5.5 示例。",
+          "inlines": [
+            {
+              "text": "SGLang 与 vLLM 均可通过 "
+            },
+            {
+              "code": true,
+              "text": "completions"
+            },
+            {
+              "text": " API 提供服务，部署方法见模型卡。微调请参考 "
+            },
+            {
+              "href": "https://github.com/NVIDIA-NeMo/Megatron-Bridge/blob/main/examples/models/ernie55/",
+              "text": "ERNIE 5.5 示例"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "6. 总结与展望",
+          "inlines": [
+            {
+              "text": "6. 总结与展望"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "ERNIE-5.5-Flash-Base 的出发点是：一个用于后续训练的 Base 模型，应当从设计上就是高效的。我们从注意力、残差连接到 MoE 层和输出头，逐个组件权衡能力与效率，并以广覆盖、高质量的预训练数据和与模型结构协同设计的训练系统作为支撑。每 token 仅激活 14B 参数，模型在各类能力维度和长上下文评测上都取得了不错的效果，同时保持了较小的 KV cache 占用。",
+          "inlines": [
+            {
+              "text": "ERNIE-5.5-Flash-Base 的出发点是：一个用于后续训练的 Base 模型，应当从设计上就是高效的。我们从注意力、残差连接到 MoE 层和输出头，逐个组件权衡能力与效率，并以广覆盖、高质量的预训练数据和与模型结构协同设计的训练系统作为支撑。每 token 仅激活 14B 参数，模型在各类能力维度和长上下文评测上都取得了不错的效果，同时保持了较小的 KV cache 占用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Base 模型只是起点。经过后训练的 ERNIE 5.5 Flash 将随后推出，我们也期待社区在这一基座上探索领域适配、推理强化与 Agent 训练等方向。",
+          "inlines": [
+            {
+              "text": "Base 模型只是起点。经过后训练的 ERNIE 5.5 Flash 将随后推出，我们也期待社区在这一基座上探索领域适配、推理强化与 Agent 训练等方向。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "引用",
+          "inlines": [
+            {
+              "text": "引用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "如果 ERNIE 5.5 对你的研究或项目有帮助，欢迎引用这篇博客：",
+          "inlines": [
+            {
+              "text": "如果 ERNIE 5.5 对你的研究或项目有帮助，欢迎引用这篇博客："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "BibTeX",
+          "inlines": [
+            {
+              "text": "BibTeX"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "@misc{ernie5.5flash,\n  title = {ERNIE 5.5 Flash Base},\n  author = {{Baidu ERNIE Team}},\n  year = {2026},\n  howpublished = {ERNIE Blog},\n  url = {https://ernie.baidu.com/release/ernie-5-5-flash-base/}\n}"
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-10T05:26:47.476982Z",
+  "contentMode": "full"
+}

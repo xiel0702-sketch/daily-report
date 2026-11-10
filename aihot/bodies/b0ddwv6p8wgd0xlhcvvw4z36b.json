@@ -1,0 +1,1855 @@
+{
+  "schemaVersion": 1,
+  "id": "b0ddwv6p8wgd0xlhcvvw4z36b",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/b0ddwv6p8wgd0xlhcvvw4z36b",
+  "fetchedAt": "2026-11-10T01:13:53.490091Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "部署工程",
+    "教程实践",
+    "#OpenAI",
+    "#Anthropic"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "OpenAI 发布 GPT-6.1 Sol 时，用 ChatGPT 账号登录 OpenClaw 的用户却选不到它。OpenClaw 内置的是 Codex 0.158.0，而 ChatGPT 只向 Codex 0.159.2 及更新版本提供 Sol，想改掉这个版本号，唯一的办法就是我们发一个新版本。",
+          "inlines": [
+            {
+              "text": "OpenAI 发布 GPT-6.1 Sol 时，用 ChatGPT 账号登录 OpenClaw 的用户却选不到它。OpenClaw 内置的是 Codex 0.158.0，而 ChatGPT 只向 Codex 0.159.2 及更新版本提供 Sol，想改掉这个版本号，唯一的办法就是我们发一个新版本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "发布当天正是大家最想试用新模型的时候，却因为我们，用户不得不等。于是我们花了大约五周时间、提交了约 80 个 PR，重做了 OpenClaw 获取模型列表的方式。",
+          "inlines": [
+            {
+              "text": "发布当天正是大家最想试用新模型的时候，却因为我们，用户不得不等。于是我们花了大约五周时间、提交了约 80 个 PR，重做了 OpenClaw 获取模型列表的方式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本文介绍 OpenClaw 现在从哪三个地方获取模型列表、一个我们上线后又回滚的修复，以及还有哪些地方仍然需要发版。",
+          "inlines": [
+            {
+              "text": "本文介绍 OpenClaw 现在从哪三个地方获取模型列表、一个我们上线后又回滚的修复，以及还有哪些地方仍然需要发版。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "以前模型是怎么到用户手里的",
+          "inlines": [
+            {
+              "text": "以前模型是怎么到用户手里的"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "每个提供商插件都在一个清单文件里带着自己的模型列表，而这个文件是打包在 OpenClaw 安装包里的。提供商以插件形式发布，插件又绑定在某个版本上。",
+          "inlines": [
+            {
+              "text": "每个提供商插件都在一个清单文件里带着自己的模型列表，而这个文件是打包在 OpenClaw 安装包里的。提供商以插件形式发布，插件又绑定在某个版本上。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/129d990bfd968385c779de262ccd93abfd9f630e919e0997f62aa939bc7e43d1.webp",
+          "alt": "Before: a provider ships a model, we edit the model manifest, we cut a release, and you update OpenClaw. After: the hosted catalog, your account's model list, and your installed Codex all feed the model picker directly."
+        },
+        {
+          "type": "paragraph",
+          "text": "图 1. 以前新模型是怎么进入你的选择器的，现在又是怎么进入的。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 1."
+            },
+            {
+              "text": " 以前新模型是怎么进入你的选择器的，现在又是怎么进入的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "现在 OpenClaw 从三个地方填充你的模型列表。",
+          "inlines": [
+            {
+              "text": "现在 OpenClaw 从三个地方填充你的模型列表。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "1. 会自动更新的目录",
+          "inlines": [
+            {
+              "text": "1. 会自动更新的目录"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 catalog.openclaw.ai 托管了一份模型目录，每四小时由任务重建一次。它从 models.dev 获取模型数据，再叠加我们自己的清单、补上价格，然后发布结果。目前收录约 1,000 个模型。",
+          "inlines": [
+            {
+              "text": "我们在 catalog.openclaw.ai 托管了一份模型目录，每四小时由任务重建一次。它从 "
+            },
+            {
+              "href": "https://models.dev/",
+              "text": "models.dev"
+            },
+            {
+              "text": " 获取模型数据，再叠加我们自己的清单、补上价格，然后发布结果。目前收录约 1,000 个模型。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fcb0e5df7d7e697bc0e1b038fc264015ae3e028222d493ac32f432d559d1c42f.webp",
+          "alt": "models.dev, plugin manifests, price feeds, and providers' model lists go into a publisher that runs every four hours. It publishes to catalog.openclaw.ai, and your running Gateway picks the catalog up without a restart."
+        },
+        {
+          "type": "paragraph",
+          "text": "图 2. 托管目录的输入内容，以及它如何到达运行中的 Gateway。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 2."
+            },
+            {
+              "text": " 托管目录的输入内容，以及它如何到达运行中的 Gateway。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "运行中的 Gateway 会在后台检查是否有更新的目录，并实时切换过去。",
+          "inlines": [
+            {
+              "text": "运行中的 Gateway 会在后台检查是否有更新的目录，并实时切换过去。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "之前："
+                },
+                {
+                  "text": "Gateway 下载新目录后仍继续使用旧目录，直到你重启它。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "之后："
+                },
+                {
+                  "text": "新的轮次使用新目录。已经进行中的轮次会用启动时的目录跑完，因此它的模型列表和价格始终一致。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "发布端还会移除已下线或提供商不再提供的模型。",
+          "inlines": [
+            {
+              "text": "发布端还会移除已下线或提供商不再提供的模型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "例如，NVIDIA 已停止在其 API 上提供 2 个模型，但目录里仍然列着它们。",
+          "inlines": [
+            {
+              "text": "例如，NVIDIA 已停止在其 API 上提供 2 个模型，但目录里仍然列着它们。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "故障是怎么发生的",
+          "inlines": [
+            {
+              "text": "故障是怎么发生的"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "9 月 21 日，models.dev 把它的 kimi-for-coding 条目拆成了两个新条目。我们的发布程序把一个缺失的提供商当成致命错误，导致每次运行都失败。那段时间里，GPT-6 Sol 和 Luna 没能进入已有的安装。现在缺失提供商会记录一条警告，只有该提供商拿不到最新数据。",
+          "inlines": [
+            {
+              "text": "9 月 21 日，models.dev 把它的 "
+            },
+            {
+              "code": true,
+              "text": "kimi-for-coding"
+            },
+            {
+              "text": " 条目拆成了两个新条目。我们的发布程序把一个缺失的提供商当成致命错误，导致每次运行都失败。那段时间里，GPT-6 Sol 和 Luna 没能进入已有的安装。现在缺失提供商会记录一条警告，只有该提供商拿不到最新数据。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2. 你的账号列出的，你就能选",
+          "inlines": [
+            {
+              "text": "2. 你的账号列出的，你就能选"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "目录知道公开存在哪些模型，你的账号知道你能用哪些。当你登录某个提供商时，OpenClaw 会向它请求你的模型列表，并显示其中所有对话模型，包括比你安装版本更新的模型，或只有你的账号能访问的模型。",
+          "inlines": [
+            {
+              "text": "目录知道公开存在哪些模型，你的账号知道你能用哪些。当你登录某个提供商时，OpenClaw 会向它请求你的模型列表，并显示其中所有对话模型，包括比你安装版本更新的模型，或只有你的账号能访问的模型。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "OpenAI API key。"
+                },
+                {
+                  "text": "之前："
+                },
+                {
+                  "code": true,
+                  "text": "Unknown model: openai/gpt-5.2"
+                },
+                {
+                  "text": "，尽管账号里列出了它。之后：账号列出的对话模型会出现并可运行。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Anthropic API key。"
+                },
+                {
+                  "text": "之前：新的 Claude 模型要等 OpenClaw 发版才会出现。之后：只要 Anthropic 的模型列表返回它，它就会出现。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Claude Code。"
+                },
+                {
+                  "text": "之前：一份由我们维护的固定列表。之后：Claude Code 为你的账号报告的模型菜单。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "GitHub Copilot。"
+                },
+                {
+                  "text": "之前："
+                },
+                {
+                  "code": true,
+                  "text": "kimi-k3"
+                },
+                {
+                  "text": " 第一轮就因 "
+                },
+                {
+                  "code": true,
+                  "text": "unsupported_api_for_model"
+                },
+                {
+                  "text": " 失败。之后：我们会读取每个模型接受哪个端点，并使用那个端点。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Grok 订阅。"
+                },
+                {
+                  "text": "之前："
+                },
+                {
+                  "code": true,
+                  "text": "grok-4.7-build-fast"
+                },
+                {
+                  "text": " 提供两档思考级别，关闭和 ultra。之后：按它的列表说明，提供 low、medium、high 和 xhigh。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Ollama。"
+                },
+                {
+                  "text": "之前：你运行 "
+                },
+                {
+                  "code": true,
+                  "text": "ollama pull"
+                },
+                {
+                  "text": "，模型却始终不出现。之后：下次刷新时它就会出现。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "OpenCode Go。"
+                },
+                {
+                  "text": "之前：你的账号可用的四个模型缺失。之后：列表中每个模型都会出现。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这项工作有一半讲的是模型能做什么。OpenClaw 过去会根据模型名称来猜测思考等级和请求格式，一旦遇到从未见过的新模型就会失效。其实服务商已经在自己的列表里公布了这些信息，所以我们改为直接从那里读取。",
+          "inlines": [
+            {
+              "text": "这项工作有一半讲的是模型能做什么。OpenClaw 过去会根据模型名称来猜测思考等级和请求格式，一旦遇到从未见过的新模型就会失效。其实服务商已经在自己的列表里公布了这些信息，所以我们改为直接从那里读取。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "3. Codex 版本问题",
+          "inlines": [
+            {
+              "text": "3. Codex 版本问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "这就是文章开头提到的 Sol 缺陷。ChatGPT 根据客户端上报的 Codex 版本决定提供哪些模型。版本旧，拿到的列表就短。",
+          "inlines": [
+            {
+              "text": "这就是文章开头提到的 Sol 缺陷。ChatGPT 根据客户端上报的 Codex 版本决定提供哪些模型。版本旧，拿到的列表就短。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "第一次尝试：上报最新的 Codex 版本",
+          "inlines": [
+            {
+              "text": "第一次尝试：上报最新的 Codex 版本"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们最初的修复很简单：向 npm 查询最新的 Codex 版本号，在拉取列表时上报这个数字。Sol 出现在了选择器里。",
+          "inlines": [
+            {
+              "text": "我们最初的修复很简单：向 npm 查询最新的 Codex 版本号，在拉取列表时上报这个数字。Sol 出现在了选择器里。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "一次教训",
+          "inlines": [
+            {
+              "text": "一次教训"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "可惜的是，列表请求上报的是 0.161.0，但对话轮次仍然跑在随附的 0.160.0 上，而这个二进制文件会在每次请求时上报自己的版本。需要更新版本的模型会出现在选择器里，然后以 HTTP 400 失败。我们只是把失败从选择器挪到了第一条消息，这更糟。于是我们回滚了。",
+          "inlines": [
+            {
+              "text": "可惜的是，列表请求上报的是 0.161.0，但对话轮次仍然跑在随附的 0.160.0 上，而这个二进制文件会在每次请求时上报自己的版本。需要更新版本的模型会出现在选择器里，然后以 HTTP 400 失败。我们只是把失败从选择器挪到了第一条消息，这更糟。于是我们回滚了。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ac45f2d33796b33081ae2db69114d5f9c3129ca5f76c81591777d28b1ae4d84d.webp",
+          "alt": "Three cases. Before: the model list and the turns both use Codex 0.158.0, so GPT-6.1 Sol stays hidden. First try: the list asks as 0.161.0 but turns run on 0.160.0, so a model is listed and then fails with HTTP 400. Now: the list and the turns use the same binary, your newest Codex, so the model is listed and runs."
+        },
+        {
+          "type": "paragraph",
+          "text": "图 3. 各方案中，请求模型列表的 Codex 版本与运行对话轮次的版本。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 3."
+            },
+            {
+              "text": " 各方案中，请求模型列表的 Codex 版本与运行对话轮次的版本。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "现在的发布方案",
+          "inlines": [
+            {
+              "text": "现在的发布方案"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenClaw 会在你的 PATH 上寻找 Codex。如果它是稳定版、比随附版本新且主版本号相同，OpenClaw 就会与它做一次真正的握手。如果握手通过，同一个二进制文件负责拉取模型列表并运行你的对话轮次。任何一步失败，OpenClaw 就使用随附的 Codex。它绝不会替你安装任何东西。",
+          "inlines": [
+            {
+              "text": "OpenClaw 会在你的 "
+            },
+            {
+              "code": true,
+              "text": "PATH"
+            },
+            {
+              "text": " 上寻找 Codex。如果它是稳定版、比随附版本新且主版本号相同，OpenClaw 就会与它做一次真正的握手。如果握手通过，同一个二进制文件负责拉取模型列表并运行你的对话轮次。任何一步失败，OpenClaw 就使用随附的 Codex。它绝不会替你安装任何东西。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这是在装有 Codex 0.162.1 的 Mac 上测试运行时，Gateway 的日志行：",
+          "inlines": [
+            {
+              "text": "这是在装有 Codex 0.162.1 的 Mac 上测试运行时，Gateway 的日志行："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "[agent/embedded] Codex app-server: using installed ~/.local/bin/codex 0.162.1 (newer than bundled 0.161.0)"
+        },
+        {
+          "type": "paragraph",
+          "text": "现在只要更新全局 Codex，就足以用上需要它的模型。",
+          "inlines": [
+            {
+              "text": "现在只要更新全局 Codex，就足以用上需要它的模型。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "一个不再缩水的列表",
+          "inlines": [
+            {
+              "text": "一个不再缩水的列表"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "找到模型是一个问题，让它们留在屏幕上则是另一个问题。过去，列表会因为与用户毫无关系的原因丢失模型。",
+          "inlines": [
+            {
+              "text": "找到模型是一个问题，让它们留在屏幕上则是另一个问题。过去，列表会因为与用户毫无关系的原因丢失模型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenRouter 超时一次",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenRouter 超时一次"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "之前："
+                },
+                {
+                  "text": "466 → 3 个模型。在有人手动刷新之前，它们一直消失。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "之后："
+                },
+                {
+                  "text": "它会自行重试。首次在 30 秒后，之后间隔逐渐拉长，最长 30 分钟。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gateway 切换到新目录",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Gateway 切换到新目录"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "之前："
+                },
+                {
+                  "text": "599 → 54 个模型，在生产 Gateway 上最长持续四分钟。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "之后："
+                },
+                {
+                  "text": "全程保持 599。旧列表会一直保留，直到新列表完整。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你更改默认模型",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "你更改默认模型"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "之前："
+                },
+                {
+                  "text": "68–142 秒。Gateway 在重新加载每个大型插件时会卡住。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "之后："
+                },
+                {
+                  "text": "0.6–1.4 秒。它会复用已经加载的插件。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "选择器现在也会立即打开。它们先显示 OpenClaw 已知的模型，其余的在后台补齐。过去它们要等发现流程完成，最长五秒。",
+          "inlines": [
+            {
+              "text": "选择器现在也会立即打开。它们先显示 OpenClaw 已知的模型，其余的在后台补齐。过去它们要等发现流程完成，最长五秒。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "一千个模型太多了",
+          "inlines": [
+            {
+              "text": "一千个模型太多了"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "一旦所有模型都显示出来，列表就会变得很长。仅 OpenRouter 就有 466 个。因此目录现在为每个服务商附带一份简短的推荐列表，选择器会把它放在最前面。",
+          "inlines": [
+            {
+              "text": "一旦所有模型都显示出来，列表就会变得很长。仅 OpenRouter 就有 466 个。因此目录现在为每个服务商附带一份简短的推荐列表，选择器会把它放在最前面。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d3d8c7bab6ba81ec23d6ed46c1a1909e643386924d951b1ce6160688f08f1ad3.webp",
+          "alt": "Before: a picker with hundreds of models in catalog order, old ones mixed with new. After: Default, then your current model, then a few recommended models, then a collapsed All models row."
+        },
+        {
+          "type": "paragraph",
+          "text": "图 4. 选择器中 OpenRouter 分组的示意图。搜索仍然会查找所有模型。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 4."
+            },
+            {
+              "text": " 选择器中 OpenRouter 分组的示意图。搜索仍然会查找所有模型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这是我们自己某个 Gateway 上的同一个选择器。在 OpenAI 分组中，当前模型排在最前，然后是两个推荐模型，其余 33 个则收在一行后面。",
+          "inlines": [
+            {
+              "text": "这是我们自己某个 Gateway 上的同一个选择器。在 OpenAI 分组中，当前模型排在最前，然后是两个推荐模型，其余 33 个则收在一行后面。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/21452adfc3e54d2a1c37a4e0708c93f433e9acaba8dd977aba1f09b3a2a947cc.webp",
+          "alt": "The OpenClaw chat model picker. The OpenAI group shows 36 models: GPT-6 Astra as the current default, then GPT-6.1 Sol and GPT-6 Luna, then a collapsed All models (33) row."
+        },
+        {
+          "type": "paragraph",
+          "text": "图 5. Control UI 聊天选择器中的 OpenAI 分组，截取自正在运行的 Gateway。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 5."
+            },
+            {
+              "text": " Control UI 聊天选择器中的 OpenAI 分组，截取自正在运行的 Gateway。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "推荐列表由人工整理，并根据我们自身的经验以及多种基准测试每天更新。",
+          "inlines": [
+            {
+              "text": "推荐列表由人工整理，并根据我们自身的经验以及多种基准测试每天更新。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "要点",
+          "inlines": [
+            {
+              "text": "要点"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "列出某个模型的版本，也必须能运行它。"
+                },
+                {
+                  "text": "报告的是一个 Codex 版本、实际运行的却是另一个，只会把故障从选择器挪到第一条消息。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "能力信息要从列表里读，而不是从名字里猜。"
+                },
+                {
+                  "text": "服务商的列表本来就写明了某个模型支持哪些思考级别和端点。靠模型名字推断的规则，遇到第一个没见过的模型就会失效。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "保留上一份可用的列表。"
+                },
+                {
+                  "text": "刷新失败或切换目录，都不该让选择器里的模型比之前更少。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "一个来源出问题，不该拖累其他来源。"
+                },
+                {
+                  "text": "models.dev 上一个改了名的服务商曾让所有服务商的目录更新全部停摆，直到我们把它降级为警告。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "仍需发版才能解决的问题",
+          "inlines": [
+            {
+              "text": "仍需发版才能解决的问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "如果你没有安装更新的 Codex，那么你看到哪些 ChatGPT 模型，仍由内置版本决定。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "比目录更新的模型还没有价格。OpenClaw 会把它的成本显示为未知，并在目录跟上之前，用保守的默认限制来运行它。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "想看你当前的安装现在能访问到什么，运行 openclaw models list --refresh。",
+          "inlines": [
+            {
+              "text": "想看你当前的安装现在能访问到什么，运行 "
+            },
+            {
+              "code": true,
+              "text": "openclaw models list --refresh"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "下一步",
+          "inlines": [
+            {
+              "text": "下一步"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们会持续改进体验，并支持更多服务商。如果你的账号里列出了某个模型，而 OpenClaw 没有显示，请提交 issue，并附上该命令的输出。",
+          "inlines": [
+            {
+              "text": "我们会持续改进体验，并支持更多服务商。如果你的账号里列出了某个模型，而 OpenClaw 没有显示，请"
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/issues",
+              "text": "提交 issue"
+            },
+            {
+              "text": "，并附上该命令的输出。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "致谢",
+          "inlines": [
+            {
+              "text": "致谢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "本文由 Ayaan Zaidi 撰写。感谢 @vincentkoc 贡献目录 v2 和按路由定价，@ly85206559 贡献 models.dev 服务商别名，@mcooks-cmd 修复目录 worker 的内存问题，以及 @steipete 让多服务商目录刷新更快。",
+          "inlines": [
+            {
+              "text": "本文由 Ayaan Zaidi 撰写。感谢 "
+            },
+            {
+              "href": "https://github.com/vincentkoc",
+              "text": "@vincentkoc"
+            },
+            {
+              "text": " 贡献目录 v2 和按路由定价，"
+            },
+            {
+              "href": "https://github.com/ly85206559",
+              "text": "@ly85206559"
+            },
+            {
+              "text": " 贡献 models.dev 服务商别名，"
+            },
+            {
+              "href": "https://github.com/mcooks-cmd",
+              "text": "@mcooks-cmd"
+            },
+            {
+              "text": " 修复目录 worker 的内存问题，以及 "
+            },
+            {
+              "href": "https://github.com/steipete",
+              "text": "@steipete"
+            },
+            {
+              "text": " 让多服务商目录刷新更快。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "主要 PR：来自 models.dev 的目录、实时目录接入、账号模型列表、已安装 Codex 的选择、发现重试、选择器中的推荐模型。",
+          "inlines": [
+            {
+              "text": "主要 PR："
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/137131",
+              "text": "来自 models.dev 的目录"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/158000",
+              "text": "实时目录接入"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/167462",
+              "text": "账号模型列表"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/168228",
+              "text": "已安装 Codex 的选择"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/167230",
+              "text": "发现重试"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/167370",
+              "text": "选择器中的推荐模型"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "When OpenAI shipped GPT-6.1 Sol, people who use OpenClaw with a ChatGPT sign-in could not select it. OpenClaw bundled Codex 0.158.0 but ChatGPT only offers Sol to Codex 0.159.2 and newer, and the only way to change that number was for us to ship a release.",
+          "inlines": [
+            {
+              "text": "When OpenAI shipped GPT-6.1 Sol, people who use OpenClaw with a ChatGPT sign-in could not select it. OpenClaw bundled Codex 0.158.0 but ChatGPT only offers Sol to Codex 0.159.2 and newer, and the only way to change that number was for us to ship a release."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch day is when people most want to try a model, and we were the reason they had to wait. So over about five weeks and roughly 80 pull requests, we rebuilt how OpenClaw finds out which models exist.",
+          "inlines": [
+            {
+              "text": "Launch day is when people most want to try a model, and we were the reason they had to wait. So over about five weeks and roughly 80 pull requests, we rebuilt how OpenClaw finds out which models exist."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This post covers the three places OpenClaw now gets its model list from, one fix we shipped and then reverted, and what still needs a release.",
+          "inlines": [
+            {
+              "text": "This post covers the three places OpenClaw now gets its model list from, one fix we shipped and then reverted, and what still needs a release."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How a model used to reach users",
+          "inlines": [
+            {
+              "text": "How a model used to reach users"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Each provider plugin carried its model list in a manifest file, and that file shipped inside the OpenClaw package. Providers ship as plugins and plugins are bound to a release.",
+          "inlines": [
+            {
+              "text": "Each provider plugin carried its model list in a manifest file, and that file shipped inside the OpenClaw package. Providers ship as plugins and plugins are bound to a release."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/129d990bfd968385c779de262ccd93abfd9f630e919e0997f62aa939bc7e43d1.webp",
+          "alt": "Before: a provider ships a model, we edit the model manifest, we cut a release, and you update OpenClaw. After: the hosted catalog, your account's model list, and your installed Codex all feed the model picker directly."
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 1. How a new model reached your picker before, and how it does now.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Figure 1."
+            },
+            {
+              "text": " How a new model reached your picker before, and how it does now."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenClaw now hydrates your model list from three places.",
+          "inlines": [
+            {
+              "text": "OpenClaw now hydrates your model list from three places."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "1. A catalog that updates itself",
+          "inlines": [
+            {
+              "text": "1. A catalog that updates itself"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We host a model catalog at catalog.openclaw.ai. A job rebuilds it every four hours. It takes model data from models.dev, lays our own manifests on top, adds prices, and publishes the result. It holds about 1,000 models today.",
+          "inlines": [
+            {
+              "text": "We host a model catalog at catalog.openclaw.ai. A job rebuilds it every four hours. It takes model data from "
+            },
+            {
+              "href": "https://models.dev/",
+              "text": "models.dev"
+            },
+            {
+              "text": ", lays our own manifests on top, adds prices, and publishes the result. It holds about 1,000 models today."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fcb0e5df7d7e697bc0e1b038fc264015ae3e028222d493ac32f432d559d1c42f.webp",
+          "alt": "models.dev, plugin manifests, price feeds, and providers' model lists go into a publisher that runs every four hours. It publishes to catalog.openclaw.ai, and your running Gateway picks the catalog up without a restart."
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 2. What goes into the hosted catalog and how it reaches a running Gateway.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Figure 2."
+            },
+            {
+              "text": " What goes into the hosted catalog and how it reaches a running Gateway."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A running Gateway checks for a newer catalog in the background and switches to it live.",
+          "inlines": [
+            {
+              "text": "A running Gateway checks for a newer catalog in the background and switches to it live."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Before:"
+                },
+                {
+                  "text": " the Gateway downloads a new catalog and keeps using the old one until you restart it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "After:"
+                },
+                {
+                  "text": " new turns use the new catalog. A turn already in progress finishes on the catalog it started with, so its model list and its prices always match."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The publisher also removes models that have been retired or are no longer served by the provider.",
+          "inlines": [
+            {
+              "text": "The publisher also removes models that have been retired or are no longer served by the provider."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "E.g. NVIDIA stopped serving 2 models on their API but the catalog still listed them.",
+          "inlines": [
+            {
+              "text": "E.g. NVIDIA stopped serving 2 models on their API but the catalog still listed them."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How it broke",
+          "inlines": [
+            {
+              "text": "How it broke"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "On September 21, models.dev split its kimi-for-coding entry into two new ones. Our publisher treated one missing provider as a fatal error, so every run failed. GPT-6 Sol and Luna did not reach existing installs in that time. A missing provider now logs a warning, and only that provider goes without fresh data.",
+          "inlines": [
+            {
+              "text": "On September 21, models.dev split its "
+            },
+            {
+              "code": true,
+              "text": "kimi-for-coding"
+            },
+            {
+              "text": " entry into two new ones. Our publisher treated one missing provider as a fatal error, so every run failed. GPT-6 Sol and Luna did not reach existing installs in that time. A missing provider now logs a warning, and only that provider goes without fresh data."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "2. If your account lists it, you can pick it",
+          "inlines": [
+            {
+              "text": "2. If your account lists it, you can pick it"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The catalog knows what exists in public. Your account knows what you can use. When you sign in to a provider, OpenClaw asks it for your model list and shows every chat model on it, including models newer than your install or models only your account can access.",
+          "inlines": [
+            {
+              "text": "The catalog knows what exists in public. Your account knows what you can use. When you sign in to a provider, OpenClaw asks it for your model list and shows every chat model on it, including models newer than your install or models only your account can access."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "OpenAI API key."
+                },
+                {
+                  "text": " Before: "
+                },
+                {
+                  "code": true,
+                  "text": "Unknown model: openai/gpt-5.2"
+                },
+                {
+                  "text": ", although the account lists it. After: chat models your account lists appear and run."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Anthropic API key."
+                },
+                {
+                  "text": " Before: a new Claude model stays hidden until an OpenClaw release. After: it appears as soon as Anthropic’s model list returns it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Claude Code."
+                },
+                {
+                  "text": " Before: a fixed list that we maintained. After: the model menu Claude Code reports for your account."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "GitHub Copilot."
+                },
+                {
+                  "text": " Before: "
+                },
+                {
+                  "code": true,
+                  "text": "kimi-k3"
+                },
+                {
+                  "text": " fails its first turn with "
+                },
+                {
+                  "code": true,
+                  "text": "unsupported_api_for_model"
+                },
+                {
+                  "text": ". After: we read which endpoint each model accepts and use that one."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Grok subscription."
+                },
+                {
+                  "text": " Before: "
+                },
+                {
+                  "code": true,
+                  "text": "grok-4.7-build-fast"
+                },
+                {
+                  "text": " offers two thinking levels, off and ultra. After: it offers low, medium, high and xhigh, as its listing says."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Ollama."
+                },
+                {
+                  "text": " Before: you run "
+                },
+                {
+                  "code": true,
+                  "text": "ollama pull"
+                },
+                {
+                  "text": " and the model never shows up. After: it shows up on the next refresh."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "OpenCode Go."
+                },
+                {
+                  "text": " Before: four models your account serves are missing. After: every listed model appears."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Half of this work was about what a model can do. OpenClaw used to guess thinking levels and request format from the model’s name, which fails on any new model it has never seen. Providers already publish this in their listings, so we read it from there instead.",
+          "inlines": [
+            {
+              "text": "Half of this work was about what a model can do. OpenClaw used to guess thinking levels and request format from the model’s name, which fails on any new model it has never seen. Providers already publish this in their listings, so we read it from there instead."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "3. The Codex version problem",
+          "inlines": [
+            {
+              "text": "3. The Codex version problem"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "This is the Sol bug from the top of the post. ChatGPT decides which models to offer from the Codex version the client reports. An old version gets a shorter list.",
+          "inlines": [
+            {
+              "text": "This is the Sol bug from the top of the post. ChatGPT decides which models to offer from the Codex version the client reports. An old version gets a shorter list."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "First try: report the newest Codex version",
+          "inlines": [
+            {
+              "text": "First try: report the newest Codex version"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Our first fix was simple. Ask npm for the latest Codex version and report that number when we fetch the list. Sol appeared in the picker.",
+          "inlines": [
+            {
+              "text": "Our first fix was simple. Ask npm for the latest Codex version and report that number when we fetch the list. Sol appeared in the picker."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A mistake we learned from",
+          "inlines": [
+            {
+              "text": "A mistake we learned from"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Unfortunately, the list request said 0.161.0, but turns still ran on the bundled 0.160.0, and that binary reports its own version with every request. A model that needed anything newer would appear in the picker and then fail with HTTP 400. We had moved the failure from the picker to the first message, which is worse. We reverted it.",
+          "inlines": [
+            {
+              "text": "Unfortunately, the list request said 0.161.0, but turns still ran on the bundled 0.160.0, and that binary reports its own version with every request. A model that needed anything newer would appear in the picker and then fail with HTTP 400. We had moved the failure from the picker to the first message, which is worse. We reverted it."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ac45f2d33796b33081ae2db69114d5f9c3129ca5f76c81591777d28b1ae4d84d.webp",
+          "alt": "Three cases. Before: the model list and the turns both use Codex 0.158.0, so GPT-6.1 Sol stays hidden. First try: the list asks as 0.161.0 but turns run on 0.160.0, so a model is listed and then fails with HTTP 400. Now: the list and the turns use the same binary, your newest Codex, so the model is listed and runs."
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 3. The Codex version that asks for the model list, and the version that runs the turn, in each design.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Figure 3."
+            },
+            {
+              "text": " The Codex version that asks for the model list, and the version that runs the turn, in each design."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What ships now",
+          "inlines": [
+            {
+              "text": "What ships now"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenClaw looks for a Codex on your PATH. If it is a stable release, newer than the bundled one and on the same major version, OpenClaw does a real handshake with it. If that passes, the same binary fetches the model list and runs your turns. If anything fails, OpenClaw uses the bundled Codex. It never installs anything for you.",
+          "inlines": [
+            {
+              "text": "OpenClaw looks for a Codex on your "
+            },
+            {
+              "code": true,
+              "text": "PATH"
+            },
+            {
+              "text": ". If it is a stable release, newer than the bundled one and on the same major version, OpenClaw does a real handshake with it. If that passes, the same binary fetches the model list and runs your turns. If anything fails, OpenClaw uses the bundled Codex. It never installs anything for you."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This is the Gateway log line from a test run on a Mac with Codex 0.162.1 installed:",
+          "inlines": [
+            {
+              "text": "This is the Gateway log line from a test run on a Mac with Codex 0.162.1 installed:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "[agent/embedded] Codex app-server: using installed ~/.local/bin/codex 0.162.1 (newer than bundled 0.161.0)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Updating your global Codex is now enough to get a model that needs it.",
+          "inlines": [
+            {
+              "text": "Updating your global Codex is now enough to get a model that needs it."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A list that stops shrinking",
+          "inlines": [
+            {
+              "text": "A list that stops shrinking"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Finding models was one problem. Keeping them on screen was another. The list used to lose models for reasons that had nothing to do with the user.",
+          "inlines": [
+            {
+              "text": "Finding models was one problem. Keeping them on screen was another. The list used to lose models for reasons that had nothing to do with the user."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenRouter times out once",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "OpenRouter times out once"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Before:"
+                },
+                {
+                  "text": " 466 → 3 models. They stay gone until someone runs a manual refresh."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "After:"
+                },
+                {
+                  "text": " it retries on its own. First after 30 seconds, then with longer gaps up to 30 minutes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The Gateway switches to a new catalog",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The Gateway switches to a new catalog"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Before:"
+                },
+                {
+                  "text": " 599 → 54 models, for up to four minutes on a production Gateway."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "After:"
+                },
+                {
+                  "text": " 599 the whole time. The old list stays until the new one is complete."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You change the default model",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "You change the default model"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Before:"
+                },
+                {
+                  "text": " 68–142 seconds. The Gateway froze while it reloaded every large plugin."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "After:"
+                },
+                {
+                  "text": " 0.6–1.4 seconds. It reuses the plugins it already has loaded."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pickers also open at once now. They show the models OpenClaw already knows and fill in the rest in the background. They used to wait up to five seconds for discovery to finish.",
+          "inlines": [
+            {
+              "text": "Pickers also open at once now. They show the models OpenClaw already knows and fill in the rest in the background. They used to wait up to five seconds for discovery to finish."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A thousand models is too many",
+          "inlines": [
+            {
+              "text": "A thousand models is too many"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Once every model shows up, the list gets long. OpenRouter alone has 466. So the catalog now carries a short recommended list for each provider, and pickers put it first.",
+          "inlines": [
+            {
+              "text": "Once every model shows up, the list gets long. OpenRouter alone has 466. So the catalog now carries a short recommended list for each provider, and pickers put it first."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d3d8c7bab6ba81ec23d6ed46c1a1909e643386924d951b1ce6160688f08f1ad3.webp",
+          "alt": "Before: a picker with hundreds of models in catalog order, old ones mixed with new. After: Default, then your current model, then a few recommended models, then a collapsed All models row."
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 4. Illustration of the OpenRouter group in the picker. Search still looks at every model.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Figure 4."
+            },
+            {
+              "text": " Illustration of the OpenRouter group in the picker. Search still looks at every model."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This is the same picker on one of our own Gateways. In the OpenAI group, the current model comes first, then the two recommended models, then the other 33 behind one row.",
+          "inlines": [
+            {
+              "text": "This is the same picker on one of our own Gateways. In the OpenAI group, the current model comes first, then the two recommended models, then the other 33 behind one row."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/21452adfc3e54d2a1c37a4e0708c93f433e9acaba8dd977aba1f09b3a2a947cc.webp",
+          "alt": "The OpenClaw chat model picker. The OpenAI group shows 36 models: GPT-6 Astra as the current default, then GPT-6.1 Sol and GPT-6 Luna, then a collapsed All models (33) row."
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 5. The OpenAI group in the Control UI chat picker, captured from a running Gateway.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Figure 5."
+            },
+            {
+              "text": " The OpenAI group in the Control UI chat picker, captured from a running Gateway."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The recommended list is manually curated and updated daily from our own experience + a variety of benchmarks.",
+          "inlines": [
+            {
+              "text": "The recommended list is manually curated and updated daily from our own experience + a variety of benchmarks."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Key takeaways",
+          "inlines": [
+            {
+              "text": "Key takeaways"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "The version that lists a model must also run it."
+                },
+                {
+                  "text": " Reporting one Codex version and running another only moved the failure from the picker to the first message."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Read capabilities from the listing, not the name."
+                },
+                {
+                  "text": " Provider listings already say which thinking levels and endpoints a model supports. Rules based on the model name break on the first model we have never seen."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Keep the last good list."
+                },
+                {
+                  "text": " A failed refresh or a catalog switch should never leave the picker with fewer models than before."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "One broken source should not block the rest."
+                },
+                {
+                  "text": " A renamed provider on models.dev stopped catalog updates for every provider until we made it a warning."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What still needs a release",
+          "inlines": [
+            {
+              "text": "What still needs a release"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "If you have no newer Codex installed, the bundled version still decides which ChatGPT models you see."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A model newer than the catalog has no price yet. OpenClaw shows its cost as unknown, and it runs with cautious default limits until the catalog catches up."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To see what your install can reach right now, run openclaw models list --refresh.",
+          "inlines": [
+            {
+              "text": "To see what your install can reach right now, run "
+            },
+            {
+              "code": true,
+              "text": "openclaw models list --refresh"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What’s next",
+          "inlines": [
+            {
+              "text": "What’s next"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We will keep improving the experience over time and support more providers. If your account lists a model that OpenClaw does not show, open an issue and include the output of that command.",
+          "inlines": [
+            {
+              "text": "We will keep improving the experience over time and support more providers. If your account lists a model that OpenClaw does not show, "
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/issues",
+              "text": "open an issue"
+            },
+            {
+              "text": " and include the output of that command."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgements",
+          "inlines": [
+            {
+              "text": "Acknowledgements"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Written by Ayaan Zaidi. Thanks to @vincentkoc for catalog v2 and per-route pricing, @ly85206559 for the models.dev provider aliases, @mcooks-cmd for the catalog worker memory fix, and @steipete for faster multi-provider catalog refreshes.",
+          "inlines": [
+            {
+              "text": "Written by Ayaan Zaidi. Thanks to "
+            },
+            {
+              "href": "https://github.com/vincentkoc",
+              "text": "@vincentkoc"
+            },
+            {
+              "text": " for catalog v2 and per-route pricing, "
+            },
+            {
+              "href": "https://github.com/ly85206559",
+              "text": "@ly85206559"
+            },
+            {
+              "text": " for the models.dev provider aliases, "
+            },
+            {
+              "href": "https://github.com/mcooks-cmd",
+              "text": "@mcooks-cmd"
+            },
+            {
+              "text": " for the catalog worker memory fix, and "
+            },
+            {
+              "href": "https://github.com/steipete",
+              "text": "@steipete"
+            },
+            {
+              "text": " for faster multi-provider catalog refreshes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Main pull requests: catalog from models.dev, live catalog adoption, account model listing, installed Codex selection, discovery retry, recommended models in pickers.",
+          "inlines": [
+            {
+              "text": "Main pull requests: "
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/137131",
+              "text": "catalog from models.dev"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/158000",
+              "text": "live catalog adoption"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/167462",
+              "text": "account model listing"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/168228",
+              "text": "installed Codex selection"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/167230",
+              "text": "discovery retry"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://github.com/openclaw/openclaw/pull/167370",
+              "text": "recommended models in pickers"
+            },
+            {
+              "text": "."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-10T05:26:15.738491Z",
+  "contentMode": "full"
+}

@@ -1,0 +1,2282 @@
+{
+  "schemaVersion": 1,
+  "id": "d28mrqwr7h7tl8b8jcse4b449",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/d28mrqwr7h7tl8b8jcse4b449",
+  "fetchedAt": "2026-11-10T01:13:12.327727Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic",
+    "Anthropic / Claude",
+    "Agent 智能体",
+    "论文研究"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "克尔凯郭尔说过，生活只能向后理解，却必须向前过。我们在为 AI 智能体设计记忆时，也遇到了类似的困境。",
+          "inlines": [
+            {
+              "text": "克尔凯郭尔说过，生活只能"
+            },
+            {
+              "italic": true,
+              "text": "向后"
+            },
+            {
+              "text": "理解，却必须"
+            },
+            {
+              "italic": true,
+              "text": "向前"
+            },
+            {
+              "text": "过。我们在为 AI 智能体设计记忆时，也遇到了类似的困境。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "作为人类，我们在日常生活中无时无刻不在编码记忆。海马体在其中扮演核心角色，它把当下的经历捕捉下来，让记忆快速形成、随时可用。但只有部分经历会被巩固为长期知识。",
+          "inlines": [
+            {
+              "text": "作为人类，我们在日常生活中无时无刻不在编码记忆。"
+            },
+            {
+              "href": "https://stanford.edu/~jlmcc/papers/McCMcNaughtonOReilly95.pdf",
+              "text": "海马体"
+            },
+            {
+              "text": "在其中扮演核心角色，它把当下的经历捕捉下来，让记忆快速形成、随时可用。但只有"
+            },
+            {
+              "href": "https://www.science.org/doi/10.1126/science.adk8261?referrer=https%3A%2F%2Fwww.google.com%2F",
+              "text": "部分经历"
+            },
+            {
+              "text": "会被巩固为长期知识。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种巩固大多发生在我们的大脑“离线”时。睡眠期间以及安静的休息时段，海马体会重放近期的经历。人们认为，这一过程会逐渐提炼这些经历并将其整合到新皮层——我们大脑中储存大部分所谓知识的部分。",
+          "inlines": [
+            {
+              "text": "这种巩固大多发生在我们的大脑“离线”时。睡眠期间以及安静的"
+            },
+            {
+              "href": "https://www.nature.com/articles/s41467-018-06213-1",
+              "text": "休息"
+            },
+            {
+              "text": "时段，海马体会重放近期的经历。人们认为，这一过程会逐渐提炼"
+            },
+            {
+              "href": "https://www.nature.com/articles/s41593-019-0467-3",
+              "text": "这些经历并将其整合"
+            },
+            {
+              "text": "到新皮层——我们大脑中储存大部分所谓知识的部分。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "智能体记忆也可以采用类似的分工。智能体会把大量工作记录在日志或对话记录中。Letta 和 UC Berkeley 的研究人员提出了睡眠时间计算，让模型利用交互之间的空闲时间重新组织已有的上下文。同样的思路可以帮助智能体通过反思日志来整理记忆，修正错误，或生成新的笔记和表征。这一过程常被称为做梦（图 1）。",
+          "inlines": [
+            {
+              "text": "智能体记忆也可以采用类似的分工。智能体会把大量工作记录在日志或对话记录中。Letta 和 UC Berkeley 的研究人员提出了"
+            },
+            {
+              "href": "https://arxiv.org/abs/2504.13171",
+              "text": "睡眠时间计算"
+            },
+            {
+              "text": "，让模型利用交互之间的空闲时间重新组织已有的上下文。同样的思路可以帮助智能体通过反思日志来整理记忆，修正错误，或生成新的笔记和表征。这一过程常被"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/managed-agents/dreams",
+              "text": "称为"
+            },
+            {
+              "href": "https://research.google/blog/the-sleep-framework-a-new-way-for-llms-to-retain-knowledge-in-continual-learning/",
+              "italic": true,
+              "text": "做梦"
+            },
+            {
+              "text": "（图 1）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们发现，做梦是帮助 Claude 获得有效记忆的一个有用工具。本文中，我们分享自己对智能体记忆的思考，并介绍我们用来探索智能体记忆的若干评估，包括做梦的用法，以及各个组成部分对记忆组织分别有何贡献。",
+          "inlines": [
+            {
+              "text": "我们发现，做梦是帮助 Claude 获得有效记忆的一个有用工具。本文中，我们分享自己对智能体记忆的思考，并介绍我们用来探索智能体记忆的若干评估，包括做梦的用法，以及各个组成部分对记忆组织分别有何贡献。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e7f33140f853ed74502d6d06c1b2564c588977413170a87db781b616367837e8.webp",
+          "alt": "Diagram of a memory hierarchy between one session and the next. From bottom to top: transcripts (a searchable event log), memory notes written by Claude, memory representations such as wikis, and injected context loaded into every session. Inside a box labeled “Dreaming,” arrows run from transcripts up to each layer, and in both directions between neighboring upper layers.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 可以用做梦来整理记忆。这可以修正错误、创建笔记、构建新的记忆表征，或者决定预先加载哪些内容到未来的会话中。",
+          "inlines": [
+            {
+              "text": "Claude 可以用做梦来整理记忆。这可以修正错误、创建笔记、构建新的记忆表征，或者决定预先加载哪些内容到未来的会话中。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "记忆笔记",
+          "inlines": [
+            {
+              "text": "记忆笔记"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们所说的“智能体记忆”，是指 Claude 从经验中获得的知识——包括与用户的交互以及被指派的任务——并在会话之间保留下来，存为之后可以读取的上下文。它不包括模型学习或管理上下文的其他方式，例如改动权重（训练时设定的内部参数）、上下文学习（在单次对话中获得的知识），以及压缩（由 Claude 撰写的摘要，用来替换较早的对话轮次，以便它能在新的上下文窗口中继续工作）。",
+          "inlines": [
+            {
+              "text": "我们所说的“智能体记忆”，是指 Claude 从经验中获得的知识——包括与用户的交互以及被指派的任务——并在会话之间保留下来，存为之后可以读取的上下文。它不包括模型学习或管理上下文的其他方式，例如改动"
+            },
+            {
+              "italic": true,
+              "text": "权重"
+            },
+            {
+              "text": "（训练时设定的内部参数）、"
+            },
+            {
+              "href": "https://www.anthropic.com/research/in-context-learning-and-induction-heads",
+              "italic": true,
+              "text": "上下文学习"
+            },
+            {
+              "text": "（在单次对话中获得的知识），以及"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/compaction",
+              "italic": true,
+              "text": "压缩"
+            },
+            {
+              "text": "（由 Claude 撰写的摘要，用来替换较早的对话轮次，以便它能在新的上下文窗口中继续工作）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在人脑中，经历之前、之中或之后释放的化学信号可以标记某段记忆为重要。被标记的记忆在离线时段往往比未被标记的记忆更频繁地被重放。这一过程称为重放，有助于稳定记忆并将其整合进长期记忆。",
+          "inlines": [
+            {
+              "text": "在人脑中，经历之前、之中或之后释放的化学信号可以"
+            },
+            {
+              "href": "https://www.nature.com/articles/385533a0",
+              "text": "标记某段记忆"
+            },
+            {
+              "text": "为重要。被标记的记忆在离线时段往往比未被标记的记忆更频繁地被重放。这一过程称为"
+            },
+            {
+              "italic": true,
+              "text": "重放"
+            },
+            {
+              "text": "，有助于稳定记忆并将其整合进长期记忆。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "同样，Claude 可以在会话日志中把重要事件实时标记出来，方便之后查找，也可以把它们写入记忆存储，比如一个存放记忆笔记的文件夹（图 2）。但 Claude 在还不知道接下来会发生什么的时候，怎么判断当下什么才是重要的？",
+          "inlines": [
+            {
+              "text": "同样，Claude 可以在会话日志中把重要事件实时标记出来，方便之后查找，也可以把它们"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+              "text": "写入"
+            },
+            {
+              "text": "记忆存储，比如一个存放记忆笔记的文件夹（图 2）。但 Claude 在还不知道接下来会发生什么的时候，怎么判断当下什么才是重要的？"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ed2b673dda997102b05fff9f491c4a8b36ffb24b514d958e2451e4444bb74a3f.webp",
+          "alt": "The same memory hierarchy, with the memory notes layer highlighted. An arrow runs from the session directly to the memory notes, described as salient observations written by Claude.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 可以把笔记写入记忆。",
+          "inlines": [
+            {
+              "text": "Claude 可以把笔记写入记忆。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "记忆可以是对未来所需之物的预测",
+          "inlines": [
+            {
+              "text": "记忆可以是对未来所需之物的预测"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "记忆有时是一种预测。写下一条规则，就等于智能体在预测：它描述的这个模式以后还会派上用场。比如，记下一条已验证的事实，就是预测未来的会话中某个智能体会想直接依赖这条事实，而不必再核实一遍。随着时间推移，Claude 在这类预测上已经进步了很多。",
+          "inlines": [
+            {
+              "text": "记忆有时是一种预测。写下一条规则，就等于智能体在预测：它描述的这个模式以后还会派上用场。比如，记下一条已验证的事实，就是预测未来的会话中某个智能体会想直接依赖这条事实，而不必再核实一遍。随着时间推移，Claude 在这类预测上已经进步了很多。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "以 Continual Learning Bench (CL-Bench) 1.0 中的一项任务为例。这个基准用来衡量智能体利用记忆完成长程任务的能力。其中一项任务要求 Claude 在数据库中查找信息，回答一连串问题。Claude 给出答案后，会被告知正确答案，并且可以写一条记忆，帮助回答之后的问题。",
+          "inlines": [
+            {
+              "text": "以 "
+            },
+            {
+              "href": "https://continual-learning-bench.com/news/cl-bench-1-0/",
+              "text": "Continual Learning Bench (CL-Bench) 1.0"
+            },
+            {
+              "text": " 中的一项任务为例。这个基准用来衡量智能体利用记忆完成长程任务的能力。其中一项任务要求 Claude 在数据库中查找信息，回答一连串问题。Claude 给出答案后，会被告知正确答案，并且可以写一条记忆，帮助回答之后的问题。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在这里，记忆可以支撑一个学习循环。如果 Claude 答错了，它可以记录这次失败，提出关于错因的种种猜想，验证这些猜想，再把发现转化为一条今后如何作答的规则。",
+          "inlines": [
+            {
+              "text": "在这里，记忆可以支撑一个学习循环。如果 Claude 答错了，它可以记录这次失败，提出关于错因的种种猜想，验证这些猜想，再把发现转化为一条今后如何作答的规则。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们用 Claude Managed Agents 跑了 CL-Bench 1.0 的这项任务。每道题 Claude 都在全新的会话中开始，只有一个例外：它可以读取一个跨会话保留的记忆目录中的文件。",
+          "inlines": [
+            {
+              "text": "我们用 "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/managed-agents/overview",
+              "text": "Claude Managed Agents"
+            },
+            {
+              "text": " 跑了 CL-Bench 1.0 的这项任务。每道题 Claude 都在全新的会话中开始，只有一个例外：它可以读取一个跨会话保留的"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/managed-agents/memory",
+              "text": "记忆目录"
+            },
+            {
+              "text": "中的文件。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不同模型在建立自己的学习循环上取得的进展各不相同。Claude Sonnet 4.6 只做到了针对答错原因提出猜想。它的记忆目录里散落着一些文件，每个文件列出若干条尚未验证的猜测。",
+          "inlines": [
+            {
+              "text": "不同模型在建立自己的学习循环上取得的进展各不相同。Claude Sonnet 4.6 只做到了针对答错原因提出猜想。它的记忆目录里散落着一些文件，每个文件列出若干条尚未验证的猜测。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7c0933dcd65a8ddd95f74690b75c97852a2b626ffe2cb1fc51b26205bbe29917.webp",
+          "alt": "Left: bar chart of mean reward on the CL-Bench database task, stateless baseline versus memory store. Opus 5.5: 0.655, 0.838. Sonnet 5.5: 0.644, 0.833. Opus 5: 0.564, 0.828. Opus 4.7: 0.383, 0.700. Sonnet 5: 0.306, 0.610. Sonnet 4.6: 0.330, 0.364. Right: line chart of running-mean reward over 30 questions for the same models, with and without memory.",
+          "width": 3840,
+          "height": 2160
+        },
+        {
+          "type": "paragraph",
+          "text": "CL-Bench 数据库任务中，各模型使用记忆与无状态基线的对比。",
+          "inlines": [
+            {
+              "text": "CL-Bench 数据库任务中，各模型使用记忆与无状态基线的对比。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 4.7 把笔记整合成一份参考文档，并开始标注哪些事实已经核实、哪些尚未确认。Claude Sonnet 5 在评分方核对之后把每个答案标记为已确认，答错时则写下更正。",
+          "inlines": [
+            {
+              "text": "Claude Opus 4.7 把笔记整合成一份参考文档，并开始标注哪些事实已经核实、哪些尚未确认。Claude Sonnet 5 在评分方核对之后把每个答案标记为已确认，答错时则写下更正。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5 是这些模型中第一个把循环闭合的。它的大多数条目都包含一条规则（以及它如何知道这条规则成立）、对先前问题的答案，还有对沿途发现的陷阱的明确警示（图 3）。",
+          "inlines": [
+            {
+              "text": "Claude Opus 5 是这些模型中第一个把循环闭合的。它的大多数条目都包含一条规则（以及它如何知道这条规则成立）、对先前问题的答案，还有对沿途发现的陷阱的明确警示（图 3）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "和 Opus 5 一样，Claude Opus 5.5 和 Claude Sonnet 5.5 也都闭合了循环，用记忆记录经过验证的规则，以便更好地回答之后的问题。借助记忆，两者的得分与 Opus 5 大致相当，不过它们无记忆时的基线表现略高一些。",
+          "inlines": [
+            {
+              "text": "和 Opus 5 一样，Claude Opus 5.5 和 Claude Sonnet 5.5 也都闭合了循环，用记忆记录经过验证的规则，以便更好地回答之后的问题。借助记忆，两者的得分与 Opus 5 大致相当，不过它们无记忆时的基线表现略高一些。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude 学会了判断什么值得记",
+          "inlines": [
+            {
+              "text": "Claude 学会了判断什么值得记"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还评估了 Claude 玩《宝可梦 红》的能力，以此检验 Claude 对该把什么存入记忆的判断力。这款游戏要求 Claude 应对复杂的长程任务。每次运行开始时，我们给每个模型一个记忆文件夹，它可以在游戏过程中读取和写入（图 4）。",
+          "inlines": [
+            {
+              "text": "我们还评估了 Claude 玩《"
+            },
+            {
+              "italic": true,
+              "text": "宝可梦 红"
+            },
+            {
+              "text": "》的能力，以此检验 Claude 对"
+            },
+            {
+              "italic": true,
+              "text": "该把什么"
+            },
+            {
+              "text": "存入记忆的判断力。这款游戏"
+            },
+            {
+              "href": "https://www.youtube.com/watch?v=CXhYDOvgpuU",
+              "text": "要求 Claude 应对"
+            },
+            {
+              "text": "复杂的长程任务。每次运行开始时，我们给每个模型一个记忆文件夹，它可以在游戏过程中读取和写入（图 4）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们对比了 Claude Sonnet 3.7 和 Claude Fable 5 各一次运行中的记忆文件夹，当时两者都已进行到游戏约 10,000 步。我们注意到的一个关键差异，是每个模型认为什么值得记住。Sonnet 3.7 假定一切都可能有用，不加区分地写入记忆。它的记忆文件夹里存着各种遭遇的档案，往往为每一场战斗、每一件找到的物品、每一个遇到的非玩家角色各建一个文件。最终，Sonnet 3.7 在 225 个文件夹中写下了 413 个记忆文件，只拿到一枚徽章（徽章标志玩家在游戏中的进度）。",
+          "inlines": [
+            {
+              "text": "我们对比了 Claude Sonnet 3.7 和 Claude Fable 5 各一次运行中的记忆文件夹，当时两者都已进行到游戏约 10,000 步。我们注意到的一个关键差异，是每个模型认为什么值得记住。Sonnet 3.7 假定一切都可能有用，不加区分地写入记忆。它的记忆文件夹里存着各种遭遇的档案，往往为每一场战斗、每一件找到的物品、每一个遇到的非玩家角色各建一个文件。最终，Sonnet 3.7 在 225 个文件夹中写下了 413 个记忆文件，只拿到一枚徽章（徽章标志玩家在游戏中的进度）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "相比之下，Fable 5 只在两个文件夹里写了九个文件，外加一个名为 global.md 的顶层文件，拿到了四枚徽章。",
+          "inlines": [
+            {
+              "text": "相比之下，Fable 5 只在两个文件夹里写了九个文件，外加一个名为 "
+            },
+            {
+              "code": true,
+              "text": "global.md"
+            },
+            {
+              "text": " 的顶层文件，拿到了四枚徽章。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/797e69d6e83c1eb57d0b469a479d1360384741639387d7025dba48a418d67f8c.webp",
+          "alt": "Two treemaps of Pokémon memory directories at the same scale, where area shows characters of memory. Claude Sonnet 3.7’s is large and crowded, with 413 files and 977,930 characters across folders such as locations, main, battles, and several “consolidated” folders. Claude Fable 5’s is small, with 10 files and 43,406 characters in locations, gameplay, and global.md.",
+          "width": 3840,
+          "height": 2545
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 3.7 与 Fable 5 在玩 Pokémon 时的记忆目录对比。",
+          "inlines": [
+            {
+              "text": "Sonnet 3.7 与 Fable 5 在玩 Pokémon 时的记忆目录对比。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 3.7 的做法之所以出问题，主要是因为 Pokémon 的游戏状态时刻在变，它那份详尽的记录不断过时。结果，随着游戏推进，Claude 不得不把越来越多的时间和资源花在翻检记忆上，而不是玩游戏。比如到第 10,000 步左右，Sonnet 3.7 开始建第四个“master”记忆文件夹。接下来的 17 步里，它新建了六个文件、删掉了另外九个，游戏本身却一步没动。",
+          "inlines": [
+            {
+              "text": "Sonnet 3.7 的做法之所以出问题，主要是因为 Pokémon 的游戏状态时刻在变，它那份详尽的记录不断过时。结果，随着游戏推进，Claude 不得不把越来越多的时间和资源花在翻检记忆上，而不是玩游戏。比如到第 10,000 步左右，Sonnet 3.7 开始建第四个“master”记忆文件夹。接下来的 17 步里，它新建了六个文件、删掉了另外九个，游戏本身却一步没动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fable 5 则把记忆用在游戏没有明确告知它的信息上。Sonnet 3.7 写进记忆的某些信息，比如玩家有多少钱、身处地图何处，每一回合都能从屏幕上读到，存下来纯属多余。相反，关于策略、计划和已验证规则的文件，只有 Claude 自己琢磨出来才会存在，不写下来就会消失。",
+          "inlines": [
+            {
+              "text": "Fable 5 则把记忆用在游戏没有明确告知它的信息上。Sonnet 3.7 写进记忆的某些信息，比如玩家有多少钱、身处地图何处，每一回合都能从屏幕上读到，存下来纯属多余。相反，关于策略、计划和已验证规则的文件，只有 Claude 自己琢磨出来才会存在，不写下来就会消失。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fable 5 据此组织记忆。它的 global.md 文件充当仪表盘，记录当前目标、预先写好的道馆挑战计划（道馆是赢取徽章的地方），以及模型自己定下的记忆使用规则。locations 文件夹存放特定路线的行进计划，gameplay 文件夹存放基于它对游戏机制的理解而总结出的策略。例如，连续七个精灵球都没能抓住一只鲤鱼王（最容易抓的 Pokémon 之一）之后，Claude 写道：“如果连续 3 个以上球失败，就改变时机（在菜单步骤之间多按几次‘等待’）——这样做之后立刻就抓到了。”",
+          "inlines": [
+            {
+              "text": "Fable 5 据此组织记忆。它的 "
+            },
+            {
+              "code": true,
+              "text": "global.md"
+            },
+            {
+              "text": " 文件充当仪表盘，记录当前目标、预先写好的道馆挑战计划（道馆是赢取徽章的地方），以及模型自己定下的记忆使用规则。"
+            },
+            {
+              "code": true,
+              "text": "locations"
+            },
+            {
+              "text": " 文件夹存放特定路线的行进计划，"
+            },
+            {
+              "code": true,
+              "text": "gameplay"
+            },
+            {
+              "text": " 文件夹存放基于它对游戏机制的理解而总结出的策略。例如，连续七个精灵球都没能抓住一只鲤鱼王（最容易抓的 Pokémon 之一）之后，Claude 写道：“如果连续 3 个以上球失败，就改变时机（在菜单步骤之间多按几次‘等待’）——这样做之后立刻就抓到了。”"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "记忆文件夹小得多，Fable 5 在游戏里的进度却远超 Sonnet 3.7。Opus 5.5 采用了类似做法：只保留一个小文件夹的记忆笔记，追踪当前目标和下一步行动，边玩边重写，最终通关。",
+          "inlines": [
+            {
+              "text": "记忆文件夹小得多，Fable 5 在游戏里的进度却远超 Sonnet 3.7。Opus 5.5 采用了类似做法：只保留一个小文件夹的记忆笔记，追踪当前目标和下一步行动，边玩边重写，最终通关。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "引导 Claude 写记忆",
+          "inlines": [
+            {
+              "text": "引导 Claude 写记忆"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们发现，告诉 Claude 记忆是干什么用的有帮助，但不要告诉它怎么用。在 CL-Bench 上，我们只是告诉 Claude 有一个记忆文件夹可用。这点笼统的提示就足以让 Opus 4.7 和 Opus 5 有效利用记忆，两者的表现都因此明显提升（图 3）。",
+          "inlines": [
+            {
+              "text": "我们发现，告诉 Claude 记忆是干什么用的有帮助，但不要告诉它"
+            },
+            {
+              "italic": true,
+              "text": "怎么"
+            },
+            {
+              "text": "用。在 CL-Bench 上，我们只是告诉 Claude 有一个记忆文件夹可用。这点笼统的提示就足以让 Opus 4.7 和 Opus 5 有效利用记忆，两者的表现都因此明显提升（图 3）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还测试了给模型规定具体的记忆写入规则，每次测试只加一条规则。我们对比了每条规则下各模型从记忆中获得的提升，与没有规则时的提升。当我们把规则设为“只记录失败”时，Opus 5 和 Opus 4.7 从记忆中获得的性能提升都大幅缩水（图 5 右）。对更强的模型来说，让它们自行判断什么重要，比事先定死规则更有效，而那些规则反而可能削弱表现。",
+          "inlines": [
+            {
+              "text": "我们还测试了给模型规定具体的记忆写入规则，每次测试只加一条规则。我们对比了每条规则下各模型从记忆中获得的提升，与没有规则时的提升。当我们把规则设为“只记录失败”时，Opus 5 和 Opus 4.7 从记忆中获得的性能提升都大幅缩水（图 5 右）。对更强的模型来说，让它们自行判断什么重要，比事先定死规则更有效，而那些规则反而可能削弱表现。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/a4b834067d2bd909b11c1d5fc957176956219825f6dd1543dba598ac62116159.webp",
+          "alt": "Left: bar chart of Sonnet 4.6’s mean reward on the CL-Bench database task: 0.330 at baseline, 0.364 with memory, and 0.641 with memory and refined instruction. Reference lines mark Opus 4.7 with memory at 0.700 and Opus 5 with memory at 0.828. Right: change in memory gain when told to record only failures: Opus 5, −0.234; Opus 4.7, −0.150; Sonnet 4.6, −0.020.",
+          "width": 3840,
+          "height": 2310
+        },
+        {
+          "type": "paragraph",
+          "text": "左：Sonnet 4.6 在 CL-Bench 数据库任务上，有无引导记忆使用的提示词时的表现。右：被告知只记录失败后，各模型从记忆中获得的提升变化。",
+          "inlines": [
+            {
+              "text": "左：Sonnet 4.6 在 CL-Bench 数据库任务上，有无引导记忆使用的提示词时的表现。右：被告知只记录失败后，各模型从记忆中获得的提升变化。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还注意到，引导对较老的模型帮助最大。例如，Sonnet 4.6 常常不读记忆目录里的文件，也不去验证自己关于答案为何错误的推测。",
+          "inlines": [
+            {
+              "text": "我们还注意到，引导对较老的模型帮助最大。例如，Sonnet 4.6 常常不读记忆目录里的文件，也不去验证自己关于答案为何错误的推测。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在这次测试中，提示 Claude 在回答前先读取自己的记忆文件，然后明确检验自己的推断，结果它的基准分数几乎翻了一倍（图 5 左）。Sonnet 5 无需提示就会这么做：10 次里有 9 次在回答前先读取记忆。相比之下，Sonnet 4.6 做到这一点的次数不到一半。",
+          "inlines": [
+            {
+              "text": "在这次测试中，提示 Claude 在回答前先读取自己的记忆文件，然后明确检验自己的推断，结果它的基准分数几乎翻了一倍（图 5 左）。Sonnet 5 无需提示就会这么做：10 次里有 9 次在回答前先读取记忆。相比之下，Sonnet 4.6 做到这一点的次数不到一半。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对于前沿 Claude 模型，我们通常只给简单的指引：当用户要求时，或当某件事明显值得记住时，就创建记忆笔记，具体判断交给 Claude 自己。",
+          "inlines": [
+            {
+              "text": "对于前沿 Claude 模型，我们通常只给简单的指引：当用户要求时，或当某件事明显值得记住时，就创建记忆笔记，具体判断交给 Claude 自己。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "做梦可以纠正记忆",
+          "inlines": [
+            {
+              "text": "做梦可以纠正记忆"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 会根据自己判断会话中哪些内容重要来写入记忆，因此一条从一开始就错误、或随环境变化而逐渐失真的笔记，可能在之后的会话中被 Claude 读取并信任。",
+          "inlines": [
+            {
+              "text": "Claude 会根据自己判断会话中哪些内容重要来写入记忆，因此一条从一开始就错误、或随环境变化而逐渐失真的笔记，可能在之后的会话中被 Claude 读取并信任。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "做梦让 Claude 能拿笔记与原始对话记录对照检验（图 6）。我们在 Claude 使用 Managed Agents、挂载记忆目录玩 Pokémon 时看到了一个正面例子。",
+          "inlines": [
+            {
+              "text": "做梦让 Claude 能拿笔记与原始对话记录对照检验（图 6）。我们在 Claude 使用 Managed Agents、挂载记忆目录玩 Pokémon 时看到了一个正面例子。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8a8da4d83a50c1dddbc33944920f38c7a74452d6726176db02463c5ea868a9dc.webp",
+          "alt": "The memory hierarchy with dreaming, highlighting an arrow from the transcripts layer up to the memory notes layer, which shows dreaming correcting notes against transcripts.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "做梦可以纠正记忆中的错误。",
+          "inlines": [
+            {
+              "text": "做梦可以纠正记忆中的错误。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在游戏的一个环节里，玩家必须穿过月见山——一个入口在地图西侧、出口在东侧的洞穴系统。入口附近有个陷阱：一处单向的悬崖边缘，会把玩家丢回他们来时的路线，而且没有明显的路能爬回去。Claude 把宝可梦中心（山入口处的一栋建筑）当作地标，所以它是否会走下悬崖，取决于它认为宝可梦中心在山哪一侧。",
+          "inlines": [
+            {
+              "text": "在游戏的一个环节里，玩家必须穿过月见山——一个入口在地图西侧、出口在东侧的洞穴系统。入口附近有个陷阱：一处单向的悬崖边缘，会把玩家丢回他们来时的路线，而且没有明显的路能爬回去。Claude 把宝可梦中心（山入口处的一栋建筑）当作地标，所以它是否会走下悬崖，取决于它认为宝可梦中心在山哪一侧。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "有一次，Claude（错误地）记下宝可梦中心在东侧。走出宝可梦中心时，它宣称“月见山在我身后”，并更新笔记：“月见山完成”。但月见山并不在它身后。几步操作之后，Claude 走下悬崖，落回了来时的路线（图 7）。它的导航工具没有显示这次坠落，于是 Claude 断定“我向西走过头了”，并认为自己一直在正确的一侧。事实并非如此。",
+          "inlines": [
+            {
+              "text": "有一次，Claude（错误地）记下宝可梦中心在东侧。走出宝可梦中心时，它宣称“月见山在我身后”，并更新笔记：“月见山完成”。但月见山并不在它身后。几步操作之后，Claude 走下悬崖，落回了来时的路线（图 7）。它的导航工具没有显示这次坠落，于是 Claude 断定“我向西走过头了”，并认为自己一直在正确的一侧。事实并非如此。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3213976e000e439f40835823debf1ba42f00f86bb3499827ec16d2589b5680d3.webp",
+          "alt": "Two Pokémon map panels with the agent next to a ledge. Left, “Raw memory,” where the stored note is wrong: an arrow shows the agent heading for the next city. Right, “Memory + dreaming,” where an offline pass corrected the note: an arrow shows the agent heading back to the cave entrance.",
+          "width": 3840,
+          "height": 2101
+        },
+        {
+          "type": "paragraph",
+          "text": "一条修正后的记忆笔记改变了 Pokémon 中的结果。笔记未修正时，Claude 说“月见山在我身后”，朝下一座城市前进，结果又回到了来时的路线。笔记经做梦修正后，它说“现在我需要找到月见山洞口重新进去”，然后回到了洞穴中。",
+          "inlines": [
+            {
+              "text": "一条修正后的记忆笔记改变了 Pokémon 中的结果。笔记未修正时，Claude 说“月见山在我身后”，朝下一座城市前进，结果又回到了来时的路线。笔记经做梦修正后，它说“现在我需要找到月见山洞口重新进去”，然后回到了洞穴中。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "接着我们测试了做梦能否帮 Claude 避开这个陷阱。我们对包含错误宝可梦中心位置的记忆文件夹运行了做梦：Claude 拿笔记与对话记录对照，发现了错误并重写了它。对话记录为 Claude 提供了验证记忆的事实依据。凭借修正后的记忆笔记，Claude 径直回到月见山，最终抵达了华蓝市。",
+          "inlines": [
+            {
+              "text": "接着我们测试了做梦能否帮 Claude 避开这个陷阱。我们对包含错误宝可梦中心位置的记忆文件夹运行了做梦：Claude 拿笔记与对话记录对照，发现了错误并重写了它。对话记录为 Claude 提供了验证记忆的事实依据。凭借修正后的记忆笔记，Claude 径直回到月见山，最终抵达了华蓝市。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在笔记未修正的那次运行中，Claude 三次掉回那条早先的路线。第三次失败后，Claude 似乎放弃了，写道：“我要停下来，而不是继续循环。”我们设置的自动回复指示它继续。于是它继续了，一路回到山前的小镇深灰市，希望在那里治疗和补给。这次运行结束时，Claude 始终没能抵达华蓝市。",
+          "inlines": [
+            {
+              "text": "在笔记未修正的那次运行中，Claude 三次掉回那条早先的路线。第三次失败后，Claude 似乎放弃了，写道：“我要停下来，而不是继续循环。”我们设置的自动回复指示它继续。于是它继续了，一路回到山前的小镇深灰市，希望在那里治疗和补给。这次运行结束时，Claude 始终没能抵达华蓝市。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2ca16bd9f0aaf53da96481277e39c88a3471056b2dab5df3ff29bf088093d974.webp",
+          "alt": "Line chart of progress toward Cerulean over 3,000 cumulative actions. The memory plus dreaming run reaches Cerulean at action 1,935. The raw memory run falls off the ledge and backtracks to Pewter. The run with no memory never reaches Cerulean.",
+          "width": 3840,
+          "height": 2636
+        },
+        {
+          "type": "paragraph",
+          "text": "做梦修正了记忆，Claude 回到洞穴并抵达下一座城市。笔记未修正（“原始记忆”）的那次运行始终没能翻过山，没有记忆的那次运行也是如此。",
+          "inlines": [
+            {
+              "text": "做梦修正了记忆，Claude 回到洞穴并抵达下一座城市。笔记未修正（“原始记忆”）的那次运行始终没能翻过山，没有记忆的那次运行也是如此。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "做梦可以构建新的记忆表征",
+          "inlines": [
+            {
+              "text": "做梦可以构建新的记忆表征"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "借助“做梦”机制，Claude 可以构建表征来帮助梳理记忆（图 9）。它使用的一种记忆表征叫做 wiki，即由 Claude 自己撰写和维护的一组页面，汇集了 Claude 对某一主题的了解，并链接到其他笔记。这些链接实际上为 Claude 提供了一张地图，让它能据此翻检记忆，在需要时高效地找到相应内容。",
+          "inlines": [
+            {
+              "text": "借助“做梦”机制，Claude 可以构建表征来帮助梳理记忆（图 9）。它使用的一种记忆表征叫做 "
+            },
+            {
+              "href": "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f",
+              "italic": true,
+              "text": "wiki"
+            },
+            {
+              "text": "，即由 Claude 自己撰写和维护的一组页面，汇集了 Claude 对某一主题的了解，并链接到其他笔记。这些链接实际上为 Claude 提供了一张地图，让它能据此翻检记忆，在需要时高效地找到相应内容。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/de0ede3fbc175013d64aff3c912bde690a45731e2eb917a86f4e49323c0f63e2.webp",
+          "alt": "The memory hierarchy with dreaming, highlighting arrows from transcripts and from memory notes up to the memory representations layer, such as wikis.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "“做梦”可以构建记忆表征。",
+          "inlines": [
+            {
+              "text": "“做梦”可以构建记忆表征。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "wiki 这类表征能帮助 Claude 在其不断增长的知识库中穿行。我们借助一批内部文档，考察了 wiki 作为记忆表征的效用——这批文档来自我们于 5 月收购的软件公司 Stainless，约 35 万个文件、约 4.2 亿个 token。我们围绕这批文档设计了一套包含 25 个问题的评测集，并给 Claude 提供了一个搜索工具来探索它。我们还指示 Claude 通过“做梦”基于这些文件构建一个 wiki。在 128 轮会话中，我们提示 Opus 5 智能体探索这些文件、撰写或修正相互链接的 wiki 页面、合并重复页面，并对照原始资料核查各项陈述。",
+          "inlines": [
+            {
+              "text": "wiki 这类表征能帮助 Claude 在其不断增长的知识库中穿行。我们借助一批内部文档，考察了 wiki 作为记忆表征的效用——这批文档来自我们于 5 月收购的软件公司 Stainless，约 35 万个文件、约 4.2 亿个 token。我们围绕这批文档设计了一套包含 25 个问题的评测集，并给 Claude 提供了一个搜索工具来探索它。我们还指示 Claude 通过“做梦”基于这些文件构建一个 wiki。在 128 轮会话中，我们提示 Opus 5 智能体探索这些文件、撰写或修正相互链接的 wiki 页面、合并重复页面，并对照原始资料核查各项陈述。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每一轮会话都建立在智能体此前各轮的进展之上，并通过一份共享日志来协调工作。当“做梦”从 2 轮扩展到 128 轮时，这 25 个问题上的表现从满足 13% 的评分标准提升到 48%（图 10）。",
+          "inlines": [
+            {
+              "text": "每一轮会话都建立在智能体此前各轮的进展之上，并通过一份共享日志来协调工作。当“做梦”从 2 轮扩展到 128 轮时，这 25 个问题上的表现从满足 13% 的评分标准提升到 48%（图 10）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 的 wiki 是逐步搭建起来的。在创建出初始 wiki 之后，它会利用后续几轮“做梦”来补充、编辑或删减内容。在“做梦”的早期轮次，Claude 的知识就像一个刚入职的新员工，仅凭 wiki 回答问题的能力有限。它“做梦”越多，知识地图就越丰富，就像一位经验丰富的老员工。在测试中我们发现，当我们同时给 Claude 提供搜索工具时，wiki 对它的帮助最大。当它同时使用搜索和 wiki 时，随着 wiki 不断扩充，其综合得分从 54% 升至 61%；而只提供搜索工具时，得分为 53%。如果只用 wiki 来回答问题，Claude 的最高得分为 48%。同时使用搜索和 wiki 还能为每个问题节省约 2 万个 token。",
+          "inlines": [
+            {
+              "text": "Claude 的 wiki 是逐步搭建起来的。在创建出初始 wiki 之后，它会利用后续几轮“做梦”来补充、编辑或删减内容。在“做梦”的早期轮次，Claude 的知识就像一个刚入职的新员工，仅凭 wiki 回答问题的能力有限。它“做梦”越多，知识地图就越丰富，就像一位经验丰富的老员工。在测试中我们发现，当我们同时给 Claude 提供搜索工具时，wiki 对它的帮助最大。当它同时使用搜索和 wiki 时，随着 wiki 不断扩充，其综合得分从 54% 升至 61%；而只提供搜索工具时，得分为 53%。如果只用 wiki 来回答问题，Claude 的最高得分为 48%。同时使用搜索和 wiki 还能为每个问题节省约 2 万个 token。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/52d3931e9e61d84f9ff2079a6669ad999748dd4b5af7ef8266b203978a9f474d.webp",
+          "alt": "Center: line chart of graded criteria met as wiki generation grows from 2M to 128M dreaming tokens. Wiki plus search tool rises from 54% to 61%, wiki alone rises from 13% to 48%, and the search tool with no wiki is flat at 53%. Left and right: network graphs of an example wiki, with 103 pages and 766 links after 2 sessions and 222 pages and 12,893 links after 128 sessions.",
+          "width": 3136,
+          "height": 1432
+        },
+        {
+          "type": "paragraph",
+          "text": "中图：随着 Claude 在连续多轮会话中构建 wiki，它在一套关于某公司文档语料的 25 个问题上的得分。左图和右图：分别经过 2 轮和 128 轮会话后的 wiki 示例；每个点代表一个页面，连线连接相互链接的页面。",
+          "inlines": [
+            {
+              "text": "中图：随着 Claude 在连续多轮会话中构建 wiki，它在一套关于某公司文档语料的 25 个问题上的得分。左图和右图：分别经过 2 轮和 128 轮会话后的 wiki 示例；每个点代表一个页面，连线连接相互链接的页面。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们想测试哪些类型的任务能从 Claude 拥有 wiki 中受益。为此，我们使用了 Harvey LAB 基准测试，以及一批关于某起并购案的文档。该基准测试给 Claude 一组文档，要求它根据文档内容生成一份法律简报，然后按照一系列标准为这份简报打分。这些评测或许不如宝可梦挑战那么有趣，但它们为我们提供了多样化的文档集合来构建 wiki。",
+          "inlines": [
+            {
+              "text": "我们想测试哪些类型的任务能从 Claude 拥有 wiki 中受益。为此，我们使用了 "
+            },
+            {
+              "href": "https://github.com/harveyai/harvey-labs",
+              "text": "Harvey LAB"
+            },
+            {
+              "text": " 基准测试，以及一批关于某起并购案的文档。该基准测试给 Claude 一组文档，要求它根据文档内容生成一份法律简报，然后按照一系列标准为这份简报打分。这些评测或许不如宝可梦挑战那么有趣，但它们为我们提供了多样化的文档集合来构建 wiki。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们指示 Claude 基于这些文档构建一个 wiki，然后要求它分别借助 wiki 和直接搜索文件来回答问题（关于这起并购案）或生成法律简报（LAB 基准测试）。其中一项测试提出了 24 个关于这起并购案的问题（图 11 左），其中超过一半需要 Claude 跨多份文档查找信息，还有许多需要 Claude 运用判断力或进行计算。在这些题目上（红色和橙色折线），Claude 查阅 wiki 时得分为 87%，而仅使用搜索时为 73%。",
+          "inlines": [
+            {
+              "text": "我们指示 Claude 基于这些文档构建一个 wiki，然后要求它分别借助 wiki 和直接搜索文件来回答问题（关于这起并购案）或生成法律简报（LAB 基准测试）。其中一项测试提出了 24 个关于这起并购案的问题（图 11 左），其中超过一半需要 Claude 跨多份文档查找信息，还有许多需要 Claude 运用判断力或进行计算。在这些题目上（红色和橙色折线），Claude 查阅 wiki 时得分为 87%，而仅使用搜索时为 73%。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/41faea4e24711472c11e6c44715f1ca38f33e0b534e22effd01f05597c283bd6.webp",
+          "alt": "Two diagrams linking graded criteria to source documents. Left, the task where the wiki showed more benefit: most of the 24 criteria connect to two or more of 10 documents, and nine need judgment or arithmetic. Right, the task where the wiki showed less benefit: most of the 57 criteria can be found by text search in a single document, usually the deal overview memo.",
+          "width": 3840,
+          "height": 3694
+        },
+        {
+          "type": "paragraph",
+          "text": "每个面板左侧列出评分内容，右侧列出满足每项评分所需的源文档。左侧：24 个关于并购的问题，大多可以通过查阅公开文件来回答。超过一半的评分标准需要综合多份文档的信息。右侧：一个 LAB 任务，wiki 没有带来明显收益。大多数评分标准只需一份文档就能满足。",
+          "inlines": [
+            {
+              "text": "每个面板左侧列出评分内容，右侧列出满足每项评分所需的源文档。左侧：24 个关于并购的问题，大多可以通过查阅公开文件来回答。超过一半的评分标准需要综合多份文档的信息。右侧：一个 LAB 任务，wiki 没有带来明显收益。大多数评分标准只需一份文档就能满足。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在其他情况下，wiki 就没那么有用了。在一个 LAB 任务中（图 11 右侧），简短的评分标准往往只需对单份文档做一次文本搜索就能找到，而 wiki 相对于搜索并没有带来明显的性能提升。在另一个 LAB 任务中，wiki 变得比文档本身还大（图 12）。就像博尔赫斯那段一页纸的短篇小说《论科学的精确性》里的制图师，画出的地图精细到与它所描绘的帝国一样大，Claude 也做了一个极其详细的 wiki，实际上什么也没有抽象出来。",
+          "inlines": [
+            {
+              "text": "在其他情况下，wiki 就没那么有用了。在一个 LAB 任务中（图 11 右侧），简短的评分标准往往只需对单份文档做一次文本搜索就能找到，而 wiki 相对于搜索并没有带来明显的性能提升。在另一个 LAB 任务中，wiki 变得比文档本身还大（图 12）。就像博尔赫斯那段一页纸的短篇小说《论科学的精确性》里的制图师，画出的地图精细到与它所描绘的帝国一样大，Claude 也做了一个极其详细的 wiki，实际上什么也没有抽象出来。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d196a2263e51d54ab5e4319e7f460e963e6614f9223c2da3c95d44b87377f77d.webp",
+          "alt": "Diagram of a wiki build and second pass. On the left, a circle holds the corpus: 10 documents, 115 KB of text. An arrow leads to a larger circle holding the wiki built from it: 68 pages, 255 links, and 203 KB, or 1.77 times the corpus. Some of the wiki’s pages have no links.",
+          "width": 3840,
+          "height": 2150
+        },
+        {
+          "type": "paragraph",
+          "text": "wiki 变得比原始文件还大。",
+          "inlines": [
+            {
+              "text": "wiki 变得比原始文件还大。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "做梦可以把笔记提升到记忆层级的上层",
+          "inlines": [
+            {
+              "text": "做梦可以把笔记提升到记忆层级的上层"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "做梦还可以把笔记浮到记忆层级的最上层，智能体框架可以在每次会话开始时把它们预先加载进 Claude 的上下文（图 13）。这意味着 Claude 不需要去搜索它们，甚至不需要知道有东西可搜。",
+          "inlines": [
+            {
+              "text": "做梦还可以把笔记浮到记忆层级的最上层，智能体框架可以在每次会话开始时把它们预先加载进 Claude 的上下文（图 13）。这意味着 Claude 不需要去搜索它们，甚至不需要知道有东西可搜。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "把记忆提升到新会话中（一种上下文注入）必须谨慎进行。注入的记忆会占用宝贵的 token，而一条错误的笔记可能被带进每一次会话。加载一条笔记也不保证 Claude 会照着它行动：我们关于 Claude Code 的文档警告说，指令文件越长，遵循度越低。所以记忆层级的最上层必须保持相对小，而做梦在这里的很多工作就是维持这一点——把一些细节下移到更低层级，只留下链接。",
+          "inlines": [
+            {
+              "text": "把记忆提升到新会话中（一种"
+            },
+            {
+              "italic": true,
+              "text": "上下文注入"
+            },
+            {
+              "text": "）必须谨慎进行。注入的记忆会占用宝贵的 token，而一条错误的笔记可能被带进每一次会话。加载一条笔记也不保证 Claude 会照着它行动：我们关于 "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/memory",
+              "text": "Claude Code"
+            },
+            {
+              "text": " 的文档警告说，指令文件越长，遵循度越低。所以记忆层级的最上层必须保持相对小，而做梦在这里的很多工作就是维持这一点——把一些细节下移到更低层级，只留下链接。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code 的自动记忆也用同样的方式让注入层保持小规模，由 Claude 在会话期间自行维护。Claude 不会把全部自动记忆都加载进每次会话的上下文窗口，只加载 MEMORY.md 的前 200 行或 25 KB。这个头部相当于一个索引，告诉 Claude 它知道什么、去哪里找。",
+          "inlines": [
+            {
+              "href": "https://code.claude.com/docs/en/memory",
+              "text": "Claude Code 的自动记忆"
+            },
+            {
+              "text": "也用同样的方式让注入层保持小规模，由 Claude 在会话期间自行维护。Claude 不会把全部自动记忆都加载进每次会话的上下文窗口，只加载 "
+            },
+            {
+              "code": true,
+              "text": "MEMORY.md"
+            },
+            {
+              "text": " 的前 200 行或 25 KB。这个头部相当于一个索引，告诉 Claude 它知道什么、去哪里找。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/dea619ba63bd4f7e90fd251ae01cc4e2d02df0ba305ccc369ff8ab69a7fc9d01.webp",
+          "alt": "The memory hierarchy with dreaming, highlighting arrows from transcripts and from memory representations up to the injected context layer at the top, which feeds into the next session.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "做梦可以写入记忆层级的最上层。注入的上下文会加载进每次会话，而它下面的层级则在 Claude 需要时被读取或搜索。",
+          "inlines": [
+            {
+              "text": "做梦可以写入记忆层级的最上层。注入的上下文会加载进每次会话，而它下面的层级则在 Claude 需要时被读取或搜索。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "做梦可以让记忆聚焦于特定目标",
+          "inlines": [
+            {
+              "text": "做梦可以让记忆聚焦于特定目标"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "做梦还可以塑造记忆的生长方式。例如，像 Claude Duet 这样的助手，往往受益于围绕它所帮助的人来组织记忆，而做梦可以被调校成服务于特定目标来构建记忆。",
+          "inlines": [
+            {
+              "text": "做梦还可以塑造记忆的生长方式。例如，像 "
+            },
+            {
+              "href": "https://support.claude.com/en/articles/17631495-get-started-with-claude-duet",
+              "text": "Claude Duet"
+            },
+            {
+              "text": " 这样的助手，往往受益于围绕它所帮助的人来组织记忆，而做梦可以被调校成服务于特定目标来构建记忆。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "指导记忆如何生长的指令因任务而异，告诉 Claude 哪些信息才真正重要。例如，LAB 基准中的一个任务模拟公司收购，并提供了一组合同。简报的评分标准是它是否正确描述了合同条款。",
+          "inlines": [
+            {
+              "text": "指导记忆如何生长的指令因任务而异，告诉 Claude 哪些信息才真正重要。例如，LAB 基准中的一个任务模拟公司收购，并提供了一组合同。简报的评分标准是它是否正确描述了合同条款。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们一开始用的是生成 wiki 的基础指令，没有告诉 Claude 如何使用 wiki。这个任务高度依赖合同条款。在构建 wiki 的过程中，多个智能体同时写入一张共享的合同条款表（图 14 左侧）。",
+          "inlines": [
+            {
+              "text": "我们一开始用的是生成 wiki 的基础指令，没有告诉 Claude "
+            },
+            {
+              "italic": true,
+              "text": "如何"
+            },
+            {
+              "text": "使用 wiki。这个任务高度依赖合同条款。在构建 wiki 的过程中，多个智能体同时写入一张共享的合同条款表（图 14 左侧）。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/38e2bff73037a77cb146036880e59334ec23883445aa7a8264cfe7b7fe648a91.webp",
+          "alt": "Two diagrams. Before: four agents write to the same shared page, provisions.md, and one agent’s save erases another’s lines; 41 of 57 graded facts survived. After: four agents each write their own contract’s page, with terms copied word for word; all 57 of 57 graded facts survived.",
+          "width": 3840,
+          "height": 1822
+        },
+        {
+          "type": "paragraph",
+          "text": "在指令修改前后，有多少条评分用的合同事实被写进了 wiki。左图：多个智能体写入同一个共享页面，57 条事实中只有 41 条保留下来。右图：每份合同由一个智能体负责，各自写入自己的页面并逐字引用条款，57 条事实全部保留。",
+          "inlines": [
+            {
+              "text": "在指令修改前后，有多少条评分用的合同事实被写进了 wiki。左图：多个智能体写入同一个共享页面，57 条事实中只有 41 条保留下来。右图：每份合同由一个智能体负责，各自写入自己的页面并逐字引用条款，57 条事实全部保留。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "结果就是 wiki 缺失了关键事实。当我们对基于该 wiki 生成的简报进行评分时，Claude 只包含了 57 条事实中的 41 条（72%）。排查问题后发现，共享表格对合同条款的总结很糟糕，有些条款甚至完全缺失，原因是智能体之间互相覆盖了对方的工作。",
+          "inlines": [
+            {
+              "text": "结果就是 wiki 缺失了关键事实。当我们对基于该 wiki 生成的简报进行评分时，Claude 只包含了 57 条事实中的 41 条（72%）。排查问题后发现，共享表格对合同条款的总结很糟糕，有些条款甚至完全缺失，原因是智能体之间互相覆盖了对方的工作。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "合同条款是 wiki 中最重要的部分，但指令里并没有说明这一点。为了找到更好的指令，我们跑了一个循环：Claude 反思自己的失败，提出对指令的修改，然后重建 wiki。这个循环让 Claude 发现了遵循合同条款有多重要，并据此重写了构建 wiki 的指令。",
+          "inlines": [
+            {
+              "text": "合同条款是 wiki 中最重要的部分，但指令里并没有说明这一点。为了找到更好的指令，我们跑了一个循环：Claude 反思自己的失败，提出对指令的修改，然后重建 wiki。这个循环让 Claude 发现了遵循合同条款有多重要，并据此重写了构建 wiki 的指令。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每份合同在 wiki 中都有独立页面，由单个智能体撰写，逐字引用条款，而不是把它们总结进一张共享表格。当我们对基于这个改进后 wiki 生成的简报进行评分时，100% 的标准都能满足，高于之前的 72%。",
+          "inlines": [
+            {
+              "text": "每份合同在 wiki 中都有独立页面，由单个智能体撰写，逐字引用条款，而不是把它们总结进一张共享表格。当我们对基于这个改进后 wiki 生成的简报进行评分时，100% 的标准都能满足，高于之前的 72%。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "做梦可以填补单次会话留下的空白",
+          "inlines": [
+            {
+              "text": "做梦可以填补单次会话留下的空白"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 写记忆笔记时，只能看到那一次会话的上下文。做梦则可以跨多次会话搜索，找出常见模式或纠正常见错误。",
+          "inlines": [
+            {
+              "text": "Claude 写记忆笔记时，只能看到"
+            },
+            {
+              "italic": true,
+              "text": "那一次"
+            },
+            {
+              "text": "会话的上下文。做梦则可以跨多次会话搜索，找出常见模式或纠正常见错误。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在为 LAB 基准构建 wiki 时（示例见图 14），Claude 有时会链接到尚未创建的页面。第二轮做梦补上了许多这类缺口。在某个任务中（图 15），做梦发现 wiki 里有九个链接指向一个不存在的页面，于是把它们重新指向同一文档的现有页面。它还新增了三个页面（包括一个索引页）来改进 wiki。",
+          "inlines": [
+            {
+              "text": "在为 LAB 基准构建 wiki 时（示例见图 14），Claude 有时会链接到尚未创建的页面。第二轮做梦补上了许多这类缺口。在某个任务中（图 15），做梦发现 wiki 里有九个链接指向一个不存在的页面，于是把它们重新指向同一文档的现有页面。它还新增了三个页面（包括一个索引页）来改进 wiki。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/a3f6a950837c8f864e11cfdd730a36b51602f79f5395cea67e763913762e92a9.webp",
+          "alt": "Two network graphs of a wiki. Before the second pass: 38 entries and 225 links, with nine links from six pages pointing to “escrow-agreement,” a page that doesn’t exist. After: 41 entries and 278 links, with all nine links pointing to “buyer-form-escrow-agreement” and three new pages: index, instructions email, and escalations.",
+          "width": 3840,
+          "height": 1812
+        },
+        {
+          "type": "paragraph",
+          "text": "第二轮做梦前后的 wiki。",
+          "inlines": [
+            {
+              "text": "第二轮做梦前后的 wiki。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "向后思考，向前看",
+          "inlines": [
+            {
+              "text": "向后思考，向前看"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "如何为智能体设计记忆系统，还有许多未解的问题。其中之一是 Claude 应该在什么时候创建记忆。Claude 执行任务时，可以写入记忆存储（例如文件夹、文件或数据库），在源头捕捉重要信息，让关键细节能立即用于后续轮次或会话。但实时记录笔记难免会让 Claude 分心，偏离主任务。相比之下，做梦可以把记忆创建推到后台，但做梦的任何产出可能无法立即被 Claude 访问。",
+          "inlines": [
+            {
+              "text": "如何为智能体设计记忆系统，还有许多未解的问题。其中之一是 Claude 应该在什么时候创建记忆。Claude 执行任务时，可以写入记忆存储（例如文件夹、文件或数据库），在源头捕捉重要信息，让关键细节能立即用于后续轮次或会话。但实时记录笔记难免会让 Claude 分心，偏离主任务。相比之下，做梦可以把记忆创建推到后台，但做梦的任何产出可能无法立即被 Claude 访问。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "另一个问题是如何让记忆可靠地保持最新。Claude 可能做出错误预测，或把一开始就错误的规则写入记忆。随着环境变化，记忆也可能漂移、变得无关。做梦是修正这些错误的一种方式（图 8），但需要消耗算力。让 Claude 持续检查所有记忆可能并不现实。更重要的也许是让做梦聚焦于可能变化的信息，或仔细调整做梦的节奏（例如根据记忆被访问的频率）。",
+          "inlines": [
+            {
+              "text": "另一个问题是如何让记忆可靠地保持最新。Claude 可能做出错误预测，或把一开始就错误的规则写入记忆。随着环境变化，记忆也可能漂移、变得无关。做梦是修正这些错误的一种方式（图 8），但需要消耗算力。让 Claude 持续检查"
+            },
+            {
+              "italic": true,
+              "text": "所有"
+            },
+            {
+              "text": "记忆可能并不现实。更重要的也许是让做梦聚焦于可能变化的信息，或仔细调整做梦的节奏（例如根据记忆被访问的频率）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "把对话记录搜索作为 Claude 记忆的基础，也是合理的考虑。把表示形式（例如 wiki）与搜索结合（图 10）有时会很有效。但 Claude 需要消耗算力来维护记忆表示，确保它们不会累积错误或幻觉。",
+          "inlines": [
+            {
+              "text": "把对话记录搜索作为 Claude 记忆的基础，也是合理的考虑。把表示形式（例如 wiki）与搜索结合（图 10）有时会很有效。但 Claude 需要消耗算力来维护记忆表示，确保它们不会累积错误或幻觉。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "尽管 Claude 对重要性的判断已经有所进步，但没有任何模型能真正预知后续对话轮次中会发生什么。Dreaming 让 Claude 有机会回望过去，用算力整理记忆、纠正错误，并维护好各种表征，使未来的会话能更轻松地调用记忆。随着 Claude 能力不断提升，记忆系统也会持续演进，而在设计 Claude 的记忆系统方面，我们还有很多东西要学。",
+          "inlines": [
+            {
+              "text": "尽管 Claude 对重要性的判断已经有所进步，但没有任何模型能真正预知后续对话轮次中会发生什么。Dreaming 让 Claude 有机会"
+            },
+            {
+              "italic": true,
+              "text": "回望"
+            },
+            {
+              "text": "过去，用算力整理记忆、纠正错误，并维护好各种表征，使未来的会话能更轻松地调用记忆。随着 Claude 能力不断提升，记忆系统也会持续演进，而在设计 Claude 的记忆系统方面，我们还有很多东西要学。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "入门 dreaming 和知识 wiki 的用法，请参阅我们的 cookbook：dreaming 入门、知识 wiki。",
+          "inlines": [
+            {
+              "text": "入门 dreaming 和知识 wiki 的用法，请参阅我们的 cookbook："
+            },
+            {
+              "href": "https://platform.claude.com/cookbook/managed-agents-cma-dreaming-with-a-dynamic-workflow",
+              "text": "dreaming 入门"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://github.com/anthropics/claude-quickstarts/tree/main/managed-agents/knowledge-wiki",
+              "text": "知识 wiki"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Søren Kierkegaard wrote that life can only be understood backward, but it must be lived forward. We’ve encountered a similar bind when designing memory for AI agents.",
+          "inlines": [
+            {
+              "text": "Søren Kierkegaard wrote that life can only be understood "
+            },
+            {
+              "italic": true,
+              "text": "backward"
+            },
+            {
+              "text": ", but it must be lived "
+            },
+            {
+              "italic": true,
+              "text": "forward"
+            },
+            {
+              "text": ". We’ve encountered a similar bind when designing memory for AI agents."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As humans, we encode memory constantly as we go about our lives. The hippocampus plays a central role in this, capturing experiences in the moment so that memories form quickly and are immediately available. But only some experiences are consolidated into long-term knowledge.",
+          "inlines": [
+            {
+              "text": "As humans, we encode memory constantly as we go about our lives. "
+            },
+            {
+              "href": "https://stanford.edu/~jlmcc/papers/McCMcNaughtonOReilly95.pdf",
+              "text": "The hippocampus"
+            },
+            {
+              "text": " plays a central role in this, capturing experiences in the moment so that memories form quickly and are immediately available. But only "
+            },
+            {
+              "href": "https://www.science.org/doi/10.1126/science.adk8261?referrer=https%3A%2F%2Fwww.google.com%2F",
+              "text": "some experiences"
+            },
+            {
+              "text": " are consolidated into long-term knowledge."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Much of that consolidation appears to happen when our brains are offline. As we sleep, and during quiet rest, the hippocampus replays our recent experiences. This is thought to gradually distill those experiences and integrate them into the neocortex—the part of our brains that stores most of what we think of as knowledge.",
+          "inlines": [
+            {
+              "text": "Much of that consolidation appears to happen when our brains are offline. As we sleep, and during quiet "
+            },
+            {
+              "href": "https://www.nature.com/articles/s41467-018-06213-1",
+              "text": "rest"
+            },
+            {
+              "text": ", the hippocampus replays our recent experiences. This is thought to gradually distill "
+            },
+            {
+              "href": "https://www.nature.com/articles/s41593-019-0467-3",
+              "text": "those experiences and integrate them"
+            },
+            {
+              "text": " into the neocortex—the part of our brains that stores most of what we think of as knowledge."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Agent memory can use a similar division of labor. Agents capture much of their work in logs or transcripts. Researchers at Letta and UC Berkeley proposed sleep-time compute as a way for models to use idle time between interactions to reorganize their existing context. The same idea can help agents organize their memory by reflecting on logs to fix mistakes or produce new notes and representations. This process is often called dreaming (Figure 1).",
+          "inlines": [
+            {
+              "text": "Agent memory can use a similar division of labor. Agents capture much of their work in logs or transcripts. Researchers at Letta and UC Berkeley proposed "
+            },
+            {
+              "href": "https://arxiv.org/abs/2504.13171",
+              "text": "sleep-time compute"
+            },
+            {
+              "text": " as a way for models to use idle time between interactions to reorganize their existing context. The same idea can help agents organize their memory by reflecting on logs to fix mistakes or produce new notes and representations. This process is often "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/managed-agents/dreams",
+              "text": "called"
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://research.google/blog/the-sleep-framework-a-new-way-for-llms-to-retain-knowledge-in-continual-learning/",
+              "italic": true,
+              "text": "dreaming"
+            },
+            {
+              "text": " (Figure 1)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We’ve found that dreaming has been a useful tool for helping us give Claude effective memory. In this post, we share how we’ve come to think about agent memory and walk through several evaluations we’ve used to explore agent memory, including the use of dreaming, and what each component contributes to memory organization.",
+          "inlines": [
+            {
+              "text": "We’ve found that dreaming has been a useful tool for helping us give Claude effective memory. In this post, we share how we’ve come to think about agent memory and walk through several evaluations we’ve used to explore agent memory, including the use of dreaming, and what each component contributes to memory organization."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e7f33140f853ed74502d6d06c1b2564c588977413170a87db781b616367837e8.webp",
+          "alt": "Diagram of a memory hierarchy between one session and the next. From bottom to top: transcripts (a searchable event log), memory notes written by Claude, memory representations such as wikis, and injected context loaded into every session. Inside a box labeled “Dreaming,” arrows run from transcripts up to each layer, and in both directions between neighboring upper layers.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude can use dreaming to organize memory. This can correct mistakes, create notes, build new memory representations, or shape what’s preemptively loaded into future sessions.",
+          "inlines": [
+            {
+              "text": "Claude can use dreaming to organize memory. This can correct mistakes, create notes, build new memory representations, or shape what’s preemptively loaded into future sessions."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Memory notes",
+          "inlines": [
+            {
+              "text": "Memory notes"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "By “agent memory,” we mean knowledge that Claude gains from experience—including interactions with users and tasks it’s been assigned—and that it retains between sessions, saved as context it can read later. It excludes other ways models can learn or manage context, such as changes to their weights (the internal parameters set during training), in-context learning (knowledge gained within a single conversation), and compaction (summaries written by Claude that replace its older turns so it can continue working in a new context window).",
+          "inlines": [
+            {
+              "text": "By “agent memory,” we mean knowledge that Claude gains from experience—including interactions with users and tasks it’s been assigned—and that it retains between sessions, saved as context it can read later. It excludes other ways models can learn or manage context, such as changes to their "
+            },
+            {
+              "italic": true,
+              "text": "weights"
+            },
+            {
+              "text": " (the internal parameters set during training), "
+            },
+            {
+              "href": "https://www.anthropic.com/research/in-context-learning-and-induction-heads",
+              "italic": true,
+              "text": "in-context learning"
+            },
+            {
+              "text": " (knowledge gained within a single conversation), and "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/compaction",
+              "italic": true,
+              "text": "compaction"
+            },
+            {
+              "text": " (summaries written by Claude that replace its older turns so it can continue working in a new context window)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the human brain, chemical signals released before, during, or after an experience can mark a memory as important. Marked memories tend to be replayed more often than unmarked ones during offline periods. This process, called replay, helps stabilize and integrate them into long-term memory.",
+          "inlines": [
+            {
+              "text": "In the human brain, chemical signals released before, during, or after an experience can "
+            },
+            {
+              "href": "https://www.nature.com/articles/385533a0",
+              "text": "mark a memory"
+            },
+            {
+              "text": " as important. Marked memories tend to be replayed more often than unmarked ones during offline periods. This process, called "
+            },
+            {
+              "italic": true,
+              "text": "replay"
+            },
+            {
+              "text": ", helps stabilize and integrate them into long-term memory."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Similarly, Claude can tag salient events in a session log as they happen, so they’re easier to find later, or it can write them to a memory store, such as a folder of memory notes (Figure 2). But how can Claude tell what’s salient in the moment, before it knows what’s coming next?",
+          "inlines": [
+            {
+              "text": "Similarly, Claude can tag salient events in a session log as they happen, so they’re easier to find later, or it can "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+              "text": "write"
+            },
+            {
+              "text": " them to a memory store, such as a folder of memory notes (Figure 2). But how can Claude tell what’s salient in the moment, before it knows what’s coming next?"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ed2b673dda997102b05fff9f491c4a8b36ffb24b514d958e2451e4444bb74a3f.webp",
+          "alt": "The same memory hierarchy, with the memory notes layer highlighted. An arrow runs from the session directly to the memory notes, described as salient observations written by Claude.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude can write notes to memory.",
+          "inlines": [
+            {
+              "text": "Claude can write notes to memory."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Memory can be a prediction about what the future will need",
+          "inlines": [
+            {
+              "text": "Memory can be a prediction about what the future will need"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Memory is, occasionally, a prediction. By writing down a rule, an agent predicts that the pattern it’s describing will be relevant again. For instance, writing down a verified fact is a prediction that an agent in a future session will want to rely on that fact without double-checking it. Over time, Claude has become much better at making these kinds of predictions.",
+          "inlines": [
+            {
+              "text": "Memory is, occasionally, a prediction. By writing down a rule, an agent predicts that the pattern it’s describing will be relevant again. For instance, writing down a verified fact is a prediction that an agent in a future session will want to rely on that fact without double-checking it. Over time, Claude has become much better at making these kinds of predictions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Consider a task from Continual Learning Bench (CL-Bench) 1.0, a benchmark that measures an agent’s ability to use memory in order to tackle long-horizon tasks. One particular task asks Claude to answer a series of questions by looking up information in a database. After Claude gives an answer, it’s told the correct solution and can write a memory to help answer future questions.",
+          "inlines": [
+            {
+              "text": "Consider a task from "
+            },
+            {
+              "href": "https://continual-learning-bench.com/news/cl-bench-1-0/",
+              "text": "Continual Learning Bench (CL-Bench) 1.0"
+            },
+            {
+              "text": ", a benchmark that measures an agent’s ability to use memory in order to tackle long-horizon tasks. One particular task asks Claude to answer a series of questions by looking up information in a database. After Claude gives an answer, it’s told the correct solution and can write a memory to help answer future questions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Memory can support a learning loop here. If Claude gets a question wrong, it can record the failure, come up with theories about what went wrong, test those theories, and turn what it finds into a rule about how to answer in the future.",
+          "inlines": [
+            {
+              "text": "Memory can support a learning loop here. If Claude gets a question wrong, it can record the failure, come up with theories about what went wrong, test those theories, and turn what it finds into a rule about how to answer in the future."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We ran the CL-Bench 1.0 task using Claude Managed Agents. Claude started each question in a fresh session, with one exception: it could retrieve files from a memory directory that persisted from one session to the next.",
+          "inlines": [
+            {
+              "text": "We ran the CL-Bench 1.0 task using "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/managed-agents/overview",
+              "text": "Claude Managed Agents"
+            },
+            {
+              "text": ". Claude started each question in a fresh session, with one exception: it could retrieve files from a "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/managed-agents/memory",
+              "text": "memory directory"
+            },
+            {
+              "text": " that persisted from one session to the next."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Different models achieved different levels of success at creating their own learning loops. Claude Sonnet 4.6 got as far as generating theories about why an answer was wrong. Its memory directory contained a scattering of files, each listing several untested guesses.",
+          "inlines": [
+            {
+              "text": "Different models achieved different levels of success at creating their own learning loops. Claude Sonnet 4.6 got as far as generating theories about why an answer was wrong. Its memory directory contained a scattering of files, each listing several untested guesses."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7c0933dcd65a8ddd95f74690b75c97852a2b626ffe2cb1fc51b26205bbe29917.webp",
+          "alt": "Left: bar chart of mean reward on the CL-Bench database task, stateless baseline versus memory store. Opus 5.5: 0.655, 0.838. Sonnet 5.5: 0.644, 0.833. Opus 5: 0.564, 0.828. Opus 4.7: 0.383, 0.700. Sonnet 5: 0.306, 0.610. Sonnet 4.6: 0.330, 0.364. Right: line chart of running-mean reward over 30 questions for the same models, with and without memory.",
+          "width": 3840,
+          "height": 2160
+        },
+        {
+          "type": "paragraph",
+          "text": "CL-Bench database task, comparing memory with a stateless baseline across models.",
+          "inlines": [
+            {
+              "text": "CL-Bench database task, comparing memory with a stateless baseline across models."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 4.7 consolidated its notes into a single reference document and began marking which facts it had checked and which were still unconfirmed. Claude Sonnet 5 marked each answer as confirmed after the grader had checked it, and wrote a correction when it had answered wrong.",
+          "inlines": [
+            {
+              "text": "Claude Opus 4.7 consolidated its notes into a single reference document and began marking which facts it had checked and which were still unconfirmed. Claude Sonnet 5 marked each answer as confirmed after the grader had checked it, and wrote a correction when it had answered wrong."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5 was the first of these models to close the loop. Most of its entries included a rule (and also how it knew the rule was true), answers to earlier questions, and clear warnings about traps it had discovered along the way (Figure 3).",
+          "inlines": [
+            {
+              "text": "Claude Opus 5 was the first of these models to close the loop. Most of its entries included a rule (and also how it knew the rule was true), answers to earlier questions, and clear warnings about traps it had discovered along the way (Figure 3)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Like Opus 5, Claude Opus 5.5 and Claude Sonnet 5.5 both closed the loop, using memory to capture validated rules about how to best answer future questions. With memory, both scored about the same as Opus 5, though their baseline performance without memory was slightly higher.",
+          "inlines": [
+            {
+              "text": "Like Opus 5, Claude Opus 5.5 and Claude Sonnet 5.5 both closed the loop, using memory to capture validated rules about how to best answer future questions. With memory, both scored about the same as Opus 5, though their baseline performance without memory was slightly higher."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude has learned to judge salience",
+          "inlines": [
+            {
+              "text": "Claude has learned to judge salience"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We also evaluated Claude’s ability to play Pokémon Red, a game that challenges Claude to navigate complex long-horizon tasks, as a test of Claude’s judgment about what to save to memory. At the start of each run, we gave each model a folder of memory files that it could read from and write to while it played (Figure 4).",
+          "inlines": [
+            {
+              "text": "We also evaluated Claude’s ability to play "
+            },
+            {
+              "italic": true,
+              "text": "Pokémon Red"
+            },
+            {
+              "text": ", a game that "
+            },
+            {
+              "href": "https://www.youtube.com/watch?v=CXhYDOvgpuU",
+              "text": "challenges Claude to navigate"
+            },
+            {
+              "text": " complex long-horizon tasks, as a test of Claude’s judgment about "
+            },
+            {
+              "italic": true,
+              "text": "what"
+            },
+            {
+              "text": " to save to memory. At the start of each run, we gave each model a folder of memory files that it could read from and write to while it played (Figure 4)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We compared the memory folders from one run each of Claude Sonnet 3.7 and Claude Fable 5, when each was about 10,000 steps into the game. A key difference we noticed was what each model thought was worth remembering. Sonnet 3.7 assumed everything might matter and wrote to memory indiscriminately. Its memory folder contained an archive of encounters, often with a separate file for each battle it fought, each item it found, and each non-player character it met. Ultimately, Sonnet 3.7 wrote 413 memory files across 225 folders and earned one badge (badges mark a player’s progress through the game).",
+          "inlines": [
+            {
+              "text": "We compared the memory folders from one run each of Claude Sonnet 3.7 and Claude Fable 5, when each was about 10,000 steps into the game. A key difference we noticed was what each model thought was worth remembering. Sonnet 3.7 assumed everything might matter and wrote to memory indiscriminately. Its memory folder contained an archive of encounters, often with a separate file for each battle it fought, each item it found, and each non-player character it met. Ultimately, Sonnet 3.7 wrote 413 memory files across 225 folders and earned one badge (badges mark a player’s progress through the game)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fable 5, by comparison, wrote nine files in two folders, plus a single top-level file called global.md, and earned four badges.",
+          "inlines": [
+            {
+              "text": "Fable 5, by comparison, wrote nine files in two folders, plus a single top-level file called "
+            },
+            {
+              "code": true,
+              "text": "global.md"
+            },
+            {
+              "text": ", and earned four badges."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/797e69d6e83c1eb57d0b469a479d1360384741639387d7025dba48a418d67f8c.webp",
+          "alt": "Two treemaps of Pokémon memory directories at the same scale, where area shows characters of memory. Claude Sonnet 3.7’s is large and crowded, with 413 files and 977,930 characters across folders such as locations, main, battles, and several “consolidated” folders. Claude Fable 5’s is small, with 10 files and 43,406 characters in locations, gameplay, and global.md.",
+          "width": 3840,
+          "height": 2545
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude’s memory directories for Sonnet 3.7 versus Fable 5 while playing Pokémon.",
+          "inlines": [
+            {
+              "text": "Claude’s memory directories for Sonnet 3.7 versus Fable 5 while playing Pokémon."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 3.7’s approach was a problem mainly because the game state of Pokémon changes constantly—Sonnet 3.7’s detailed record was continuously going out of date. As a result, as Claude progressed, it had to spend more time and resources combing through its memories rather than playing the game. Around step 10,000, for example, Sonnet 3.7 started its fourth folder of “master” memory files. Over the next 17 steps, it created six files, deleted nine others, and took no actions in the game itself.",
+          "inlines": [
+            {
+              "text": "Sonnet 3.7’s approach was a problem mainly because the game state of Pokémon changes constantly—Sonnet 3.7’s detailed record was continuously going out of date. As a result, as Claude progressed, it had to spend more time and resources combing through its memories rather than playing the game. Around step 10,000, for example, Sonnet 3.7 started its fourth folder of “master” memory files. Over the next 17 steps, it created six files, deleted nine others, and took no actions in the game itself."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fable 5’s approach used memory for things the game didn’t explicitly tell it. Some of the kinds of information Sonnet 3.7 wrote to memory—such as how much money the player has or where the player is on the map—can be read off the screen every turn, so storing it is redundant. By contrast, memory files about strategy, plans, and tested rules exist only if Claude works them out, and they disappear unless Claude writes them down.",
+          "inlines": [
+            {
+              "text": "Fable 5’s approach used memory for things the game didn’t explicitly tell it. Some of the kinds of information Sonnet 3.7 wrote to memory—such as how much money the player has or where the player is on the map—can be read off the screen every turn, so storing it is redundant. By contrast, memory files about strategy, plans, and tested rules exist only if Claude works them out, and they disappear unless Claude writes them down."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fable 5 organized its memory accordingly. Its global.md file acted as a dashboard, holding the current goal, a prewritten plan for tackling gyms (the challenges where badges are won), and the model’s own rules for using memory. A locations folder held plans for navigating particular routes, and a gameplay folder held strategies based on what it had learned about how the game works. For example, after seven Poké Balls in a row failed to catch a Magikarp (one of the easiest Pokémon to catch), Claude wrote, “If 3+ balls fail in a row, VARY the timing (insert extra ‘wait’ presses between menu steps) - the catch landed right after doing this.”",
+          "inlines": [
+            {
+              "text": "Fable 5 organized its memory accordingly. Its "
+            },
+            {
+              "code": true,
+              "text": "global.md"
+            },
+            {
+              "text": " file acted as a dashboard, holding the current goal, a prewritten plan for tackling gyms (the challenges where badges are won), and the model’s own rules for using memory. A "
+            },
+            {
+              "code": true,
+              "text": "locations"
+            },
+            {
+              "text": " folder held plans for navigating particular routes, and a "
+            },
+            {
+              "code": true,
+              "text": "gameplay"
+            },
+            {
+              "text": " folder held strategies based on what it had learned about how the game works. For example, after seven Poké Balls in a row failed to catch a Magikarp (one of the easiest Pokémon to catch), Claude wrote, “If 3+ balls fail in a row, VARY the timing (insert extra ‘wait’ presses between menu steps) - the catch landed right after doing this.”"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With a much smaller memory folder, Fable 5 progressed much further in the game than Sonnet 3.7. Opus 5.5 took a similar approach: it kept a small folder of memory notes that tracked its current goal and next steps, rewrote them as it played, and beat the game.",
+          "inlines": [
+            {
+              "text": "With a much smaller memory folder, Fable 5 progressed much further in the game than Sonnet 3.7. Opus 5.5 took a similar approach: it kept a small folder of memory notes that tracked its current goal and next steps, rewrote them as it played, and beat the game."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Steering Claude to write memory",
+          "inlines": [
+            {
+              "text": "Steering Claude to write memory"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We’ve found that it helps to tell Claude what memory is for, but not how to use it. On CL-Bench, we simply told Claude that a memory folder was available. That general guidance was enough for Opus 4.7 and Opus 5 to use memory effectively, and it gave both a noticeable boost in performance (Figure 3).",
+          "inlines": [
+            {
+              "text": "We’ve found that it helps to tell Claude what memory is for, but not "
+            },
+            {
+              "italic": true,
+              "text": "how"
+            },
+            {
+              "text": " to use it. On CL-Bench, we simply told Claude that a memory folder was available. That general guidance was enough for Opus 4.7 and Opus 5 to use memory effectively, and it gave both a noticeable boost in performance (Figure 3)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We also tested giving the models specific rules about what they should write to memory, with one rule per test. We compared how much each model gained from memory with each rule against how much it gained without it. When we set a rule to “record only failures,” both Opus 5 and Opus 4.7 lost much of the performance boost that memory gave them (Figure 5, right). For stronger models, giving them freedom to judge salience was more effective than setting fixed rules in advance, and those rules could end up weakening performance.",
+          "inlines": [
+            {
+              "text": "We also tested giving the models specific rules about what they should write to memory, with one rule per test. We compared how much each model gained from memory with each rule against how much it gained without it. When we set a rule to “record only failures,” both Opus 5 and Opus 4.7 lost much of the performance boost that memory gave them (Figure 5, right). For stronger models, giving them freedom to judge salience was more effective than setting fixed rules in advance, and those rules could end up weakening performance."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/a4b834067d2bd909b11c1d5fc957176956219825f6dd1543dba598ac62116159.webp",
+          "alt": "Left: bar chart of Sonnet 4.6’s mean reward on the CL-Bench database task: 0.330 at baseline, 0.364 with memory, and 0.641 with memory and refined instruction. Reference lines mark Opus 4.7 with memory at 0.700 and Opus 5 with memory at 0.828. Right: change in memory gain when told to record only failures: Opus 5, −0.234; Opus 4.7, −0.150; Sonnet 4.6, −0.020.",
+          "width": 3840,
+          "height": 2310
+        },
+        {
+          "type": "paragraph",
+          "text": "Left: Sonnet 4.6 on the CL-Bench database task with and without prompting to guide memory usage. Right: how much each model’s gain from memory changed when it was told to record only failures.",
+          "inlines": [
+            {
+              "text": "Left: Sonnet 4.6 on the CL-Bench database task with and without prompting to guide memory usage. Right: how much each model’s gain from memory changed when it was told to record only failures."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We also noticed that steering helped older models the most. For instance, Sonnet 4.6 often didn’t read files from its memory directory and failed to test its theories about why an answer was wrong.",
+          "inlines": [
+            {
+              "text": "We also noticed that steering helped older models the most. For instance, Sonnet 4.6 often didn’t read files from its memory directory and failed to test its theories about why an answer was wrong."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this case, prompting Claude to read its memory files before answering—and then to explicitly test its theories—nearly doubled its benchmark score (Figure 5, left). Sonnet 5 does this on its own. Without being prompted to, it read its memory before answering 9 out of 10 times. By comparison, Sonnet 4.6 did this less than half of the time.",
+          "inlines": [
+            {
+              "text": "In this case, prompting Claude to read its memory files before answering—and then to explicitly test its theories—nearly doubled its benchmark score (Figure 5, left). Sonnet 5 does this on its own. Without being prompted to, it read its memory before answering 9 out of 10 times. By comparison, Sonnet 4.6 did this less than half of the time."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With frontier Claude models, we typically give simple guidance to create memory notes when a person asks them to or when something is clearly worth remembering, and we leave that judgment up to Claude.",
+          "inlines": [
+            {
+              "text": "With frontier Claude models, we typically give simple guidance to create memory notes when a person asks them to or when something is clearly worth remembering, and we leave that judgment up to Claude."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Dreaming can correct memory",
+          "inlines": [
+            {
+              "text": "Dreaming can correct memory"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Since Claude writes to memory based on what it judges to be salient in-session, a note that’s wrong from the start or that drifts as the environment changes can be read, and trusted, by Claude in a later session.",
+          "inlines": [
+            {
+              "text": "Since Claude writes to memory based on what it judges to be salient in-session, a note that’s wrong from the start or that drifts as the environment changes can be read, and trusted, by Claude in a later session."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Dreaming gives Claude a way to test its notes against the original transcripts (Figure 6). We saw a positive example of this when Claude played Pokémon using Managed Agents with a mounted directory for its memories.",
+          "inlines": [
+            {
+              "text": "Dreaming gives Claude a way to test its notes against the original transcripts (Figure 6). We saw a positive example of this when Claude played Pokémon using Managed Agents with a mounted directory for its memories."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8a8da4d83a50c1dddbc33944920f38c7a74452d6726176db02463c5ea868a9dc.webp",
+          "alt": "The memory hierarchy with dreaming, highlighting an arrow from the transcripts layer up to the memory notes layer, which shows dreaming correcting notes against transcripts.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "Dreaming can correct mistakes in memory.",
+          "inlines": [
+            {
+              "text": "Dreaming can correct mistakes in memory."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In one part of the game, the player has to get through Mt. Moon, a cave system with its entrance on the west side of the map and its exit on the east. Near the entrance is a trap: a one-way ledge that drops the player onto the route they came from, with no clear way to climb back up. Claude was using the PokéCenter, a building at the mountain’s entrance, as a landmark, so whether it walked off the ledge depended on which side of the mountain it thought the PokéCenter was on.",
+          "inlines": [
+            {
+              "text": "In one part of the game, the player has to get through Mt. Moon, a cave system with its entrance on the west side of the map and its exit on the east. Near the entrance is a trap: a one-way ledge that drops the player onto the route they came from, with no clear way to climb back up. Claude was using the PokéCenter, a building at the mountain’s entrance, as a landmark, so whether it walked off the ledge depended on which side of the mountain it thought the PokéCenter was on."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At one point, Claude wrote down (incorrectly) that the PokéCenter was on the east side. When it walked out of the PokéCenter, it announced, “Mt Moon is behind me,” and updated its notes: “Mt Moon DONE.” But Mt. Moon was not behind it. A few actions later, Claude went over the ledge and landed back on the route it had come from (Figure 7). Its navigation tool didn’t show the drop, so Claude concluded, “I overshot far west,” and that it had been on the correct side all along. It hadn’t.",
+          "inlines": [
+            {
+              "text": "At one point, Claude wrote down (incorrectly) that the PokéCenter was on the east side. When it walked out of the PokéCenter, it announced, “Mt Moon is behind me,” and updated its notes: “Mt Moon DONE.” But Mt. Moon was not behind it. A few actions later, Claude went over the ledge and landed back on the route it had come from (Figure 7). Its navigation tool didn’t show the drop, so Claude concluded, “I overshot far west,” and that it had been on the correct side all along. It hadn’t."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3213976e000e439f40835823debf1ba42f00f86bb3499827ec16d2589b5680d3.webp",
+          "alt": "Two Pokémon map panels with the agent next to a ledge. Left, “Raw memory,” where the stored note is wrong: an arrow shows the agent heading for the next city. Right, “Memory + dreaming,” where an offline pass corrected the note: an arrow shows the agent heading back to the cave entrance.",
+          "width": 3840,
+          "height": 2101
+        },
+        {
+          "type": "paragraph",
+          "text": "A corrected memory note changed the outcome in Pokémon. With the uncorrected note, Claude says, “Mt Moon is behind me,” heads for the next city, and ends up back on the route it came from. With the note corrected by dreaming, it says, “Now I need to find the Mt Moon cave entrance to re-enter,” and goes back into the cave.",
+          "inlines": [
+            {
+              "text": "A corrected memory note changed the outcome in Pokémon. With the uncorrected note, Claude says, “Mt Moon is behind me,” heads for the next city, and ends up back on the route it came from. With the note corrected by dreaming, it says, “Now I need to find the Mt Moon cave entrance to re-enter,” and goes back into the cave."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We then tested whether dreaming could help Claude avoid this trap. We ran dreaming on the memory folder that contained the wrong location for the PokéCenter: Claude checked the note against the session transcript, caught its error, and rewrote it. The transcript gave Claude a ground truth to validate its memory against. With the corrected memory note, Claude went straight back into Mt. Moon and eventually reached Cerulean City.",
+          "inlines": [
+            {
+              "text": "We then tested whether dreaming could help Claude avoid this trap. We ran dreaming on the memory folder that contained the wrong location for the PokéCenter: Claude checked the note against the session transcript, caught its error, and rewrote it. The transcript gave Claude a ground truth to validate its memory against. With the corrected memory note, Claude went straight back into Mt. Moon and eventually reached Cerulean City."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the run with the uncorrected note, Claude dropped back onto that earlier route three times. After the third failure, Claude seemed to give up, writing, “I’m going to stop rather than keep looping.” Our setup’s automatic reply instructed it to continue. So it did, all the way back to Pewter City, the town before the mountain, where it hoped to heal and restock. The run ended without Claude ever reaching Cerulean City.",
+          "inlines": [
+            {
+              "text": "In the run with the uncorrected note, Claude dropped back onto that earlier route three times. After the third failure, Claude seemed to give up, writing, “I’m going to stop rather than keep looping.” Our setup’s automatic reply instructed it to continue. So it did, all the way back to Pewter City, the town before the mountain, where it hoped to heal and restock. The run ended without Claude ever reaching Cerulean City."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2ca16bd9f0aaf53da96481277e39c88a3471056b2dab5df3ff29bf088093d974.webp",
+          "alt": "Line chart of progress toward Cerulean over 3,000 cumulative actions. The memory plus dreaming run reaches Cerulean at action 1,935. The raw memory run falls off the ledge and backtracks to Pewter. The run with no memory never reaches Cerulean.",
+          "width": 3840,
+          "height": 2636
+        },
+        {
+          "type": "paragraph",
+          "text": "Dreaming corrects the memory, and Claude goes back into the cave and reaches the next city. The run with the uncorrected note (“Raw memory”) never gets past the mountain, and neither does the run with no memory.",
+          "inlines": [
+            {
+              "text": "Dreaming corrects the memory, and Claude goes back into the cave and reaches the next city. The run with the uncorrected note (“Raw memory”) never gets past the mountain, and neither does the run with no memory."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Dreaming can build new memory representations",
+          "inlines": [
+            {
+              "text": "Dreaming can build new memory representations"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "With dreaming, Claude can build representations to help navigate memory (Figure 9). One type of memory representation it uses is called a wiki, a collection of pages written and maintained by Claude that gathers what Claude knows about one subject and links it to other notes. These links effectively provide Claude with a map it can use to sift through its memory and efficiently locate memories when they’re needed.",
+          "inlines": [
+            {
+              "text": "With dreaming, Claude can build representations to help navigate memory (Figure 9). One type of memory representation it uses is called a "
+            },
+            {
+              "href": "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f",
+              "italic": true,
+              "text": "wiki"
+            },
+            {
+              "text": ", a collection of pages written and maintained by Claude that gathers what Claude knows about one subject and links it to other notes. These links effectively provide Claude with a map it can use to sift through its memory and efficiently locate memories when they’re needed."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/de0ede3fbc175013d64aff3c912bde690a45731e2eb917a86f4e49323c0f63e2.webp",
+          "alt": "The memory hierarchy with dreaming, highlighting arrows from transcripts and from memory notes up to the memory representations layer, such as wikis.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "Dreaming can build memory representations.",
+          "inlines": [
+            {
+              "text": "Dreaming can build memory representations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Representations like wikis can help Claude traverse its ever-growing knowledge base. We explored the benefit of wikis as a memory representation using a corpus of internal documents—about 350,000 files, roughly 420M tokens—from Stainless, a software company we acquired in May. We created an evaluation set of 25 questions about this corpus and gave Claude a search tool to explore it. We also instructed Claude to build a wiki based on these files using dreaming. Over 128 sessions, we prompted Opus 5 agents to explore the files, write or correct linked wiki pages, merge duplicates, and check claims against the sources.",
+          "inlines": [
+            {
+              "text": "Representations like wikis can help Claude traverse its ever-growing knowledge base. We explored the benefit of wikis as a memory representation using a corpus of internal documents—about 350,000 files, roughly 420M tokens—from Stainless, a software company we acquired in May. We created an evaluation set of 25 questions about this corpus and gave Claude a search tool to explore it. We also instructed Claude to build a wiki based on these files using dreaming. Over 128 sessions, we prompted Opus 5 agents to explore the files, write or correct linked wiki pages, merge duplicates, and check claims against the sources."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each session built on the progress that agents made in prior sessions, using a shared log to coordinate work. As we scaled dreaming from two sessions to 128, performance on the 25 questions grew from 13% to 48% of graded criteria (Figure 10).",
+          "inlines": [
+            {
+              "text": "Each session built on the progress that agents made in prior sessions, using a shared log to coordinate work. As we scaled dreaming from two sessions to 128, performance on the 25 questions grew from 13% to 48% of graded criteria (Figure 10)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude builds its wikis incrementally. After creating an initial wiki, it uses subsequent rounds of dreaming to add to, edit, or prune it. In the early rounds of dreaming, Claude’s knowledge is like that of a new employee, and its ability to answer questions based on the wiki alone is limited. The more it dreams, the richer its knowledge map grows, like that of a seasoned employee. In our tests, we found that the wiki helped Claude the most when we also gave it access to a search tool. When it used both search and the wiki, Claude’s aggregate score rose from 54% to 61% as that wiki grew, compared with 53% when it had access to the search tool alone. Claude’s best score was 48% when it used only the wiki to answer questions. Using search and the wiki also saved about 20,000 tokens per question.",
+          "inlines": [
+            {
+              "text": "Claude builds its wikis incrementally. After creating an initial wiki, it uses subsequent rounds of dreaming to add to, edit, or prune it. In the early rounds of dreaming, Claude’s knowledge is like that of a new employee, and its ability to answer questions based on the wiki alone is limited. The more it dreams, the richer its knowledge map grows, like that of a seasoned employee. In our tests, we found that the wiki helped Claude the most when we also gave it access to a search tool. When it used both search and the wiki, Claude’s aggregate score rose from 54% to 61% as that wiki grew, compared with 53% when it had access to the search tool alone. Claude’s best score was 48% when it used only the wiki to answer questions. Using search and the wiki also saved about 20,000 tokens per question."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/52d3931e9e61d84f9ff2079a6669ad999748dd4b5af7ef8266b203978a9f474d.webp",
+          "alt": "Center: line chart of graded criteria met as wiki generation grows from 2M to 128M dreaming tokens. Wiki plus search tool rises from 54% to 61%, wiki alone rises from 13% to 48%, and the search tool with no wiki is flat at 53%. Left and right: network graphs of an example wiki, with 103 pages and 766 links after 2 sessions and 222 pages and 12,893 links after 128 sessions.",
+          "width": 3136,
+          "height": 1432
+        },
+        {
+          "type": "paragraph",
+          "text": "Center: scores on 25 questions about a corpus of documents from a company as Claude built wikis over sequential sessions. Left and right: an example wiki after two and 128 sessions; each dot is a page, and lines join linked pages.",
+          "inlines": [
+            {
+              "text": "Center: scores on 25 questions about a corpus of documents from a company as Claude built wikis over sequential sessions. Left and right: an example wiki after two and 128 sessions; each dot is a page, and lines join linked pages."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We wanted to test which kinds of tasks benefited from Claude having a wiki. To do this, we used the Harvey LAB benchmark along with a collection of documents about a merger. The benchmark gives Claude a set of documents and asks Claude to generate a legal brief based on their content. The benchmark then grades the brief against a list of criteria. While a tad less engaging, perhaps, than a Pokémon run, these evaluations give us diverse collections of documents to build wikis from.",
+          "inlines": [
+            {
+              "text": "We wanted to test which kinds of tasks benefited from Claude having a wiki. To do this, we used the "
+            },
+            {
+              "href": "https://github.com/harveyai/harvey-labs",
+              "text": "Harvey LAB"
+            },
+            {
+              "text": " benchmark along with a collection of documents about a merger. The benchmark gives Claude a set of documents and asks Claude to generate a legal brief based on their content. The benchmark then grades the brief against a list of criteria. While a tad less engaging, perhaps, than a Pokémon run, these evaluations give us diverse collections of documents to build wikis from."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We instructed Claude to build a wiki from the documents. We then asked Claude to answer questions (about the merger) or generate legal briefs (the LAB benchmark) both from the wiki and from a direct file search. One test asked 24 questions about the merger (Figure 11, left), more than half of which needed Claude to find information across several documents, and many of which also needed Claude to use judgment or do math. On those items (red and orange lines), Claude scored 87% when it consulted the wiki, compared with 73% when it used search alone.",
+          "inlines": [
+            {
+              "text": "We instructed Claude to build a wiki from the documents. We then asked Claude to answer questions (about the merger) or generate legal briefs (the LAB benchmark) both from the wiki and from a direct file search. One test asked 24 questions about the merger (Figure 11, left), more than half of which needed Claude to find information across several documents, and many of which also needed Claude to use judgment or do math. On those items (red and orange lines), Claude scored 87% when it consulted the wiki, compared with 73% when it used search alone."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/41faea4e24711472c11e6c44715f1ca38f33e0b534e22effd01f05597c283bd6.webp",
+          "alt": "Two diagrams linking graded criteria to source documents. Left, the task where the wiki showed more benefit: most of the 24 criteria connect to two or more of 10 documents, and nine need judgment or arithmetic. Right, the task where the wiki showed less benefit: most of the 57 criteria can be found by text search in a single document, usually the deal overview memo.",
+          "width": 3840,
+          "height": 3694
+        },
+        {
+          "type": "paragraph",
+          "text": "Each panel lists what was graded (left) and the source documents needed to meet each one (right). Left: 24 questions about a merger, which can be answered by looking at mostly public filings. More than half of the criteria required combining information from several documents. Right: a LAB task where the wiki showed no clear gain. Most criteria could be met from a single document.",
+          "inlines": [
+            {
+              "text": "Each panel lists what was graded (left) and the source documents needed to meet each one (right). Left: 24 questions about a merger, which can be answered by looking at mostly public filings. More than half of the criteria required combining information from several documents. Right: a LAB task where the wiki showed no clear gain. Most criteria could be met from a single document."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In other cases, the wiki was less useful. On one LAB task (Figure 11, right), brief criteria often could be retrieved with a text search from a single document, and the wiki showed no clear gain in performance relative to search. On another LAB task, the wiki grew larger than the documents themselves (Figure 12). Like the mapmakers in Borges’s one-paragraph short story “On Exactitude in Science,” who drafted a map so detailed it was as large as the empire it represented, Claude had made an extremely detailed wiki that effectively abstracted nothing.",
+          "inlines": [
+            {
+              "text": "In other cases, the wiki was less useful. On one LAB task (Figure 11, right), brief criteria often could be retrieved with a text search from a single document, and the wiki showed no clear gain in performance relative to search. On another LAB task, the wiki grew larger than the documents themselves (Figure 12). Like the mapmakers in Borges’s one-paragraph short story “On Exactitude in Science,” who drafted a map so detailed it was as large as the empire it represented, Claude had made an extremely detailed wiki that effectively abstracted nothing."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d196a2263e51d54ab5e4319e7f460e963e6614f9223c2da3c95d44b87377f77d.webp",
+          "alt": "Diagram of a wiki build and second pass. On the left, a circle holds the corpus: 10 documents, 115 KB of text. An arrow leads to a larger circle holding the wiki built from it: 68 pages, 255 links, and 203 KB, or 1.77 times the corpus. Some of the wiki’s pages have no links.",
+          "width": 3840,
+          "height": 2150
+        },
+        {
+          "type": "paragraph",
+          "text": "The wiki grew to be larger than the raw files.",
+          "inlines": [
+            {
+              "text": "The wiki grew to be larger than the raw files."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Dreaming can promote notes up the memory hierarchy",
+          "inlines": [
+            {
+              "text": "Dreaming can promote notes up the memory hierarchy"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Dreaming can also float notes to the top of the memory hierarchy, and the agent harness can preemptively load them into Claude’s context at the start of every session (Figure 13). This means Claude doesn’t need to search for them, or even to know there’s something to search for.",
+          "inlines": [
+            {
+              "text": "Dreaming can also float notes to the top of the memory hierarchy, and the agent harness can preemptively load them into Claude’s context at the start of every session (Figure 13). This means Claude doesn’t need to search for them, or even to know there’s something to search for."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Promoting memories into a new session (a form of context injection) must be done carefully. Injected memories use up valuable tokens, and an incorrect note can be carried into every session. Loading a note also doesn’t guarantee that Claude acts on it: our documentation on Claude Code warns that longer instruction files reduce adherence. So the top layer of the memory hierarchy has to stay relatively small, and much of dreaming’s work here is keeping it that way—by moving some details down the hierarchy and leaving links behind.",
+          "inlines": [
+            {
+              "text": "Promoting memories into a new session (a form of "
+            },
+            {
+              "italic": true,
+              "text": "context injection"
+            },
+            {
+              "text": ") must be done carefully. Injected memories use up valuable tokens, and an incorrect note can be carried into every session. Loading a note also doesn’t guarantee that Claude acts on it: our documentation on "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/memory",
+              "text": "Claude Code"
+            },
+            {
+              "text": " warns that longer instruction files reduce adherence. So the top layer of the memory hierarchy has to stay relatively small, and much of dreaming’s work here is keeping it that way—by moving some details down the hierarchy and leaving links behind."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code’s auto memory keeps its injected layer small in the same way, with Claude maintaining it during the session. Claude doesn’t load all of its auto memory into every session’s context window. It loads only the first 200 lines or 25 KB of MEMORY.md. This header serves as an index, which shows Claude what it knows and where to find it.",
+          "inlines": [
+            {
+              "href": "https://code.claude.com/docs/en/memory",
+              "text": "Claude Code’s auto memory"
+            },
+            {
+              "text": " keeps its injected layer small in the same way, with Claude maintaining it during the session. Claude doesn’t load all of its auto memory into every session’s context window. It loads only the first 200 lines or 25 KB of "
+            },
+            {
+              "code": true,
+              "text": "MEMORY.md"
+            },
+            {
+              "text": ". This header serves as an index, which shows Claude what it knows and where to find it."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/dea619ba63bd4f7e90fd251ae01cc4e2d02df0ba305ccc369ff8ab69a7fc9d01.webp",
+          "alt": "The memory hierarchy with dreaming, highlighting arrows from transcripts and from memory representations up to the injected context layer at the top, which feeds into the next session.",
+          "width": 3840,
+          "height": 1754
+        },
+        {
+          "type": "paragraph",
+          "text": "Dreaming can write to the top of the memory hierarchy. Injected context is loaded into every session, and the layers below it are read or searched when Claude needs them.",
+          "inlines": [
+            {
+              "text": "Dreaming can write to the top of the memory hierarchy. Injected context is loaded into every session, and the layers below it are read or searched when Claude needs them."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Dreaming can focus memory on a specific goal",
+          "inlines": [
+            {
+              "text": "Dreaming can focus memory on a specific goal"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Dreaming can also shape how memory grows. An assistant like Claude Duet, for example, often benefits from having memories that are organized around the person it’s helping, and dreaming can be tuned to build memory in service of a particular goal.",
+          "inlines": [
+            {
+              "text": "Dreaming can also shape how memory grows. An assistant like "
+            },
+            {
+              "href": "https://support.claude.com/en/articles/17631495-get-started-with-claude-duet",
+              "text": "Claude Duet"
+            },
+            {
+              "text": ", for example, often benefits from having memories that are organized around the person it’s helping, and dreaming can be tuned to build memory in service of a particular goal."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The instructions that guide how memory grows differ by task and tell Claude what information actually matters. For example, one task in the LAB benchmark simulates a company acquisition and provides a set of contracts. The brief is graded on whether it correctly describes the contract terms.",
+          "inlines": [
+            {
+              "text": "The instructions that guide how memory grows differ by task and tell Claude what information actually matters. For example, one task in the LAB benchmark simulates a company acquisition and provides a set of contracts. The brief is graded on whether it correctly describes the contract terms."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We started with basic instructions for generating the wiki that didn’t tell Claude how to use the wiki. This task relied heavily on contract terms. While the wiki was being built, several agents wrote to a shared table of contract terms at the same time (Figure 14, left).",
+          "inlines": [
+            {
+              "text": "We started with basic instructions for generating the wiki that didn’t tell Claude "
+            },
+            {
+              "italic": true,
+              "text": "how"
+            },
+            {
+              "text": " to use the wiki. This task relied heavily on contract terms. While the wiki was being built, several agents wrote to a shared table of contract terms at the same time (Figure 14, left)."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/38e2bff73037a77cb146036880e59334ec23883445aa7a8264cfe7b7fe648a91.webp",
+          "alt": "Two diagrams. Before: four agents write to the same shared page, provisions.md, and one agent’s save erases another’s lines; 41 of 57 graded facts survived. After: four agents each write their own contract’s page, with terms copied word for word; all 57 of 57 graded facts survived.",
+          "width": 3840,
+          "height": 1822
+        },
+        {
+          "type": "paragraph",
+          "text": "How many graded contract facts made it into the wiki, before and after instructions changed. Left: several agents writing to one shared page; 41 of 57 facts survived. Right: one agent per contract, each writing its own page and quoting terms word for word; 57 of 57 facts survived.",
+          "inlines": [
+            {
+              "text": "How many graded contract facts made it into the wiki, before and after instructions changed. Left: several agents writing to one shared page; 41 of 57 facts survived. Right: one agent per contract, each writing its own page and quoting terms word for word; 57 of 57 facts survived."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The result was a wiki that was missing key facts. When we graded a brief generated from the wiki, Claude had included only 41 of the 57 facts (72%). When we looked at what had gone wrong, we found that the shared table summarized the contract terms poorly and was missing some of them altogether, because agents had overwritten one another’s work.",
+          "inlines": [
+            {
+              "text": "The result was a wiki that was missing key facts. When we graded a brief generated from the wiki, Claude had included only 41 of the 57 facts (72%). When we looked at what had gone wrong, we found that the shared table summarized the contract terms poorly and was missing some of them altogether, because agents had overwritten one another’s work."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The contract terms were the most important part of the wiki, but the instructions didn’t say that. To find better instructions, we ran a loop in which Claude reflected on its failures, proposed a change to the instructions, and rebuilt the wiki. This loop allowed Claude to discover how important it was to follow the contract terms, and it rewrote the instructions for building the wiki accordingly.",
+          "inlines": [
+            {
+              "text": "The contract terms were the most important part of the wiki, but the instructions didn’t say that. To find better instructions, we ran a loop in which Claude reflected on its failures, proposed a change to the instructions, and rebuilt the wiki. This loop allowed Claude to discover how important it was to follow the contract terms, and it rewrote the instructions for building the wiki accordingly."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each contract got its own page in the wiki, written by a single agent, which quoted the terms word for word rather than summarizing them into a shared table. When we graded the brief generated from this improved wiki, 100% of the criteria could be met, up from 72%.",
+          "inlines": [
+            {
+              "text": "Each contract got its own page in the wiki, written by a single agent, which quoted the terms word for word rather than summarizing them into a shared table. When we graded the brief generated from this improved wiki, 100% of the criteria could be met, up from 72%."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Dreaming can fill in gaps a session leaves behind",
+          "inlines": [
+            {
+              "text": "Dreaming can fill in gaps a session leaves behind"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "When Claude writes memory notes, it sees only the context in that particular session. Dreaming can search across many sessions to find common patterns or correct common mistakes.",
+          "inlines": [
+            {
+              "text": "When Claude writes memory notes, it sees only the context in "
+            },
+            {
+              "italic": true,
+              "text": "that"
+            },
+            {
+              "text": " particular session. Dreaming can search across many sessions to find common patterns or correct common mistakes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When building the wikis for the LAB benchmark (as an example, see Figure 14), sometimes Claude would link to pages that hadn’t yet been created. A second dreaming pass closed many of these gaps. On one task (Figure 15), dreaming found nine links to a missing page in the wiki and repointed them to an existing page for the same document. It also added three new pages, including an index, to improve the wiki.",
+          "inlines": [
+            {
+              "text": "When building the wikis for the LAB benchmark (as an example, see Figure 14), sometimes Claude would link to pages that hadn’t yet been created. A second dreaming pass closed many of these gaps. On one task (Figure 15), dreaming found nine links to a missing page in the wiki and repointed them to an existing page for the same document. It also added three new pages, including an index, to improve the wiki."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/a3f6a950837c8f864e11cfdd730a36b51602f79f5395cea67e763913762e92a9.webp",
+          "alt": "Two network graphs of a wiki. Before the second pass: 38 entries and 225 links, with nine links from six pages pointing to “escrow-agreement,” a page that doesn’t exist. After: 41 entries and 278 links, with all nine links pointing to “buyer-form-escrow-agreement” and three new pages: index, instructions email, and escalations.",
+          "width": 3840,
+          "height": 1812
+        },
+        {
+          "type": "paragraph",
+          "text": "The wiki before and after a second dreaming pass.",
+          "inlines": [
+            {
+              "text": "The wiki before and after a second dreaming pass."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Thinking backward, looking forward",
+          "inlines": [
+            {
+              "text": "Thinking backward, looking forward"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "There are many open questions about how to design memory systems for agents. One is when Claude should create memory. When Claude works on a task, it can write to a memory store (e.g., a folder, file, or database), capturing salience at the source and making important details immediately available for future turns or sessions. But logging notes in the moment inevitably draws Claude’s attention away from its main task. In contrast, dreaming can push memory creation to the background, but any outputs from dreaming may not be immediately accessible to Claude.",
+          "inlines": [
+            {
+              "text": "There are many open questions about how to design memory systems for agents. One is when Claude should create memory. When Claude works on a task, it can write to a memory store (e.g., a folder, file, or database), capturing salience at the source and making important details immediately available for future turns or sessions. But logging notes in the moment inevitably draws Claude’s attention away from its main task. In contrast, dreaming can push memory creation to the background, but any outputs from dreaming may not be immediately accessible to Claude."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Another question is how to keep memory reliably up to date. Claude can make incorrect predictions or write rules to memory that are wrong from the start. Memory can also drift and become irrelevant as the environment changes. Dreaming is one way to fix these mistakes (Figure 8), but it requires compute. Directing Claude to continuously check all its memories might not be practical. It may be important instead to focus dreaming on information that’s likely to change or to carefully tune the cadence of dreaming (e.g., based on how often memories are accessed).",
+          "inlines": [
+            {
+              "text": "Another question is how to keep memory reliably up to date. Claude can make incorrect predictions or write rules to memory that are wrong from the start. Memory can also drift and become irrelevant as the environment changes. Dreaming is one way to fix these mistakes (Figure 8), but it requires compute. Directing Claude to continuously check "
+            },
+            {
+              "italic": true,
+              "text": "all"
+            },
+            {
+              "text": " its memories might not be practical. It may be important instead to focus dreaming on information that’s likely to change or to carefully tune the cadence of dreaming (e.g., based on how often memories are accessed)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "It’s also reasonable to consider transcript search as the foundation of Claude’s memory. Combining representations (e.g., wikis) with search (Figure 10) can sometimes be effective. But Claude needs to use compute to maintain memory representations and make sure they don’t accumulate errors or hallucinations.",
+          "inlines": [
+            {
+              "text": "It’s also reasonable to consider transcript search as the foundation of Claude’s memory. Combining representations (e.g., wikis) with search (Figure 10) can sometimes be effective. But Claude needs to use compute to maintain memory representations and make sure they don’t accumulate errors or hallucinations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Even though Claude’s judgment about salience has improved, no model can really know what will happen in future turns. Dreaming gives Claude an opportunity to look backward and use compute to organize its memory, correct mistakes, and maintain representations that allow future sessions to access memory more readily. Memory systems will evolve as Claude gets more capable, and we still have a lot to learn about designing Claude’s memory systems.",
+          "inlines": [
+            {
+              "text": "Even though Claude’s judgment about salience has improved, no model can really know what will happen in future turns. Dreaming gives Claude an opportunity to look "
+            },
+            {
+              "italic": true,
+              "text": "backward"
+            },
+            {
+              "text": " and use compute to organize its memory, correct mistakes, and maintain representations that allow future sessions to access memory more readily. Memory systems will evolve as Claude gets more capable, and we still have a lot to learn about designing Claude’s memory systems."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "See our cookbooks for getting started with dreaming and knowledge wikis.",
+          "inlines": [
+            {
+              "text": "See our cookbooks for "
+            },
+            {
+              "href": "https://platform.claude.com/cookbook/managed-agents-cma-dreaming-with-a-dynamic-workflow",
+              "text": "getting started with dreaming"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://github.com/anthropics/claude-quickstarts/tree/main/managed-agents/knowledge-wiki",
+              "text": "knowledge wikis"
+            },
+            {
+              "text": "."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-10T05:26:06.932856Z",
+  "contentMode": "full"
+}
