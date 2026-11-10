@@ -106,7 +106,8 @@ def snapshot_body(reader, item, output_dir, force):
             notice = payload.get("notice", "").strip()
             payload["notice"] = (notice + " " + str(error)).strip()
     external_images = 0
-    for language in payload.get("languages", {}).values():
+    languages = payload.get("languages", {})
+    for language_name, language in list(languages.items()):
         for block in language.get("blocks", []):
             if block.get("type") != "image":
                 continue
@@ -120,6 +121,7 @@ def snapshot_body(reader, item, output_dir, force):
                     media_count += 1
                 else:
                     image_errors.append("不支持的图片地址")
+                    block["_imageUnavailable"] = True
             except (KeyError, RuntimeError, ValueError) as error:
                 image_errors.append(str(error))
                 block["_imageUnavailable"] = True
@@ -127,6 +129,8 @@ def snapshot_body(reader, item, output_dir, force):
             block for block in language.get("blocks", [])
             if not block.get("_imageUnavailable")
         ]
+        if not language["blocks"]:
+            del languages[language_name]
     payload["snapshotAt"] = utc_now()
     payload["contentMode"] = "full"
     if image_errors:
