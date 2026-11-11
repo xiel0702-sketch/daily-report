@@ -1,0 +1,4821 @@
+{
+  "schemaVersion": 1,
+  "id": "i3gp1xj4j11gi4qoreya18izb",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/i3gp1xj4j11gi4qoreya18izb",
+  "fetchedAt": "2026-11-11T01:10:15.164207Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenRouter",
+    "部署工程",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "通过 API 调用开放权重模型时，可能有多家服务商以不同精度提供同一个模型，比如 16 位 bf16、8 位 fp8 或 4 位 fp4。精度既会影响回答质量，也会影响价格。LLM 量化就是用更少的位数存储模型权重，从而造出这些不同版本，让模型占用更少内存和硬件，代价是损失一些准确度。",
+          "inlines": [
+            {
+              "text": "通过 API 调用开放权重模型时，可能有多家服务商以不同精度提供同一个模型，比如 16 位 bf16、8 位 fp8 或 4 位 fp4。精度既会影响回答质量，也会影响价格。LLM 量化就是用更少的位数存储模型权重，从而造出这些不同版本，让模型占用更少内存和硬件，代价是损失一些准确度。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本文介绍这些格式，并汇报我们于 2026 年 10 月 20 日在 OpenRouter 上的实测结果，覆盖 1,455 个服务商端点和 6 个提供 Qwen3.8 27B 的端点。在我们的测试中，fp8、fp4 与 fp16 之间没有检测到准确度差异，因此单看精度标签并不能预测准确度。精度越低通常越便宜，但并非每个模型都如此。",
+          "inlines": [
+            {
+              "text": "本文介绍这些格式，并汇报我们于 2026 年 10 月 20 日在 OpenRouter 上的实测结果，覆盖 1,455 个服务商端点和 6 个提供 "
+            },
+            {
+              "href": "https://openrouter.ai/qwen/qwen3.8-27b",
+              "text": "Qwen3.8 27B"
+            },
+            {
+              "text": " 的端点。在我们的测试中，fp8、fp4 与 fp16 之间没有检测到准确度差异，因此单看精度标签并不能预测准确度。精度越低通常越便宜，但并非每个模型都如此。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "要点速览",
+          "inlines": [
+            {
+              "text": "要点速览"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "在 240 个计分任务上，fp8、fp4 与 fp16 之间没有检测到准确度差异。六个端点的得分都在 98.3% 到 99.2% 之间。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在另外 40 个乘法任务上，一个 fp4 端点得分最低，但差距太小，无法排除偶然因素。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在同时提供 8 位和 16 位的 24 个模型中，有 14 个的 8 位比 16 位便宜，7 个更贵。在同时提供 4 位和 8 位的 33 个模型中，有 26 个的 4 位更便宜。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "provider.quantizations 可以锁定你得到的精度。把你愿意接受的每种精度都列出来，这样路由器就有不止一个端点可以回退。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "什么是 LLM 量化？",
+          "inlines": [
+            {
+              "text": "什么是 LLM 量化？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "LLM 量化是指用比训练时更少的位数来存储大语言模型中的数值。如今大多数 LLM 使用 FP16 或 BF16，都是 16 位格式。fp8 把每个权重占用的内存减半，fp4 或 int4 则降到四分之一，这样同一块 GPU 就能装下更大的模型，或服务更多请求。代价是准确度，因为每个权重都会被舍入到更小格式能存储的最近值。",
+          "inlines": [
+            {
+              "href": "https://www.actian.com/blog/developer/which-quantization-level-should-you-use-for-edge-llm-deployment/",
+              "text": "LLM 量化"
+            },
+            {
+              "text": "是指用比训练时更少的位数来存储大语言模型中的数值。"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection#quantization",
+              "text": "如今大多数 LLM 使用 FP16 或 BF16"
+            },
+            {
+              "text": "，都是 16 位格式。fp8 把每个权重占用的内存减半，fp4 或 int4 则降到四分之一，这样同一块 GPU 就能装下更大的模型，或服务更多请求。代价是准确度，因为每个权重都会被舍入到更小格式能存储的最近值。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "格式",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "格式"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个权重的位数",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "每个权重的位数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "27B 模型的权重占用",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "27B 模型的权重占用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "常见出现场景",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "常见出现场景"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "bf16 / fp16",
+          "inlines": [
+            {
+              "text": "bf16 / fp16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "54 GB",
+          "inlines": [
+            {
+              "text": "54 GB"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "大多数模型发布时采用的精度",
+          "inlines": [
+            {
+              "text": "大多数模型发布时采用的精度"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8",
+          "inlines": [
+            {
+              "text": "fp8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "27 GB",
+          "inlines": [
+            {
+              "text": "27 GB"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenRouter 上最常见的标注精度",
+          "inlines": [
+            {
+              "text": "OpenRouter 上最常见的标注精度"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp4、nvfp4、mxfp4、int4",
+          "inlines": [
+            {
+              "text": "fp4、nvfp4、mxfp4、int4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.5 GB",
+          "inlines": [
+            {
+              "text": "13.5 GB"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "更便宜的端点、本地运行、部分实验室发布的版本",
+          "inlines": [
+            {
+              "text": "更便宜的端点、本地运行、部分实验室发布的版本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "以上数字只算权重。模型运行时还需要内存存放 KV 缓存，也就是上下文中每个 token 对应的注意力状态。",
+          "inlines": [
+            {
+              "text": "以上数字只算权重。模型运行时还需要内存存放 KV 缓存，也就是上下文中每个 token 对应的注意力状态。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "量化主要有两类。训练后量化转换的是已训练完成的模型权重，可以是动态的，在运行时计算每个激活值的范围；也可以是静态的，提前用样本数据跑一遍模型算出这些范围。量化感知训练则在训练过程中模拟舍入，让权重学会适应这种误差。Hugging Face Optimum 概念指南对两者都有讲解，Transformers 量化概览则介绍了你可以自己运行的量化方法。",
+          "inlines": [
+            {
+              "text": "量化主要有两类。训练后量化转换的是已训练完成的模型权重，可以是动态的，在运行时计算每个激活值的范围；也可以是静态的，提前用样本数据跑一遍模型算出这些范围。量化感知训练则在训练过程中模拟舍入，让权重学会适应这种误差。"
+            },
+            {
+              "href": "https://huggingface.co/docs/optimum/concept_guides/quantization",
+              "text": "Hugging Face Optimum 概念指南"
+            },
+            {
+              "text": "对两者都有讲解，"
+            },
+            {
+              "href": "https://huggingface.co/docs/transformers/main/en/quantization/overview",
+              "text": "Transformers 量化概览"
+            },
+            {
+              "text": "则介绍了你可以自己运行的量化方法。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "fp8 与 bf16：有什么区别？",
+          "inlines": [
+            {
+              "text": "fp8 与 bf16：有什么区别？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "浮点格式把位数分配给符号、指数和尾数三部分。指数决定数值范围，尾数决定该范围内数值的分辨精细程度。",
+          "inlines": [
+            {
+              "text": "浮点格式把位数分配给符号、指数和尾数三部分。指数决定数值范围，尾数决定该范围内数值的分辨精细程度。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9775d1e9d50ee8e76d35201bd61405c2f8ae3298f169818a59964730fd3b1ad6.webp",
+          "alt": "Bit layouts: bf16 has 1 sign, 8 exponent and 7 mantissa bits; fp16 has 1, 5 and 10; fp8 (E4M3) has 1, 4 and 3; fp4 (E2M1) has 1, 2 and 1."
+        },
+        {
+          "type": "paragraph",
+          "text": "bf16 有 1 个符号位、8 个指数位和 7 个尾数位，因此它的数值范围与 32 位 fp32 相同，但精度更低。fp16 把 16 位拆成 5 个指数位和 10 个尾数位。OCP 8 位浮点规范定义了两种 fp8 编码：E4M3（4 个指数位、3 个尾数位）和 E5M2（5 个指数位、2 个尾数位）。fp8 同时牺牲了范围和精度，所以量化模型会为每个张量或每组权重存一个缩放因子。MXFP4 每 32 个值共用一个缩放因子，NVFP4 则每 16 个值用一个 fp8 缩放因子。",
+          "inlines": [
+            {
+              "href": "https://cloud.google.com/tpu/docs/bfloat16",
+              "text": "bf16"
+            },
+            {
+              "text": " 有 1 个符号位、8 个指数位和 7 个尾数位，因此它的数值范围与 32 位 fp32 相同，但精度更低。fp16 把 16 位拆成 5 个指数位和 10 个尾数位。"
+            },
+            {
+              "href": "https://www.opencompute.org/documents/ocp-8-bit-floating-point-specification-ofp8-revision-1-0-2023-12-01-pdf-1",
+              "text": "OCP 8 位浮点规范"
+            },
+            {
+              "text": "定义了两种 fp8 编码：E4M3（4 个指数位、3 个尾数位）和 E5M2（5 个指数位、2 个尾数位）。fp8 同时牺牲了范围和精度，所以量化模型会为每个张量或每组权重存一个缩放因子。"
+            },
+            {
+              "href": "https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf",
+              "text": "MXFP4"
+            },
+            {
+              "text": " 每 32 个值共用一个缩放因子，"
+            },
+            {
+              "href": "https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/",
+              "text": "NVFP4"
+            },
+            {
+              "text": " 则每 16 个值用一个 fp8 缩放因子。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对 API 用户来说，fp8 和 bf16 的区别只体现在同一个模型的不同标签和价格上。在我们的测试中，三个 fp8 端点和 fp16 端点之间没有测出差异。",
+          "inlines": [
+            {
+              "text": "对 API 用户来说，fp8 和 bf16 的区别只体现在同一个模型的不同标签和价格上。在我们的测试中，三个 fp8 端点和 fp16 端点之间没有测出差异。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "fp8 和 fp4 会损失多少质量？",
+          "inlines": [
+            {
+              "text": "fp8 和 fp4 会损失多少质量？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的测试中，fp8 和 fp4 都没有测出质量损失。六个端点的得分都在 98.3% 到 99.2% 之间，而这样规模的测试无法排除一两个百分点的差距。",
+          "inlines": [
+            {
+              "text": "在我们的测试中，fp8 和 fp4 都没有测出质量损失。六个端点的得分都在 98.3% 到 99.2% 之间，而这样规模的测试无法排除一两个百分点的差距。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们把 280 个有精确答案的任务跑过 qwen/qwen3.8-27b，固定到六个端点。Cerebras 以 fp16 提供该模型，Parasail、CoreWeave 和 AkashML 以 fp8 提供，Darkbloom 和 ModelRun 以 fp4 提供。每个请求都设置 provider.only、quantizations 和 allow_fallbacks: false，因此只能到达我们指定的端点，温度为 0，关闭推理。任务包括带演算过程的多步算术、需要追踪的 Python 程序、对 20 到 30 个数字排序、在 240 或 1,200 个条目中查找一个键（约 4,000 和 20,000 个 token），以及一条穿过约 9,000 个 token 的四步查找链。所有任务都由我们生成，因此每个都有精确答案，不需要评审模型。另外 40 个任务要求直接给出两个四位数的乘积、不写演算过程，单独计分。",
+          "inlines": [
+            {
+              "text": "我们把 280 个有精确答案的任务跑过 qwen/qwen3.8-27b，固定到六个端点。Cerebras 以 fp16 提供该模型，Parasail、CoreWeave 和 AkashML 以 fp8 提供，Darkbloom 和 ModelRun 以 fp4 提供。每个请求都设置 provider.only、quantizations 和 allow_fallbacks: false，因此只能到达我们指定的端点，温度为 0，关闭推理。任务包括带演算过程的多步算术、需要追踪的 Python 程序、对 20 到 30 个数字排序、在 240 或 1,200 个条目中查找一个键（约 4,000 和 20,000 个 token），以及一条穿过约 9,000 个 token 的四步查找链。所有任务都由我们生成，因此每个都有精确答案，不需要评审模型。另外 40 个任务要求直接给出两个四位数的乘积、不写演算过程，单独计分。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "任务类别",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "任务类别"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "任务数",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "任务数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp16 Cerebras",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp16 Cerebras"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8 Parasail",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp8 Parasail"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8 CoreWeave",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp8 CoreWeave"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8 AkashML",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp8 AkashML"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp4 Darkbloom",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp4 Darkbloom"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp4 ModelRun",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp4 ModelRun"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "带演算过程的算术",
+          "inlines": [
+            {
+              "text": "带演算过程的算术"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48",
+          "inlines": [
+            {
+              "text": "48"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49",
+          "inlines": [
+            {
+              "text": "49"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48",
+          "inlines": [
+            {
+              "text": "48"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49",
+          "inlines": [
+            {
+              "text": "49"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49",
+          "inlines": [
+            {
+              "text": "49"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "短代码追踪",
+          "inlines": [
+            {
+              "text": "短代码追踪"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "长代码追踪",
+          "inlines": [
+            {
+              "text": "长代码追踪"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "28",
+          "inlines": [
+            {
+              "text": "28"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20 到 30 个数字排序",
+          "inlines": [
+            {
+              "text": "20 到 30 个数字排序"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4,000 token 召回",
+          "inlines": [
+            {
+              "text": "4,000 token 召回"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20,000 token 召回",
+          "inlines": [
+            {
+              "text": "20,000 token 召回"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "四跳召回",
+          "inlines": [
+            {
+              "text": "四跳召回"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "39",
+          "inlines": [
+            {
+              "text": "39"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "39",
+          "inlines": [
+            {
+              "text": "39"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "总计",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "总计"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "240",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "240"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.8%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.8%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.3%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.3%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.8%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.3%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.3%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "99.2%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "99.2%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "乘法，无演算过程",
+          "inlines": [
+            {
+              "text": "乘法，无演算过程"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "33",
+          "inlines": [
+            {
+              "text": "33"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "31",
+          "inlines": [
+            {
+              "text": "31"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26",
+          "inlines": [
+            {
+              "text": "26"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "来源：OpenRouter，Qwen3.8 27B，2026 年 10 月 20 日。总计的 95% 置信区间为 95.8% 到 99.8%，六个端点全部重叠。",
+          "inlines": [
+            {
+              "text": "来源：OpenRouter，Qwen3.8 27B，2026 年 10 月 20 日。总计的 95% 置信区间为 95.8% 到 99.8%，六个端点全部重叠。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "没有任何任务类别能区分出不同精度。每个端点在任一类别中最多错两个任务，而且都是普通的失误，比如排序列表里漏掉一个数字。三个 fp8 端点彼此在 240 个任务中有 2 到 5 个不一致，两个 fp4 端点有 4 个不一致。Darkbloom 与 fp16、fp8 端点不一致的次数最多，有 7 或 8 个任务，但它的总分与 fp16 相差不到半个百分点。",
+          "inlines": [
+            {
+              "text": "没有任何任务类别能区分出不同精度。每个端点在任一类别中最多错两个任务，而且都是普通的失误，比如排序列表里漏掉一个数字。三个 fp8 端点彼此在 240 个任务中有 2 到 5 个不一致，两个 fp4 端点有 4 个不一致。Darkbloom 与 fp16、fp8 端点不一致的次数最多，有 7 或 8 个任务，但它的总分与 fp16 相差不到半个百分点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "唯一出现差距的地方是不写演算过程的乘法。fp4 的 Darkbloom 在 40 个乘积中答对 26 个，而其他五个端点为 30 到 33 个，其中 fp4 的 ModelRun 是 30 个。针对最佳端点（33 个）做两比例 z 检验——这个比较是我们看到结果之后才选的——结果显示，在没有真实差异的情况下出现这么大差距的概率约为 7.5%，因此我们不能把它称为精度效应。各精度下答错的乘积都很接近，误差中位数不到 0.01%。",
+          "inlines": [
+            {
+              "text": "唯一出现差距的地方是不写演算过程的乘法。fp4 的 Darkbloom 在 40 个乘积中答对 26 个，而其他五个端点为 30 到 33 个，其中 fp4 的 ModelRun 是 30 个。针对最佳端点（33 个）做两比例 z 检验——这个比较是我们看到结果之后才选的——结果显示，在没有真实差异的情况下出现这么大差距的概率约为 7.5%，因此我们不能把它称为精度效应。各精度下答错的乘积都很接近，误差中位数不到 0.01%。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 Cerebras 上把全部 280 个任务跑了两遍，两遍在每个任务上返回的文本完全一致。不同端点之间的细微差异可能来自精度，也可能来自各家提供商的硬件和推理软件，或者其他端点的运行间波动；在这个规模上，我们无法把它们区分开。Cerebras 是唯一的 fp16 端点，所以 fp16 没有第二个端点可供对比。",
+          "inlines": [
+            {
+              "text": "我们在 Cerebras 上把全部 280 个任务跑了两遍，两遍在每个任务上返回的文本完全一致。不同端点之间的细微差异可能来自精度，也可能来自各家提供商的硬件和推理软件，或者其他端点的运行间波动；在这个规模上，我们无法把它们区分开。Cerebras 是唯一的 fp16 端点，所以 fp16 没有第二个端点可供对比。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这项测试只覆盖一个模型、280 个任务和一天之内的六个端点。它并不能说明 4-bit 对每个模型或每种负载都安全，所以在把流量切到 4-bit 端点之前，请先测试你自己的提示词。",
+          "inlines": [
+            {
+              "text": "这项测试只覆盖一个模型、280 个任务和一天之内的六个端点。它并不能说明 4-bit 对每个模型或每种负载都安全，所以在把流量切到 4-bit 端点之前，请先测试你自己的提示词。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "API 提供商提供的是哪种精度？",
+          "inlines": [
+            {
+              "text": "API 提供商提供的是哪种精度？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8 是最常见的标注精度，而大多数端点根本不报告精度。我们从端点 API 拉取了每个模型的端点，共返回 470 个模型下的 1,455 个端点。",
+          "inlines": [
+            {
+              "text": "fp8 是最常见的标注精度，而大多数端点根本不报告精度。我们从"
+            },
+            {
+              "href": "https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model",
+              "text": "端点 API"
+            },
+            {
+              "text": " 拉取了每个模型的端点，共返回 470 个模型下的 1,455 个端点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "报告的精度",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "报告的精度"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "端点数",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "端点数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "占全部比例",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "占全部比例"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "占已标注比例",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "占已标注比例"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "未知",
+          "inlines": [
+            {
+              "text": "未知"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "865",
+          "inlines": [
+            {
+              "text": "865"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "59.5%",
+          "inlines": [
+            {
+              "text": "59.5%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8",
+          "inlines": [
+            {
+              "text": "fp8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "343",
+          "inlines": [
+            {
+              "text": "343"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "23.6%",
+          "inlines": [
+            {
+              "text": "23.6%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "58.1%",
+          "inlines": [
+            {
+              "text": "58.1%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp4",
+          "inlines": [
+            {
+              "text": "fp4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "123",
+          "inlines": [
+            {
+              "text": "123"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.5%",
+          "inlines": [
+            {
+              "text": "8.5%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20.8%",
+          "inlines": [
+            {
+              "text": "20.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "bf16",
+          "inlines": [
+            {
+              "text": "bf16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "70",
+          "inlines": [
+            {
+              "text": "70"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.8%",
+          "inlines": [
+            {
+              "text": "4.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11.9%",
+          "inlines": [
+            {
+              "text": "11.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "int4",
+          "inlines": [
+            {
+              "text": "int4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.4%",
+          "inlines": [
+            {
+              "text": "1.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.4%",
+          "inlines": [
+            {
+              "text": "3.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "nvfp4",
+          "inlines": [
+            {
+              "text": "nvfp4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13",
+          "inlines": [
+            {
+              "text": "13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.9%",
+          "inlines": [
+            {
+              "text": "0.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.2%",
+          "inlines": [
+            {
+              "text": "2.2%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mxfp4",
+          "inlines": [
+            {
+              "text": "mxfp4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12",
+          "inlines": [
+            {
+              "text": "12"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.8%",
+          "inlines": [
+            {
+              "text": "0.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.0%",
+          "inlines": [
+            {
+              "text": "2.0%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp16",
+          "inlines": [
+            {
+              "text": "fp16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.5%",
+          "inlines": [
+            {
+              "text": "0.5%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.4%",
+          "inlines": [
+            {
+              "text": "1.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp32",
+          "inlines": [
+            {
+              "text": "fp32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.1%",
+          "inlines": [
+            {
+              "text": "0.1%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.2%",
+          "inlines": [
+            {
+              "text": "0.2%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "来源：OpenRouter（openrouter.ai/api/v1/models/{author}/{slug}/endpoints），截至 2026 年 10 月 20 日。",
+          "inlines": [
+            {
+              "text": "来源：OpenRouter（"
+            },
+            {
+              "href": "http://openrouter.ai/api/v1/models/%7Bauthor%7D/%7Bslug%7D/endpoints",
+              "text": "openrouter.ai/api/v1/models/{author}/{slug}/endpoints"
+            },
+            {
+              "text": "），截至 2026 年 10 月 20 日。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "865 个未知端点中有 610 个属于闭源权重模型，这些模型完全没有标注端点，包括所有 Claude 和 Gemini 模型，以及除 gpt-oss 之外的所有 OpenAI 模型。其余 255 个中，有 253 个属于提供商未标注精度的开源权重模型。163 个有标注端点的模型中，只有 54 个拥有 16-bit 端点，因此对大多数开源权重模型来说，8-bit 或 4-bit 是唯一有标注的选项。",
+          "inlines": [
+            {
+              "text": "865 个未知端点中有 610 个属于闭源权重模型，这些模型完全没有标注端点，包括所有 Claude 和 Gemini 模型，以及除 gpt-oss 之外的所有 OpenAI 模型。其余 255 个中，有 253 个属于提供商未标注精度的开源权重模型。163 个有标注端点的模型中，只有 54 个拥有 16-bit 端点，因此对大多数开源权重模型来说，8-bit 或 4-bit 是唯一有标注的选项。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "量化端点更便宜吗？",
+          "inlines": [
+            {
+              "text": "量化端点更便宜吗？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "通常如此，但并非总是。对每个模型，我们按输入 token 与输出 token 三比一的混合价格，比较了各精度下最便宜的端点。",
+          "inlines": [
+            {
+              "text": "通常如此，但并非总是。对每个模型，我们按输入 token 与输出 token 三比一的混合价格，比较了各精度下最便宜的端点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对比",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "对比"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型数",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "模型数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "低精度更便宜",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "低精度更便宜"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "相差 2% 以内",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "相差 2% 以内"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "低精度更贵",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "低精度更贵"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "价格比中位数",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "价格比中位数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8-bit 对 16-bit",
+          "inlines": [
+            {
+              "text": "8-bit 对 16-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "24",
+          "inlines": [
+            {
+              "text": "24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14",
+          "inlines": [
+            {
+              "text": "14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3",
+          "inlines": [
+            {
+              "text": "3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7",
+          "inlines": [
+            {
+              "text": "7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.94",
+          "inlines": [
+            {
+              "text": "0.94"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4-bit 对 8-bit",
+          "inlines": [
+            {
+              "text": "4-bit 对 8-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "33",
+          "inlines": [
+            {
+              "text": "33"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26",
+          "inlines": [
+            {
+              "text": "26"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3",
+          "inlines": [
+            {
+              "text": "3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.76",
+          "inlines": [
+            {
+              "text": "0.76"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4-bit 对 16-bit",
+          "inlines": [
+            {
+              "text": "4-bit 对 16-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11",
+          "inlines": [
+            {
+              "text": "11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9",
+          "inlines": [
+            {
+              "text": "9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0",
+          "inlines": [
+            {
+              "text": "0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2",
+          "inlines": [
+            {
+              "text": "2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.73",
+          "inlines": [
+            {
+              "text": "0.73"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "来源：OpenRouter 端点 API，含提供商折扣的标价，截至 2026 年 10 月 20 日。",
+          "inlines": [
+            {
+              "text": "来源：OpenRouter 端点 API，含提供商折扣的标价，截至 2026 年 10 月 20 日。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "以下是五个模型在各精度下最便宜的端点，单位为每百万混合 token 的美元价格。有两个例外：gpt-oss-120b 的 8-bit 比 16-bit 更贵，MiniMax M3 的 4-bit 比 8-bit 更贵。",
+          "inlines": [
+            {
+              "text": "以下是五个模型在各精度下最便宜的端点，单位为每百万混合 token 的美元价格。有两个例外：gpt-oss-120b 的 8-bit 比 16-bit 更贵，MiniMax M3 的 4-bit 比 8-bit 更贵。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "模型"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16-bit",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "16-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8-bit",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "8-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4-bit",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "4-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen3.8 27B",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/qwen/qwen3.8-27b",
+              "text": "Qwen3.8 27B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.581",
+          "inlines": [
+            {
+              "text": "$0.581"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.342",
+          "inlines": [
+            {
+              "text": "$0.342"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.140",
+          "inlines": [
+            {
+              "text": "$0.140"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kimi K2.6",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/moonshotai/kimi-k2.6",
+              "text": "Kimi K2.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.400",
+          "inlines": [
+            {
+              "text": "$1.400"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.079",
+          "inlines": [
+            {
+              "text": "$1.079"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.825",
+          "inlines": [
+            {
+              "text": "$0.825"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gemma 4 31B",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/google/gemma-4-31b-it",
+              "text": "Gemma 4 31B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.205",
+          "inlines": [
+            {
+              "text": "$0.205"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.200",
+          "inlines": [
+            {
+              "text": "$0.200"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.160",
+          "inlines": [
+            {
+              "text": "$0.160"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "gpt-oss-120b",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/openai/gpt-oss-120b",
+              "text": "gpt-oss-120b"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.067",
+          "inlines": [
+            {
+              "text": "$0.067"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.100",
+          "inlines": [
+            {
+              "text": "$0.100"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.060",
+          "inlines": [
+            {
+              "text": "$0.060"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MiniMax M3",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/minimax/minimax-m3",
+              "text": "MiniMax M3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "无",
+          "inlines": [
+            {
+              "text": "无"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.388",
+          "inlines": [
+            {
+              "text": "$0.388"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.412",
+          "inlines": [
+            {
+              "text": "$0.412"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "来源：OpenRouter 端点 API，截至 2026 年 10 月 20 日。",
+          "inlines": [
+            {
+              "text": "来源：OpenRouter 端点 API，截至 2026 年 10 月 20 日。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "提供商对价格的影响比精度更大。当同一个模型在同一精度下有多个端点时，最贵的端点价格中位数是最便宜的 1.72 倍。以 Qwen3.8 27B 为例，十个 fp8 端点的价格从每百万混合 token 0.342 美元到 1.137 美元不等。要把请求发到通过你精度筛选的最便宜端点，可以在模型 slug 后加上 :floor，具体做法见我们的最低成本推理指南。加上 quantizations: [“fp8”] 后，qwen/qwen3.8-27b:floor 在我们两次尝试中都指向了 Chutes，也就是最便宜的 fp8 端点。",
+          "inlines": [
+            {
+              "text": "提供商对价格的影响比精度更大。当同一个模型在同一精度下有多个端点时，最贵的端点价格中位数是最便宜的 1.72 倍。以 Qwen3.8 27B 为例，十个 fp8 端点的价格从每百万混合 token 0.342 美元到 1.137 美元不等。要把请求发到通过你精度筛选的最便宜端点，可以在模型 slug 后加上 :floor，具体做法见我们的"
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/how-to-get-the-lowest-cost-llm-inference-on-openrouter/",
+              "text": "最低成本推理指南"
+            },
+            {
+              "text": "。加上 quantizations: [“fp8”] 后，qwen/qwen3.8-27b:floor 在我们两次尝试中都指向了 Chutes，也就是最便宜的 fp8 端点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的测试中，最便宜的完整 280 任务运行是 fp4，最贵的是 fp16，但中间的顺序并不遵循精度。一次运行在 Darkbloom（fp4）上花费 $0.58，在 AkashML（fp8）上 $0.72，在 ModelRun（fp4）上 $0.77，在 Parasail（fp8）上 $0.81，在 CoreWeave（fp8）上 $1.19，在 Cerebras（fp16）上 $1.24。速度也不遵循精度。Cerebras（fp16）和 ModelRun（fp4）的中位响应时间分别为 1.3 秒和 2.4 秒，而其他四个为 8.4 到 15.0 秒。在所有端点中，除 fp32（只有一个端点）外，每个标注精度的中位 24 小时正常运行时间均为 99.8% 或更高。",
+          "inlines": [
+            {
+              "text": "在我们的测试中，最便宜的完整 280 任务运行是 fp4，最贵的是 fp16，但中间的顺序并不遵循精度。一次运行在 Darkbloom（fp4）上花费 $0.58，在 AkashML（fp8）上 $0.72，在 ModelRun（fp4）上 $0.77，在 Parasail（fp8）上 $0.81，在 CoreWeave（fp8）上 $1.19，在 Cerebras（fp16）上 $1.24。速度也不遵循精度。Cerebras（fp16）和 ModelRun（fp4）的中位响应时间分别为 1.3 秒和 2.4 秒，而其他四个为 8.4 到 15.0 秒。在所有端点中，除 fp32（只有一个端点）外，每个标注精度的中位 24 小时正常运行时间均为 99.8% 或更高。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "如何选择获得的精度？",
+          "inlines": [
+            {
+              "text": "如何选择获得的精度？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "查看模型的端点提供什么，然后在请求中设置 provider.quantizations。对 https://openrouter.ai/api/v1/models/qwen/qwen3.8-27b/endpoints 发起 GET 请求，会为每个端点返回一条记录，包含其量化、价格、上下文长度和正常运行时间。我们调用时无需 API 密钥即可响应，模型的 providers 标签页 显示相同的列表。对于 Qwen3.8 27B，它列出了 21 个端点，其中 1 个 bf16、1 个 fp16、10 个 fp8、3 个 fp4 和 6 个未知。在固定精度之前，请检查你想要精度的数量，因为该数量决定了当一个端点失败时有多少端点可以接管。",
+          "inlines": [
+            {
+              "text": "查看模型的端点提供什么，然后在请求中设置 provider.quantizations。对 "
+            },
+            {
+              "href": "https://openrouter.ai/api/v1/models/qwen/qwen3.8-27b/endpoints",
+              "text": "https://openrouter.ai/api/v1/models/qwen/qwen3.8-27b/endpoints"
+            },
+            {
+              "text": " 发起 GET 请求，会为每个端点返回一条记录，包含其量化、价格、上下文长度和正常运行时间。我们调用时无需 API 密钥即可响应，模型的 "
+            },
+            {
+              "href": "https://openrouter.ai/qwen/qwen3.8-27b/providers",
+              "text": "providers 标签页"
+            },
+            {
+              "text": " 显示相同的列表。对于 Qwen3.8 27B，它列出了 21 个端点，其中 1 个 bf16、1 个 fp16、10 个 fp8、3 个 fp4 和 6 个未知。在固定精度之前，请检查你想要精度的数量，因为该数量决定了当一个端点失败时有多少端点可以接管。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要将请求保持在 8 位或更高，请列出你接受的精度。",
+          "inlines": [
+            {
+              "text": "要将请求保持在 8 位或更高，请列出你接受的精度。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://openrouter.ai/api/v1/chat/completions\",\n    headers={\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"},\n    json={\n        \"model\": \"qwen/qwen3.8-27b\",\n        \"messages\": [{\"role\": \"user\", \"content\": \"What is the capital of Australia? One word.\"}],\n        \"reasoning\": {\"enabled\": False},\n        \"provider\": {\"quantizations\": [\"fp8\", \"bf16\", \"fp16\"]},\n    },\n    timeout=120,\n)\ndata = response.json()\nif \"error\" in data:\n    raise RuntimeError(data[\"error\"])\nprint(data[\"provider\"], data[\"choices\"][0][\"message\"][\"content\"], f'${data[\"usage\"][\"cost\"]:.6f}')"
+        },
+        {
+          "type": "paragraph",
+          "text": "我们运行了三次，每次运行都打印了相同的行。",
+          "inlines": [
+            {
+              "text": "我们运行了三次，每次运行都打印了相同的行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reka Canberra $0.000007",
+          "inlines": [
+            {
+              "text": "Reka Canberra $0.000007"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "提供商路由量化文档 列出了所有接受的值，并解释了量化如何与 only、order 和 sort 结合使用。",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection#quantization",
+              "text": "提供商路由量化文档"
+            },
+            {
+              "text": " 列出了所有接受的值，并解释了量化如何与 only、order 和 sort 结合使用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "quantizations 过滤端点列表。我们丢弃精度不在列表中的每个端点，然后 在其余端点之间进行负载均衡，权重偏向最低价格，如果提供商失败则回退到下一个端点。过滤器不保证每次都是同一个提供商，因此如果你跟踪质量，请记录响应的 provider 字段。文档还指出，fp4 包括 mxfp4 和 nvfp4，fp8 包括 mxfp8。",
+          "inlines": [
+            {
+              "text": "quantizations 过滤端点列表。我们丢弃精度不在列表中的每个端点，然后 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection",
+              "text": "在其余端点之间进行负载均衡"
+            },
+            {
+              "text": "，权重偏向最低价格，如果提供商失败则回退到下一个端点。过滤器不保证每次都是同一个提供商，因此如果你跟踪质量，请记录响应的 provider 字段。文档还指出，fp4 包括 mxfp4 和 nvfp4，fp8 包括 mxfp8。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/bd1753c114f2348fbe66f64c4f3e24cae2de4d3b7645d29c2c50b0caab98779b.webp",
+          "alt": "Routing flow: all endpoints for the model are filtered by allowed providers (only), then by quantization (quantizations), returning 404 No endpoints found if none are left. The remaining endpoints are load-balanced, and on an error OpenRouter tries the next endpoint (allow_fallbacks)."
+        },
+        {
+          "type": "heading",
+          "text": "精度过滤器的常见问题及修复方法",
+          "inlines": [
+            {
+              "text": "精度过滤器的常见问题及修复方法"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "过滤器在联系任何提供商之前运行，因此空候选列表会快速失败。向 Qwen3.8 27B 请求 int8（没有端点提供），在 0.4 秒内返回 404。",
+          "inlines": [
+            {
+              "text": "过滤器在联系任何提供商之前运行，因此空候选列表会快速失败。向 Qwen3.8 27B 请求 int8（没有端点提供），在 0.4 秒内返回 404。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "{\"error\":{\"message\":\"No endpoints found for the request with quantization: int8. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection\",\"code\":404,\"metadata\":{\"routing_funnel\":[{\"step\":\"Initial Endpoints\",\"endpoint_count\":21}],\"failed_routing_step\":\"Filter by Quantization\"}}}"
+        },
+        {
+          "type": "paragraph",
+          "text": "routing_funnel 字段显示每个步骤后有多少端点存活，failed_routing_step 指出导致没有端点剩余的步骤。{“quantizations”: [“fp8”], “only”: [“cerebras”]} 返回相同的 404，并带有 quantization: fp8，因为 Cerebras 提供 fp16，所以漏斗从 21 个端点变为 1 个，再变为无。",
+          "inlines": [
+            {
+              "text": "routing_funnel 字段显示每个步骤后有多少端点存活，failed_routing_step 指出导致没有端点剩余的步骤。{“quantizations”: [“fp8”], “only”: [“cerebras”]} 返回相同的 404，并带有 quantization: fp8，因为 Cerebras 提供 fp16，所以漏斗从 21 个端点变为 1 个，再变为无。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "较慢的失败发生在只有一个端点匹配时。Cerebras 是 Qwen3.8 27B 唯一的 fp16 端点。在我们的测试中，使用 allow_fallbacks: false 固定 Cerebras，前 280 个请求中有 93 个连续三次失败，并出现此错误（节选）。",
+          "inlines": [
+            {
+              "text": "较慢的失败发生在只有一个端点匹配时。Cerebras 是 Qwen3.8 27B 唯一的 fp16 端点。在我们的测试中，使用 allow_fallbacks: false 固定 Cerebras，前 280 个请求中有 93 个连续三次失败，并出现此错误（节选）。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"qwen/qwen3.8-27b is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Cerebras\",\"limit_source\":\"upstream_provider_shared_pool\",\"retry_after_seconds\":59}}"
+        },
+        {
+          "type": "paragraph",
+          "text": "我们重试它们，直到所有 280 个完成。单独使用 quantizations: [“fp16”] 会留下相同的单一候选，因此那里的速率限制无处可去。将列表扩大到 [“fp16”, “bf16”] 为路由器提供了第二个候选，相同的请求发往了 DeepInfra。",
+          "inlines": [
+            {
+              "text": "我们重试它们，直到所有 280 个完成。单独使用 quantizations: [“fp16”] 会留下相同的单一候选，因此那里的速率限制无处可去。将列表扩大到 [“fp16”, “bf16”] 为路由器提供了第二个候选，相同的请求发往了 DeepInfra。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "提供商失败也可能以 HTTP 200 状态 到达，因为我们在提供商接受请求后立即发送状态。检查响应体中的 error，而不仅仅是状态码。",
+          "inlines": [
+            {
+              "text": "提供商失败也可能以 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/api_reference/errors-and-debugging#mid-stream-errors",
+              "text": "HTTP 200 状态"
+            },
+            {
+              "text": " 到达，因为我们在提供商接受请求后立即发送状态。检查响应体中的 error，而不仅仅是状态码。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "使用 Exacto 按质量信号对端点排序",
+          "inlines": [
+            {
+              "text": "使用 Exacto 按质量信号对端点排序"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "量化后的质量“取决于所用的方法”，而且每家提供商都运行自己的推理软件，所以两个标注相同的端点并不保证表现一致。对于带工具的请求，Auto Exacto 已经把吞吐量、工具调用成功率和基准分数较低的端点排到列表后面。要把这种排序应用到不带工具的请求上，只需在模型 slug 后加上 :exacto。Exacto 依据工具调用信号给端点排序，而不是依据它们在你任务上的准确率，所以请用你自己的提示词去测试你正在考虑的端点。如何评估 LLM 提供商的性能介绍了如何比较它们的延迟、吞吐量和正常运行时间。",
+          "inlines": [
+            {
+              "text": "量化后的质量"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection#quantization",
+              "text": "“取决于所用的方法”"
+            },
+            {
+              "text": "，而且每家提供商都运行自己的推理软件，所以两个标注相同的端点并不保证表现一致。对于带工具的请求，"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/auto-exacto",
+              "text": "Auto Exacto"
+            },
+            {
+              "text": " 已经把吞吐量、工具调用成功率和基准分数较低的端点排到列表后面。要把这种排序应用到不带工具的请求上，只需在模型 slug 后加上 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/model-variants/exacto",
+              "text": ":exacto"
+            },
+            {
+              "text": "。Exacto 依据工具调用信号给端点排序，而不是依据它们在你任务上的准确率，所以请用你自己的提示词去测试你正在考虑的端点。"
+            },
+            {
+              "href": "https://openrouter.ai/blog/insights/evaluate-llm-provider-performance/",
+              "text": "如何评估 LLM 提供商的性能"
+            },
+            {
+              "text": "介绍了如何比较它们的延迟、吞吐量和正常运行时间。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "常见问题",
+          "inlines": [
+            {
+              "text": "常见问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "量化位数越高越好还是越低越好？",
+          "inlines": [
+            {
+              "text": "量化位数越高越好还是越低越好？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "位数越多，保留的原始模型精度就越多，占用的内存也越多。在 2026 年 10 月 20 日对 Qwen3.8 27B 的测试中，我们在 240 个有确切答案的任务上，没有发现 fp8、fp4 和 fp16 端点之间存在准确率差异。但这只覆盖了一个模型、一天的情况，所以在正式采用 4-bit 之前，请先在自己的工作负载上测试。",
+          "inlines": [
+            {
+              "text": "位数越多，保留的原始模型精度就越多，占用的内存也越多。在 2026 年 10 月 20 日对 Qwen3.8 27B 的测试中，我们在 240 个有确切答案的任务上，没有发现 fp8、fp4 和 fp16 端点之间存在准确率差异。但这只覆盖了一个模型、一天的情况，所以在正式采用 4-bit 之前，请先在自己的工作负载上测试。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么量化不会破坏 LLM 的准确率？",
+          "inlines": [
+            {
+              "text": "为什么量化不会破坏 LLM 的准确率？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "并非所有权重都同等重要。AWQ 发现，保护约 1% 最重要的权重就能大幅降低量化误差；LLM.int8() 则采用混合精度，把离群值保持在 16-bit，而超过 99.9% 的数值以 8-bit 相乘。我们对 Qwen3.8 27B 的测试无法显示各家提供商用的是哪种方法，但 fp16 端点漏掉了 240 个任务中的 3 个，fp8 和 fp4 端点则漏掉了 2 到 4 个。",
+          "inlines": [
+            {
+              "text": "并非所有权重都同等重要。"
+            },
+            {
+              "href": "https://arxiv.org/abs/2306.00978",
+              "text": "AWQ"
+            },
+            {
+              "text": " 发现，保护约 1% 最重要的权重就能大幅降低量化误差；"
+            },
+            {
+              "href": "https://arxiv.org/abs/2208.07339",
+              "text": "LLM.int8()"
+            },
+            {
+              "text": " 则采用混合精度，把离群值保持在 16-bit，而超过 99.9% 的数值以 8-bit 相乘。我们对 Qwen3.8 27B 的测试无法显示各家提供商用的是哪种方法，但 fp16 端点漏掉了 240 个任务中的 3 个，fp8 和 fp4 端点则漏掉了 2 到 4 个。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "什么时候应该对模型做量化？",
+          "inlines": [
+            {
+              "text": "什么时候应该对模型做量化？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "当模型在 16-bit 下放不进你的硬件，或者你需要从同样的 GPU 获得更高吞吐量时，就该量化。在我们的测试中，没有发现 fp8 有精度损失，而且 fp8 对每个权重的舍入幅度比 4-bit 更小，所以它是更小的一步。请先在你自己的任务上测试其中任意一种。通过 API 使用时，你不需要自己量化模型，只需在 OpenRouter 上通过 provider.quantizations 选择一个提供你所需精度的端点。",
+          "inlines": [
+            {
+              "text": "当模型在 16-bit 下放不进你的硬件，或者你需要从同样的 GPU 获得更高吞吐量时，就该量化。在我们的测试中，没有发现 fp8 有精度损失，而且 fp8 对每个权重的舍入幅度比 4-bit 更小，所以它是更小的一步。请先在你自己的任务上测试其中任意一种。通过 API 使用时，你不需要自己量化模型，只需在 OpenRouter 上通过 provider.quantizations 选择一个提供你所需精度的端点。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "提供商上的“unknown”量化是什么意思？",
+          "inlines": [
+            {
+              "text": "提供商上的“unknown”量化是什么意思？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "意思是该提供商没有报告这个端点的精度。在 OpenRouter 上，2026 年 10 月 20 日有 1,455 个端点中的 865 个为 unknown，其中 610 个属于 Claude、Gemini 等闭源权重模型。unknown 也是 provider.quantizations 中可接受的值，因此你可以选择包含或排除这些端点。",
+          "inlines": [
+            {
+              "text": "意思是该提供商没有报告这个端点的精度。在 OpenRouter 上，2026 年 10 月 20 日有 1,455 个端点中的 865 个为 unknown，其中 610 个属于 Claude、Gemini 等闭源权重模型。unknown 也是 provider.quantizations 中可接受的值，因此你可以选择包含或排除这些端点。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "When you call an open-weight model through an API, several providers may serve it at different precisions, such as 16-bit bf16, 8-bit fp8 or 4-bit fp4. The precision can affect both the answers and the price. LLM quantization creates these versions by storing a model’s weights in fewer bits, so the model needs less memory and hardware, at some cost in accuracy.",
+          "inlines": [
+            {
+              "text": "When you call an open-weight model through an API, several providers may serve it at different precisions, such as 16-bit bf16, 8-bit fp8 or 4-bit fp4. The precision can affect both the answers and the price. LLM quantization creates these versions by storing a model’s weights in fewer bits, so the model needs less memory and hardware, at some cost in accuracy."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This post explains the formats and reports what we measured on OpenRouter on October 20, 2026, across 1,455 provider endpoints and six endpoints serving Qwen3.8 27B. On our test, we didn’t detect an accuracy difference between fp8, fp4 and fp16, so the precision label alone didn’t predict accuracy. Lower precision was usually cheaper, but not for every model.",
+          "inlines": [
+            {
+              "text": "This post explains the formats and reports what we measured on OpenRouter on October 20, 2026, across 1,455 provider endpoints and six endpoints serving "
+            },
+            {
+              "href": "https://openrouter.ai/qwen/qwen3.8-27b",
+              "text": "Qwen3.8 27B"
+            },
+            {
+              "text": ". On our test, we didn’t detect an accuracy difference between fp8, fp4 and fp16, so the precision label alone didn’t predict accuracy. Lower precision was usually cheaper, but not for every model."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TL;DR",
+          "inlines": [
+            {
+              "text": "TL;DR"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "We didn’t detect an accuracy difference between fp8, fp4 and fp16 on our 240 scored tasks. All six endpoints scored between 98.3% and 99.2%."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "On 40 more multiplication tasks, one fp4 endpoint scored lowest, by a gap too small to rule out chance."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "8-bit was cheaper than 16-bit for 14 of the 24 models served at both, and more expensive for 7. 4-bit was cheaper than 8-bit for 26 of 33."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "provider.quantizations pins the precision you get. List every precision you’d accept, so the router has more than one endpoint to fall back to."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is LLM quantization?",
+          "inlines": [
+            {
+              "text": "What is LLM quantization?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "LLM quantization means storing a large language model’s numbers with fewer bits than it was trained with. Most LLMs today use FP16 or BF16, which are 16-bit formats. fp8 halves the memory each weight takes, and fp4 or int4 quarters it, so the same GPU holds a bigger model or serves more requests. The cost is accuracy, because each weight is rounded to the nearest value the smaller format can store.",
+          "inlines": [
+            {
+              "href": "https://www.actian.com/blog/developer/which-quantization-level-should-you-use-for-edge-llm-deployment/",
+              "text": "LLM quantization"
+            },
+            {
+              "text": " means storing a large language model’s numbers with fewer bits than it was trained with. "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection#quantization",
+              "text": "Most LLMs today use FP16 or BF16"
+            },
+            {
+              "text": ", which are 16-bit formats. fp8 halves the memory each weight takes, and fp4 or int4 quarters it, so the same GPU holds a bigger model or serves more requests. The cost is accuracy, because each weight is rounded to the nearest value the smaller format can store."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Format",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Format"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Bits per weight",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Bits per weight"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Weights for a 27B model",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Weights for a 27B model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Where you see it",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Where you see it"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "bf16 / fp16",
+          "inlines": [
+            {
+              "text": "bf16 / fp16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16",
+          "inlines": [
+            {
+              "text": "16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "54 GB",
+          "inlines": [
+            {
+              "text": "54 GB"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The precision most models are released in",
+          "inlines": [
+            {
+              "text": "The precision most models are released in"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8",
+          "inlines": [
+            {
+              "text": "fp8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "27 GB",
+          "inlines": [
+            {
+              "text": "27 GB"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The most common labeled precision on OpenRouter",
+          "inlines": [
+            {
+              "text": "The most common labeled precision on OpenRouter"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp4, nvfp4, mxfp4, int4",
+          "inlines": [
+            {
+              "text": "fp4, nvfp4, mxfp4, int4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.5 GB",
+          "inlines": [
+            {
+              "text": "13.5 GB"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cheaper endpoints, local runs, some lab releases",
+          "inlines": [
+            {
+              "text": "Cheaper endpoints, local runs, some lab releases"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These figures cover weights only. A running model also needs memory for its KV cache, the stored attention state for each token in the context.",
+          "inlines": [
+            {
+              "text": "These figures cover weights only. A running model also needs memory for its KV cache, the stored attention state for each token in the context."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "There are two main types of quantization. Post-training quantization converts a finished model’s weights. It can be dynamic, computing the range of each activation at run time, or static, computing those ranges in advance by passing sample data through the model. Quantization-aware training simulates the rounding during training so the weights learn to tolerate it. The Hugging Face Optimum concept guide explains both, and the Transformers quantization overview covers the quantization methods you can run yourself.",
+          "inlines": [
+            {
+              "text": "There are two main types of quantization. Post-training quantization converts a finished model’s weights. It can be dynamic, computing the range of each activation at run time, or static, computing those ranges in advance by passing sample data through the model. Quantization-aware training simulates the rounding during training so the weights learn to tolerate it. The "
+            },
+            {
+              "href": "https://huggingface.co/docs/optimum/concept_guides/quantization",
+              "text": "Hugging Face Optimum concept guide"
+            },
+            {
+              "text": " explains both, and the "
+            },
+            {
+              "href": "https://huggingface.co/docs/transformers/main/en/quantization/overview",
+              "text": "Transformers quantization overview"
+            },
+            {
+              "text": " covers the quantization methods you can run yourself."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "fp8 vs bf16: what’s the difference?",
+          "inlines": [
+            {
+              "text": "fp8 vs bf16: what’s the difference?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Floating-point formats split their bits between a sign, an exponent and a mantissa. The exponent sets the range of values, and the mantissa sets how finely values within that range are resolved.",
+          "inlines": [
+            {
+              "text": "Floating-point formats split their bits between a sign, an exponent and a mantissa. The exponent sets the range of values, and the mantissa sets how finely values within that range are resolved."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9775d1e9d50ee8e76d35201bd61405c2f8ae3298f169818a59964730fd3b1ad6.webp",
+          "alt": "Bit layouts: bf16 has 1 sign, 8 exponent and 7 mantissa bits; fp16 has 1, 5 and 10; fp8 (E4M3) has 1, 4 and 3; fp4 (E2M1) has 1, 2 and 1."
+        },
+        {
+          "type": "paragraph",
+          "text": "bf16 has 1 sign bit, 8 exponent bits and 7 mantissa bits, so it has the same range as 32-bit fp32 with less precision. fp16 splits its 16 bits as 5 exponent and 10 mantissa bits. The OCP 8-bit floating point spec defines two fp8 encodings, E4M3 (4 exponent bits, 3 mantissa bits) and E5M2 (5 exponent bits, 2 mantissa bits). fp8 gives up both range and precision, so quantized models store a scale factor per tensor or per block of weights. MXFP4 shares one scale across each block of 32 values, and NVFP4 uses one fp8 scale per 16 values.",
+          "inlines": [
+            {
+              "href": "https://cloud.google.com/tpu/docs/bfloat16",
+              "text": "bf16"
+            },
+            {
+              "text": " has 1 sign bit, 8 exponent bits and 7 mantissa bits, so it has the same range as 32-bit fp32 with less precision. fp16 splits its 16 bits as 5 exponent and 10 mantissa bits. The "
+            },
+            {
+              "href": "https://www.opencompute.org/documents/ocp-8-bit-floating-point-specification-ofp8-revision-1-0-2023-12-01-pdf-1",
+              "text": "OCP 8-bit floating point spec"
+            },
+            {
+              "text": " defines two fp8 encodings, E4M3 (4 exponent bits, 3 mantissa bits) and E5M2 (5 exponent bits, 2 mantissa bits). fp8 gives up both range and precision, so quantized models store a scale factor per tensor or per block of weights. "
+            },
+            {
+              "href": "https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf",
+              "text": "MXFP4"
+            },
+            {
+              "text": " shares one scale across each block of 32 values, and "
+            },
+            {
+              "href": "https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/",
+              "text": "NVFP4"
+            },
+            {
+              "text": " uses one fp8 scale per 16 values."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For an API user, fp8 vs bf16 shows up as a different label and price on the same model. In our test, we didn’t detect a difference between the three fp8 endpoints and the fp16 endpoint.",
+          "inlines": [
+            {
+              "text": "For an API user, fp8 vs bf16 shows up as a different label and price on the same model. In our test, we didn’t detect a difference between the three fp8 endpoints and the fp16 endpoint."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How much quality is lost with fp8 and fp4?",
+          "inlines": [
+            {
+              "text": "How much quality is lost with fp8 and fp4?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We didn’t detect a quality loss at fp8 or fp4 in our test. All six endpoints scored between 98.3% and 99.2%, and a test this size can’t rule out a gap of a point or two.",
+          "inlines": [
+            {
+              "text": "We didn’t detect a quality loss at fp8 or fp4 in our test. All six endpoints scored between 98.3% and 99.2%, and a test this size can’t rule out a gap of a point or two."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We ran 280 tasks with exact answers through qwen/qwen3.8-27b, pinned to six endpoints. Cerebras serves it at fp16. Parasail, CoreWeave and AkashML serve it at fp8, and Darkbloom and ModelRun serve it at fp4. Each request set provider.only, quantizations and allow_fallbacks: false, so it could only reach the endpoint we named, at temperature 0 with reasoning off. The tasks were multi-step arithmetic with working, Python programs to trace, lists of 20 to 30 numbers to sort, a key to find among 240 or 1,200 entries (about 4,000 and 20,000 tokens), and a four-step lookup chain through about 9,000 tokens. We generated every task, so each has an exact answer and no judge is needed. Another 40 tasks asked for the product of two four-digit numbers with no working, scored separately.",
+          "inlines": [
+            {
+              "text": "We ran 280 tasks with exact answers through qwen/qwen3.8-27b, pinned to six endpoints. Cerebras serves it at fp16. Parasail, CoreWeave and AkashML serve it at fp8, and Darkbloom and ModelRun serve it at fp4. Each request set provider.only, quantizations and allow_fallbacks: false, so it could only reach the endpoint we named, at temperature 0 with reasoning off. The tasks were multi-step arithmetic with working, Python programs to trace, lists of 20 to 30 numbers to sort, a key to find among 240 or 1,200 entries (about 4,000 and 20,000 tokens), and a four-step lookup chain through about 9,000 tokens. We generated every task, so each has an exact answer and no judge is needed. Another 40 tasks asked for the product of two four-digit numbers with no working, scored separately."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Task family",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Task family"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tasks",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Tasks"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp16 Cerebras",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp16 Cerebras"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8 Parasail",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp8 Parasail"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8 CoreWeave",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp8 CoreWeave"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8 AkashML",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp8 AkashML"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp4 Darkbloom",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp4 Darkbloom"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp4 ModelRun",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "fp4 ModelRun"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Arithmetic with working",
+          "inlines": [
+            {
+              "text": "Arithmetic with working"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48",
+          "inlines": [
+            {
+              "text": "48"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49",
+          "inlines": [
+            {
+              "text": "49"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "48",
+          "inlines": [
+            {
+              "text": "48"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49",
+          "inlines": [
+            {
+              "text": "49"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "49",
+          "inlines": [
+            {
+              "text": "49"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Short code traces",
+          "inlines": [
+            {
+              "text": "Short code traces"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "50",
+          "inlines": [
+            {
+              "text": "50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Long code traces",
+          "inlines": [
+            {
+              "text": "Long code traces"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "28",
+          "inlines": [
+            {
+              "text": "28"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sorting 20 to 30 numbers",
+          "inlines": [
+            {
+              "text": "Sorting 20 to 30 numbers"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "29",
+          "inlines": [
+            {
+              "text": "29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Recall at 4,000 tokens",
+          "inlines": [
+            {
+              "text": "Recall at 4,000 tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Recall at 20,000 tokens",
+          "inlines": [
+            {
+              "text": "Recall at 20,000 tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Four-hop recall",
+          "inlines": [
+            {
+              "text": "Four-hop recall"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "39",
+          "inlines": [
+            {
+              "text": "39"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "39",
+          "inlines": [
+            {
+              "text": "39"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Total",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Total"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "240",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "240"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.8%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.8%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.3%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.3%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.8%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "98.3%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "98.3%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "99.2%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "99.2%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Multiplication, no working",
+          "inlines": [
+            {
+              "text": "Multiplication, no working"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "40",
+          "inlines": [
+            {
+              "text": "40"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "33",
+          "inlines": [
+            {
+              "text": "33"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "31",
+          "inlines": [
+            {
+              "text": "31"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "32",
+          "inlines": [
+            {
+              "text": "32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26",
+          "inlines": [
+            {
+              "text": "26"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30",
+          "inlines": [
+            {
+              "text": "30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Source: OpenRouter, Qwen3.8 27B, October 20, 2026. The 95% confidence intervals on the totals run from 95.8% to 99.8%, and all six overlap.",
+          "inlines": [
+            {
+              "text": "Source: OpenRouter, Qwen3.8 27B, October 20, 2026. The 95% confidence intervals on the totals run from 95.8% to 99.8%, and all six overlap."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "No task family separated the precisions. Each endpoint missed at most two tasks in any family, and the misses were ordinary slips, such as a number dropped from a sorted list. The fp8 endpoints disagreed with each other on 2 to 5 of the 240 tasks, and the two fp4 endpoints on 4. Darkbloom disagreed with the fp16 and fp8 endpoints most often, on 7 or 8 tasks, yet its total was within half a point of fp16.",
+          "inlines": [
+            {
+              "text": "No task family separated the precisions. Each endpoint missed at most two tasks in any family, and the misses were ordinary slips, such as a number dropped from a sorted list. The fp8 endpoints disagreed with each other on 2 to 5 of the 240 tasks, and the two fp4 endpoints on 4. Darkbloom disagreed with the fp16 and fp8 endpoints most often, on 7 or 8 tasks, yet its total was within half a point of fp16."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The one place a gap showed was multiplication with no working. Darkbloom at fp4 got 26 of 40 products exactly right, against 30 to 33 on the other five endpoints, including 30 on ModelRun at fp4. A two-proportion z-test against the best endpoint (33), a comparison we chose after seeing the results, puts the chance of a gap that large arising with no real difference at about 7.5%, so we can’t call it a precision effect. Wrong products were close at every precision, with the median miss off by less than 0.01%.",
+          "inlines": [
+            {
+              "text": "The one place a gap showed was multiplication with no working. Darkbloom at fp4 got 26 of 40 products exactly right, against 30 to 33 on the other five endpoints, including 30 on ModelRun at fp4. A two-proportion z-test against the best endpoint (33), a comparison we chose after seeing the results, puts the chance of a gap that large arising with no real difference at about 7.5%, so we can’t call it a precision effect. Wrong products were close at every precision, with the median miss off by less than 0.01%."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We ran all 280 tasks twice on Cerebras, and both runs returned identical text on every task. The small differences between endpoints can come from precision, from each provider’s hardware and inference software, or from run-to-run variation on the other endpoints, and at this size we can’t separate them. Cerebras is the only fp16 endpoint, so fp16 has no second endpoint to compare it with.",
+          "inlines": [
+            {
+              "text": "We ran all 280 tasks twice on Cerebras, and both runs returned identical text on every task. The small differences between endpoints can come from precision, from each provider’s hardware and inference software, or from run-to-run variation on the other endpoints, and at this size we can’t separate them. Cerebras is the only fp16 endpoint, so fp16 has no second endpoint to compare it with."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This test covers one model, 280 tasks and six endpoints on one day. It doesn’t show that 4-bit is safe for every model or workload, so test your own prompts before you move traffic to a 4-bit endpoint.",
+          "inlines": [
+            {
+              "text": "This test covers one model, 280 tasks and six endpoints on one day. It doesn’t show that 4-bit is safe for every model or workload, so test your own prompts before you move traffic to a 4-bit endpoint."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Which precision do API providers serve?",
+          "inlines": [
+            {
+              "text": "Which precision do API providers serve?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8 is the most common labeled precision, and most endpoints don’t report a precision at all. We pulled every model’s endpoints from our endpoints API, which returned 1,455 endpoints across 470 models.",
+          "inlines": [
+            {
+              "text": "fp8 is the most common labeled precision, and most endpoints don’t report a precision at all. We pulled every model’s endpoints from our "
+            },
+            {
+              "href": "https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model",
+              "text": "endpoints API"
+            },
+            {
+              "text": ", which returned 1,455 endpoints across 470 models."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reported precision",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Reported precision"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Endpoints",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Endpoints"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Share of all",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Share of all"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Share of labeled",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Share of labeled"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "unknown",
+          "inlines": [
+            {
+              "text": "unknown"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "865",
+          "inlines": [
+            {
+              "text": "865"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "59.5%",
+          "inlines": [
+            {
+              "text": "59.5%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp8",
+          "inlines": [
+            {
+              "text": "fp8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "343",
+          "inlines": [
+            {
+              "text": "343"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "23.6%",
+          "inlines": [
+            {
+              "text": "23.6%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "58.1%",
+          "inlines": [
+            {
+              "text": "58.1%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp4",
+          "inlines": [
+            {
+              "text": "fp4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "123",
+          "inlines": [
+            {
+              "text": "123"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.5%",
+          "inlines": [
+            {
+              "text": "8.5%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20.8%",
+          "inlines": [
+            {
+              "text": "20.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "bf16",
+          "inlines": [
+            {
+              "text": "bf16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "70",
+          "inlines": [
+            {
+              "text": "70"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.8%",
+          "inlines": [
+            {
+              "text": "4.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11.9%",
+          "inlines": [
+            {
+              "text": "11.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "int4",
+          "inlines": [
+            {
+              "text": "int4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20",
+          "inlines": [
+            {
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.4%",
+          "inlines": [
+            {
+              "text": "1.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.4%",
+          "inlines": [
+            {
+              "text": "3.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "nvfp4",
+          "inlines": [
+            {
+              "text": "nvfp4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13",
+          "inlines": [
+            {
+              "text": "13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.9%",
+          "inlines": [
+            {
+              "text": "0.9%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.2%",
+          "inlines": [
+            {
+              "text": "2.2%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mxfp4",
+          "inlines": [
+            {
+              "text": "mxfp4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12",
+          "inlines": [
+            {
+              "text": "12"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.8%",
+          "inlines": [
+            {
+              "text": "0.8%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.0%",
+          "inlines": [
+            {
+              "text": "2.0%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp16",
+          "inlines": [
+            {
+              "text": "fp16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8",
+          "inlines": [
+            {
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.5%",
+          "inlines": [
+            {
+              "text": "0.5%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.4%",
+          "inlines": [
+            {
+              "text": "1.4%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "fp32",
+          "inlines": [
+            {
+              "text": "fp32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.1%",
+          "inlines": [
+            {
+              "text": "0.1%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.2%",
+          "inlines": [
+            {
+              "text": "0.2%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Source: OpenRouter (openrouter.ai/api/v1/models/{author}/{slug}/endpoints), as of October 20, 2026.",
+          "inlines": [
+            {
+              "text": "Source: OpenRouter ("
+            },
+            {
+              "href": "http://openrouter.ai/api/v1/models/%7Bauthor%7D/%7Bslug%7D/endpoints",
+              "text": "openrouter.ai/api/v1/models/{author}/{slug}/endpoints"
+            },
+            {
+              "text": "), as of October 20, 2026."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "610 of the 865 unknown endpoints belong to closed-weight models with no labeled endpoint at all, including every Claude and Gemini model and every OpenAI model except gpt-oss. Of the other 255, 253 are on open-weight models whose providers don’t label precision. Only 54 of the 163 models with a labeled endpoint have a 16-bit one, so for most open-weight models, 8-bit or 4-bit is the only labeled option.",
+          "inlines": [
+            {
+              "text": "610 of the 865 unknown endpoints belong to closed-weight models with no labeled endpoint at all, including every Claude and Gemini model and every OpenAI model except gpt-oss. Of the other 255, 253 are on open-weight models whose providers don’t label precision. Only 54 of the 163 models with a labeled endpoint have a 16-bit one, so for most open-weight models, 8-bit or 4-bit is the only labeled option."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Is a quantized endpoint cheaper?",
+          "inlines": [
+            {
+              "text": "Is a quantized endpoint cheaper?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Usually, but not always. For each model, we compared the cheapest endpoint at each precision, at a blended price of three input tokens to one output token.",
+          "inlines": [
+            {
+              "text": "Usually, but not always. For each model, we compared the cheapest endpoint at each precision, at a blended price of three input tokens to one output token."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Comparison",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Comparison"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Models",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Models"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Lower precision cheaper",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Lower precision cheaper"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Within 2%",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Within 2%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Lower precision more expensive",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Lower precision more expensive"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Median price ratio",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Median price ratio"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8-bit vs 16-bit",
+          "inlines": [
+            {
+              "text": "8-bit vs 16-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "24",
+          "inlines": [
+            {
+              "text": "24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14",
+          "inlines": [
+            {
+              "text": "14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3",
+          "inlines": [
+            {
+              "text": "3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7",
+          "inlines": [
+            {
+              "text": "7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.94",
+          "inlines": [
+            {
+              "text": "0.94"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4-bit vs 8-bit",
+          "inlines": [
+            {
+              "text": "4-bit vs 8-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "33",
+          "inlines": [
+            {
+              "text": "33"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26",
+          "inlines": [
+            {
+              "text": "26"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3",
+          "inlines": [
+            {
+              "text": "3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4",
+          "inlines": [
+            {
+              "text": "4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.76",
+          "inlines": [
+            {
+              "text": "0.76"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4-bit vs 16-bit",
+          "inlines": [
+            {
+              "text": "4-bit vs 16-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11",
+          "inlines": [
+            {
+              "text": "11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9",
+          "inlines": [
+            {
+              "text": "9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0",
+          "inlines": [
+            {
+              "text": "0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2",
+          "inlines": [
+            {
+              "text": "2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.73",
+          "inlines": [
+            {
+              "text": "0.73"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Source: OpenRouter endpoints API, list prices including provider discounts, as of October 20, 2026.",
+          "inlines": [
+            {
+              "text": "Source: OpenRouter endpoints API, list prices including provider discounts, as of October 20, 2026."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Here’s the cheapest endpoint at each precision for five models, in dollars per million blended tokens. Two are exceptions. gpt-oss-120b costs more at 8-bit than at 16-bit, and MiniMax M3 costs more at 4-bit than at 8-bit.",
+          "inlines": [
+            {
+              "text": "Here’s the cheapest endpoint at each precision for five models, in dollars per million blended tokens. Two are exceptions. gpt-oss-120b costs more at 8-bit than at 16-bit, and MiniMax M3 costs more at 4-bit than at 8-bit."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "16-bit",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "16-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8-bit",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "8-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4-bit",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "4-bit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen3.8 27B",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/qwen/qwen3.8-27b",
+              "text": "Qwen3.8 27B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.581",
+          "inlines": [
+            {
+              "text": "$0.581"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.342",
+          "inlines": [
+            {
+              "text": "$0.342"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.140",
+          "inlines": [
+            {
+              "text": "$0.140"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kimi K2.6",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/moonshotai/kimi-k2.6",
+              "text": "Kimi K2.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.400",
+          "inlines": [
+            {
+              "text": "$1.400"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.079",
+          "inlines": [
+            {
+              "text": "$1.079"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.825",
+          "inlines": [
+            {
+              "text": "$0.825"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gemma 4 31B",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/google/gemma-4-31b-it",
+              "text": "Gemma 4 31B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.205",
+          "inlines": [
+            {
+              "text": "$0.205"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.200",
+          "inlines": [
+            {
+              "text": "$0.200"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.160",
+          "inlines": [
+            {
+              "text": "$0.160"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "gpt-oss-120b",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/openai/gpt-oss-120b",
+              "text": "gpt-oss-120b"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.067",
+          "inlines": [
+            {
+              "text": "$0.067"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.100",
+          "inlines": [
+            {
+              "text": "$0.100"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.060",
+          "inlines": [
+            {
+              "text": "$0.060"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MiniMax M3",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/minimax/minimax-m3",
+              "text": "MiniMax M3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "None",
+          "inlines": [
+            {
+              "text": "None"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.388",
+          "inlines": [
+            {
+              "text": "$0.388"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.412",
+          "inlines": [
+            {
+              "text": "$0.412"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Source: OpenRouter endpoints API, as of October 20, 2026.",
+          "inlines": [
+            {
+              "text": "Source: OpenRouter endpoints API, as of October 20, 2026."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The provider affects the price more than the precision does. Where one model has several endpoints at the same precision, the most expensive was a median 1.72 times the cheapest. For Qwen3.8 27B, the ten fp8 endpoints ranged from $0.342 to $1.137 per million blended tokens. To send a request to the cheapest endpoint that passes your precision filter, add :floor to the model slug, as our lowest-cost inference guide explains. With quantizations: [“fp8”], qwen/qwen3.8-27b:floor went to Chutes, the cheapest fp8 endpoint, on both of our tries.",
+          "inlines": [
+            {
+              "text": "The provider affects the price more than the precision does. Where one model has several endpoints at the same precision, the most expensive was a median 1.72 times the cheapest. For Qwen3.8 27B, the ten fp8 endpoints ranged from $0.342 to $1.137 per million blended tokens. To send a request to the cheapest endpoint that passes your precision filter, add :floor to the model slug, as our "
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/how-to-get-the-lowest-cost-llm-inference-on-openrouter/",
+              "text": "lowest-cost inference guide"
+            },
+            {
+              "text": " explains. With quantizations: [“fp8”], qwen/qwen3.8-27b:floor went to Chutes, the cheapest fp8 endpoint, on both of our tries."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In our test, the cheapest full 280-task run was at fp4 and the most expensive at fp16, but the order in between didn’t follow precision. One run cost $0.58 on Darkbloom (fp4), $0.72 on AkashML (fp8), $0.77 on ModelRun (fp4), $0.81 on Parasail (fp8), $1.19 on CoreWeave (fp8) and $1.24 on Cerebras (fp16). Speed didn’t follow precision either. Cerebras (fp16) and ModelRun (fp4) answered in a median 1.3 and 2.4 seconds, against 8.4 to 15.0 seconds for the other four. Across all endpoints, median 24-hour uptime was 99.8% or higher at every labeled precision except fp32, which has one endpoint.",
+          "inlines": [
+            {
+              "text": "In our test, the cheapest full 280-task run was at fp4 and the most expensive at fp16, but the order in between didn’t follow precision. One run cost $0.58 on Darkbloom (fp4), $0.72 on AkashML (fp8), $0.77 on ModelRun (fp4), $0.81 on Parasail (fp8), $1.19 on CoreWeave (fp8) and $1.24 on Cerebras (fp16). Speed didn’t follow precision either. Cerebras (fp16) and ModelRun (fp4) answered in a median 1.3 and 2.4 seconds, against 8.4 to 15.0 seconds for the other four. Across all endpoints, median 24-hour uptime was 99.8% or higher at every labeled precision except fp32, which has one endpoint."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How do you choose the precision you get?",
+          "inlines": [
+            {
+              "text": "How do you choose the precision you get?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Check what a model’s endpoints serve, then set provider.quantizations on your requests. A GET to https://openrouter.ai/api/v1/models/qwen/qwen3.8-27b/endpoints returns one entry per endpoint with its quantization, price, context length and uptime. It answered without an API key when we called it, and the model’s providers tab shows the same list. For Qwen3.8 27B it listed 21 endpoints, with one bf16, one fp16, ten fp8, three fp4 and six unknown. Check the count for the precision you want before you pin it, because that count is how many endpoints can take over when one fails.",
+          "inlines": [
+            {
+              "text": "Check what a model’s endpoints serve, then set provider.quantizations on your requests. A GET to "
+            },
+            {
+              "href": "https://openrouter.ai/api/v1/models/qwen/qwen3.8-27b/endpoints",
+              "text": "https://openrouter.ai/api/v1/models/qwen/qwen3.8-27b/endpoints"
+            },
+            {
+              "text": " returns one entry per endpoint with its quantization, price, context length and uptime. It answered without an API key when we called it, and the model’s "
+            },
+            {
+              "href": "https://openrouter.ai/qwen/qwen3.8-27b/providers",
+              "text": "providers tab"
+            },
+            {
+              "text": " shows the same list. For Qwen3.8 27B it listed 21 endpoints, with one bf16, one fp16, ten fp8, three fp4 and six unknown. Check the count for the precision you want before you pin it, because that count is how many endpoints can take over when one fails."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To keep requests at 8 bits or higher, list the precisions you accept.",
+          "inlines": [
+            {
+              "text": "To keep requests at 8 bits or higher, list the precisions you accept."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://openrouter.ai/api/v1/chat/completions\",\n    headers={\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"},\n    json={\n        \"model\": \"qwen/qwen3.8-27b\",\n        \"messages\": [{\"role\": \"user\", \"content\": \"What is the capital of Australia? One word.\"}],\n        \"reasoning\": {\"enabled\": False},\n        \"provider\": {\"quantizations\": [\"fp8\", \"bf16\", \"fp16\"]},\n    },\n    timeout=120,\n)\ndata = response.json()\nif \"error\" in data:\n    raise RuntimeError(data[\"error\"])\nprint(data[\"provider\"], data[\"choices\"][0][\"message\"][\"content\"], f'${data[\"usage\"][\"cost\"]:.6f}')"
+        },
+        {
+          "type": "paragraph",
+          "text": "We ran it three times, and each run printed the same line.",
+          "inlines": [
+            {
+              "text": "We ran it three times, and each run printed the same line."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reka Canberra $0.000007",
+          "inlines": [
+            {
+              "text": "Reka Canberra $0.000007"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The provider routing quantization docs list every accepted value and explain how quantizations combines with only, order and sort.",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection#quantization",
+              "text": "provider routing quantization docs"
+            },
+            {
+              "text": " list every accepted value and explain how quantizations combines with only, order and sort."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "quantizations filters the list of endpoints. We drop every endpoint whose precision isn’t in the list, then load-balance across the rest, weighted toward the lowest price, and fall back to the next endpoint if a provider fails. Nothing in the filter guarantees the same provider each time, so log the response’s provider field if you track quality. The docs also note that fp4 includes mxfp4 and nvfp4, and fp8 includes mxfp8.",
+          "inlines": [
+            {
+              "text": "quantizations filters the list of endpoints. We drop every endpoint whose precision isn’t in the list, then "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection",
+              "text": "load-balance across the rest"
+            },
+            {
+              "text": ", weighted toward the lowest price, and fall back to the next endpoint if a provider fails. Nothing in the filter guarantees the same provider each time, so log the response’s provider field if you track quality. The docs also note that fp4 includes mxfp4 and nvfp4, and fp8 includes mxfp8."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/bd1753c114f2348fbe66f64c4f3e24cae2de4d3b7645d29c2c50b0caab98779b.webp",
+          "alt": "Routing flow: all endpoints for the model are filtered by allowed providers (only), then by quantization (quantizations), returning 404 No endpoints found if none are left. The remaining endpoints are load-balanced, and on an error OpenRouter tries the next endpoint (allow_fallbacks)."
+        },
+        {
+          "type": "heading",
+          "text": "Common problems with precision filters and how to fix them",
+          "inlines": [
+            {
+              "text": "Common problems with precision filters and how to fix them"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The filter runs before any provider is contacted, so an empty candidate list fails fast. Asking Qwen3.8 27B for int8, which no endpoint serves, returned a 404 in 0.4 seconds.",
+          "inlines": [
+            {
+              "text": "The filter runs before any provider is contacted, so an empty candidate list fails fast. Asking Qwen3.8 27B for int8, which no endpoint serves, returned a 404 in 0.4 seconds."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "{\"error\":{\"message\":\"No endpoints found for the request with quantization: int8. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection\",\"code\":404,\"metadata\":{\"routing_funnel\":[{\"step\":\"Initial Endpoints\",\"endpoint_count\":21}],\"failed_routing_step\":\"Filter by Quantization\"}}}"
+        },
+        {
+          "type": "paragraph",
+          "text": "The routing_funnel field shows how many endpoints survived each step, and failed_routing_step names the step that left none. {“quantizations”: [“fp8”], “only”: [“cerebras”]} returned the same 404 with quantization: fp8, because Cerebras serves fp16, so the funnel went from 21 endpoints to 1 to none.",
+          "inlines": [
+            {
+              "text": "The routing_funnel field shows how many endpoints survived each step, and failed_routing_step names the step that left none. {“quantizations”: [“fp8”], “only”: [“cerebras”]} returned the same 404 with quantization: fp8, because Cerebras serves fp16, so the funnel went from 21 endpoints to 1 to none."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The slower failure happens when only one endpoint matches. Cerebras is the only fp16 endpoint for Qwen3.8 27B. During our test, which pinned Cerebras with allow_fallbacks: false, 93 of the first 280 requests failed three times in a row with this error (abridged).",
+          "inlines": [
+            {
+              "text": "The slower failure happens when only one endpoint matches. Cerebras is the only fp16 endpoint for Qwen3.8 27B. During our test, which pinned Cerebras with allow_fallbacks: false, 93 of the first 280 requests failed three times in a row with this error (abridged)."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"qwen/qwen3.8-27b is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Cerebras\",\"limit_source\":\"upstream_provider_shared_pool\",\"retry_after_seconds\":59}}"
+        },
+        {
+          "type": "paragraph",
+          "text": "We retried them until all 280 completed. quantizations: [“fp16”] on its own leaves the same single candidate, so a rate limit there has nowhere else to go. Widening the list to [“fp16”, “bf16”] gave the router a second candidate, and the same request went to DeepInfra.",
+          "inlines": [
+            {
+              "text": "We retried them until all 280 completed. quantizations: [“fp16”] on its own leaves the same single candidate, so a rate limit there has nowhere else to go. Widening the list to [“fp16”, “bf16”] gave the router a second candidate, and the same request went to DeepInfra."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A provider failure can also arrive with an HTTP 200 status, because we send the status as soon as the provider accepts the request. Check the body for error, not only the status code.",
+          "inlines": [
+            {
+              "text": "A provider failure can also arrive "
+            },
+            {
+              "href": "https://openrouter.ai/docs/api_reference/errors-and-debugging#mid-stream-errors",
+              "text": "with an HTTP 200 status"
+            },
+            {
+              "text": ", because we send the status as soon as the provider accepts the request. Check the body for error, not only the status code."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Sort endpoints by quality signals with Exacto",
+          "inlines": [
+            {
+              "text": "Sort endpoints by quality signals with Exacto"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Quantized quality depends “on the method used”, and each provider runs its own inference software, so two endpoints with the same label aren’t guaranteed to match. For requests with tools, Auto Exacto already moves endpoints with lower throughput, tool-calling success rates and benchmark scores to the back of the list. To apply that ordering to requests without tools, add :exacto to the model slug. Exacto ranks endpoints on tool-calling signals, not on accuracy at your task, so run your own prompts against the endpoints you’re considering. How to evaluate LLM provider performance covers how to compare their latency, throughput and uptime.",
+          "inlines": [
+            {
+              "text": "Quantized quality depends "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/provider-selection#quantization",
+              "text": "“on the method used”"
+            },
+            {
+              "text": ", and each provider runs its own inference software, so two endpoints with the same label aren’t guaranteed to match. For requests with tools, "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/auto-exacto",
+              "text": "Auto Exacto"
+            },
+            {
+              "text": " already moves endpoints with lower throughput, tool-calling success rates and benchmark scores to the back of the list. To apply that ordering to requests without tools, add "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/routing/model-variants/exacto",
+              "text": ":exacto"
+            },
+            {
+              "text": " to the model slug. Exacto ranks endpoints on tool-calling signals, not on accuracy at your task, so run your own prompts against the endpoints you’re considering. "
+            },
+            {
+              "href": "https://openrouter.ai/blog/insights/evaluate-llm-provider-performance/",
+              "text": "How to evaluate LLM provider performance"
+            },
+            {
+              "text": " covers how to compare their latency, throughput and uptime."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Frequently asked questions",
+          "inlines": [
+            {
+              "text": "Frequently asked questions"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Is higher or lower quantization better?",
+          "inlines": [
+            {
+              "text": "Is higher or lower quantization better?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "More bits keep more of the original model’s precision and take more memory. In our test of Qwen3.8 27B on October 20, 2026, we didn’t detect an accuracy difference between fp8, fp4 and fp16 endpoints on 240 tasks with exact answers. That covers one model on one day, so test 4-bit on your own workload before you commit to it.",
+          "inlines": [
+            {
+              "text": "More bits keep more of the original model’s precision and take more memory. In our test of Qwen3.8 27B on October 20, 2026, we didn’t detect an accuracy difference between fp8, fp4 and fp16 endpoints on 240 tasks with exact answers. That covers one model on one day, so test 4-bit on your own workload before you commit to it."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why doesn’t quantization destroy an LLM’s accuracy?",
+          "inlines": [
+            {
+              "text": "Why doesn’t quantization destroy an LLM’s accuracy?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Not all weights matter equally. AWQ found that protecting about 1% of the most important weights greatly reduces quantization error, and LLM.int8() uses mixed precision, keeping outlier values at 16-bit while multiplying more than 99.9% of values in 8-bit. Our test of Qwen3.8 27B can’t show which methods the providers use, but the fp16 endpoint missed 3 of 240 tasks and the fp8 and fp4 endpoints missed 2 to 4.",
+          "inlines": [
+            {
+              "text": "Not all weights matter equally. "
+            },
+            {
+              "href": "https://arxiv.org/abs/2306.00978",
+              "text": "AWQ"
+            },
+            {
+              "text": " found that protecting about 1% of the most important weights greatly reduces quantization error, and "
+            },
+            {
+              "href": "https://arxiv.org/abs/2208.07339",
+              "text": "LLM.int8()"
+            },
+            {
+              "text": " uses mixed precision, keeping outlier values at 16-bit while multiplying more than 99.9% of values in 8-bit. Our test of Qwen3.8 27B can’t show which methods the providers use, but the fp16 endpoint missed 3 of 240 tasks and the fp8 and fp4 endpoints missed 2 to 4."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "When should you quantize a model?",
+          "inlines": [
+            {
+              "text": "When should you quantize a model?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Quantize when the model doesn’t fit your hardware at 16-bit, or when you need more throughput from the same GPUs. In our test we didn’t detect a loss at fp8, and fp8 rounds each weight less than 4-bit does, so it’s the smaller step. Test either one on your own tasks first. Through an API you don’t quantize the model yourself. You choose an endpoint on OpenRouter that serves the precision you want, with provider.quantizations.",
+          "inlines": [
+            {
+              "text": "Quantize when the model doesn’t fit your hardware at 16-bit, or when you need more throughput from the same GPUs. In our test we didn’t detect a loss at fp8, and fp8 rounds each weight less than 4-bit does, so it’s the smaller step. Test either one on your own tasks first. Through an API you don’t quantize the model yourself. You choose an endpoint on OpenRouter that serves the precision you want, with provider.quantizations."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What does “unknown” quantization mean on a provider?",
+          "inlines": [
+            {
+              "text": "What does “unknown” quantization mean on a provider?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "It means the provider hasn’t reported a precision for that endpoint. On OpenRouter, 865 of 1,455 endpoints were unknown on October 20, 2026, and 610 of those belong to closed-weight models such as Claude and Gemini. unknown is also an accepted value in provider.quantizations, so you can include or exclude those endpoints.",
+          "inlines": [
+            {
+              "text": "It means the provider hasn’t reported a precision for that endpoint. On OpenRouter, 865 of 1,455 endpoints were unknown on October 20, 2026, and 610 of those belong to closed-weight models such as Claude and Gemini. unknown is also an accepted value in provider.quantizations, so you can include or exclude those endpoints."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-11T01:10:16.328567Z",
+  "contentMode": "full"
+}

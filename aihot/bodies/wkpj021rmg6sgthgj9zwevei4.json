@@ -1,0 +1,3078 @@
+{
+  "schemaVersion": 1,
+  "id": "wkpj021rmg6sgthgj9zwevei4",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/wkpj021rmg6sgthgj9zwevei4",
+  "fetchedAt": "2026-11-11T01:10:10.915119Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenRouter",
+    "MCP 与工具调用",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "你给智能体提供的每个工具，都会在每次请求时把它的定义发给模型，而这些定义会作为输入 token 计费。一个 Model Context Protocol（MCP）服务器可能给上下文窗口增加数万个 token。常见的替代方案是命令行工具（CLI）或 skill。",
+          "inlines": [
+            {
+              "text": "你给智能体提供的每个工具，都会在每次请求时把它的定义发给模型，而这些定义会作为输入 token 计费。一个 "
+            },
+            {
+              "href": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+              "text": "Model Context Protocol"
+            },
+            {
+              "text": "（MCP）服务器可能给上下文窗口增加数万个 token。常见的替代方案是命令行工具（CLI）或 "
+            },
+            {
+              "href": "https://agentskills.io/specification",
+              "text": "skill"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在一个 GitHub 任务上做了实测，用到 GitHub MCP server、gh CLI 和一个 gh skill，测试模型包括 Claude Haiku 5.5、Claude Sonnet 5.5、GPT-6 Luna 和 Gemini 3.8 Flash。在 Sonnet 5.5 上，三者都答对了，但消耗的输入 token 差别很大：CLI 用了 1,421 个，skill 用了 3,315 个，而 MCP 服务器在加载默认工具的情况下用了 59,417 个。下面说说这些 token 花在了哪里，以及如何用我们的 Tool Search 服务器工具把它们降下来。",
+          "inlines": [
+            {
+              "text": "我们在一个 GitHub 任务上做了实测，用到 "
+            },
+            {
+              "href": "https://github.com/github/github-mcp-server",
+              "text": "GitHub MCP server"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://cli.github.com/manual/",
+              "text": "gh CLI"
+            },
+            {
+              "text": " 和一个 gh skill，测试模型包括 "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+              "text": "Claude Haiku 5.5"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+              "text": "Claude Sonnet 5.5"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://openrouter.ai/openai/gpt-6-luna",
+              "text": "GPT-6 Luna"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://openrouter.ai/google/gemini-3.8-flash",
+              "text": "Gemini 3.8 Flash"
+            },
+            {
+              "text": "。在 Sonnet 5.5 上，三者都答对了，但消耗的输入 token 差别很大：CLI 用了 1,421 个，skill 用了 3,315 个，而 MCP 服务器在加载默认工具的情况下用了 59,417 个。下面说说这些 token 花在了哪里，以及如何用我们的 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/features/server-tools/tool-search",
+              "text": "Tool Search"
+            },
+            {
+              "text": " 服务器工具把它们降下来。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TL;DR",
+          "inlines": [
+            {
+              "text": "TL;DR"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "在 Claude Sonnet 5.5 上，GitHub MCP 服务器的 46 个默认工具会给每次请求增加 19,436 个 token。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在 Sonnet 5.5 上，单条工具结果——GitHub 的 release 对象——就花了约 20,400 个 token，比全部 46 个工具定义还多。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Tool Search 把 46 个工具的前置开销降到了 600 个 token 以内。从整个任务来看，它让 Sonnet 5.5 的成本减半，却让 Claude Haiku 5.5 的成本上升。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MCP、CLI 和 skill 有什么区别？",
+          "inlines": [
+            {
+              "text": "MCP、CLI 和 skill 有什么区别？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "三者都能给模型一项能力，区别在于模型在使用这项能力之前要读什么。",
+          "inlines": [
+            {
+              "text": "三者都能给模型一项能力，区别在于模型在使用这项能力之前要读什么。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型一开始看到什么",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "模型一开始看到什么"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型执行时看到什么",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "模型执行时看到什么"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP 服务器",
+          "inlines": [
+            {
+              "text": "MCP 服务器"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每次请求都带上每个工具的名称、描述和 JSON schema",
+          "inlines": [
+            {
+              "text": "每次请求都带上每个工具的名称、描述和 JSON schema"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "工具返回的结果，格式由服务器决定",
+          "inlines": [
+            {
+              "text": "工具返回的结果，格式由服务器决定"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CLI",
+          "inlines": [
+            {
+              "text": "CLI"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一个 shell 工具，外加一行说明该 CLI 存在",
+          "inlines": [
+            {
+              "text": "一个 shell 工具，外加一行说明该 CLI 存在"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "命令的输出，你可以用 —json 之类的参数来控制格式",
+          "inlines": [
+            {
+              "text": "命令的输出，你可以用 —json 之类的参数来控制格式"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Skill",
+          "inlines": [
+            {
+              "text": "Skill"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个 skill 的一行描述",
+          "inlines": [
+            {
+              "text": "每个 skill 的一行描述"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "先读一次该 skill 的 SKILL.md 文件，然后是命令输出",
+          "inlines": [
+            {
+              "text": "先读一次该 skill 的 SKILL.md 文件，然后是命令输出"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CLI 依赖模型本来就懂这个工具。skill 则是教模型怎么用某个工具，模型只在任务需要时才加载完整说明。",
+          "inlines": [
+            {
+              "text": "CLI 依赖模型本来就懂这个工具。skill 则是教模型怎么用某个工具，模型只在任务需要时才加载完整说明。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MCP 服务器会给每次请求增加多少 token？",
+          "inlines": [
+            {
+              "text": "MCP 服务器会给每次请求增加多少 token？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "可靠的计数方式是直接问模型。各家服务商在计算 token 之前，会先按自己的格式把工具定义写进提示词，本地分词器会漏掉这部分。把同一个请求分别带工具和不带工具各发一次，usage.prompt_tokens 的差值就是这些工具每一轮的开销。",
+          "inlines": [
+            {
+              "text": "可靠的计数方式是直接问模型。各家服务商在计算 token 之前，会先按自己的格式把工具定义写进提示词，本地分词器会漏掉这部分。把同一个请求分别带工具和不带工具各发一次，usage.prompt_tokens 的差值就是这些工具每一轮的开销。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "把这段代码保存为 mcp_cost.py。它使用 MCP 的 2025-06-18 版本，GitHub 服务器接受这个版本。",
+          "inlines": [
+            {
+              "text": "把这段代码保存为 mcp_cost.py。它使用 MCP 的 "
+            },
+            {
+              "href": "https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle",
+              "text": "2025-06-18 版本"
+            },
+            {
+              "text": "，GitHub 服务器接受这个版本。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "\"\"\"How many prompt tokens does an MCP server add to every request? Ask the model.\"\"\"\nimport json\nimport os\nimport subprocess\nimport sys\n\nimport requests\n\nAPI = \"https://openrouter.ai/api/v1/chat/completions\"\nHEADERS = {\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"}\n\ndef list_mcp_tools(command):\n    \"\"\"Start a stdio MCP server, run the handshake, and return its tools/list result.\"\"\"\n    proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,\n                            stderr=subprocess.DEVNULL, text=True)\n\n    def rpc(method, params, id=None):\n        msg = {\"jsonrpc\": \"2.0\", \"method\": method, \"params\": params}\n        if id is not None:\n            msg[\"id\"] = id\n        proc.stdin.write(json.dumps(msg) + \"\\n\")\n        proc.stdin.flush()\n        while id is not None:\n            reply = json.loads(proc.stdout.readline())\n            if reply.get(\"id\") == id:\n                return reply[\"result\"]\n\n    rpc(\"initialize\", {\"protocolVersion\": \"2025-06-18\", \"capabilities\": {},\n                       \"clientInfo\": {\"name\": \"mcp-cost\", \"version\": \"1\"}}, id=1)\n    rpc(\"notifications/initialized\", {})\n    tools, cursor, id = [], None, 2\n    while True:  # follow nextCursor so servers that paginate tools/list are fully counted\n        page = rpc(\"tools/list\", {\"cursor\": cursor} if cursor else {}, id=id)\n        tools += page[\"tools\"]\n        cursor, id = page.get(\"nextCursor\"), id + 1\n        if not cursor:\n            break\n    proc.kill()\n    return tools\n\ndef prompt_tokens(model, tools=None):\n    body = {\"model\": model, \"max_tokens\": 16, \"messages\": [{\"role\": \"user\", \"content\": \"Say ok.\"}]}\n    if tools:\n        body[\"tools\"] = tools\n    if model.startswith(\"google/\"):\n        # Google Vertex and Google AI Studio count the same tools differently, so pin one.\n        body[\"provider\"] = {\"only\": [\"google-vertex\"]}\n    r = requests.post(API, headers=HEADERS, json=body, timeout=120)\n    r.raise_for_status()\n    return r.json()[\"usage\"][\"prompt_tokens\"]\n\nif __name__ == \"__main__\":\n    mcp_tools = list_mcp_tools(sys.argv[1:])\n    # What an MCP client sends the model: each tool's name, description and input schema.\n    tools = [{\"type\": \"function\", \"function\": {\"name\": t[\"name\"], \"description\": t.get(\"description\", \"\"),\n                                               \"parameters\": t[\"inputSchema\"]}} for t in mcp_tools]\n    print(f\"{len(tools)} tools\")\n    for model in [\"anthropic/claude-haiku-5.5\", \"openai/gpt-6-luna\", \"google/gemini-3.8-flash\"]:\n        added = prompt_tokens(model, tools) - prompt_tokens(model)\n        print(f\"{model:30} +{added:,} prompt tokens on every request\")"
+        },
+        {
+          "type": "paragraph",
+          "text": "把服务器的启动命令作为参数传入，下面以 GitHub MCP server v2.0.2 为例。",
+          "inlines": [
+            {
+              "text": "把服务器的启动命令作为参数传入，下面以 GitHub MCP server v2.0.2 为例。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$ python mcp_cost.py github-mcp-server stdio --toolsets=default\n46 tools\nanthropic/claude-haiku-5.5     +19,436 prompt tokens on every request\nopenai/gpt-6-luna              +8,903 prompt tokens on every request\ngoogle/gemini-3.8-flash        +8,525 prompt tokens on every request"
+        },
+        {
+          "type": "paragraph",
+          "text": "每增加一个工具，开销就会增长。在 Haiku 5.5 上，issues 工具集有 10 个工具，增加 5,801 个 token；users 工具集只有 1 个工具，增加 619 个。",
+          "inlines": [
+            {
+              "text": "每增加一个工具，开销就会增长。在 Haiku 5.5 上，issues 工具集有 10 个工具，增加 5,801 个 token；users 工具集只有 1 个工具，增加 619 个。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "所用模型也会改变计数。同样的 46 个工具，在 Haiku 5.5 上要 19,436 个 token，在 GPT-6 Luna 上只要 8,903 个，所以要按你打算实际运行的模型来测量。",
+          "inlines": [
+            {
+              "text": "所用模型也会改变计数。同样的 46 个工具，在 Haiku 5.5 上要 19,436 个 token，在 GPT-6 Luna 上只要 8,903 个，所以要按你打算实际运行的模型来测量。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "就连提供模型的服务商也会影响结果。在 Gemini 3.8 Flash 上，这 46 个工具通过 Google Vertex 要 8,525 个 token，通过 Google AI Studio 则要 13,010 个。所以脚本总是把 Gemini 请求发往 Google Vertex。",
+          "inlines": [
+            {
+              "text": "就连提供模型的服务商也会影响结果。在 Gemini 3.8 Flash 上，这 46 个工具通过 Google Vertex 要 8,525 个 token，通过 Google AI Studio 则要 13,010 个。所以脚本总是把 Gemini 请求发往 Google Vertex。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "同一个任务用 CLI、skill 和 MCP 分别要花多少？",
+          "inlines": [
+            {
+              "text": "同一个任务用 CLI、skill 和 MCP 分别要花多少？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们问每个模型：“GitHub 仓库 cli/cli 的最新 release 是哪个？该仓库中带 bug 标签、最近打开的三个 open issue 是什么？”每种方式都在我们的 Responses API 上以工具调用循环运行，我们把各次请求的 usage.input_tokens 累加起来。",
+          "inlines": [
+            {
+              "text": "我们问每个模型：“GitHub 仓库 cli/cli 的最新 release 是哪个？该仓库中带 bug 标签、最近打开的三个 open issue 是什么？”每种方式都在我们的 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/api_reference/responses/overview",
+              "text": "Responses API"
+            },
+            {
+              "text": " 上以工具调用循环运行，我们把各次请求的 usage.input_tokens 累加起来。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "CLI。"
+                },
+                {
+                  "text": "一个 run_shell 工具，外加一句“GitHub CLI gh 已安装并完成认证”。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Skill。"
+                },
+                {
+                  "text": "同一个工具，再加一行索引，指向一份 1,492 字符的 SKILL.md，里面是 gh 的常用命令。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "MCP。"
+                },
+                {
+                  "text": "服务器提供的工具，范围可选任务所需的 2 个、默认的 46 个，或全部 91 个。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 2026 年 10 月 20 日把每种组合各跑了三次，表中显示的是中位数。Haiku 5.5 的提示词计数方式与 Sonnet 5.5 完全相同，但它在部分运行中多走了几轮，因此我们展示的是 Sonnet 更稳定的 token 数和计费成本。",
+          "inlines": [
+            {
+              "text": "我们在 2026 年 10 月 20 日把每种组合各跑了三次，表中显示的是中位数。Haiku 5.5 的提示词计数方式与 Sonnet 5.5 完全相同，但它在部分运行中多走了几轮，因此我们展示的是 Sonnet 更稳定的 token 数和计费成本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "方案",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "方案"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5 token 数",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Sonnet 5.5 token 数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5 每任务成本",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Sonnet 5.5 每任务成本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT-6 Luna token 数",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "GPT-6 Luna token 数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gemini 3.8 Flash token 数",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Gemini 3.8 Flash token 数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CLI",
+          "inlines": [
+            {
+              "text": "CLI"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,421",
+          "inlines": [
+            {
+              "text": "1,421"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0075",
+          "inlines": [
+            {
+              "text": "$0.0075"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "627",
+          "inlines": [
+            {
+              "text": "627"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5,292",
+          "inlines": [
+            {
+              "text": "5,292"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Skill",
+          "inlines": [
+            {
+              "text": "Skill"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,315",
+          "inlines": [
+            {
+              "text": "3,315"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0118",
+          "inlines": [
+            {
+              "text": "$0.0118"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,542",
+          "inlines": [
+            {
+              "text": "1,542"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6,107",
+          "inlines": [
+            {
+              "text": "6,107"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP，2 个工具",
+          "inlines": [
+            {
+              "text": "MCP，2 个工具"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "23,228",
+          "inlines": [
+            {
+              "text": "23,228"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0552",
+          "inlines": [
+            {
+              "text": "$0.0552"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14,479",
+          "inlines": [
+            {
+              "text": "14,479"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17,267",
+          "inlines": [
+            {
+              "text": "17,267"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP，46 个默认工具",
+          "inlines": [
+            {
+              "text": "MCP，46 个默认工具"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "59,417",
+          "inlines": [
+            {
+              "text": "59,417"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.1274",
+          "inlines": [
+            {
+              "text": "$0.1274"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "116,282",
+          "inlines": [
+            {
+              "text": "116,282"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "35,409",
+          "inlines": [
+            {
+              "text": "35,409"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP，全部 91 个工具",
+          "inlines": [
+            {
+              "text": "MCP，全部 91 个工具"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "101,351",
+          "inlines": [
+            {
+              "text": "101,351"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.2113",
+          "inlines": [
+            {
+              "text": "$0.2113"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "135,238",
+          "inlines": [
+            {
+              "text": "135,238"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "53,289",
+          "inlines": [
+            {
+              "text": "53,289"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP，2 个工具，结果截断至 4,000 字符",
+          "inlines": [
+            {
+              "text": "MCP，2 个工具，结果截断至 4,000 字符"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5,357",
+          "inlines": [
+            {
+              "text": "5,357"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0191",
+          "inlines": [
+            {
+              "text": "$0.0191"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2,726",
+          "inlines": [
+            {
+              "text": "2,726"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2,943",
+          "inlines": [
+            {
+              "text": "2,943"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "表中每一次运行都答对了。失败案例出现在 Tool Search 上，详见下文。在 Sonnet 5.5 上，默认 MCP 服务器的输入 token 是 CLI 的 42 倍，成本是 17 倍，每 1,000 个任务为 127 美元对 7.50 美元。Sonnet 5.5 的输出 token 单价是输入的 5 倍，CLI 那次运行的 463 个输出 token 占其 0.0075 美元成本中的 0.0046 美元。",
+          "inlines": [
+            {
+              "text": "表中每一次运行都答对了。失败案例出现在 Tool Search 上，详见下文。在 Sonnet 5.5 上，默认 MCP 服务器的输入 token 是 CLI 的 42 倍，成本是 17 倍，每 1,000 个任务为 127 美元对 7.50 美元。Sonnet 5.5 的输出 token 单价是输入的 5 倍，CLI 那次运行的 463 个输出 token 占其 0.0075 美元成本中的 0.0046 美元。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/028c0e96fbf3ede45cff51b6358896cb3dd148a50b194ae12d530ee5162e6133.webp",
+          "alt": "Bar chart of input tokens for the whole task, split into tool definitions and instructions versus task, tool results and replies: CLI 1,421, Skill 3,315, MCP with 2 tools capped 5,357, MCP with 2 tools 23,228, MCP with 46 tools 59,417, MCP with 91 tools 101,351."
+        },
+        {
+          "type": "paragraph",
+          "text": "Skill 比裸 CLI 更贵，因为文件一旦被模型读取，就会一直留在对话里。对于模型已经很熟悉的 CLI 工具，Skill 是可选项。而对于你自己的 CLI，Skill 正是模型学习命令的途径。",
+          "inlines": [
+            {
+              "text": "Skill 比裸 CLI 更贵，因为文件一旦被模型读取，就会一直留在对话里。对于模型已经很熟悉的 CLI 工具，Skill 是可选项。而对于你自己的 CLI，Skill 正是模型学习命令的途径。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么 MCP 工具结果的成本和工具定义一样高？",
+          "inlines": [
+            {
+              "text": "为什么 MCP 工具结果的成本和工具定义一样高？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "get_latest_release 返回了 GitHub 的完整 release 对象，共 42,182 字符，其中 87% 都在描述那 22 个下载文件。模型需要的只是 tag 和日期，而这正是 gh release view 返回的全部内容。",
+          "inlines": [
+            {
+              "text": "get_latest_release 返回了 GitHub 的完整 release 对象，共 42,182 字符，其中 87% 都在描述那 22 个下载文件。模型需要的只是 tag 和日期，而这正是 gh release view 返回的全部内容。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$ gh release view -R cli/cli --json tagName,publishedAt\n{\"publishedAt\":\"2026-09-30T02:40:02Z\",\"tagName\":\"v2.102.0\"}"
+        },
+        {
+          "type": "paragraph",
+          "text": "这个对象会留在上下文窗口中，并在之后的每次请求中重新发送，在 Sonnet 5.5 上它增加了约 20,400 个 token。把服务器限定为两个工具后，首次请求从 19,487 个 token 降到 1,406 个。整个任务仍然花了 23,228 个 token。",
+          "inlines": [
+            {
+              "text": "这个对象会留在上下文窗口中，并在之后的每次请求中重新发送，在 Sonnet 5.5 上它增加了约 20,400 个 token。把服务器限定为两个工具后，首次请求从 19,487 个 token 降到 1,406 个。整个任务仍然花了 23,228 个 token。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "表中展示了两种解决办法。第一，只暴露智能体需要的工具，用 —tools=get_latest_release,list_issues 或 —toolsets=issues,repos。第二，在模型看到结果之前，先在客户端里精简结果。4,000 字符的上限让限定范围的方案降到 5,357 个 token，且每次运行都正确，因为 GitHub 把 tag 和日期放在靠前的位置。",
+          "inlines": [
+            {
+              "text": "表中展示了两种解决办法。第一，只暴露智能体需要的工具，用 —tools=get_latest_release,list_issues 或 —toolsets=issues,repos。第二，在模型看到结果之前，先在客户端里精简结果。4,000 字符的上限让限定范围的方案降到 5,357 个 token，且每次运行都正确，因为 GitHub 把 tag 和日期放在靠前的位置。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这个上限之所以有效，只是因为相关字段恰好排在前面。与 Tool Search 结合后，该上限让 Gemini 3.8 Flash 和 Haiku 5.5 各自三次运行中只有一次答对，Gemini 还有一次在重试时触发了我们 12 次请求的上限。",
+          "inlines": [
+            {
+              "text": "这个上限之所以有效，只是因为相关字段恰好排在前面。与 Tool Search 结合后，该上限让 Gemini 3.8 Flash 和 Haiku 5.5 各自三次运行中只有一次答对，Gemini 还有一次在重试时触发了我们 12 次请求的上限。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "更好的做法是保留完整字段，就像 CLI 的 —json 那样。GitHub 服务器的 list_issues 接受 fields 参数，只请求 number、title 和 creation date 后，其结果从 8,336 字符降到 714 字符。不加这个参数，结果大小就由模型决定。在加载 46 或 91 个工具的六次运行中，有四次 GPT-6 Luna 请求了 100 个 issue 及其全文，拿回了 281,963 字符。",
+          "inlines": [
+            {
+              "text": "更好的做法是保留完整字段，就像 CLI 的 —json 那样。GitHub 服务器的 list_issues 接受 fields 参数，只请求 number、title 和 creation date 后，其结果从 8,336 字符降到 714 字符。不加这个参数，结果大小就由模型决定。在加载 46 或 91 个工具的六次运行中，有四次 GPT-6 Luna 请求了 100 个 issue 及其全文，拿回了 281,963 字符。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Tool Search 能解决 MCP 的上下文问题吗？",
+          "inlines": [
+            {
+              "text": "Tool Search 能解决 MCP 的上下文问题吗？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Search 消除了工具定义的大部分成本。你把工具标记为 defer_loading: true，并加上 {“type”: “openrouter:tool_search”}。我们会暂不发送被延迟的定义，只发送搜索工具，以及你保留加载的工具。模型用正则表达式搜索工具名称和描述，并在下一轮调用匹配到的工具。该功能处于 beta 阶段，可在 Responses 和 Messages API 上配合任意模型和提供商使用。",
+          "inlines": [
+            {
+              "text": "Tool Search 消除了工具定义的大部分成本。你把工具标记为 defer_loading: true，并加上 {“type”: “openrouter:tool_search”}。我们会暂不发送被延迟的定义，只发送搜索工具，以及你保留加载的工具。模型用正则表达式搜索工具名称和描述，并在下一轮调用匹配到的工具。该功能处于 beta 阶段，可在 Responses 和 Messages API 上配合"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/features/server-tools/tool-search",
+              "text": "任意模型和提供商"
+            },
+            {
+              "text": "使用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "把全部 46 个 GitHub 工具都延迟加载后，任何搜索之前的成本在 Claude 模型上是 578 个 token，GPT-6 Luna 上是 144 个，Gemini 3.8 Flash 上是 130 个。",
+          "inlines": [
+            {
+              "text": "把全部 46 个 GitHub 工具都延迟加载后，任何搜索之前的成本在 Claude 模型上是 578 个 token，GPT-6 Luna 上是 144 个，Gemini 3.8 Flash 上是 130 个。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这个脚本会先加载全部 46 个工具发送一个问题，然后再改为延迟加载。把它保存到 mcp_cost.py 旁边，因为它复用了 list_mcp_tools。",
+          "inlines": [
+            {
+              "text": "这个脚本会先加载全部 46 个工具发送一个问题，然后再改为延迟加载。把它保存到 mcp_cost.py 旁边，因为它复用了 list_mcp_tools。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "\"\"\"Send the same MCP tools with defer_loading and openrouter:tool_search, and compare prompt tokens.\"\"\"\nimport os\nimport sys\n\nimport requests\n\nfrom mcp_cost import list_mcp_tools\n\nAPI = \"https://openrouter.ai/api/v1/responses\"\nHEADERS = {\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"}\nQUESTION = \"What is the latest release of the GitHub repository cli/cli?\"\n\ndef ask(model, tools):\n    r = requests.post(API, headers=HEADERS, timeout=300,\n                      json={\"model\": model, \"input\": QUESTION, \"tools\": tools})\n    r.raise_for_status()\n    return r.json()\n\nmcp_tools = list_mcp_tools(sys.argv[1:])\n# The Responses API takes function tools flat: type, name, description, parameters.\ntools = [{\"type\": \"function\", \"name\": t[\"name\"], \"description\": t.get(\"description\", \"\"),\n          \"parameters\": t[\"inputSchema\"]} for t in mcp_tools]\ndeferred = [{\"type\": \"openrouter:tool_search\"}] + [{**t, \"defer_loading\": True} for t in tools]\n\nfor model in [\"anthropic/claude-haiku-5.5\", \"openai/gpt-6-luna\"]:\n    for label, tool_list in [(\"all loaded\", tools), (\"tool search\", deferred)]:\n        res = ask(model, tool_list)\n        steps = [f\"search {o['query']!r}\" if o[\"type\"] == \"openrouter:tool_search\" else f\"call {o['name']}\"\n                 for o in res[\"output\"] if o[\"type\"] in (\"openrouter:tool_search\", \"function_call\")]\n        print(f\"{model:28} {label:12} {res['usage']['input_tokens']:>6,} input tokens  {' -> '.join(steps)}\")"
+        },
+        {
+          "type": "code",
+          "text": "$ python tool_search.py github-mcp-server stdio --toolsets=default\nanthropic/claude-haiku-5.5   all loaded   19,464 input tokens  call get_latest_release\nanthropic/claude-haiku-5.5   tool search   7,069 input tokens  search 'github|release' -> search 'latest release|list_releases|get_latest_release' -> call get_latest_release\nopenai/gpt-6-luna            all loaded    8,923 input tokens  call get_latest_release\nopenai/gpt-6-luna            tool search   4,453 input tokens  search 'github repository latest release cli cli' -> search 'github' -> search 'search web internet browser' -> search 'release' -> call get_latest_release"
+        },
+        {
+          "type": "paragraph",
+          "text": "要在你的智能体上试用，请把你的 MCP 工具标记为 defer_loading: true，添加 {\"type\": \"openrouter:tool_search\"}，然后对比前后的 usage.input_tokens。",
+          "inlines": [
+            {
+              "text": "要在你的智能体上试用，请把你的 MCP 工具标记为 defer_loading: true，添加 {\"type\": \"openrouter:tool_search\"}，然后对比前后的 usage.input_tokens。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Search 各行数据会随模型的搜索方式而变化。在这个脚本的五次独立运行中，Haiku 5.5 用了 2,134 到 13,225 个 token，且每次搜索都会增加。GPT-6 Luna 写的是短语而不是模式，进行了三到六次搜索，还有一次直接放弃，没有调用该工具。我们的文档建议保持你最常用的三到五个工具处于加载状态。",
+          "inlines": [
+            {
+              "text": "Tool Search 各行数据会随模型的搜索方式而变化。在这个脚本的五次独立运行中，Haiku 5.5 用了 2,134 到 13,225 个 token，且每次搜索都会增加。GPT-6 Luna 写的是短语而不是模式，进行了三到六次搜索，还有一次直接放弃，没有调用该工具。"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/features/server-tools/tool-search",
+              "text": "我们的文档"
+            },
+            {
+              "text": "建议保持你最常用的三到五个工具处于加载状态。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在整个任务中，结果取决于模型。",
+          "inlines": [
+            {
+              "text": "在整个任务中，结果取决于模型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "模型"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP，加载 46 个工具",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "MCP，加载 46 个工具"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Search，延迟 46 个",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Tool Search，延迟 46 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Search，延迟 91 个",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Tool Search，延迟 91 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Sonnet 5.5",
+          "inlines": [
+            {
+              "text": "Claude Sonnet 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "59,417",
+          "inlines": [
+            {
+              "text": "59,417"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30,334",
+          "inlines": [
+            {
+              "text": "30,334"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "31,615",
+          "inlines": [
+            {
+              "text": "31,615"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT-6 Luna",
+          "inlines": [
+            {
+              "text": "GPT-6 Luna"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "116,282",
+          "inlines": [
+            {
+              "text": "116,282"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25,544",
+          "inlines": [
+            {
+              "text": "25,544"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "57,975",
+          "inlines": [
+            {
+              "text": "57,975"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gemini 3.8 Flash",
+          "inlines": [
+            {
+              "text": "Gemini 3.8 Flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "35,409",
+          "inlines": [
+            {
+              "text": "35,409"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "37,568",
+          "inlines": [
+            {
+              "text": "37,568"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "38,445",
+          "inlines": [
+            {
+              "text": "38,445"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Haiku 5.5",
+          "inlines": [
+            {
+              "text": "Claude Haiku 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "99,319",
+          "inlines": [
+            {
+              "text": "99,319"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "154,623",
+          "inlines": [
+            {
+              "text": "154,623"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "31,781",
+          "inlines": [
+            {
+              "text": "31,781"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT-6 Luna 的加载数值包含了上文所述的 100 个 issue 请求。",
+          "inlines": [
+            {
+              "text": "GPT-6 Luna 的加载数值包含了上文所述的 100 个 issue 请求。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Sonnet 5.5 上，延迟 91 个工具比延迟 46 个多花 1,281 个 token，而全部加载 91 个则多花约 42,000 个。Tool Search 不会缩小工具结果，而且 release 对象仍然占据了 Sonnet 第二次请求的大部分。",
+          "inlines": [
+            {
+              "text": "在 Sonnet 5.5 上，延迟 91 个工具比延迟 46 个多花 1,281 个 token，而全部加载 91 个则多花约 42,000 个。Tool Search 不会缩小工具结果，而且 release 对象仍然占据了 Sonnet 第二次请求的大部分。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5 在延迟 46 个工具时比全部加载时花费更高。在全部三次运行中，它都向 list_issues 请求了一个该工具并不提供的字段，然后用错误类型的参数重试了三到四次，例如把 labels 写成字符串而不是数组。在全部工具加载的情况下，Haiku 在三次运行中有两次犯了同样的错误，并在下一次调用时修正了。请限制循环中的请求数量，并在某次运行成本激增时检查工具错误。",
+          "inlines": [
+            {
+              "text": "Haiku 5.5 在延迟 46 个工具时比全部加载时花费更高。在全部三次运行中，它都向 list_issues 请求了一个该工具并不提供的字段，然后用错误类型的参数重试了三到四次，例如把 labels 写成字符串而不是数组。在全部工具加载的情况下，Haiku 在三次运行中有两次犯了同样的错误，并在下一次调用时修正了。请限制循环中的请求数量，并在某次运行成本激增时检查工具错误。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Search 通过放宽 tool_choice 来揭示工具，因此同时强制进行工具调用的请求会失败。",
+          "inlines": [
+            {
+              "text": "Tool Search 通过放宽 tool_choice 来揭示工具，因此同时强制进行工具调用的请求会失败。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "400 `tool_choice` 与 `openrouter:tool_search` 冲突。延迟工具是通过 `tool_choice` 揭示的，因此必须省略它或将其设置为 `{\"type\": \"allowed_tools\", …}`。移除 `tool_choice`，或者从你的工具中去掉 `defer_loading` 以按原样使用。",
+          "inlines": [
+            {
+              "text": "400 `tool_choice` 与 `openrouter:tool_search` 冲突。延迟工具是通过 `tool_choice` 揭示的，因此必须省略它或将其设置为 `{\"type\": \"allowed_tools\", …}`。移除 `tool_choice`，或者从你的工具中去掉 `defer_loading` 以按原样使用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Chat Completions 不接受 openrouter:tool_search 并返回 400，因此请先将该智能体迁移到 Responses 或 Messages API。",
+          "inlines": [
+            {
+              "text": "Chat Completions 不接受 openrouter:tool_search 并返回 400，因此请先将该智能体迁移到 Responses 或 Messages API。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MCP vs CLI vs 技能：你应该用哪个？",
+          "inlines": [
+            {
+              "text": "MCP vs CLI vs 技能：你应该用哪个？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "当存在一个 CLI 且你的智能体能运行命令时，就用 CLI。当它不能时，就用 MCP，并限定范围、保持结果精简。",
+          "inlines": [
+            {
+              "text": "当存在一个 CLI 且你的智能体能运行命令时，就用 CLI。当它不能时，就用 MCP，并限定范围、保持结果精简。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你的情况",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "你的情况"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "使用",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "使用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "来自我们在 Sonnet 5.5 上的运行",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "来自我们在 Sonnet 5.5 上的运行"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "存在一个众所周知的 CLI，且智能体能运行命令",
+          "inlines": [
+            {
+              "text": "存在一个众所周知的 CLI，且智能体能运行命令"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CLI",
+          "inlines": [
+            {
+              "text": "CLI"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个任务 1,421 个 token",
+          "inlines": [
+            {
+              "text": "每个任务 1,421 个 token"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你自己的 CLI，或者模型使用不稳定的 CLI",
+          "inlines": [
+            {
+              "text": "你自己的 CLI，或者模型使用不稳定的 CLI"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CLI 加一个技能",
+          "inlines": [
+            {
+              "text": "CLI 加一个技能"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,315 个 token，每次运行命令相同",
+          "inlines": [
+            {
+              "text": "3,315 个 token，每次运行命令相同"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "没有 CLI、没有 shell，或者你需要服务器的认证和权限",
+          "inlines": [
+            {
+              "text": "没有 CLI、没有 shell，或者你需要服务器的认证和权限"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP，限定为你需要的工具",
+          "inlines": [
+            {
+              "text": "MCP，限定为你需要的工具"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2 个工具时 23,228 个 token，而 46 个工具时为 59,417 个",
+          "inlines": [
+            {
+              "text": "2 个工具时 23,228 个 token，而 46 个工具时为 59,417 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "跨多个服务器的大型工具库",
+          "inlines": [
+            {
+              "text": "跨多个服务器的大型工具库"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "带 Tool Search 的 MCP",
+          "inlines": [
+            {
+              "text": "带 Tool Search 的 MCP"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Sonnet 5.5 上，延迟 91 个工具的成本与 46 个大致相同",
+          "inlines": [
+            {
+              "text": "在 Sonnet 5.5 上，延迟 91 个工具的成本与 46 个大致相同"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "任何 MCP 路线",
+          "inlines": [
+            {
+              "text": "任何 MCP 路线"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "将工具结果裁剪为你需要的字段",
+          "inlines": [
+            {
+              "text": "将工具结果裁剪为你需要的字段"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "从 23,228 降至 5,357 个 token",
+          "inlines": [
+            {
+              "text": "从 23,228 降至 5,357 个 token"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你的智能体没有 shell，我们的 Shell 服务器工具可以为任何模型提供一个沙箱化的 shell。在我们的 Agent SDK 中，MCP Tools 可连接远程 MCP 服务器，而技能加载器示例仅在模型请求后才添加技能的指令。",
+          "inlines": [
+            {
+              "text": "如果你的智能体没有 shell，我们的 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/features/server-tools/shell",
+              "text": "Shell 服务器工具"
+            },
+            {
+              "text": "可以为任何模型提供一个沙箱化的 shell。在我们的 Agent SDK 中，"
+            },
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/mcp-tools",
+              "text": "MCP Tools"
+            },
+            {
+              "text": " 可连接远程 MCP 服务器，而"
+            },
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/examples/skills-loader",
+              "text": "技能加载器示例"
+            },
+            {
+              "text": "仅在模型请求后才添加技能的指令。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们只在一个任务上测试了一个服务器，所以在做决定之前，请在你的服务器上运行 mcp_cost.py。",
+          "inlines": [
+            {
+              "text": "我们只在一个任务上测试了一个服务器，所以在做决定之前，请在你的服务器上运行 mcp_cost.py。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "常见问题",
+          "inlines": [
+            {
+              "text": "常见问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "在 AI 智能体语境中，什么是 CLI？",
+          "inlines": [
+            {
+              "text": "在 AI 智能体语境中，什么是 CLI？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "CLI（命令行界面）是用输入命令来运行的程序。智能体拿到一个 shell 工具，自己写出这些命令。在我们的测试中，gh CLI 在一个 GitHub 任务上用了 1,421 个输入 token，而 GitHub MCP 服务器用了 59,417 个。",
+          "inlines": [
+            {
+              "text": "CLI（命令行界面）是用输入命令来运行的程序。智能体拿到一个 shell 工具，自己写出这些命令。在我们的测试中，gh CLI 在一个 GitHub 任务上用了 1,421 个输入 token，而 GitHub MCP 服务器用了 59,417 个。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MCP 服务器和连接器有什么区别？",
+          "inlines": [
+            {
+              "text": "MCP 服务器和连接器有什么区别？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP 服务器通过模型上下文协议对外提供工具。连接器则是 Claude 这类应用对其连接远程 MCP 服务器的链路的称呼。我们的 Agent SDK 可以通过 MCP Tools 连接远程 MCP 服务器。",
+          "inlines": [
+            {
+              "text": "MCP 服务器通过模型上下文协议对外提供工具。连接器则是 Claude 这类应用对其连接"
+            },
+            {
+              "href": "https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp",
+              "text": "远程 MCP 服务器"
+            },
+            {
+              "text": "的链路的称呼。我们的 Agent SDK 可以通过 MCP Tools 连接远程 MCP 服务器。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "技能会取代 MCP 吗？",
+          "inlines": [
+            {
+              "text": "技能会取代 MCP 吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "不会。技能是通常面向 CLI 的指令，只在任务需要时才加载。MCP 提供带自身鉴权的类型化工具，无需 shell 即可工作。在 OpenRouter 上，Tool Search 让你可以保留 MCP，只在需要时加载每个工具。",
+          "inlines": [
+            {
+              "text": "不会。技能是通常面向 CLI 的指令，只在任务需要时才加载。MCP 提供带自身鉴权的类型化工具，无需 shell 即可工作。在 OpenRouter 上，Tool Search 让你可以保留 MCP，只在需要时加载每个工具。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "提示词缓存能解决 MCP 的 token 成本问题吗？",
+          "inlines": [
+            {
+              "text": "提示词缓存能解决 MCP 的 token 成本问题吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "它能降低这些 token 的价格，但并不能消除它们。截至 2026 年 10 月，在 OpenRouter 上，根据我们的实时模型价格，在 Claude Haiku 5.5 和 GPT-6 Luna 上缓存输入的价格是正常费率的十分之一，而且它仍然会占用上下文窗口。",
+          "inlines": [
+            {
+              "text": "它能降低这些 token 的价格，但并不能消除它们。截至 2026 年 10 月，在 OpenRouter 上，根据我们的"
+            },
+            {
+              "href": "https://openrouter.ai/api/v1/models",
+              "text": "实时模型价格"
+            },
+            {
+              "text": "，在 Claude Haiku 5.5 和 GPT-6 Luna 上"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/prompt-caching",
+              "text": "缓存输入"
+            },
+            {
+              "text": "的价格是正常费率的十分之一，而且它仍然会占用上下文窗口。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "多少个 MCP 工具算太多？",
+          "inlines": [
+            {
+              "text": "多少个 MCP 工具算太多？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的 Tool Search 文档建议，一旦工具定义超过约 10,000 个 token 或大约 10 个工具，就推迟加载工具。GitHub MCP 服务器默认的 46 个工具在 Claude 上合计 19,436 个 token。",
+          "inlines": [
+            {
+              "text": "我们的 Tool Search 文档建议，一旦工具定义超过约 10,000 个 token 或大约 10 个工具，就推迟加载工具。GitHub MCP 服务器默认的 46 个工具在 Claude 上合计 19,436 个 token。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "后续步骤",
+          "inlines": [
+            {
+              "text": "后续步骤"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/features/server-tools/tool-search",
+                  "text": "Tool Search"
+                },
+                {
+                  "text": " 涵盖所有选项，包括 max_results。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/build-tool-calling-agent-loop/",
+                  "text": "构建可靠的工具调用智能体循环"
+                },
+                {
+                  "text": "展示了我们各次运行所用的循环类型，并带有迭代上限。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/prompt-caching-sticky-routing/",
+                  "text": "OpenRouter 提示词缓存"
+                },
+                {
+                  "text": "说明了缓存 token 的费用。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Every tool you give an agent sends its definition to the model on every request, and you pay for it as input tokens. A Model Context Protocol (MCP) server can add tens of thousands of tokens to the context window. The usual alternatives are a command-line tool (CLI) or a skill.",
+          "inlines": [
+            {
+              "text": "Every tool you give an agent sends its definition to the model on every request, and you pay for it as input tokens. A "
+            },
+            {
+              "href": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+              "text": "Model Context Protocol"
+            },
+            {
+              "text": " (MCP) server can add tens of thousands of tokens to the context window. The usual alternatives are a command-line tool (CLI) or a "
+            },
+            {
+              "href": "https://agentskills.io/specification",
+              "text": "skill"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We measured it on one GitHub task with the GitHub MCP server, the gh CLI, and a gh skill, on Claude Haiku 5.5, Claude Sonnet 5.5, GPT-6 Luna, and Gemini 3.8 Flash. On Sonnet 5.5, all three answered correctly, but the input tokens they used were very different. The CLI used 1,421, the skill used 3,315, and the MCP server used 59,417 with its default tools loaded. Here’s where the tokens go and how to cut them with our Tool Search server tool.",
+          "inlines": [
+            {
+              "text": "We measured it on one GitHub task with the "
+            },
+            {
+              "href": "https://github.com/github/github-mcp-server",
+              "text": "GitHub MCP server"
+            },
+            {
+              "text": ", the "
+            },
+            {
+              "href": "https://cli.github.com/manual/",
+              "text": "gh CLI"
+            },
+            {
+              "text": ", and a gh skill, on "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+              "text": "Claude Haiku 5.5"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+              "text": "Claude Sonnet 5.5"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://openrouter.ai/openai/gpt-6-luna",
+              "text": "GPT-6 Luna"
+            },
+            {
+              "text": ", and "
+            },
+            {
+              "href": "https://openrouter.ai/google/gemini-3.8-flash",
+              "text": "Gemini 3.8 Flash"
+            },
+            {
+              "text": ". On Sonnet 5.5, all three answered correctly, but the input tokens they used were very different. The CLI used 1,421, the skill used 3,315, and the MCP server used 59,417 with its default tools loaded. Here’s where the tokens go and how to cut them with our "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/features/server-tools/tool-search",
+              "text": "Tool Search"
+            },
+            {
+              "text": " server tool."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TL;DR",
+          "inlines": [
+            {
+              "text": "TL;DR"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "The GitHub MCP server’s 46 default tools add 19,436 tokens to every request on Claude Sonnet 5.5."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "On Sonnet 5.5, one tool result, GitHub’s release object, cost about 20,400 tokens, more than all 46 definitions."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Tool Search cut the up-front cost of 46 tools to under 600 tokens. Over the whole task, it halved the cost on Sonnet 5.5 and raised it on Claude Haiku 5.5."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is the difference between MCP, a CLI, and a skill?",
+          "inlines": [
+            {
+              "text": "What is the difference between MCP, a CLI, and a skill?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "All three give a model a capability. They differ in what the model reads before it can use it.",
+          "inlines": [
+            {
+              "text": "All three give a model a capability. They differ in what the model reads before it can use it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What the model sees up front",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What the model sees up front"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What it sees when it acts",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What it sees when it acts"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP server",
+          "inlines": [
+            {
+              "text": "MCP server"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Every tool’s name, description, and JSON schema, on every request",
+          "inlines": [
+            {
+              "text": "Every tool’s name, description, and JSON schema, on every request"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The tool’s result, in whatever shape the server returns",
+          "inlines": [
+            {
+              "text": "The tool’s result, in whatever shape the server returns"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CLI",
+          "inlines": [
+            {
+              "text": "CLI"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A shell tool and a line saying the CLI exists",
+          "inlines": [
+            {
+              "text": "A shell tool and a line saying the CLI exists"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The command’s output, which you shape with flags such as —json",
+          "inlines": [
+            {
+              "text": "The command’s output, which you shape with flags such as —json"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Skill",
+          "inlines": [
+            {
+              "text": "Skill"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A one-line description of each skill",
+          "inlines": [
+            {
+              "text": "A one-line description of each skill"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The skill’s SKILL.md file, once, then the command output",
+          "inlines": [
+            {
+              "text": "The skill’s SKILL.md file, once, then the command output"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A CLI relies on the model already knowing the tool. A skill teaches the model how to use a tool, and the model loads the full instructions only when a task needs them.",
+          "inlines": [
+            {
+              "text": "A CLI relies on the model already knowing the tool. A skill teaches the model how to use a tool, and the model loads the full instructions only when a task needs them."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How many tokens does an MCP server add to every request?",
+          "inlines": [
+            {
+              "text": "How many tokens does an MCP server add to every request?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The reliable way to count them is to ask the model. Each provider writes tool definitions into the prompt in its own format before counting tokens, which a local tokenizer misses. Send the same request with and without the tools, and the difference in usage.prompt_tokens is what the tools cost on every turn.",
+          "inlines": [
+            {
+              "text": "The reliable way to count them is to ask the model. Each provider writes tool definitions into the prompt in its own format before counting tokens, which a local tokenizer misses. Send the same request with and without the tools, and the difference in usage.prompt_tokens is what the tools cost on every turn."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Save this as mcp_cost.py. It speaks the 2025-06-18 version of MCP, which the GitHub server accepts.",
+          "inlines": [
+            {
+              "text": "Save this as mcp_cost.py. It speaks the "
+            },
+            {
+              "href": "https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle",
+              "text": "2025-06-18 version"
+            },
+            {
+              "text": " of MCP, which the GitHub server accepts."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "\"\"\"How many prompt tokens does an MCP server add to every request? Ask the model.\"\"\"\nimport json\nimport os\nimport subprocess\nimport sys\n\nimport requests\n\nAPI = \"https://openrouter.ai/api/v1/chat/completions\"\nHEADERS = {\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"}\n\ndef list_mcp_tools(command):\n    \"\"\"Start a stdio MCP server, run the handshake, and return its tools/list result.\"\"\"\n    proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,\n                            stderr=subprocess.DEVNULL, text=True)\n\n    def rpc(method, params, id=None):\n        msg = {\"jsonrpc\": \"2.0\", \"method\": method, \"params\": params}\n        if id is not None:\n            msg[\"id\"] = id\n        proc.stdin.write(json.dumps(msg) + \"\\n\")\n        proc.stdin.flush()\n        while id is not None:\n            reply = json.loads(proc.stdout.readline())\n            if reply.get(\"id\") == id:\n                return reply[\"result\"]\n\n    rpc(\"initialize\", {\"protocolVersion\": \"2025-06-18\", \"capabilities\": {},\n                       \"clientInfo\": {\"name\": \"mcp-cost\", \"version\": \"1\"}}, id=1)\n    rpc(\"notifications/initialized\", {})\n    tools, cursor, id = [], None, 2\n    while True:  # follow nextCursor so servers that paginate tools/list are fully counted\n        page = rpc(\"tools/list\", {\"cursor\": cursor} if cursor else {}, id=id)\n        tools += page[\"tools\"]\n        cursor, id = page.get(\"nextCursor\"), id + 1\n        if not cursor:\n            break\n    proc.kill()\n    return tools\n\ndef prompt_tokens(model, tools=None):\n    body = {\"model\": model, \"max_tokens\": 16, \"messages\": [{\"role\": \"user\", \"content\": \"Say ok.\"}]}\n    if tools:\n        body[\"tools\"] = tools\n    if model.startswith(\"google/\"):\n        # Google Vertex and Google AI Studio count the same tools differently, so pin one.\n        body[\"provider\"] = {\"only\": [\"google-vertex\"]}\n    r = requests.post(API, headers=HEADERS, json=body, timeout=120)\n    r.raise_for_status()\n    return r.json()[\"usage\"][\"prompt_tokens\"]\n\nif __name__ == \"__main__\":\n    mcp_tools = list_mcp_tools(sys.argv[1:])\n    # What an MCP client sends the model: each tool's name, description and input schema.\n    tools = [{\"type\": \"function\", \"function\": {\"name\": t[\"name\"], \"description\": t.get(\"description\", \"\"),\n                                               \"parameters\": t[\"inputSchema\"]}} for t in mcp_tools]\n    print(f\"{len(tools)} tools\")\n    for model in [\"anthropic/claude-haiku-5.5\", \"openai/gpt-6-luna\", \"google/gemini-3.8-flash\"]:\n        added = prompt_tokens(model, tools) - prompt_tokens(model)\n        print(f\"{model:30} +{added:,} prompt tokens on every request\")"
+        },
+        {
+          "type": "paragraph",
+          "text": "Pass the server’s start command as arguments, as here for the GitHub MCP server v2.0.2.",
+          "inlines": [
+            {
+              "text": "Pass the server’s start command as arguments, as here for the GitHub MCP server v2.0.2."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$ python mcp_cost.py github-mcp-server stdio --toolsets=default\n46 tools\nanthropic/claude-haiku-5.5     +19,436 prompt tokens on every request\nopenai/gpt-6-luna              +8,903 prompt tokens on every request\ngoogle/gemini-3.8-flash        +8,525 prompt tokens on every request"
+        },
+        {
+          "type": "paragraph",
+          "text": "The cost grows with each tool you add. On Haiku 5.5, the issues toolset has 10 tools and adds 5,801 tokens. The users toolset has one tool and adds 619.",
+          "inlines": [
+            {
+              "text": "The cost grows with each tool you add. On Haiku 5.5, the issues toolset has 10 tools and adds 5,801 tokens. The users toolset has one tool and adds 619."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The model you use changes the count too. The same 46 tools cost 19,436 tokens on Haiku 5.5 but 8,903 on GPT-6 Luna, so measure on the model you plan to run.",
+          "inlines": [
+            {
+              "text": "The model you use changes the count too. The same 46 tools cost 19,436 tokens on Haiku 5.5 but 8,903 on GPT-6 Luna, so measure on the model you plan to run."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Even the provider serving the model can change it. On Gemini 3.8 Flash, the 46 tools cost 8,525 tokens through Google Vertex and 13,010 through Google AI Studio. That’s why the script always sends Gemini requests to Google Vertex.",
+          "inlines": [
+            {
+              "text": "Even the provider serving the model can change it. On Gemini 3.8 Flash, the 46 tools cost 8,525 tokens through Google Vertex and 13,010 through Google AI Studio. That’s why the script always sends Gemini requests to Google Vertex."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What does the same task cost with a CLI, a skill, and MCP?",
+          "inlines": [
+            {
+              "text": "What does the same task cost with a CLI, a skill, and MCP?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We asked each model, “What is the latest release of the GitHub repository cli/cli, and what are the three most recently opened open issues in that repository with the label bug?” Each approach ran as a tool-calling loop on our Responses API, and we added up usage.input_tokens across requests.",
+          "inlines": [
+            {
+              "text": "We asked each model, “What is the latest release of the GitHub repository cli/cli, and what are the three most recently opened open issues in that repository with the label bug?” Each approach ran as a tool-calling loop on our "
+            },
+            {
+              "href": "https://openrouter.ai/docs/api_reference/responses/overview",
+              "text": "Responses API"
+            },
+            {
+              "text": ", and we added up usage.input_tokens across requests."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "CLI."
+                },
+                {
+                  "text": " One run_shell tool and the line “The GitHub CLI gh is installed and authenticated.”"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Skill."
+                },
+                {
+                  "text": " The same tool, plus a one-line index pointing at a 1,492-character SKILL.md of gh recipes."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "MCP."
+                },
+                {
+                  "text": " The server’s tools, scoped to the 2 the task needs, the default 46, or all 91."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We ran each combination three times on October 20, 2026, and show medians. Haiku 5.5 counts a prompt exactly as Sonnet 5.5 does, but it took extra turns in some runs, so we show Sonnet’s steadier tokens and billed cost.",
+          "inlines": [
+            {
+              "text": "We ran each combination three times on October 20, 2026, and show medians. Haiku 5.5 counts a prompt exactly as Sonnet 5.5 does, but it took extra turns in some runs, so we show Sonnet’s steadier tokens and billed cost."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Approach",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Approach"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5 tokens",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Sonnet 5.5 tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sonnet 5.5 cost per task",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Sonnet 5.5 cost per task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT-6 Luna tokens",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "GPT-6 Luna tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gemini 3.8 Flash tokens",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Gemini 3.8 Flash tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CLI",
+          "inlines": [
+            {
+              "text": "CLI"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,421",
+          "inlines": [
+            {
+              "text": "1,421"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0075",
+          "inlines": [
+            {
+              "text": "$0.0075"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "627",
+          "inlines": [
+            {
+              "text": "627"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5,292",
+          "inlines": [
+            {
+              "text": "5,292"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Skill",
+          "inlines": [
+            {
+              "text": "Skill"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,315",
+          "inlines": [
+            {
+              "text": "3,315"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0118",
+          "inlines": [
+            {
+              "text": "$0.0118"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,542",
+          "inlines": [
+            {
+              "text": "1,542"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6,107",
+          "inlines": [
+            {
+              "text": "6,107"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP, 2 tools",
+          "inlines": [
+            {
+              "text": "MCP, 2 tools"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "23,228",
+          "inlines": [
+            {
+              "text": "23,228"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0552",
+          "inlines": [
+            {
+              "text": "$0.0552"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "14,479",
+          "inlines": [
+            {
+              "text": "14,479"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17,267",
+          "inlines": [
+            {
+              "text": "17,267"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP, 46 default tools",
+          "inlines": [
+            {
+              "text": "MCP, 46 default tools"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "59,417",
+          "inlines": [
+            {
+              "text": "59,417"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.1274",
+          "inlines": [
+            {
+              "text": "$0.1274"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "116,282",
+          "inlines": [
+            {
+              "text": "116,282"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "35,409",
+          "inlines": [
+            {
+              "text": "35,409"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP, all 91 tools",
+          "inlines": [
+            {
+              "text": "MCP, all 91 tools"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "101,351",
+          "inlines": [
+            {
+              "text": "101,351"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.2113",
+          "inlines": [
+            {
+              "text": "$0.2113"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "135,238",
+          "inlines": [
+            {
+              "text": "135,238"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "53,289",
+          "inlines": [
+            {
+              "text": "53,289"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP, 2 tools, results capped at 4,000 characters",
+          "inlines": [
+            {
+              "text": "MCP, 2 tools, results capped at 4,000 characters"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5,357",
+          "inlines": [
+            {
+              "text": "5,357"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.0191",
+          "inlines": [
+            {
+              "text": "$0.0191"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2,726",
+          "inlines": [
+            {
+              "text": "2,726"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2,943",
+          "inlines": [
+            {
+              "text": "2,943"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Every run in this table answered correctly. The failures came with Tool Search, covered below. On Sonnet 5.5, the default MCP server used 42 times the CLI’s input tokens and cost 17 times as much, $127 against $7.50 per 1,000 tasks. Output tokens cost five times as much as input on Sonnet 5.5, and the CLI run’s 463 output tokens were $0.0046 of its $0.0075.",
+          "inlines": [
+            {
+              "text": "Every run in this table answered correctly. The failures came with Tool Search, covered below. On Sonnet 5.5, the default MCP server used 42 times the CLI’s input tokens and cost 17 times as much, $127 against $7.50 per 1,000 tasks. Output tokens cost five times as much as input on Sonnet 5.5, and the CLI run’s 463 output tokens were $0.0046 of its $0.0075."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/028c0e96fbf3ede45cff51b6358896cb3dd148a50b194ae12d530ee5162e6133.webp",
+          "alt": "Bar chart of input tokens for the whole task, split into tool definitions and instructions versus task, tool results and replies: CLI 1,421, Skill 3,315, MCP with 2 tools capped 5,357, MCP with 2 tools 23,228, MCP with 46 tools 59,417, MCP with 91 tools 101,351."
+        },
+        {
+          "type": "paragraph",
+          "text": "The skill cost more than the bare CLI because the file stays in the conversation once the model reads it. For a CLI tool the model knows well, a skill is optional. For your own CLI, the skill is how the model learns the commands.",
+          "inlines": [
+            {
+              "text": "The skill cost more than the bare CLI because the file stays in the conversation once the model reads it. For a CLI tool the model knows well, a skill is optional. For your own CLI, the skill is how the model learns the commands."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why do MCP tool results cost as much as the definitions?",
+          "inlines": [
+            {
+              "text": "Why do MCP tool results cost as much as the definitions?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "get_latest_release returned GitHub’s full release object, 42,182 characters, and 87% of it described the 22 download files. The model needed the tag and date, which is all gh release view returned.",
+          "inlines": [
+            {
+              "text": "get_latest_release returned GitHub’s full release object, 42,182 characters, and 87% of it described the 22 download files. The model needed the tag and date, which is all gh release view returned."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "$ gh release view -R cli/cli --json tagName,publishedAt\n{\"publishedAt\":\"2026-09-30T02:40:02Z\",\"tagName\":\"v2.102.0\"}"
+        },
+        {
+          "type": "paragraph",
+          "text": "That object stays in the context window and is resent with every later request, and on Sonnet 5.5 it added about 20,400 tokens. Scoping the server to two tools cut the first request from 19,487 tokens to 1,406. The whole task still cost 23,228.",
+          "inlines": [
+            {
+              "text": "That object stays in the context window and is resent with every later request, and on Sonnet 5.5 it added about 20,400 tokens. Scoping the server to two tools cut the first request from 19,487 tokens to 1,406. The whole task still cost 23,228."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The table shows two fixes. First, expose only the tools the agent needs, with —tools=get_latest_release,list_issues or —toolsets=issues,repos. Second, shrink results in your client before the model sees them. A 4,000-character cap brought the scoped route to 5,357 tokens with every run correct, because GitHub puts the tag and date near the top.",
+          "inlines": [
+            {
+              "text": "The table shows two fixes. First, expose only the tools the agent needs, with —tools=get_latest_release,list_issues or —toolsets=issues,repos. Second, shrink results in your client before the model sees them. A 4,000-character cap brought the scoped route to 5,357 tokens with every run correct, because GitHub puts the tag and date near the top."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The cap worked only because of where the fields happened to sit. Combined with Tool Search, the cap left Gemini 3.8 Flash and Haiku 5.5 with one correct answer in three runs each, and Gemini once hit our 12-request limit while retrying.",
+          "inlines": [
+            {
+              "text": "The cap worked only because of where the fields happened to sit. Combined with Tool Search, the cap left Gemini 3.8 Flash and Haiku 5.5 with one correct answer in three runs each, and Gemini once hit our 12-request limit while retrying."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Keep whole fields instead, as —json does for the CLI. The GitHub server’s list_issues takes a fields argument, and asking for only number, title, and creation date cut its result from 8,336 characters to 714. Without it, the model decides the size. In four of six runs with 46 or 91 tools loaded, GPT-6 Luna asked for 100 issues with their full text and got 281,963 characters back.",
+          "inlines": [
+            {
+              "text": "Keep whole fields instead, as —json does for the CLI. The GitHub server’s list_issues takes a fields argument, and asking for only number, title, and creation date cut its result from 8,336 characters to 714. Without it, the model decides the size. In four of six runs with 46 or 91 tools loaded, GPT-6 Luna asked for 100 issues with their full text and got 281,963 characters back."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Does Tool Search fix MCP’s context problem?",
+          "inlines": [
+            {
+              "text": "Does Tool Search fix MCP’s context problem?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Search removes most of the cost of tool definitions. You mark tools defer_loading: true and add {“type”: “openrouter:tool_search”}. We withhold the deferred definitions and send the search tool, plus any tools you left loaded. The model searches tool names and descriptions with a regular expression and calls a match on its next turn. It’s in beta and works with any model and provider on the Responses and Messages APIs.",
+          "inlines": [
+            {
+              "text": "Tool Search removes most of the cost of tool definitions. You mark tools defer_loading: true and add {“type”: “openrouter:tool_search”}. We withhold the deferred definitions and send the search tool, plus any tools you left loaded. The model searches tool names and descriptions with a regular expression and calls a match on its next turn. It’s in beta and works with "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/features/server-tools/tool-search",
+              "text": "any model and provider"
+            },
+            {
+              "text": " on the Responses and Messages APIs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With all 46 GitHub tools deferred, the cost before any search was 578 tokens on the Claude models, 144 on GPT-6 Luna, and 130 on Gemini 3.8 Flash.",
+          "inlines": [
+            {
+              "text": "With all 46 GitHub tools deferred, the cost before any search was 578 tokens on the Claude models, 144 on GPT-6 Luna, and 130 on Gemini 3.8 Flash."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This script sends one question with all 46 tools loaded, then deferred. Save it next to mcp_cost.py, since it reuses list_mcp_tools.",
+          "inlines": [
+            {
+              "text": "This script sends one question with all 46 tools loaded, then deferred. Save it next to mcp_cost.py, since it reuses list_mcp_tools."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "\"\"\"Send the same MCP tools with defer_loading and openrouter:tool_search, and compare prompt tokens.\"\"\"\nimport os\nimport sys\n\nimport requests\n\nfrom mcp_cost import list_mcp_tools\n\nAPI = \"https://openrouter.ai/api/v1/responses\"\nHEADERS = {\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"}\nQUESTION = \"What is the latest release of the GitHub repository cli/cli?\"\n\ndef ask(model, tools):\n    r = requests.post(API, headers=HEADERS, timeout=300,\n                      json={\"model\": model, \"input\": QUESTION, \"tools\": tools})\n    r.raise_for_status()\n    return r.json()\n\nmcp_tools = list_mcp_tools(sys.argv[1:])\n# The Responses API takes function tools flat: type, name, description, parameters.\ntools = [{\"type\": \"function\", \"name\": t[\"name\"], \"description\": t.get(\"description\", \"\"),\n          \"parameters\": t[\"inputSchema\"]} for t in mcp_tools]\ndeferred = [{\"type\": \"openrouter:tool_search\"}] + [{**t, \"defer_loading\": True} for t in tools]\n\nfor model in [\"anthropic/claude-haiku-5.5\", \"openai/gpt-6-luna\"]:\n    for label, tool_list in [(\"all loaded\", tools), (\"tool search\", deferred)]:\n        res = ask(model, tool_list)\n        steps = [f\"search {o['query']!r}\" if o[\"type\"] == \"openrouter:tool_search\" else f\"call {o['name']}\"\n                 for o in res[\"output\"] if o[\"type\"] in (\"openrouter:tool_search\", \"function_call\")]\n        print(f\"{model:28} {label:12} {res['usage']['input_tokens']:>6,} input tokens  {' -> '.join(steps)}\")"
+        },
+        {
+          "type": "code",
+          "text": "$ python tool_search.py github-mcp-server stdio --toolsets=default\nanthropic/claude-haiku-5.5   all loaded   19,464 input tokens  call get_latest_release\nanthropic/claude-haiku-5.5   tool search   7,069 input tokens  search 'github|release' -> search 'latest release|list_releases|get_latest_release' -> call get_latest_release\nopenai/gpt-6-luna            all loaded    8,923 input tokens  call get_latest_release\nopenai/gpt-6-luna            tool search   4,453 input tokens  search 'github repository latest release cli cli' -> search 'github' -> search 'search web internet browser' -> search 'release' -> call get_latest_release"
+        },
+        {
+          "type": "paragraph",
+          "text": "To try it on your agent, mark your MCP tools defer_loading: true, add {“type”: “openrouter:tool_search”}, and compare usage.input_tokens before and after.",
+          "inlines": [
+            {
+              "text": "To try it on your agent, mark your MCP tools defer_loading: true, add {“type”: “openrouter:tool_search”}, and compare usage.input_tokens before and after."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The Tool Search rows vary with how the model searches. In five separate runs of this script, Haiku 5.5 used 2,134 to 13,225 tokens, rising with each search. GPT-6 Luna wrote phrases instead of patterns, made three to six searches, and once gave up without calling the tool. Our docs suggest keeping your three to five most-used tools loaded.",
+          "inlines": [
+            {
+              "text": "The Tool Search rows vary with how the model searches. In five separate runs of this script, Haiku 5.5 used 2,134 to 13,225 tokens, rising with each search. GPT-6 Luna wrote phrases instead of patterns, made three to six searches, and once gave up without calling the tool. "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/features/server-tools/tool-search",
+              "text": "Our docs"
+            },
+            {
+              "text": " suggest keeping your three to five most-used tools loaded."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Over the whole task, the result depended on the model.",
+          "inlines": [
+            {
+              "text": "Over the whole task, the result depended on the model."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP, 46 tools loaded",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "MCP, 46 tools loaded"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Search, 46 deferred",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Tool Search, 46 deferred"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Search, 91 deferred",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Tool Search, 91 deferred"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Sonnet 5.5",
+          "inlines": [
+            {
+              "text": "Claude Sonnet 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "59,417",
+          "inlines": [
+            {
+              "text": "59,417"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "30,334",
+          "inlines": [
+            {
+              "text": "30,334"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "31,615",
+          "inlines": [
+            {
+              "text": "31,615"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT-6 Luna",
+          "inlines": [
+            {
+              "text": "GPT-6 Luna"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "116,282",
+          "inlines": [
+            {
+              "text": "116,282"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "25,544",
+          "inlines": [
+            {
+              "text": "25,544"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "57,975",
+          "inlines": [
+            {
+              "text": "57,975"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gemini 3.8 Flash",
+          "inlines": [
+            {
+              "text": "Gemini 3.8 Flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "35,409",
+          "inlines": [
+            {
+              "text": "35,409"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "37,568",
+          "inlines": [
+            {
+              "text": "37,568"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "38,445",
+          "inlines": [
+            {
+              "text": "38,445"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Haiku 5.5",
+          "inlines": [
+            {
+              "text": "Claude Haiku 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "99,319",
+          "inlines": [
+            {
+              "text": "99,319"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "154,623",
+          "inlines": [
+            {
+              "text": "154,623"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "31,781",
+          "inlines": [
+            {
+              "text": "31,781"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT-6 Luna’s loaded figure includes the 100-issue request described above.",
+          "inlines": [
+            {
+              "text": "GPT-6 Luna’s loaded figure includes the 100-issue request described above."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On Sonnet 5.5, 91 deferred tools cost 1,281 tokens more than 46, where loading all 91 cost about 42,000 more. Tool Search doesn’t shrink tool results, and the release object still filled most of Sonnet’s second request.",
+          "inlines": [
+            {
+              "text": "On Sonnet 5.5, 91 deferred tools cost 1,281 tokens more than 46, where loading all 91 cost about 42,000 more. Tool Search doesn’t shrink tool results, and the release object still filled most of Sonnet’s second request."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Haiku 5.5 cost more with 46 deferred tools than with all loaded. In all three runs it asked list_issues for a field the tool doesn’t offer, then retried three or four times with arguments of the wrong type, such as labels as a string instead of an array. With all tools loaded, Haiku made the same mistake in two of three runs and fixed it on its next call. Cap the requests in your loop, and check tool errors when a run’s cost jumps.",
+          "inlines": [
+            {
+              "text": "Haiku 5.5 cost more with 46 deferred tools than with all loaded. In all three runs it asked list_issues for a field the tool doesn’t offer, then retried three or four times with arguments of the wrong type, such as labels as a string instead of an array. With all tools loaded, Haiku made the same mistake in two of three runs and fixed it on its next call. Cap the requests in your loop, and check tool errors when a run’s cost jumps."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Search reveals tools by widening tool_choice, so a request that also forces a tool call fails.",
+          "inlines": [
+            {
+              "text": "Tool Search reveals tools by widening tool_choice, so a request that also forces a tool call fails."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "400 `tool_choice` conflicts with `openrouter:tool_search`. Deferred tools are revealed through `tool_choice`, so it must be omitted or set to `{“type”: “allowed_tools”, …}`. Remove `tool_choice`, or drop `defer_loading` from your tools to use it as-is.",
+          "inlines": [
+            {
+              "text": "400 `tool_choice` conflicts with `openrouter:tool_search`. Deferred tools are revealed through `tool_choice`, so it must be omitted or set to `{“type”: “allowed_tools”, …}`. Remove `tool_choice`, or drop `defer_loading` from your tools to use it as-is."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Chat Completions doesn’t accept openrouter:tool_search and returns a 400, so move that agent to the Responses or Messages API first.",
+          "inlines": [
+            {
+              "text": "Chat Completions doesn’t accept openrouter:tool_search and returns a 400, so move that agent to the Responses or Messages API first."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MCP vs CLI vs skills: which should you use?",
+          "inlines": [
+            {
+              "text": "MCP vs CLI vs skills: which should you use?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Use a CLI when one exists and your agent can run commands. When it can’t, use MCP, scoped and with small results.",
+          "inlines": [
+            {
+              "text": "Use a CLI when one exists and your agent can run commands. When it can’t, use MCP, scoped and with small results."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Your situation",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Your situation"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Use",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Use"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "From our runs on Sonnet 5.5",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "From our runs on Sonnet 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A well-known CLI exists and the agent can run commands",
+          "inlines": [
+            {
+              "text": "A well-known CLI exists and the agent can run commands"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The CLI",
+          "inlines": [
+            {
+              "text": "The CLI"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1,421 tokens per task",
+          "inlines": [
+            {
+              "text": "1,421 tokens per task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Your own CLI, or one the model uses inconsistently",
+          "inlines": [
+            {
+              "text": "Your own CLI, or one the model uses inconsistently"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The CLI plus a skill",
+          "inlines": [
+            {
+              "text": "The CLI plus a skill"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3,315 tokens, same commands every run",
+          "inlines": [
+            {
+              "text": "3,315 tokens, same commands every run"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "No CLI, no shell, or you need the server’s auth and permissions",
+          "inlines": [
+            {
+              "text": "No CLI, no shell, or you need the server’s auth and permissions"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP, scoped to the tools you need",
+          "inlines": [
+            {
+              "text": "MCP, scoped to the tools you need"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "23,228 tokens with 2 tools, against 59,417 with 46",
+          "inlines": [
+            {
+              "text": "23,228 tokens with 2 tools, against 59,417 with 46"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A large tool library across many servers",
+          "inlines": [
+            {
+              "text": "A large tool library across many servers"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MCP with Tool Search",
+          "inlines": [
+            {
+              "text": "MCP with Tool Search"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On Sonnet 5.5, 91 deferred tools cost about what 46 did",
+          "inlines": [
+            {
+              "text": "On Sonnet 5.5, 91 deferred tools cost about what 46 did"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Any MCP route",
+          "inlines": [
+            {
+              "text": "Any MCP route"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Trim tool results to the fields you need",
+          "inlines": [
+            {
+              "text": "Trim tool results to the fields you need"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "23,228 down to 5,357 tokens",
+          "inlines": [
+            {
+              "text": "23,228 down to 5,357 tokens"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If your agent has no shell, our Shell server tool gives any model a sandboxed one. In our Agent SDK, MCP Tools connects remote MCP servers, and the skills loader example adds a skill’s instructions only after the model asks for it.",
+          "inlines": [
+            {
+              "text": "If your agent has no shell, our "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/features/server-tools/shell",
+              "text": "Shell server tool"
+            },
+            {
+              "text": " gives any model a sandboxed one. In our Agent SDK, "
+            },
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/mcp-tools",
+              "text": "MCP Tools"
+            },
+            {
+              "text": " connects remote MCP servers, and the "
+            },
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/examples/skills-loader",
+              "text": "skills loader example"
+            },
+            {
+              "text": " adds a skill’s instructions only after the model asks for it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We tested one server on one task, so run mcp_cost.py on yours before you decide.",
+          "inlines": [
+            {
+              "text": "We tested one server on one task, so run mcp_cost.py on yours before you decide."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Frequently asked questions",
+          "inlines": [
+            {
+              "text": "Frequently asked questions"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "What is a CLI in an AI agent context?",
+          "inlines": [
+            {
+              "text": "What is a CLI in an AI agent context?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "A CLI (command-line interface) is a program you run with typed commands. An agent gets a shell tool and writes the commands itself. In our tests, the gh CLI used 1,421 input tokens on a GitHub task, against 59,417 for the GitHub MCP server.",
+          "inlines": [
+            {
+              "text": "A CLI (command-line interface) is a program you run with typed commands. An agent gets a shell tool and writes the commands itself. In our tests, the gh CLI used 1,421 input tokens on a GitHub task, against 59,417 for the GitHub MCP server."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is the difference between an MCP server and a connector?",
+          "inlines": [
+            {
+              "text": "What is the difference between an MCP server and a connector?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "An MCP server exposes tools over the Model Context Protocol. A connector is what an app such as Claude calls its link to a remote MCP server. Our Agent SDK can connect remote MCP servers through MCP Tools.",
+          "inlines": [
+            {
+              "text": "An MCP server exposes tools over the Model Context Protocol. A connector is what an app such as Claude calls its link to a "
+            },
+            {
+              "href": "https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp",
+              "text": "remote MCP server"
+            },
+            {
+              "text": ". Our Agent SDK can connect remote MCP servers through MCP Tools."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Are skills replacing MCP?",
+          "inlines": [
+            {
+              "text": "Are skills replacing MCP?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "No. A skill is instructions, usually for a CLI, that load only when a task needs them. MCP gives typed tools with their own auth and works without a shell. On OpenRouter, Tool Search lets you keep MCP and load each tool only when needed.",
+          "inlines": [
+            {
+              "text": "No. A skill is instructions, usually for a CLI, that load only when a task needs them. MCP gives typed tools with their own auth and works without a shell. On OpenRouter, Tool Search lets you keep MCP and load each tool only when needed."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Does prompt caching fix MCP’s token cost?",
+          "inlines": [
+            {
+              "text": "Does prompt caching fix MCP’s token cost?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "It lowers the price of those tokens but doesn’t remove them. As of October 2026, on OpenRouter, cached input costs a tenth of the normal rate on Claude Haiku 5.5 and GPT-6 Luna, per our live model prices, and still fills the context window.",
+          "inlines": [
+            {
+              "text": "It lowers the price of those tokens but doesn’t remove them. As of October 2026, on OpenRouter, "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/prompt-caching",
+              "text": "cached input"
+            },
+            {
+              "text": " costs a tenth of the normal rate on Claude Haiku 5.5 and GPT-6 Luna, per our "
+            },
+            {
+              "href": "https://openrouter.ai/api/v1/models",
+              "text": "live model prices"
+            },
+            {
+              "text": ", and still fills the context window."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How many MCP tools is too many?",
+          "inlines": [
+            {
+              "text": "How many MCP tools is too many?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Our Tool Search docs suggest deferring tools once definitions pass roughly 10,000 tokens or about 10 tools. The GitHub MCP server’s 46 default tools came to 19,436 tokens on Claude.",
+          "inlines": [
+            {
+              "text": "Our Tool Search docs suggest deferring tools once definitions pass roughly 10,000 tokens or about 10 tools. The GitHub MCP server’s 46 default tools came to 19,436 tokens on Claude."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Next steps",
+          "inlines": [
+            {
+              "text": "Next steps"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/features/server-tools/tool-search",
+                  "text": "Tool Search"
+                },
+                {
+                  "text": " covers every option, including max_results."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/build-tool-calling-agent-loop/",
+                  "text": "Build a Reliable Tool-Calling Agent Loop"
+                },
+                {
+                  "text": " shows the kind of loop our runs used, with an iteration cap."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/prompt-caching-sticky-routing/",
+                  "text": "OpenRouter Prompt Caching"
+                },
+                {
+                  "text": " explains what cached tokens cost."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-11T01:10:10.955294Z",
+  "contentMode": "full"
+}

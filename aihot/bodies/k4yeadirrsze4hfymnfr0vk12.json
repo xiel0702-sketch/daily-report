@@ -1,0 +1,4518 @@
+{
+  "schemaVersion": 1,
+  "id": "k4yeadirrsze4hfymnfr0vk12",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/k4yeadirrsze4hfymnfr0vk12",
+  "fetchedAt": "2026-11-11T01:12:14.886043Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenRouter",
+    "多模态",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "把扫描文档变成可靠的文本并不容易。Tesseract 这类经典 OCR 引擎遇到褪色印刷、手写和传真件就会失灵。视觉模型读这类页面读得不错，但有时会写出页面上根本没有的数值。我们用自己写的文字做了八张测试页，这样每个字符都能核对，然后把它们交给 OpenRouter 上的 15 个视觉模型和 Mistral OCR，再加上 Tesseract 跑了一遍。",
+          "inlines": [
+            {
+              "text": "把扫描文档变成可靠的文本并不容易。Tesseract 这类经典 OCR 引擎遇到褪色印刷、手写和传真件就会失灵。视觉模型读这类页面读得不错，但有时会写出页面上根本没有的数值。我们用自己写的文字做了八张测试页，这样每个字符都能核对，然后把它们交给 OpenRouter 上的 15 个视觉模型和 Mistral OCR，再加上 Tesseract 跑了一遍。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "测试中准确率最高的 OCR 模型是 Claude Opus 5.5，264 个关键值对了 262 个，每 1,000 页花费 $16.42。性价比最高的是 Mistral OCR：264 个对了 258 个，花费 $2.02。本文展示测试结果、需要警惕的错误，以及用来捕捉这些错误的代码。",
+          "inlines": [
+            {
+              "text": "测试中准确率最高的 OCR 模型是 Claude Opus 5.5，264 个关键值对了 262 个，每 1,000 页花费 $16.42。性价比最高的是 Mistral OCR：264 个对了 258 个，花费 $2.02。本文展示测试结果、需要警惕的错误，以及用来捕捉这些错误的代码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些结果只是一个起点。我们的八张页面不是你的文档，所以想知道哪个模型最适合你的工作流，唯一可靠的办法是拿候选模型在你自己的扫描件上测一遍。",
+          "inlines": [
+            {
+              "text": "这些结果只是一个起点。我们的八张页面不是你的文档，所以想知道哪个模型最适合你的工作流，唯一可靠的办法是拿候选模型在你自己的扫描件上测一遍。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "要点速览",
+          "inlines": [
+            {
+              "text": "要点速览"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "最准确："
+                },
+                {
+                  "code": true,
+                  "text": "anthropic/claude-opus-5.5"
+                },
+                {
+                  "text": "。性价比最高："
+                },
+                {
+                  "code": true,
+                  "text": "mistral-ocr"
+                },
+                {
+                  "text": "。便宜又好用的选择：关闭推理的 "
+                },
+                {
+                  "code": true,
+                  "text": "inclusionai/ling-3.0-flash-vl"
+                },
+                {
+                  "text": "，264 个关键值对了 254 个，每 1,000 页 $0.04。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在一张褪色收据上，GPT-6 Luna 和 GPT-6.1 Sol 编造了卡号数字、wifi 密码和服务器名。错误率反映不出这类问题，所以要检查你实际会用到的那些值。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "关闭推理后，我们测试的五个模型里有四个变得更快、更便宜，关键值一个没丢。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "把来自不同实验室的两个便宜模型意见不一致的词标出来，能抓住 35 个错词中的 34 个，每 1,000 页花费 $0.62。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们怎么测的",
+          "inlines": [
+            {
+              "text": "我们怎么测的"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们把每页从已知文本渲染出来，再像扫描件那样劣化：轻微旋转、模糊、噪点和 JPEG 压缩。五页是普通内容：一张收据、一封故意写错两个词的信、一张勾了选框的表格、一份双栏通讯和一张工整的手写便条。另外三页是刻意做难的：一张褪色的热敏收据、一段快速潦草的手写，以及一份低分辨率传真，上面有 12 个用形近字符（0/O、1/I/L、5/S、8/B）拼成的序列号，让模型没法靠上下文猜出来。",
+          "inlines": [
+            {
+              "text": "我们把每页从已知文本渲染出来，再像扫描件那样劣化：轻微旋转、模糊、噪点和 JPEG 压缩。五页是普通内容：一张收据、一封故意写错两个词的信、一张勾了选框的表格、一份双栏通讯和一张工整的手写便条。另外三页是刻意做难的：一张褪色的热敏收据、一段快速潦草的手写，以及一份低分辨率传真，上面有 12 个用形近字符（0/O、1/I/L、5/S、8/B）拼成的序列号，让模型没法靠上下文猜出来。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/907e26e192ca48cc8b52b8aabd7d4d3167b05962cd1588f847bcc580646b3798.jpg",
+          "alt": "Scanned thermal receipt from Cafe Verdigris, faded towards the bottom, with the card number and wifi password barely legible"
+        },
+        {
+          "type": "paragraph",
+          "text": "我们用两种方式给每份转录打分。字符错误率（CER）是到正确文本的编辑距离除以文本长度，不计换行和 Markdown。关键值是流水线会用到的 88 个字符串，每页 10 到 15 个，比如总额、日期、卡号数字、序列号和拼错的词。每个值必须在三次运行中每次都完全一致，这样每个模型共 264 项检查。成本是每次请求实际计费的 usage.cost。模型来自 2026 年 10 月 8 日的 OpenRouter 目录。",
+          "inlines": [
+            {
+              "text": "我们用两种方式给每份转录打分。字符错误率（CER）是到正确文本的编辑距离除以文本长度，不计换行和 Markdown。关键值是流水线会用到的 88 个字符串，每页 10 到 15 个，比如总额、日期、卡号数字、序列号和拼错的词。每个值必须在三次运行中每次都完全一致，这样每个模型共 264 项检查。成本是每次请求实际计费的 "
+            },
+            {
+              "code": true,
+              "text": "usage.cost"
+            },
+            {
+              "text": "。模型来自 2026 年 10 月 8 日的 OpenRouter 目录。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "哪个 OCR 模型在扫描文档上最准确？",
+          "inlines": [
+            {
+              "text": "哪个 OCR 模型在扫描文档上最准确？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "表格按关键值正确数排序。",
+          "inlines": [
+            {
+              "text": "表格按关键值正确数排序。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "路线",
+          "inlines": [
+            {
+              "text": "路线"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "关键值正确数",
+          "inlines": [
+            {
+              "text": "关键值正确数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CER，全部页面",
+          "inlines": [
+            {
+              "text": "CER，全部页面"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CER，3 张难页",
+          "inlines": [
+            {
+              "text": "CER，3 张难页"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每 1,000 页成本",
+          "inlines": [
+            {
+              "text": "每 1,000 页成本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "中位耗时（秒）",
+          "inlines": [
+            {
+              "text": "中位耗时（秒）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "anthropic/claude-opus-5.5",
+          "inlines": [
+            {
+              "code": true,
+              "text": "anthropic/claude-opus-5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 262 个",
+          "inlines": [
+            {
+              "text": "264 个中 262 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.02%",
+          "inlines": [
+            {
+              "text": "0.02%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.06%",
+          "inlines": [
+            {
+              "text": "0.06%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$16.42",
+          "inlines": [
+            {
+              "text": "$16.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.2",
+          "inlines": [
+            {
+              "text": "7.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mistral-ocr（PDF 引擎）",
+          "inlines": [
+            {
+              "code": true,
+              "text": "mistral-ocr"
+            },
+            {
+              "text": "（PDF 引擎）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 258 个",
+          "inlines": [
+            {
+              "text": "264 个中 258 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.14%",
+          "inlines": [
+            {
+              "text": "0.14%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.26%",
+          "inlines": [
+            {
+              "text": "0.26%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$2.02",
+          "inlines": [
+            {
+              "text": "$2.02"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.8",
+          "inlines": [
+            {
+              "text": "3.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "anthropic/claude-sonnet-5.5",
+          "inlines": [
+            {
+              "code": true,
+              "text": "anthropic/claude-sonnet-5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 256 个",
+          "inlines": [
+            {
+              "text": "264 个中 256 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.34%",
+          "inlines": [
+            {
+              "text": "1.34%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.49%",
+          "inlines": [
+            {
+              "text": "3.49%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$7.68",
+          "inlines": [
+            {
+              "text": "$7.68"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.2",
+          "inlines": [
+            {
+              "text": "4.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "google/gemini-3.8-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "google/gemini-3.8-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 254 个",
+          "inlines": [
+            {
+              "text": "264 个中 254 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.15%",
+          "inlines": [
+            {
+              "text": "0.15%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.28%",
+          "inlines": [
+            {
+              "text": "0.28%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$7.50",
+          "inlines": [
+            {
+              "text": "$7.50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.3",
+          "inlines": [
+            {
+              "text": "9.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "stepfun/step-5-preview",
+          "inlines": [
+            {
+              "code": true,
+              "text": "stepfun/step-5-preview"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 254 个",
+          "inlines": [
+            {
+              "text": "264 个中 254 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.42%",
+          "inlines": [
+            {
+              "text": "0.42%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.11%",
+          "inlines": [
+            {
+              "text": "1.11%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$5.48",
+          "inlines": [
+            {
+              "text": "$5.48"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.3",
+          "inlines": [
+            {
+              "text": "9.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "inclusionai/ling-3.0-flash-vl",
+          "inlines": [
+            {
+              "code": true,
+              "text": "inclusionai/ling-3.0-flash-vl"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 254 个",
+          "inlines": [
+            {
+              "text": "264 个中 254 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.05%",
+          "inlines": [
+            {
+              "text": "1.05%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.56%",
+          "inlines": [
+            {
+              "text": "2.56%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.12",
+          "inlines": [
+            {
+              "text": "$0.12"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.2",
+          "inlines": [
+            {
+              "text": "7.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "anthropic/claude-haiku-5.5",
+          "inlines": [
+            {
+              "code": true,
+              "text": "anthropic/claude-haiku-5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 253 个",
+          "inlines": [
+            {
+              "text": "264 个中 253 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.19%",
+          "inlines": [
+            {
+              "text": "1.19%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.89%",
+          "inlines": [
+            {
+              "text": "2.89%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.46",
+          "inlines": [
+            {
+              "text": "$0.46"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.8",
+          "inlines": [
+            {
+              "text": "3.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "x-ai/grok-4.7",
+          "inlines": [
+            {
+              "code": true,
+              "text": "x-ai/grok-4.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 252 个",
+          "inlines": [
+            {
+              "text": "264 个中 252 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.13%",
+          "inlines": [
+            {
+              "text": "0.13%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.35%",
+          "inlines": [
+            {
+              "text": "0.35%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$12.85",
+          "inlines": [
+            {
+              "text": "$12.85"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11.3",
+          "inlines": [
+            {
+              "text": "11.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "z-ai/glm-5.3-flashx",
+          "inlines": [
+            {
+              "code": true,
+              "text": "z-ai/glm-5.3-flashx"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 252 个",
+          "inlines": [
+            {
+              "text": "264 个中 252 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.33%",
+          "inlines": [
+            {
+              "text": "0.33%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.86%",
+          "inlines": [
+            {
+              "text": "0.86%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.45",
+          "inlines": [
+            {
+              "text": "$1.45"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5.5",
+          "inlines": [
+            {
+              "text": "5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-6.1-sol",
+          "inlines": [
+            {
+              "code": true,
+              "text": "openai/gpt-6.1-sol"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 252 个",
+          "inlines": [
+            {
+              "text": "264 个中 252 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.65%",
+          "inlines": [
+            {
+              "text": "0.65%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.74%",
+          "inlines": [
+            {
+              "text": "1.74%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$6.03",
+          "inlines": [
+            {
+              "text": "$6.03"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.4",
+          "inlines": [
+            {
+              "text": "8.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "deepseek/deepseek-v4.1-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "deepseek/deepseek-v4.1-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 248 个",
+          "inlines": [
+            {
+              "text": "264 个中 248 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.20%",
+          "inlines": [
+            {
+              "text": "0.20%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.48%",
+          "inlines": [
+            {
+              "text": "0.48%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.20",
+          "inlines": [
+            {
+              "text": "$0.20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.8",
+          "inlines": [
+            {
+              "text": "4.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "qwen/qwen3.8-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "qwen/qwen3.8-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 248 个",
+          "inlines": [
+            {
+              "text": "264 个中 248 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.74%",
+          "inlines": [
+            {
+              "text": "0.74%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.49%",
+          "inlines": [
+            {
+              "text": "1.49%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.29",
+          "inlines": [
+            {
+              "text": "$0.29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.1",
+          "inlines": [
+            {
+              "text": "8.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "qwen/qwen3.8-27b",
+          "inlines": [
+            {
+              "code": true,
+              "text": "qwen/qwen3.8-27b"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 246 个",
+          "inlines": [
+            {
+              "text": "264 个中 246 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.92%",
+          "inlines": [
+            {
+              "text": "0.92%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.31%",
+          "inlines": [
+            {
+              "text": "2.31%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.54",
+          "inlines": [
+            {
+              "text": "$1.54"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.8",
+          "inlines": [
+            {
+              "text": "10.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "xiaomi/mimo-v2.6-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "xiaomi/mimo-v2.6-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 246 个",
+          "inlines": [
+            {
+              "text": "264 个中 246 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.02%",
+          "inlines": [
+            {
+              "text": "2.02%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5.34%",
+          "inlines": [
+            {
+              "text": "5.34%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.58",
+          "inlines": [
+            {
+              "text": "$0.58"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.1",
+          "inlines": [
+            {
+              "text": "3.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mistralai/mistral-large-4-0",
+          "inlines": [
+            {
+              "code": true,
+              "text": "mistralai/mistral-large-4-0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 240 个",
+          "inlines": [
+            {
+              "text": "264 个中 240 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.61%",
+          "inlines": [
+            {
+              "text": "4.61%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.19%",
+          "inlines": [
+            {
+              "text": "12.19%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$6.80",
+          "inlines": [
+            {
+              "text": "$6.80"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "47.9",
+          "inlines": [
+            {
+              "text": "47.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-6-luna",
+          "inlines": [
+            {
+              "code": true,
+              "text": "openai/gpt-6-luna"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个中 232 个",
+          "inlines": [
+            {
+              "text": "264 个中 232 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.49%",
+          "inlines": [
+            {
+              "text": "1.49%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.95%",
+          "inlines": [
+            {
+              "text": "3.95%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.54",
+          "inlines": [
+            {
+              "text": "$0.54"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.8",
+          "inlines": [
+            {
+              "text": "7.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tesseract 5.5（本地，1 次运行）",
+          "inlines": [
+            {
+              "text": "Tesseract 5.5（本地，1 次运行）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88 个中 46 个",
+          "inlines": [
+            {
+              "text": "88 个中 46 个"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26.06%",
+          "inlines": [
+            {
+              "text": "26.06%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "64.39%",
+          "inlines": [
+            {
+              "text": "64.39%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0",
+          "inlines": [
+            {
+              "text": "$0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "58.1",
+          "inlines": [
+            {
+              "text": "58.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在五张普通页面上，每个视觉模型的 CER 都低于 0.3%，15 个模型全都完美转录了那张工整的手写便条。差距主要来自那张褪色收据。Opus 5.5 和 Mistral OCR 在这张页面上 33 项检查全对，而 GPT-6 Luna 只对了 16 项。各模型计算图像 token 的方式不同（中位页面 DeepSeek 是 1,070 个提示词 token，Grok 是 3,314 个），所以成本要在你自己的页面上测。",
+          "inlines": [
+            {
+              "text": "在五张普通页面上，每个视觉模型的 CER 都低于 0.3%，15 个模型全都完美转录了那张工整的手写便条。差距主要来自那张褪色收据。Opus 5.5 和 Mistral OCR 在这张页面上 33 项检查全对，而 GPT-6 Luna 只对了 16 项。各模型计算图像 token 的方式不同（中位页面 DeepSeek 是 1,070 个提示词 token，Grok 是 3,314 个），所以成本要在你自己的页面上测。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "哪个 OCR 模型适合你的工作",
+          "inlines": [
+            {
+              "text": "哪个 OCR 模型适合你的工作"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你的大部分工作是",
+          "inlines": [
+            {
+              "text": "如果你的大部分工作是"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "先从谁开始",
+          "inlines": [
+            {
+              "text": "先从谁开始"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为什么",
+          "inlines": [
+            {
+              "text": "为什么"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个值都不能错的高难度扫描件",
+          "inlines": [
+            {
+              "text": "每个值都不能错的高难度扫描件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5.5",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/anthropic/claude-opus-5.5",
+              "text": "Claude Opus 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个关键值对了 262 个，每 1,000 页 $16.42",
+          "inlines": [
+            {
+              "text": "264 个关键值对了 262 个，每 1,000 页 $16.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "价格公道的大批量处理",
+          "inlines": [
+            {
+              "text": "价格公道的大批量处理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral OCR（mistral-ocr PDF 引擎）",
+          "inlines": [
+            {
+              "text": "Mistral OCR（"
+            },
+            {
+              "code": true,
+              "text": "mistral-ocr"
+            },
+            {
+              "text": " PDF 引擎）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个关键值对了 258 个，每 1,000 页 $2.02",
+          "inlines": [
+            {
+              "text": "264 个关键值对了 258 个，每 1,000 页 $2.02"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "成本最低",
+          "inlines": [
+            {
+              "text": "成本最低"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ling 3.0 Flash VL，关闭推理",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/inclusionai/ling-3.0-flash-vl",
+              "text": "Ling 3.0 Flash VL"
+            },
+            {
+              "text": "，关闭推理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "264 个关键值中识别出 254 个，每 1,000 页 $0.04",
+          "inlines": [
+            {
+              "text": "264 个关键值中识别出 254 个，每 1,000 页 $0.04"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "外形相似的字符导致的序列号和 ID 错误",
+          "inlines": [
+            {
+              "text": "外形相似的字符导致的序列号和 ID 错误"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Haiku 5.5 由 DeepSeek V4.1 Flash 复核",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+              "text": "Claude Haiku 5.5"
+            },
+            {
+              "text": " 由 "
+            },
+            {
+              "href": "https://openrouter.ai/deepseek/deepseek-v4.1-flash",
+              "text": "DeepSeek V4.1 Flash"
+            },
+            {
+              "text": " 复核"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "两者共标出 35 个错词中的 34 个，每 1,000 页 $0.62",
+          "inlines": [
+            {
+              "text": "两者共标出 35 个错词中的 34 个，每 1,000 页 $0.62"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "干净的打印页面，离线运行",
+          "inlines": [
+            {
+              "text": "干净的打印页面，离线运行"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tesseract 5.5",
+          "inlines": [
+            {
+              "text": "Tesseract 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在信件和简报上表现完美，而且免费，但面对褪色收据却什么都没返回",
+          "inlines": [
+            {
+              "text": "在信件和简报上表现完美，而且免费，但面对褪色收据却什么都没返回"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "视觉模型读取难处理的扫描件时，会出什么问题？",
+          "inlines": [
+            {
+              "text": "视觉模型读取难处理的扫描件时，会出什么问题？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "最严重的错误是看似合理、但页面上根本不存在的值。下面是褪色收据底部的实际打印内容，后面是一次 GPT-6 Luna 的运行结果：",
+          "inlines": [
+            {
+              "text": "最严重的错误是看似合理、但页面上根本不存在的值。下面是褪色收据底部的实际打印内容，后面是一次 GPT-6 Luna 的运行结果："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "CONTACTLESS 32.95\nCARD ****9026\nSERVED BY: PRIYA\nWIFI: verdigris-guest / tide2026"
+        },
+        {
+          "type": "code",
+          "text": "NET                                 27.46\n\nCONTACTLESS\nCARD **** 9027\n\nSERVED BY: SHEVA\nWIFI: verdigris_guest / 1freecoffee"
+        },
+        {
+          "type": "paragraph",
+          "text": "收据上没有 NET 这一行。卡号以 9026 结尾，姓名和密码都是编造的。GPT-6 Luna 在三次运行中都改掉了服务器名称和年份。GPT-6.1 Sol 每次运行都编出不同的密码（flatwhite24、flat9am!、flatleaf）。我们还要求模型在不确定时写 [?] 而不是猜测。这没有用：七个模型中有四个从未使用过这个标记。",
+          "inlines": [
+            {
+              "text": "收据上没有 "
+            },
+            {
+              "code": true,
+              "text": "NET"
+            },
+            {
+              "text": " 这一行。卡号以 9026 结尾，姓名和密码都是编造的。GPT-6 Luna 在三次运行中都改掉了服务器名称和年份。GPT-6.1 Sol 每次运行都编出不同的密码（"
+            },
+            {
+              "code": true,
+              "text": "flatwhite24"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "flat9am!"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "flatleaf"
+            },
+            {
+              "text": "）。我们还要求模型在不确定时写 "
+            },
+            {
+              "code": true,
+              "text": "[?]"
+            },
+            {
+              "text": " 而不是猜测。这没有用：七个模型中有四个从未使用过这个标记。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "其他反复出现的错误：",
+          "inlines": [
+            {
+              "text": "其他反复出现的错误："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "O 和 0：15 个模型中有 13 个至少在一次运行中把两个传真序列号读错。只有 Claude Sonnet 5.5 和 GPT-6.1 Sol 每次都读对了。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "拼写“纠正”：信件署名是“Senior Assosiate”，提示词要求逐字照抄拼写。45 份转录中仍有 16 份把它“纠正”了。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "勾选框：Claude Sonnet 5.5 和 Haiku 5.5 抄下了表单的复选框标签，却漏掉了哪个框被勾选。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "第 1 步：把扫描件发给视觉模型",
+          "inlines": [
+            {
+              "text": "第 1 步：把扫描件发给视觉模型"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "视觉模型生成转录文本的方式，和语言模型生成任何文本一样，所以它倾向于写出文本通常该有的样子，而不是页面上实际印的内容。提示词要求它逐字照抄。这能减轻问题，但不能消除：45 份转录中仍有 16 份“纠正”了信件里故意写错的拼写。你需要在 OPENROUTER_API_KEY 中填入 OpenRouter API key。图片以 base64 的 image_url 部分传入（参见 image inputs），因此 OpenRouter 上每个视觉模型都接受同样的请求。把它保存为 transcribe.py，因为第 3 步和第 4 步要从它导入：",
+          "inlines": [
+            {
+              "text": "视觉模型生成转录文本的方式，和语言模型生成任何文本一样，所以它倾向于写出文本通常该有的样子，而不是页面上实际印的内容。提示词要求它逐字照抄。这能减轻问题，但不能消除：45 份转录中仍有 16 份“纠正”了信件里故意写错的拼写。你需要在 "
+            },
+            {
+              "code": true,
+              "text": "OPENROUTER_API_KEY"
+            },
+            {
+              "text": " 中填入 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/quickstart",
+              "text": "OpenRouter API key"
+            },
+            {
+              "text": "。图片以 base64 的 "
+            },
+            {
+              "code": true,
+              "text": "image_url"
+            },
+            {
+              "text": " 部分传入（参见 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/overview/multimodal/image-understanding",
+              "text": "image inputs"
+            },
+            {
+              "text": "），因此 OpenRouter 上每个视觉模型都接受同样的请求。把它保存为 "
+            },
+            {
+              "code": true,
+              "text": "transcribe.py"
+            },
+            {
+              "text": "，因为第 3 步和第 4 步要从它导入："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import base64\nimport mimetypes\nimport os\n\nimport requests\n\nAPI = \"https://openrouter.ai/api/v1/chat/completions\"\nHEADERS = {\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"}\nPROMPT = (\"Transcribe all of the text in this scanned document, in reading order. \"\n          \"Copy spelling, numbers and punctuation exactly as they appear, even if they \"\n          \"look wrong. Return plain text only, with no Markdown and no commentary.\")\n\n\ndef transcribe(path, model=\"deepseek/deepseek-v4.1-flash\", reasoning={\"effort\": \"none\"}):\n    mime = mimetypes.guess_type(path)[0] or \"image/jpeg\"\n    with open(path, \"rb\") as f:\n        image = f\"data:{mime};base64,\" + base64.b64encode(f.read()).decode()\n    body = {\n        \"model\": model,\n        \"max_tokens\": 16000,\n        \"messages\": [{\"role\": \"user\", \"content\": [\n            {\"type\": \"text\", \"text\": PROMPT},\n            {\"type\": \"image_url\", \"image_url\": {\"url\": image}},\n        ]}],\n    }\n    if reasoning:\n        body[\"reasoning\"] = reasoning\n    response = requests.post(API, headers=HEADERS, json=body, timeout=300)\n    response.raise_for_status()\n    data = response.json()\n    choice = data[\"choices\"][0]\n    if choice[\"finish_reason\"] != \"stop\":\n        raise ValueError(f\"finish_reason={choice['finish_reason']}: the transcript is incomplete\")\n    return choice[\"message\"][\"content\"], data[\"usage\"][\"cost\"]\n\n\nif __name__ == \"__main__\":\n    text, cost = transcribe(\"receipt.jpg\")\n    print(text)\n    print(f\"\\n${cost:.5f}\")"
+        },
+        {
+          "type": "code",
+          "text": "HARBOR LANE MARKET\n1180 Harbor Lane, Unit 4\nPortland OR 97209\nTel (503) 555-0148\n...\nTOTAL 62.86\nVISA ****4471 62.86\nAUTH 08813C\n...\n\n$0.00022"
+        },
+        {
+          "type": "paragraph",
+          "text": "每个字符都正确返回，成本约百分之二美分。数据 URL 的类型取自文件扩展名，所以 PNG 和 WebP 扫描件也能用。要比较模型，只需改 model 字符串；对第 2 步中无法关闭推理的模型，传入 reasoning=None。",
+          "inlines": [
+            {
+              "text": "每个字符都正确返回，成本约百分之二美分。数据 URL 的类型取自文件扩展名，所以 PNG 和 WebP 扫描件也能用。要比较模型，只需改 "
+            },
+            {
+              "code": true,
+              "text": "model"
+            },
+            {
+              "text": " 字符串；对第 2 步中无法关闭推理的模型，传入 "
+            },
+            {
+              "code": true,
+              "text": "reasoning=None"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "加 finish_reason 检查是因为推理 token 也计入 max_tokens。在 4,000 的上限下，Gemini 3.8 Flash 每次运行都花 3,841 个 token 推理那份传真，结果在序列号 4 处中途停止。请求仍然返回了带 finish_reason: \"length\" 的 200 OK，所以没有这项检查，流水线会在不知不觉中存下不完整的转录。",
+          "inlines": [
+            {
+              "text": "加 "
+            },
+            {
+              "code": true,
+              "text": "finish_reason"
+            },
+            {
+              "text": " 检查是因为推理 token 也计入 "
+            },
+            {
+              "code": true,
+              "text": "max_tokens"
+            },
+            {
+              "text": "。在 4,000 的上限下，Gemini 3.8 Flash 每次运行都花 3,841 个 token 推理那份传真，结果在序列号 4 处中途停止。请求仍然返回了带 "
+            },
+            {
+              "code": true,
+              "text": "finish_reason: \"length\""
+            },
+            {
+              "text": " 的 "
+            },
+            {
+              "code": true,
+              "text": "200 OK"
+            },
+            {
+              "text": "，所以没有这项检查，流水线会在不知不觉中存下不完整的转录。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "第 2 步：转录时关闭推理",
+          "inlines": [
+            {
+              "text": "第 2 步：转录时关闭推理"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "当模型需要规划答案时，推理有帮助。从页面上抄文本不需要规划，所以额外的 token 大多只会增加成本和时间。这就是 transcribe 默认发送 \"reasoning\": {\"effort\": \"none\"} 的原因（参见 reasoning tokens）。我们对所有允许关闭推理的模型，在关闭推理的情况下重跑了完整测试：",
+          "inlines": [
+            {
+              "text": "当模型需要规划答案时，推理有帮助。从页面上抄文本不需要规划，所以额外的 token 大多只会增加成本和时间。这就是 "
+            },
+            {
+              "code": true,
+              "text": "transcribe"
+            },
+            {
+              "text": " 默认发送 "
+            },
+            {
+              "code": true,
+              "text": "\"reasoning\": {\"effort\": \"none\"}"
+            },
+            {
+              "text": " 的原因（参见 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens",
+              "text": "reasoning tokens"
+            },
+            {
+              "text": "）。我们对所有允许关闭推理的模型，在关闭推理的情况下重跑了完整测试："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型",
+          "inlines": [
+            {
+              "text": "模型"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "关键值，开 → 关",
+          "inlines": [
+            {
+              "text": "关键值，开 → 关"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CER，开 → 关",
+          "inlines": [
+            {
+              "text": "CER，开 → 关"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每 1,000 页成本，开 → 关",
+          "inlines": [
+            {
+              "text": "每 1,000 页成本，开 → 关"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "中位耗时（秒），开 → 关",
+          "inlines": [
+            {
+              "text": "中位耗时（秒），开 → 关"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mistralai/mistral-large-4-0",
+          "inlines": [
+            {
+              "code": true,
+              "text": "mistralai/mistral-large-4-0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "240 → 249",
+          "inlines": [
+            {
+              "text": "240 → 249"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.61% → 0.15%",
+          "inlines": [
+            {
+              "text": "4.61% → 0.15%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$6.80 → $1.68",
+          "inlines": [
+            {
+              "text": "$6.80 → $1.68"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "47.9 → 5.6",
+          "inlines": [
+            {
+              "text": "47.9 → 5.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "inclusionai/ling-3.0-flash-vl",
+          "inlines": [
+            {
+              "code": true,
+              "text": "inclusionai/ling-3.0-flash-vl"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "254 → 254",
+          "inlines": [
+            {
+              "text": "254 → 254"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.05% → 0.19%",
+          "inlines": [
+            {
+              "text": "1.05% → 0.19%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.12 → $0.04",
+          "inlines": [
+            {
+              "text": "$0.12 → $0.04"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.2 → 4.0",
+          "inlines": [
+            {
+              "text": "7.2 → 4.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-6-luna",
+          "inlines": [
+            {
+              "code": true,
+              "text": "openai/gpt-6-luna"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "232 → 232",
+          "inlines": [
+            {
+              "text": "232 → 232"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.49% → 1.08%",
+          "inlines": [
+            {
+              "text": "1.49% → 1.08%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.54 → $0.22",
+          "inlines": [
+            {
+              "text": "$0.54 → $0.22"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.8 → 3.8",
+          "inlines": [
+            {
+              "text": "7.8 → 3.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "deepseek/deepseek-v4.1-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "deepseek/deepseek-v4.1-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "248 → 249",
+          "inlines": [
+            {
+              "text": "248 → 249"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.20% → 0.23%",
+          "inlines": [
+            {
+              "text": "0.20% → 0.23%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.20 → $0.16",
+          "inlines": [
+            {
+              "text": "$0.20 → $0.16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.8 → 4.5",
+          "inlines": [
+            {
+              "text": "4.8 → 4.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "qwen/qwen3.8-27b",
+          "inlines": [
+            {
+              "code": true,
+              "text": "qwen/qwen3.8-27b"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "246 → 244",
+          "inlines": [
+            {
+              "text": "246 → 244"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.92% → 2.28%",
+          "inlines": [
+            {
+              "text": "0.92% → 2.28%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.54 → $0.77",
+          "inlines": [
+            {
+              "text": "$1.54 → $0.77"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.8 → 8.9",
+          "inlines": [
+            {
+              "text": "10.8 → 8.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "开启推理时，一次 Mistral Large 4 请求推理了 626 秒，却没有返回任何文本（finish_reason: \"error\"）。Qwen3.8 27B 开启推理后表现更好，所以请用你自己的页面测试。Gemini 3.8 Flash、Grok 4.7 和 GLM 5.3 FlashX 不允许关闭推理，因此传入 reasoning=None 以省略该字段。否则请求会失败并报错：",
+          "inlines": [
+            {
+              "text": "开启推理时，一次 Mistral Large 4 请求推理了 626 秒，却没有返回任何文本（"
+            },
+            {
+              "code": true,
+              "text": "finish_reason: \"error\""
+            },
+            {
+              "text": "）。Qwen3.8 27B 开启推理后表现更好，所以请用你自己的页面测试。Gemini 3.8 Flash、Grok 4.7 和 GLM 5.3 FlashX 不允许关闭推理，因此传入 "
+            },
+            {
+              "code": true,
+              "text": "reasoning=None"
+            },
+            {
+              "text": " 以省略该字段。否则请求会失败并报错："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "400 {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}"
+        },
+        {
+          "type": "heading",
+          "text": "第 3 步：交叉核对来自不同实验室的两个模型",
+          "inlines": [
+            {
+              "text": "第 3 步：交叉核对来自不同实验室的两个模型"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "模糊图像里，O 和 0 这类形近字符很难分辨。每个模型都按自己训练出的判断来识别，所以不同实验室的两个模型很少会犯同样的错误。它们转录结果不一致的地方，通常就是图像不清楚的地方。我们把六个模型两两组合全部测了一遍。表现最好的是 Claude Haiku 5.5，由 DeepSeek V4.1 Flash 负责校验。Haiku 在 2,964 个词里错了 35 个，DeepSeek 按第 2 步那样关闭推理，在其中 34 处给出了不同结果，另有 10 次误报。这一组合每 1,000 页花费 $0.62，是 Mistral OCR 的三分之一。两者用的是同一个 API，所以校验只需多一次调用。调用 Haiku 时用的是 reasoning=None，因为它在我们的表格里就是这么跑的：",
+          "inlines": [
+            {
+              "text": "模糊图像里，O 和 0 这类形近字符很难分辨。每个模型都按自己训练出的判断来识别，所以不同实验室的两个模型很少会犯同样的错误。它们转录结果不一致的地方，通常就是图像不清楚的地方。我们把六个模型两两组合全部测了一遍。表现最好的是 Claude Haiku 5.5，由 DeepSeek V4.1 Flash 负责校验。Haiku 在 2,964 个词里错了 35 个，DeepSeek 按第 2 步那样关闭推理，在其中 34 处给出了不同结果，另有 10 次误报。这一组合每 1,000 页花费 $0.62，是 Mistral OCR 的三分之一。两者用的是同一个 API，所以校验只需多一次调用。调用 Haiku 时用的是 "
+            },
+            {
+              "code": true,
+              "text": "reasoning=None"
+            },
+            {
+              "text": "，因为它在我们的表格里就是这么跑的："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import difflib\n\nfrom transcribe import transcribe  # the function from step 1\n\na, _ = transcribe(\"fax.jpg\", model=\"anthropic/claude-haiku-5.5\", reasoning=None)\nb, _ = transcribe(\"fax.jpg\", model=\"deepseek/deepseek-v4.1-flash\")\na, b = a.split(), b.split()\nfor tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():\n    if tag != \"equal\":\n        print(\"check:\", \" \".join(a[i1:i2]), \"vs\", \" \".join(b[j1:j2]))"
+        },
+        {
+          "type": "code",
+          "text": "check: 8LI5-QS0B5O vs 8LI5-QS0B50\ncheck: 30HY-1OHLG7 vs 30HY-10HLG7"
+        },
+        {
+          "type": "paragraph",
+          "text": "这两个序列号是大多数模型都读错的地方。如果两个模型以同样的方式误读同一个字符，就不会被标记出来。我们的测试中发生过一次：两个模型都把 O 读成了零，所以只要条件允许，最好用清单或校验和来验证 ID。这种比对还假设两个模型按相同顺序读取页面。三次运行中有一次，两个模型对传真两栏的排列顺序不同，结果每个序列号都被标成了不一致。",
+          "inlines": [
+            {
+              "text": "这两个序列号是大多数模型都读错的地方。如果两个模型以同样的方式误读同一个字符，就不会被标记出来。我们的测试中发生过一次：两个模型都把 O 读成了零，所以只要条件允许，最好用清单或校验和来验证 ID。这种比对还假设两个模型按相同顺序读取页面。三次运行中有一次，两个模型对传真两栏的排列顺序不同，结果每个序列号都被标成了不一致。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "第 4 步：把 Mistral OCR 当作专用引擎",
+          "inlines": [
+            {
+              "text": "第 4 步：把 Mistral OCR 当作专用引擎"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral OCR 是专门为文档 OCR 训练的模型。在 OpenRouter 上，它以 file-parser 插件中的引擎形式运行，接受 PDF，每 1,000 页收费 $2。插件会在你的模型看到文件之前先做 OCR。它把文本作为文件注释附在响应里返回，所以你指定的模型只需负责回复。把扫描件包进一页的 PDF，再配任意便宜的模型发送即可：",
+          "inlines": [
+            {
+              "text": "Mistral OCR 是专门为文档 OCR 训练的模型。在 OpenRouter 上，它以 "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/overview/multimodal/pdfs",
+              "text": "file-parser 插件"
+            },
+            {
+              "text": "中的引擎形式运行，接受 PDF，每 1,000 页收费 $2。插件会在你的模型看到文件之前先做 OCR。它把文本作为文件注释附在响应里返回，所以你指定的模型只需负责回复。把扫描件包进一页的 PDF，再配任意便宜的模型发送即可："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import base64\nimport html\nimport io\nimport os\n\nimport requests\nfrom PIL import Image, ImageSequence\n\nfrom transcribe import API, HEADERS  # from step 1\n\n\ndef mistral_ocr(path):\n    if path.lower().endswith(\".pdf\"):  # scanned PDFs go as they are\n        with open(path, \"rb\") as f:\n            raw = f.read()\n    else:  # wrap an image in a PDF in memory, one page per frame of a multipage TIFF\n        pages = [p.convert(\"RGB\") for p in ImageSequence.Iterator(Image.open(path))]\n        buf = io.BytesIO()\n        pages[0].save(buf, \"PDF\", save_all=True, append_images=pages[1:])\n        raw = buf.getvalue()\n    pdf = \"data:application/pdf;base64,\" + base64.b64encode(raw).decode()\n    pdf_name = os.path.splitext(os.path.basename(path))[0] + \".pdf\"\n    body = {\n        \"model\": \"upstage/solar-mini4\",  # any cheap text model; it only has to reply\n        \"max_tokens\": 5,\n        \"messages\": [{\"role\": \"user\", \"content\": [\n            {\"type\": \"text\", \"text\": \"Reply OK.\"},\n            {\"type\": \"file\", \"file\": {\"filename\": pdf_name, \"file_data\": pdf}},\n        ]}],\n        \"plugins\": [{\"id\": \"file-parser\", \"pdf\": {\"engine\": \"mistral-ocr\"}}],\n    }\n    response = requests.post(API, headers=HEADERS, json=body, timeout=300)\n    response.raise_for_status()\n    data = response.json()\n    parts = data[\"choices\"][0][\"message\"][\"annotations\"][0][\"file\"][\"content\"]\n    texts = [p[\"text\"] for p in parts if p.get(\"type\") == \"text\"]  # skip extracted image parts\n    text = \"\\n\".join(t for t in texts if not t.startswith((\"<file\", \"</file\")))\n    return html.unescape(text), data[\"usage\"][\"cost\"]\n\n\ntext, cost = mistral_ocr(\"receipt_faded.jpg\")\nprint(text)\nprint(f\"\\n${cost:.5f}\")"
+        },
+        {
+          "type": "code",
+          "text": "CAFE VERDIGRIS\n22 Quayside Row\nBristol BS1 4QA\nVAT No. GB 318 7742 09\n\n27/09/2026 08:17 TILL 2 CHK 0193\n...\n|  CONTACTLESS | 32.95  |\n|  CARD ***9026 |   |\n\nSERVED BY: PRIYA\nWIFI: verdigris-guest / tide2026\n\n$0.00202"
+        },
+        {
+          "type": "paragraph",
+          "text": "那张褪色收据上的每个值都读对了，包括卡号数字和密码。Mistral OCR 的设计目标是保留版面，所以输出是 Markdown：收据行变成表格，标题会带上 ##，& 返回为 &amp;。这也是函数要反转义 HTML 实体的原因。需要纯文本就剥掉 Markdown，如果接下来由 LLM 读取结果，就保留它。",
+          "inlines": [
+            {
+              "text": "那张褪色收据上的每个值都读对了，包括卡号数字和密码。Mistral OCR 的设计目标是保留版面，所以输出是 Markdown：收据行变成表格，标题会带上 "
+            },
+            {
+              "code": true,
+              "text": "##"
+            },
+            {
+              "text": "，"
+            },
+            {
+              "code": true,
+              "text": "&"
+            },
+            {
+              "text": " 返回为 "
+            },
+            {
+              "code": true,
+              "text": "&amp;"
+            },
+            {
+              "text": "。这也是函数要反转义 HTML 实体的原因。需要纯文本就剥掉 Markdown，如果接下来由 LLM 读取结果，就保留它。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "做 OCR，LLM 比 Tesseract 更好吗？",
+          "inlines": [
+            {
+              "text": "做 OCR，LLM 比 Tesseract 更好吗？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "是的，但干净的打印页面除外。Tesseract 5.5 逐行识别字符形状，所以在清晰的印刷体上表现稳定，遇到噪点和手写就撑不住。它把那封信和那份简报转录得完美无缺。面对褪色收据它什么都没返回，杂乱手写 11 个值里只读出 1 个，传真 15 个值里读出 4 个。",
+          "inlines": [
+            {
+              "text": "是的，但干净的打印页面除外。Tesseract 5.5 逐行识别字符形状，所以在清晰的印刷体上表现稳定，遇到噪点和手写就撑不住。它把那封信和那份简报转录得完美无缺。面对褪色收据它什么都没返回，杂乱手写 11 个值里只读出 1 个，传真 15 个值里读出 4 个。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "常见问题",
+          "inlines": [
+            {
+              "text": "常见问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "做 OCR 用哪个 LLM 最好？",
+          "inlines": [
+            {
+              "text": "做 OCR 用哪个 LLM 最好？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的测试中是 Claude Opus 5.5。Gemini 3.8 Flash 和 Grok 4.7 的错误率几乎一样低，但漏掉的序列号更多。DeepSeek V4.1 Flash 和 Ling 3.0 Flash VL 表现接近，每 1,000 页不到 $0.20。",
+          "inlines": [
+            {
+              "text": "在我们的测试中是 Claude Opus 5.5。Gemini 3.8 Flash 和 Grok 4.7 的错误率几乎一样低，但漏掉的序列号更多。DeepSeek V4.1 Flash 和 Ling 3.0 Flash VL 表现接近，每 1,000 页不到 $0.20。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "怎么对扫描版 PDF 做 OCR？",
+          "inlines": [
+            {
+              "text": "怎么对扫描版 PDF 做 OCR？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "按第 4 步用 mistral-ocr 引擎发送。另一种办法是把每页渲染成图像交给视觉模型，或者把 PDF 直接发给能读 PDF 的模型。免费的文本解析器对扫描件没用，因为扫描件没有文本层。",
+          "inlines": [
+            {
+              "text": "按第 4 步用 "
+            },
+            {
+              "code": true,
+              "text": "mistral-ocr"
+            },
+            {
+              "text": " 引擎发送。另一种办法是把每页渲染成图像交给视觉模型，或者把 PDF 直接发给能读 PDF 的模型。免费的文本解析器对扫描件没用，因为扫描件没有文本层。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "最准确的 OCR 模型是哪个？",
+          "inlines": [
+            {
+              "text": "最准确的 OCR 模型是哪个？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5.5 在 264 个关键值中读对 262 个，在我们八份扫描件上的字符错误率为 0.02%。Mistral OCR 以 264 个中读对 258 个位居第二，成本只有八分之一。",
+          "inlines": [
+            {
+              "text": "Claude Opus 5.5 在 264 个关键值中读对 262 个，在我们八份扫描件上的字符错误率为 0.02%。Mistral OCR 以 264 个中读对 258 个位居第二，成本只有八分之一。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "用 LLM 做 OCR 要花多少钱？",
+          "inlines": [
+            {
+              "text": "用 LLM 做 OCR 要花多少钱？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的测试中，从每 1,000 页 $0.04（Ling 3.0 Flash VL，关闭推理）到 $16.42（Claude Opus 5.5）不等。Mistral OCR 每 1,000 页收费 $2。各模型计算图像 token 的方式不同，所以成本要拿你自己的页面来测。",
+          "inlines": [
+            {
+              "text": "在我们的测试中，从每 1,000 页 $0.04（Ling 3.0 Flash VL，关闭推理）到 $16.42（Claude Opus 5.5）不等。Mistral OCR 每 1,000 页收费 $2。各模型计算图像 token 的方式不同，所以成本要拿你自己的页面来测。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Mistral OCR 比视觉模型更好吗？",
+          "inlines": [
+            {
+              "text": "Mistral OCR 比视觉模型更好吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "它是我们测试中性价比最高的：每 1000 页 2.02 美元，264 个关键值中识别对了 258 个，仅次于 Claude Opus 5.5。它返回的 Markdown 能保留版面布局，而视觉模型则按你要求的格式返回结果。",
+          "inlines": [
+            {
+              "text": "它是我们测试中性价比最高的：每 1000 页 2.02 美元，264 个关键值中识别对了 258 个，仅次于 Claude Opus 5.5。它返回的 Markdown 能保留版面布局，而视觉模型则按你要求的格式返回结果。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "大语言模型能识别手写体吗？",
+          "inlines": [
+            {
+              "text": "大语言模型能识别手写体吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "能。15 个视觉模型都完美转录了我们工整的笔记。面对潦草的手写，大多数模型的字符准确率仍在 99% 以上，出错的主要是人名（把“Achterberg”认成了“Ackterberg”）。",
+          "inlines": [
+            {
+              "text": "能。15 个视觉模型都完美转录了我们工整的笔记。面对潦草的手写，大多数模型的字符准确率仍在 99% 以上，出错的主要是人名（把“Achterberg”认成了“Ackterberg”）。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "下一步",
+          "inlines": [
+            {
+              "text": "下一步"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/overview/multimodal/image-understanding",
+                  "text": "图像输入"
+                },
+                {
+                  "text": "介绍了如何通过 URL 或 base64 发送图像，我们的"
+                },
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/send-image-to-llm/",
+                  "text": "视觉 API 指南"
+                },
+                {
+                  "text": "则讲解了细节级别。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/overview/multimodal/pdfs",
+                  "text": "PDF 输入"
+                },
+                {
+                  "text": "列出了各种 PDF 引擎，并说明了如何复用解析结果。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/collections/vision-models",
+                  "text": "视觉模型合集"
+                },
+                {
+                  "text": "列出了所有支持图像输入的模型。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "如果想把手写转录结果转成带类型的字段，请参阅"
+                },
+                {
+                  "href": "https://openrouter.ai/docs/guides/features/structured-outputs",
+                  "text": "结构化输出"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Turning scanned documents into reliable text is hard. Classic OCR engines such as Tesseract fail on faded print, handwriting and faxes. Vision models read those pages well, but sometimes write values that aren’t on the page. We made eight test pages from text we wrote, so every character could be checked, and ran them through 15 vision models and Mistral OCR on OpenRouter, plus Tesseract.",
+          "inlines": [
+            {
+              "text": "Turning scanned documents into reliable text is hard. Classic OCR engines such as Tesseract fail on faded print, handwriting and faxes. Vision models read those pages well, but sometimes write values that aren’t on the page. We made eight test pages from text we wrote, so every character could be checked, and ran them through 15 vision models and Mistral OCR on OpenRouter, plus Tesseract."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The best OCR model in our test was Claude Opus 5.5, with 262 of 264 key values right at $16.42 per 1,000 pages. Mistral OCR was the best value: 258 of 264 for $2.02. This post shows the results, the errors to watch for, and code to catch them.",
+          "inlines": [
+            {
+              "text": "The best OCR model in our test was Claude Opus 5.5, with 262 of 264 key values right at $16.42 per 1,000 pages. Mistral OCR was the best value: 258 of 264 for $2.02. This post shows the results, the errors to watch for, and code to catch them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These results are a starting point. Our eight pages aren’t your documents, so the only real way to know which model is best for your workflow is to test the candidates on your own scans.",
+          "inlines": [
+            {
+              "text": "These results are a starting point. Our eight pages aren’t your documents, so the only real way to know which model is best for your workflow is to test the candidates on your own scans."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Tl;dr",
+          "inlines": [
+            {
+              "text": "Tl;dr"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Most accurate: "
+                },
+                {
+                  "code": true,
+                  "text": "anthropic/claude-opus-5.5"
+                },
+                {
+                  "text": ". Best value: "
+                },
+                {
+                  "code": true,
+                  "text": "mistral-ocr"
+                },
+                {
+                  "text": ". Cheapest good result: "
+                },
+                {
+                  "code": true,
+                  "text": "inclusionai/ling-3.0-flash-vl"
+                },
+                {
+                  "text": " with reasoning off, 254 of 264 for $0.04 per 1,000 pages."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "On a faded receipt, GPT-6 Luna and GPT-6.1 Sol made up card digits, wifi passwords and a server name. Error rates don’t show this, so check the values you’ll actually use."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Turning reasoning off made four of five models we tested faster and cheaper, with no key values lost."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Flagging the words where two cheap models from different labs disagreed caught 34 of 35 wrong words, for $0.62 per 1,000 pages."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How we tested",
+          "inlines": [
+            {
+              "text": "How we tested"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We rendered each page from known text, then degraded it like a scan: a small rotation, blur, noise and JPEG compression. Five pages are ordinary: a receipt, a letter with two deliberate misspellings, a form with a ticked box, a two-column newsletter and a neat handwritten note. Three are built to be hard: a faded thermal receipt, fast cramped handwriting, and a low-resolution fax of 12 serial numbers made from look-alike characters (0/O, 1/I/L, 5/S, 8/B), so a model can’t guess them from context.",
+          "inlines": [
+            {
+              "text": "We rendered each page from known text, then degraded it like a scan: a small rotation, blur, noise and JPEG compression. Five pages are ordinary: a receipt, a letter with two deliberate misspellings, a form with a ticked box, a two-column newsletter and a neat handwritten note. Three are built to be hard: a faded thermal receipt, fast cramped handwriting, and a low-resolution fax of 12 serial numbers made from look-alike characters (0/O, 1/I/L, 5/S, 8/B), so a model can’t guess them from context."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/907e26e192ca48cc8b52b8aabd7d4d3167b05962cd1588f847bcc580646b3798.jpg",
+          "alt": "Scanned thermal receipt from Cafe Verdigris, faded towards the bottom, with the card number and wifi password barely legible"
+        },
+        {
+          "type": "paragraph",
+          "text": "We scored each transcript two ways. The character error rate (CER) is the edit distance to the true text divided by its length, ignoring line breaks and Markdown. The key values are 88 strings a pipeline would use, 10 to 15 per page, such as totals, dates, card digits, serials and the misspelled words. Each has to appear exactly in each of three runs, which gives 264 checks per model. Costs are the billed usage.cost of each request. Models are from the OpenRouter catalog as of October 8, 2026.",
+          "inlines": [
+            {
+              "text": "We scored each transcript two ways. The character error rate (CER) is the edit distance to the true text divided by its length, ignoring line breaks and Markdown. The key values are 88 strings a pipeline would use, 10 to 15 per page, such as totals, dates, card digits, serials and the misspelled words. Each has to appear exactly in each of three runs, which gives 264 checks per model. Costs are the billed "
+            },
+            {
+              "code": true,
+              "text": "usage.cost"
+            },
+            {
+              "text": " of each request. Models are from the OpenRouter catalog as of October 8, 2026."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Which OCR model is most accurate on scanned documents?",
+          "inlines": [
+            {
+              "text": "Which OCR model is most accurate on scanned documents?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The table is sorted by key values correct.",
+          "inlines": [
+            {
+              "text": "The table is sorted by key values correct."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Route",
+          "inlines": [
+            {
+              "text": "Route"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Key values correct",
+          "inlines": [
+            {
+              "text": "Key values correct"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CER, all pages",
+          "inlines": [
+            {
+              "text": "CER, all pages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CER, 3 hard pages",
+          "inlines": [
+            {
+              "text": "CER, 3 hard pages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cost per 1,000 pages",
+          "inlines": [
+            {
+              "text": "Cost per 1,000 pages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Median seconds",
+          "inlines": [
+            {
+              "text": "Median seconds"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "anthropic/claude-opus-5.5",
+          "inlines": [
+            {
+              "code": true,
+              "text": "anthropic/claude-opus-5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "262 of 264",
+          "inlines": [
+            {
+              "text": "262 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.02%",
+          "inlines": [
+            {
+              "text": "0.02%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.06%",
+          "inlines": [
+            {
+              "text": "0.06%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$16.42",
+          "inlines": [
+            {
+              "text": "$16.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.2",
+          "inlines": [
+            {
+              "text": "7.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mistral-ocr (PDF engine)",
+          "inlines": [
+            {
+              "code": true,
+              "text": "mistral-ocr"
+            },
+            {
+              "text": " (PDF engine)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "258 of 264",
+          "inlines": [
+            {
+              "text": "258 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.14%",
+          "inlines": [
+            {
+              "text": "0.14%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.26%",
+          "inlines": [
+            {
+              "text": "0.26%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$2.02",
+          "inlines": [
+            {
+              "text": "$2.02"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.8",
+          "inlines": [
+            {
+              "text": "3.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "anthropic/claude-sonnet-5.5",
+          "inlines": [
+            {
+              "code": true,
+              "text": "anthropic/claude-sonnet-5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "256 of 264",
+          "inlines": [
+            {
+              "text": "256 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.34%",
+          "inlines": [
+            {
+              "text": "1.34%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.49%",
+          "inlines": [
+            {
+              "text": "3.49%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$7.68",
+          "inlines": [
+            {
+              "text": "$7.68"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.2",
+          "inlines": [
+            {
+              "text": "4.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "google/gemini-3.8-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "google/gemini-3.8-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "254 of 264",
+          "inlines": [
+            {
+              "text": "254 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.15%",
+          "inlines": [
+            {
+              "text": "0.15%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.28%",
+          "inlines": [
+            {
+              "text": "0.28%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$7.50",
+          "inlines": [
+            {
+              "text": "$7.50"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.3",
+          "inlines": [
+            {
+              "text": "9.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "stepfun/step-5-preview",
+          "inlines": [
+            {
+              "code": true,
+              "text": "stepfun/step-5-preview"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "254 of 264",
+          "inlines": [
+            {
+              "text": "254 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.42%",
+          "inlines": [
+            {
+              "text": "0.42%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.11%",
+          "inlines": [
+            {
+              "text": "1.11%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$5.48",
+          "inlines": [
+            {
+              "text": "$5.48"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9.3",
+          "inlines": [
+            {
+              "text": "9.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "inclusionai/ling-3.0-flash-vl",
+          "inlines": [
+            {
+              "code": true,
+              "text": "inclusionai/ling-3.0-flash-vl"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "254 of 264",
+          "inlines": [
+            {
+              "text": "254 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.05%",
+          "inlines": [
+            {
+              "text": "1.05%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.56%",
+          "inlines": [
+            {
+              "text": "2.56%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.12",
+          "inlines": [
+            {
+              "text": "$0.12"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.2",
+          "inlines": [
+            {
+              "text": "7.2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "anthropic/claude-haiku-5.5",
+          "inlines": [
+            {
+              "code": true,
+              "text": "anthropic/claude-haiku-5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "253 of 264",
+          "inlines": [
+            {
+              "text": "253 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.19%",
+          "inlines": [
+            {
+              "text": "1.19%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.89%",
+          "inlines": [
+            {
+              "text": "2.89%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.46",
+          "inlines": [
+            {
+              "text": "$0.46"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.8",
+          "inlines": [
+            {
+              "text": "3.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "x-ai/grok-4.7",
+          "inlines": [
+            {
+              "code": true,
+              "text": "x-ai/grok-4.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "252 of 264",
+          "inlines": [
+            {
+              "text": "252 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.13%",
+          "inlines": [
+            {
+              "text": "0.13%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.35%",
+          "inlines": [
+            {
+              "text": "0.35%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$12.85",
+          "inlines": [
+            {
+              "text": "$12.85"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11.3",
+          "inlines": [
+            {
+              "text": "11.3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "z-ai/glm-5.3-flashx",
+          "inlines": [
+            {
+              "code": true,
+              "text": "z-ai/glm-5.3-flashx"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "252 of 264",
+          "inlines": [
+            {
+              "text": "252 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.33%",
+          "inlines": [
+            {
+              "text": "0.33%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.86%",
+          "inlines": [
+            {
+              "text": "0.86%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.45",
+          "inlines": [
+            {
+              "text": "$1.45"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5.5",
+          "inlines": [
+            {
+              "text": "5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-6.1-sol",
+          "inlines": [
+            {
+              "code": true,
+              "text": "openai/gpt-6.1-sol"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "252 of 264",
+          "inlines": [
+            {
+              "text": "252 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.65%",
+          "inlines": [
+            {
+              "text": "0.65%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.74%",
+          "inlines": [
+            {
+              "text": "1.74%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$6.03",
+          "inlines": [
+            {
+              "text": "$6.03"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.4",
+          "inlines": [
+            {
+              "text": "8.4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "deepseek/deepseek-v4.1-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "deepseek/deepseek-v4.1-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "248 of 264",
+          "inlines": [
+            {
+              "text": "248 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.20%",
+          "inlines": [
+            {
+              "text": "0.20%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.48%",
+          "inlines": [
+            {
+              "text": "0.48%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.20",
+          "inlines": [
+            {
+              "text": "$0.20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.8",
+          "inlines": [
+            {
+              "text": "4.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "qwen/qwen3.8-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "qwen/qwen3.8-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "248 of 264",
+          "inlines": [
+            {
+              "text": "248 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.74%",
+          "inlines": [
+            {
+              "text": "0.74%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.49%",
+          "inlines": [
+            {
+              "text": "1.49%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.29",
+          "inlines": [
+            {
+              "text": "$0.29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "8.1",
+          "inlines": [
+            {
+              "text": "8.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "qwen/qwen3.8-27b",
+          "inlines": [
+            {
+              "code": true,
+              "text": "qwen/qwen3.8-27b"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "246 of 264",
+          "inlines": [
+            {
+              "text": "246 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.92%",
+          "inlines": [
+            {
+              "text": "0.92%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.31%",
+          "inlines": [
+            {
+              "text": "2.31%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.54",
+          "inlines": [
+            {
+              "text": "$1.54"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.8",
+          "inlines": [
+            {
+              "text": "10.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "xiaomi/mimo-v2.6-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "xiaomi/mimo-v2.6-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "246 of 264",
+          "inlines": [
+            {
+              "text": "246 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.02%",
+          "inlines": [
+            {
+              "text": "2.02%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5.34%",
+          "inlines": [
+            {
+              "text": "5.34%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.58",
+          "inlines": [
+            {
+              "text": "$0.58"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.1",
+          "inlines": [
+            {
+              "text": "3.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mistralai/mistral-large-4-0",
+          "inlines": [
+            {
+              "code": true,
+              "text": "mistralai/mistral-large-4-0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "240 of 264",
+          "inlines": [
+            {
+              "text": "240 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.61%",
+          "inlines": [
+            {
+              "text": "4.61%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "12.19%",
+          "inlines": [
+            {
+              "text": "12.19%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$6.80",
+          "inlines": [
+            {
+              "text": "$6.80"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "47.9",
+          "inlines": [
+            {
+              "text": "47.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-6-luna",
+          "inlines": [
+            {
+              "code": true,
+              "text": "openai/gpt-6-luna"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "232 of 264",
+          "inlines": [
+            {
+              "text": "232 of 264"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.49%",
+          "inlines": [
+            {
+              "text": "1.49%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3.95%",
+          "inlines": [
+            {
+              "text": "3.95%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.54",
+          "inlines": [
+            {
+              "text": "$0.54"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.8",
+          "inlines": [
+            {
+              "text": "7.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tesseract 5.5 (local, 1 run)",
+          "inlines": [
+            {
+              "text": "Tesseract 5.5 (local, 1 run)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "46 of 88",
+          "inlines": [
+            {
+              "text": "46 of 88"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26.06%",
+          "inlines": [
+            {
+              "text": "26.06%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "64.39%",
+          "inlines": [
+            {
+              "text": "64.39%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0",
+          "inlines": [
+            {
+              "text": "$0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "58.1",
+          "inlines": [
+            {
+              "text": "58.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On the five ordinary pages every vision model scored under 0.3% CER, and all 15 transcribed the neat handwriting perfectly. Most of the spread comes from the faded receipt. Opus 5.5 and Mistral OCR got all 33 checks on it, while GPT-6 Luna got 16. Models count image tokens differently (a median page was 1,070 prompt tokens for DeepSeek and 3,314 for Grok), so measure cost on your own pages.",
+          "inlines": [
+            {
+              "text": "On the five ordinary pages every vision model scored under 0.3% CER, and all 15 transcribed the neat handwriting perfectly. Most of the spread comes from the faded receipt. Opus 5.5 and Mistral OCR got all 33 checks on it, while GPT-6 Luna got 16. Models count image tokens differently (a median page was 1,070 prompt tokens for DeepSeek and 3,314 for Grok), so measure cost on your own pages."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Which OCR model fits your work",
+          "inlines": [
+            {
+              "text": "Which OCR model fits your work"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "If most of your work is",
+          "inlines": [
+            {
+              "text": "If most of your work is"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Start with",
+          "inlines": [
+            {
+              "text": "Start with"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Why",
+          "inlines": [
+            {
+              "text": "Why"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hard scans where every value matters",
+          "inlines": [
+            {
+              "text": "Hard scans where every value matters"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5.5",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/anthropic/claude-opus-5.5",
+              "text": "Claude Opus 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "262 of 264 key values, at $16.42 per 1,000 pages",
+          "inlines": [
+            {
+              "text": "262 of 264 key values, at $16.42 per 1,000 pages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "High volume at a fair price",
+          "inlines": [
+            {
+              "text": "High volume at a fair price"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral OCR (the mistral-ocr PDF engine)",
+          "inlines": [
+            {
+              "text": "Mistral OCR (the "
+            },
+            {
+              "code": true,
+              "text": "mistral-ocr"
+            },
+            {
+              "text": " PDF engine)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "258 of 264 key values, at $2.02 per 1,000 pages",
+          "inlines": [
+            {
+              "text": "258 of 264 key values, at $2.02 per 1,000 pages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The lowest cost",
+          "inlines": [
+            {
+              "text": "The lowest cost"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ling 3.0 Flash VL with reasoning off",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/inclusionai/ling-3.0-flash-vl",
+              "text": "Ling 3.0 Flash VL"
+            },
+            {
+              "text": " with reasoning off"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "254 of 264 key values, at $0.04 per 1,000 pages",
+          "inlines": [
+            {
+              "text": "254 of 264 key values, at $0.04 per 1,000 pages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Serial numbers and IDs with look-alike characters",
+          "inlines": [
+            {
+              "text": "Serial numbers and IDs with look-alike characters"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Haiku 5.5 checked by DeepSeek V4.1 Flash",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/anthropic/claude-haiku-5.5",
+              "text": "Claude Haiku 5.5"
+            },
+            {
+              "text": " checked by "
+            },
+            {
+              "href": "https://openrouter.ai/deepseek/deepseek-v4.1-flash",
+              "text": "DeepSeek V4.1 Flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The pair flagged 34 of 35 wrong words, for $0.62 per 1,000 pages",
+          "inlines": [
+            {
+              "text": "The pair flagged 34 of 35 wrong words, for $0.62 per 1,000 pages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Clean typed pages, offline",
+          "inlines": [
+            {
+              "text": "Clean typed pages, offline"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tesseract 5.5",
+          "inlines": [
+            {
+              "text": "Tesseract 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Perfect on the letter and the newsletter, and free, but it returned nothing for the faded receipt",
+          "inlines": [
+            {
+              "text": "Perfect on the letter and the newsletter, and free, but it returned nothing for the faded receipt"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What goes wrong when a vision model reads a hard scan?",
+          "inlines": [
+            {
+              "text": "What goes wrong when a vision model reads a hard scan?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The most serious error was a value that looks plausible but isn’t on the page. Here’s the bottom of the faded receipt as printed, followed by one GPT-6 Luna run:",
+          "inlines": [
+            {
+              "text": "The most serious error was a value that looks plausible but isn’t on the page. Here’s the bottom of the faded receipt as printed, followed by one GPT-6 Luna run:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "CONTACTLESS 32.95\nCARD ****9026\nSERVED BY: PRIYA\nWIFI: verdigris-guest / tide2026"
+        },
+        {
+          "type": "code",
+          "text": "NET                                 27.46\n\nCONTACTLESS\nCARD **** 9027\n\nSERVED BY: SHEVA\nWIFI: verdigris_guest / 1freecoffee"
+        },
+        {
+          "type": "paragraph",
+          "text": "There’s no NET line on the receipt. The card ends in 9026, and the name and password are invented. GPT-6 Luna changed the server’s name and the year in all three runs. GPT-6.1 Sol wrote a different made-up password in each run (flatwhite24, flat9am!, flatleaf). We also asked models to write [?] instead of guessing. It didn’t help: four of seven models never used the marker.",
+          "inlines": [
+            {
+              "text": "There’s no "
+            },
+            {
+              "code": true,
+              "text": "NET"
+            },
+            {
+              "text": " line on the receipt. The card ends in 9026, and the name and password are invented. GPT-6 Luna changed the server’s name and the year in all three runs. GPT-6.1 Sol wrote a different made-up password in each run ("
+            },
+            {
+              "code": true,
+              "text": "flatwhite24"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "flat9am!"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "flatleaf"
+            },
+            {
+              "text": "). We also asked models to write "
+            },
+            {
+              "code": true,
+              "text": "[?]"
+            },
+            {
+              "text": " instead of guessing. It didn’t help: four of seven models never used the marker."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The other errors that repeated:",
+          "inlines": [
+            {
+              "text": "The other errors that repeated:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "O and 0: Two fax serials were wrong in at least one run from 13 of the 15 models. Only Claude Sonnet 5.5 and GPT-6.1 Sol read them correctly every time."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Spelling fixes: The letter is signed “Senior Assosiate”, and the prompt says to copy spelling exactly. 16 of 45 transcripts “corrected” it anyway."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Ticked boxes: Claude Sonnet 5.5 and Haiku 5.5 copied the form’s checkbox labels but dropped which box was ticked."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 1: Send the scan to a vision model",
+          "inlines": [
+            {
+              "text": "Step 1: Send the scan to a vision model"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "A vision model generates its transcript the same way a language model generates any text, so it tends to write what text usually says rather than exactly what’s printed. The prompt asks it to copy exactly. That reduces the problem but doesn’t remove it: 16 of 45 transcripts still corrected the letter’s deliberate misspelling. You need an OpenRouter API key in OPENROUTER_API_KEY. The image goes in as a base64 image_url part (see image inputs), so every vision model on OpenRouter takes this same request. Save it as transcribe.py, since steps 3 and 4 import from it:",
+          "inlines": [
+            {
+              "text": "A vision model generates its transcript the same way a language model generates any text, so it tends to write what text usually says rather than exactly what’s printed. The prompt asks it to copy exactly. That reduces the problem but doesn’t remove it: 16 of 45 transcripts still corrected the letter’s deliberate misspelling. You need an "
+            },
+            {
+              "href": "https://openrouter.ai/docs/quickstart",
+              "text": "OpenRouter API key"
+            },
+            {
+              "text": " in "
+            },
+            {
+              "code": true,
+              "text": "OPENROUTER_API_KEY"
+            },
+            {
+              "text": ". The image goes in as a base64 "
+            },
+            {
+              "code": true,
+              "text": "image_url"
+            },
+            {
+              "text": " part (see "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/overview/multimodal/image-understanding",
+              "text": "image inputs"
+            },
+            {
+              "text": "), so every vision model on OpenRouter takes this same request. Save it as "
+            },
+            {
+              "code": true,
+              "text": "transcribe.py"
+            },
+            {
+              "text": ", since steps 3 and 4 import from it:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import base64\nimport mimetypes\nimport os\n\nimport requests\n\nAPI = \"https://openrouter.ai/api/v1/chat/completions\"\nHEADERS = {\"Authorization\": f\"Bearer {os.environ['OPENROUTER_API_KEY']}\"}\nPROMPT = (\"Transcribe all of the text in this scanned document, in reading order. \"\n          \"Copy spelling, numbers and punctuation exactly as they appear, even if they \"\n          \"look wrong. Return plain text only, with no Markdown and no commentary.\")\n\n\ndef transcribe(path, model=\"deepseek/deepseek-v4.1-flash\", reasoning={\"effort\": \"none\"}):\n    mime = mimetypes.guess_type(path)[0] or \"image/jpeg\"\n    with open(path, \"rb\") as f:\n        image = f\"data:{mime};base64,\" + base64.b64encode(f.read()).decode()\n    body = {\n        \"model\": model,\n        \"max_tokens\": 16000,\n        \"messages\": [{\"role\": \"user\", \"content\": [\n            {\"type\": \"text\", \"text\": PROMPT},\n            {\"type\": \"image_url\", \"image_url\": {\"url\": image}},\n        ]}],\n    }\n    if reasoning:\n        body[\"reasoning\"] = reasoning\n    response = requests.post(API, headers=HEADERS, json=body, timeout=300)\n    response.raise_for_status()\n    data = response.json()\n    choice = data[\"choices\"][0]\n    if choice[\"finish_reason\"] != \"stop\":\n        raise ValueError(f\"finish_reason={choice['finish_reason']}: the transcript is incomplete\")\n    return choice[\"message\"][\"content\"], data[\"usage\"][\"cost\"]\n\n\nif __name__ == \"__main__\":\n    text, cost = transcribe(\"receipt.jpg\")\n    print(text)\n    print(f\"\\n${cost:.5f}\")"
+        },
+        {
+          "type": "code",
+          "text": "HARBOR LANE MARKET\n1180 Harbor Lane, Unit 4\nPortland OR 97209\nTel (503) 555-0148\n...\nTOTAL 62.86\nVISA ****4471 62.86\nAUTH 08813C\n...\n\n$0.00022"
+        },
+        {
+          "type": "paragraph",
+          "text": "Every character came back right, for about two hundredths of a cent. The data URL takes its type from the file extension, so PNG and WebP scans work too. To compare models, change only the model string, and pass reasoning=None for the models in step 2 that can’t turn reasoning off.",
+          "inlines": [
+            {
+              "text": "Every character came back right, for about two hundredths of a cent. The data URL takes its type from the file extension, so PNG and WebP scans work too. To compare models, change only the "
+            },
+            {
+              "code": true,
+              "text": "model"
+            },
+            {
+              "text": " string, and pass "
+            },
+            {
+              "code": true,
+              "text": "reasoning=None"
+            },
+            {
+              "text": " for the models in step 2 that can’t turn reasoning off."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The finish_reason check is there because reasoning tokens count against max_tokens. With a limit of 4,000, Gemini 3.8 Flash spent 3,841 tokens reasoning about the fax on every run and stopped partway through serial number 4. The request still returned 200 OK with finish_reason: \"length\", so without the check a pipeline stores short transcripts without noticing.",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "code": true,
+              "text": "finish_reason"
+            },
+            {
+              "text": " check is there because reasoning tokens count against "
+            },
+            {
+              "code": true,
+              "text": "max_tokens"
+            },
+            {
+              "text": ". With a limit of 4,000, Gemini 3.8 Flash spent 3,841 tokens reasoning about the fax on every run and stopped partway through serial number 4. The request still returned "
+            },
+            {
+              "code": true,
+              "text": "200 OK"
+            },
+            {
+              "text": " with "
+            },
+            {
+              "code": true,
+              "text": "finish_reason: \"length\""
+            },
+            {
+              "text": ", so without the check a pipeline stores short transcripts without noticing."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 2: Turn reasoning off for transcription",
+          "inlines": [
+            {
+              "text": "Step 2: Turn reasoning off for transcription"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Reasoning helps when a model has to plan an answer. Copying text from a page doesn’t need a plan, so the extra tokens mostly add cost and time. That’s why transcribe sends \"reasoning\": {\"effort\": \"none\"} by default (see reasoning tokens). We reran the full test with reasoning off for every model that allows it:",
+          "inlines": [
+            {
+              "text": "Reasoning helps when a model has to plan an answer. Copying text from a page doesn’t need a plan, so the extra tokens mostly add cost and time. That’s why "
+            },
+            {
+              "code": true,
+              "text": "transcribe"
+            },
+            {
+              "text": " sends "
+            },
+            {
+              "code": true,
+              "text": "\"reasoning\": {\"effort\": \"none\"}"
+            },
+            {
+              "text": " by default (see "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens",
+              "text": "reasoning tokens"
+            },
+            {
+              "text": "). We reran the full test with reasoning off for every model that allows it:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model",
+          "inlines": [
+            {
+              "text": "Model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Key values, on → off",
+          "inlines": [
+            {
+              "text": "Key values, on → off"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CER, on → off",
+          "inlines": [
+            {
+              "text": "CER, on → off"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cost per 1,000 pages, on → off",
+          "inlines": [
+            {
+              "text": "Cost per 1,000 pages, on → off"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Median seconds, on → off",
+          "inlines": [
+            {
+              "text": "Median seconds, on → off"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mistralai/mistral-large-4-0",
+          "inlines": [
+            {
+              "code": true,
+              "text": "mistralai/mistral-large-4-0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "240 → 249",
+          "inlines": [
+            {
+              "text": "240 → 249"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.61% → 0.15%",
+          "inlines": [
+            {
+              "text": "4.61% → 0.15%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$6.80 → $1.68",
+          "inlines": [
+            {
+              "text": "$6.80 → $1.68"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "47.9 → 5.6",
+          "inlines": [
+            {
+              "text": "47.9 → 5.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "inclusionai/ling-3.0-flash-vl",
+          "inlines": [
+            {
+              "code": true,
+              "text": "inclusionai/ling-3.0-flash-vl"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "254 → 254",
+          "inlines": [
+            {
+              "text": "254 → 254"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.05% → 0.19%",
+          "inlines": [
+            {
+              "text": "1.05% → 0.19%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.12 → $0.04",
+          "inlines": [
+            {
+              "text": "$0.12 → $0.04"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.2 → 4.0",
+          "inlines": [
+            {
+              "text": "7.2 → 4.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-6-luna",
+          "inlines": [
+            {
+              "code": true,
+              "text": "openai/gpt-6-luna"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "232 → 232",
+          "inlines": [
+            {
+              "text": "232 → 232"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.49% → 1.08%",
+          "inlines": [
+            {
+              "text": "1.49% → 1.08%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.54 → $0.22",
+          "inlines": [
+            {
+              "text": "$0.54 → $0.22"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "7.8 → 3.8",
+          "inlines": [
+            {
+              "text": "7.8 → 3.8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "deepseek/deepseek-v4.1-flash",
+          "inlines": [
+            {
+              "code": true,
+              "text": "deepseek/deepseek-v4.1-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "248 → 249",
+          "inlines": [
+            {
+              "text": "248 → 249"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.20% → 0.23%",
+          "inlines": [
+            {
+              "text": "0.20% → 0.23%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.20 → $0.16",
+          "inlines": [
+            {
+              "text": "$0.20 → $0.16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4.8 → 4.5",
+          "inlines": [
+            {
+              "text": "4.8 → 4.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "qwen/qwen3.8-27b",
+          "inlines": [
+            {
+              "code": true,
+              "text": "qwen/qwen3.8-27b"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "246 → 244",
+          "inlines": [
+            {
+              "text": "246 → 244"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0.92% → 2.28%",
+          "inlines": [
+            {
+              "text": "0.92% → 2.28%"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$1.54 → $0.77",
+          "inlines": [
+            {
+              "text": "$1.54 → $0.77"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10.8 → 8.9",
+          "inlines": [
+            {
+              "text": "10.8 → 8.9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With reasoning on, one Mistral Large 4 request reasoned for 626 seconds and returned no text (finish_reason: \"error\"). Qwen3.8 27B did better with reasoning on, so test your own pages. Gemini 3.8 Flash, Grok 4.7 and GLM 5.3 FlashX don’t allow reasoning to be turned off, so pass reasoning=None to leave the field out. Otherwise the request fails with:",
+          "inlines": [
+            {
+              "text": "With reasoning on, one Mistral Large 4 request reasoned for 626 seconds and returned no text ("
+            },
+            {
+              "code": true,
+              "text": "finish_reason: \"error\""
+            },
+            {
+              "text": "). Qwen3.8 27B did better with reasoning on, so test your own pages. Gemini 3.8 Flash, Grok 4.7 and GLM 5.3 FlashX don’t allow reasoning to be turned off, so pass "
+            },
+            {
+              "code": true,
+              "text": "reasoning=None"
+            },
+            {
+              "text": " to leave the field out. Otherwise the request fails with:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "400 {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}"
+        },
+        {
+          "type": "heading",
+          "text": "Step 3: Cross-check two models from different labs",
+          "inlines": [
+            {
+              "text": "Step 3: Cross-check two models from different labs"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Look-alike characters such as O and 0 are hard to tell apart in a blurry image. Each model decides based on its own training, so two models from different labs rarely make the same wrong choice. Where their transcripts differ is usually where the image is unclear. We tested every pair among six models. The best was Claude Haiku 5.5 checked by DeepSeek V4.1 Flash. Haiku made 35 word errors in 2,964 words, and DeepSeek, with reasoning off as in step 2, disagreed on 34 of them, with 10 false alarms. The pair costs $0.62 per 1,000 pages, a third of Mistral OCR. Both use the same API, so the check is one extra call. Haiku is called with reasoning=None because that’s how it ran in our table:",
+          "inlines": [
+            {
+              "text": "Look-alike characters such as O and 0 are hard to tell apart in a blurry image. Each model decides based on its own training, so two models from different labs rarely make the same wrong choice. Where their transcripts differ is usually where the image is unclear. We tested every pair among six models. The best was Claude Haiku 5.5 checked by DeepSeek V4.1 Flash. Haiku made 35 word errors in 2,964 words, and DeepSeek, with reasoning off as in step 2, disagreed on 34 of them, with 10 false alarms. The pair costs $0.62 per 1,000 pages, a third of Mistral OCR. Both use the same API, so the check is one extra call. Haiku is called with "
+            },
+            {
+              "code": true,
+              "text": "reasoning=None"
+            },
+            {
+              "text": " because that’s how it ran in our table:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import difflib\n\nfrom transcribe import transcribe  # the function from step 1\n\na, _ = transcribe(\"fax.jpg\", model=\"anthropic/claude-haiku-5.5\", reasoning=None)\nb, _ = transcribe(\"fax.jpg\", model=\"deepseek/deepseek-v4.1-flash\")\na, b = a.split(), b.split()\nfor tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():\n    if tag != \"equal\":\n        print(\"check:\", \" \".join(a[i1:i2]), \"vs\", \" \".join(b[j1:j2]))"
+        },
+        {
+          "type": "code",
+          "text": "check: 8LI5-QS0B5O vs 8LI5-QS0B50\ncheck: 30HY-1OHLG7 vs 30HY-10HLG7"
+        },
+        {
+          "type": "paragraph",
+          "text": "Those are the two serials most models got wrong. If both models misread a character the same way, nothing is flagged. That happened once in our runs, with an O both read as a zero, so validate IDs against a list or a checksum where you can. The comparison also assumes both models read the page in the same order. In one of three runs the models listed the fax’s two columns in different orders, and every serial showed up as a disagreement.",
+          "inlines": [
+            {
+              "text": "Those are the two serials most models got wrong. If both models misread a character the same way, nothing is flagged. That happened once in our runs, with an O both read as a zero, so validate IDs against a list or a checksum where you can. The comparison also assumes both models read the page in the same order. In one of three runs the models listed the fax’s two columns in different orders, and every serial showed up as a disagreement."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 4: Use Mistral OCR as a dedicated engine",
+          "inlines": [
+            {
+              "text": "Step 4: Use Mistral OCR as a dedicated engine"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Mistral OCR is a model trained only for document OCR. On OpenRouter it runs as an engine in the file-parser plugin, which accepts PDFs, at $2 per 1,000 pages. The plugin OCRs the file before your model sees it. It returns the text as a file annotation on the response, so the model you name only has to reply. Wrap the scan in a one-page PDF and send it with any cheap model:",
+          "inlines": [
+            {
+              "text": "Mistral OCR is a model trained only for document OCR. On OpenRouter it runs as an engine in the "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/overview/multimodal/pdfs",
+              "text": "file-parser plugin"
+            },
+            {
+              "text": ", which accepts PDFs, at $2 per 1,000 pages. The plugin OCRs the file before your model sees it. It returns the text as a file annotation on the response, so the model you name only has to reply. Wrap the scan in a one-page PDF and send it with any cheap model:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import base64\nimport html\nimport io\nimport os\n\nimport requests\nfrom PIL import Image, ImageSequence\n\nfrom transcribe import API, HEADERS  # from step 1\n\n\ndef mistral_ocr(path):\n    if path.lower().endswith(\".pdf\"):  # scanned PDFs go as they are\n        with open(path, \"rb\") as f:\n            raw = f.read()\n    else:  # wrap an image in a PDF in memory, one page per frame of a multipage TIFF\n        pages = [p.convert(\"RGB\") for p in ImageSequence.Iterator(Image.open(path))]\n        buf = io.BytesIO()\n        pages[0].save(buf, \"PDF\", save_all=True, append_images=pages[1:])\n        raw = buf.getvalue()\n    pdf = \"data:application/pdf;base64,\" + base64.b64encode(raw).decode()\n    pdf_name = os.path.splitext(os.path.basename(path))[0] + \".pdf\"\n    body = {\n        \"model\": \"upstage/solar-mini4\",  # any cheap text model; it only has to reply\n        \"max_tokens\": 5,\n        \"messages\": [{\"role\": \"user\", \"content\": [\n            {\"type\": \"text\", \"text\": \"Reply OK.\"},\n            {\"type\": \"file\", \"file\": {\"filename\": pdf_name, \"file_data\": pdf}},\n        ]}],\n        \"plugins\": [{\"id\": \"file-parser\", \"pdf\": {\"engine\": \"mistral-ocr\"}}],\n    }\n    response = requests.post(API, headers=HEADERS, json=body, timeout=300)\n    response.raise_for_status()\n    data = response.json()\n    parts = data[\"choices\"][0][\"message\"][\"annotations\"][0][\"file\"][\"content\"]\n    texts = [p[\"text\"] for p in parts if p.get(\"type\") == \"text\"]  # skip extracted image parts\n    text = \"\\n\".join(t for t in texts if not t.startswith((\"<file\", \"</file\")))\n    return html.unescape(text), data[\"usage\"][\"cost\"]\n\n\ntext, cost = mistral_ocr(\"receipt_faded.jpg\")\nprint(text)\nprint(f\"\\n${cost:.5f}\")"
+        },
+        {
+          "type": "code",
+          "text": "CAFE VERDIGRIS\n22 Quayside Row\nBristol BS1 4QA\nVAT No. GB 318 7742 09\n\n27/09/2026 08:17 TILL 2 CHK 0193\n...\n|  CONTACTLESS | 32.95  |\n|  CARD ***9026 |   |\n\nSERVED BY: PRIYA\nWIFI: verdigris-guest / tide2026\n\n$0.00202"
+        },
+        {
+          "type": "paragraph",
+          "text": "Every value on the faded receipt came back right, including the card digits and password. Mistral OCR is built to keep layout, so its output is Markdown: receipt lines become tables, headings get ##, and & comes back as &amp;. That’s why the function unescapes the HTML entities. Strip the Markdown if you need plain text, or keep it if an LLM reads the result next.",
+          "inlines": [
+            {
+              "text": "Every value on the faded receipt came back right, including the card digits and password. Mistral OCR is built to keep layout, so its output is Markdown: receipt lines become tables, headings get "
+            },
+            {
+              "code": true,
+              "text": "##"
+            },
+            {
+              "text": ", and "
+            },
+            {
+              "code": true,
+              "text": "&"
+            },
+            {
+              "text": " comes back as "
+            },
+            {
+              "code": true,
+              "text": "&amp;"
+            },
+            {
+              "text": ". That’s why the function unescapes the HTML entities. Strip the Markdown if you need plain text, or keep it if an LLM reads the result next."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Is an LLM better than Tesseract for OCR?",
+          "inlines": [
+            {
+              "text": "Is an LLM better than Tesseract for OCR?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Yes, except on clean typed pages. Tesseract 5.5 reads character shapes line by line, so it holds up on crisp print and breaks down on noise and handwriting. It transcribed the letter and the newsletter perfectly. It returned nothing for the faded receipt, 1 of 11 values on the messy handwriting and 4 of 15 on the fax.",
+          "inlines": [
+            {
+              "text": "Yes, except on clean typed pages. Tesseract 5.5 reads character shapes line by line, so it holds up on crisp print and breaks down on noise and handwriting. It transcribed the letter and the newsletter perfectly. It returned nothing for the faded receipt, 1 of 11 values on the messy handwriting and 4 of 15 on the fax."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Frequently asked questions",
+          "inlines": [
+            {
+              "text": "Frequently asked questions"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Which LLM is best for OCR?",
+          "inlines": [
+            {
+              "text": "Which LLM is best for OCR?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5.5 in our test. Gemini 3.8 Flash and Grok 4.7 had error rates almost as low but missed more serials. DeepSeek V4.1 Flash and Ling 3.0 Flash VL came close for under $0.20 per 1,000 pages.",
+          "inlines": [
+            {
+              "text": "Claude Opus 5.5 in our test. Gemini 3.8 Flash and Grok 4.7 had error rates almost as low but missed more serials. DeepSeek V4.1 Flash and Ling 3.0 Flash VL came close for under $0.20 per 1,000 pages."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How do I OCR a scanned PDF?",
+          "inlines": [
+            {
+              "text": "How do I OCR a scanned PDF?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Send it with the mistral-ocr engine as in step 4. Alternatively, render each page to an image for a vision model, or send the PDF directly to a model that reads PDFs. A free text parser won’t work on a scan, because a scan has no text layer.",
+          "inlines": [
+            {
+              "text": "Send it with the "
+            },
+            {
+              "code": true,
+              "text": "mistral-ocr"
+            },
+            {
+              "text": " engine as in step 4. Alternatively, render each page to an image for a vision model, or send the PDF directly to a model that reads PDFs. A free text parser won’t work on a scan, because a scan has no text layer."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is the most accurate OCR model?",
+          "inlines": [
+            {
+              "text": "What is the most accurate OCR model?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5.5 got 262 of 264 key values right and had a 0.02% character error rate across our eight scans. Mistral OCR was second with 258 of 264, at an eighth of the cost.",
+          "inlines": [
+            {
+              "text": "Claude Opus 5.5 got 262 of 264 key values right and had a 0.02% character error rate across our eight scans. Mistral OCR was second with 258 of 264, at an eighth of the cost."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How much does OCR with an LLM cost?",
+          "inlines": [
+            {
+              "text": "How much does OCR with an LLM cost?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "In our test it ran from $0.04 per 1,000 pages (Ling 3.0 Flash VL with reasoning off) to $16.42 (Claude Opus 5.5). Mistral OCR costs $2 per 1,000 pages. Models count image tokens differently, so measure cost on your own pages.",
+          "inlines": [
+            {
+              "text": "In our test it ran from $0.04 per 1,000 pages (Ling 3.0 Flash VL with reasoning off) to $16.42 (Claude Opus 5.5). Mistral OCR costs $2 per 1,000 pages. Models count image tokens differently, so measure cost on your own pages."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Is Mistral OCR better than a vision model?",
+          "inlines": [
+            {
+              "text": "Is Mistral OCR better than a vision model?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "It was the best value in our test: 258 of 264 key values for $2.02 per 1,000 pages, behind only Claude Opus 5.5. It returns Markdown that keeps the layout, while a vision model returns whatever format you ask for.",
+          "inlines": [
+            {
+              "text": "It was the best value in our test: 258 of 264 key values for $2.02 per 1,000 pages, behind only Claude Opus 5.5. It returns Markdown that keeps the layout, while a vision model returns whatever format you ask for."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Can an LLM read handwriting?",
+          "inlines": [
+            {
+              "text": "Can an LLM read handwriting?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Yes. All 15 vision models transcribed our neat note perfectly. On messy handwriting most stayed above 99% character accuracy, and the misses were mostly names (“Ackterberg” for “Achterberg”).",
+          "inlines": [
+            {
+              "text": "Yes. All 15 vision models transcribed our neat note perfectly. On messy handwriting most stayed above 99% character accuracy, and the misses were mostly names (“Ackterberg” for “Achterberg”)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Next steps",
+          "inlines": [
+            {
+              "text": "Next steps"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/overview/multimodal/image-understanding",
+                  "text": "Image inputs"
+                },
+                {
+                  "text": " covers sending images by URL or base64, and our "
+                },
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/send-image-to-llm/",
+                  "text": "vision API guide"
+                },
+                {
+                  "text": " covers detail levels."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/overview/multimodal/pdfs",
+                  "text": "PDF inputs"
+                },
+                {
+                  "text": " lists the PDF engines and explains how to reuse parsed results."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The "
+                },
+                {
+                  "href": "https://openrouter.ai/collections/vision-models",
+                  "text": "vision models collection"
+                },
+                {
+                  "text": " lists every model that takes images."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "To turn a transcript into typed fields, see "
+                },
+                {
+                  "href": "https://openrouter.ai/docs/guides/features/structured-outputs",
+                  "text": "structured outputs"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-11T01:12:14.951968Z",
+  "contentMode": "full"
+}

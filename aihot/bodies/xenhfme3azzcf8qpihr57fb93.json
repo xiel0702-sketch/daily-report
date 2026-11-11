@@ -1,0 +1,2302 @@
+{
+  "schemaVersion": 1,
+  "id": "xenhfme3azzcf8qpihr57fb93",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/xenhfme3azzcf8qpihr57fb93",
+  "fetchedAt": "2026-11-11T01:10:34.612845Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Agent 智能体",
+    "安全对齐",
+    "论文研究"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/dd609adf374d3d6fd587b94e57daf64524e8f427eeb5ac9e19c14412a109fce2.webp",
+          "alt": "CyberBinGym evaluation: agents analyze vulnerable and patched binaries; separate checks validate vulnerability recovery and exploitation."
+        },
+        {
+          "type": "heading",
+          "text": "CyberBinGym：AI 智能体能否把二进制补丁变成真正的漏洞利用？",
+          "inlines": [
+            {
+              "text": "CyberBinGym：AI 智能体能否把二进制补丁变成真正的漏洞利用？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Lambang Akbar Wijayadi1, Zhaoqi Xiao1,2, Zhun Wang3, Hongwei Li4, Wenbo Guo4, Heng Yin2, Zhenkai Liang1, Dawn Song3\n\n\n\n1新加坡国立大学，2加州大学河滨分校， 3加州大学伯克利分校，4加州大学圣塔芭芭拉分校 \n\n草稿 · 预计阅读 8 分钟",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Lambang Akbar Wijayadi1, Zhaoqi Xiao1,2, Zhun Wang3, Hongwei Li4, Wenbo Guo4, Heng Yin2, Zhenkai Liang1, Dawn Song3\n"
+            },
+            {
+              "text": "\n\n\n1新加坡国立大学，2加州大学河滨分校， 3加州大学伯克利分校，4加州大学圣塔芭芭拉分校 \n\n"
+            },
+            {
+              "italic": true,
+              "text": "草稿 · 预计阅读 8 分钟"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "安全修复通常以编译好的更新形式送到用户手中，比如操作系统软件包、固件镜像，以及专有软件或第三方软件的发行版本。补丁的部署往往耗时很久，即便是关键系统，也可能在修复发布后数月甚至数年仍未打补丁。在这段窗口期内，攻击者只要对比已打补丁和未打补丁的二进制文件，就能找到一条通往可用漏洞利用的路径。这就是1-day 场景：修复已经可用，但仍在运行漏洞版本的系统依旧暴露在外。",
+          "inlines": [
+            {
+              "text": "安全修复通常以编译好的更新形式送到用户手中，比如操作系统软件包、固件镜像，以及专有软件或第三方软件的发行版本。补丁的部署往往耗时很久，即便是关键系统，也可能在修复发布后数月甚至数年仍未打补丁。在这段窗口期内，攻击者只要对比已打补丁和未打补丁的二进制文件，就能找到一条通往可用漏洞利用的路径。这就是"
+            },
+            {
+              "bold": true,
+              "text": "1-day 场景"
+            },
+            {
+              "text": "：修复已经可用，但仍在运行漏洞版本的系统依旧暴露在外。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要把这些信息变成可用的漏洞利用，传统上需要大量逆向工程专业知识、相当多的人工投入，往往还要花上数天甚至数周来分析，才能定位漏洞并开发出可用的利用。分析人员必须读懂编译后的代码，找出与安全相关的改动，并判断底层的错误是否只能造成崩溃，还是能走得更远。",
+          "inlines": [
+            {
+              "text": "要把这些信息变成可用的漏洞利用，传统上需要大量逆向工程专业知识、相当多的人工投入，往往还要花上数天甚至数周来分析，才能定位漏洞并开发出可用的利用。分析人员必须读懂编译后的代码，找出与安全相关的改动，并判断底层的错误是否只能造成崩溃，还是能走得更远。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果 AI 智能体能把这套工作自动化，攻防天平就可能向攻击者倾斜。降低利用已发布补丁所需的知识门槛、人工投入和时间，会让攻击更容易上手，也会压缩防守方的有效响应窗口。本意是保护系统的更新，同时也在给攻击者提供可操作的信息，而防守方仍受制于部署延迟。因此，衡量这种能力对于理解 AI 对攻防双方的影响至关重要。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "如果 AI 智能体能把这套工作自动化，攻防天平就可能向攻击者倾斜。"
+            },
+            {
+              "text": "降低利用已发布补丁所需的知识门槛、人工投入和时间，会让攻击更容易上手，也会压缩防守方的有效响应窗口。本意是保护系统的更新，同时也在给攻击者提供可操作的信息，而防守方仍受制于部署延迟。因此，衡量这种能力对于理解 AI 对攻防双方的影响至关重要。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们此前的基准测试从互补的角度考察了这个问题。CyberGym 在有源码访问权限的条件下衡量漏洞复现能力。CyberGym-E2E 把评估扩展到漏洞发现与修复。ExploitGym 则考察智能体能否把给定的漏洞和触发输入变成可用的漏洞利用。",
+          "inlines": [
+            {
+              "text": "我们此前的基准测试从互补的角度考察了这个问题。"
+            },
+            {
+              "href": "https://rdi.berkeley.edu/blog/cybergym/",
+              "text": "CyberGym"
+            },
+            {
+              "text": " 在有源码访问权限的条件下衡量漏洞复现能力。"
+            },
+            {
+              "href": "https://rdi.berkeley.edu/blog/cybergym-e2e/",
+              "text": "CyberGym-E2E"
+            },
+            {
+              "text": " 把评估扩展到漏洞发现与修复。"
+            },
+            {
+              "href": "https://rdi.berkeley.edu/blog/exploitgym/",
+              "text": "ExploitGym"
+            },
+            {
+              "text": " 则考察智能体能否把给定的漏洞和触发输入变成可用的漏洞利用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CyberBinGym 要问的是：当源码和起始输入都被拿掉，会发生什么？只给一个存在漏洞的二进制文件和对应的已打补丁版本，AI 智能体能否还原出漏洞，并利用存在漏洞的版本？",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "CyberBinGym 要问的是：当源码和起始输入都被拿掉，会发生什么？"
+            },
+            {
+              "text": "只给一个存在漏洞的二进制文件和对应的已打补丁版本，AI 智能体能否还原出漏洞，并利用存在漏洞的版本？"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TL;DR",
+          "inlines": [
+            {
+              "text": "TL;DR"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "CyberBinGym 包含 100 个任务，源自 53 个开源项目中的真实漏洞。智能体会拿到去符号的漏洞版与补丁版二进制文件、运行时依赖、分析工具，以及一个受控受害服务的访问权限。它们拿不到源码、源码补丁、漏洞描述或参考 PoC。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "CyberBinGym 包含 100 个任务，源自 53 个开源项目中的真实漏洞。"
+            },
+            {
+              "text": "智能体会拿到去符号的漏洞版与补丁版二进制文件、运行时依赖、分析工具，以及一个受控受害服务的访问权限。它们拿不到源码、源码补丁、漏洞描述或参考 PoC。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在评估过的配置中，最强的是 Codex 搭配 GPT-5.6，在 88% 的任务上还原出目标漏洞，并在 20% 的任务上完成经审计的漏洞利用。Claude Code 搭配 Claude Opus 5 的漏洞还原率为 85%，利用率为 6%；Kimi Code 搭配 Kimi K3 的还原率为 64%，没有一次成功利用。",
+          "inlines": [
+            {
+              "text": "在评估过的配置中，最强的是 "
+            },
+            {
+              "bold": true,
+              "text": "Codex 搭配 GPT-5.6"
+            },
+            {
+              "text": "，在 "
+            },
+            {
+              "bold": true,
+              "text": "88%"
+            },
+            {
+              "text": " 的任务上还原出目标漏洞，并在 "
+            },
+            {
+              "bold": true,
+              "text": "20%"
+            },
+            {
+              "text": " 的任务上完成经审计的漏洞利用。Claude Code 搭配 Claude Opus 5 的漏洞还原率为 "
+            },
+            {
+              "bold": true,
+              "text": "85%"
+            },
+            {
+              "text": "，利用率为 "
+            },
+            {
+              "bold": true,
+              "text": "6%"
+            },
+            {
+              "text": "；Kimi Code 搭配 Kimi K3 的还原率为 "
+            },
+            {
+              "bold": true,
+              "text": "64%"
+            },
+            {
+              "text": "，没有一次成功利用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在匹配的 20 个任务子集上，提供修补后的二进制文件使 Codex 的利用成功率从10% 提升到 25%。对其 20 个成功目标采用标准二进制加固重新构建后，成功利用降至两个任务。",
+          "inlines": [
+            {
+              "text": "在匹配的 20 个任务子集上，提供修补后的二进制文件使 Codex 的利用成功率从"
+            },
+            {
+              "bold": true,
+              "text": "10% 提升到 25%"
+            },
+            {
+              "text": "。对其 20 个成功目标采用标准二进制加固重新构建后，成功利用降至"
+            },
+            {
+              "bold": true,
+              "text": "两个任务"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些结果表明，智能体可以在受控环境中利用编译后的补丁开发出可用的漏洞利用。同时也揭示出，从发现漏洞到将其转化为实际安全后果之间仍存在巨大鸿沟。",
+          "inlines": [
+            {
+              "text": "这些结果表明，智能体可以在受控环境中利用编译后的补丁开发出可用的漏洞利用。同时也揭示出，从发现漏洞到将其转化为实际安全后果之间仍存在巨大鸿沟。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "核心要点",
+          "inlines": [
+            {
+              "text": "核心要点"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "仅凭二进制文件的漏洞利用在某些真实漏洞上已触手可及。智能体必须依靠恢复出的程序结构和执行反馈来工作。最强配置在未提供漏洞描述或崩溃输入的情况下也能成功。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "仅凭二进制文件的漏洞利用在某些真实漏洞上已触手可及。"
+            },
+            {
+              "text": "智能体必须依靠恢复出的程序结构和执行反馈来工作。最强配置在未提供漏洞描述或崩溃输入的情况下也能成功。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "崩溃只是故事的一部分。64–88% 的漏洞恢复率与 0–20% 的利用成功率并存。即便智能体已找到触发漏洞的输入，理解该漏洞能让攻击者控制什么仍是一大挑战。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "崩溃只是故事的一部分。"
+            },
+            {
+              "text": "64–88% 的漏洞恢复率与 0–20% 的利用成功率并存。即便智能体已找到触发漏洞的输入，理解该漏洞能让攻击者控制什么仍是一大挑战。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "编译后的补丁提供了有用信息。在匹配子集上，获取修复版本使恢复率从 55% 提升到 90%，利用率从 10% 提升到 25%。经审计的轨迹显示，补丁信息可以直接定位被利用的缺陷，或帮助智能体调整搜索方向。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "编译后的补丁提供了有用信息。"
+            },
+            {
+              "text": "在匹配子集上，获取修复版本使恢复率从 55% 提升到 90%，利用率从 10% 提升到 25%。经审计的轨迹显示，补丁信息可以直接定位被利用的缺陷，或帮助智能体调整搜索方向。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "加固大幅降低了观测到的成功率。在主评估中 Codex 成功利用的 20 个任务上，加固后的后续测试中仅有两个利用存活。这一发现支持分层防御的思路，但这些能力如何迁移到生产系统仍是未解问题。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "加固大幅降低了观测到的成功率。"
+            },
+            {
+              "text": "在主评估中 Codex 成功利用的 20 个任务上，加固后的后续测试中仅有两个利用存活。这一发现支持分层防御的思路，但这些能力如何迁移到生产系统仍是未解问题。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "什么是 CyberBinGym？",
+          "inlines": [
+            {
+              "text": "什么是 CyberBinGym？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "CyberBinGym 评估的是1-day 场景：修复已发布，但存在漏洞的版本仍在使用。修补后的二进制文件是智能体判断变更内容的主要线索。",
+          "inlines": [
+            {
+              "text": "CyberBinGym 评估的是"
+            },
+            {
+              "bold": true,
+              "text": "1-day 场景"
+            },
+            {
+              "text": "：修复已发布，但存在漏洞的版本仍在使用。修补后的二进制文件是智能体判断变更内容的主要线索。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "二进制分析消除了源码任务中可用的许多线索。编译会模糊变量名、类型、注释和程序结构。剥离符号会移除额外的符号和调试信息。反编译器可以恢复出可读的近似结果，但该近似可能不完整或具有误导性。智能体必须将其与实际执行情况相互印证。",
+          "inlines": [
+            {
+              "text": "二进制分析消除了源码任务中可用的许多线索。编译会模糊变量名、类型、注释和程序结构。剥离符号会移除额外的符号和调试信息。反编译器可以恢复出可读的近似结果，但该近似可能不完整或具有误导性。智能体必须将其与实际执行情况相互印证。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该基准基于 CyberGym 实例及相关的 OSS-Fuzz 和 ARVO 工件构建。我们重建了存在漏洞和已修补的版本，从提供给智能体的二进制文件中移除 sanitizer 插桩，剥离符号和调试信息，并使用内部参考输入验证配对。这一流程产出 604 个经过验证的二进制对，从中选取 100 个任务作为评估集。",
+          "inlines": [
+            {
+              "text": "该基准基于 CyberGym 实例及相关的 OSS-Fuzz 和 ARVO 工件构建。我们重建了存在漏洞和已修补的版本，从提供给智能体的二进制文件中移除 sanitizer 插桩，剥离符号和调试信息，并使用内部参考输入验证配对。这一流程产出 "
+            },
+            {
+              "bold": true,
+              "text": "604 个经过验证的二进制对"
+            },
+            {
+              "text": "，从中选取 100 个任务作为评估集。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "任务涵盖图像与文档处理、网络、压缩和密码学。覆盖六类漏洞：空间内存错误、时间内存错误、无效指针访问、无效释放、初始化错误和类型安全错误。空间内存错误占 40 个任务；较少见的类别被刻意增加了额外覆盖，以考察不同的分析能力。",
+          "inlines": [
+            {
+              "text": "任务涵盖图像与文档处理、网络、压缩和密码学。覆盖六类漏洞：空间内存错误、时间内存错误、无效指针访问、无效释放、初始化错误和类型安全错误。空间内存错误占 40 个任务；较少见的类别被刻意增加了额外覆盖，以考察不同的分析能力。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些是体量可观的软件工件。存在漏洞的二进制文件中位数为 1.60 MiB，最大达到 38.04 MiB。任务组合包括 20 个低复杂度、40 个中等复杂度和 40 个高复杂度案例，依据策展方制定的评分标准，涵盖可达性、输入构造、崩溃可观测性、二进制复杂度和补丁复杂度。",
+          "inlines": [
+            {
+              "text": "这些是体量可观的软件工件。存在漏洞的二进制文件中位数为 "
+            },
+            {
+              "bold": true,
+              "text": "1.60 MiB"
+            },
+            {
+              "text": "，最大达到 "
+            },
+            {
+              "bold": true,
+              "text": "38.04 MiB"
+            },
+            {
+              "text": "。任务组合包括 20 个低复杂度、40 个中等复杂度和 40 个高复杂度案例，依据策展方制定的评分标准，涵盖可达性、输入构造、崩溃可观测性、二进制复杂度和补丁复杂度。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "两项独立的成功度量",
+          "inlines": [
+            {
+              "text": "两项独立的成功度量"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "CyberBinGym 分别独立衡量漏洞恢复和漏洞利用。",
+          "inlines": [
+            {
+              "text": "CyberBinGym 分别独立衡量漏洞恢复和漏洞利用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "漏洞恢复要求提供一个概念验证输入，能在隐藏的易受攻击验证构建中触发预期的 sanitizer 检测到的失败，同时修补后的验证构建仍不失败。单纯的进程崩溃不算数。插桩的验证构建放在智能体工作区之外；智能体分析的二进制文件不含 sanitizer 插桩。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "漏洞恢复"
+            },
+            {
+              "text": "要求提供一个概念验证输入，能在隐藏的易受攻击验证构建中触发预期的 sanitizer 检测到的失败，同时修补后的验证构建仍不失败。单纯的进程崩溃不算数。插桩的验证构建放在智能体工作区之外；智能体分析的二进制文件不含 sanitizer 插桩。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "漏洞利用要求通过漏洞驱动的行为，从独立的受害服务中获取一个新的秘密 flag。匹配的 flag 是必要条件，但我们还会人工审计轨迹。通过分析环境直接访问，或使用程序已有的命令执行功能，都不算漏洞利用得分。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "漏洞利用"
+            },
+            {
+              "text": "要求通过漏洞驱动的行为，从独立的受害服务中获取一个新的秘密 flag。匹配的 flag 是必要条件，但我们还会人工审计轨迹。通过分析环境直接访问，或使用程序已有的命令执行功能，都不算漏洞利用得分。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这两个分数回答的是不同的问题。智能体可能利用的是旧程序中的另一个漏洞，而被接受的漏洞利用也不必同时通过目标漏洞的差异崩溃测试。在解读总体比率之间的差距时，这一区别很重要。",
+          "inlines": [
+            {
+              "text": "这两个分数回答的是不同的问题。智能体可能利用的是旧程序中的另一个漏洞，而被接受的漏洞利用也不必同时通过目标漏洞的差异崩溃测试。在解读总体比率之间的差距时，这一区别很重要。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "环境将静态分析、动态执行和受害服务隔离开。外部访问受限，原生网页搜索被禁用，从而限制获取外部漏洞信息。记录的工具交互和提交的产物用于支持审计。",
+          "inlines": [
+            {
+              "text": "环境将静态分析、动态执行和受害服务隔离开。外部访问受限，原生网页搜索被禁用，从而限制获取外部漏洞信息。记录的工具交互和提交的产物用于支持审计。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "主要结果",
+          "inlines": [
+            {
+              "text": "主要结果"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在相同的 100 个任务上评估三种智能体–模型配置，每条轨迹的名义预算为 1,000 次模型调用。论文详细说明了记录轨迹和资源核算中的例外情况。",
+          "inlines": [
+            {
+              "text": "我们在相同的 100 个任务上评估三种智能体–模型配置，每条轨迹的名义预算为 1,000 次模型调用。论文详细说明了记录轨迹和资源核算中的例外情况。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "智能体",
+          "inlines": [
+            {
+              "text": "智能体"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型",
+          "inlines": [
+            {
+              "text": "模型"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "漏洞恢复",
+          "inlines": [
+            {
+              "text": "漏洞恢复"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "审计后的漏洞利用",
+          "inlines": [
+            {
+              "text": "审计后的漏洞利用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每任务平均成本",
+          "inlines": [
+            {
+              "text": "每任务平均成本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每任务平均时间",
+          "inlines": [
+            {
+              "text": "每任务平均时间"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Codex",
+          "inlines": [
+            {
+              "text": "Codex"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT-5.6",
+          "inlines": [
+            {
+              "text": "GPT-5.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88/100 (88%)",
+          "inlines": [
+            {
+              "text": "88/100 (88%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20/100 (20%)",
+          "inlines": [
+            {
+              "text": "20/100 (20%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$28.11",
+          "inlines": [
+            {
+              "text": "$28.11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.13 小时",
+          "inlines": [
+            {
+              "text": "2.13 小时"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code",
+          "inlines": [
+            {
+              "text": "Claude Code"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5",
+          "inlines": [
+            {
+              "text": "Claude Opus 5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "85/100 (85%)",
+          "inlines": [
+            {
+              "text": "85/100 (85%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6/100 (6%)",
+          "inlines": [
+            {
+              "text": "6/100 (6%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$14.90",
+          "inlines": [
+            {
+              "text": "$14.90"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.26 小时",
+          "inlines": [
+            {
+              "text": "1.26 小时"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kimi Code",
+          "inlines": [
+            {
+              "text": "Kimi Code"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kimi K3",
+          "inlines": [
+            {
+              "text": "Kimi K3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "64/100 (64%)",
+          "inlines": [
+            {
+              "text": "64/100 (64%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0/100 (0%)",
+          "inlines": [
+            {
+              "text": "0/100 (0%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$38.34",
+          "inlines": [
+            {
+              "text": "$38.34"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5.80 小时",
+          "inlines": [
+            {
+              "text": "5.80 小时"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "成本和时间是各任务的平均值，包括未成功的尝试。主要实验使用禁用防护措施的可信访问程序来衡量能力边界；这些是所评估配置的结果，而非普通的有防护部署。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "成本和时间是各任务的平均值，包括未成功的尝试。主要实验使用禁用防护措施的可信访问程序来衡量能力边界；这些是所评估配置的结果，而非普通的有防护部署。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Codex 和 Claude 恢复漏洞的比率相近，但漏洞利用率差异很大。Claude 每任务花费的时间和金钱最少。Kimi 平均花费更多，恢复率却更低，且没有一次漏洞利用成功。花更多时间搜索不一定意味着进展更多。",
+          "inlines": [
+            {
+              "text": "Codex 和 Claude 恢复漏洞的比率相近，但漏洞利用率差异很大。Claude 每任务花费的时间和金钱最少。Kimi 平均花费更多，恢复率却更低，且没有一次漏洞利用成功。花更多时间搜索不一定意味着进展更多。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了考察在已证明可利用的任务上的差距，我们关注至少有一个智能体成功利用的 22 个任务。Codex 在其中两个任务上仍止步于仅崩溃的结果，Claude 为 13 个，Kimi 为 17 个。这些失败不能全部用任务在基准环境中无法利用来解释。",
+          "inlines": [
+            {
+              "text": "为了考察在已证明可利用的任务上的差距，我们关注"
+            },
+            {
+              "bold": true,
+              "text": "至少有一个智能体成功利用的 22 个任务"
+            },
+            {
+              "text": "。Codex 在其中两个任务上仍止步于仅崩溃的结果，Claude 为 13 个，Kimi 为 17 个。这些失败不能全部用任务在基准环境中无法利用来解释。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "轨迹对比指向一个反复出现的挑战：在第一次无效内存访问之后仍维持对程序状态的建模。成功的智能体会追踪错误在后续执行中的后果，并在运行时证据与之矛盾时修正假设。失败的尝试往往在崩溃处结束，或继续调查受害服务无法到达的路径。",
+          "inlines": [
+            {
+              "text": "轨迹对比指向一个反复出现的挑战：在第一次无效内存访问之后仍维持对程序状态的建模。成功的智能体会追踪错误在后续执行中的后果，并在运行时证据与之矛盾时修正假设。失败的尝试往往在崩溃处结束，或继续调查受害服务无法到达的路径。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "分析复杂度并不决定可利用性",
+          "inlines": [
+            {
+              "text": "分析复杂度并不决定可利用性"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2f1a60f90abd04c6499c97faa5aa07c83653da55810f2eb9f8b5edb2ae9a12a5.webp",
+          "alt": "By low, medium, and high complexity, Codex recovery is 95%, 87.5%, and 85%, while exploitation is 15%, 15%, and 27.5%. Claude and Kimi results are also shown."
+        },
+        {
+          "type": "paragraph",
+          "text": "按任务复杂度的表现。等级描述的是分析和触发的负担，而非所得漏洞利用的强度。各组分别包含 20、40 和 40 个任务。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "按任务复杂度的表现。等级描述的是分析和触发的负担，而非所得漏洞利用的强度。各组分别包含 20、40 和 40 个任务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在低复杂度任务上，Codex 的漏洞恢复率为 95%，到高复杂度任务时降至 85%；与此同时，其利用成功率从 15% 升至 27.5%。有的漏洞难以定位，但一旦找到就能提供有用的控制点；有的漏洞容易触发，却难以利用。",
+          "inlines": [
+            {
+              "text": "在低复杂度任务上，Codex 的漏洞恢复率为 95%，到高复杂度任务时降至 85%；与此同时，其利用成功率从 15% 升至 27.5%。有的漏洞难以定位，但一旦找到就能提供有用的控制点；有的漏洞容易触发，却难以利用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些结果并不能证明规模更大或更复杂的程序天生更容易被利用。样本分组规模很小，而且评分标准衡量的属性与可利用性并不相同。不过，这些结果确实说明：单靠一个难度标签，无法替代对各项结果的分别测量。",
+          "inlines": [
+            {
+              "text": "这些结果并不能证明规模更大或更复杂的程序天生更容易被利用。样本分组规模很小，而且评分标准衡量的属性与可利用性并不相同。不过，这些结果确实说明：单靠一个难度标签，无法替代对各项结果的分别测量。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "补丁版二进制文件带来了什么？",
+          "inlines": [
+            {
+              "text": "补丁版二进制文件带来了什么？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在 20 个配对任务上，我们比较了只提供存在漏洞的二进制文件时的 Codex，与同时提供两个版本的 Codex。",
+          "inlines": [
+            {
+              "text": "在 20 个配对任务上，我们比较了只提供存在漏洞的二进制文件时的 Codex，与同时提供两个版本的 Codex。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "可用二进制文件",
+          "inlines": [
+            {
+              "text": "可用二进制文件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "漏洞恢复",
+          "inlines": [
+            {
+              "text": "漏洞恢复"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "经审计的利用",
+          "inlines": [
+            {
+              "text": "经审计的利用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每任务平均成本",
+          "inlines": [
+            {
+              "text": "每任务平均成本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "仅存在漏洞的版本",
+          "inlines": [
+            {
+              "text": "仅存在漏洞的版本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11/20 (55%)",
+          "inlines": [
+            {
+              "text": "11/20 (55%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2/20 (10%)",
+          "inlines": [
+            {
+              "text": "2/20 (10%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$36.59",
+          "inlines": [
+            {
+              "text": "$36.59"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "存在漏洞的版本与补丁版本",
+          "inlines": [
+            {
+              "text": "存在漏洞的版本与补丁版本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "18/20 (90%)",
+          "inlines": [
+            {
+              "text": "18/20 (90%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5/20 (25%)",
+          "inlines": [
+            {
+              "text": "5/20 (25%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$31.42",
+          "inlines": [
+            {
+              "text": "$31.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "补丁版本提供了一个对照，可以缩小搜索范围，也让智能体能够检验候选行为在两个版本之间是否存在差异。在这里，成功率提高的同时，平均成本也更低。",
+          "inlines": [
+            {
+              "text": "补丁版本提供了一个对照，可以缩小搜索范围，也让智能体能够检验候选行为在两个版本之间是否存在差异。在这里，成功率提高的同时，平均成本也更低。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们另外审计了补丁信息在 22 个任务中的 26 条成功轨迹里是如何体现的。其中 17 条轨迹里，补丁信息直接指向了后来被利用的漏洞；7 条轨迹里，它影响了搜索决策，但没有指出最终的利用目标；剩下 2 条轨迹中，记录的证据无法建立这种联系。",
+          "inlines": [
+            {
+              "text": "我们另外审计了补丁信息在 "
+            },
+            {
+              "bold": true,
+              "text": "22 个任务中的 26 条成功轨迹"
+            },
+            {
+              "text": "里是如何体现的。其中 17 条轨迹里，补丁信息直接指向了后来被利用的漏洞；7 条轨迹里，它影响了搜索决策，但没有指出最终的利用目标；剩下 2 条轨迹中，记录的证据无法建立这种联系。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这一区分可以避免夸大补丁所揭示的信息。有些智能体利用更新来定位最终缺陷；另一些则用它评估初步发现，然后回到旧版本中继续搜索。审计描述的是观察到的行为，而配对消融实验衡量的是在该子集上提供第二个二进制文件所带来的收益。",
+          "inlines": [
+            {
+              "text": "这一区分可以避免夸大补丁所揭示的信息。有些智能体利用更新来定位最终缺陷；另一些则用它评估初步发现，然后回到旧版本中继续搜索。审计描述的是观察到的行为，而配对消融实验衡量的是在该子集上提供第二个二进制文件所带来的收益。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "推理与重复尝试都有帮助",
+          "inlines": [
+            {
+              "text": "推理与重复尝试都有帮助"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/a37629ec67f44558d814afb2d0acebab8e3c815b87dd713e782107731bb78533.webp",
+          "alt": "On 20 matched tasks, maximum reasoning raises recovery from 30% to 90% and exploitation from 0% to 25%. Providing the patched binary raises recovery from 55% to 90% and exploitation from 10% to 25%."
+        },
+        {
+          "type": "paragraph",
+          "text": "Codex 在 20 个配对任务上的消融实验。推理强度和补丁版二进制文件是否可用是两组独立的比较。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Codex 在 20 个配对任务上的消融实验。推理强度和补丁版二进制文件是否可用是两组独立的比较。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在最高推理强度下，Codex 恢复了 20 个漏洞中的 18 个，并完成了 5 次利用。关闭推理后，它只恢复 6 个漏洞，且没有完成任何利用。平均成本从 $2.33 升至 $31.42。记录下来的轨迹显示，更强的设置与跨依赖阶段更持续的分析相关，不过工具使用失败也造成了部分差异。",
+          "inlines": [
+            {
+              "text": "在最高推理强度下，Codex 恢复了 20 个漏洞中的 18 个，并完成了 5 次利用。关闭推理后，它只恢复 6 个漏洞，且没有完成任何利用。平均成本从 $2.33 升至 $31.42。记录下来的轨迹显示，更强的设置与跨依赖阶段更持续的分析相关，不过工具使用失败也造成了部分差异。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "重复尝试同样能提升覆盖率。在另一项 20 任务的规模评估中，恢复率从单次尝试的 68.3% 提升到三次尝试的 90%，利用率则从11.7% 提升到 25%。这些是 Success@k 估计值，是在每个任务三次记录运行的子集上取平均得到的，因此单次尝试的成功率与主评估及其他消融实验并不相同。",
+          "inlines": [
+            {
+              "text": "重复尝试同样能提升覆盖率。在另一项 20 任务的规模评估中，恢复率从"
+            },
+            {
+              "bold": true,
+              "text": "单次尝试的 68.3% 提升到三次尝试的 90%"
+            },
+            {
+              "text": "，利用率则从"
+            },
+            {
+              "bold": true,
+              "text": "11.7% 提升到 25%"
+            },
+            {
+              "text": "。这些是 Success@k 估计值，是在每个任务三次记录运行的子集上取平均得到的，因此单次尝试的成功率与主评估及其他消融实验并不相同。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8c2cae7dab1f194d940e41fa8a440f091dba139e8e09b0f7811ab7cfa4cae069.webp",
+          "alt": "With one, two, and three Codex attempts, recovery rates are 68.3%, 83.3%, and 90%; exploit rates are 11.7%, 20%, and 25%. Mean total costs are $35.53, $71.06, and $106.59."
+        },
+        {
+          "type": "paragraph",
+          "text": "重复尝试在总成本增加的情况下提升了成功率。恢复仍然比利用可靠得多。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "重复尝试在总成本增加的情况下提升了成功率。恢复仍然比利用可靠得多。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一次失败的运行可能反映的是分析路径没有成效，而不是任务超出了智能体的能力。增加尝试次数能提供更多找到有效路径的机会，但收益会递减，利用方面的差距依然存在。",
+          "inlines": [
+            {
+              "text": "一次失败的运行可能反映的是分析路径没有成效，而不是任务超出了智能体的能力。增加尝试次数能提供更多找到有效路径的机会，但收益会递减，利用方面的差距依然存在。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "标准加固之后会怎样？",
+          "inlines": [
+            {
+              "text": "标准加固之后会怎样？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们用栈金丝雀、位置无关可执行文件、完整 RELRO、不可执行栈以及启用 Fortify 的编译方式，重新构建了主实验中 Codex 成功利用的 20 个目标。",
+          "inlines": [
+            {
+              "text": "我们用栈金丝雀、位置无关可执行文件、完整 RELRO、不可执行栈以及启用 Fortify 的编译方式，重新构建了"
+            },
+            {
+              "bold": true,
+              "text": "主实验中 Codex 成功利用的 20 个目标"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Codex 仍然恢复了20 个漏洞中的 15 个（75%），但只完成了两次利用（10%）。这是从先前成功案例中选出的后续集合，并不代表全部 100 个任务在加固后的利用情况。",
+          "inlines": [
+            {
+              "text": "Codex 仍然恢复了"
+            },
+            {
+              "bold": true,
+              "text": "20 个漏洞中的 15 个（75%）"
+            },
+            {
+              "text": "，但只完成了"
+            },
+            {
+              "bold": true,
+              "text": "两次利用（10%）"
+            },
+            {
+              "text": "。这是从先前成功案例中选出的后续集合，并不代表全部 100 个任务在加固后的利用情况。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "结果显示，观察到的漏洞利用大幅减少。结果同时表明，所测试的防护措施并未堵死所有路径：仅存的两条利用路径会影响栈之外的可写状态，并复用已有代码。观察到的降幅中还包含智能体搜索波动和服务交付失败的影响，因此无法单独归因于加固措施本身的因果作用。",
+          "inlines": [
+            {
+              "text": "结果显示，观察到的漏洞利用大幅减少。结果同时表明，所测试的防护措施并未堵死所有路径：仅存的两条利用路径会影响栈之外的可写状态，并复用已有代码。观察到的降幅中还包含智能体搜索波动和服务交付失败的影响，因此无法单独归因于加固措施本身的因果作用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "这对攻击方和防御方意味着什么",
+          "inlines": [
+            {
+              "text": "这对攻击方和防御方意味着什么"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "AI 能把二进制补丁变成漏洞利用，这可能改变攻防双方的力量对比。CyberBinGym 表明，智能体已经能在受控环境中利用编译后的更新还原并利用真实漏洞，既不需要源代码，也不需要预先提供触发输入。对攻击方而言，把这项工作自动化，可以降低针对未打补丁软件所需的技术门槛和人工投入，让漏洞利用更容易上手。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "AI 能把二进制补丁变成漏洞利用，这可能改变攻防双方的力量对比。"
+            },
+            {
+              "text": "CyberBinGym 表明，智能体已经能在受控环境中利用编译后的更新还原并利用真实漏洞，既不需要源代码，也不需要预先提供触发输入。对攻击方而言，把这项工作自动化，可以降低针对未打补丁软件所需的技术门槛和人工投入，让漏洞利用更容易上手。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对防御方来说，关键问题在于修复发布与部署之间的时间差。补丁安装后才会提供保护，但补丁的发布也可能泄露信息，让人知道哪些系统仍在运行存在漏洞的版本。如果智能体让漏洞利用变快，而部署延迟依然存在，攻击方就会在这段时间窗口内占据优势，防御方的响应时间则更少。在我们的配对研究中，提供打过补丁的二进制文件后，漏洞利用成功率从 10% 升至 25%，这正说明更新本身对这一平衡有多重要。",
+          "inlines": [
+            {
+              "text": "对防御方来说，关键问题在于修复发布与部署之间的时间差。补丁安装后才会提供保护，但补丁的发布也可能泄露信息，让人知道哪些系统仍在运行存在漏洞的版本。如果智能体让漏洞利用变快，而部署延迟依然存在，攻击方就会在这段时间窗口内占据优势，防御方的响应时间则更少。在我们的配对研究中，提供打过补丁的二进制文件后，漏洞利用成功率从 10% 升至 25%，这正说明更新本身对这一平衡有多重要。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "同样的能力也可以用于加强防御。二进制分析能帮助防御方在没有源代码的情况下评估第三方软件、确定紧急更新的优先级，并判断各项缓解措施能否阻止漏洞造成有害后果。分别衡量漏洞还原与漏洞利用，有助于区分容易复现的故障与已被证实的安全后果，从而在补丁窗口期内做出更有依据的决策。",
+          "inlines": [
+            {
+              "text": "同样的能力也可以用于加强防御。二进制分析能帮助防御方在没有源代码的情况下评估第三方软件、确定紧急更新的优先级，并判断各项缓解措施能否阻止漏洞造成有害后果。分别衡量漏洞还原与漏洞利用，有助于区分容易复现的故障与已被证实的安全后果，从而在补丁窗口期内做出更有依据的决策。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的实验使用历史漏洞和受控的受害服务，并未衡量生产环境的实际入侵率，也没有测量利用一个新发布补丁所需的时间。这些结果确立的是能力本身；它究竟能缩短多少现实世界的响应窗口，仍是一个有待进一步评估的重要问题。",
+          "inlines": [
+            {
+              "text": "我们的实验使用历史漏洞和受控的受害服务，并未衡量生产环境的实际入侵率，也没有测量利用一个新发布补丁所需的时间。这些结果确立的是能力本身；它究竟能缩短多少现实世界的响应窗口，仍是一个有待进一步评估的重要问题。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随着这类能力不断提升，防御方需要把 AI 辅助分析转化为更快的防护行动。及时部署补丁，以及在更新安装前仍然有效的多层防御，正变得越来越重要。CyberBinGym 提供了一种方法，用来追踪可能加速攻击方进展的能力，并为防御方如何为这一变化做好准备提供参考。",
+          "inlines": [
+            {
+              "text": "随着这类能力不断提升，防御方需要把 AI 辅助分析转化为更快的防护行动。及时部署补丁，以及在更新安装前仍然有效的多层防御，正变得越来越重要。CyberBinGym 提供了一种方法，用来追踪可能加速攻击方进展的能力，并为防御方如何为这一变化做好准备提供参考。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Berkeley RDI",
+          "inlines": [
+            {
+              "text": "Berkeley RDI"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "推进去中心化与 AI 的科学、技术和教育，赋能负责任的数字经济。",
+          "inlines": [
+            {
+              "text": "推进去中心化与 AI 的科学、技术和教育，赋能负责任的数字经济。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copyright © 2025 UC Regents; all rights reserved",
+          "inlines": [
+            {
+              "text": "Copyright © 2025 UC Regents; all rights reserved"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/dd609adf374d3d6fd587b94e57daf64524e8f427eeb5ac9e19c14412a109fce2.webp",
+          "alt": "CyberBinGym evaluation: agents analyze vulnerable and patched binaries; separate checks validate vulnerability recovery and exploitation."
+        },
+        {
+          "type": "heading",
+          "text": "CyberBinGym: Can AI Agents Turn Binary Patches into Real Exploits?",
+          "inlines": [
+            {
+              "text": "CyberBinGym: Can AI Agents Turn Binary Patches into Real Exploits?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Lambang Akbar Wijayadi1, Zhaoqi Xiao1,2, Zhun Wang3, Hongwei Li4, Wenbo Guo4, Heng Yin2, Zhenkai Liang1, Dawn Song3\n\n\n\n1National University of Singapore, 2UC Riverside, 3UC Berkeley, 4UC Santa Barbara \n\nDraft · Estimated 8-minute read",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Lambang Akbar Wijayadi1, Zhaoqi Xiao1,2, Zhun Wang3, Hongwei Li4, Wenbo Guo4, Heng Yin2, Zhenkai Liang1, Dawn Song3\n"
+            },
+            {
+              "text": "\n\n\n1National University of Singapore, 2UC Riverside, 3UC Berkeley, 4UC Santa Barbara \n\n"
+            },
+            {
+              "italic": true,
+              "text": "Draft · Estimated 8-minute read"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Security fixes usually reach users as compiled updates, such as operating-system packages, firmware images, and releases of proprietary or third-party software. Patch deployment often takes a long time, and even critical systems can remain unpatched for months or years after a fix is released. During this window, comparing the patched and unpatched binaries can guide an attacker toward a working exploit. This is the 1-day setting: a fix is available, but systems still running the vulnerable version remain exposed.",
+          "inlines": [
+            {
+              "text": "Security fixes usually reach users as compiled updates, such as operating-system packages, firmware images, and releases of proprietary or third-party software. Patch deployment often takes a long time, and even critical systems can remain unpatched for months or years after a fix is released. During this window, comparing the patched and unpatched binaries can guide an attacker toward a working exploit. This is the "
+            },
+            {
+              "bold": true,
+              "text": "1-day setting"
+            },
+            {
+              "text": ": a fix is available, but systems still running the vulnerable version remain exposed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Turning that information into a working exploit has traditionally required substantial reverse-engineering expertise, considerable manual effort, and often days or weeks of analysis to localize the vulnerability and develop a working exploit. An analyst must understand compiled code, identify the security-relevant change, and determine whether the underlying error can produce more than a crash.",
+          "inlines": [
+            {
+              "text": "Turning that information into a working exploit has traditionally required substantial reverse-engineering expertise, considerable manual effort, and often days or weeks of analysis to localize the vulnerability and develop a working exploit. An analyst must understand compiled code, identify the security-relevant change, and determine whether the underlying error can produce more than a crash."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If AI agents can automate this work, they could shift the balance in attackers’ favor. Reducing the expertise, effort, and time needed to exploit a released patch could make attacks more accessible and compress defenders’ effective response window. The update intended to protect systems can simultaneously give attackers actionable information, while defenders remain constrained by deployment delays. Measuring this capability is therefore critical for understanding AI’s impact on both attack and defense.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "If AI agents can automate this work, they could shift the balance in attackers’ favor."
+            },
+            {
+              "text": " Reducing the expertise, effort, and time needed to exploit a released patch could make attacks more accessible and compress defenders’ effective response window. The update intended to protect systems can simultaneously give attackers actionable information, while defenders remain constrained by deployment delays. Measuring this capability is therefore critical for understanding AI’s impact on both attack and defense."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our earlier benchmarks examined complementary parts of this problem. CyberGym measures vulnerability reproduction with source access. CyberGym-E2E extends evaluation through discovery and repair. ExploitGym asks whether agents can turn supplied vulnerabilities and triggering inputs into working exploits.",
+          "inlines": [
+            {
+              "text": "Our earlier benchmarks examined complementary parts of this problem. "
+            },
+            {
+              "href": "https://rdi.berkeley.edu/blog/cybergym/",
+              "text": "CyberGym"
+            },
+            {
+              "text": " measures vulnerability reproduction with source access. "
+            },
+            {
+              "href": "https://rdi.berkeley.edu/blog/cybergym-e2e/",
+              "text": "CyberGym-E2E"
+            },
+            {
+              "text": " extends evaluation through discovery and repair. "
+            },
+            {
+              "href": "https://rdi.berkeley.edu/blog/exploitgym/",
+              "text": "ExploitGym"
+            },
+            {
+              "text": " asks whether agents can turn supplied vulnerabilities and triggering inputs into working exploits."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CyberBinGym asks what happens when the source code and the starting input are both removed. Given only a vulnerable binary and its patched counterpart, can an AI agent recover the vulnerability and exploit the vulnerable version?",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "CyberBinGym asks what happens when the source code and the starting input are both removed."
+            },
+            {
+              "text": " Given only a vulnerable binary and its patched counterpart, can an AI agent recover the vulnerability and exploit the vulnerable version?"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TL;DR",
+          "inlines": [
+            {
+              "text": "TL;DR"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "CyberBinGym contains 100 tasks derived from real vulnerabilities in 53 open-source projects. Agents receive stripped vulnerable and patched binaries, runtime dependencies, analysis tools, and access to a controlled victim service. They receive no source code, source patch, vulnerability description, or reference proof of concept.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "CyberBinGym contains 100 tasks derived from real vulnerabilities in 53 open-source projects."
+            },
+            {
+              "text": " Agents receive stripped vulnerable and patched binaries, runtime dependencies, analysis tools, and access to a controlled victim service. They receive no source code, source patch, vulnerability description, or reference proof of concept."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The strongest evaluated configuration, Codex with GPT-5.6, recovers the target vulnerability on 88% of tasks and completes audited exploitation on 20%. Claude Code with Claude Opus 5 achieves 85% recovery and 6% exploitation; Kimi Code with Kimi K3 achieves 64% recovery and no successful exploits.",
+          "inlines": [
+            {
+              "text": "The strongest evaluated configuration, "
+            },
+            {
+              "bold": true,
+              "text": "Codex with GPT-5.6"
+            },
+            {
+              "text": ", recovers the target vulnerability on "
+            },
+            {
+              "bold": true,
+              "text": "88%"
+            },
+            {
+              "text": " of tasks and completes audited exploitation on "
+            },
+            {
+              "bold": true,
+              "text": "20%"
+            },
+            {
+              "text": ". Claude Code with Claude Opus 5 achieves "
+            },
+            {
+              "bold": true,
+              "text": "85%"
+            },
+            {
+              "text": " recovery and "
+            },
+            {
+              "bold": true,
+              "text": "6%"
+            },
+            {
+              "text": " exploitation; Kimi Code with Kimi K3 achieves "
+            },
+            {
+              "bold": true,
+              "text": "64%"
+            },
+            {
+              "text": " recovery and no successful exploits."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On a matched 20-task subset, supplying the patched binary raises Codex’s exploit rate from 10% to 25%. Rebuilding its 20 successful targets with standard binary hardening reduces successful exploitation to two tasks.",
+          "inlines": [
+            {
+              "text": "On a matched 20-task subset, supplying the patched binary raises Codex’s exploit rate from "
+            },
+            {
+              "bold": true,
+              "text": "10% to 25%"
+            },
+            {
+              "text": ". Rebuilding its 20 successful targets with standard binary hardening reduces successful exploitation to "
+            },
+            {
+              "bold": true,
+              "text": "two tasks"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These results show that agents can use compiled patches to develop working exploits in a controlled setting. They also reveal a substantial gap between recovering a vulnerability and turning it into a security consequence.",
+          "inlines": [
+            {
+              "text": "These results show that agents can use compiled patches to develop working exploits in a controlled setting. They also reveal a substantial gap between recovering a vulnerability and turning it into a security consequence."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Key Takeaways",
+          "inlines": [
+            {
+              "text": "Key Takeaways"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Binary-only exploitation is already within reach on some real vulnerabilities. The agents must work from recovered program structure and execution feedback. The strongest configuration succeeds without a supplied bug description or crashing input.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Binary-only exploitation is already within reach on some real vulnerabilities."
+            },
+            {
+              "text": " The agents must work from recovered program structure and execution feedback. The strongest configuration succeeds without a supplied bug description or crashing input."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A crash is only part of the story. Recovery rates of 64–88% coexist with exploitation rates of 0–20%. Understanding what a bug lets an attacker control remains a major challenge, even after the agent has found an input that triggers it.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "A crash is only part of the story."
+            },
+            {
+              "text": " Recovery rates of 64–88% coexist with exploitation rates of 0–20%. Understanding what a bug lets an attacker control remains a major challenge, even after the agent has found an input that triggers it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The compiled patch provides useful information. On the matched subset, access to the fixed version improves recovery from 55% to 90% and exploitation from 10% to 25%. Audited trajectories show that patch information can identify the exploited defect directly or help an agent redirect its search.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The compiled patch provides useful information."
+            },
+            {
+              "text": " On the matched subset, access to the fixed version improves recovery from 55% to 90% and exploitation from 10% to 25%. Audited trajectories show that patch information can identify the exploited defect directly or help an agent redirect its search."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hardening substantially reduces observed success. Two exploits survive the hardened follow-up on the 20 tasks Codex exploited in the main evaluation. That finding supports layered defenses, while leaving open how these capabilities transfer to production systems.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Hardening substantially reduces observed success."
+            },
+            {
+              "text": " Two exploits survive the hardened follow-up on the 20 tasks Codex exploited in the main evaluation. That finding supports layered defenses, while leaving open how these capabilities transfer to production systems."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What Is CyberBinGym?",
+          "inlines": [
+            {
+              "text": "What Is CyberBinGym?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "CyberBinGym evaluates the 1-day setting: a fix has been released, but the vulnerable version remains in use. The patched binary is the agent’s main clue about what changed.",
+          "inlines": [
+            {
+              "text": "CyberBinGym evaluates the "
+            },
+            {
+              "bold": true,
+              "text": "1-day setting"
+            },
+            {
+              "text": ": a fix has been released, but the vulnerable version remains in use. The patched binary is the agent’s main clue about what changed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Binary analysis removes many of the cues available in a source-code task. Compilation obscures variable names, types, comments, and program structure. Stripping removes additional symbols and debugging information. Decompilers can recover a readable approximation, but that approximation can be incomplete or misleading. Agents must reconcile it with actual execution.",
+          "inlines": [
+            {
+              "text": "Binary analysis removes many of the cues available in a source-code task. Compilation obscures variable names, types, comments, and program structure. Stripping removes additional symbols and debugging information. Decompilers can recover a readable approximation, but that approximation can be incomplete or misleading. Agents must reconcile it with actual execution."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The benchmark starts from CyberGym instances and associated OSS-Fuzz and ARVO artifacts. We reconstruct vulnerable and patched revisions, remove sanitizer instrumentation from the binaries available to agents, strip symbols and debug information, and verify the pairs using internal reference inputs. This process yields 604 validated binary pairs, from which we select the 100-task evaluation set.",
+          "inlines": [
+            {
+              "text": "The benchmark starts from CyberGym instances and associated OSS-Fuzz and ARVO artifacts. We reconstruct vulnerable and patched revisions, remove sanitizer instrumentation from the binaries available to agents, strip symbols and debug information, and verify the pairs using internal reference inputs. This process yields "
+            },
+            {
+              "bold": true,
+              "text": "604 validated binary pairs"
+            },
+            {
+              "text": ", from which we select the 100-task evaluation set."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The tasks span image and document processing, networking, compression, and cryptography. They cover six vulnerability families: spatial memory errors, temporal memory errors, invalid pointer access, invalid deallocation, initialization errors, and type-safety errors. Spatial memory errors account for 40 tasks; less common families receive deliberate additional coverage to exercise different analysis skills.",
+          "inlines": [
+            {
+              "text": "The tasks span image and document processing, networking, compression, and cryptography. They cover six vulnerability families: spatial memory errors, temporal memory errors, invalid pointer access, invalid deallocation, initialization errors, and type-safety errors. Spatial memory errors account for 40 tasks; less common families receive deliberate additional coverage to exercise different analysis skills."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These are substantial software artifacts. The median vulnerable binary is 1.60 MiB, and the largest reaches 38.04 MiB. The task mix includes 20 low-, 40 medium-, and 40 high-complexity cases, based on a curator-side rubric covering reachability, input construction, crash observability, binary complexity, and patch complexity.",
+          "inlines": [
+            {
+              "text": "These are substantial software artifacts. The median vulnerable binary is "
+            },
+            {
+              "bold": true,
+              "text": "1.60 MiB"
+            },
+            {
+              "text": ", and the largest reaches "
+            },
+            {
+              "bold": true,
+              "text": "38.04 MiB"
+            },
+            {
+              "text": ". The task mix includes 20 low-, 40 medium-, and 40 high-complexity cases, based on a curator-side rubric covering reachability, input construction, crash observability, binary complexity, and patch complexity."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Two Separate Measures of Success",
+          "inlines": [
+            {
+              "text": "Two Separate Measures of Success"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "CyberBinGym measures vulnerability recovery and exploitation independently.",
+          "inlines": [
+            {
+              "text": "CyberBinGym measures vulnerability recovery and exploitation independently."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Vulnerability recovery requires a proof-of-concept input that triggers the expected sanitizer-detected failure in a hidden vulnerable validation build while the patched validation build remains non-failing. A generic process crash is insufficient. The instrumented validation builds are kept outside the agent workspace; the binaries the agent analyzes contain no sanitizer instrumentation.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Vulnerability recovery"
+            },
+            {
+              "text": " requires a proof-of-concept input that triggers the expected sanitizer-detected failure in a hidden vulnerable validation build while the patched validation build remains non-failing. A generic process crash is insufficient. The instrumented validation builds are kept outside the agent workspace; the binaries the agent analyzes contain no sanitizer instrumentation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Exploitation requires retrieving a fresh secret flag from a separate victim service through vulnerability-driven behavior. A matching flag is necessary, but we also manually audit the trajectory. Direct access through the analysis environment and use of a program’s existing command-execution functionality do not earn exploitation credit.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Exploitation"
+            },
+            {
+              "text": " requires retrieving a fresh secret flag from a separate victim service through vulnerability-driven behavior. A matching flag is necessary, but we also manually audit the trajectory. Direct access through the analysis environment and use of a program’s existing command-execution functionality do not earn exploitation credit."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The two scores answer different questions. An agent may exploit a different vulnerability in the older program, and an accepted exploit need not also pass the target vulnerability’s differential crash test. This distinction matters when interpreting the gap between the headline rates.",
+          "inlines": [
+            {
+              "text": "The two scores answer different questions. An agent may exploit a different vulnerability in the older program, and an accepted exploit need not also pass the target vulnerability’s differential crash test. This distinction matters when interpreting the gap between the headline rates."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The environment separates static analysis, dynamic execution, and the victim service. External access is restricted, and native web search is disabled, limiting access to outside vulnerability information. Recorded tool interactions and submitted artifacts support the audit.",
+          "inlines": [
+            {
+              "text": "The environment separates static analysis, dynamic execution, and the victim service. External access is restricted, and native web search is disabled, limiting access to outside vulnerability information. Recorded tool interactions and submitted artifacts support the audit."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The Main Results",
+          "inlines": [
+            {
+              "text": "The Main Results"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We evaluate three agent–model configurations on the same 100 tasks, with a nominal budget of 1,000 model calls per trajectory. The paper details exceptions in recorded traces and resource accounting.",
+          "inlines": [
+            {
+              "text": "We evaluate three agent–model configurations on the same 100 tasks, with a nominal budget of 1,000 model calls per trajectory. The paper details exceptions in recorded traces and resource accounting."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Agent",
+          "inlines": [
+            {
+              "text": "Agent"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model",
+          "inlines": [
+            {
+              "text": "Model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Vulnerability recovery",
+          "inlines": [
+            {
+              "text": "Vulnerability recovery"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Audited exploitation",
+          "inlines": [
+            {
+              "text": "Audited exploitation"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mean cost per task",
+          "inlines": [
+            {
+              "text": "Mean cost per task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mean time per task",
+          "inlines": [
+            {
+              "text": "Mean time per task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Codex",
+          "inlines": [
+            {
+              "text": "Codex"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT-5.6",
+          "inlines": [
+            {
+              "text": "GPT-5.6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "88/100 (88%)",
+          "inlines": [
+            {
+              "text": "88/100 (88%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20/100 (20%)",
+          "inlines": [
+            {
+              "text": "20/100 (20%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$28.11",
+          "inlines": [
+            {
+              "text": "$28.11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2.13 hours",
+          "inlines": [
+            {
+              "text": "2.13 hours"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code",
+          "inlines": [
+            {
+              "text": "Claude Code"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5",
+          "inlines": [
+            {
+              "text": "Claude Opus 5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "85/100 (85%)",
+          "inlines": [
+            {
+              "text": "85/100 (85%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6/100 (6%)",
+          "inlines": [
+            {
+              "text": "6/100 (6%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$14.90",
+          "inlines": [
+            {
+              "text": "$14.90"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.26 hours",
+          "inlines": [
+            {
+              "text": "1.26 hours"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kimi Code",
+          "inlines": [
+            {
+              "text": "Kimi Code"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Kimi K3",
+          "inlines": [
+            {
+              "text": "Kimi K3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "64/100 (64%)",
+          "inlines": [
+            {
+              "text": "64/100 (64%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0/100 (0%)",
+          "inlines": [
+            {
+              "text": "0/100 (0%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$38.34",
+          "inlines": [
+            {
+              "text": "$38.34"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5.80 hours",
+          "inlines": [
+            {
+              "text": "5.80 hours"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Costs and times are averages across tasks, including unsuccessful attempts. The main experiments use trusted-access programs with safeguards disabled to measure capability boundaries; these are results for the evaluated configurations, rather than ordinary safeguarded deployments.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Costs and times are averages across tasks, including unsuccessful attempts. The main experiments use trusted-access programs with safeguards disabled to measure capability boundaries; these are results for the evaluated configurations, rather than ordinary safeguarded deployments."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Codex and Claude recover vulnerabilities at similar rates, but their exploit rates differ substantially. Claude uses the least time and money per task. Kimi spends more on average while achieving lower recovery and no exploitation successes. More time spent searching does not necessarily mean more progress.",
+          "inlines": [
+            {
+              "text": "Codex and Claude recover vulnerabilities at similar rates, but their exploit rates differ substantially. Claude uses the least time and money per task. Kimi spends more on average while achieving lower recovery and no exploitation successes. More time spent searching does not necessarily mean more progress."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To examine the gap on tasks with demonstrated exploitability, we look at the 22 tasks that at least one agent successfully exploits. Codex still stops at a crash-only outcome on two of them, Claude on 13, and Kimi on 17. These failures cannot all be explained by the task being impossible to exploit in the benchmark environment.",
+          "inlines": [
+            {
+              "text": "To examine the gap on tasks with demonstrated exploitability, we look at the "
+            },
+            {
+              "bold": true,
+              "text": "22 tasks that at least one agent successfully exploits"
+            },
+            {
+              "text": ". Codex still stops at a crash-only outcome on two of them, Claude on 13, and Kimi on 17. These failures cannot all be explained by the task being impossible to exploit in the benchmark environment."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The trajectory comparisons point to a recurring challenge: maintaining a model of program state beyond the first invalid memory access. Successful agents follow the consequences of an error through later execution and revise hypotheses when runtime evidence contradicts them. Unsuccessful attempts often end at a crash or continue investigating paths the victim cannot reach.",
+          "inlines": [
+            {
+              "text": "The trajectory comparisons point to a recurring challenge: maintaining a model of program state beyond the first invalid memory access. Successful agents follow the consequences of an error through later execution and revise hypotheses when runtime evidence contradicts them. Unsuccessful attempts often end at a crash or continue investigating paths the victim cannot reach."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Analysis Complexity Does Not Determine Exploitability",
+          "inlines": [
+            {
+              "text": "Analysis Complexity Does Not Determine Exploitability"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2f1a60f90abd04c6499c97faa5aa07c83653da55810f2eb9f8b5edb2ae9a12a5.webp",
+          "alt": "By low, medium, and high complexity, Codex recovery is 95%, 87.5%, and 85%, while exploitation is 15%, 15%, and 27.5%. Claude and Kimi results are also shown."
+        },
+        {
+          "type": "paragraph",
+          "text": "Performance by task complexity. Levels describe the burden of analysis and triggering, rather than the strength of the resulting exploit. Groups contain 20, 40, and 40 tasks, respectively.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Performance by task complexity. Levels describe the burden of analysis and triggering, rather than the strength of the resulting exploit. Groups contain 20, 40, and 40 tasks, respectively."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Codex’s recovery rate falls from 95% on low-complexity tasks to 85% on high-complexity tasks, while its exploit rate rises from 15% to 27.5%. A bug can be difficult to locate but offer useful control once found; another can be easy to trigger yet difficult to exploit.",
+          "inlines": [
+            {
+              "text": "Codex’s recovery rate falls from 95% on low-complexity tasks to 85% on high-complexity tasks, while its exploit rate rises from 15% to 27.5%. A bug can be difficult to locate but offer useful control once found; another can be easy to trigger yet difficult to exploit."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These results do not establish that larger or more complex programs are inherently easier to exploit. The groups are small, and the rubric measures a different property from exploitability. They do show why a single difficulty label cannot replace separate outcome measurements.",
+          "inlines": [
+            {
+              "text": "These results do not establish that larger or more complex programs are inherently easier to exploit. The groups are small, and the rubric measures a different property from exploitability. They do show why a single difficulty label cannot replace separate outcome measurements."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What Does the Patched Binary Contribute?",
+          "inlines": [
+            {
+              "text": "What Does the Patched Binary Contribute?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "On 20 matched tasks, we compare Codex with only the vulnerable binary against Codex with both versions.",
+          "inlines": [
+            {
+              "text": "On 20 matched tasks, we compare Codex with only the vulnerable binary against Codex with both versions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Available binaries",
+          "inlines": [
+            {
+              "text": "Available binaries"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Vulnerability recovery",
+          "inlines": [
+            {
+              "text": "Vulnerability recovery"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Audited exploitation",
+          "inlines": [
+            {
+              "text": "Audited exploitation"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Mean cost per task",
+          "inlines": [
+            {
+              "text": "Mean cost per task"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Vulnerable only",
+          "inlines": [
+            {
+              "text": "Vulnerable only"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11/20 (55%)",
+          "inlines": [
+            {
+              "text": "11/20 (55%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2/20 (10%)",
+          "inlines": [
+            {
+              "text": "2/20 (10%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$36.59",
+          "inlines": [
+            {
+              "text": "$36.59"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Vulnerable and patched",
+          "inlines": [
+            {
+              "text": "Vulnerable and patched"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "18/20 (90%)",
+          "inlines": [
+            {
+              "text": "18/20 (90%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5/20 (25%)",
+          "inlines": [
+            {
+              "text": "5/20 (25%)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$31.42",
+          "inlines": [
+            {
+              "text": "$31.42"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The patched version supplies a comparison that can narrow the search and lets the agent test whether candidate behavior differs between the two versions. Here, better success also comes with lower average cost.",
+          "inlines": [
+            {
+              "text": "The patched version supplies a comparison that can narrow the search and lets the agent test whether candidate behavior differs between the two versions. Here, better success also comes with lower average cost."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We separately audit how patch information appears in 26 successful trajectories across 22 tasks. In 17 trajectories, it directly points to the vulnerability later exploited. In seven, it informs a search decision without identifying the eventual exploitation target. In the remaining two, the recorded evidence does not establish a connection.",
+          "inlines": [
+            {
+              "text": "We separately audit how patch information appears in "
+            },
+            {
+              "bold": true,
+              "text": "26 successful trajectories across 22 tasks"
+            },
+            {
+              "text": ". In 17 trajectories, it directly points to the vulnerability later exploited. In seven, it informs a search decision without identifying the eventual exploitation target. In the remaining two, the recorded evidence does not establish a connection."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That distinction prevents overstating what a patch reveals. Some agents use the update to locate the final defect; others use it to assess an initial finding and then search elsewhere in the older version. The audit describes observed behavior, while the matched ablation measures the benefit of providing the second binary on that subset.",
+          "inlines": [
+            {
+              "text": "That distinction prevents overstating what a patch reveals. Some agents use the update to locate the final defect; others use it to assess an initial finding and then search elsewhere in the older version. The audit describes observed behavior, while the matched ablation measures the benefit of providing the second binary on that subset."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Reasoning and Repeated Attempts Help",
+          "inlines": [
+            {
+              "text": "Reasoning and Repeated Attempts Help"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/a37629ec67f44558d814afb2d0acebab8e3c815b87dd713e782107731bb78533.webp",
+          "alt": "On 20 matched tasks, maximum reasoning raises recovery from 30% to 90% and exploitation from 0% to 25%. Providing the patched binary raises recovery from 55% to 90% and exploitation from 10% to 25%."
+        },
+        {
+          "type": "paragraph",
+          "text": "Codex ablations on 20 matched tasks. Reasoning effort and patched-binary availability are separate comparisons.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Codex ablations on 20 matched tasks. Reasoning effort and patched-binary availability are separate comparisons."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With maximum reasoning, Codex recovers 18 of 20 vulnerabilities and completes five exploits. Without reasoning, it recovers six and completes none. Average cost rises from $2.33 to $31.42. The recorded traces associate the stronger setting with more sustained analysis across dependent stages, though tool-use failures also contribute to the difference.",
+          "inlines": [
+            {
+              "text": "With maximum reasoning, Codex recovers 18 of 20 vulnerabilities and completes five exploits. Without reasoning, it recovers six and completes none. Average cost rises from $2.33 to $31.42. The recorded traces associate the stronger setting with more sustained analysis across dependent stages, though tool-use failures also contribute to the difference."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Repeated attempts improve coverage as well. On a separate 20-task scaling evaluation, recovery rises from 68.3% with one attempt to 90% with three, and exploitation rises from 11.7% to 25%. These are Success@k estimates averaged over subsets of three recorded runs per task, so the one-attempt rate differs from the main evaluation and other ablations.",
+          "inlines": [
+            {
+              "text": "Repeated attempts improve coverage as well. On a separate 20-task scaling evaluation, recovery rises from "
+            },
+            {
+              "bold": true,
+              "text": "68.3% with one attempt to 90% with three"
+            },
+            {
+              "text": ", and exploitation rises from "
+            },
+            {
+              "bold": true,
+              "text": "11.7% to 25%"
+            },
+            {
+              "text": ". These are Success@k estimates averaged over subsets of three recorded runs per task, so the one-attempt rate differs from the main evaluation and other ablations."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8c2cae7dab1f194d940e41fa8a440f091dba139e8e09b0f7811ab7cfa4cae069.webp",
+          "alt": "With one, two, and three Codex attempts, recovery rates are 68.3%, 83.3%, and 90%; exploit rates are 11.7%, 20%, and 25%. Mean total costs are $35.53, $71.06, and $106.59."
+        },
+        {
+          "type": "paragraph",
+          "text": "Repeated attempts improve success at increasing total cost. Recovery remains substantially more reliable than exploitation.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Repeated attempts improve success at increasing total cost. Recovery remains substantially more reliable than exploitation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A failed run can reflect an unproductive analysis path rather than a task beyond the agent’s capability. Additional attempts offer more opportunities to find a useful path, but the gains diminish and the exploitation gap remains.",
+          "inlines": [
+            {
+              "text": "A failed run can reflect an unproductive analysis path rather than a task beyond the agent’s capability. Additional attempts offer more opportunities to find a useful path, but the gains diminish and the exploitation gap remains."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What Happens with Standard Hardening?",
+          "inlines": [
+            {
+              "text": "What Happens with Standard Hardening?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We rebuild the 20 targets Codex successfully exploited in the main experiment with stack canaries, position-independent executables, full RELRO, non-executable stacks, and Fortify-enabled compilation.",
+          "inlines": [
+            {
+              "text": "We rebuild the "
+            },
+            {
+              "bold": true,
+              "text": "20 targets Codex successfully exploited in the main experiment"
+            },
+            {
+              "text": " with stack canaries, position-independent executables, full RELRO, non-executable stacks, and Fortify-enabled compilation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Codex still recovers 15 of the 20 vulnerabilities (75%), but completes only two exploits (10%). This is a selected follow-up set of previous successes, not an estimate of hardened exploitation across all 100 tasks.",
+          "inlines": [
+            {
+              "text": "Codex still recovers "
+            },
+            {
+              "bold": true,
+              "text": "15 of the 20 vulnerabilities (75%)"
+            },
+            {
+              "text": ", but completes only "
+            },
+            {
+              "bold": true,
+              "text": "two exploits (10%)"
+            },
+            {
+              "text": ". This is a selected follow-up set of previous successes, not an estimate of hardened exploitation across all 100 tasks."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The results show a substantial reduction in observed exploitation. They also show that the tested protections do not eliminate every path: the two surviving exploits affect writable state outside the stack and reuse existing code. The observed reduction includes agent search variation and service-delivery failures, so it does not isolate the causal effect of hardening alone.",
+          "inlines": [
+            {
+              "text": "The results show a substantial reduction in observed exploitation. They also show that the tested protections do not eliminate every path: the two surviving exploits affect writable state outside the stack and reuse existing code. The observed reduction includes agent search variation and service-delivery failures, so it does not isolate the causal effect of hardening alone."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why This Matters for Attackers and Defenders",
+          "inlines": [
+            {
+              "text": "Why This Matters for Attackers and Defenders"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "AI’s ability to turn binary patches into exploits could change the balance between attackers and defenders. CyberBinGym shows that agents can already use compiled updates to recover and exploit real vulnerabilities in a controlled setting, without source code or supplied triggering inputs. For attackers, automating this work could lower the expertise and manual effort required to target unpatched software and make exploitation more accessible.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "AI’s ability to turn binary patches into exploits could change the balance between attackers and defenders."
+            },
+            {
+              "text": " CyberBinGym shows that agents can already use compiled updates to recover and exploit real vulnerabilities in a controlled setting, without source code or supplied triggering inputs. For attackers, automating this work could lower the expertise and manual effort required to target unpatched software and make exploitation more accessible."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For defenders, the critical issue is the gap between releasing a fix and deploying it. A patch provides protection once installed, but its release can also supply information about systems that still run the vulnerable version. If agents make exploitation faster while deployment delays persist, attackers gain an advantage during that interval and defenders have less time to respond. Our matched study, in which supplying the patched binary raises exploit success from 10% to 25%, demonstrates why the update itself matters to this balance.",
+          "inlines": [
+            {
+              "text": "For defenders, the critical issue is the gap between releasing a fix and deploying it. A patch provides protection once installed, but its release can also supply information about systems that still run the vulnerable version. If agents make exploitation faster while deployment delays persist, attackers gain an advantage during that interval and defenders have less time to respond. Our matched study, in which supplying the patched binary raises exploit success from 10% to 25%, demonstrates why the update itself matters to this balance."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The same capability could also strengthen defense. Binary analysis can help defenders assess third-party software without source access, prioritize urgent updates, and evaluate whether mitigations prevent a vulnerability from producing a harmful outcome. Measuring recovery and exploitation separately helps distinguish an easily reproduced failure from a demonstrated security consequence, supporting more informed decisions during the patching window.",
+          "inlines": [
+            {
+              "text": "The same capability could also strengthen defense. Binary analysis can help defenders assess third-party software without source access, prioritize urgent updates, and evaluate whether mitigations prevent a vulnerability from producing a harmful outcome. Measuring recovery and exploitation separately helps distinguish an easily reproduced failure from a demonstrated security consequence, supporting more informed decisions during the patching window."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our experiments use historical vulnerabilities and controlled victim services. They do not measure production compromise rates or the time needed to exploit a newly released patch. The results establish the capability; how much it shortens real-world response windows remains an important question for further evaluation.",
+          "inlines": [
+            {
+              "text": "Our experiments use historical vulnerabilities and controlled victim services. They do not measure production compromise rates or the time needed to exploit a newly released patch. The results establish the capability; how much it shortens real-world response windows remains an important question for further evaluation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As these capabilities improve, defenders need to turn AI-assisted analysis into faster protective action. Timely patch deployment and layered defenses that remain effective before updates are installed become increasingly important. CyberBinGym provides a way to track the capability that could accelerate attackers’ progress and to inform how defenders prepare for that change.",
+          "inlines": [
+            {
+              "text": "As these capabilities improve, defenders need to turn AI-assisted analysis into faster protective action. Timely patch deployment and layered defenses that remain effective before updates are installed become increasingly important. CyberBinGym provides a way to track the capability that could accelerate attackers’ progress and to inform how defenders prepare for that change."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Berkeley RDI",
+          "inlines": [
+            {
+              "text": "Berkeley RDI"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Advancing the science, technology, and education of decentralization and AI to empower a responsible digital economy.",
+          "inlines": [
+            {
+              "text": "Advancing the science, technology, and education of decentralization and AI to empower a responsible digital economy."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Copyright © 2025 UC Regents; all rights reserved",
+          "inlines": [
+            {
+              "text": "Copyright © 2025 UC Regents; all rights reserved"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-11T01:10:39.622772Z",
+  "contentMode": "full"
+}
