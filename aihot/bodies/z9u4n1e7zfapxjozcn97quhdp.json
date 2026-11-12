@@ -1,0 +1,934 @@
+{
+  "schemaVersion": 1,
+  "id": "z9u4n1e7zfapxjozcn97quhdp",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/z9u4n1e7zfapxjozcn97quhdp",
+  "fetchedAt": "2026-11-12T01:10:31.418813Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic",
+    "OpenAI",
+    "Alibaba",
+    "Anthropic / Claude",
+    "Agent 智能体",
+    "安全对齐",
+    "论文研究"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Sahan Paliskara1\nNattaput Namchittai1、Jacqueline Tay2、Avery Griffin3\nAndrew Lampinen3",
+          "inlines": [
+            {
+              "text": "Sahan Paliskara1\nNattaput Namchittai1、Jacqueline Tay2、Avery Griffin3\nAndrew Lampinen3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026年11月11日",
+          "inlines": [
+            {
+              "text": "2026年11月11日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1Anthropic Fellows Program；2独立研究者；3Anthropic",
+          "inlines": [
+            {
+              "text": "1Anthropic Fellows Program；2独立研究者；3Anthropic"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "tl;dr",
+          "inlines": [
+            {
+              "text": "tl;dr"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随着 AI 智能体的能力越来越强、应用越来越广，它们之间需要相互交互的场景也越来越多。用户交给智能体的任务，往往要求它们与其他人的智能体共享资源，比如共享算力预算、共享代码库，或者一起凑钱点一份团体外卖。这类场景目前研究得还很少，因此我们搭建了四个带模拟用户和日常任务的环境，并在其中测试了来自 Anthropic、OpenAI 和阿里巴巴的前沿模型。在四个环境中，当每个用户各自委派自己的智能体、而不是由一个智能体服务所有人时，团队的整体结果都更差。在这些模拟场景中，我们还观察到了一些问题行为，且因模型和环境不同差异很大，包括团队规模扩大后陷入停滞、覆盖其他用户的请求，以及就他人做出没有依据的断言。修复办法因环境而异：在智能体共享预算时，指定一名团队负责人并明确说明优先级能提升表现；而在智能体下单前先要求它读完消息，比单纯重跑失败订单能挽回更多失败的团体订单。",
+          "inlines": [
+            {
+              "text": "随着 AI 智能体的能力越来越强、应用越来越广，它们之间需要相互交互的场景也越来越多。用户交给智能体的任务，往往要求它们与其他人的智能体共享资源，比如共享算力预算、共享代码库，或者一起凑钱点一份团体外卖。这类场景目前研究得还很少，因此我们搭建了四个带模拟用户和日常任务的环境，并在其中测试了来自 Anthropic、OpenAI 和阿里巴巴的前沿模型。在四个环境中，当每个用户各自委派自己的智能体、而不是由一个智能体服务所有人时，团队的整体结果都更差。在这些模拟场景中，我们还观察到了一些问题行为，且因模型和环境不同差异很大，包括团队规模扩大后陷入停滞、覆盖其他用户的请求，以及就他人做出没有依据的断言。修复办法因环境而异：在智能体共享预算时，指定一名团队负责人并明确说明优先级能提升表现；而在智能体下单前先要求它读完消息，比单纯重跑失败订单能挽回更多失败的团体订单。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们将其中三个环境作为基准 MAMUBench 发布，方便其他人用它们来测试智能体在多用户、多智能体系统中协调得如何、行为表现如何。",
+          "inlines": [
+            {
+              "text": "我们将其中三个环境作为基准 MAMUBench 发布，方便其他人用它们来测试智能体在多用户、多智能体系统中协调得如何、行为表现如何。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "📄 论文 · 💻 代码",
+          "inlines": [
+            {
+              "text": "📄 "
+            },
+            {
+              "href": "https://arxiv.org/abs/2610.00583",
+              "text": "论文"
+            },
+            {
+              "text": " · 💻 "
+            },
+            {
+              "href": "https://github.com/safety-research/MAMUBench",
+              "text": "代码"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本研究作为 Anthropic Fellows Program 的一部分完成。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "本研究作为 "
+            },
+            {
+              "italic": true,
+              "href": "https://alignment.anthropic.com/2024/anthropic-fellows-program/",
+              "text": "Anthropic Fellows Program"
+            },
+            {
+              "italic": true,
+              "text": " 的一部分完成。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "引言",
+          "inlines": [
+            {
+              "text": "引言"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "随着 AI 智能体日益普及，用户越来越多地让它们去完成需要与其他智能体交互的目标。读到这里，你大概已经让 Claude 跑过实验、订过东西，或者在共享代码库里写过代码并把改动合并到 GitHub 上。SemiAnalysis 预测，到 2026 年底，Claude Code 撰写的代码将占每日提交量的 20% 甚至更多。Claude Tag 和跨会话消息传递等功能，指向这样一个世界：人们把更多任务交给智能体，而这些智能体也越来越频繁地彼此相遇。近期的产品发布还让多个用户可以通过各自的智能体共享资源：借助 DoorDash CLI，几个人的智能体可以往同一个团体购物车里加东西；Slack Code 把 Claude、Devin 和 GitHub Copilot 等智能体带进整个团队协作的频道；OpenAI 的 dots 则为每个人配一个代表自己行事的智能体，并与队友处在同一空间里（DevDay 2026 回顾）。在以上每种情况下，每个智能体都代表自己的用户行事，而智能体应当如何为整个团队行事，目前尚不清楚。",
+          "inlines": [
+            {
+              "text": "随着 AI 智能体日益普及，用户越来越多地让它们去完成需要与其他智能体交互的目标。读到这里，你大概已经让 Claude 跑过实验、订过东西，或者在共享代码库里写过代码并把改动合并到 GitHub 上。"
+            },
+            {
+              "href": "https://newsletter.semianalysis.com/p/claude-code-is-the-inflection-point",
+              "text": "SemiAnalysis 预测"
+            },
+            {
+              "text": "，到 2026 年底，Claude Code 撰写的代码将占每日提交量的 20% 甚至更多。"
+            },
+            {
+              "href": "https://www.anthropic.com/news/introducing-claude-tag",
+              "text": "Claude Tag"
+            },
+            {
+              "text": " 和"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/cross-session-messaging",
+              "text": "跨会话消息传递"
+            },
+            {
+              "text": "等功能，指向这样一个世界：人们把更多任务交给智能体，而这些智能体也越来越频繁地彼此相遇。近期的产品发布还让多个用户可以通过各自的智能体共享资源：借助 "
+            },
+            {
+              "href": "https://github.com/doordash-oss/doordash-cli",
+              "text": "DoorDash CLI"
+            },
+            {
+              "text": "，几个人的智能体可以往同一个团体购物车里加东西；"
+            },
+            {
+              "href": "https://slack.com/blog/news/slack-code-channels-for-agents",
+              "text": "Slack Code"
+            },
+            {
+              "text": " 把 Claude、Devin 和 GitHub Copilot 等智能体带进整个团队协作的频道；OpenAI 的 "
+            },
+            {
+              "href": "https://openai.com/index/introducing-dots",
+              "text": "dots"
+            },
+            {
+              "text": " 则为每个人配一个代表自己行事的智能体，并与队友处在同一空间里（"
+            },
+            {
+              "href": "https://openai.com/index/devday-2026-recap",
+              "text": "DevDay 2026 回顾"
+            },
+            {
+              "text": "）。在以上每种情况下，每个智能体都代表自己的用户行事，而智能体应当如何为整个团队行事，目前尚不清楚。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "近期研究发现，多智能体系统可能出现协调失败等问题，且大多出现在智能体追求共同目标的场景中。这就引出一个问题：如果智能体代表的是目标与偏好各不相同的不同用户，情况又会怎样？我们研究了这类日益常见的场景，称之为多用户、多智能体系统。在我们的环境中，每个用户都有自己的目标，而所有用户共用同一份资源。我们针对这些环境评估了来自 Anthropic、OpenAI 和阿里巴巴的一系列前沿模型。评分方式与我们评判一群人围绕该资源进行协商的方式一致：看整个群体的结果。",
+          "inlines": [
+            {
+              "href": "https://www.anthropic.com/research/multiagent-systems",
+              "text": "近期研究"
+            },
+            {
+              "text": "发现，多智能体系统可能出现协调失败等问题，且大多出现在智能体追求共同目标的场景中。这就引出一个问题：如果智能体代表的是目标与偏好各不相同的不同用户，情况又会怎样？我们研究了这类日益常见的场景，称之为多用户、多智能体系统。在我们的环境中，每个用户都有自己的目标，而所有用户共用同一份资源。我们针对这些环境评估了来自 Anthropic、OpenAI 和阿里巴巴的一系列前沿模型。评分方式与我们评判一群人围绕该资源进行协商的方式一致：看整个群体的结果。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "实验设置",
+          "inlines": [
+            {
+              "text": "实验设置"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们为这种多用户、多智能体场景搭建了四个环境：由多名研究人员共享的 API token 预算、由急诊患者共享的诊所日程、用户通过个人助理安排的团体订餐或旅行预订，以及带有发布截止时间的合并队列。这些都是贴近现实的场景，设计上保证前沿模型作为单一协调者时通常表现良好；因此比较不同组织形式时，考察的是协调能力而非任务能力。我们比较四种组织形式：单人（一个用户、一个智能体）；协调者，即一个智能体服务多个用户；静默团队，每个用户一个智能体，彼此无法沟通；以及点对点团队，每个用户一个智能体，智能体之间有沟通渠道。我们以协调者作为对照组。本文重点讨论 API 密钥和个人助理两个环境，以及协调者和点对点团队两种形式（图 1）；其余内容建议阅读论文。按各环境场景取平均，在两个 Claude 模型上，协调者在全部四个环境中都优于点对点团队，领先约 10 到 45 个百分点（图 2）。",
+          "inlines": [
+            {
+              "text": "我们为这种多用户、多智能体场景搭建了四个环境：由多名研究人员共享的 API token 预算、由急诊患者共享的诊所日程、用户通过个人助理安排的团体订餐或旅行预订，以及带有发布截止时间的合并队列。这些都是贴近现实的场景，设计上保证前沿模型作为单一协调者时通常表现良好；因此比较不同组织形式时，考察的是协调能力而非任务能力。我们比较四种组织形式：单人（一个用户、一个智能体）；"
+            },
+            {
+              "italic": true,
+              "text": "协调者"
+            },
+            {
+              "text": "，即一个智能体服务多个用户；静默团队，每个用户一个智能体，彼此无法沟通；以及"
+            },
+            {
+              "italic": true,
+              "text": "点对点团队"
+            },
+            {
+              "text": "，每个用户一个智能体，智能体之间有沟通渠道。我们以协调者作为对照组。本文重点讨论 API 密钥和个人助理两个环境，以及协调者和点对点团队两种形式（图 1）；其余内容建议阅读"
+            },
+            {
+              "href": "https://arxiv.org/abs/2610.00583",
+              "text": "论文"
+            },
+            {
+              "text": "。按各环境场景取平均，在两个 Claude 模型上，协调者在全部四个环境中都优于点对点团队，领先约 10 到 45 个百分点（图 2）。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/dec9501ea31c963ce0f74670be4331cba9520f5f51af74a24ff775266150fc44.webp",
+          "alt": "Diagram in a two-by-two grid. Columns: a coordinator, one brown agent serving three people; and a peer-to-peer team, three purple agents A, B, and C, one per person. Top row, API key: the coordinator cancels low-value jobs so each person’s high-value job finishes, while the team’s agents message each other but act too little, too late, and C’s high-value job fails. Bottom row, personal assistant: the coordinator sees C’s ask for an early seat and books it, while in the team C’s direct message to B is still unread when B checks out, so C’s early seat is missing."
+        },
+        {
+          "type": "paragraph",
+          "text": "我们用来组织智能体的几种形式（论文中还有另外两种），以及我们在环境中观察到的一些有趣行为，详见下文。",
+          "inlines": [
+            {
+              "text": "我们用来组织智能体的几种形式（论文中还有另外两种），以及我们在环境中观察到的一些有趣行为，详见下文。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/efc635b7e01c6f1c79f9023adb1f1468d68f46dba1120efafd52a32bafb8972a.webp",
+          "alt": "Grouped bar chart with one row per model, Claude Opus 5 and Claude Sonnet 5, and four environments: API key, clinic, personal assistant, and merge queue. Brown bars are the coordinator and purple bars the peer-to-peer team, as a percentage of the best outcome. The coordinator is higher in every environment: for Opus 5, 64 vs 30, 84 vs 71, 88 vs 44, and 92 vs 81; for Sonnet 5, 32 vs 12, 74 vs 65, 75 vs 37, and 93 vs 78."
+        },
+        {
+          "type": "paragraph",
+          "text": "在全部四个环境中，对 Claude Opus 5 和 Claude Sonnet 5 而言，一个智能体服务所有人，都优于每个用户各配一个智能体的团队。柱状图显示的是群体结果占最优策略可实现结果的比例，按场景取平均。误差棒为 95% 置信区间。",
+          "inlines": [
+            {
+              "text": "在全部四个环境中，对 Claude Opus 5 和 Claude Sonnet 5 而言，一个智能体服务所有人，都优于每个用户各配一个智能体的团队。柱状图显示的是群体结果占最优策略可实现结果的比例，按场景取平均。误差棒为 95% 置信区间。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "行为表现",
+          "inlines": [
+            {
+              "text": "行为表现"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "API 密钥",
+          "inlines": [
+            {
+              "text": "API 密钥"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在 API 密钥环境中，4 名、8 名或 16 名研究人员组成的小组共享一份有限的 API token 预算。值得注意的是，这份预算不足以覆盖所有人的工作。每位研究人员给自己的智能体一个任务队列，并附上每个任务的截止时间以及错过截止时间的后果，比如即将到来的论文截稿或周末后的发布评审。智能体需要取消和缩减任务，以确保部分工作能够完成。我们构建了 25 个场景，变化用户及其任务。我们发现，对 Claude Opus 5 和 Claude Sonnet 5，点对点团队分别达到协调者表现的 47% 和 38%（分别为最优结果的 30% 和 12%，而协调者为 64% 和 32%）。",
+          "inlines": [
+            {
+              "text": "在 API 密钥环境中，4 名、8 名或 16 名研究人员组成的小组共享一份有限的 API token 预算。值得注意的是，这份预算不足以覆盖所有人的工作。每位研究人员给自己的智能体一个任务队列，并附上每个任务的截止时间以及错过截止时间的后果，比如即将到来的论文截稿或周末后的发布评审。智能体需要取消和缩减任务，以确保部分工作能够完成。我们构建了 25 个场景，变化用户及其任务。我们发现，对 Claude Opus 5 和 Claude Sonnet 5，点对点团队分别达到协调者表现的 47% 和 38%（分别为最优结果的 30% 和 12%，而协调者为 64% 和 32%）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "多智能体团队的主要问题在于智能体行动太少、太晚。这个环境是动态的，所以智能体需要主动安排任务顺序。比如，一个胜率渺茫的“英雄”任务如果被允许继续跑下去，就可能耗尽剩余时间，导致其他任务错过截止期限。事实上，很多智能体从头到尾都不采取任何行动，而且随着团队规模扩大，不行动的智能体更多：从 4 个智能体增加到 16 个，Sonnet 5 中曾经行动过的比例从 66% 降到 10%，GPT-5.6-sol 则从 82% 降到 25%。GPT 和 Qwen 的智能体还会不经询问就取消或中止其他用户的任务，每回合 3.9 到 7.1 次，而 Sonnet 5 只有 0.59 次，Opus 5 则从未发生。这些未经同意的中止并不会拉低团队的整体结果，因为取消低价值任务正是这个环境所要求的，但它们仍然不可取，因为它们在没有得到其他用户同意的情况下终止了对方的工作。智能体未经询问就取消或缩减其他用户任务的回合，通常比同一场景下没有这样做的回合获得更高的团队得分。但这恰恰暴露了评分体系的局限：它只看已完成任务的总价值，而不看是否有人工作被毁、以及当事人是否同意。最后，智能体的隐性优先级因模型而异。例如，Claude Opus 5 在用户之间分配结果比 Claude Sonnet 5 和 GPT 系列模型更均匀（图 3）。",
+          "inlines": [
+            {
+              "text": "多智能体团队的主要问题在于智能体行动太少、太晚。这个环境是动态的，所以智能体需要主动安排任务顺序。比如，一个胜率渺茫的“英雄”任务如果被允许继续跑下去，就可能耗尽剩余时间，导致其他任务错过截止期限。事实上，很多智能体从头到尾都不采取任何行动，而且随着团队规模扩大，不行动的智能体更多：从 4 个智能体增加到 16 个，Sonnet 5 中曾经行动过的比例从 66% 降到 10%，GPT-5.6-sol 则从 82% 降到 25%。GPT 和 Qwen 的智能体还会不经询问就取消或中止其他用户的任务，每回合 3.9 到 7.1 次，而 Sonnet 5 只有 0.59 次，Opus 5 则从未发生。这些未经同意的中止并不会拉低团队的整体结果，因为取消低价值任务正是这个环境所要求的，但它们仍然不可取，因为它们在没有得到其他用户同意的情况下终止了对方的工作。智能体未经询问就取消或缩减其他用户任务的回合，通常比同一场景下没有这样做的回合获得更高的团队得分。但这恰恰暴露了评分体系的局限：它只看已完成任务的总价值，而不看是否有人工作被毁、以及当事人是否同意。最后，智能体的隐性优先级因模型而异。例如，Claude Opus 5 在用户之间分配结果比 Claude Sonnet 5 和 GPT 系列模型更均匀（图 3）。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2729c0a475adf7a1daf75a2e2ded64c2bb849518bf573afcb91d211f3cb73c8d.webp",
+          "alt": "Three panels with one row per model: Claude Opus 5, Claude Sonnet 5, GPT-5.6-sol, GPT-5.6-terra, and Qwen3.8-max. Left: the share of team agents that ever act falls as teams grow from four to 16 agents, for example from 84 to 57 percent for Opus 5 and from 66 to 10 percent for Sonnet 5. Middle: unconsented cuts per episode are 0 for Opus 5, 0.59 for Sonnet 5, and 3.87 to 7.12 for the GPT and Qwen models. Right: evenness of outcomes across users (Jain index) for the coordinator in brown and the team in purple; Opus 5 is highest at 0.59 and 0.58, and the optimal plan scores 0.47."
+        },
+        {
+          "type": "paragraph",
+          "text": "五个模型在 API key 场景下的行为，每行一个：Claude Opus 5、Claude Sonnet 5、GPT-5.6-sol、GPT-5.6-terra 和 Qwen3.8-max。随着团队扩大，采取行动的智能体变少（左）。GPT 和 Qwen 的智能体还经常不经询问就取消或中止其他用户的任务（中：每回合未经同意的中止次数；是否同意由 Claude Sonnet 5 判定）。Opus 5 在用户之间分配结果比 Sonnet 5 和 GPT 系列模型更均匀（右：四用户场景下的 Jain 指数）。误差棒为 95% 区间。",
+          "inlines": [
+            {
+              "text": "五个模型在 API key 场景下的行为，每行一个：Claude Opus 5、Claude Sonnet 5、GPT-5.6-sol、GPT-5.6-terra 和 Qwen3.8-max。随着团队扩大，采取行动的智能体变少（左）。GPT 和 Qwen 的智能体还经常不经询问就取消或中止其他用户的任务（中：每回合未经同意的中止次数；是否同意由 Claude Sonnet 5 判定）。Opus 5 在用户之间分配结果比 Sonnet 5 和 GPT 系列模型更均匀（右：四用户场景下的 Jain 指数）。误差棒为 95% 区间。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "个人助理",
+          "inlines": [
+            {
+              "text": "个人助理"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在个人助理环境中，一群用户把一项共享的规划任务交给各自的助理：集体订餐、预付预订或旅行预订，并共享一份预算。每个场景中，都有一位用户提出一个针对性请求，我们称之为“诉求”：要么是安全约束，要么是利他请求。重要的是，这些请求要求智能体以合理的方式偏离默认行为。例如，一位乳糜泻用户要求两份不含麸质的配菜，而不是主菜。我们以最终订单或预订是否满足诉求来衡量成功。在 25 个场景中，协调者满足诉求的频率大约是点对点团队的两倍。",
+          "inlines": [
+            {
+              "text": "在个人助理环境中，一群用户把一项共享的规划任务交给各自的助理：集体订餐、预付预订或旅行预订，并共享一份预算。每个场景中，都有一位用户提出一个针对性请求，我们称之为“诉求”：要么是安全约束，要么是利他请求。重要的是，这些请求要求智能体以合理的方式偏离默认行为。例如，一位乳糜泻用户要求两份不含麸质的配菜，而不是主菜。我们以最终订单或预订是否满足诉求来衡量成功。在 25 个场景中，协调者满足诉求的频率大约是点对点团队的两倍。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "尽管诉求通常能在团队内部传达，主要问题却是一个竞态条件：提交订单的智能体往往还没读完发给它的所有消息就下了单。在所有场景和模型中，94–99% 的回合里诉求都发送到了最终下单或预订的智能体，但在提交那一刻，该诉求只出现在该智能体上下文中的 47–67%（图 4）。有意思的是，即使诉求在上下文中，也只有 56–68% 的回合满足了它，而不在上下文时这一比例是 19–36%。团队还倾向于在共享购物车或预订中覆盖彼此的请求：65–77% 的团队回合至少包含一次违背诉求的修改。论文中也给出了 GPT-5.6-sol 和 GPT-5.6-terra 的结果。",
+          "inlines": [
+            {
+              "text": "尽管诉求通常能在团队内部传达，主要问题却是一个竞态条件：提交订单的智能体往往还没读完发给它的所有消息就下了单。在所有场景和模型中，94–99% 的回合里诉求都发送到了最终下单或预订的智能体，但在提交那一刻，该诉求只出现在该智能体上下文中的 47–67%（图 4）。有意思的是，即使诉求在上下文中，也只有 56–68% 的回合满足了它，而不在上下文时这一比例是 19–36%。团队还倾向于在共享购物车或预订中覆盖彼此的请求：65–77% 的团队回合至少包含一次违背诉求的修改。论文中也给出了 GPT-5.6-sol 和 GPT-5.6-terra 的结果。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "此外，智能体有时会就他人做出其信息并不支持的断言。略超过一半的 Claude 团队回合至少包含一处此类捏造（按 Claude Opus 5 评判，Opus 5 为 58%，Sonnet 5 为 53%），而单个智能体出现这种情况的回合占 17–20%。这源于信息被分割的方式。每个智能体只能看到自己用户的笔记，却必须谈论所有人的订单，于是智能体便去填补空白：它们假定餐桌想要的是自己用户想要的东西，把一个用户的笔记安到另一个用户头上，或者声称某位用户同意了其从未说过的事。",
+          "inlines": [
+            {
+              "text": "此外，智能体有时会就他人做出其信息并不支持的断言。略超过一半的 Claude 团队回合至少包含一处此类捏造（按 Claude Opus 5 评判，Opus 5 为 58%，Sonnet 5 为 53%），而单个智能体出现这种情况的回合占 17–20%。这源于信息被分割的方式。每个智能体只能看到自己用户的笔记，却必须谈论所有人的订单，于是智能体便去填补空白：它们假定餐桌想要的是自己用户想要的东西，把一个用户的笔记安到另一个用户头上，或者声称某位用户同意了其从未说过的事。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/6fdd6045a5a9394ca4c138627cd742cdad6e5dcc81b56d301379873c13339d31.webp",
+          "alt": "Two panels for Claude Opus 5 and Claude Sonnet 5 teams. Left, horizontal bars as a percentage of committed episodes: the ask was sent to the agent that checked out in 98.6 and 93.6 percent of episodes, but was in its context at checkout in only 65.0 and 47.1 percent; the ask was honored in 67.7 and 58.5 percent of episodes when it was in context, against 18.6 and 21.4 percent when it was not. Right, a histogram of fabricated claims per episode: 42 percent of Opus 5 and 47 percent of Sonnet 5 episodes have none, and most of the rest have one or two."
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5 与 Claude Sonnet 5 团队在全部 25 个个人助理场景中的行为。请求几乎总能到达下单的智能体，但智能体过于急切，常常在其进入上下文之前就结账（前两行）。当请求未进入上下文时，被满足的比例要低得多（后两行）。智能体还会捏造关于其他智能体及其用户、而其信息并不支持的断言（右图；由 Claude Opus 5 评判）。误差棒为 95% 置信区间。",
+          "inlines": [
+            {
+              "text": "Claude Opus 5 与 Claude Sonnet 5 团队在全部 25 个个人助理场景中的行为。请求几乎总能到达下单的智能体，但智能体过于急切，常常在其进入上下文之前就结账（前两行）。当请求未进入上下文时，被满足的比例要低得多（后两行）。智能体还会捏造关于其他智能体及其用户、而其信息并不支持的断言（右图；由 Claude Opus 5 评判）。误差棒为 95% 置信区间。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "缓解措施",
+          "inlines": [
+            {
+              "text": "缓解措施"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们测试了针对性改动——例如增加指令，或设置拥有决策权的团队负责人——能否弥合这些差距（图 5）。在 API 密钥环境中，一个单独的团队负责人智能体（被指示优先处理高价值任务并充分利用预算）弥合了协调者与对等团队之间的差距。然而在个人助理环境中，团队负责人并无帮助。在那里，我们最好的缓解措施是一道平台防护：在提交智能体读完其所有待处理消息之前阻止结账；它挽回了 73%（Opus 5）和 62%（Sonnet 5）的失败回合。有效的修复因环境而异，这表明多用户、多智能体的失败原因多种多样。我们在论文中更深入地讨论了缓解措施。",
+          "inlines": [
+            {
+              "text": "我们测试了针对性改动——例如增加指令，或设置拥有决策权的团队负责人——能否弥合这些差距（图 5）。在 API 密钥环境中，一个单独的团队负责人智能体（被指示优先处理高价值任务并充分利用预算）弥合了协调者与对等团队之间的差距。然而在个人助理环境中，团队负责人并无帮助。在那里，我们最好的缓解措施是一道平台防护：在提交智能体读完其所有待处理消息之前阻止结账；它挽回了 73%（Opus 5）和 62%（Sonnet 5）的失败回合。有效的修复因环境而异，这表明多用户、多智能体的失败原因多种多样。我们在论文中更深入地讨论了缓解措施。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/832fab3a73ae904e3a770785a21a96a169b9c869c0dfdd1fa2c76fcdd4c4edd7.webp",
+          "alt": "Two panels of horizontal bars for Claude Opus 5 and Claude Sonnet 5. API key, as a percentage of the best outcome: coordinator 64 and 32, peer-to-peer team 30 and 12, team with a lead 64 and 37, and team with a prompted lead 71 and 44. Personal assistant, as a percentage of episodes that honor the ask: coordinator 88 and 75, peer-to-peer team 44 and 37, and, on reruns of failed team episodes, lead-only checkout 47.4 and 29.4 and the unread-message guard 73.1 and 62.3."
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Opus 5 与 Claude Sonnet 5 的缓解结果。API 密钥（左）：团队负责人使对等团队达到协调者或更高水平，另有三条附加指令可进一步改善：(1) 负责人严格按价值对任务排序，(2) 在仍有时间使用时释放其保留的任何预算，(3) 其他每个智能体报告其任务信息并遵循负责人的分配。个人助理（右）：后两行重跑了失败的团队回合。在这里，未读消息防护挽回了其中大部分。误差棒为 95% 置信区间。",
+          "inlines": [
+            {
+              "text": "Claude Opus 5 与 Claude Sonnet 5 的缓解结果。API 密钥（左）：团队负责人使对等团队达到协调者或更高水平，另有三条附加指令可进一步改善：(1) 负责人严格按价值对任务排序，(2) 在仍有时间使用时释放其保留的任何预算，(3) 其他每个智能体报告其任务信息并遵循负责人的分配。个人助理（右）：后两行重跑了失败的团队回合。在这里，未读消息防护挽回了其中大部分。误差棒为 95% 置信区间。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "讨论与安全启示",
+          "inlines": [
+            {
+              "text": "讨论与安全启示"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "多用户、多智能体系统已经出现。例如，Instinct 最近发布了其 Trusted Person Network，其中每个用户的助理都能与其他用户的助理对话，代表他们协调计划。类似的协调问题也可能出现在单用户场景中：当一个人把不同但相互交叉的任务委派给多个智能体时，例如运行八个 Claude 会话在同一代码库中构建功能。我们研究的核心问题是：多个智能体可能在追求不同目标的同时，通过共享环境或资源进行交互。",
+          "inlines": [
+            {
+              "text": "多用户、多智能体系统已经出现。例如，Instinct 最近发布了其 "
+            },
+            {
+              "href": "https://finance.yahoo.com/technology/ai/articles/instinct-raises-1-billion-series-120300548.html",
+              "text": "Trusted Person Network"
+            },
+            {
+              "text": "，其中每个用户的助理都能与其他用户的助理对话，代表他们协调计划。类似的协调问题也可能出现在单用户场景中：当一个人把不同但相互交叉的任务委派给多个智能体时，例如运行八个 Claude 会话在同一代码库中构建功能。我们研究的核心问题是：多个智能体可能在追求不同目标的同时，通过共享环境或资源进行交互。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的结果与已有研究共同表明，多用户、多智能体系统带来的风险不止于群体表现变差：一个替某位用户行事的智能体，可能伤害共享同一系统的其他用户。在我们的实验环境中，来自多家厂商（Anthropic、OpenAI 和阿里巴巴）的智能体未经同意就操作其他用户的任务、推翻用户的请求，并对他人做出其掌握信息并不支持的说法。在实验室之外，成群的智能体已经造成过真实伤害，例如 Hugging Face 事件和德国某维基被劫持（路透社、Euronews）。这些案例都不涉及智能体替不同用户行事，而这一场景在很大程度上仍未被探索。我们的结果显示协调者可以胜过团队，此前的研究也发现单智能体系统在对齐上更有优势，但对于用户众多的系统来说，依赖协调者并不总是可行或自然。因此，多用户、多智能体的风险无法仅靠集中协调来解决。",
+          "inlines": [
+            {
+              "text": "我们的结果与已有研究共同表明，多用户、多智能体系统带来的风险不止于群体表现变差：一个替某位用户行事的智能体，可能伤害共享同一系统的其他用户。在我们的实验环境中，来自多家厂商（Anthropic、OpenAI 和阿里巴巴）的智能体未经同意就操作其他用户的任务、推翻用户的请求，并对他人做出其掌握信息并不支持的说法。在实验室之外，成群的智能体已经造成过真实伤害，例如 "
+            },
+            {
+              "href": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
+              "text": "Hugging Face 事件"
+            },
+            {
+              "text": "和德国某维基被劫持（"
+            },
+            {
+              "href": "https://www.reuters.com/world/europe/openai-agents-hijacked-german-website-previously-undisclosed-ai-breakout-this-2026-09-04/",
+              "text": "路透社"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "href": "https://www.euronews.com/next/2026/09/09/rogue-openai-agents-hijacked-a-german-wiki-and-it-stayed-secret-for-weeks",
+              "text": "Euronews"
+            },
+            {
+              "text": "）。这些案例都不涉及智能体替不同用户行事，而这一场景在很大程度上仍未被探索。我们的结果显示协调者可以胜过团队，"
+            },
+            {
+              "href": "https://arxiv.org/abs/2604.10290",
+              "text": "此前的研究"
+            },
+            {
+              "text": "也发现单智能体系统在对齐上更有优势，但对于用户众多的系统来说，依赖协调者并不总是可行或自然。因此，多用户、多智能体的风险无法仅靠集中协调来解决。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些结果指向了具体的下一步。首先，评估应当同时衡量智能体行为和群体结果，因为单看任何一项都会遗漏信息。例如，只看结果得分，就不会发现 GPT 和 Qwen 智能体未经询问就取消其他用户的任务；反过来，只检查行为，也不会发现 Claude Opus 5 团队的问题——它们的智能体从未这样做，但表现远逊于协调者。其次，缓解措施可以来自整个技术栈：从平台层面的防护机制，防止智能体互相踩踏——就像排队让一群人不会一拥而上挤向售票窗口——到训练智能体进行沟通并达成一致。人类已经发展出处理微妙冲突目标的方法，智能体同样需要这些方法，这既是为了有效性，也是为了对齐。我们希望这项工作能激发更多研究，去理解和防范多用户、多智能体团队的失效。",
+          "inlines": [
+            {
+              "text": "这些结果指向了具体的下一步。首先，评估应当同时衡量智能体行为和群体结果，因为单看任何一项都会遗漏信息。例如，只看结果得分，就不会发现 GPT 和 Qwen 智能体未经询问就取消其他用户的任务；反过来，只检查行为，也不会发现 Claude Opus 5 团队的问题——它们的智能体从未这样做，但表现远逊于协调者。其次，缓解措施可以来自整个技术栈：从平台层面的防护机制，防止智能体互相踩踏——就像排队让一群人不会一拥而上挤向售票窗口——到训练智能体进行沟通并达成一致。人类已经发展出处理微妙冲突目标的方法，智能体同样需要这些方法，这既是为了有效性，也是为了对齐。我们希望这项工作能激发更多研究，去理解和防范多用户、多智能体团队的失效。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Sahan Paliskara1\nNattaput Namchittai1, Jacqueline Tay2, and Avery Griffin3\nAndrew Lampinen3",
+          "inlines": [
+            {
+              "text": "Sahan Paliskara1\nNattaput Namchittai1, Jacqueline Tay2, and Avery Griffin3\nAndrew Lampinen3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "November 11, 2026",
+          "inlines": [
+            {
+              "text": "November 11, 2026"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1Anthropic Fellows Program; 2Independent; 3Anthropic",
+          "inlines": [
+            {
+              "text": "1Anthropic Fellows Program; 2Independent; 3Anthropic"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "tl;dr",
+          "inlines": [
+            {
+              "text": "tl;dr"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As AI agents become more capable and widely used, they are increasingly required to interact with each other. Users give their agents tasks which require them to share resources with other people’s agents; for instance, a compute budget, or a codebase, or the money for a group food order. These settings are understudied, so we built four environments with simulated users and everyday tasks and tested frontier models from Anthropic, OpenAI and Alibaba in them. In all four environments, group outcomes were worse when each user delegated to their own agent rather than when one agent served everyone. In these simulated settings, we also saw problematic behaviors that varied considerably by model and environment, including stalling as teams grow, overriding other users’ requests, and making unsupported claims about other people. Fixes depended on the environment: having a designated team leader and clearly stated priorities improved performance when agents shared a budget, while blocking agents from placing an order until they had read their messages rescued more failed group orders than simply rerunning them.",
+          "inlines": [
+            {
+              "text": "As AI agents become more capable and widely used, they are increasingly required to interact with each other. Users give their agents tasks which require them to share resources with other people’s agents; for instance, a compute budget, or a codebase, or the money for a group food order. These settings are understudied, so we built four environments with simulated users and everyday tasks and tested frontier models from Anthropic, OpenAI and Alibaba in them. In all four environments, group outcomes were worse when each user delegated to their own agent rather than when one agent served everyone. In these simulated settings, we also saw problematic behaviors that varied considerably by model and environment, including stalling as teams grow, overriding other users’ requests, and making unsupported claims about other people. Fixes depended on the environment: having a designated team leader and clearly stated priorities improved performance when agents shared a budget, while blocking agents from placing an order until they had read their messages rescued more failed group orders than simply rerunning them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We are releasing three of the environments as a benchmark, MAMUBench, so that others can use them to test how well agents coordinate, and how they behave, in multi-user, multi-agent systems.",
+          "inlines": [
+            {
+              "text": "We are releasing three of the environments as a benchmark, MAMUBench, so that others can use them to test how well agents coordinate, and how they behave, in multi-user, multi-agent systems."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "📄 Paper · 💻 Code",
+          "inlines": [
+            {
+              "text": "📄 "
+            },
+            {
+              "href": "https://arxiv.org/abs/2610.00583",
+              "text": "Paper"
+            },
+            {
+              "text": " · 💻 "
+            },
+            {
+              "href": "https://github.com/safety-research/MAMUBench",
+              "text": "Code"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Research done as part of the Anthropic Fellows Program.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Research done as part of the "
+            },
+            {
+              "italic": true,
+              "href": "https://alignment.anthropic.com/2024/anthropic-fellows-program/",
+              "text": "Anthropic Fellows Program"
+            },
+            {
+              "italic": true,
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Introduction",
+          "inlines": [
+            {
+              "text": "Introduction"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "As AI agents become more common, users increasingly deploy them to pursue goals that require interacting with other agents. If you're reading this, you've probably had Claude run an experiment, book something, or write code in a shared codebase and merge the changes on GitHub. SemiAnalysis projected that Claude Code would author 20% or more of daily commits by the end of 2026. Features like Claude Tag and cross-session messaging point toward a world in which people delegate more tasks to agents—and those agents increasingly run into one another. Recent releases also let several users share resources through their agents: with the DoorDash CLI, several people's agents can add to one group cart; Slack Code brings agents such as Claude, Devin and GitHub Copilot into channels the whole team works in; and OpenAI's dots give each person an agent that works on their behalf, in a space shared with teammates (DevDay 2026 recap). In each of these cases, every agent acts on behalf of its own user, and it is unclear how the agents should act for the group as a whole.",
+          "inlines": [
+            {
+              "text": "As AI agents become more common, users increasingly deploy them to pursue goals that require interacting with other agents. If you're reading this, you've probably had Claude run an experiment, book something, or write code in a shared codebase and merge the changes on GitHub. "
+            },
+            {
+              "href": "https://newsletter.semianalysis.com/p/claude-code-is-the-inflection-point",
+              "text": "SemiAnalysis projected"
+            },
+            {
+              "text": " that Claude Code would author 20% or more of daily commits by the end of 2026. Features like "
+            },
+            {
+              "href": "https://www.anthropic.com/news/introducing-claude-tag",
+              "text": "Claude Tag"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/cross-session-messaging",
+              "text": "cross-session messaging"
+            },
+            {
+              "text": " point toward a world in which people delegate more tasks to agents—and those agents increasingly run into one another. Recent releases also let several users share resources through their agents: with the "
+            },
+            {
+              "href": "https://github.com/doordash-oss/doordash-cli",
+              "text": "DoorDash CLI"
+            },
+            {
+              "text": ", several people's agents can add to one group cart; "
+            },
+            {
+              "href": "https://slack.com/blog/news/slack-code-channels-for-agents",
+              "text": "Slack Code"
+            },
+            {
+              "text": " brings agents such as Claude, Devin and GitHub Copilot into channels the whole team works in; and OpenAI's "
+            },
+            {
+              "href": "https://openai.com/index/introducing-dots",
+              "text": "dots"
+            },
+            {
+              "text": " give each person an agent that works on their behalf, in a space shared with teammates ("
+            },
+            {
+              "href": "https://openai.com/index/devday-2026-recap",
+              "text": "DevDay 2026 recap"
+            },
+            {
+              "text": "). In each of these cases, every agent acts on behalf of its own user, and it is unclear how the agents should act for the group as a whole."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Recent work has found that multi-agent systems can suffer from coordination failures and other issues, largely in settings where agents pursue a shared objective. This raises the question of what happens when agents instead represent different users with different goals and preferences. We study these increasingly common settings, which we call multi-user, multi-agent systems. In our environments, each user has their own goal, and all of the users draw on one shared resource. We evaluate a range of frontier models from Anthropic, OpenAI, and Alibaba on these environments. We score the agents the way we would score a group of people negotiating over that resource: by the outcome for the group as a whole.",
+          "inlines": [
+            {
+              "href": "https://www.anthropic.com/research/multiagent-systems",
+              "text": "Recent work"
+            },
+            {
+              "text": " has found that multi-agent systems can suffer from coordination failures and other issues, largely in settings where agents pursue a shared objective. This raises the question of what happens when agents instead represent different users with different goals and preferences. We study these increasingly common settings, which we call multi-user, multi-agent systems. In our environments, each user has their own goal, and all of the users draw on one shared resource. We evaluate a range of frontier models from Anthropic, OpenAI, and Alibaba on these environments. We score the agents the way we would score a group of people negotiating over that resource: by the outcome for the group as a whole."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Setup",
+          "inlines": [
+            {
+              "text": "Setup"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We developed four environments for this multi-user, multi-agent setting: an API-token budget shared by researchers, a clinic calendar shared by urgent patients, a group food order or travel booking that users arrange through personal assistants, and a merge queue with a release cutoff. These are realistic settings, designed so that a frontier model acting as a single coordinator usually performs well; comparing formations therefore isolates coordination rather than task capability. We compare four formations: solo (one user, one agent); a coordinator, a single agent that serves several users; a silent team, one agent per user with no way to communicate; and a peer-to-peer team, one agent per user with a channel between the agents. We use the coordinator as our control. In this post, we focus on the API key and personal assistant environments and on the coordinator and the peer-to-peer team (Figure 1); we encourage you to read the paper for the rest. Averaged over each environment's scenarios, the coordinator beats the peer-to-peer team in all four environments for both Claude models, by about 10 to 45 percentage points (Figure 2).",
+          "inlines": [
+            {
+              "text": "We developed four environments for this multi-user, multi-agent setting: an API-token budget shared by researchers, a clinic calendar shared by urgent patients, a group food order or travel booking that users arrange through personal assistants, and a merge queue with a release cutoff. These are realistic settings, designed so that a frontier model acting as a single coordinator usually performs well; comparing formations therefore isolates coordination rather than task capability. We compare four formations: solo (one user, one agent); a "
+            },
+            {
+              "italic": true,
+              "text": "coordinator"
+            },
+            {
+              "text": ", a single agent that serves several users; a silent team, one agent per user with no way to communicate; and a "
+            },
+            {
+              "italic": true,
+              "text": "peer-to-peer team"
+            },
+            {
+              "text": ", one agent per user with a channel between the agents. We use the coordinator as our control. In this post, we focus on the API key and personal assistant environments and on the coordinator and the peer-to-peer team (Figure 1); we encourage you to read "
+            },
+            {
+              "href": "https://arxiv.org/abs/2610.00583",
+              "text": "the paper"
+            },
+            {
+              "text": " for the rest. Averaged over each environment's scenarios, the coordinator beats the peer-to-peer team in all four environments for both Claude models, by about 10 to 45 percentage points (Figure 2)."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/dec9501ea31c963ce0f74670be4331cba9520f5f51af74a24ff775266150fc44.webp",
+          "alt": "Diagram in a two-by-two grid. Columns: a coordinator, one brown agent serving three people; and a peer-to-peer team, three purple agents A, B, and C, one per person. Top row, API key: the coordinator cancels low-value jobs so each person’s high-value job finishes, while the team’s agents message each other but act too little, too late, and C’s high-value job fails. Bottom row, personal assistant: the coordinator sees C’s ask for an early seat and books it, while in the team C’s direct message to B is still unread when B checks out, so C’s early seat is missing."
+        },
+        {
+          "type": "paragraph",
+          "text": "The formations we use to organize the agents (the paper has two more) and some interesting behaviors in our environments, described below.",
+          "inlines": [
+            {
+              "text": "The formations we use to organize the agents (the paper has two more) and some interesting behaviors in our environments, described below."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/efc635b7e01c6f1c79f9023adb1f1468d68f46dba1120efafd52a32bafb8972a.webp",
+          "alt": "Grouped bar chart with one row per model, Claude Opus 5 and Claude Sonnet 5, and four environments: API key, clinic, personal assistant, and merge queue. Brown bars are the coordinator and purple bars the peer-to-peer team, as a percentage of the best outcome. The coordinator is higher in every environment: for Opus 5, 64 vs 30, 84 vs 71, 88 vs 44, and 92 vs 81; for Sonnet 5, 32 vs 12, 74 vs 65, 75 vs 37, and 93 vs 78."
+        },
+        {
+          "type": "paragraph",
+          "text": "One agent for everyone beats a team of per-user agents in all four environments, for both Claude Opus 5 and Claude Sonnet 5. Bars show the group's outcome as a share of what the best possible strategy achieves, averaged over scenarios. Error bars are 95% confidence intervals.",
+          "inlines": [
+            {
+              "text": "One agent for everyone beats a team of per-user agents in all four environments, for both Claude Opus 5 and Claude Sonnet 5. Bars show the group's outcome as a share of what the best possible strategy achieves, averaged over scenarios. Error bars are 95% confidence intervals."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Behaviors",
+          "inlines": [
+            {
+              "text": "Behaviors"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "API Key",
+          "inlines": [
+            {
+              "text": "API Key"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "In the API key environment, groups of four, eight, or 16 researchers share a limited API-token budget. Notably, this budget is not enough to cover everybody's work. Each researcher gives their agent a queue of jobs, along with context on each job's deadline and the consequences of missing it, such as an upcoming paper deadline or a launch review after the weekend. Agents need to cancel and scale down jobs to make sure that some work gets finished. We built 25 scenarios that vary the users and their jobs. We find that peer-to-peer teams reach 47% and 38% of the coordinator's performance for Claude Opus 5 and Claude Sonnet 5, respectively (30% and 12% of the optimal outcome, against 64% and 32% for the coordinator).",
+          "inlines": [
+            {
+              "text": "In the API key environment, groups of four, eight, or 16 researchers share a limited API-token budget. Notably, this budget is not enough to cover everybody's work. Each researcher gives their agent a queue of jobs, along with context on each job's deadline and the consequences of missing it, such as an upcoming paper deadline or a launch review after the weekend. Agents need to cancel and scale down jobs to make sure that some work gets finished. We built 25 scenarios that vary the users and their jobs. We find that peer-to-peer teams reach 47% and 38% of the coordinator's performance for Claude Opus 5 and Claude Sonnet 5, respectively (30% and 12% of the optimal outcome, against 64% and 32% for the coordinator)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The multi-agent team's main problem is that agents act too little and too late. This environment is dynamic, so agents need to sequence jobs actively. Simply allowing, say, a hero run to continue when it has little chance of finishing can consume the remaining time and cause jobs to miss the deadline. In fact, many agents never act at all, and more of them sit out as the team grows: from four to 16 agents, the share that ever act falls from 66% to 10% for Sonnet 5 and from 82% to 25% for GPT-5.6-sol. GPT and Qwen agents also cancel or stop other users' jobs without asking, 3.9 to 7.1 times per episode, against 0.59 for Sonnet 5 and never for Opus 5. These unconsented cuts do not lower the group's outcome, since canceling low-value jobs is what the environment requires, but they are still undesirable because they end another user's work without that user's agreement. Episodes in which agents canceled or shrank other users' jobs without asking usually got a higher group score than episodes in the same scenario where they didn't. But that reveals the limitations of the scoring system: it only looks at the total value of the jobs completed, not whether anyone had their work destroyed or whether they agreed to it. Lastly, the agents' implicit priorities differ from model to model. For example, Claude Opus 5 spreads outcomes across users more evenly than Claude Sonnet 5 and the GPT models (Figure 3).",
+          "inlines": [
+            {
+              "text": "The multi-agent team's main problem is that agents act too little and too late. This environment is dynamic, so agents need to sequence jobs actively. Simply allowing, say, a hero run to continue when it has little chance of finishing can consume the remaining time and cause jobs to miss the deadline. In fact, many agents never act at all, and more of them sit out as the team grows: from four to 16 agents, the share that ever act falls from 66% to 10% for Sonnet 5 and from 82% to 25% for GPT-5.6-sol. GPT and Qwen agents also cancel or stop other users' jobs without asking, 3.9 to 7.1 times per episode, against 0.59 for Sonnet 5 and never for Opus 5. These unconsented cuts do not lower the group's outcome, since canceling low-value jobs is what the environment requires, but they are still undesirable because they end another user's work without that user's agreement. Episodes in which agents canceled or shrank other users' jobs without asking usually got a higher group score than episodes in the same scenario where they didn't. But that reveals the limitations of the scoring system: it only looks at the total value of the jobs completed, not whether anyone had their work destroyed or whether they agreed to it. Lastly, the agents' implicit priorities differ from model to model. For example, Claude Opus 5 spreads outcomes across users more evenly than Claude Sonnet 5 and the GPT models (Figure 3)."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2729c0a475adf7a1daf75a2e2ded64c2bb849518bf573afcb91d211f3cb73c8d.webp",
+          "alt": "Three panels with one row per model: Claude Opus 5, Claude Sonnet 5, GPT-5.6-sol, GPT-5.6-terra, and Qwen3.8-max. Left: the share of team agents that ever act falls as teams grow from four to 16 agents, for example from 84 to 57 percent for Opus 5 and from 66 to 10 percent for Sonnet 5. Middle: unconsented cuts per episode are 0 for Opus 5, 0.59 for Sonnet 5, and 3.87 to 7.12 for the GPT and Qwen models. Right: evenness of outcomes across users (Jain index) for the coordinator in brown and the team in purple; Opus 5 is highest at 0.59 and 0.58, and the optimal plan scores 0.47."
+        },
+        {
+          "type": "paragraph",
+          "text": "API key behaviors of five models, one row each: Claude Opus 5, Claude Sonnet 5, GPT-5.6-sol, GPT-5.6-terra, and Qwen3.8-max. As teams grow, fewer agents take any action (left). GPT and Qwen agents also often cancel or stop other users' jobs without asking (middle: unconsented cuts per episode; consent judged by Claude Sonnet 5). Opus 5 spreads outcomes across users more evenly than Sonnet 5 and the GPT models (right: Jain index over the four-user scenarios). Error bars are 95% intervals.",
+          "inlines": [
+            {
+              "text": "API key behaviors of five models, one row each: Claude Opus 5, Claude Sonnet 5, GPT-5.6-sol, GPT-5.6-terra, and Qwen3.8-max. As teams grow, fewer agents take any action (left). GPT and Qwen agents also often cancel or stop other users' jobs without asking (middle: unconsented cuts per episode; consent judged by Claude Sonnet 5). Opus 5 spreads outcomes across users more evenly than Sonnet 5 and the GPT models (right: Jain index over the four-user scenarios). Error bars are 95% intervals."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Personal Assistant",
+          "inlines": [
+            {
+              "text": "Personal Assistant"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "In the personal assistant environment, groups of users delegate a shared planning task to their own assistants: a group food order, a prepaid reservation, or a travel booking, with a shared budget. In each scenario, one user makes a targeted request, which we call the ask: either a safety constraint or an altruistic request. Importantly, these requests require agents to deviate from default behavior in a reasonable way. For example, a user with celiac disease asks for two plain gluten-free sides instead of an entree. We measure success by whether the final order or booking honors the ask. Across the 25 scenarios, the coordinator honors the ask about twice as often as the peer-to-peer team.",
+          "inlines": [
+            {
+              "text": "In the personal assistant environment, groups of users delegate a shared planning task to their own assistants: a group food order, a prepaid reservation, or a travel booking, with a shared budget. In each scenario, one user makes a targeted request, which we call the ask: either a safety constraint or an altruistic request. Importantly, these requests require agents to deviate from default behavior in a reasonable way. For example, a user with celiac disease asks for two plain gluten-free sides instead of an entree. We measure success by whether the final order or booking honors the ask. Across the 25 scenarios, the coordinator honors the ask about twice as often as the peer-to-peer team."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Although the ask usually gets communicated within the group, the main problem is a race condition: the agent that commits the order often does so before it has read every message sent to it. Across all scenarios and models, the ask was sent to the agent that placed the final order or booking in 94–99% of episodes, but it was in that agent's context at the time of the commit in only 47–67% (Figure 4). Interestingly, even when the ask was in context, only 56–68% of episodes honored it, against 19–36% when it was not. Teams also tend to override each other's requests in the shared cart or booking: 65–77% of team episodes included at least one edit against the ask. We include results for GPT-5.6-sol and GPT-5.6-terra in the paper as well.",
+          "inlines": [
+            {
+              "text": "Although the ask usually gets communicated within the group, the main problem is a race condition: the agent that commits the order often does so before it has read every message sent to it. Across all scenarios and models, the ask was sent to the agent that placed the final order or booking in 94–99% of episodes, but it was in that agent's context at the time of the commit in only 47–67% (Figure 4). Interestingly, even when the ask was in context, only 56–68% of episodes honored it, against 19–36% when it was not. Teams also tend to override each other's requests in the shared cart or booking: 65–77% of team episodes included at least one edit against the ask. We include results for GPT-5.6-sol and GPT-5.6-terra in the paper as well."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Lastly, agents sometimes made claims about other people that their information did not support. Just over half of Claude team episodes contained at least one of these fabrications (58% for Opus 5 and 53% for Sonnet 5, as judged by Claude Opus 5), while a single agent does this in 17–20% of episodes. This follows from how information is split. Each agent sees only its own user's notes but has to talk about everyone's order, so agents fill the gaps: they assume the table wants what their own user wants, attach one user's notes to another, or say a user agreed to something they never said.",
+          "inlines": [
+            {
+              "text": "Lastly, agents sometimes made claims about other people that their information did not support. Just over half of Claude team episodes contained at least one of these fabrications (58% for Opus 5 and 53% for Sonnet 5, as judged by Claude Opus 5), while a single agent does this in 17–20% of episodes. This follows from how information is split. Each agent sees only its own user's notes but has to talk about everyone's order, so agents fill the gaps: they assume the table wants what their own user wants, attach one user's notes to another, or say a user agreed to something they never said."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/6fdd6045a5a9394ca4c138627cd742cdad6e5dcc81b56d301379873c13339d31.webp",
+          "alt": "Two panels for Claude Opus 5 and Claude Sonnet 5 teams. Left, horizontal bars as a percentage of committed episodes: the ask was sent to the agent that checked out in 98.6 and 93.6 percent of episodes, but was in its context at checkout in only 65.0 and 47.1 percent; the ask was honored in 67.7 and 58.5 percent of episodes when it was in context, against 18.6 and 21.4 percent when it was not. Right, a histogram of fabricated claims per episode: 42 percent of Opus 5 and 47 percent of Sonnet 5 episodes have none, and most of the rest have one or two."
+        },
+        {
+          "type": "paragraph",
+          "text": "Behaviors of Claude Opus 5 and Claude Sonnet 5 teams over all 25 personal assistant scenarios. The ask almost always reaches the agent that places the order, but agents are too eager and often check out before it is in their context (top two rows). When it isn't, the ask is honored far less often (bottom two rows). Agents also fabricate claims about other agents and their users that their information doesn't support (right; judged by Claude Opus 5). Error bars are 95% confidence intervals.",
+          "inlines": [
+            {
+              "text": "Behaviors of Claude Opus 5 and Claude Sonnet 5 teams over all 25 personal assistant scenarios. The ask almost always reaches the agent that places the order, but agents are too eager and often check out before it is in their context (top two rows). When it isn't, the ask is honored far less often (bottom two rows). Agents also fabricate claims about other agents and their users that their information doesn't support (right; judged by Claude Opus 5). Error bars are 95% confidence intervals."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Mitigations",
+          "inlines": [
+            {
+              "text": "Mitigations"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We tested whether targeted changes, such as added instructions or a lead agent with decision authority, close these gaps (Figure 5). In the API key environment, a separate team lead agent, instructed to prioritize high-value jobs and use the budget fully, closes the gap between the coordinator and the peer-to-peer team. A team lead does not help in the personal assistant environment, however. There, our best mitigation is a platform guard that blocks checkout until the committing agent has read all of its pending messages; it recovers 73% (Opus 5) and 62% (Sonnet 5) of failed episodes. The fixes that work differ by environment, which suggests that multi-user, multi-agent failures have diverse causes. We cover mitigations in more depth in the paper.",
+          "inlines": [
+            {
+              "text": "We tested whether targeted changes, such as added instructions or a lead agent with decision authority, close these gaps (Figure 5). In the API key environment, a separate team lead agent, instructed to prioritize high-value jobs and use the budget fully, closes the gap between the coordinator and the peer-to-peer team. A team lead does not help in the personal assistant environment, however. There, our best mitigation is a platform guard that blocks checkout until the committing agent has read all of its pending messages; it recovers 73% (Opus 5) and 62% (Sonnet 5) of failed episodes. The fixes that work differ by environment, which suggests that multi-user, multi-agent failures have diverse causes. We cover mitigations in more depth in the paper."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/832fab3a73ae904e3a770785a21a96a169b9c869c0dfdd1fa2c76fcdd4c4edd7.webp",
+          "alt": "Two panels of horizontal bars for Claude Opus 5 and Claude Sonnet 5. API key, as a percentage of the best outcome: coordinator 64 and 32, peer-to-peer team 30 and 12, team with a lead 64 and 37, and team with a prompted lead 71 and 44. Personal assistant, as a percentage of episodes that honor the ask: coordinator 88 and 75, peer-to-peer team 44 and 37, and, on reruns of failed team episodes, lead-only checkout 47.4 and 29.4 and the unread-message guard 73.1 and 62.3."
+        },
+        {
+          "type": "paragraph",
+          "text": "Mitigation results for Claude Opus 5 and Claude Sonnet 5. API key (left): a team lead brings the peer-to-peer team up to the coordinator or above, and three added instructions improve it further: (1) the lead ranks jobs strictly by value, (2) it releases any budget it holds back while there's still time to use it, and (3) every other agent reports its jobs' information and follows the lead's allocation. Personal assistant (right): the bottom two rows rerun failed team episodes. Here, an unread-message guard recovers most of them. Error bars are 95% confidence intervals.",
+          "inlines": [
+            {
+              "text": "Mitigation results for Claude Opus 5 and Claude Sonnet 5. API key (left): a team lead brings the peer-to-peer team up to the coordinator or above, and three added instructions improve it further: (1) the lead ranks jobs strictly by value, (2) it releases any budget it holds back while there's still time to use it, and (3) every other agent reports its jobs' information and follows the lead's allocation. Personal assistant (right): the bottom two rows rerun failed team episodes. Here, an unread-message guard recovers most of them. Error bars are 95% confidence intervals."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Discussion and Implications for Safety",
+          "inlines": [
+            {
+              "text": "Discussion and Implications for Safety"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Multi-user, multi-agent systems are already emerging. For example, Instinct recently released its Trusted Person Network, in which each user's assistant can talk to other users' assistants to coordinate plans on their behalf. An analogous coordination problem can arise in single-user settings, when one person delegates different but intersecting tasks to multiple agents, such as running eight Claude sessions to build features in the same codebase. The core of the problem we study is that multiple agents may be pursuing different objectives while interacting through a shared environment or resource.",
+          "inlines": [
+            {
+              "text": "Multi-user, multi-agent systems are already emerging. For example, Instinct recently released its "
+            },
+            {
+              "href": "https://finance.yahoo.com/technology/ai/articles/instinct-raises-1-billion-series-120300548.html",
+              "text": "Trusted Person Network"
+            },
+            {
+              "text": ", in which each user's assistant can talk to other users' assistants to coordinate plans on their behalf. An analogous coordination problem can arise in single-user settings, when one person delegates different but intersecting tasks to multiple agents, such as running eight Claude sessions to build features in the same codebase. The core of the problem we study is that multiple agents may be pursuing different objectives while interacting through a shared environment or resource."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our results, together with prior work, show that multi-user, multi-agent systems carry risks beyond worse group outcomes: an agent acting for one user can harm others who share the system. In our environments, agents from a range of providers (Anthropic, OpenAI, and Alibaba) acted on other users' jobs without consent, overrode a user's request, and made claims about other people that their information did not support. Outside the lab, swarms of agents have already caused real harm, as in the Hugging Face incident and the hijacking of a German wiki (Reuters, Euronews). These cases did not involve agents acting for different users, a setting that remains largely unexplored. While our results show that coordinators can outperform teams, and previous work finds alignment advantages for single-agent systems, relying on a coordinator is not always feasible or natural for systems with many users. Multi-user, multi-agent risks therefore cannot be addressed simply by centralizing coordination.",
+          "inlines": [
+            {
+              "text": "Our results, together with prior work, show that multi-user, multi-agent systems carry risks beyond worse group outcomes: an agent acting for one user can harm others who share the system. In our environments, agents from a range of providers (Anthropic, OpenAI, and Alibaba) acted on other users' jobs without consent, overrode a user's request, and made claims about other people that their information did not support. Outside the lab, swarms of agents have already caused real harm, as in the "
+            },
+            {
+              "href": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
+              "text": "Hugging Face incident"
+            },
+            {
+              "text": " and the hijacking of a German wiki ("
+            },
+            {
+              "href": "https://www.reuters.com/world/europe/openai-agents-hijacked-german-website-previously-undisclosed-ai-breakout-this-2026-09-04/",
+              "text": "Reuters"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://www.euronews.com/next/2026/09/09/rogue-openai-agents-hijacked-a-german-wiki-and-it-stayed-secret-for-weeks",
+              "text": "Euronews"
+            },
+            {
+              "text": "). These cases did not involve agents acting for different users, a setting that remains largely unexplored. While our results show that coordinators can outperform teams, and "
+            },
+            {
+              "href": "https://arxiv.org/abs/2604.10290",
+              "text": "previous work"
+            },
+            {
+              "text": " finds alignment advantages for single-agent systems, relying on a coordinator is not always feasible or natural for systems with many users. Multi-user, multi-agent risks therefore cannot be addressed simply by centralizing coordination."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These results suggest concrete next steps. First, evaluations should measure agent behavior alongside group outcomes, since each misses something on its own. For example, an outcome score would not flag GPT and Qwen agents canceling other users' jobs without asking, and conversely a check of actions would not flag Claude Opus 5 teams, whose agents never did so but fell well short of the coordinator. Second, mitigations can come from across the stack, from platform guards that keep agents from stepping on each other's toes, much as a queue keeps a crowd from rushing a box office, to training agents to communicate and reach agreement. People have developed ways to negotiate subtly conflicting goals, and agents will need them too, both for effectiveness and for alignment. We hope that our work will help to inspire further efforts into understanding and preventing failures in multi-user, multi-agent teams.",
+          "inlines": [
+            {
+              "text": "These results suggest concrete next steps. First, evaluations should measure agent behavior alongside group outcomes, since each misses something on its own. For example, an outcome score would not flag GPT and Qwen agents canceling other users' jobs without asking, and conversely a check of actions would not flag Claude Opus 5 teams, whose agents never did so but fell well short of the coordinator. Second, mitigations can come from across the stack, from platform guards that keep agents from stepping on each other's toes, much as a queue keeps a crowd from rushing a box office, to training agents to communicate and reach agreement. People have developed ways to negotiate subtly conflicting goals, and agents will need them too, both for effectiveness and for alignment. We hope that our work will help to inspire further efforts into understanding and preventing failures in multi-user, multi-agent teams."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-12T01:10:35.877822Z",
+  "contentMode": "full"
+}

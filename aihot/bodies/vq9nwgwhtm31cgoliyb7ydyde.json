@@ -1,0 +1,2248 @@
+{
+  "schemaVersion": 1,
+  "id": "vq9nwgwhtm31cgoliyb7ydyde",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/vq9nwgwhtm31cgoliyb7ydyde",
+  "fetchedAt": "2026-11-12T01:10:10.427495Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenRouter",
+    "Agent 智能体",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "当模型反复调用一个失败的工具、而且参数往往一模一样时，AI 智能体就会陷入死循环，因为智能体循环里没有任何机制叫它停下来。每次重试都会把整段对话重新发一遍，于是每一轮都比上一轮更贵，一个跑了一整夜的空转循环可能烧掉数千美元。",
+          "inlines": [
+            {
+              "text": "当模型反复调用一个失败的工具、而且参数往往一模一样时，AI 智能体就会陷入死循环，因为智能体循环里没有任何机制叫它停下来。每次重试都会把整段对话重新发一遍，于是每一轮都比上一轮更贵，一个跑了一整夜的空转循环可能烧掉数千美元。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本指南用四道防线把循环拦住，我们在六个当前模型上做了测试。其中三道通过 OpenRouter Agent SDK（@openrouter/agent 0.11.0）运行在你的智能体内部：死循环检测、判定哪些调用算重复的规则，以及对步数和成本的上限。第四道是你 API 密钥上的额度上限。这道防线由我们这边执行，所以即使你的智能体代码有 bug 也依然有效。",
+          "inlines": [
+            {
+              "text": "本指南用四道防线把循环拦住，我们在六个当前模型上做了测试。其中三道通过 "
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/agent-sdk-with-callmodel/",
+              "text": "OpenRouter Agent SDK"
+            },
+            {
+              "text": "（@openrouter/agent 0.11.0）运行在你的智能体内部：死循环检测、判定哪些调用算重复的规则，以及对步数和成本的上限。第四道是你 API 密钥上的额度上限。这道防线由我们这边执行，所以即使你的智能体代码有 bug 也依然有效。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TL;DR",
+          "inlines": [
+            {
+              "text": "TL;DR"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "开启死循环检测后，我们测试的六个模型全部在第三次相同的工具调用时被拦下。不开启时，18 次运行中有 4 次一直重试到 40 步上限。开启后，18 次运行中有 16 次在两次真实的工具调用后就结束了。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在 callModel 里设置 doomLoop: true，会拦下第三次相同的调用，并在第六次时结束运行。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "有些模型会稍微改动参数来绕过检测。用一个对参数做归一化的 loopKey 就能拦住它们。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "stopWhen: [stepCountIs(n), maxCost(x)] 会给每次运行设上限，不管循环是什么原因引起的。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "密钥上的额度上限则封顶你的总花费。放不下的请求会失败，返回 402 和 limit_source: “openrouter_key_limit”。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么 AI 智能体会陷入死循环？",
+          "inlines": [
+            {
+              "text": "为什么 AI 智能体会陷入死循环？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "当模型不请求工具、直接给出回答时，智能体循环就结束了。而一个持续失败的工具，让模型没有理由这么做。错误被送回对话里，指令仍然要求完成任务，于是再试一次看起来就是正确的下一步。除非你加上代码去计数，否则循环里没有任何东西会统计尝试次数。",
+          "inlines": [
+            {
+              "text": "当模型不请求工具、直接给出回答时，智能体循环就结束了。而一个持续失败的工具，让模型没有理由这么做。错误被送回对话里，指令仍然要求完成任务，于是再试一次看起来就是正确的下一步。除非你加上代码去计数，否则循环里没有任何东西会统计尝试次数。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "循环还会越跑越贵，因为每一轮都会把整段对话重新发一遍，包括之前每一次失败。在一次运行中我们逐轮做了记录，输入从 131 个 token 涨到 3,262 个，每轮成本几乎翻了两番。如果换成更贵的模型、同时跑很多会话，这种增长正是一夜之间累积到数千美元的原因。",
+          "inlines": [
+            {
+              "text": "循环还会越跑越贵，因为每一轮都会把整段对话重新发一遍，包括之前每一次失败。在一次运行中我们逐轮做了记录，输入从 131 个 token 涨到 3,262 个，每轮成本几乎翻了两番。如果换成更贵的模型、同时跑很多会话，这种增长正是一夜之间累积到数千美元的原因。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了亲眼看到它发生，我们做了一个账单智能体，它唯一的工具会像账单服务宕机那样失败。要运行它，把它保存为 agent.ts，执行 bun add @openrouter/agent zod，设置 OPENROUTER_API_KEY，然后运行 bun agent.ts：",
+          "inlines": [
+            {
+              "text": "为了亲眼看到它发生，我们做了一个账单智能体，它唯一的工具会像账单服务宕机那样失败。要运行它，把它保存为 agent.ts，执行 bun add @openrouter/agent zod，设置 OPENROUTER_API_KEY，然后运行 bun agent.ts："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import { OpenRouter, tool, stepCountIs } from '@openrouter/agent';\nimport { z } from 'zod';\n\nconst openrouter = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });\n\nlet attempts = 0;\n\nconst fetchInvoice = tool({\n  name: 'fetch_invoice',\n  description: 'Fetch an invoice from the billing service by ID.',\n  inputSchema: z.object({ invoice_id: z.string() }),\n  execute: async ({ invoice_id }) => {\n    attempts++;\n    console.log(`  fetch_invoice(\"${invoice_id}\")`);\n    throw new Error(`billing-service timeout after 30s fetching ${invoice_id}`);\n  },\n});\n\nlet cost = 0;\n\nconst result = openrouter.callModel({\n  model: 'mistralai/mistral-large-4-0',\n  instructions:\n    'You are a billing agent. Complete the task. If a tool call fails, retry it. ' +\n    'Do not stop until you have the invoice total.',\n  input: 'Get the total of invoice INV-2291.',\n  tools: [fetchInvoice] as const,\n  stopWhen: stepCountIs(40), // so the demo ends\n  hooks: {\n    PostModelCall: [{ handler: ({ usage }) => { cost += usage?.cost ?? 0; } }],\n    DoomLoopDetected: [{ handler: ({ action, streak }) =>\n      console.log(`DoomLoopDetected: ${action} (streak ${streak})`) }],\n    SessionEnd: [{ handler: ({ reason }) => console.log(`SessionEnd: ${reason}`) }],\n  },\n});\n\nconst text = await result.getText();\nconst verdict = await result.getDoomLoopVerdict(); // set only when detection stopped the run\n\nconsole.log(`attempts: ${attempts}, cost: $${cost.toFixed(4)}`);\nconsole.log(verdict ? `stopped: ${verdict.message}` : text.slice(0, 160));"
+        },
+        {
+          "type": "code",
+          "text": "  fetch_invoice(\"INV-2291\")\n  fetch_invoice(\"INV-2291\")\n  fetch_invoice(\"INV-2291\")\n  ...\nSessionEnd: max_turns\nattempts: 41, cost: $0.0309\nI was unable to retrieve the total for invoice INV-2291. The billing service\nconsistently timed out after 30 seconds on all 41 attempts to fetch this invoice, r"
+        },
+        {
+          "type": "paragraph",
+          "text": "全部 41 次调用完全相同，运行之所以结束，只是因为 stepCountIs(40)。多出来的那次调用是上限触发时模型已经请求过的，SDK 仍会执行它（第 3 步会讲到这一点）。如果没有 stopWhen，Agent SDK 会一直循环，直到模型不再请求工具，所以这次运行本来不会自己停下来。最终回答里说服务超时了，可见模型每一轮都知道这一点，却还是照样重试。",
+          "inlines": [
+            {
+              "text": "全部 41 次调用完全相同，运行之所以结束，只是因为 stepCountIs(40)。多出来的那次调用是上限触发时模型已经请求过的，SDK 仍会执行它（第 3 步会讲到这一点）。如果没有 stopWhen，Agent SDK 会一直循环，直到模型不再请求工具，所以这次运行本来不会自己停下来。最终回答里说服务超时了，可见模型每一轮都知道这一点，却还是照样重试。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0a5707086222c0ea6d8174c6e194f281fe889b4e730f76ac5f7b35adc0d59a49.webp",
+          "alt": "Line chart of the cumulative cost of the unguarded Mistral Large 4 run, rising from near $0 at turn 1 to $0.0309 after 41 turns."
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在六个模型上各跑了同一个智能体三次，分别开启和关闭检测：",
+          "inlines": [
+            {
+              "text": "我们在六个模型上各跑了同一个智能体三次，分别开启和关闭检测："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "模型"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每次运行的工具调用数（无防护）",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "每次运行的工具调用数（无防护）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "触发 40 步上限",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "触发 40 步上限"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每次运行的工具调用数（doomLoop: true）",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "每次运行的工具调用数（doomLoop: true）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "anthropic/claude-haiku-5.5",
+          "inlines": [
+            {
+              "text": "anthropic/claude-haiku-5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6, 6, 6",
+          "inlines": [
+            {
+              "text": "6, 6, 6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0/3",
+          "inlines": [
+            {
+              "text": "0/3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 2",
+          "inlines": [
+            {
+              "text": "2, 2, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "deepseek/deepseek-v4.1-flash",
+          "inlines": [
+            {
+              "text": "deepseek/deepseek-v4.1-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6, 5, 7",
+          "inlines": [
+            {
+              "text": "6, 5, 7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0/3",
+          "inlines": [
+            {
+              "text": "0/3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 2",
+          "inlines": [
+            {
+              "text": "2, 2, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "google/gemini-3.8-flash",
+          "inlines": [
+            {
+              "text": "google/gemini-3.8-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5, 6, 5",
+          "inlines": [
+            {
+              "text": "5, 6, 5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0/3",
+          "inlines": [
+            {
+              "text": "0/3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 2",
+          "inlines": [
+            {
+              "text": "2, 2, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mistralai/mistral-large-4-0",
+          "inlines": [
+            {
+              "text": "mistralai/mistral-large-4-0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11, 41, 41",
+          "inlines": [
+            {
+              "text": "11, 41, 41"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2/3",
+          "inlines": [
+            {
+              "text": "2/3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 12, 2",
+          "inlines": [
+            {
+              "text": "2, 12, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-6-luna",
+          "inlines": [
+            {
+              "text": "openai/gpt-6-luna"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17, 37, 21",
+          "inlines": [
+            {
+              "text": "17, 37, 21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0/3",
+          "inlines": [
+            {
+              "text": "0/3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 20",
+          "inlines": [
+            {
+              "text": "2, 2, 20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "x-ai/grok-4.7",
+          "inlines": [
+            {
+              "text": "x-ai/grok-4.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "41, 12, 41",
+          "inlines": [
+            {
+              "text": "41, 12, 41"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2/3",
+          "inlines": [
+            {
+              "text": "2/3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 2",
+          "inlines": [
+            {
+              "text": "2, 2, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "循环情况在不同运行之间也会变化。Grok 4.7 在同样的输入下分别调用了 41 次、12 次和 41 次，所以一次干净的测试并不能证明你的智能体不会循环。在全部 18 次运行中，检测把工具调用从 314 次降到 64 次，花费从 $0.29 降到 $0.05。",
+          "inlines": [
+            {
+              "text": "循环情况在不同运行之间也会变化。Grok 4.7 在同样的输入下分别调用了 41 次、12 次和 41 次，所以一次干净的测试并不能证明你的智能体不会循环。在全部 18 次运行中，检测把工具调用从 314 次降到 64 次，花费从 $0.29 降到 $0.05。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "第 1 步：开启死循环检测",
+          "inlines": [
+            {
+              "text": "第 1 步：开启死循环检测"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在 callModel 调用里加一个选项：",
+          "inlines": [
+            {
+              "text": "在 callModel 调用里加一个选项："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  doomLoop: true,"
+        },
+        {
+          "type": "code",
+          "text": "  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: observe (streak 2)\n  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: block (streak 3)\nDoomLoopDetected: block (streak 4)\nDoomLoopDetected: block (streak 5)\nDoomLoopDetected: stop (streak 6)\nSessionEnd: doom_loop\nattempts: 2, cost: $0.0034\nstopped: Doom loop suspected: tool \"fetch_invoice\" was invoked in 6 consecutive rounds\nwith identical arguments (fingerprint 64be4614c5ea3e26…). Repeating the call will not\nchange the result. Take a different approach, or explain why repetition is required."
+        },
+        {
+          "type": "paragraph",
+          "text": "死循环检测会按工具名和参数为每次工具调用生成指纹。它先对参数做规范化处理，所以即使 JSON 键的顺序被打乱，也无法掩盖重复。只有模型已经看到上一次结果、却再次发起请求时，才算一次重复，因此同一轮里五次完全相同的调用只计为一次。随着连续重复次数增加，它会沿默认阶梯逐级升级：2 次时观察，3 次时拦截，6 次时终止。",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/doom-loop-detection",
+              "text": "死循环检测"
+            },
+            {
+              "text": "会按工具名和参数为每次工具调用生成指纹。它先对参数做规范化处理，所以即使 JSON 键的顺序被打乱，也无法掩盖重复。只有模型已经看到上一次结果、却再次发起请求时，才算一次重复，因此同一轮里五次完全相同的调用只计为一次。随着连续重复次数增加，它会沿默认阶梯逐级升级：2 次时观察，3 次时拦截，6 次时终止。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "调用被拦截时，SDK 会跳过 execute，并返回一个工具错误，告诉模型它正在重复自己。与超时不同，这个错误明确表示再试一次也没用。在大多数运行中，模型读到它后就直接写出最终答案，以 SessionEnd: complete 结束。在上面那次运行中，模型仍继续请求，于是 stop 以 reason: doom_loop 终止了运行。getDoomLoopVerdict() 只在检测导致运行结束时才返回消息，因此它是应当触发告警的信号。",
+          "inlines": [
+            {
+              "text": "调用被拦截时，SDK 会跳过 execute，并返回一个工具错误，告诉模型它正在重复自己。与超时不同，这个错误明确表示再试一次也没用。在大多数运行中，模型读到它后就直接写出最终答案，以 SessionEnd: complete 结束。在上面那次运行中，模型仍继续请求，于是 stop 以 reason: doom_loop 终止了运行。getDoomLoopVerdict() 只在检测导致运行结束时才返回消息，因此它是应当触发告警的信号。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "想更早终止，就调低阈值。设置 doomLoop: { ladder: { observe: 2, block: 3, stop: 4 } } 后，一次 GPT-6 Luna 运行在连续重复 4 次时结束，花费 $0.0002。这个阶梯还有两级默认关闭。steer 会向模型发送一条提示，说明它在重复自己；escalate 会让你指定的更强模型来执行下一轮。",
+          "inlines": [
+            {
+              "text": "想更早终止，就调低阈值。设置 doomLoop: { ladder: { observe: 2, block: 3, stop: 4 } } 后，一次 GPT-6 Luna 运行在连续重复 4 次时结束，花费 $0.0002。这个阶梯还有两级默认关闭。steer 会向模型发送一条提示，说明它在重复自己；escalate 会让你指定的更强模型来执行下一轮。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "第 2 步：告诉检测器什么算同一次调用",
+          "inlines": [
+            {
+              "text": "第 2 步：告诉检测器什么算同一次调用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "默认情况下，只有参数完全一致，两次调用才算同一次。被拦截后，有些模型会稍微改动参数，让这次调用获得新指纹并开启新的连续计数：",
+          "inlines": [
+            {
+              "text": "默认情况下，只有参数完全一致，两次调用才算同一次。被拦截后，有些模型会稍微改动参数，让这次调用获得新指纹并开启新的连续计数："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": " fetch_invoice(\"INV-2291\")\nDoomLoopDetected: observe (streak 2)\n  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: block (streak 3)\n  fetch_invoice(\"2291\")\n  fetch_invoice(\"inv-2291\")\n  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: observe (streak 2)\n  fetch_invoice(\"INV-2291\")\n  fetch_invoice(\"INV2291\")\n  ...\nSessionEnd: complete\nattempts: 13, cost: $0.0125"
+        },
+        {
+          "type": "paragraph",
+          "text": "在另外九次开启检测的 Mistral Large 4 运行中，模型这样做了五次，其中三次达到 40 步上限，主要是在 INV-2291 和 inv-2291 之间来回切换。GPT-6 Luna 则用尾随空格和换行做了同样的事。模型是在遵循拦截消息，那条消息让它们换一种做法。只有一个工具时，它们能换的只有输入。",
+          "inlines": [
+            {
+              "text": "在另外九次开启检测的 Mistral Large 4 运行中，模型这样做了五次，其中三次达到 40 步上限，主要是在 INV-2291 和 inv-2291 之间来回切换。GPT-6 Luna 则用尾随空格和换行做了同样的事。模型是在遵循拦截消息，那条消息让它们换一种做法。只有一个工具时，它们能换的只有输入。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "工具上的 loopKey 告诉检测器输入中哪一部分用于标识这次调用。对于发票 ID，就是其中的数字：",
+          "inlines": [
+            {
+              "text": "工具上的 loopKey 告诉检测器输入中哪一部分用于标识这次调用。对于发票 ID，就是其中的数字："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": " loopKey: ({ invoice_id }) => invoice_id.replace(/\\D/g, ''), // \"inv-2291 \" and \"INV-2291\" are one call"
+        },
+        {
+          "type": "code",
+          "text": " fetch_invoice(\"INV-2291\")\nDoomLoopDetected: observe (streak 2)\n  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: block (streak 3)\nDoomLoopDetected: block (streak 4)\nDoomLoopDetected: block (streak 5)\nSessionEnd: complete\nattempts: 2, cost: $0.0039"
+        },
+        {
+          "type": "paragraph",
+          "text": "现在所有变体都映射到 2291，连续计数会继续增长，重复调用也持续被拦截。六次运行中有五次在两次真实调用后就停止了。第六次里，模型尝试了另一张发票 INV-0000，这正确地重置了连续计数。",
+          "inlines": [
+            {
+              "text": "现在所有变体都映射到 2291，连续计数会继续增长，重复调用也持续被拦截。六次运行中有五次在两次真实调用后就停止了。第六次里，模型尝试了另一张发票 INV-0000，这正确地重置了连续计数。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要规范化大小写、空格、前缀，以及任何不影响工具取到哪条记录的差异。如果想完全忽略某个字段，比如模型每次重试都会调高的超时时间，就只列出真正重要的字段：loopKey: [‘invoice_id’]。如果工具本身就是用来重复的，比如轮询任务状态，就用 loopKey: false。",
+          "inlines": [
+            {
+              "text": "要规范化大小写、空格、前缀，以及任何不影响工具取到哪条记录的差异。如果想完全忽略某个字段，比如模型每次重试都会调高的超时时间，就只列出真正重要的字段：loopKey: [‘invoice_id’]。如果工具本身就是用来重复的，比如轮询任务状态，就用 loopKey: false。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "第 3 步：为每次运行设置步数和成本上限",
+          "inlines": [
+            {
+              "text": "第 3 步：为每次运行设置步数和成本上限"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "检测只能抓住重复。如果模型每轮都尝试新东西，就永远不会重复同一个指纹；而模型在被拦截后仍继续请求，也要等到 stop 触发才会被终止。停止条件不管运行为什么变长，都能结束它。把 maxCost 和 stepCountIs 一起导入，替换 stopWhen，并添加两个生命周期钩子：",
+          "inlines": [
+            {
+              "text": "检测只能抓住重复。如果模型每轮都尝试新东西，就永远不会重复同一个指纹；而模型在被拦截后仍继续请求，也要等到 stop 触发才会被终止。"
+            },
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/stop-conditions",
+              "text": "停止条件"
+            },
+            {
+              "text": "不管运行为什么变长，都能结束它。把 maxCost 和 stepCountIs 一起导入，替换 stopWhen，并添加两个"
+            },
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/lifecycle-hooks",
+              "text": "生命周期钩子"
+            },
+            {
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "let failuresInARow = 0; // tool errors in a row, whatever the arguments\n\n  stopWhen: [stepCountIs(15), maxCost(0.01), () => failuresInARow >= 5],\n  hooks: {\n    // ...the hooks from before, plus:\n    PostToolUse: [{ handler: () => { failuresInARow = 0; } }],\n    PostToolUseFailure: [{ handler: () => { failuresInARow++; } }],\n  },"
+        },
+        {
+          "type": "paragraph",
+          "text": "stopWhen 在每一轮之后检查，只要任一条件为真，运行就停止。maxCost 会累加我们在每个响应中返回的 usage.cost，因此统计的是你实际被计费的部分。失败计数器忽略参数，所以即使没有 loopKey，也能抓住第 2 步里那种改动参数的情况。在一次以同样方式改动参数的 Mistral Large 4 运行中，它在六次调用后以 $0.0062 结束了会话，SessionEnd: max_turns。",
+          "inlines": [
+            {
+              "text": "stopWhen 在每一轮之后检查，只要任一条件为真，运行就停止。maxCost 会累加我们在每个响应中返回的 usage.cost，因此统计的是你实际被计费的部分。失败计数器忽略参数，所以即使没有 loopKey，也能抓住第 2 步里那种改动参数的情况。在一次以同样方式改动参数的 Mistral Large 4 运行中，它在六次调用后以 $0.0062 结束了会话，SessionEnd: max_turns。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每个 stopWhen 条件都会以 reason: max_turns 结束会话，所以如果需要区分是哪个上限触发的，就得自己记录原因。如果上限触发时模型还有待执行的工具调用，SDK 会先把它们跑完，再在禁用工具调用的情况下做最后一轮，让这次运行以一段文字回答收尾。这就是为什么这次运行在上限为五的情况下发出了六次调用，也是为什么第一个演示在上限为四十的情况下跑了四十一次。把 allowFinalResponse 设为 false 可以跳过这一轮。",
+          "inlines": [
+            {
+              "text": "每个 stopWhen 条件都会以 reason: max_turns 结束会话，所以如果需要区分是哪个上限触发的，就得自己记录原因。如果上限触发时模型还有待执行的工具调用，SDK 会先把它们跑完，再在禁用工具调用的情况下做最后一轮，让这次运行以一段文字回答收尾。这就是为什么这次运行在上限为五的情况下发出了六次调用，也是为什么第一个演示在上限为四十的情况下跑了四十一次。把 allowFinalResponse 设为 false 可以跳过这一轮。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "两个上限都按你平时的运行情况来设。我们的运行用了四到六轮，在 Mistral Large 4 上花费 $0.0018 到 $0.0053，所以 15 步和 $0.01 留有余地，又不至于放任一次 40 轮的运行。两者之中，成本上限更重要，因为后面的轮次比前面的更贵。",
+          "inlines": [
+            {
+              "text": "两个上限都按你平时的运行情况来设。我们的运行用了四到六轮，在 Mistral Large 4 上花费 $0.0018 到 $0.0053，所以 15 步和 $0.01 留有余地，又不至于放任一次 40 轮的运行。两者之中，成本上限更重要，因为后面的轮次比前面的更贵。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不用 Agent SDK，同样的防护也能放进任何循环里。按工具名和归一化后的参数统计调用次数，第三次重复时不要执行，而是返回一条工具结果，比如“已拦截：告诉用户出了什么问题”，并在步数或累计的 usage.cost 超过上限时停止。我们的 Python 版本对接 chat completions API，在三次运行中都于四步之后停掉了 Mistral Large 4，花费不到 $0.002。",
+          "inlines": [
+            {
+              "text": "不用 Agent SDK，同样的防护也能放进任何循环里。按工具名和归一化后的参数统计调用次数，第三次重复时不要执行，而是返回一条工具结果，比如“已拦截：告诉用户出了什么问题”，并在步数或累计的 usage.cost 超过上限时停止。我们的 Python 版本对接 chat completions API，在三次运行中都于四步之后停掉了 Mistral Large 4，花费不到 $0.002。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "第 4 步：给 API 密钥设置额度上限",
+          "inlines": [
+            {
+              "text": "第 4 步：给 API 密钥设置额度上限"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "到目前为止，所有防护都运行在智能体自己的进程里。如果那段代码有 bug、上线时没带上限，或者跑了一百个各自都不超过 maxCost 的会话，总量就没有任何限制。给密钥设额度上限就能管住这一点，因为我们会在请求到达提供商之前，先在自己这边做检查。",
+          "inlines": [
+            {
+              "text": "到目前为止，所有防护都运行在智能体自己的进程里。如果那段代码有 bug、上线时没带上限，或者跑了一百个各自都不超过 maxCost 的会话，总量就没有任何限制。给密钥设额度上限就能管住这一点，因为我们会在请求到达提供商之前，先在自己这边做检查。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在控制台或用 create key API 设置 limit（以美元计）和 limit_reset（daily、weekly、monthly 或 null）。如果密钥使用 BYOK，还要把 include_byok_in_limit 设为 true，因为它默认是 false，否则 BYOK 的花费不会计入上限。每日上限在 UTC 午夜重置，每周上限在周一重置。给每个智能体或每个客户分配独立的密钥，这样一个循环最多只能花掉该密钥的那一份额度。如果多个智能体必须共用一个密钥，请参考为共享的智能体密钥设上限。",
+          "inlines": [
+            {
+              "text": "在控制台或用 create key API 设置 limit（以美元计）和 limit_reset（daily、weekly、monthly 或 null）。如果密钥使用 BYOK，还要把 include_byok_in_limit 设为 true，因为它默认是 false，否则 BYOK 的花费不会计入上限。每日上限在 UTC 午夜重置，每周上限在周一重置。给每个智能体或每个客户分配独立的密钥，这样一个循环最多只能花掉该密钥的那一份额度。如果多个智能体必须共用一个密钥，请参考"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/capping-shared-agent-keys",
+              "text": "为共享的智能体密钥设上限"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在路由请求之前，我们会先按最坏情况计价，也就是输入加上 max_tokens。如果这个数额超出了密钥剩余额度，请求就会失败，而且不会向你收费。我们用一个还剩 $9.97 的密钥，向一个昂贵的模型发送了一条 max_tokens: 900000 的 chat completions 请求，得到了这样的返回：",
+          "inlines": [
+            {
+              "text": "在路由请求之前，我们会先按最坏情况计价，也就是输入加上 max_tokens。如果这个数额超出了密钥剩余额度，请求就会失败，而且不会向你收费。我们用一个还剩 $9.97 的密钥，向一个昂贵的模型发送了一条 max_tokens: 900000 的 chat completions 请求，得到了这样的返回："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "402\n{\n  \"error\": {\n    \"message\": \"This request requires more credits, or fewer max_tokens. You requested up to 900000 tokens, but can only afford 664657. To increase, visit https://openrouter.ai/workspaces/<workspace-slug>/keys/<key-hash> and adjust the key's total limit\",\n    \"code\": 402,\n    \"metadata\": {\n      \"limit_source\": \"openrouter_key_limit\",\n      \"remedy_hint\": \"Raise or remove this API key's usage limit at https://openrouter.ai/settings/keys, or use a key without a limit.\",\n      \"provider_name\": null\n    }\n  },\n  \"user_id\": \"<org-id>\"\n}"
+        },
+        {
+          "type": "paragraph",
+          "text": "我们替换了工作区 slug、密钥哈希和组织 ID。",
+          "inlines": [
+            {
+              "text": "我们替换了工作区 slug、密钥哈希和组织 ID。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要根据 error.metadata.limit_source 分支处理，而不是根据消息文本或状态码。密钥额度耗尽时也会报告 openrouter_key_limit，limits 文档把该来源同时列在 402 额度错误和 403 预算错误之下。如果消息说该密钥能负担的 token 更少，就像上面的例子那样，就用更低的 max_tokens 重试。如果密钥已耗尽，在额度重置之前重试不可能成功，所以应当把它当作停止信号。Agent SDK 会把 402 抛出为 PaymentRequiredResponseError。唯一值得重试的 402 是 openrouter_in_flight_budget，要按它的 Retry-After 头来重试。速率限制则返回 429，我们的LLM API 速率限制指南对此有说明。",
+          "inlines": [
+            {
+              "text": "要根据 error.metadata.limit_source 分支处理，而不是根据消息文本或状态码。密钥额度耗尽时也会报告 openrouter_key_limit，"
+            },
+            {
+              "href": "https://openrouter.ai/docs/api_reference/limits",
+              "text": "limits 文档"
+            },
+            {
+              "text": "把该来源同时列在 402 额度错误和 403 预算错误之下。如果消息说该密钥能负担的 token 更少，就像上面的例子那样，就用更低的 max_tokens 重试。如果密钥已耗尽，在额度重置之前重试不可能成功，所以应当把它当作停止信号。Agent SDK 会把 402 抛出为 PaymentRequiredResponseError。唯一值得重试的 402 是 openrouter_in_flight_budget，要按它的 Retry-After 头来重试。速率限制则返回 429，我们的"
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/llm-api-rate-limits/",
+              "text": "LLM API 速率限制指南"
+            },
+            {
+              "text": "对此有说明。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "工作区预算按天、周、月或整个生命周期，把额度上限分摊到工作区内的每个密钥上。被拦截的请求会返回 403，并附带类似“Workspace monthly budget of $500.00 exceeded. Contact your org admin.”的提示。（这条提示并非我们实际触发，而是来自文档。）已经在处理中的请求仍会完成，所以实际支出可能略微超出上限，但整夜运行的循环会在接近每日上限时停下。支出控制指南介绍了工作区预算与成员级防护措施如何配合使用。",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/docs/guides/features/workspaces/workspace-budgets",
+              "text": "工作区预算"
+            },
+            {
+              "text": "按天、周、月或整个生命周期，把额度上限分摊到工作区内的每个密钥上。被拦截的请求会返回 403，并附带类似“Workspace monthly budget of $500.00 exceeded. Contact your org admin.”的提示。（这条提示并非我们实际触发，而是来自文档。）已经在处理中的请求仍会完成，所以实际支出可能略微超出上限，但整夜运行的循环会在接近每日上限时停下。"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/spend-controls",
+              "text": "支出控制指南"
+            },
+            {
+              "text": "介绍了工作区预算与成员级防护措施如何配合使用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "哪种防护能拦住哪种循环？",
+          "inlines": [
+            {
+              "text": "哪种防护能拦住哪种循环？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "每种防护拦下的循环类型不同。密钥限额能拦住所有循环，但要等密钥额度花完才生效，所以最适合作为最后一道防线。",
+          "inlines": [
+            {
+              "text": "每种防护拦下的循环类型不同。密钥限额能拦住所有循环，但要等密钥额度花完才生效，所以最适合作为最后一道防线。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "循环类型",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "循环类型"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "doomLoop",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "doomLoop"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "loopKey",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "loopKey"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "stopWhen 上限",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "stopWhen 上限"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "密钥限额或工作区预算",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "密钥限额或工作区预算"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "同样的调用、同样的参数",
+          "inlines": [
+            {
+              "text": "同样的调用、同样的参数"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "能拦住",
+          "inlines": [
+            {
+              "text": "能拦住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不需要",
+          "inlines": [
+            {
+              "text": "不需要"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在额度上限处拦住",
+          "inlines": [
+            {
+              "text": "在额度上限处拦住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在限额处拦住",
+          "inlines": [
+            {
+              "text": "在限额处拦住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "同样的调用、参数略有不同",
+          "inlines": [
+            {
+              "text": "同样的调用、参数略有不同"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "拦不住",
+          "inlines": [
+            {
+              "text": "拦不住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "能拦住",
+          "inlines": [
+            {
+              "text": "能拦住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在额度上限处拦住",
+          "inlines": [
+            {
+              "text": "在额度上限处拦住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在限额处拦住",
+          "inlines": [
+            {
+              "text": "在限额处拦住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每一轮都换新方法",
+          "inlines": [
+            {
+              "text": "每一轮都换新方法"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "拦不住",
+          "inlines": [
+            {
+              "text": "拦不住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "拦不住",
+          "inlines": [
+            {
+              "text": "拦不住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在额度上限处拦住",
+          "inlines": [
+            {
+              "text": "在额度上限处拦住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在限额处拦住",
+          "inlines": [
+            {
+              "text": "在限额处拦住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "多次运行，每次都在各自上限内",
+          "inlines": [
+            {
+              "text": "多次运行，每次都在各自上限内"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "仅限单次运行",
+          "inlines": [
+            {
+              "text": "仅限单次运行"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "仅限单次运行",
+          "inlines": [
+            {
+              "text": "仅限单次运行"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "仅限单次运行",
+          "inlines": [
+            {
+              "text": "仅限单次运行"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "拦住总量",
+          "inlines": [
+            {
+              "text": "拦住总量"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "部署时漏掉了这些防护",
+          "inlines": [
+            {
+              "text": "部署时漏掉了这些防护"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "拦不住",
+          "inlines": [
+            {
+              "text": "拦不住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "拦不住",
+          "inlines": [
+            {
+              "text": "拦不住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "拦不住",
+          "inlines": [
+            {
+              "text": "拦不住"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在限额处拦住",
+          "inlines": [
+            {
+              "text": "在限额处拦住"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "常见问题",
+          "inlines": [
+            {
+              "text": "常见问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "为什么我的智能体在报错后一直调用同一个工具？",
+          "inlines": [
+            {
+              "text": "为什么我的智能体在报错后一直调用同一个工具？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "工具返回的结果说调用失败，而提示词又要求完成任务，所以在模型看来再试一次才是正确做法。返回错误时，要告诉模型下一步该怎么做，比如“计费服务已宕机。告知用户并停止。”不要告诉模型一直重试到成功为止。",
+          "inlines": [
+            {
+              "text": "工具返回的结果说调用失败，而提示词又要求完成任务，所以在模型看来再试一次才是正确做法。返回错误时，要告诉模型下一步该怎么做，比如“计费服务已宕机。告知用户并停止。”不要告诉模型一直重试到成功为止。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "最大迭代次数限制能阻止成本失控吗？",
+          "inlines": [
+            {
+              "text": "最大迭代次数限制能阻止成本失控吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "最大迭代次数限制能阻止单次运行无限进行下去，但它并不能限制你的花费，因为越往后的轮次成本越高，而且多次运行即使都在限制之内，加起来仍然很可观。LangChain 的 AgentExecutor 中的 max_iterations 和 CrewAI 中的 max_iter 这类设置，与 OpenRouter Agent SDK 中的 stepCountIs 作用相同。要把它们与单次运行的成本上限以及 API 密钥的额度限制配合使用。",
+          "inlines": [
+            {
+              "text": "最大迭代次数限制能阻止单次运行无限进行下去，但它并不能限制你的花费，因为越往后的轮次成本越高，而且多次运行即使都在限制之内，加起来仍然很可观。LangChain 的 AgentExecutor 中的 max_iterations 和 CrewAI 中的 max_iter 这类设置，与 OpenRouter Agent SDK 中的 stepCountIs 作用相同。要把它们与单次运行的成本上限以及 API 密钥的额度限制配合使用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "后续步骤",
+          "inlines": [
+            {
+              "text": "后续步骤"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/agent-sdk/call-model/doom-loop-detection",
+                  "text": "死循环检测"
+                },
+                {
+                  "text": "：分级处理、引导、升级以及按工具覆盖。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/agent-sdk/call-model/stop-conditions",
+                  "text": "停止条件"
+                },
+                {
+                  "text": "：stepCountIs、maxCost、maxTokensUsed 以及自定义条件。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/team-spend-controls-setup/",
+                  "text": "设置团队 AI 支出控制"
+                },
+                {
+                  "text": "：在仪表盘中配置工作区预算和防护措施。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/agent-sdk-with-callmodel/",
+                  "text": "Agent SDK：在 OpenRouter 上构建多轮智能体工作流"
+                },
+                {
+                  "text": "：callModel 如何运行智能体循环。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "An AI agent gets stuck in an infinite loop when a model keeps calling a tool that fails, usually with the same arguments, because nothing in the agent loop tells it to stop. Each retry resends the whole conversation, so every turn costs more than the last, and a loop left running overnight can cost thousands of dollars.",
+          "inlines": [
+            {
+              "text": "An AI agent gets stuck in an infinite loop when a model keeps calling a tool that fails, usually with the same arguments, because nothing in the agent loop tells it to stop. Each retry resends the whole conversation, so every turn costs more than the last, and a loop left running overnight can cost thousands of dollars."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This guide stops the loop with four guards, which we tested on six current models. Three run inside your agent through the OpenRouter Agent SDK (@openrouter/agent 0.11.0): doom-loop detection, a rule for which calls count as repeats, and caps on steps and cost. The fourth is a credit limit on your API key. We enforce it on our side, so it holds even when your agent code has a bug.",
+          "inlines": [
+            {
+              "text": "This guide stops the loop with four guards, which we tested on six current models. Three run inside your agent through the "
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/agent-sdk-with-callmodel/",
+              "text": "OpenRouter Agent SDK"
+            },
+            {
+              "text": " (@openrouter/agent 0.11.0): doom-loop detection, a rule for which calls count as repeats, and caps on steps and cost. The fourth is a credit limit on your API key. We enforce it on our side, so it holds even when your agent code has a bug."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TL;DR",
+          "inlines": [
+            {
+              "text": "TL;DR"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "With doom-loop detection on, all six models we tested were blocked on their third identical tool call. Without it, 4 of 18 runs retried until a 40-step cap. With it, 16 of 18 runs ended after two real tool calls."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "doomLoop: true in callModel blocks the third identical call and ends the run at the sixth."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Some models get past detection by changing the argument slightly. A loopKey that normalizes the argument stops them."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "stopWhen: [stepCountIs(n), maxCost(x)] caps every run, whatever causes the loop."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A credit limit on the key caps your total spend. A request that doesn’t fit fails with a 402 and limit_source: “openrouter_key_limit”."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why do AI agents get stuck in infinite loops?",
+          "inlines": [
+            {
+              "text": "Why do AI agents get stuck in infinite loops?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "An agent loop ends when the model answers without asking for a tool. A tool that keeps failing gives the model no reason to do that. The error goes back into the conversation, the instructions still say to finish the task, and another attempt looks like the right next step. Nothing in the loop counts attempts unless you add code that does.",
+          "inlines": [
+            {
+              "text": "An agent loop ends when the model answers without asking for a tool. A tool that keeps failing gives the model no reason to do that. The error goes back into the conversation, the instructions still say to finish the task, and another attempt looks like the right next step. Nothing in the loop counts attempts unless you add code that does."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The loop also gets more expensive as it goes, because every turn resends the whole conversation, including every earlier failure. In one run we logged turn by turn, input grew from 131 tokens to 3,262, and the cost per turn nearly quadrupled. With a pricier model and many sessions running at once, that growth is how one night adds up to thousands of dollars.",
+          "inlines": [
+            {
+              "text": "The loop also gets more expensive as it goes, because every turn resends the whole conversation, including every earlier failure. In one run we logged turn by turn, input grew from 131 tokens to 3,262, and the cost per turn nearly quadrupled. With a pricier model and many sessions running at once, that growth is how one night adds up to thousands of dollars."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To watch it happen, we built a billing agent whose only tool fails the way a billing service that’s down would. To run it, save it as agent.ts, run bun add @openrouter/agent zod, set OPENROUTER_API_KEY, and run bun agent.ts:",
+          "inlines": [
+            {
+              "text": "To watch it happen, we built a billing agent whose only tool fails the way a billing service that’s down would. To run it, save it as agent.ts, run bun add @openrouter/agent zod, set OPENROUTER_API_KEY, and run bun agent.ts:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import { OpenRouter, tool, stepCountIs } from '@openrouter/agent';\nimport { z } from 'zod';\n\nconst openrouter = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });\n\nlet attempts = 0;\n\nconst fetchInvoice = tool({\n  name: 'fetch_invoice',\n  description: 'Fetch an invoice from the billing service by ID.',\n  inputSchema: z.object({ invoice_id: z.string() }),\n  execute: async ({ invoice_id }) => {\n    attempts++;\n    console.log(`  fetch_invoice(\"${invoice_id}\")`);\n    throw new Error(`billing-service timeout after 30s fetching ${invoice_id}`);\n  },\n});\n\nlet cost = 0;\n\nconst result = openrouter.callModel({\n  model: 'mistralai/mistral-large-4-0',\n  instructions:\n    'You are a billing agent. Complete the task. If a tool call fails, retry it. ' +\n    'Do not stop until you have the invoice total.',\n  input: 'Get the total of invoice INV-2291.',\n  tools: [fetchInvoice] as const,\n  stopWhen: stepCountIs(40), // so the demo ends\n  hooks: {\n    PostModelCall: [{ handler: ({ usage }) => { cost += usage?.cost ?? 0; } }],\n    DoomLoopDetected: [{ handler: ({ action, streak }) =>\n      console.log(`DoomLoopDetected: ${action} (streak ${streak})`) }],\n    SessionEnd: [{ handler: ({ reason }) => console.log(`SessionEnd: ${reason}`) }],\n  },\n});\n\nconst text = await result.getText();\nconst verdict = await result.getDoomLoopVerdict(); // set only when detection stopped the run\n\nconsole.log(`attempts: ${attempts}, cost: $${cost.toFixed(4)}`);\nconsole.log(verdict ? `stopped: ${verdict.message}` : text.slice(0, 160));"
+        },
+        {
+          "type": "code",
+          "text": "  fetch_invoice(\"INV-2291\")\n  fetch_invoice(\"INV-2291\")\n  fetch_invoice(\"INV-2291\")\n  ...\nSessionEnd: max_turns\nattempts: 41, cost: $0.0309\nI was unable to retrieve the total for invoice INV-2291. The billing service\nconsistently timed out after 30 seconds on all 41 attempts to fetch this invoice, r"
+        },
+        {
+          "type": "paragraph",
+          "text": "All 41 calls were identical, and the run ended only because of stepCountIs(40). The extra call is one the model had already asked for when the cap fired, which the SDK still runs (Step 3 covers this). Without a stopWhen, the Agent SDK keeps looping until the model stops asking for tools, so this run wouldn’t have stopped on its own. The final answer says the service was timing out, so the model knew that on every turn and retried anyway.",
+          "inlines": [
+            {
+              "text": "All 41 calls were identical, and the run ended only because of stepCountIs(40). The extra call is one the model had already asked for when the cap fired, which the SDK still runs (Step 3 covers this). Without a stopWhen, the Agent SDK keeps looping until the model stops asking for tools, so this run wouldn’t have stopped on its own. The final answer says the service was timing out, so the model knew that on every turn and retried anyway."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0a5707086222c0ea6d8174c6e194f281fe889b4e730f76ac5f7b35adc0d59a49.webp",
+          "alt": "Line chart of the cumulative cost of the unguarded Mistral Large 4 run, rising from near $0 at turn 1 to $0.0309 after 41 turns."
+        },
+        {
+          "type": "paragraph",
+          "text": "We ran the same agent three times on each of six models, with and without detection:",
+          "inlines": [
+            {
+              "text": "We ran the same agent three times on each of six models, with and without detection:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool calls per run, no guard",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Tool calls per run, no guard"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hit the 40-step cap",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Hit the 40-step cap"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool calls per run, doomLoop: true",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Tool calls per run, doomLoop: true"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "anthropic/claude-haiku-5.5",
+          "inlines": [
+            {
+              "text": "anthropic/claude-haiku-5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6, 6, 6",
+          "inlines": [
+            {
+              "text": "6, 6, 6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0 of 3",
+          "inlines": [
+            {
+              "text": "0 of 3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 2",
+          "inlines": [
+            {
+              "text": "2, 2, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "deepseek/deepseek-v4.1-flash",
+          "inlines": [
+            {
+              "text": "deepseek/deepseek-v4.1-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6, 5, 7",
+          "inlines": [
+            {
+              "text": "6, 5, 7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0 of 3",
+          "inlines": [
+            {
+              "text": "0 of 3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 2",
+          "inlines": [
+            {
+              "text": "2, 2, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "google/gemini-3.8-flash",
+          "inlines": [
+            {
+              "text": "google/gemini-3.8-flash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5, 6, 5",
+          "inlines": [
+            {
+              "text": "5, 6, 5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0 of 3",
+          "inlines": [
+            {
+              "text": "0 of 3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 2",
+          "inlines": [
+            {
+              "text": "2, 2, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "mistralai/mistral-large-4-0",
+          "inlines": [
+            {
+              "text": "mistralai/mistral-large-4-0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "11, 41, 41",
+          "inlines": [
+            {
+              "text": "11, 41, 41"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2 of 3",
+          "inlines": [
+            {
+              "text": "2 of 3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 12, 2",
+          "inlines": [
+            {
+              "text": "2, 12, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-6-luna",
+          "inlines": [
+            {
+              "text": "openai/gpt-6-luna"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "17, 37, 21",
+          "inlines": [
+            {
+              "text": "17, 37, 21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0 of 3",
+          "inlines": [
+            {
+              "text": "0 of 3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 20",
+          "inlines": [
+            {
+              "text": "2, 2, 20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "x-ai/grok-4.7",
+          "inlines": [
+            {
+              "text": "x-ai/grok-4.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "41, 12, 41",
+          "inlines": [
+            {
+              "text": "41, 12, 41"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2 of 3",
+          "inlines": [
+            {
+              "text": "2 of 3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2, 2, 2",
+          "inlines": [
+            {
+              "text": "2, 2, 2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Looping also changes from run to run. Grok 4.7 made 41, 12 and 41 calls on the same input, so one clean test doesn’t prove your agent won’t loop. Across all 18 runs, detection cut tool calls from 314 to 64 and spend from $0.29 to $0.05.",
+          "inlines": [
+            {
+              "text": "Looping also changes from run to run. Grok 4.7 made 41, 12 and 41 calls on the same input, so one clean test doesn’t prove your agent won’t loop. Across all 18 runs, detection cut tool calls from 314 to 64 and spend from $0.29 to $0.05."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 1: Turn on doom-loop detection",
+          "inlines": [
+            {
+              "text": "Step 1: Turn on doom-loop detection"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Add one option to the callModel call:",
+          "inlines": [
+            {
+              "text": "Add one option to the callModel call:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  doomLoop: true,"
+        },
+        {
+          "type": "code",
+          "text": "  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: observe (streak 2)\n  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: block (streak 3)\nDoomLoopDetected: block (streak 4)\nDoomLoopDetected: block (streak 5)\nDoomLoopDetected: stop (streak 6)\nSessionEnd: doom_loop\nattempts: 2, cost: $0.0034\nstopped: Doom loop suspected: tool \"fetch_invoice\" was invoked in 6 consecutive rounds\nwith identical arguments (fingerprint 64be4614c5ea3e26…). Repeating the call will not\nchange the result. Take a different approach, or explain why repetition is required."
+        },
+        {
+          "type": "paragraph",
+          "text": "Doom-loop detection fingerprints each tool call by its name and arguments. It canonicalizes the arguments first, so reordered JSON keys don’t hide a repeat. A repeat only counts when the model has seen the previous result and asks again, so five identical calls in one turn count as one. As the streak grows, it climbs the default ladder: observe at 2, block at 3 and stop at 6.",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/doom-loop-detection",
+              "text": "Doom-loop detection"
+            },
+            {
+              "text": " fingerprints each tool call by its name and arguments. It canonicalizes the arguments first, so reordered JSON keys don’t hide a repeat. A repeat only counts when the model has seen the previous result and asks again, so five identical calls in one turn count as one. As the streak grows, it climbs the default ladder: observe at 2, block at 3 and stop at 6."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When a call is blocked, the SDK skips execute and returns a tool error telling the model it’s repeating itself. Unlike the timeout, this error says another try won’t help. In most runs, the model read it and wrote a final answer straight away, ending with SessionEnd: complete. In the run above it kept asking, so stop ended the run with reason: doom_loop. getDoomLoopVerdict() returns a message only when detection ended the run, which makes it the signal to alert on.",
+          "inlines": [
+            {
+              "text": "When a call is blocked, the SDK skips execute and returns a tool error telling the model it’s repeating itself. Unlike the timeout, this error says another try won’t help. In most runs, the model read it and wrote a final answer straight away, ending with SessionEnd: complete. In the run above it kept asking, so stop ended the run with reason: doom_loop. getDoomLoopVerdict() returns a message only when detection ended the run, which makes it the signal to alert on."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To stop sooner, lower the thresholds. With doomLoop: { ladder: { observe: 2, block: 3, stop: 4 } }, a GPT-6 Luna run ended at streak 4 for $0.0002. The ladder also has two rungs that are off by default. steer sends the model a note that it’s repeating itself, and escalate runs the next turn on a stronger model you pick.",
+          "inlines": [
+            {
+              "text": "To stop sooner, lower the thresholds. With doomLoop: { ladder: { observe: 2, block: 3, stop: 4 } }, a GPT-6 Luna run ended at streak 4 for $0.0002. The ladder also has two rungs that are off by default. steer sends the model a note that it’s repeating itself, and escalate runs the next turn on a stronger model you pick."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 2: Tell the detector what counts as the same call",
+          "inlines": [
+            {
+              "text": "Step 2: Tell the detector what counts as the same call"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "By default, two calls count as the same only when their arguments match exactly. After a block, some models changed the argument slightly, which gives the call a new fingerprint and starts a new streak:",
+          "inlines": [
+            {
+              "text": "By default, two calls count as the same only when their arguments match exactly. After a block, some models changed the argument slightly, which gives the call a new fingerprint and starts a new streak:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": " fetch_invoice(\"INV-2291\")\nDoomLoopDetected: observe (streak 2)\n  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: block (streak 3)\n  fetch_invoice(\"2291\")\n  fetch_invoice(\"inv-2291\")\n  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: observe (streak 2)\n  fetch_invoice(\"INV-2291\")\n  fetch_invoice(\"INV2291\")\n  ...\nSessionEnd: complete\nattempts: 13, cost: $0.0125"
+        },
+        {
+          "type": "paragraph",
+          "text": "In nine more Mistral Large 4 runs with detection on, the model did this five times, and three of those reached the 40-step cap, mostly by alternating INV-2291 and inv-2291. GPT-6 Luna did the same with trailing spaces and newlines. The models are following the block message, which tells them to take a different approach. With only one tool, the only other approach they have is a different input.",
+          "inlines": [
+            {
+              "text": "In nine more Mistral Large 4 runs with detection on, the model did this five times, and three of those reached the 40-step cap, mostly by alternating INV-2291 and inv-2291. GPT-6 Luna did the same with trailing spaces and newlines. The models are following the block message, which tells them to take a different approach. With only one tool, the only other approach they have is a different input."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A loopKey on the tool tells the detector which part of the input identifies the call. For an invoice ID, that’s the digits:",
+          "inlines": [
+            {
+              "text": "A loopKey on the tool tells the detector which part of the input identifies the call. For an invoice ID, that’s the digits:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": " loopKey: ({ invoice_id }) => invoice_id.replace(/\\D/g, ''), // \"inv-2291 \" and \"INV-2291\" are one call"
+        },
+        {
+          "type": "code",
+          "text": " fetch_invoice(\"INV-2291\")\nDoomLoopDetected: observe (streak 2)\n  fetch_invoice(\"INV-2291\")\nDoomLoopDetected: block (streak 3)\nDoomLoopDetected: block (streak 4)\nDoomLoopDetected: block (streak 5)\nSessionEnd: complete\nattempts: 2, cost: $0.0039"
+        },
+        {
+          "type": "paragraph",
+          "text": "Every variant now maps to 2291, so the streak keeps growing and the repeats stay blocked. Five of six runs stopped after two real calls. In the sixth, the model tried a different invoice, INV-0000, which correctly reset the streak.",
+          "inlines": [
+            {
+              "text": "Every variant now maps to 2291, so the streak keeps growing and the repeats stay blocked. Five of six runs stopped after two real calls. In the sixth, the model tried a different invoice, INV-0000, which correctly reset the streak."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Normalize case, spacing, prefixes and anything else that doesn’t change which record the tool fetches. To ignore a field entirely, like a timeout the model raises on each retry, list only the fields that matter: loopKey: [‘invoice_id’]. A tool whose job is to repeat, like one that polls a job’s status, takes loopKey: false.",
+          "inlines": [
+            {
+              "text": "Normalize case, spacing, prefixes and anything else that doesn’t change which record the tool fetches. To ignore a field entirely, like a timeout the model raises on each retry, list only the fields that matter: loopKey: [‘invoice_id’]. A tool whose job is to repeat, like one that polls a job’s status, takes loopKey: false."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 3: Cap steps and cost for every run",
+          "inlines": [
+            {
+              "text": "Step 3: Cap steps and cost for every run"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Detection only catches repeats. A model that tries something new every turn never repeats a fingerprint, and a model that keeps asking after a block isn’t stopped until stop fires. Stop conditions end the run no matter why it ran long. Import maxCost alongside stepCountIs, replace stopWhen and add two lifecycle hooks:",
+          "inlines": [
+            {
+              "text": "Detection only catches repeats. A model that tries something new every turn never repeats a fingerprint, and a model that keeps asking after a block isn’t stopped until stop fires. "
+            },
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/stop-conditions",
+              "text": "Stop conditions"
+            },
+            {
+              "text": " end the run no matter why it ran long. Import maxCost alongside stepCountIs, replace stopWhen and add two "
+            },
+            {
+              "href": "https://openrouter.ai/docs/agent-sdk/call-model/lifecycle-hooks",
+              "text": "lifecycle hooks"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "let failuresInARow = 0; // tool errors in a row, whatever the arguments\n\n  stopWhen: [stepCountIs(15), maxCost(0.01), () => failuresInARow >= 5],\n  hooks: {\n    // ...the hooks from before, plus:\n    PostToolUse: [{ handler: () => { failuresInARow = 0; } }],\n    PostToolUseFailure: [{ handler: () => { failuresInARow++; } }],\n  },"
+        },
+        {
+          "type": "paragraph",
+          "text": "stopWhen is checked after every round, and the run stops when any condition is true. maxCost sums the usage.cost we return with each response, so it counts what you’re billed. The failure counter ignores arguments, so it catches the changed arguments from Step 2 even without a loopKey. On a Mistral Large 4 run that changed its arguments the same way, it ended the session after six calls for $0.0062, with SessionEnd: max_turns.",
+          "inlines": [
+            {
+              "text": "stopWhen is checked after every round, and the run stops when any condition is true. maxCost sums the usage.cost we return with each response, so it counts what you’re billed. The failure counter ignores arguments, so it catches the changed arguments from Step 2 even without a loopKey. On a Mistral Large 4 run that changed its arguments the same way, it ended the session after six calls for $0.0062, with SessionEnd: max_turns."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Every stopWhen condition ends the session with reason: max_turns, so log your own reason if you need to tell the caps apart. When a cap fires while the model still has tool calls pending, the SDK runs them and makes one last turn with tool calling disabled, so the run ends with a written answer. That’s why this run made six calls against a cap of five, and why the first demo made 41 against a cap of 40. Set allowFinalResponse: false to skip that turn.",
+          "inlines": [
+            {
+              "text": "Every stopWhen condition ends the session with reason: max_turns, so log your own reason if you need to tell the caps apart. When a cap fires while the model still has tool calls pending, the SDK runs them and makes one last turn with tool calling disabled, so the run ends with a written answer. That’s why this run made six calls against a cap of five, and why the first demo made 41 against a cap of 40. Set allowFinalResponse: false to skip that turn."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Set both caps from your normal runs. Ours took four to six turns and cost $0.0018 to $0.0053 on Mistral Large 4, so 15 steps and $0.01 leave room without allowing a 40-turn run. Of the two, the cost cap matters more, since later turns cost more than early ones.",
+          "inlines": [
+            {
+              "text": "Set both caps from your normal runs. Ours took four to six turns and cost $0.0018 to $0.0053 on Mistral Large 4, so 15 steps and $0.01 leave room without allowing a 40-turn run. Of the two, the cost cap matters more, since later turns cost more than early ones."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Without the Agent SDK, the same guards fit in any loop. Count calls per tool name and normalized arguments, return a tool result like “Blocked: tell the user what went wrong” instead of running the third repeat, and stop when steps or summed usage.cost pass your cap. Our Python version against the chat completions API stopped Mistral Large 4 after four steps, for under $0.002, in all three runs.",
+          "inlines": [
+            {
+              "text": "Without the Agent SDK, the same guards fit in any loop. Count calls per tool name and normalized arguments, return a tool result like “Blocked: tell the user what went wrong” instead of running the third repeat, and stop when steps or summed usage.cost pass your cap. Our Python version against the chat completions API stopped Mistral Large 4 after four steps, for under $0.002, in all three runs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 4: Put a credit limit on the API key",
+          "inlines": [
+            {
+              "text": "Step 4: Put a credit limit on the API key"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Every guard so far runs inside your agent’s process. If that code has a bug, ships without the caps, or runs a hundred sessions that each stay under maxCost, nothing limits the total. A credit limit on the key does, because we check it on our side before the request reaches a provider.",
+          "inlines": [
+            {
+              "text": "Every guard so far runs inside your agent’s process. If that code has a bug, ships without the caps, or runs a hundred sessions that each stay under maxCost, nothing limits the total. A credit limit on the key does, because we check it on our side before the request reaches a provider."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Set limit (in dollars) and limit_reset (daily, weekly, monthly or null) in the dashboard or with the create key API. If the key uses BYOK, also set include_byok_in_limit to true, because it defaults to false and BYOK spend doesn’t count toward the limit otherwise. Daily limits reset at midnight UTC, and weekly limits reset on Monday. Give each agent or customer its own key, so one loop can only spend that key’s share. If several agents have to share a key, follow Capping Shared Agent Keys.",
+          "inlines": [
+            {
+              "text": "Set limit (in dollars) and limit_reset (daily, weekly, monthly or null) in the dashboard or with the create key API. If the key uses BYOK, also set include_byok_in_limit to true, because it defaults to false and BYOK spend doesn’t count toward the limit otherwise. Daily limits reset at midnight UTC, and weekly limits reset on Monday. Give each agent or customer its own key, so one loop can only spend that key’s share. If several agents have to share a key, follow "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/capping-shared-agent-keys",
+              "text": "Capping Shared Agent Keys"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Before we route a request, we price its worst case, which is the input plus max_tokens. If that doesn’t fit in what the key has left, the request fails, and you aren’t charged. We sent a chat completions request with max_tokens: 900000 to an expensive model on a key with $9.97 left, and got this back:",
+          "inlines": [
+            {
+              "text": "Before we route a request, we price its worst case, which is the input plus max_tokens. If that doesn’t fit in what the key has left, the request fails, and you aren’t charged. We sent a chat completions request with max_tokens: 900000 to an expensive model on a key with $9.97 left, and got this back:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "402\n{\n  \"error\": {\n    \"message\": \"This request requires more credits, or fewer max_tokens. You requested up to 900000 tokens, but can only afford 664657. To increase, visit https://openrouter.ai/workspaces/<workspace-slug>/keys/<key-hash> and adjust the key's total limit\",\n    \"code\": 402,\n    \"metadata\": {\n      \"limit_source\": \"openrouter_key_limit\",\n      \"remedy_hint\": \"Raise or remove this API key's usage limit at https://openrouter.ai/settings/keys, or use a key without a limit.\",\n      \"provider_name\": null\n    }\n  },\n  \"user_id\": \"<org-id>\"\n}"
+        },
+        {
+          "type": "paragraph",
+          "text": "We replaced the workspace slug, key hash and organization ID.",
+          "inlines": [
+            {
+              "text": "We replaced the workspace slug, key hash and organization ID."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Branch on error.metadata.limit_source, not on the message text or the status code. An exhausted key also reports openrouter_key_limit, and the limits docs list that source under both 402 credit errors and 403 budget errors. If the message says the key can afford fewer tokens, as in the example above, retry with a lower max_tokens. If the key is exhausted, retrying can’t succeed until the limit resets, so treat it as a stop. The Agent SDK throws the 402 as PaymentRequiredResponseError. The one 402 worth retrying is openrouter_in_flight_budget, after its Retry-After header. Rate limits return 429 instead, which our LLM API rate limits guide covers.",
+          "inlines": [
+            {
+              "text": "Branch on error.metadata.limit_source, not on the message text or the status code. An exhausted key also reports openrouter_key_limit, and the "
+            },
+            {
+              "href": "https://openrouter.ai/docs/api_reference/limits",
+              "text": "limits docs"
+            },
+            {
+              "text": " list that source under both 402 credit errors and 403 budget errors. If the message says the key can afford fewer tokens, as in the example above, retry with a lower max_tokens. If the key is exhausted, retrying can’t succeed until the limit resets, so treat it as a stop. The Agent SDK throws the 402 as PaymentRequiredResponseError. The one 402 worth retrying is openrouter_in_flight_budget, after its Retry-After header. Rate limits return 429 instead, which our "
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/llm-api-rate-limits/",
+              "text": "LLM API rate limits guide"
+            },
+            {
+              "text": " covers."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Workspace budgets pool the cap across every key in a workspace, per day, week, month or lifetime. Blocked requests get a 403 with a message like Workspace monthly budget of $500.00 exceeded. Contact your org admin. (We didn’t trigger this one, so the message comes from the docs.) Requests already in flight still finish, so spend can go slightly over, but a loop that runs all night stops close to the daily cap. The spend controls guide shows how workspace budgets and per-member guardrails fit together.",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/docs/guides/features/workspaces/workspace-budgets",
+              "text": "Workspace budgets"
+            },
+            {
+              "text": " pool the cap across every key in a workspace, per day, week, month or lifetime. Blocked requests get a 403 with a message like Workspace monthly budget of $500.00 exceeded. Contact your org admin. (We didn’t trigger this one, so the message comes from the docs.) Requests already in flight still finish, so spend can go slightly over, but a loop that runs all night stops close to the daily cap. The "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/best-practices/spend-controls",
+              "text": "spend controls guide"
+            },
+            {
+              "text": " shows how workspace budgets and per-member guardrails fit together."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Which guard stops which loop?",
+          "inlines": [
+            {
+              "text": "Which guard stops which loop?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Each guard catches a different kind of loop. The key limit catches all of them, but only once the key’s cap is spent, so it works best as the last layer.",
+          "inlines": [
+            {
+              "text": "Each guard catches a different kind of loop. The key limit catches all of them, but only once the key’s cap is spent, so it works best as the last layer."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Loop",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Loop"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "doomLoop",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "doomLoop"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "loopKey",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "loopKey"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "stopWhen caps",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "stopWhen caps"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Key limit or workspace budget",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Key limit or workspace budget"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Same call, same arguments",
+          "inlines": [
+            {
+              "text": "Same call, same arguments"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops it",
+          "inlines": [
+            {
+              "text": "Stops it"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Not needed",
+          "inlines": [
+            {
+              "text": "Not needed"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops it at the cap",
+          "inlines": [
+            {
+              "text": "Stops it at the cap"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops it at the limit",
+          "inlines": [
+            {
+              "text": "Stops it at the limit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Same call, slightly different arguments",
+          "inlines": [
+            {
+              "text": "Same call, slightly different arguments"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Misses it",
+          "inlines": [
+            {
+              "text": "Misses it"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops it",
+          "inlines": [
+            {
+              "text": "Stops it"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops it at the cap",
+          "inlines": [
+            {
+              "text": "Stops it at the cap"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops it at the limit",
+          "inlines": [
+            {
+              "text": "Stops it at the limit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A new approach every turn",
+          "inlines": [
+            {
+              "text": "A new approach every turn"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Misses it",
+          "inlines": [
+            {
+              "text": "Misses it"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Misses it",
+          "inlines": [
+            {
+              "text": "Misses it"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops it at the cap",
+          "inlines": [
+            {
+              "text": "Stops it at the cap"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops it at the limit",
+          "inlines": [
+            {
+              "text": "Stops it at the limit"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Many runs, each under its own cap",
+          "inlines": [
+            {
+              "text": "Many runs, each under its own cap"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Per run only",
+          "inlines": [
+            {
+              "text": "Per run only"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Per run only",
+          "inlines": [
+            {
+              "text": "Per run only"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Per run only",
+          "inlines": [
+            {
+              "text": "Per run only"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops the total",
+          "inlines": [
+            {
+              "text": "Stops the total"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A deploy with the guards missing",
+          "inlines": [
+            {
+              "text": "A deploy with the guards missing"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Misses it",
+          "inlines": [
+            {
+              "text": "Misses it"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Misses it",
+          "inlines": [
+            {
+              "text": "Misses it"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Misses it",
+          "inlines": [
+            {
+              "text": "Misses it"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stops it at the limit",
+          "inlines": [
+            {
+              "text": "Stops it at the limit"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Frequently asked questions",
+          "inlines": [
+            {
+              "text": "Frequently asked questions"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Why does my agent keep calling the same tool after an error?",
+          "inlines": [
+            {
+              "text": "Why does my agent keep calling the same tool after an error?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The tool result says the call failed and the prompt says to finish the task, so another try looks like the right move to the model. Return errors that tell the model what to do next, like “The billing service is down. Tell the user and stop.” Don’t tell the model to retry until it succeeds.",
+          "inlines": [
+            {
+              "text": "The tool result says the call failed and the prompt says to finish the task, so another try looks like the right move to the model. Return errors that tell the model what to do next, like “The billing service is down. Tell the user and stop.” Don’t tell the model to retry until it succeeds."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Does a max iterations limit stop runaway costs?",
+          "inlines": [
+            {
+              "text": "Does a max iterations limit stop runaway costs?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "A max iterations limit stops a single run from going on forever, but it doesn’t cap what you spend, because later turns cost more and many runs under the limit still add up. Settings like max_iterations in LangChain’s AgentExecutor and max_iter in CrewAI do the same job as stepCountIs in the OpenRouter Agent SDK. Pair one with a cost cap per run and a credit limit on the API key.",
+          "inlines": [
+            {
+              "text": "A max iterations limit stops a single run from going on forever, but it doesn’t cap what you spend, because later turns cost more and many runs under the limit still add up. Settings like max_iterations in LangChain’s AgentExecutor and max_iter in CrewAI do the same job as stepCountIs in the OpenRouter Agent SDK. Pair one with a cost cap per run and a credit limit on the API key."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Next steps",
+          "inlines": [
+            {
+              "text": "Next steps"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/agent-sdk/call-model/doom-loop-detection",
+                  "text": "Doom-loop detection"
+                },
+                {
+                  "text": ": the ladder, steering, escalation and per-tool overrides."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/agent-sdk/call-model/stop-conditions",
+                  "text": "Stop conditions"
+                },
+                {
+                  "text": ": stepCountIs, maxCost, maxTokensUsed and custom conditions."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/team-spend-controls-setup/",
+                  "text": "Set up team AI spend controls"
+                },
+                {
+                  "text": ": workspace budgets and guardrails in the dashboard."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/blog/tutorials/agent-sdk-with-callmodel/",
+                  "text": "Agent SDK: Building Multi-turn Agent Workflows on OpenRouter"
+                },
+                {
+                  "text": ": how callModel runs the agent loop."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-12T01:10:10.477962Z",
+  "contentMode": "full"
+}
