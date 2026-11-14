@@ -1,0 +1,1719 @@
+{
+  "schemaVersion": 1,
+  "id": "ypeap2t8w4fqqfuvt7mw3wg79",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/ypeap2t8w4fqqfuvt7mw3wg79",
+  "fetchedAt": "2026-11-14T01:10:44.742621Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic",
+    "Anthropic / Claude",
+    "Agent 智能体",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "过去几个月里，常驻智能体（always-on agent）重新流行起来。",
+          "inlines": [
+            {
+              "text": "过去几个月里，常驻智能体（always-on agent）重新流行起来。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "常驻智能体是有状态、主动的，也就是说，它们能跨会话管理上下文，并在没有直接监督的情况下采取行动。底层上，它们和其他智能体运行在同一个核心循环上。区别在于外围架构：这套架构由若干基础构件组成，用来控制智能体何时唤醒、每次运行之间保留什么，以及它们的工作如何送达用户。",
+          "inlines": [
+            {
+              "text": "常驻智能体是有状态、主动的，也就是说，它们能跨会话管理上下文，并在没有直接监督的情况下采取行动。底层上，它们和其他智能体运行在同一个"
+            },
+            {
+              "href": "https://www.anthropic.com/research/building-effective-agents",
+              "text": "核心循环"
+            },
+            {
+              "text": "上。区别在于外围架构：这套架构由若干基础构件组成，用来控制智能体何时唤醒、每次运行之间保留什么，以及它们的工作如何送达用户。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这波回潮很大程度上源于近期的模型进步，让常驻智能体运行起来更实际。首先，最新模型的判断力更强：它们更能可靠地理解用户意图，也知道什么时候该来确认一下。其次，智能成本在下降，长周期任务受益最大。例如，在一个长周期编程基准上，Opus 5.5 每解决一个任务的花费比 Opus 5 低 78%，而典型工作负载下只低 40%。",
+          "inlines": [
+            {
+              "text": "这波回潮很大程度上源于近期的模型进步，让常驻智能体运行起来更实际。首先，最新模型的判断力更强：它们更能可靠地理解用户意图，也知道什么时候该来确认一下。其次，智能成本在下降，长周期任务受益最大。例如，在"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
+              "text": "一个长周期编程基准"
+            },
+            {
+              "text": "上，Opus 5.5 每解决一个任务的花费比 Opus 5 低 78%，而典型工作负载下只低 40%。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "客户开始问我们，如何把这种体验集成到自己的产品里。有些公司想让现有智能体更主动，另一些则打算从头构建。",
+          "inlines": [
+            {
+              "text": "客户开始问我们，如何把这种体验集成到自己的产品里。有些公司想让现有智能体更主动，另一些则打算从头构建。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本文拆解常驻智能体背后的基础构件，并说明它们如何协同工作。",
+          "inlines": [
+            {
+              "text": "本文拆解常驻智能体背后的基础构件，并说明它们如何协同工作。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "常驻智能体的循环",
+          "inlines": [
+            {
+              "text": "常驻智能体的循环"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "常驻智能体其实并不是“常驻”。这只是对用户体验的一种描述。",
+          "inlines": [
+            {
+              "text": "常驻智能体其实并不是“常驻”。这只是对用户体验的一种描述。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "实际上，智能体大部分时间都在休眠，定期醒来干活。每一段工作称为一次运行（run）：智能体收到一个事件，完成任务，然后保存发生了什么。运行在会话（session）中进行，会话是消息和工具调用的记录。运行结束后，智能体重新休眠，这个循环无限重复。",
+          "inlines": [
+            {
+              "text": "实际上，智能体大部分时间都在休眠，定期醒来干活。每一段工作称为一次"
+            },
+            {
+              "bold": true,
+              "text": "运行"
+            },
+            {
+              "text": "（run）：智能体收到一个事件，完成任务，然后保存发生了什么。运行在"
+            },
+            {
+              "bold": true,
+              "text": "会话"
+            },
+            {
+              "text": "（session）中进行，会话是消息和工具调用的记录。运行结束后，智能体重新休眠，这个循环无限重复。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0164c4319078af1fcaa13f0982ca0fc0d8d0c66a0f50ca343765d54fbb49d88b.gif",
+          "alt": "Animated diagram of an always-on agent’s timeline: long stretches asleep with no tokens spent, broken by brief runs. Each run has four steps: an event arrives, a session starts, the agent loop runs, and the run writes back to stored state that carries over between runs.",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "type": "heading",
+          "text": "核心基础构件",
+          "inlines": [
+            {
+              "text": "核心基础构件"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "常驻智能体的外围架构有五个核心基础构件：事件收件箱、定时器、记忆、权限和发件箱。下面逐一来看。",
+          "inlines": [
+            {
+              "text": "常驻智能体的外围架构有五个核心基础构件：事件收件箱、定时器、记忆、权限和发件箱。下面逐一来看。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "事件收件箱",
+          "inlines": [
+            {
+              "text": "事件收件箱"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "大多数 AI 智能体只在用户发消息时运行。相比之下，常驻智能体可以由多种事件触发，包括 webhook、定时任务和后台作业。",
+          "inlines": [
+            {
+              "text": "大多数 AI 智能体只在用户发消息时运行。相比之下，常驻智能体可以由多种事件触发，包括 webhook、定时任务和后台作业。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一种诱人的做法是让每个事件源直接调用智能体，但这有几种失败模式。例如，两个事件同时到达，可能启动相互竞争的运行；一次崩溃则可能彻底丢失一个事件。",
+          "inlines": [
+            {
+              "text": "一种诱人的做法是让每个事件源直接调用智能体，但这有几种失败模式。例如，两个事件同时到达，可能启动相互竞争的运行；一次崩溃则可能彻底丢失一个事件。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这就是事件收件箱的用武之地。每个来源不直接调用智能体，而是把事件发送到收件箱，由工作进程取走处理。",
+          "inlines": [
+            {
+              "text": "这就是事件收件箱的用武之地。每个来源不直接调用智能体，而是把事件发送到收件箱，由工作进程取走处理。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "最简单的版本包含三个组件：",
+          "inlines": [
+            {
+              "text": "最简单的版本包含三个组件："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "一份持久化的事件列表，通常是一张数据库表；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "一个处理器，通常是 HTTP 端点，负责把事件写入列表；以及"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "一个工作进程，通常是后台服务，负责从列表中读取。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "收件箱应跟踪每个事件的状态，并可根据来源提供的唯一标识符对事件去重。关系型数据库很适合做收件箱，每个事件作为新行追加。我们建议先从每个用户一个收件箱开始，如果需要更高并行度，可以进一步拆分。",
+          "inlines": [
+            {
+              "text": "收件箱应跟踪每个事件的状态，并可根据来源提供的唯一标识符对事件去重。关系型数据库很适合做收件箱，每个事件作为新行追加。我们建议先从每个用户一个收件箱开始，如果需要更高并行度，可以进一步拆分。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/58b76ddc2f3b86bdf2bb04b31b4c563fdbee2c9412ca99dd5b34738042c9becb.webp",
+          "alt": "Diagram of the event inbox. A handler (an HTTP endpoint) writes each event to the inbox, a database table that tracks status and drops duplicates, and wakes the worker. The worker reads what’s pending, starts the run, waits for it to finish, and marks the events done.",
+          "width": 2040,
+          "height": 1821
+        },
+        {
+          "type": "paragraph",
+          "text": "新事件到来时，处理器把事件写入收件箱并唤醒工作进程。工作进程读取所有待处理事件，启动一次运行。延续先前工作的事件（例如用户的回复）会恢复现有会话，其他事件则开启新会话。",
+          "inlines": [
+            {
+              "text": "新事件到来时，处理器把事件写入收件箱并唤醒工作进程。工作进程读取所有待处理事件，启动一次运行。延续先前工作的事件（例如用户的回复）会恢复现有会话，其他事件则开启新会话。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随后，worker 把事件交给智能体循环，等待本次运行结束，再把对应事件标记为已完成。具体实现有不少门道，下面列出几条最佳实践：",
+          "inlines": [
+            {
+              "text": "随后，worker 把事件交给智能体循环，等待本次运行结束，再把对应事件标记为已完成。具体实现有不少门道，下面列出几条最佳实践："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "处理程序应当尽快确认收到事件"
+                },
+                {
+                  "text": "。有些来源（比如 webhook 提供方）会把响应慢当成失败。处理程序仍可做轻量检查，但更深入的校验（例如检查提示词注入）应放到运行阶段完成。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "收件箱应当作为唯一可信来源"
+                },
+                {
+                  "text": "。worker 被唤醒后，应先从收件箱拉取最新事件。这样即使 worker 在运行中途挂掉，新起的 worker 也能拿到同一个事件并重试。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "一个收件箱同一时间只应有一个活跃 worker"
+                },
+                {
+                  "text": "。这样可以避免两次运行重复干活或互相覆盖。如果运行中途来了新事件，你可以把它推到下一轮运行、并入当前运行，或者中断当前运行重新开始。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "worker 应把待处理事件批量合并"
+                },
+                {
+                  "text": "。例如用户连续发来几条消息，worker 可以把它们合并成一次运行，智能体只需回复一次。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "定时器",
+          "inlines": [
+            {
+              "text": "定时器"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "定时器与事件收件箱配合，让常驻智能体具备主动性。定时器一般分两类：跟进和日程。跟进是智能体给自己设的截止时间，比如到点去查看某个回复；日程则是按固定节奏重复执行的任务，比如每日简报。",
+          "inlines": [
+            {
+              "text": "定时器与事件收件箱配合，让常驻智能体具备主动性。定时器一般分两类：跟进和日程。跟进是智能体给自己设的截止时间，比如到点去查看某个回复；日程则是按固定节奏重复执行的任务，比如每日简报。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "定时器存放在自己独立的持久化存储里，通常是另一张数据库表，与收件箱分开。收件箱只应存放已经可以处理的事件。跟进和日程可以共用相似的 schema，但日程还需要额外记录重复规则。",
+          "inlines": [
+            {
+              "text": "定时器存放在自己独立的持久化存储里，通常是另一张数据库表，与收件箱分开。收件箱只应存放已经可以处理的事件。跟进和日程可以共用相似的 schema，但日程还需要额外记录重复规则。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/692728684e9fcbd651582d1c02a771970046635ead98e70a04083126db7acc1f.webp",
+          "alt": "Diagram of timers. A run sets a timer in a database table, either a follow-up set by the agent or a schedule set by the user. A scheduler finds what’s due and adds an event to the event inbox, which starts the next run.",
+          "width": 1400,
+          "height": 732
+        },
+        {
+          "type": "paragraph",
+          "text": "定时器本身不会发起运行。真正干活的是调度器，通常是一个后台服务，它按固定间隔轮询存储，把到期的定时器触发出去。每一轮调度中，调度器会：",
+          "inlines": [
+            {
+              "text": "定时器本身不会发起运行。真正干活的是调度器，通常是一个后台服务，它按固定间隔轮询存储，把到期的定时器触发出去。每一轮调度中，调度器会："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "扫描存储，找出已到期的定时器。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Updates each timer based on its category."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "跟进类定时器应标记为已完成。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "日程类定时器应把到期时间更新为下一次触发时间。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "向收件箱添加一个事件，并唤醒 worker。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "调度器可以自己写一个服务，也可以直接用持久化执行引擎。",
+          "inlines": [
+            {
+              "text": "调度器可以自己写一个服务，也可以直接用持久化执行引擎。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "记忆",
+          "inlines": [
+            {
+              "text": "记忆"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "常驻智能体要跨越许多彼此独立的运行，靠记忆来保持连续性。",
+          "inlines": [
+            {
+              "text": "常驻智能体要跨越许多彼此独立的运行，靠记忆来保持连续性。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "和事件收件箱、定时器一样，记忆也应有自己的存储。在我们的产品里，比如 Claude Code 的 auto memory 和 Messages API 的 memory tool，记忆被实现为一个文件目录。对常驻智能体来说，这些目录应映射到持久化存储，通常是数据库或对象存储，这样记忆的生命周期就能长于 worker。",
+          "inlines": [
+            {
+              "text": "和事件收件箱、定时器一样，记忆也应有自己的存储。在我们的产品里，比如 Claude Code 的 "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/memory",
+              "text": "auto memory"
+            },
+            {
+              "text": " 和 Messages API 的 "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+              "text": "memory tool"
+            },
+            {
+              "text": "，记忆被实现为一个文件目录。对常驻智能体来说，这些目录应映射到持久化存储，通常是数据库或对象存储，这样记忆的生命周期就能长于 worker。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一条经验法则是：记忆只应保存智能体无法再次查到的东西。如果某些信息已经存在于其他系统（比如问题跟踪器），那就存一个指针即可。下面是常驻智能体应当保存的记忆类型：",
+          "inlines": [
+            {
+              "text": "一条经验法则是：记忆只应保存智能体无法再次查到的东西。如果某些信息已经存在于其他系统（比如问题跟踪器），那就存一个指针即可。下面是常驻智能体应当保存的记忆类型："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "用户指令："
+                },
+                {
+                  "text": "用户关于智能体行为的任何指令都应单独存成一个文件，并在每次运行开始时加载。用户不会总在旁边给智能体指方向，所以这些指令必须能跨运行延续下去。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "用户笔记："
+                },
+                {
+                  "text": "智能体应当保存它了解到的用户信息，比如用户的角色、偏好，或者用户给出的纠正。你可以先从一个文件开始，随着笔记增多再拆成多个小文件。拆成多个文件后，每次运行开始时只加载一个索引，需要更多细节时智能体再把对应的单个文件拉进上下文。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "历史消息："
+                },
+                {
+                  "text": "智能体应当记录自己已经告诉过用户什么，避免重复。它可以把它存进一个单独的文件，在每次运行开始时加载；也可以让执行单元加载智能体与用户最近几条消息。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "任务进度："
+                },
+                {
+                  "text": "对每个进行中的任务，智能体应当维护一个进度文件，记录已完成和待完成的部分。这样任何一次新的运行都能读取该文件，从上次中断的地方接着做。和用户笔记类似，每次运行开始时只加载索引，需要更多细节时智能体再把单个文件拉进上下文。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下图展示了一种示例配置。",
+          "inlines": [
+            {
+              "text": "下图展示了一种示例配置。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e1dbdc23dd3357eb7f80b45c25aa16a5485f63f8a0579e79bb010872d0f96ec8.webp",
+          "alt": "Diagram of an example memory setup as a directory of files. instructions.md, index.md, and reported.md are loaded at the start of every run, while the notes/ and progress/ folders are read when needed. The agent writes to memory during the run.",
+          "width": 1400,
+          "height": 703
+        },
+        {
+          "type": "paragraph",
+          "text": "以上说的都是运行期间保存的记忆。你还可以加入“做梦”机制，回顾过去的会话以整理记忆。做梦可以替换过时的条目，并发现只有跨多次运行才会显现的规律。如果想了解更多，我们的智能体记忆文章有更详细的介绍。",
+          "inlines": [
+            {
+              "text": "以上说的都是运行期间保存的记忆。你还可以加入“做梦”机制，回顾过去的会话以整理记忆。做梦可以替换过时的条目，并发现只有跨多次运行才会显现的规律。如果想了解更多，我们的"
+            },
+            {
+              "href": "https://www.anthropic.com/research/components-of-agent-memory",
+              "text": "智能体记忆文章"
+            },
+            {
+              "text": "有更详细的介绍。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "上下文窗口内部",
+          "inlines": [
+            {
+              "text": "上下文窗口内部"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "在开始任何工作之前，智能体会加载系统提示词、工具定义和记忆文件。这部分初始上下文的“开销”会包含在每次运行中，所以我们建议保持精简，并使用提示词缓存来降低成本。",
+          "inlines": [
+            {
+              "text": "在开始任何工作之前，智能体会加载系统提示词、工具定义和记忆文件。这部分初始上下文的“开销”会包含在每次运行中，所以我们建议保持精简，并使用"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+              "text": "提示词缓存"
+            },
+            {
+              "text": "来降低成本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "新会话开始时只有这部分上下文开销，以及触发本次运行的事件。而已有会话则会带回它此前各次运行中的消息和工具调用。",
+          "inlines": [
+            {
+              "text": "新会话开始时只有这部分上下文开销，以及触发本次运行的事件。而已有会话则会带回它此前各次运行中的消息和工具调用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果会话变得过长，你可以压缩较早的消息，或者开启一个新会话。这两种做法都会丢失细节，所以任何需要长期保留的内容都应当随时写入记忆。",
+          "inlines": [
+            {
+              "text": "如果会话变得过长，你可以"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/compaction",
+              "text": "压缩较早的消息"
+            },
+            {
+              "text": "，或者开启一个新会话。这两种做法都会丢失细节，所以任何需要长期保留的内容都应当随时写入记忆。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7ab1c0447328e89c284d6b0ee79bc41d2692eced60083427905dc8858a69219b.gif",
+          "alt": "Animated chart of context used over time. A fixed band for the system prompt, tools, and memory is present on every run. An existing session brings back its whole transcript and grows until compaction turns the older transcript into a summary.",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "type": "heading",
+          "text": "权限",
+          "inlines": [
+            {
+              "text": "权限"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "权限是常驻智能体风险最大的地方。一次运行持有用户的访问权限，而且按设计是在无人值守的情况下运作。对每次工具调用，智能体都需要判断是自己继续执行、阻止，还是等待批准。",
+          "inlines": [
+            {
+              "text": "权限是常驻智能体风险最大的地方。一次运行持有用户的访问权限，而且按设计是在无人值守的情况下运作。对每次工具调用，智能体都需要判断是自己继续执行、阻止，还是等待批准。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "权限相关的组件与其他智能体所用的相同：",
+          "inlines": [
+            {
+              "text": "权限相关的组件与其他智能体所用的相同："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "凭据存储："
+                },
+                {
+                  "text": "常驻智能体往往需要密码或访问令牌这类敏感的用户凭据才能发挥作用。"
+                },
+                {
+                  "href": "https://code.claude.com/docs/en/agent-sdk/secure-deployment#credential-management",
+                  "text": "推荐的做法"
+                },
+                {
+                  "text": "是在智能体环境之外设一个代理，由它给对外请求加上凭据。智能体发送不带凭据的请求，代理在转发前注入真实凭据。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "自动模式："
+                },
+                {
+                  "text": "常驻智能体应当能在没有用户持续输入的情况下工作。我们已经在 Claude Code 的"
+                },
+                {
+                  "href": "https://www.anthropic.com/research/claude-code-auto-mode",
+                  "text": "自动模式"
+                },
+                {
+                  "text": "中处理过这类问题的一个版本。自动模式用分类器审查风险较高的操作，拦截被判定为危险的操作，让 Claude 能找到更安全的做法。不过，最重要的决策仍然需要用户审核。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "延迟工具调用："
+                },
+                {
+                  "text": "在 Claude Code 中，"
+                },
+                {
+                  "href": "https://code.claude.com/docs/en/hooks#defer-a-tool-call-for-later",
+                  "text": "钩子可以延迟一次工具调用"
+                },
+                {
+                  "text": "，等待用户提供更多输入。同样的模式也适用于常驻智能体：它们在执行某些操作前，可能需要用户澄清或批准。调用被延迟时，本次运行结束，会话在调用中途保存。请求会展示给用户（例如通过用 "
+                },
+                {
+                  "href": "https://modelcontextprotocol.io/extensions/apps/overview",
+                  "text": "MCP Apps"
+                },
+                {
+                  "text": " 构建的交互式卡片），用户的回答则以事件形式回到收件箱。该事件会启动一次新的运行，带着用户的输入恢复已保存的会话。在延迟调用等待响应期间，工作进程可以继续处理其他事件，因此智能体不会被阻塞。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "发件箱",
+          "inlines": [
+            {
+              "text": "发件箱"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "大多数 AI 智能体在生成回复时会实时流式输出给用户，让用户能跟随 Claude 一步步推理问题、调用工具并写出答案。",
+          "inlines": [
+            {
+              "text": "大多数 AI 智能体在生成回复时会实时流式输出给用户，让用户能跟随 Claude 一步步推理问题、调用工具并写出答案。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "而常驻智能体的大部分工作都在后台完成。用户拿到的是结果和少量细节，而不是完整的逐步过程。",
+          "inlines": [
+            {
+              "text": "而常驻智能体的大部分工作都在后台完成。用户拿到的是结果和少量细节，而不是完整的逐步过程。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d9ddf09e83ddc28e12ffa9b663282231134fd5b215959c2c6acca090b05ae481.webp",
+          "alt": "Diagram of the outbox. A run ends with nothing to say, a send tool call, or a deferred tool call that asks the user. Messages go to the outbox, a database table, and a dispatcher delivers them to the user. A deferred request can go through the outbox or be shown in your own interface.",
+          "width": 1506,
+          "height": 739
+        },
+        {
+          "type": "paragraph",
+          "text": "一次运行可能以三种方式之一结束：",
+          "inlines": [
+            {
+              "text": "一次运行可能以三种方式之一结束："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "智能体向发件箱发送一条消息；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "智能体判断无需发送任何内容；"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "智能体通过延迟工具调用来请求权限或补充输入。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "大多数常驻智能体用一个“发送”工具直接把消息送达用户就够了。只有当你需要控制智能体发消息的节奏，或让智能体从错误中恢复时，才需要正式的发件箱。",
+          "inlines": [
+            {
+              "text": "大多数常驻智能体用一个“发送”工具直接把消息送达用户就够了。只有当你需要控制智能体发消息的节奏，或让智能体从错误中恢复时，才需要正式的发件箱。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "发件箱是一张单独存放待发消息的表，对应事件收件箱。此外还有一个调度器，通常是后台服务，对应工作进程。调度器读取待发消息，决定投递哪些，再把它们发送给用户。延迟工具调用发出的请求既可以走发件箱，也可以直接在界面中展示。",
+          "inlines": [
+            {
+              "text": "发件箱是一张单独存放待发消息的表，对应事件收件箱。此外还有一个调度器，通常是后台服务，对应工作进程。调度器读取待发消息，决定投递哪些，再把它们发送给用户。延迟工具调用发出的请求既可以走发件箱，也可以直接在界面中展示。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "除了投递，调节智能体发送消息的数量也很重要。发得太多会变得吵闹，发得太少又会漏掉用户需要知道的事情。我们建议通过构建评估来找到合适的平衡点。实践中，智能体最好一开始保持安静，再逐步赢得用户更多的关注。",
+          "inlines": [
+            {
+              "text": "除了投递，调节智能体发送消息的数量也很重要。发得太多会变得吵闹，发得太少又会漏掉用户需要知道的事情。我们建议通过构建评估来找到合适的平衡点。实践中，智能体最好一开始保持安静，再逐步赢得用户更多的关注。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "各部分如何协同",
+          "inlines": [
+            {
+              "text": "各部分如何协同"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "以下是五个基础组件如何组合在一起：",
+          "inlines": [
+            {
+              "text": "以下是五个基础组件如何组合在一起："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8398b63c35281d2a0d29658e06f20f0072278e5c61654f1a0169e94e1a4a4ebc.webp",
+          "alt": "Animated diagram of how the five primitives fit together. Timers and the event inbox start a run, the run works with memory and permissions inside a session, and the outbox delivers messages to the user, whose answer comes back as an event.",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "type": "paragraph",
+          "text": "每次运行都始于收件箱中的一个事件，无论是用户消息、webhook 还是定时器。工作进程取到事件后，就启动一次运行，在新的或已有的会话中唤醒智能体。智能体读取记忆以获得基线，在权限范围内执行操作，然后把学到的东西更新到记忆中。运行结束后，智能体向发件箱写入一行记录，由调度器把消息投递给用户。",
+          "inlines": [
+            {
+              "text": "每次运行都始于收件箱中的一个事件，无论是用户消息、webhook 还是定时器。工作进程取到事件后，就启动一次运行，在新的或已有的会话中唤醒智能体。智能体读取记忆以获得基线，在权限范围内执行操作，然后把学到的东西更新到记忆中。运行结束后，智能体向发件箱写入一行记录，由调度器把消息投递给用户。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些环节共同构成一个循环。一次运行可以设置定时器，稍后再次唤醒智能体；当用户回复消息时，其回答又会作为事件回到收件箱。每次运行都很短暂，但这个循环会一直持续下去，这正是智能体让人感觉始终在线的原因。",
+          "inlines": [
+            {
+              "text": "这些环节共同构成一个循环。一次运行可以设置定时器，稍后再次唤醒智能体；当用户回复消息时，其回答又会作为事件回到收件箱。每次运行都很短暂，但这个循环会一直持续下去，这正是智能体让人感觉始终在线的原因。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "致谢",
+          "inlines": [
+            {
+              "text": "致谢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "作者：William Hu。特别感谢 Rodrigo Olivares 和 Michael Segner 的贡献。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "作者：William Hu。特别感谢 Rodrigo Olivares 和 Michael Segner 的贡献。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Over the past few months, we’ve seen a resurgence of always-on agents.",
+          "inlines": [
+            {
+              "text": "Over the past few months, we’ve seen a resurgence of always-on agents."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Always-on agents are stateful and proactive, meaning they manage context across sessions and take actions without direct supervision. Underneath, they run on the same core loop as other agents. The difference is the surrounding architecture, which is built from primitives that control when the agents wake up, what carries over between runs, and how their work reaches the user.",
+          "inlines": [
+            {
+              "text": "Always-on agents are stateful and proactive, meaning they manage context across sessions and take actions without direct supervision. Underneath, they run on the same "
+            },
+            {
+              "href": "https://www.anthropic.com/research/building-effective-agents",
+              "text": "core loop"
+            },
+            {
+              "text": " as other agents. The difference is the surrounding architecture, which is built from primitives that control when the agents wake up, what carries over between runs, and how their work reaches the user."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The resurgence is largely due to recent model advancements, which have made always-on agents more practical to run. First, the latest models have better judgment: they’re more reliable at understanding user intent and knowing when to check in. Second, intelligence is becoming cheaper, with long-horizon tasks benefiting the most. For example, on one long-horizon coding benchmark, Opus 5.5 cost 78% less per solved task than Opus 5, compared with 40% less on typical workloads.",
+          "inlines": [
+            {
+              "text": "The resurgence is largely due to recent model advancements, which have made always-on agents more practical to run. First, the latest models have better judgment: they’re more reliable at understanding user intent and knowing when to check in. Second, intelligence is becoming cheaper, with long-horizon tasks benefiting the most. For example, on "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
+              "text": "one long-horizon coding benchmark"
+            },
+            {
+              "text": ", Opus 5.5 cost 78% less per solved task than Opus 5, compared with 40% less on typical workloads."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Customers have started to ask us how to integrate this type of experience into their own products. Some companies want to make their existing agents more proactive, while others are looking to build them from the ground up.",
+          "inlines": [
+            {
+              "text": "Customers have started to ask us how to integrate this type of experience into their own products. Some companies want to make their existing agents more proactive, while others are looking to build them from the ground up."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This post breaks down the primitives behind always-on agents and walks through how they fit together.",
+          "inlines": [
+            {
+              "text": "This post breaks down the primitives behind always-on agents and walks through how they fit together."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The cycle behind the always-on agent",
+          "inlines": [
+            {
+              "text": "The cycle behind the always-on agent"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "An always-on agent is not actually “always on.” This is just a description of the user experience.",
+          "inlines": [
+            {
+              "text": "An always-on agent is not actually “always on.” This is just a description of the user experience."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In reality, the agent spends most of its time asleep, waking up periodically to do work. Each stretch of work is called a run: the agent receives an event, completes its task, and then saves information about what happened. A run works inside a session, which is the transcript of messages and tool calls. Once the run is finished, the agent goes back to sleep, and the cycle repeats indefinitely.",
+          "inlines": [
+            {
+              "text": "In reality, the agent spends most of its time asleep, waking up periodically to do work. Each stretch of work is called a "
+            },
+            {
+              "bold": true,
+              "text": "run"
+            },
+            {
+              "text": ": the agent receives an event, completes its task, and then saves information about what happened. A run works inside a "
+            },
+            {
+              "bold": true,
+              "text": "session"
+            },
+            {
+              "text": ", which is the transcript of messages and tool calls. Once the run is finished, the agent goes back to sleep, and the cycle repeats indefinitely."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0164c4319078af1fcaa13f0982ca0fc0d8d0c66a0f50ca343765d54fbb49d88b.gif",
+          "alt": "Animated diagram of an always-on agent’s timeline: long stretches asleep with no tokens spent, broken by brief runs. Each run has four steps: an event arrives, a session starts, the agent loop runs, and the run writes back to stored state that carries over between runs.",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "type": "heading",
+          "text": "The core primitives",
+          "inlines": [
+            {
+              "text": "The core primitives"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The surrounding architecture of an always-on agent has five core primitives: an event inbox, timers, memory, permissions, and an outbox. Let’s take a look at each.",
+          "inlines": [
+            {
+              "text": "The surrounding architecture of an always-on agent has five core primitives: an event inbox, timers, memory, permissions, and an outbox. Let’s take a look at each."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Event inbox",
+          "inlines": [
+            {
+              "text": "Event inbox"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Most AI agents only run when the user sends a message. In contrast, always-on agents can be triggered by many types of events, including webhooks, scheduled tasks, and background jobs.",
+          "inlines": [
+            {
+              "text": "Most AI agents only run when the user sends a message. In contrast, always-on agents can be triggered by many types of events, including webhooks, scheduled tasks, and background jobs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One tempting approach is to have each event source call the agent directly, but that has a few failure modes. For example, two events arriving at the same time can start competing runs, and a crash can lose an event entirely.",
+          "inlines": [
+            {
+              "text": "One tempting approach is to have each event source call the agent directly, but that has a few failure modes. For example, two events arriving at the same time can start competing runs, and a crash can lose an event entirely."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This is where the event inbox comes in. Instead of calling the agent, every source sends an event to an inbox, where a worker picks it up.",
+          "inlines": [
+            {
+              "text": "This is where the event inbox comes in. Instead of calling the agent, every source sends an event to an inbox, where a worker picks it up."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The simplest version has three components:",
+          "inlines": [
+            {
+              "text": "The simplest version has three components:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "A durable list of events, usually a database table;"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A handler, usually an HTTP endpoint, that writes events to the list; and"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A worker, usually a background service, that reads from the list."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The inbox should track the status of each event, and events can be deduplicated based on unique identifiers from the source. A relational database works well for the inbox, with every event appended as a new row. We recommend starting with one inbox per user, but you can split this further if you need more parallelism.",
+          "inlines": [
+            {
+              "text": "The inbox should track the status of each event, and events can be deduplicated based on unique identifiers from the source. A relational database works well for the inbox, with every event appended as a new row. We recommend starting with one inbox per user, but you can split this further if you need more parallelism."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/58b76ddc2f3b86bdf2bb04b31b4c563fdbee2c9412ca99dd5b34738042c9becb.webp",
+          "alt": "Diagram of the event inbox. A handler (an HTTP endpoint) writes each event to the inbox, a database table that tracks status and drops duplicates, and wakes the worker. The worker reads what’s pending, starts the run, waits for it to finish, and marks the events done.",
+          "width": 2040,
+          "height": 1821
+        },
+        {
+          "type": "paragraph",
+          "text": "When a new event comes in, the handler writes the event to the inbox and wakes the worker. The worker reads whatever is pending and starts a run. Events that continue earlier work, such as a reply from the user, resume an existing session, while everything else starts a new session.",
+          "inlines": [
+            {
+              "text": "When a new event comes in, the handler writes the event to the inbox and wakes the worker. The worker reads whatever is pending and starts a run. Events that continue earlier work, such as a reply from the user, resume an existing session, while everything else starts a new session."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "From there, the worker passes the events to the agent loop, waits for the run to finish, and marks the corresponding events as done. The implementation details can get tricky, so here are a few best practices:",
+          "inlines": [
+            {
+              "text": "From there, the worker passes the events to the agent loop, waits for the run to finish, and marks the corresponding events as done. The implementation details can get tricky, so here are a few best practices:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "The handler should acknowledge events quickly"
+                },
+                {
+                  "text": ". Some sources, such as webhook providers, treat slow responses as failures. The handler can still run lightweight checks, but any deeper verification, such as checking for prompt injection, should be done during the run."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "The inbox should be the source of truth"
+                },
+                {
+                  "text": ". When the worker is woken up, it should pull the latest events from the inbox first. That way, if the worker dies mid-run, a new one can pick up the same event and retry."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "An inbox should only have one active worker at a time"
+                },
+                {
+                  "text": ". This prevents two runs from duplicating work or overwriting each other. When a new event shows up mid-run, you can either push it to the next run, fold it into the current run, or interrupt and restart."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "The worker should batch pending events together."
+                },
+                {
+                  "text": " For example, if the user sends several messages in a row, the worker can merge them into a single run, so the agent only needs to reply once."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Timers",
+          "inlines": [
+            {
+              "text": "Timers"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Together with the event inbox, timers let always-on agents be proactive. Timers generally fall into one of two categories: follow-ups or schedules. A follow-up is a deadline that the agent sets for itself, such as checking in on a reply. A schedule, on the other hand, is a recurring task that happens on a known cadence, such as a daily newsletter.",
+          "inlines": [
+            {
+              "text": "Together with the event inbox, timers let always-on agents be proactive. Timers generally fall into one of two categories: follow-ups or schedules. A follow-up is a deadline that the agent sets for itself, such as checking in on a reply. A schedule, on the other hand, is a recurring task that happens on a known cadence, such as a daily newsletter."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Timers live in their own durable store, usually another database table, separate from the inbox. The inbox should only hold events that are ready to be worked on. A follow-up and a schedule can share a similar schema, but a schedule needs to track its recurrence as well.",
+          "inlines": [
+            {
+              "text": "Timers live in their own durable store, usually another database table, separate from the inbox. The inbox should only hold events that are ready to be worked on. A follow-up and a schedule can share a similar schema, but a schedule needs to track its recurrence as well."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/692728684e9fcbd651582d1c02a771970046635ead98e70a04083126db7acc1f.webp",
+          "alt": "Diagram of timers. A run sets a timer in a database table, either a follow-up set by the agent or a schedule set by the user. A scheduler finds what’s due and adds an event to the event inbox, which starts the next run.",
+          "width": 1400,
+          "height": 732
+        },
+        {
+          "type": "paragraph",
+          "text": "A timer doesn’t initiate a run on its own. Instead, a scheduler, usually a background service, polls the store at a fixed interval and fires anything that’s due. On each pass, the scheduler:",
+          "inlines": [
+            {
+              "text": "A timer doesn’t initiate a run on its own. Instead, a scheduler, usually a background service, polls the store at a fixed interval and fires anything that’s due. On each pass, the scheduler:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Scans the store and finds timers that are due."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Updates each timer based on its category."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "A follow-up should be marked as done."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "A schedule should get its due time updated to the next occurrence."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Adds an event to the inbox and wakes the worker."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For the scheduler, you can either build your own service or use a durable execution engine.",
+          "inlines": [
+            {
+              "text": "For the scheduler, you can either build your own service or use a durable execution engine."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Memory",
+          "inlines": [
+            {
+              "text": "Memory"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Always-on agents work across many disjointed runs and rely on memory to maintain continuity.",
+          "inlines": [
+            {
+              "text": "Always-on agents work across many disjointed runs and rely on memory to maintain continuity."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Similar to the event inbox and timers, memory should have its own store. In our products, such as Claude Code’s auto memory and the Messages API’s memory tool, this is implemented as a directory of files. For an always-on agent, the directories should map to durable storage, usually a database or an object store. This way memories outlive the worker.",
+          "inlines": [
+            {
+              "text": "Similar to the event inbox and timers, memory should have its own store. In our products, such as Claude Code’s "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/memory",
+              "text": "auto memory"
+            },
+            {
+              "text": " and the Messages API’s "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+              "text": "memory tool"
+            },
+            {
+              "text": ", this is implemented as a directory of files. For an always-on agent, the directories should map to durable storage, usually a database or an object store. This way memories outlive the worker."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As a rule of thumb, memory should only hold what the agent can’t look up again. If something already lives in another system, such as an issue tracker, you should save a pointer instead. Here is a breakdown of the types of memory an always-on agent should store:",
+          "inlines": [
+            {
+              "text": "As a rule of thumb, memory should only hold what the agent can’t look up again. If something already lives in another system, such as an issue tracker, you should save a pointer instead. Here is a breakdown of the types of memory an always-on agent should store:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "User instructions:"
+                },
+                {
+                  "text": " Any instructions from the user about agent behavior should be saved in their own file and loaded at the start of every run. The user won’t always be around to steer the agent, so the instructions have to carry over between runs."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "User notes:"
+                },
+                {
+                  "text": " The agent should save what it’s learned about the user, such as their role, their preferences, or any corrections they’ve given. You can start with one file and move to several small files as the notes grow. In the latter case, only an index is loaded at the start of each run, but the agent can pull the individual files into context when it needs more details."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Past messages:"
+                },
+                {
+                  "text": " The agent should keep track of what it’s already told the user so nothing is repeated. It can either store this in a separate file that’s loaded at the start of each run, or have the worker load the agent’s last few messages with the user."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Task progress:"
+                },
+                {
+                  "text": " For each ongoing task, the agent should keep a progress file that covers what’s been done and what’s left. Any new run can then read that file and pick up where the previous run left off. Similar to user notes, only an index is loaded at the start of each run, but the agent can pull the individual files into context when it needs more details."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The diagram below shows one example setup.",
+          "inlines": [
+            {
+              "text": "The diagram below shows one example setup."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e1dbdc23dd3357eb7f80b45c25aa16a5485f63f8a0579e79bb010872d0f96ec8.webp",
+          "alt": "Diagram of an example memory setup as a directory of files. instructions.md, index.md, and reported.md are loaded at the start of every run, while the notes/ and progress/ folders are read when needed. The agent writes to memory during the run.",
+          "width": 1400,
+          "height": 703
+        },
+        {
+          "type": "paragraph",
+          "text": "All of the above describes memory that’s saved during a run. You can also add dreaming, which reviews past sessions to curate memories. Dreaming can replace outdated entries and find patterns that only show up across many runs. If you’re interested in learning more, our post on agent memory covers this in more detail.",
+          "inlines": [
+            {
+              "text": "All of the above describes memory that’s saved during a run. You can also add dreaming, which reviews past sessions to curate memories. Dreaming can replace outdated entries and find patterns that only show up across many runs. If you’re interested in learning more, our "
+            },
+            {
+              "href": "https://www.anthropic.com/research/components-of-agent-memory",
+              "text": "post on agent memory"
+            },
+            {
+              "text": " covers this in more detail."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Inside the context window",
+          "inlines": [
+            {
+              "text": "Inside the context window"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Before doing any work, the agent loads the system prompt, tool definitions, and memory files. This initial context “overhead” is included in every run, so we recommend keeping it lean and using prompt caching to lower costs.",
+          "inlines": [
+            {
+              "text": "Before doing any work, the agent loads the system prompt, tool definitions, and memory files. This initial context “overhead” is included in every run, so we recommend keeping it lean and using "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+              "text": "prompt caching"
+            },
+            {
+              "text": " to lower costs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A new session starts only with this context overhead and the events that triggered the run. An existing session, on the other hand, brings back the messages and tool calls from its earlier runs.",
+          "inlines": [
+            {
+              "text": "A new session starts only with this context overhead and the events that triggered the run. An existing session, on the other hand, brings back the messages and tool calls from its earlier runs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If a session becomes too long, you can either compact the older messages or start a new session. Both approaches lose detail, so anything that needs to persist should be saved to memory along the way.",
+          "inlines": [
+            {
+              "text": "If a session becomes too long, you can either "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/compaction",
+              "text": "compact the older messages"
+            },
+            {
+              "text": " or start a new session. Both approaches lose detail, so anything that needs to persist should be saved to memory along the way."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7ab1c0447328e89c284d6b0ee79bc41d2692eced60083427905dc8858a69219b.gif",
+          "alt": "Animated chart of context used over time. A fixed band for the system prompt, tools, and memory is present on every run. An existing session brings back its whole transcript and grows until compaction turns the older transcript into a summary.",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "type": "heading",
+          "text": "Permissions",
+          "inlines": [
+            {
+              "text": "Permissions"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Permissions are where always-on agents carry the most risk. A run holds the user’s access and, by design, operates unattended. For each tool call, the agent needs to decide whether to proceed on its own, block it, or wait for approval.",
+          "inlines": [
+            {
+              "text": "Permissions are where always-on agents carry the most risk. A run holds the user’s access and, by design, operates unattended. For each tool call, the agent needs to decide whether to proceed on its own, block it, or wait for approval."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The components for permissions are the same ones other agents use:",
+          "inlines": [
+            {
+              "text": "The components for permissions are the same ones other agents use:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Credential store:"
+                },
+                {
+                  "text": " Always-on agents often need sensitive user credentials like passwords or access tokens to be useful. The "
+                },
+                {
+                  "href": "https://code.claude.com/docs/en/agent-sdk/secure-deployment#credential-management",
+                  "text": "recommended pattern"
+                },
+                {
+                  "text": " is a proxy outside the agent’s environment that adds credentials to outgoing requests. The agent sends requests without credentials, and the proxy injects the real credentials before forwarding."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Auto mode:"
+                },
+                {
+                  "text": " An always-on agent should be able to work without constant user input. We’ve already tackled a version of this problem with "
+                },
+                {
+                  "href": "https://www.anthropic.com/research/claude-code-auto-mode",
+                  "text": "auto mode"
+                },
+                {
+                  "text": " in Claude Code. Auto mode uses classifiers to review higher-risk actions and block the ones they identify as dangerous so Claude can find a safer approach. User review, however, is still necessary for the most important decisions."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Deferred tool calls:"
+                },
+                {
+                  "text": " In Claude Code, "
+                },
+                {
+                  "href": "https://code.claude.com/docs/en/hooks#defer-a-tool-call-for-later",
+                  "text": "a hook can defer a tool call"
+                },
+                {
+                  "text": " and wait for additional input from the user. The same pattern applies to always-on agents, which may need clarification or approval before taking certain actions. When a call is deferred, the run ends and the session is saved mid-call. The request is shown to the user (e.g., through an interactive card built with "
+                },
+                {
+                  "href": "https://modelcontextprotocol.io/extensions/apps/overview",
+                  "text": "MCP Apps"
+                },
+                {
+                  "text": "), and their answer comes back as an event in the inbox. That event starts a new run, which resumes the saved session with the user’s input. While the deferred call waits for a response, the worker can pick up other events, so the agent isn’t blocked."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Outbox",
+          "inlines": [
+            {
+              "text": "Outbox"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "With most AI agents, the response is streamed to the user as it’s generated, so they can follow along as Claude reasons through the problem, calls tools, and writes its answer.",
+          "inlines": [
+            {
+              "text": "With most AI agents, the response is streamed to the user as it’s generated, so they can follow along as Claude reasons through the problem, calls tools, and writes its answer."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Always-on agents, on the other hand, do most of their work in the background. The user gets the outcome and a few details, rather than the entire step-by-step breakdown.",
+          "inlines": [
+            {
+              "text": "Always-on agents, on the other hand, do most of their work in the background. The user gets the outcome and a few details, rather than the entire step-by-step breakdown."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d9ddf09e83ddc28e12ffa9b663282231134fd5b215959c2c6acca090b05ae481.webp",
+          "alt": "Diagram of the outbox. A run ends with nothing to say, a send tool call, or a deferred tool call that asks the user. Messages go to the outbox, a database table, and a dispatcher delivers them to the user. A deferred request can go through the outbox or be shown in your own interface.",
+          "width": 1506,
+          "height": 739
+        },
+        {
+          "type": "paragraph",
+          "text": "A run can end in one of three ways:",
+          "inlines": [
+            {
+              "text": "A run can end in one of three ways:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "The agent sends a message to the outbox,"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The agent decides that nothing needs to be sent, or"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The agent uses a deferred tool call to request permission or additional input."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Most always-on agents can get by with a “send” tool that delivers the message directly to the user. You only need a formal outbox when you want to pace your agent’s messages or allow your agent to recover from errors.",
+          "inlines": [
+            {
+              "text": "Most always-on agents can get by with a “send” tool that delivers the message directly to the user. You only need a formal outbox when you want to pace your agent’s messages or allow your agent to recover from errors."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The outbox is a separate table of outgoing messages, analogous to the event inbox. There’s also a dispatcher, usually a background service, that’s analogous to the worker. The dispatcher reads the pending messages, decides what to deliver, and sends those to the user. A request from a deferred tool call can either go through the outbox or be shown directly in the interface.",
+          "inlines": [
+            {
+              "text": "The outbox is a separate table of outgoing messages, analogous to the event inbox. There’s also a dispatcher, usually a background service, that’s analogous to the worker. The dispatcher reads the pending messages, decides what to deliver, and sends those to the user. A request from a deferred tool call can either go through the outbox or be shown directly in the interface."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Beyond delivery, it’s important to tune how many messages the agent sends. An agent that sends too many becomes noisy, while an agent that doesn’t send enough misses things that the user needs to know. We recommend building evals to find the right balance. In practice, it’s better for the agent to start quiet and then earn more of the user’s attention over time.",
+          "inlines": [
+            {
+              "text": "Beyond delivery, it’s important to tune how many messages the agent sends. An agent that sends too many becomes noisy, while an agent that doesn’t send enough misses things that the user needs to know. We recommend building evals to find the right balance. In practice, it’s better for the agent to start quiet and then earn more of the user’s attention over time."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How everything fits together",
+          "inlines": [
+            {
+              "text": "How everything fits together"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Here is how the five primitives fit together:",
+          "inlines": [
+            {
+              "text": "Here is how the five primitives fit together:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/8398b63c35281d2a0d29658e06f20f0072278e5c61654f1a0169e94e1a4a4ebc.webp",
+          "alt": "Animated diagram of how the five primitives fit together. Timers and the event inbox start a run, the run works with memory and permissions inside a session, and the outbox delivers messages to the user, whose answer comes back as an event.",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "type": "paragraph",
+          "text": "Every run starts with an event from the inbox, whether it’s a user message, a webhook, or a timer. When the worker picks up an event, it kicks off a run and wakes the agent in a new or existing session. The agent reads its memory to get a baseline, works within its permissions to take actions, and then updates its memory with anything it has learned. Once the run is finished, the agent pushes a row to the outbox, and the dispatcher delivers the message to the user.",
+          "inlines": [
+            {
+              "text": "Every run starts with an event from the inbox, whether it’s a user message, a webhook, or a timer. When the worker picks up an event, it kicks off a run and wakes the agent in a new or existing session. The agent reads its memory to get a baseline, works within its permissions to take actions, and then updates its memory with anything it has learned. Once the run is finished, the agent pushes a row to the outbox, and the dispatcher delivers the message to the user."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Together, these form a cycle. A run can set a timer that wakes the agent again later, and when the user replies to a message, their answer comes back as an event in the inbox. Each run is brief, but the cycle keeps going indefinitely, and that’s what makes the agent feel like it’s always on.",
+          "inlines": [
+            {
+              "text": "Together, these form a cycle. A run can set a timer that wakes the agent again later, and when the user replies to a message, their answer comes back as an event in the inbox. Each run is brief, but the cycle keeps going indefinitely, and that’s what makes the agent feel like it’s always on."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Acknowledgements",
+          "inlines": [
+            {
+              "text": "Acknowledgements"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Written by William Hu. Special thanks to Rodrigo Olivares and Michael Segner for their contributions.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Written by William Hu. Special thanks to Rodrigo Olivares and Michael Segner for their contributions."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-14T01:11:00.040342Z",
+  "contentMode": "full"
+}
