@@ -1,7 +1,7 @@
 /* Both views use the complete weekly Markdown as their content source. */
 (() => {
   'use strict';
-  const SOURCE = '../weekly-reports/2026-W46.md?v=20261115-w46-r4';
+  const SOURCE = '../weekly-reports/2026-W46.md?v=20261115-w46-r5';
   const deck = document.getElementById('deck');
   const modeButton = document.getElementById('presentationToggle');
   const fullButton = document.getElementById('fullscreenToggle');
@@ -168,6 +168,7 @@
           wrapper = element('div', 'table-block');
           if (caption) { const label = caption.cloneNode(true); if (isContinuation) label.append(document.createTextNode('（续）')); wrapper.append(label); }
           const scroller = element('div', 'table-scroll'); const copy = table.cloneNode(false);
+          if (page.section >= 2) copy.classList.add('finance-compact');
           copy.append(table.querySelector('thead').cloneNode(true)); body = element('tbody'); copy.append(body); scroller.append(copy); wrapper.append(scroller); page.content.append(wrapper);
         }
         let continued = false;
