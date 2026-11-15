@@ -1,0 +1,804 @@
+{
+  "schemaVersion": 1,
+  "id": "e9o5h2c1o5f0xuh2bgqtc2w7k",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/e9o5h2c1o5f0xuh2bgqtc2w7k",
+  "fetchedAt": "2026-11-15T01:10:36.387093Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Cursor",
+    "安全对齐",
+    "行业动态"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "阅读约 6 分钟",
+          "inlines": [
+            {
+              "text": "阅读约 6 分钟"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://cursor.com/blog/security-incident-update#what-happened",
+                  "text": "发生了什么"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://cursor.com/blog/security-incident-update#what-was-not-affected",
+                  "text": "哪些未受影响"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://cursor.com/blog/security-incident-update#what-weve-done",
+                  "text": "我们做了什么"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://cursor.com/blog/security-incident-update#whats-next",
+                  "text": "接下来怎么办"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "10 月 29 日，我们通报正在调查一起安全事件：Cursor VS Code 扩展市场中出现了 Anthropic Claude Code 扩展的恶意未授权副本。经过过去两周的深入调查，我们想进一步说明这次攻击的来龙去脉和相关影响。",
+          "inlines": [
+            {
+              "text": "10 月 29 日，我们"
+            },
+            {
+              "href": "https://cursor.com/blog/claude-code-extension-security-notice",
+              "text": "通报"
+            },
+            {
+              "text": "正在调查一起安全事件：Cursor VS Code 扩展市场中出现了 Anthropic Claude Code 扩展的恶意未授权副本。经过过去两周的深入调查，我们想进一步说明这次攻击的来龙去脉和相关影响。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "绝大多数客户未受影响。对于每一位受影响客户，我们都已直接联系，并告知了与其相关的具体情况。",
+          "inlines": [
+            {
+              "text": "绝大多数客户未受影响。对于每一位受影响客户，我们都已直接联系，并告知了与其相关的具体情况。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "保护客户数据安全是我们高度重视的核心要务。此次事件涉及我们存储和共享的数据、我们签发的凭证以及我们运营的系统。我们正在处理相关影响，并根据此次教训加强安全措施。",
+          "inlines": [
+            {
+              "text": "保护客户数据安全是我们高度重视的核心要务。此次事件涉及我们存储和共享的数据、我们签发的凭证以及我们运营的系统。我们正在处理相关影响，并根据此次教训加强安全措施。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "发生了什么",
+          "inlines": [
+            {
+              "text": "发生了什么"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "经过调查，我们还原出如下经过：",
+          "inlines": [
+            {
+              "text": "经过调查，我们还原出如下经过："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "源头在 Fireworks。"
+                },
+                {
+                  "text": "攻击者获取了我们签发给 Fireworks 的一个访问密钥。该密钥"
+                },
+                {
+                  "href": "https://fireworks.ai/security/bulletins",
+                  "text": "由 Fireworks 泄露"
+                },
+                {
+                  "text": "，攻击者用它从我们与其共享数据的一个只读存储桶中复制了数据。该存储桶中存有少量编码智能体的会话轨迹，大多来自 2025 年，均来自未开启隐私模式的会话，这些数据我们获准用于模型训练。其中少数轨迹包含未脱敏的凭证；不到 0.01% 的客户存在 API 凭证泄露。攻击者以这些凭证为起点，进入了 Cursor 使用的部分 SaaS 工具，并由此访问了部分已归档的非生产环境 Cursor 源代码仓库（其中一些包含商务联系人信息）、有限的客户支持数据和邮件往来、产品使用指标和联系方式、部分编码智能体会话摘要，以及用户曾发送给 Cursor 支持团队的一些凭证。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "我们的监控系统发现了未授权活动。"
+                },
+                {
+                  "text": "在察觉未授权活动后，我们停用了该供应商的密钥，启动事件响应工作流，并开始吊销和轮换凭证、排查是否还有进一步的未授权访问。每发现一处新的访问，我们都立即切断。出于谨慎，我们临时停用了远超证据所要求的内部服务和产品服务，导致 Cursor 的部分功能短暂中断。在确认安全后，我们逐一恢复了这些服务。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "攻击者发布了恶意扩展。"
+                },
+                {
+                  "text": "10 月 29 日，攻击者利用从我们内部系统泄露数据中窃取的凭证，将 Anthropic Claude Code 扩展的恶意未授权副本直接放到了用于提供 Cursor VS Code 扩展市场服务的缓存上。Anthropic 并未发布该副本，这也不是 Anthropic 产品中的漏洞。市场源 Open VSX 从未出现过该恶意软件。10 月 29 日当天请求该扩展特定缓存版本的用户中，最多有 5,000 人可能收到了恶意构建版本。该版本上线约 11 小时后被我们移除。我们将其下架，关停了扩展市场，并与托管攻击者服务器的云服务商合作将其关停。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "我们已通知客户。"
+                },
+                {
+                  "text": "10 月 30 日，我们在博客和 X 上发布了安全公告，其中包含入侵指标、修复步骤和用于检查系统的脚本，并开始通过应用内通知和电子邮件告知受影响的用户和团队管理员。如果凭据遭到泄露，我们通过电子邮件向团队管理员发送了需要轮换的具体密钥清单，并要求签发这些凭据的第三方服务将其吊销。如果客户支持数据或业务数据可能受到影响，我们已直接通知客户。如果客户在泄露窗口期内从 Cursor VS Code 扩展市场安装或更新到了被篡改的版本 Anthropic.claude-code 2.1.312 或 2.1.313，我们请客户按照"
+                },
+                {
+                  "href": "https://cursor.com/blog/claude-code-extension-security-notice",
+                  "text": "我们的安全公告"
+                },
+                {
+                  "text": "中的步骤操作。仅卸载扩展可能还不够。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "我们认为事件已得到控制。我们观察到的最后一次攻击者活动发生在 11 月 1 日，且已被拦截。我们会继续监控系统是否存在异常活动，并加强安全控制。如果我们发现会影响客户的更多信息，将直接联系他们。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "未受影响的部分",
+          "inlines": [
+            {
+              "text": "未受影响的部分"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Your prompts and code if you use Privacy Mode."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "对于未使用隐私模式的用户，只有"
+                },
+                {
+                  "bold": true,
+                  "text": "不到 0.05%"
+                },
+                {
+                  "text": " 的用户其编码智能体追踪数据遭到泄露。我们已识别出这些用户，并逐一直接通知。如果您没有收到通知，说明您的数据不在这些追踪数据中。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "您当前发送给 Cursor 的任何数据或实时流量。泄露的追踪数据仅限于用于历史离线分析的存储。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "运行 Cursor 的生产系统和基础设施。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Cursor 应用及其官方更新，以及我们交付给客户端和云服务的代码。Cursor 通过独立的代码托管系统发布，攻击者从未访问过该系统，也没有任何发布签名密钥泄露。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们的其他产品，包括面向客户团队的 Cloud Agents、Grok Bot 以及所有其他 SpaceX SI 产品。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们扩展市场中的任何其他扩展。我们已验证所有其他扩展均为正版，并审查和重建了市场商店。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "活跃的推理请求。这些请求未遭泄露，并且作为预防措施，我们已将全部推理迁离第三方训练和推理供应商。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "从 "
+                },
+                {
+                  "href": "https://cursor.com/marketplace",
+                  "text": "Cursor Marketplace"
+                },
+                {
+                  "text": " 下载的任何插件。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "客户的代码仓库。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们已采取的措施",
+          "inlines": [
+            {
+              "text": "我们已采取的措施"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "将所有推理流量迁离 Fireworks，停用我们签发给它的密钥，并切断它对与我们共享的所有数据集的访问。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "轮换我们发现的每一个已泄露的 Cursor 凭据，按风险从高到低处理；作为预防措施，我们还轮换了内部系统中使用的所有凭据，即使没有证据表明其已泄露。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "验证我们市场中所有其他扩展均为正版，并审查和重建了我们的 VS Code 扩展市场。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "尽可能扩大对服务提供商的网络访问限制，使泄露的凭据无法在预期位置之外使用。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在所有代码仓库中加入密钥扫描和防护措施，并将扫描范围扩大到其他内部数据源。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "作为预防措施，重新部署所有生产基础设施和服务，并在恢复每个内部服务前逐一审查。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "聘请外部取证专家协助调查。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "联系所有受影响者。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "下一步",
+          "inlines": [
+            {
+              "text": "下一步"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们对此次事件受到影响的人深表歉意——隐私与安全始终是我们的头等大事，我们能够也必须做得更好。我们会吸取这次的经验教训，让 Cursor 变得更安全。如有重要变动，我们会更新本文。",
+          "inlines": [
+            {
+              "text": "我们对此次事件受到影响的人深表歉意——隐私与安全始终是我们的头等大事，我们能够也必须做得更好。我们会吸取这次的经验教训，让 Cursor 变得更安全。如有重要变动，我们会更新本文。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "有问题？请发邮件至 security@cursor.com。",
+          "inlines": [
+            {
+              "text": "有问题？请发邮件至 security@cursor.com。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "6 min read",
+          "inlines": [
+            {
+              "text": "6 min read"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://cursor.com/blog/security-incident-update#what-happened",
+                  "text": "What happened"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://cursor.com/blog/security-incident-update#what-was-not-affected",
+                  "text": "What was not affected"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://cursor.com/blog/security-incident-update#what-weve-done",
+                  "text": "What we've done"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://cursor.com/blog/security-incident-update#whats-next",
+                  "text": "What's next"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On October 29, we shared that we were investigating a security incident and a malicious, unauthorized copy of Anthropic's Claude Code extension that appeared in the Cursor VS Code extension marketplace. After an extensive investigation over the past two weeks, we want to share more context on the attack and the related impact.",
+          "inlines": [
+            {
+              "text": "On October 29, we "
+            },
+            {
+              "href": "https://cursor.com/blog/claude-code-extension-security-notice",
+              "text": "shared"
+            },
+            {
+              "text": " that we were investigating a security incident and a malicious, unauthorized copy of Anthropic's Claude Code extension that appeared in the Cursor VS Code extension marketplace. After an extensive investigation over the past two weeks, we want to share more context on the attack and the related impact."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The vast majority of customers were not affected, and we have contacted each affected customer directly with the details that apply to them.",
+          "inlines": [
+            {
+              "text": "The vast majority of customers were not affected, and we have contacted each affected customer directly with the details that apply to them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Protecting the safety of our customers' data is a core priority we take seriously. This incident involved data we stored and shared, credentials we issued, and systems we operate. We are addressing the impacts and are enhancing our security measures based on what we have learned.",
+          "inlines": [
+            {
+              "text": "Protecting the safety of our customers' data is a core priority we take seriously. This incident involved data we stored and shared, credentials we issued, and systems we operate. We are addressing the impacts and are enhancing our security measures based on what we have learned."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What happened",
+          "inlines": [
+            {
+              "text": "What happened"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Our investigation has pieced together the following picture:",
+          "inlines": [
+            {
+              "text": "Our investigation has pieced together the following picture:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "It started at Fireworks."
+                },
+                {
+                  "text": " An attacker obtained an access key we had issued to Fireworks. The key was "
+                },
+                {
+                  "href": "https://fireworks.ai/security/bulletins",
+                  "text": "exposed by Fireworks"
+                },
+                {
+                  "text": ", and the attacker used it to copy data from a read-only storage bucket we used to share data with them. That bucket contained limited coding agent traces, mostly from 2025, from sessions not in Privacy Mode, which we were permitted to use for model training. A small number of those traces contained credentials that had not been redacted; less than 0.01% of customers had API credentials exposed. Starting with those credentials, the attacker reached select SaaS tools used by Cursor. From these tools they accessed select archived non-production Cursor source code repositories (some containing business contact information), limited customer support data and email conversations, product usage metrics and contact details, summaries of some coding agent conversations, and some credentials users had sent to the Cursor support team."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Our monitoring systems identified the unauthorized activity."
+                },
+                {
+                  "text": " After becoming aware of the unauthorized activity, we deactivated the vendor's key, opened an incident response workstream, and began revoking and rotating credentials and hunting for any further unauthorized access. As we identified further access, we cut it off. Out of an abundance of caution, we temporarily disabled internal and product services well beyond what the evidence required, which temporarily disrupted certain Cursor features. We restored each one once it was safe to do so."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "The attacker published a malicious extension."
+                },
+                {
+                  "text": " On October 29, using a stolen credential from the exposed data from our internal system, the attacker placed malicious, unauthorized copies of Anthropic's Claude Code extension directly on the cache used to serve the Cursor VS Code extension marketplace. Anthropic did not publish this copy, and this was not a vulnerability in Anthropic's product. The marketplace source, Open VSX, never had the malware. At most 5,000 users who requested specific cached versions of the extension on October 29 potentially received the malicious build. It was available for approximately 11 hours before we removed it. We took it down, took the extension marketplace offline, and worked with the cloud service provider hosting the attacker's server to take it down."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "We notified customers."
+                },
+                {
+                  "text": " On October 30, we published a security notice on our blog and on X with indicators of compromise, remediation steps and scripts to check your system, and began notifying affected users and team admins through in-app notices and email. If credentials were exposed, we emailed team admins a list of the specific keys to rotate, and asked the third-party services that issued those credentials to revoke them. If customer support or business data may have been involved, we notified customers directly. If customers installed or updated to tampered version Anthropic.claude-code 2.1.312 or 2.1.313 from the Cursor VS Code extension marketplace during the exposure window, we ask customers to follow the steps in "
+                },
+                {
+                  "href": "https://cursor.com/blog/claude-code-extension-security-notice",
+                  "text": "our security notice"
+                },
+                {
+                  "text": ". Uninstalling the extension alone may not be enough."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "We believe the incident is contained. The last attacker activity we have seen was on November 1, and it was blocked. We continue to monitor our systems for anomalous activity and to strengthen our security controls. If we identify additional information that affects customers, we will contact them directly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What was not affected",
+          "inlines": [
+            {
+              "text": "What was not affected"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Your prompts and code if you use Privacy Mode."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "For users not using Privacy Mode, coding agent traces were exposed for "
+                },
+                {
+                  "bold": true,
+                  "text": "fewer than 0.05%"
+                },
+                {
+                  "text": " of users. We have identified these users and notified each of them directly. If you did not receive a notification, your data was not in these traces."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Any data or live traffic you are sending to Cursor right now. The exposed trace data was limited to storage used for historical offline analysis."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The production systems and infrastructure that run Cursor."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The Cursor app and its official updates, and the code we ship both to the client and to our cloud services. We ship Cursor from a separate code hosting system that the attacker never accessed, and no release signing keys were exposed."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Our other products, including Cloud Agents for customer teams, Grok Bot, and all other SpaceX SI products."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Any other extension in our extension marketplace. We validated that all other extensions were authentic, and reviewed and rebuilt the marketplace store."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Active inference requests. These were not exposed, and we moved all inference away from the third-party training and inference vendor as a precaution."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Any plugins downloaded from the "
+                },
+                {
+                  "href": "https://cursor.com/marketplace",
+                  "text": "Cursor Marketplace"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Customer code repositories."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What we've done",
+          "inlines": [
+            {
+              "text": "What we've done"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Moved all inference traffic off Fireworks, deactivated the key we had issued to it, and cut off its access to all data sets we shared with it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Rotated every exposed Cursor credential we found, highest risk first, and as a precaution rotated all credentials in use across our internal systems, even where we had no evidence of exposure."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Validated that all other extensions in our marketplace were authentic, and reviewed and rebuilt our VS Code extension marketplace."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Expanded network access restrictions across our service providers, where possible, so compromised credentials can't be used outside their intended location."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Added secret scanning and protections across all our code repositories, and expanded scanning to other internal data sources."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Redeployed all production infrastructure and services as a precaution, and reviewed every internal service before restoring it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Engaged external forensics experts to support our investigation."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Contacted everyone affected."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What's next",
+          "inlines": [
+            {
+              "text": "What's next"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We apologize to those impacted by this incident — privacy and security is treated as a top priority, and we can and must do better. We're taking what we've learned and using it to make Cursor more secure. If anything important changes, we'll update this post.",
+          "inlines": [
+            {
+              "text": "We apologize to those impacted by this incident — privacy and security is treated as a top priority, and we can and must do better. We're taking what we've learned and using it to make Cursor more secure. If anything important changes, we'll update this post."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Questions? Email us at security@cursor.com.",
+          "inlines": [
+            {
+              "text": "Questions? Email us at security@cursor.com."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-15T01:10:36.388016Z",
+  "contentMode": "full"
+}
