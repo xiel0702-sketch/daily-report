@@ -1,7 +1,7 @@
 /* Both views use the complete weekly Markdown as their content source. */
 (() => {
   'use strict';
-  const SOURCE = '../weekly-reports/2026-W46.md?v=20261115-w46-r5';
+  const SOURCE = '../weekly-reports/2026-W46.md?v=20261115-w46-r6';
   const deck = document.getElementById('deck');
   const modeButton = document.getElementById('presentationToggle');
   const fullButton = document.getElementById('fullscreenToggle');
