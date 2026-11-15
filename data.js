@@ -115,7 +115,7 @@ const WEEKLY_DATA = [
   {
     "week": "W46",
     "label": "2026 Week 46",
-    "coverage": "11月9日 — 11月15日（截至22:45）· IPO与A轮及以前融资",
+    "coverage": "11月9日 — 11月15日（截至22:45）· IPO与融资动态",
     "file": "weekly-reports/2026-W46.md"
   },
   {
