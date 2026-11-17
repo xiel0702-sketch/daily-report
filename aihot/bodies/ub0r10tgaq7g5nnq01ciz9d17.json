@@ -1,0 +1,874 @@
+{
+  "schemaVersion": 1,
+  "id": "ub0r10tgaq7g5nnq01ciz9d17",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/ub0r10tgaq7g5nnq01ciz9d17",
+  "fetchedAt": "2026-11-17T01:11:22.616010Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Microsoft Research",
+    "Microsoft / Copilot",
+    "Agent 智能体",
+    "AI 编码",
+    "论文研究"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/479bd912dda84c7da520b79f7bd0c1b9b6ea36915d274fd051919591ea59cd7f.jpg",
+          "alt": "Six coding sessions with shrinking cost bars send their logs to TokenEconomizer, which uses micro-skills, tool pruning and failure-loop intervention to guide an unchanged coding agent through the next session.",
+          "width": 1400,
+          "height": 788
+        },
+        {
+          "type": "heading",
+          "text": "概览",
+          "inlines": [
+            {
+              "text": "概览"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "开发者日复一日地在同一批代码库中使用 AI 编程智能体，但智能体往往每次会话都从零开始：重新摸索熟悉的事实、加载用不上的工具、重复此前不成功的做法。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "TokenEconomizer 是一款开源插件，它能从智能体在某个代码库中的历史会话中学习，减少后续会话中的浪费，而且无需改动智能体或其底层模型。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在 277 个真实的缺陷修复任务中，TokenEconomizer 让多个 AI 编程智能体的成本降低了 18.4%–30.9%。所有测试过的代码库成本都有下降，任务成功率则基本保持稳定。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AI 编程智能体正越来越多地帮助开发者基本独立地修复缺陷、构建功能，但每一次与模型的交互都会消耗 token。在每次会话中，智能体都要向模型发送指令、工具描述和会话历史。多数降低这部分成本的努力都聚焦于单个任务。然而开发者会反复回到同一批代码库，这就给了智能体从以往工作中学习的机会。缺少这种学习，智能体可能反复重新摸索如何运行测试、加载它从不使用的工具，或者花上几十轮反复纠缠同一个错误。",
+          "inlines": [
+            {
+              "text": "AI 编程智能体正越来越多地帮助开发者基本独立地修复缺陷、构建功能，但每一次与模型的交互都会消耗 "
+            },
+            {
+              "italic": true,
+              "text": "token。在每次会话中"
+            },
+            {
+              "text": "，智能体都要向模型发送指令、工具描述和会话历史。多数降低这部分成本的努力都聚焦于单个任务。然而开发者会反复回到同一批代码库，这就给了智能体从以往工作中学习的机会。缺少这种学习，智能体可能反复重新摸索如何运行测试、加载它从不使用的工具，或者花上几十轮反复纠缠同一个错误。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的论文 TokenEconomizer: Experience-Driven Black-Box Cost Control for Coding Agents 中，我们提出了一个简单的问题：在某个代码库中积累的经验，能否帮助智能体更高效地完成后续任务？TokenEconomizer 是来自加州大学伯克利分校、微软研究院和微软安全团队的开源插件，它把已完成的会话转化为对后续会话的指导。它降低浪费的同时不改动智能体或其底层模型，因此开发者可以把它与已经在用的编程智能体搭配使用。",
+          "inlines": [
+            {
+              "text": "在我们的论文 "
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/research/publication/tokeneconomizer-experience-driven-black-box-cost-control-for-coding-agents/",
+              "text": "TokenEconomizer: Experience-Driven Black-Box Cost Control for Coding Agents"
+            },
+            {
+              "text": " 中，我们提出了一个简单的问题：在某个代码库中积累的经验，能否帮助智能体更高效地完成后续任务？TokenEconomizer 是来自加州大学伯克利分校、微软研究院和微软安全团队的开源插件，它把已完成的会话转化为对后续会话的指导。它降低浪费的同时不改动智能体或其底层模型，因此开发者可以把它与已经在用的编程智能体搭配使用。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/4e99bb149aba9f390b9a768056271ec8fc48134fccf23287ab987f03825bfe32.webp",
+          "alt": "Each finished session teaches TokenEconomizer something about the repository, so later sessions cost less tokens. \n",
+          "width": 2560,
+          "height": 1371
+        },
+        {
+          "type": "paragraph",
+          "text": "图 1. 每个完成的会话都会让 TokenEconomizer 对这个代码库多一分了解，后续会话消耗的 token 也就更少。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 1. 每个完成的会话都会让 TokenEconomizer 对这个代码库多一分了解，后续会话消耗的 token 也就更少。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "token 都花在哪了",
+          "inlines": [
+            {
+              "text": "token 都花在哪了"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们首先在 SWE-Bench 的 60 个任务上对 Claude Code 做了分析。SWE-Bench 是一个基于开源 Python 项目真实缺陷修复的基准测试，我们按顺序运行每个代码库的任务。有三类浪费反复出现：",
+          "inlines": [
+            {
+              "text": "我们首先在 SWE-Bench 的 60 个任务上对 Claude Code 做了分析。SWE-Bench 是一个基于开源 Python 项目真实缺陷修复的基准测试，我们按顺序运行每个代码库的任务。有三类浪费反复出现："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "反复重新摸索同样的事实"
+                },
+                {
+                  "text": "。当一个代码库累计完成至少五个任务后，30% 的工具调用重复了该代码库中更早任务里的某个操作。只有 7% 与另一个代码库历史中的操作相匹配。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "为用不上的工具付费"
+                },
+                {
+                  "text": "。智能体每一轮都会收到 23 个工具描述，但其中 16 个从未被调用。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "卡在失败上"
+                },
+                {
+                  "text": "。失败的任务占 17%，却消耗了 32% 的费用。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还测试了三款流行的开源插件，它们各自围绕一种固定的省钱策略构建。每款插件都能降低部分代码库的成本，但在另一些代码库上则不然。综合来看，这些发现说明有效的成本控制必须因代码库而异，而不能到处套用同一种策略。",
+          "inlines": [
+            {
+              "text": "我们还测试了三款流行的开源插件，它们各自围绕一种固定的省钱策略构建。每款插件都能降低部分代码库的成本，但在另一些代码库上则不然。综合来看，这些发现说明有效的成本控制必须因代码库而异，而不能到处套用同一种策略。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TokenEconomizer 如何工作",
+          "inlines": [
+            {
+              "text": "TokenEconomizer 如何工作"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "每次会话结束后，TokenEconomizer 会读取该会话的日志，并更新它对代码库的了解。随后它通过三种机制发挥作用，且只使用智能体已经提供的接口，如图 2 所示。",
+          "inlines": [
+            {
+              "text": "每次会话结束后，TokenEconomizer 会读取该会话的日志，并更新它对代码库的了解。随后它通过三种机制发挥作用，且只使用智能体已经提供的接口，如图 2 所示。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "微技能用一行式笔记记录代码库特有的知识。TokenEconomizer 会识别跨会话反复出现的模式，并提出相应的笔记。只有在多个会话确认该模式之后，笔记才会被加入智能体的起始上下文；如果后续证据与之矛盾，则会停用该笔记。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "微技能"
+            },
+            {
+              "text": "用一行式笔记记录代码库特有的知识。TokenEconomizer 会识别跨会话反复出现的模式，并提出相应的笔记。只有在多个会话确认该模式之后，笔记才会被加入智能体的起始上下文；如果后续证据与之矛盾，则会停用该笔记。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "工具裁剪会移除仓库历史显示智能体不太可能使用的工具，同时始终保留用于运行命令和编辑文件的核心工具。被移除的工具如有需要可以恢复。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "工具裁剪"
+            },
+            {
+              "text": "会移除仓库历史显示智能体不太可能"
+            },
+            {
+              "bold": true,
+              "text": "使用"
+            },
+            {
+              "text": "的工具，同时始终保留用于运行命令和编辑文件的核心工具。被移除的工具如有需要可以恢复。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "失败循环干预会监测反复遭遇同一失败的智能体。由一个评判模型判断智能体是真的卡住了，还是仍在取得进展。如果确实卡住，智能体会收到一条简短提示，建议换一种方法。在开源插件中，如果智能体收到提示后仍然卡住，TokenEconomizer 会通知开发者，而不是自行中止工作。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "失败循环干预"
+            },
+            {
+              "text": "会监测反复遭遇同一失败的智能体。由一个评判模型判断智能体是真的卡住了，还是仍在取得进展。如果确实卡住，智能体会收到一条简短提示，建议换一种方法。在开源插件中，如果智能体收到提示后仍然卡住，TokenEconomizer 会通知开发者，而不是自行中止工作。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/bbc7c8d3c267b7f1bb32041228930b1517aa15ae8d0344c2d4fcd263f06ed8ce.webp",
+          "alt": "TokenEconomizer works alongside an unchanged coding agent. Micro-skills add learned facts, tool pruning trims the loaded tools, and failure-loop intervention redirects stuck work. Each finished session updates all three.",
+          "width": 2560,
+          "height": 1292
+        },
+        {
+          "type": "paragraph",
+          "text": "图 2。TokenEconomizer 与未经改动的编码智能体协同工作。微技能补充学到的事实，工具裁剪精简已加载的工具，失败循环干预则为卡住的工作重新指明方向。每个会话结束后，这三部分都会更新。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 2。TokenEconomizer 与未经改动的编码智能体协同工作。微技能补充学到的事实，工具裁剪精简已加载的工具，失败循环干预则为卡住的工作重新指明方向。每个会话结束后，这三部分都会更新。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该控制器会随着新证据的出现修正自己的决策。所报告的节省也已计入 TokenEconomizer 自身模型调用的成本。",
+          "inlines": [
+            {
+              "text": "该控制器会随着新证据的出现修正自己的决策。所报告的节省也已计入 TokenEconomizer 自身模型调用的成本。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在每个仓库都能省钱",
+          "inlines": [
+            {
+              "text": "在每个仓库都能省钱"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在来自六个仓库的 277 个 SWE-Bench 任务上评估了 TokenEconomizer，使用了五种不同的 AI 编码智能体与模型组合。对每个仓库，TokenEconomizer 都从没有任何历史会话记录的状态开始。",
+          "inlines": [
+            {
+              "text": "我们在来自六个仓库的 277 个 SWE-Bench 任务上评估了 TokenEconomizer，使用了五种不同的 AI 编码智能体与模型组合。对每个仓库，TokenEconomizer 都从没有任何历史会话记录的状态开始。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如图 3 所示，TokenEconomizer 将平均成本降低了 18.4–30.9%，并且在全部 30 个仓库与组合配对中都实现了最大幅度的节省，同时没有性能损失。相比之下，降低模型的推理强度虽然能节省相近甚至更多的成本，却会导致性能大幅下降。",
+          "inlines": [
+            {
+              "text": "如图 3 所示，TokenEconomizer 将平均成本降低了 18.4–30.9%，并且在全部 30 个仓库与组合配对中都实现了最大幅度的节省，同时没有性能损失。相比之下，降低模型的推理强度虽然能节省相近甚至更多的成本，却会导致性能大幅下降。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/77777a4f2599f3d4c8b1deb509ee58651b950746d63352ec2db65f3b27596100.webp",
+          "alt": "On SWE-Bench, TokenEconomizer lowered mean cost per task by 18.4–30.9% across five agent–model combinations (left), while Pass@1 rose in four of them (right).",
+          "width": 2560,
+          "height": 893
+        },
+        {
+          "type": "paragraph",
+          "text": "图 3。在 SWE-Bench 上，TokenEconomizer 在五种智能体–模型组合中将每个任务的平均成本降低了 18.4–30.9%（左），其中四种组合的 Pass@1 还有所上升（右）。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 3。在 SWE-Bench 上，TokenEconomizer 在五种智能体–模型组合中将每个任务的平均成本降低了 18.4–30.9%（左），其中四种组合的 Pass@1 还有所上升（右）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随着经验积累，节省会越来越多。早期任务在 TokenEconomizer 学习期间成本可能更高，但如图 4 所示，到第六个任务时，每个仓库的累计成本都已低于默认水平。每种机制单独都能带来节省，三者结合则降幅最大。",
+          "inlines": [
+            {
+              "text": "随着经验积累，节省会越来越多。早期任务在 TokenEconomizer 学习期间成本可能更高，但如图 4 所示，到第六个任务时，每个仓库的累计成本都已低于默认水平。每种机制单独都能带来节省，三者结合则降幅最大。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5b93389714ab86caa3b575545ca94cbd7de67f7ea33cbec7c5b6fa466690d1a3.webp",
+          "alt": "Cumulative cost change relative to default over each repository’s tasks, using Claude Code. Starting with no history, every repository becomes cheaper by the sixth task.",
+          "width": 2560,
+          "height": 919
+        },
+        {
+          "type": "paragraph",
+          "text": "图 4。使用 Claude Code 时，各仓库任务相对于默认水平的累计成本变化。从零历史开始，每个仓库到第六个任务时都变得更便宜。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 4。使用 Claude Code 时，各仓库任务相对于默认水平的累计成本变化。从零历史开始，每个仓库到第六个任务时都变得更便宜。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种节省也延续到了连续进行的 Web 开发任务中，在 Web-Bench 上成本降低了 16.0–21.2%。在安全审计场景中，每个任务都位于新仓库，成本降低了 6.4–19.6%。",
+          "inlines": [
+            {
+              "text": "这种节省也延续到了连续进行的 Web 开发任务中，在 Web-Bench 上成本降低了 16.0–21.2%。在安全审计场景中，每个任务都位于新仓库，成本降低了 6.4–19.6%。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "未来展望",
+          "inlines": [
+            {
+              "text": "未来展望"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "TokenEconomizer 为编码智能体开辟了一条新路径：不仅学会如何解决任务，还学会如何更有效地使用计算资源。其轻量级控制器展示了经验如何在不改变底层智能体或模型的情况下提升效率。",
+          "inlines": [
+            {
+              "text": "TokenEconomizer 为编码智能体开辟了一条新路径：不仅学会如何解决任务，还学会如何更有效地使用计算资源。其轻量级控制器展示了经验如何在不改变底层智能体或模型的情况下提升效率。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这个开源插件让开发者和研究者都能接触这些方向。它的设计目标是与现有 AI 编码智能体并行运行，无需修改其底层模型，自身也不需要 API 密钥，并且学到的内容都保留在开发者本机。我们邀请社区以它为起点，探索那些能随经验变得更善于调配资源的智能体——既调整工作方式，也调整知识储备。",
+          "inlines": [
+            {
+              "text": "这个开源插件让开发者和研究者都能接触这些方向。它的设计目标是与现有 AI 编码智能体并行运行，无需修改其底层模型，自身也不需要 API 密钥，并且学到的内容都保留在开发者本机。我们邀请社区以它为起点，探索那些能随经验变得更善于调配资源的智能体——既调整工作方式，也调整知识储备。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "阅读论文",
+          "inlines": [
+            {
+              "href": "https://www.microsoft.com/en-us/research/publication/tokeneconomizer-experience-driven-black-box-cost-control-for-coding-agents/",
+              "text": "阅读论文"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "获取代码",
+          "inlines": [
+            {
+              "href": "https://github.com/microsoft/TokenEconomizer",
+              "text": "获取代码"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "查看项目",
+          "inlines": [
+            {
+              "href": "https://tokeneconomizer.github.io/",
+              "text": "查看项目"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在新标签页中打开",
+          "inlines": [
+            {
+              "text": "在新标签页中打开"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "文章 TokenEconomizer：从经验中学习，让 AI 编码智能体更高效 首发于 Microsoft Research。",
+          "inlines": [
+            {
+              "text": "文章 "
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/research/blog/tokeneconomizer-learning-from-experience-to-make-ai-coding-agents-more-efficient/",
+              "text": "TokenEconomizer：从经验中学习，让 AI 编码智能体更高效"
+            },
+            {
+              "text": " 首发于 "
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/research",
+              "text": "Microsoft Research"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/479bd912dda84c7da520b79f7bd0c1b9b6ea36915d274fd051919591ea59cd7f.jpg",
+          "alt": "Six coding sessions with shrinking cost bars send their logs to TokenEconomizer, which uses micro-skills, tool pruning and failure-loop intervention to guide an unchanged coding agent through the next session.",
+          "width": 1400,
+          "height": 788
+        },
+        {
+          "type": "heading",
+          "text": "At a glance",
+          "inlines": [
+            {
+              "text": "At a glance"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Developers use AI coding agents in the same codebases day after day, yet agents often start each session from scratch: rediscovering familiar facts, loading unused tools, and repeating unsuccessful approaches."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "TokenEconomizer is an open-source plugin that learns from an agent’s past sessions in a repository to reduce waste in future sessions, without modifying the agent or its underlying model."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Across 277 real bug-fixing tasks, TokenEconomizer reduced costs by 18.4–30.9% across multiple AI coding agents. Costs fell in every repository tested, while task success rates remained broadly stable."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AI coding agents are increasingly helping developers fix bugs and build features largely on their own, but every interaction with their models consumes tokens. In each session, an agent sends instructions, tool descriptions, and session history to its model. Most efforts to reduce this cost focus on individual tasks. Yet developers return to the same repositories, giving agents an opportunity to learn from previous work. Without that learning, an agent may repeatedly rediscover how to run tests, load tools it never uses, or spend dozens of turns revisiting the same error.",
+          "inlines": [
+            {
+              "text": "AI coding agents are increasingly helping developers fix bugs and build features largely on their own, but every interaction with their models consumes "
+            },
+            {
+              "italic": true,
+              "text": "tokens. In each session"
+            },
+            {
+              "text": ", an agent sends instructions, tool descriptions, and session history to its model. Most efforts to reduce this cost focus on individual tasks. Yet developers return to the same repositories, giving agents an opportunity to learn from previous work. Without that learning, an agent may repeatedly rediscover how to run tests, load tools it never uses, or spend dozens of turns revisiting the same error."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In our paper, TokenEconomizer: Experience-Driven Black-Box Cost Control for Coding Agents, we ask a simple question: can experience in a repository help an agent solve future tasks more efficiently? TokenEconomizer, an open-source plugin from UC Berkeley, Microsoft Research, and Microsoft Security, turns completed sessions into guidance for subsequent ones. It reduces waste without changing the agent or its underlying model, so developers can use it alongside the coding agents they already rely on.",
+          "inlines": [
+            {
+              "text": "In our paper, "
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/research/publication/tokeneconomizer-experience-driven-black-box-cost-control-for-coding-agents/",
+              "text": "TokenEconomizer: Experience-Driven Black-Box Cost Control for Coding Agents"
+            },
+            {
+              "text": ", we ask a simple question: can experience in a repository help an agent solve future tasks more efficiently? TokenEconomizer, an open-source plugin from UC Berkeley, Microsoft Research, and Microsoft Security, turns completed sessions into guidance for subsequent ones. It reduces waste without changing the agent or its underlying model, so developers can use it alongside the coding agents they already rely on."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/4e99bb149aba9f390b9a768056271ec8fc48134fccf23287ab987f03825bfe32.webp",
+          "alt": "Each finished session teaches TokenEconomizer something about the repository, so later sessions cost less tokens. \n",
+          "width": 2560,
+          "height": 1371
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 1. Each finished session teaches TokenEconomizer something about the repository, so later sessions cost less tokens.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 1. Each finished session teaches TokenEconomizer something about the repository, so later sessions cost less tokens."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where the tokens go",
+          "inlines": [
+            {
+              "text": "Where the tokens go"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We first profiled Claude Code on 60 tasks from SWE-Bench, a benchmark of real bug fixes in open-source Python projects, running each repository’s tasks in sequence. Three kinds of waste recurred:",
+          "inlines": [
+            {
+              "text": "We first profiled Claude Code on 60 tasks from SWE-Bench, a benchmark of real bug fixes in open-source Python projects, running each repository’s tasks in sequence. Three kinds of waste recurred:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Rediscovering the same facts"
+                },
+                {
+                  "text": ". After a repository had accumulated at least five completed tasks, 30% of tool calls repeated an action from an earlier task in that repository. Only 7% matched an action in another repository’s history."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Paying for unused tools"
+                },
+                {
+                  "text": ". The agent received 23 tool descriptions on every turn, but 16 were never called."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Getting stuck on failures"
+                },
+                {
+                  "text": ". The 17% of tasks that failed accounted for 32% of the spending."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We also tested three popular open-source plugins, each built around a fixed cost-saving strategy. Each lowered costs in some repositories but not others. Together, these findings suggest that effective cost control must adapt to the repository, rather than apply the same strategy everywhere.",
+          "inlines": [
+            {
+              "text": "We also tested three popular open-source plugins, each built around a fixed cost-saving strategy. Each lowered costs in some repositories but not others. Together, these findings suggest that effective cost control must adapt to the repository, rather than apply the same strategy everywhere."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How TokenEconomizer works",
+          "inlines": [
+            {
+              "text": "How TokenEconomizer works"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "After each session, TokenEconomizer reads the session’s log and updates what it knows about the repository. It then acts through three mechanisms, using only interfaces the agent already provides, as illustrated in Figure 2.",
+          "inlines": [
+            {
+              "text": "After each session, TokenEconomizer reads the session’s log and updates what it knows about the repository. It then acts through three mechanisms, using only interfaces the agent already provides, as illustrated in Figure 2."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Micro-skills capture repository-specific knowledge in one-line notes. TokenEconomizer identifies recurring patterns across sessions and proposes corresponding notes. They are added to the agent’s starting context only after several sessions have confirmed the pattern, and retires the note if later evidence contradicts it.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Micro-skills"
+            },
+            {
+              "text": " capture repository-specific knowledge in one-line notes. TokenEconomizer identifies recurring patterns across sessions and proposes corresponding notes. They are added to the agent’s starting context only after several sessions have confirmed the pattern, and retires the note if later evidence contradicts it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool pruning removes tools that repository history suggests the agent is unlikely to use, while always retaining core tools for running commands and editing files. Removed tools can be restored if needed.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Tool pruning"
+            },
+            {
+              "text": " removes tools that repository history suggests the agent is unlikely to "
+            },
+            {
+              "bold": true,
+              "text": "use"
+            },
+            {
+              "text": ", while always retaining core tools for running commands and editing files. Removed tools can be restored if needed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Failure-loop intervention watches for an agent that keeps hitting the same failure. A judge model decides whether the agent is truly stuck or still making progress. If it is stuck, the agent gets a short note suggesting a different approach. In the open-source plugin, if the agent is still stuck after the note, TokenEconomizer alerts the developer rather than stopping the work itself.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Failure-loop intervention"
+            },
+            {
+              "text": " watches for an agent that keeps hitting the same failure. A judge model decides whether the agent is truly stuck or still making progress. If it is stuck, the agent gets a short note suggesting a different approach. In the open-source plugin, if the agent is still stuck after the note, TokenEconomizer alerts the developer rather than stopping the work itself."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/bbc7c8d3c267b7f1bb32041228930b1517aa15ae8d0344c2d4fcd263f06ed8ce.webp",
+          "alt": "TokenEconomizer works alongside an unchanged coding agent. Micro-skills add learned facts, tool pruning trims the loaded tools, and failure-loop intervention redirects stuck work. Each finished session updates all three.",
+          "width": 2560,
+          "height": 1292
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 2. TokenEconomizer works alongside an unchanged coding agent. Micro-skills add learned facts, tool pruning trims the loaded tools, and failure-loop intervention redirects stuck work. Each finished session updates all three.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 2. TokenEconomizer works alongside an unchanged coding agent. Micro-skills add learned facts, tool pruning trims the loaded tools, and failure-loop intervention redirects stuck work. Each finished session updates all three."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The controller is designed to revise its decisions as new evidence arrives. Reported savings also account for the cost of TokenEconomizer’s own model calls.",
+          "inlines": [
+            {
+              "text": "The controller is designed to revise its decisions as new evidence arrives. Reported savings also account for the cost of TokenEconomizer’s own model calls."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Saving costs in every repository",
+          "inlines": [
+            {
+              "text": "Saving costs in every repository"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We evaluated TokenEconomizer on 277 SWE-Bench tasks from six repositories, using five different AI coding agent and model combinations. For each repository, TokenEconomizer started with no prior session history.",
+          "inlines": [
+            {
+              "text": "We evaluated TokenEconomizer on 277 SWE-Bench tasks from six repositories, using five different AI coding agent and model combinations. For each repository, TokenEconomizer started with no prior session history."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TokenEconomizer lowered the average cost by 18.4–30.9%, as shown in Figure 3, and saved the most in all 30 repository-combination pairs without performance loss. By contrast, lowering the model’s reasoning effort saved similar or larger amounts but led to substantial performance degradation.",
+          "inlines": [
+            {
+              "text": "TokenEconomizer lowered the average cost by 18.4–30.9%, as shown in Figure 3, and saved the most in all 30 repository-combination pairs without performance loss. By contrast, lowering the model’s reasoning effort saved similar or larger amounts but led to substantial performance degradation."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/77777a4f2599f3d4c8b1deb509ee58651b950746d63352ec2db65f3b27596100.webp",
+          "alt": "On SWE-Bench, TokenEconomizer lowered mean cost per task by 18.4–30.9% across five agent–model combinations (left), while Pass@1 rose in four of them (right).",
+          "width": 2560,
+          "height": 893
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 3. On SWE-Bench, TokenEconomizer lowered mean cost per task by 18.4–30.9% across five agent–model combinations (left), while Pass@1 rose in four of them (right).",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 3. On SWE-Bench, TokenEconomizer lowered mean cost per task by 18.4–30.9% across five agent–model combinations (left), while Pass@1 rose in four of them (right)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Savings grow as experience accumulates. Early tasks can cost more while TokenEconomizer learns, but cumulative costs fell below the default in every repository by the sixth task, shown inFigure 4. Each mechanism contributes savings on its own, and combining all three delivers the largest reduction.",
+          "inlines": [
+            {
+              "text": "Savings grow as experience accumulates. Early tasks can cost more while TokenEconomizer learns, but cumulative costs fell below the default in every repository by the sixth task, shown inFigure 4. Each mechanism contributes savings on its own, and combining all three delivers the largest reduction."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/5b93389714ab86caa3b575545ca94cbd7de67f7ea33cbec7c5b6fa466690d1a3.webp",
+          "alt": "Cumulative cost change relative to default over each repository’s tasks, using Claude Code. Starting with no history, every repository becomes cheaper by the sixth task.",
+          "width": 2560,
+          "height": 919
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 4. Cumulative cost change relative to default over each repository’s tasks, using Claude Code. Starting with no history, every repository becomes cheaper by the sixth task.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 4. Cumulative cost change relative to default over each repository’s tasks, using Claude Code. Starting with no history, every repository becomes cheaper by the sixth task."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The savings also carried over to sequential web development, with costs 16.0–21.2% lower on Web-Bench. On security auditing, where every task is in a new repository, costs were 6.4–19.6% lower.",
+          "inlines": [
+            {
+              "text": "The savings also carried over to sequential web development, with costs 16.0–21.2% lower on Web-Bench. On security auditing, where every task is in a new repository, costs were 6.4–19.6% lower."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Looking ahead",
+          "inlines": [
+            {
+              "text": "Looking ahead"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "TokenEconomizer opens a path toward coding agents that learn not only how to solve tasks, but also how to spend computation more effectively. Its lightweight controller shows how experience can improve efficiency without changing the underlying agent or model.",
+          "inlines": [
+            {
+              "text": "TokenEconomizer opens a path toward coding agents that learn not only how to solve tasks, but also how to spend computation more effectively. Its lightweight controller shows how experience can improve efficiency without changing the underlying agent or model."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The open-source plugin makes these directions accessible to developers and researchers. It is designed to run alongside existing AI coding agents without modifying their underlying models, requires no API key of its own, and keeps what it learns on the developer’s machine. We invite the community to use it as a starting point for exploring agents that become more resourceful with experience, adapting how they work, as well as what they know.",
+          "inlines": [
+            {
+              "text": "The open-source plugin makes these directions accessible to developers and researchers. It is designed to run alongside existing AI coding agents without modifying their underlying models, requires no API key of its own, and keeps what it learns on the developer’s machine. We invite the community to use it as a starting point for exploring agents that become more resourceful with experience, adapting how they work, as well as what they know."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Read the paper",
+          "inlines": [
+            {
+              "href": "https://www.microsoft.com/en-us/research/publication/tokeneconomizer-experience-driven-black-box-cost-control-for-coding-agents/",
+              "text": "Read the paper"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Access the code",
+          "inlines": [
+            {
+              "href": "https://github.com/microsoft/TokenEconomizer",
+              "text": "Access the code"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "View the project",
+          "inlines": [
+            {
+              "href": "https://tokeneconomizer.github.io/",
+              "text": "View the project"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Opens in a new tab",
+          "inlines": [
+            {
+              "text": "Opens in a new tab"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The post TokenEconomizer: Learning from Experience to Make AI Coding Agents More Efficient appeared first on Microsoft Research.",
+          "inlines": [
+            {
+              "text": "The post "
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/research/blog/tokeneconomizer-learning-from-experience-to-make-ai-coding-agents-more-efficient/",
+              "text": "TokenEconomizer: Learning from Experience to Make AI Coding Agents More Efficient"
+            },
+            {
+              "text": " appeared first on "
+            },
+            {
+              "href": "https://www.microsoft.com/en-us/research",
+              "text": "Microsoft Research"
+            },
+            {
+              "text": "."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-17T01:11:32.073681Z",
+  "contentMode": "full"
+}

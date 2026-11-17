@@ -1,0 +1,1600 @@
+{
+  "schemaVersion": 1,
+  "id": "jy89axg8rd82ugct5uwh5psaq",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/jy89axg8rd82ugct5uwh5psaq",
+  "fetchedAt": "2026-11-17T01:10:37.172736Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Claude",
+    "Anthropic / Claude",
+    "Agent 智能体",
+    "AI 编码",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "在 Claude Code 团队，我们绝大部分代码（约 90%）都是由 Claude 编写并由 Claude 审查的。在这样的规模下，如何让智能体用证据来验证自己的工作，就变得极其重要。",
+          "inlines": [
+            {
+              "text": "在 Claude Code 团队，我们绝大部分代码（约 90%）都是由 Claude 编写并"
+            },
+            {
+              "href": "https://claude.dev/blog/solving-code-review-at-anthropic/",
+              "text": "由 Claude 审查"
+            },
+            {
+              "text": "的。在这样的规模下，如何让智能体用证据来验证自己的工作，就变得极其重要。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "验证闭环是让你能把更多工作交给 Claude 的基础。没有它，你基本上只能同时跑一两个 Claude，因为所有东西都得自己检查。有了它，你可以并行跑几十甚至上百个。",
+          "inlines": [
+            {
+              "text": "验证闭环是让你能把更多工作交给 Claude 的基础。没有它，你基本上只能同时跑一两个 Claude，因为所有东西都得自己检查。有了它，你可以并行跑几十甚至上百个。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这是因为给智能体一个验证其输出的途径，是提升质量的有效方法。在围绕结构化文件生成的内部测试中，让一个独立的评分器按评分标准检查 Claude 的工作，相比标准的提示词循环，任务成功率最多提升了 10 个百分点，而且在最难的问题上收益最大。",
+          "inlines": [
+            {
+              "text": "这是因为给智能体一个"
+            },
+            {
+              "href": "https://claude.com/blog/building-verification-loops-in-claude-code-with-skills",
+              "text": "验证其输出的途径"
+            },
+            {
+              "text": "，是提升质量的有效方法。在围绕结构化文件生成的内部测试中，让一个独立的评分器按评分标准检查 Claude 的工作，相比标准的提示词循环，"
+            },
+            {
+              "href": "https://claude.com/blog/claude-managed-agents",
+              "text": "任务成功率最多提升了 10 个百分点"
+            },
+            {
+              "text": "，而且在最难的问题上收益最大。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "过去验证成本很高的东西（测试、基准、规格、真实的端到端运行），现在让智能体来做成本很低。和写代码一样，智能体能快速生成测试、基准和规格。而且一旦生成，这些测试和基准就以软件形式运行，可以频繁执行，不必额外消耗大量 token。",
+          "inlines": [
+            {
+              "text": "过去验证成本很高的东西（测试、基准、规格、真实的端到端运行），现在让智能体来做成本很低。和写代码一样，智能体能快速生成测试、基准和规格。而且一旦生成，这些测试和基准就以软件形式运行，可以频繁执行，不必额外消耗大量 token。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你还可以用结果来改进智能体在该任务上的表现，从而闭合验证回路。比如，如果智能体反复通不过某个检查日志中是否含用户数据的测试，你可以在 CLAUDE.md 里创建一个钩子或一条更明确的规则，避免以后再出问题。这样（基本）能防止问题再次发生。",
+          "inlines": [
+            {
+              "text": "你还可以用结果来改进智能体在该任务上的表现，从而闭合验证回路。比如，如果智能体反复通不过某个检查日志中是否含用户数据的测试，你可以在 CLAUDE.md 里创建一个钩子或一条更明确的规则，避免以后再出问题。这样（基本）能防止问题再次发生。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "那么，既然验证对高速产出高质量代码如此关键，该用哪些类型的测试，又该如何在整个流水线中应用它们？本文回答这些问题，并分享 Claude Code 团队的做法。",
+          "inlines": [
+            {
+              "text": "那么，既然验证对高速产出高质量代码如此关键，该用哪些类型的测试，又该如何在整个流水线中应用它们？本文回答这些问题，并分享 Claude Code 团队的做法。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "并非所有测试生来平等：值得投入的 3 类测试",
+          "inlines": [
+            {
+              "text": "并非所有测试生来平等：值得投入的 3 类测试"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "无论选择哪种测试类型，都有几种失败模式要避免。",
+          "inlines": [
+            {
+              "text": "无论选择哪种测试类型，都有几种失败模式要避免。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果测试不稳定，你就会把智能体训练成重跑测试，而不是去修出错的代码。如果测试很慢，智能体在批次之间做的测试就会更少，这会让你难以定位问题。较重的测试最好在提交改动之前运行。",
+          "inlines": [
+            {
+              "text": "如果测试不稳定，你就会把智能体训练成重跑测试，而不是去修出错的代码。如果测试很慢，智能体在批次之间做的测试就会更少，这会让你难以定位问题。较重的测试最好在提交改动之前运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下面是我认为最值得投入的三类测试。",
+          "inlines": [
+            {
+              "text": "下面是我认为最值得投入的三类测试。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "端到端测试",
+          "inlines": [
+            {
+              "text": "端到端测试"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "如果只能专注一类测试，那就选端到端。这类测试描述真实的用户流程，比如把商品加入购物车、结账、跳转到确认页。",
+          "inlines": [
+            {
+              "text": "如果只能专注一类测试，那就选端到端。这类测试描述真实的用户流程，比如把商品加入购物车、结账、跳转到确认页。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "端到端测试之所以有效，是因为它很难被糊弄——要么整个功能能用，要么不能用。它还有明确的完成标准，能具体告诉你哪里坏了。",
+          "inlines": [
+            {
+              "text": "端到端测试之所以有效，是因为它很难被糊弄——要么整个功能能用，要么不能用。它还有明确的完成标准，能具体告诉你哪里坏了。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/6022d4bf50eed8823c4e7fc6dcaa2f2d1e417b37e3da1710816d523a387e9af7.webp",
+          "alt": "Unit test failure vs. end-to-end test failure. Left: checkout.test.ts shows only “FAIL checkout.test.ts / Error: Timeout after 30s”, captioned “Shooting blind. No step, no trace.” Right: checkout.spec.ts shows a step trace (Register, Add item to cart, Checkout failed, See confirmation page not reached), a screenshot of shop.example/checkout with “Payment form failed to load” and a disabled “Place order” button, and “What step failed: Checkout: ‘Place order’ stayed disabled because the payment form never loaded”, captioned “Screenshots, trace, and a description of what step failed.”",
+          "width": 1999,
+          "height": 1093
+        },
+        {
+          "type": "paragraph",
+          "text": "图 A单元测试可能只显示“错误：30 秒后超时”，而端到端测试能给出截图，并说明哪里坏了。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 A"
+            },
+            {
+              "text": "单元测试可能只显示“错误：30 秒后超时”，而端到端测试能给出截图，并说明哪里坏了。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "单元测试虽然更快、更稳定，但有可能测试通过了，功能却依然是坏的。这是因为智能体和测试都没有理解完整任务。",
+          "inlines": [
+            {
+              "text": "单元测试虽然更快、更稳定，但有可能测试通过了，功能却依然是坏的。这是因为智能体和测试都没有理解完整任务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用端到端测试时，让智能体在真实运行的系统上动手、动眼是有效的。你可以用一个技能，借助 CDP、模拟器或 API 测试框架等工具来启动、驱动和检查应用。",
+          "inlines": [
+            {
+              "text": "用端到端测试时，让智能体在真实运行的系统上动手、动眼是有效的。你可以用一个技能，借助 "
+            },
+            {
+              "href": "https://chromedevtools.github.io/devtools-protocol/",
+              "text": "CDP"
+            },
+            {
+              "text": "、模拟器或 API 测试框架等工具来启动、驱动和检查应用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "功能地图可以作为智能体的指南和评分标准，因为它通常从用户视角列出功能，并描述路径、键盘快捷键、选择器和预期结果。",
+          "inlines": [
+            {
+              "text": "功能地图可以作为智能体的指南和评分标准，因为它通常从用户视角列出功能，并描述路径、键盘快捷键、选择器和预期结果。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "属性测试：不可打破的约束",
+          "inlines": [
+            {
+              "text": "属性测试：不可打破的约束"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "很多测试都是基于你预想中可能出问题的地方来设计的。而属性测试关注的是人们容易忽略的边界情况，智能体往往正是在这些地方出错。",
+          "inlines": [
+            {
+              "text": "很多测试都是基于你预想中可能出问题的地方来设计的。而属性测试关注的是人们容易忽略的边界情况，智能体往往正是在这些地方出错。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你先写一条你认为不可能失败的断言，然后用测试库（JS/TS 用 fast-check，Python 用 Hypothesis，Rust 用 proptest 等）生成成千上万个输入，试图证明它不成立。",
+          "inlines": [
+            {
+              "text": "你先写一条你认为不可能失败的断言，然后用测试库（JS/TS 用 "
+            },
+            {
+              "href": "https://fast-check.dev/",
+              "text": "fast-check"
+            },
+            {
+              "text": "，Python 用 "
+            },
+            {
+              "href": "https://hypothesis.readthedocs.io/en/latest/",
+              "text": "Hypothesis"
+            },
+            {
+              "text": "，Rust 用 "
+            },
+            {
+              "href": "https://proptest-rs.github.io/proptest/",
+              "text": "proptest"
+            },
+            {
+              "text": " 等）生成成千上万个输入，试图证明它不成立。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "几乎每个软件项目里都有大量属性，比如：",
+          "inlines": [
+            {
+              "text": "几乎每个软件项目里都有大量属性，比如："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "往返编码"
+                },
+                {
+                  "text": "：“把 X 编码后再解码，得到的还是 X。”解析和序列化同样适用。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "不变量"
+                },
+                {
+                  "text": "：必须始终成立的东西，比如“账户余额永远不会变成负数”。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "幂等性"
+                },
+                {
+                  "text": "：同一个操作（迁移、归一化、重试）执行两次和执行一次效果相同。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "等价性"
+                },
+                {
+                  "text": "：优化后的代码与朴素但正确的代码产生相同结果。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "属性测试库用边界情况来检验智能体是否诚实可靠，而这些边界情况不会带着与生成原始代码的智能体相同的偏见。在重写场景中，它们尤其有用——此时规格说明已经偏离生产环境的行为，不再是可靠的验证依据。",
+          "inlines": [
+            {
+              "text": "属性测试库用边界情况来检验智能体是否诚实可靠，而这些边界情况不会带着与生成原始代码的智能体相同的偏见。在重写场景中，它们尤其有用——此时规格说明已经偏离生产环境的行为，不再是可靠的验证依据。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "差分测试：以旧系统为准绳",
+          "inlines": [
+            {
+              "text": "差分测试：以旧系统为准绳"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "差分测试在功能预期保持不变的大规模迁移场景中尤其有效。做法是用相同的输入分别运行旧系统和新系统，看结果是否不同。如果不同，就说明存在需要修复的 bug 或破坏性变更。",
+          "inlines": [
+            {
+              "text": "差分测试在功能预期保持不变的"
+            },
+            {
+              "href": "https://claude.com/resources/articles/ai-code-migration",
+              "text": "大规模迁移"
+            },
+            {
+              "text": "场景中尤其有效。做法是用相同的输入分别运行旧系统和新系统，看结果是否不同。如果不同，就说明存在需要修复的 bug 或破坏性变更。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "差分测试的关键在于使用随机生成的输入或生产流量样本。你还需要归一化空白字符等无关因素，并维护一份已批准的变更清单，用于新环境本就应当与旧环境不同的情况。",
+          "inlines": [
+            {
+              "text": "差分测试的关键在于使用随机生成的输入或生产流量样本。你还需要归一化空白字符等无关因素，并维护一份已批准的变更清单，用于新环境本就应当与旧环境不同的情况。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude Code 团队如何看待验证",
+          "inlines": [
+            {
+              "text": "Claude Code 团队如何看待验证"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们之前写过Anthropic 的代码审查是如何运作的，而本文想更深入地讲讲我们如何验证自己的工作。",
+          "inlines": [
+            {
+              "text": "我们之前写过"
+            },
+            {
+              "href": "https://claude.dev/blog/solving-code-review-at-anthropic/",
+              "text": "Anthropic 的代码审查是如何运作的"
+            },
+            {
+              "text": "，而本文想更深入地讲讲我们如何验证自己的工作。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "验证意味着把改动跑起来",
+          "inlines": [
+            {
+              "text": "验证意味着把改动跑起来"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "端到端运行应用比测试更重要。你不会没在模拟器里试过就发布 iOS 改动，Claude 也一样。",
+          "inlines": [
+            {
+              "text": "端到端运行应用比测试更重要。你不会没在模拟器里试过就发布 iOS 改动，Claude 也一样。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 可以像人或者 QA 工程师那样测试整个应用。对于 Web 改动，让它使用 Claude Chrome 扩展；移动端用 iOS 或 Android MCP；桌面端用 computer use；后端工作则在本地运行服务。",
+          "inlines": [
+            {
+              "text": "Claude 可以像人或者 QA 工程师那样测试整个应用。对于 Web 改动，让它使用 Claude Chrome 扩展；移动端用 iOS 或 Android MCP；桌面端用 computer use；后端工作则在本地运行服务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要把如何启动模拟器或运行应用固化下来，可以创建一个名为 verify 的技能。把它放在仓库的 .claude/skills/ 文件夹里，尽量靠近相关代码，需要多少个就加多少个。Claude 知道在提交改动前使用 verify 技能。",
+          "inlines": [
+            {
+              "text": "要把如何启动模拟器或运行应用固化下来，可以创建一个名为 verify 的技能。把它放在仓库的 .claude/skills/ 文件夹里，尽量靠近相关代码，需要多少个就加多少个。Claude 知道在提交改动前使用 verify 技能。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "然后投入精力让 verify 技能又快又可靠。让 Claude 反复迭代并做压力测试。这是你的冒烟测试工具，所以要确保它坚如磐石。",
+          "inlines": [
+            {
+              "text": "然后投入精力让 verify 技能又快又可靠。让 Claude 反复迭代并做压力测试。这是你的冒烟测试工具，所以要确保它坚如磐石。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当你给 Claude 一种端到端冒烟测试其改动的方法时，效果会好得多。你会看到它像人一样反复迭代，更快地发现真正的错误。在 Anthropic，我们几乎所有的改动都是这样测试的。",
+          "inlines": [
+            {
+              "text": "当你给 Claude 一种端到端冒烟测试其改动的方法时，效果会好得多。你会看到它像人一样反复迭代，更快地发现真正的错误。在 Anthropic，我们几乎所有的改动都是这样测试的。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "失败的测试需要人来处理",
+          "inlines": [
+            {
+              "text": "失败的测试需要人来处理"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "没人能读完每一处改动，所以我们把失败作为判断哪些需要人介入的一种方式。Claude 会运行检查并尝试修复任何失败项。如果检查在三轮之后仍然失败，Claude 就会停下来，请人介入。",
+          "inlines": [
+            {
+              "text": "没人能读完每一处改动，所以我们把失败作为判断哪些需要人介入的一种方式。Claude 会运行检查并尝试修复任何失败项。如果检查在三轮之后仍然失败，Claude 就会停下来，请人介入。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "代码所有者编写自己的检查",
+          "inlines": [
+            {
+              "text": "代码所有者编写自己的检查"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "写检查规则的人自己出钱维护这些规则，并不断打磨，直到它们能标出所有者会标出的问题。当某项检查引入评审者时，应当说明原因，这样评审者就不必自己从 diff 里推断。",
+          "inlines": [
+            {
+              "text": "写检查规则的人自己出钱维护这些规则，并不断打磨，直到它们能标出所有者会标出的问题。当某项检查引入评审者时，应当说明原因，这样评审者就不必自己从 diff 里推断。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "可靠性检查由 diff 触发",
+          "inlines": [
+            {
+              "text": "可靠性检查由 diff 触发"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们维护一份包含 39 个条目的可靠性清单，每个条目都有一个可从 diff 读取的触发条件、一项检查，以及它背后的故障事件或 PR。其中一条是“--resume 会加载旧对话记录”。当会话存储或消息类型发生变化时，我们会追问新字段能否安全加载，因为旧对话记录里不会有这个字段。",
+          "inlines": [
+            {
+              "text": "我们维护一份包含 39 个条目的可靠性清单，每个条目都有一个可从 diff 读取的触发条件、一项检查，以及它背后的故障事件或 PR。其中一条是“--resume 会加载旧对话记录”。当会话存储或消息类型发生变化时，我们会追问新字段能否安全加载，因为旧对话记录里不会有这个字段。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 读取 diff，只检查触发条件匹配的条目——通常 3 到 10 条——这样没人需要记住过去的故障。",
+          "inlines": [
+            {
+              "text": "Claude 读取 diff，只检查触发条件匹配的条目——通常 3 到 10 条——这样没人需要记住过去的故障。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "一个评审者，多轮评审",
+          "inlines": [
+            {
+              "text": "一个评审者，多轮评审"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们不靠堆叠更多评审者来改进评审。在主评审者之上再加一个更昂贵的第二评审者，往往不如调优主评审者。我们的做法是维护一份 REVIEW.md，说明评审者针对这类代码应该关注什么。",
+          "inlines": [
+            {
+              "text": "我们不靠堆叠更多评审者来改进评审。在主评审者之上再加一个更昂贵的第二评审者，往往不如调优主评审者。我们的做法是维护一份 "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/code-review-customize",
+              "text": "REVIEW.md"
+            },
+            {
+              "text": "，说明评审者针对这类代码应该关注什么。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还认为，评审与验证的轮次应当层层递进。每一轮都指向此前轮次的上下文和过去的失败，而不是从头重新检查所有内容。这样成本更低，发现的问题更多。",
+          "inlines": [
+            {
+              "text": "我们还认为，评审与验证的轮次应当层层递进。每一轮都指向此前轮次的上下文和过去的失败，而不是从头重新检查所有内容。这样成本更低，发现的问题更多。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "变更不能修改自己的检查",
+          "inlines": [
+            {
+              "text": "变更不能修改自己的检查"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "如果一项变更能修改评判它的检查，那这项检查就是失效的。代码评审从基线分支或默认分支读取 REVIEW.md 文件，绝不从拉取请求的变更中读取。Claude Code 团队确保把关变更的规则位于变更无法修改的分支上。",
+          "inlines": [
+            {
+              "text": "如果一项变更能修改评判它的检查，那这项检查就是失效的。代码评审从基线分支或默认分支读取 REVIEW.md 文件，"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/code-review-customize",
+              "text": "绝不从拉取请求的变更中读取"
+            },
+            {
+              "text": "。Claude Code 团队确保把关变更的规则位于变更无法修改的分支上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code 团队还把评审限定在提交上。如果有人在评审进行时推送新代码，评审结果就不再有用。对过期提交的通过评审毫无意义。",
+          "inlines": [
+            {
+              "text": "Claude Code 团队还把评审限定在提交上。如果有人在评审进行时推送新代码，评审结果就不再有用。对过期提交的通过评审毫无意义。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "团队还先跑成本低的检查。如果智能体在本地测试之前就推送，它就占用了共享的评审和 CI 时间，而它本可以自己发现这个 bug。在我们团队，Claude 会在打开拉取请求之前运行测试、构建和 linter。你可以用一个 hook 在 Claude 完成时运行测试，或者用 /goal 设定测试套件通过的目标，来强制执行这一点。",
+          "inlines": [
+            {
+              "text": "团队还先跑成本低的检查。如果智能体在本地测试之前就推送，它就占用了共享的评审和 CI 时间，而它本可以自己发现这个 bug。在我们团队，Claude 会在打开拉取请求之前运行测试、构建和 linter。你可以用一个 "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/hooks",
+              "text": "hook"
+            },
+            {
+              "text": " 在 Claude 完成时运行测试，或者用 "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/goal",
+              "text": "/goal"
+            },
+            {
+              "text": " 设定测试套件通过的目标，来强制执行这一点。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "新关卡先以观察模式启动",
+          "inlines": [
+            {
+              "text": "新关卡先以观察模式启动"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们自己的仓库里，我们会给每个提交打上验证方式的标记。标记甚至包含“none”，这样我们就能查询未经验证的提交。",
+          "inlines": [
+            {
+              "text": "在我们自己的仓库里，我们会给每个提交打上验证方式的标记。标记甚至包含“none”，这样我们就能查询未经验证的提交。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还创建了一个提交关卡，如果会话中没有包含 /code-review 或 /verify，就可以阻止提交。我们为它设置了 off、observe 和 enforce 三种模式。",
+          "inlines": [
+            {
+              "text": "我们还创建了一个提交关卡，如果会话中没有包含 /code-review 或 /verify，就可以阻止提交。我们为它设置了 off、observe 和 enforce 三种模式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "观察模式会记录本应被阻止的内容，这样我们可以审查任何误报，确保没有人受到影响。",
+          "inlines": [
+            {
+              "text": "观察模式会记录本应被阻止的内容，这样我们可以审查任何误报，确保没有人受到影响。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "强制模式会阻止提交。任何提交都可以在提交信息中说明为什么没有经过验证。如果会话中提交已被阻止两次，下一次就会放行，以免 Claude 卡住——Claude Code 并不完美。",
+          "inlines": [
+            {
+              "text": "强制模式会阻止提交。任何提交都可以在提交信息中说明为什么没有经过验证。如果会话中提交已被阻止两次，下一次就会放行，以免 Claude 卡住——Claude Code 并不完美。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "用真正重要的东西检验你的检查",
+          "inlines": [
+            {
+              "text": "用真正重要的东西检验你的检查"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Code 团队还会定期评审评审者。我们跟踪有多少已合并的变更被回滚、维护者在合并前拒绝了多少变更，以及一组规模匹配、保持干净的变更。",
+          "inlines": [
+            {
+              "text": "Claude Code 团队还会定期评审评审者。我们跟踪有多少已合并的变更被回滚、维护者在合并前拒绝了多少变更，以及一组规模匹配、保持干净的变更。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这也可以通过正式评估来实现。在代码审查文章中，我们介绍了 Code Review 团队如何基于以往的事故和回滚建立评估。他们会把每个示例的仓库还原到审查时的状态，并给出一句话的答案要点，说明 bug 是什么。只有正确描述该 bug 的发现才能得分。他们用已合并且稳定的改动作为对照组，防止过度标记。调优集与用于评估系统的固定测试集是分开的。",
+          "inlines": [
+            {
+              "text": "这也可以通过正式评估来实现。在"
+            },
+            {
+              "href": "https://claude.dev/blog/solving-code-review-at-anthropic/",
+              "text": "代码审查文章"
+            },
+            {
+              "text": "中，我们介绍了 Code Review 团队如何基于以往的事故和回滚建立评估。他们会把每个示例的仓库还原到审查时的状态，并给出一句话的答案要点，说明 bug 是什么。只有正确描述该 bug 的发现才能得分。他们用已合并且稳定的改动作为对照组，防止过度标记。调优集与用于评估系统的固定测试集是分开的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "他们还分别评估了原始发现、验证后和最终审查的召回率。这样就能看出系统是否在丢失已经发现的 bug。任何把这些都当成一个端到端分数的评估，都无法捕捉到这种细微差别。",
+          "inlines": [
+            {
+              "text": "他们还分别评估了原始发现、验证后和最终审查的召回率。这样就能看出系统是否在丢失已经发现的 bug。任何把这些都当成一个端到端分数的评估，都无法捕捉到这种细微差别。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "除了有效性，我们关心的另一个维度是做出这项改动有多重要。好的审查者能发现大多数技术上正确的问题，但人们真正关心的是某个 bug 属于必须修复、应该修复还是吹毛求疵。",
+          "inlines": [
+            {
+              "text": "除了有效性，我们关心的另一个维度是做出这项改动有多重要。好的审查者能发现大多数技术上正确的问题，但人们真正关心的是某个 bug 属于必须修复、应该修复还是吹毛求疵。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Code Review 正是这么做的，它会将问题标记为重要、吹毛求疵或既有问题。“既有问题”标签意味着审查者不应让作者为本来就存在的 bug 负责。",
+          "inlines": [
+            {
+              "text": "Code Review 正是这么做的，它会将问题标记为"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/code-review-pull-requests",
+              "text": "重要、吹毛求疵或既有问题"
+            },
+            {
+              "text": "。“既有问题”标签意味着审查者不应让作者为本来就存在的 bug 负责。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "最后，Claude Code 团队会把召回率调高到这样一个程度：再进一步优化就会过拟合评估，而不是真正发现 bug。",
+          "inlines": [
+            {
+              "text": "最后，Claude Code 团队会把召回率调高到这样一个程度：再进一步优化就会过拟合评估，而不是真正发现 bug。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "把漏报变成规则",
+          "inlines": [
+            {
+              "text": "把漏报变成规则"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Claude Code 仓库中，我们有两种把漏报案例转化为规则的方法。第一种是从人工代码审查评论和 PR 回滚中提取模式，找出常见问题。这些问题必须至少出现在两个 PR 中，并且能从 diff 中识别出来，才能被视为潜在规则。会有三个智能体尝试证伪它们，然后由人工在 PR 中审查并批准。",
+          "inlines": [
+            {
+              "text": "在 Claude Code 仓库中，我们有两种把漏报案例转化为规则的方法。第一种是从人工代码审查评论和 PR 回滚中提取模式，找出常见问题。这些问题必须至少出现在两个 PR 中，并且能从 diff 中识别出来，才能被视为潜在规则。会有三个智能体尝试证伪它们，然后由人工在 PR 中审查并批准。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "第二种方法是让三个 bug 查找器重放一个与已知事故相关的 PR。如果至少有两个找到了该 bug，就说明它是可检测的 bug。如果在小 diff 上漏掉了这个 bug，这就是一个值得写入 REVIEW.md 规则的缺口。",
+          "inlines": [
+            {
+              "text": "第二种方法是让三个 bug 查找器重放一个与已知事故相关的 PR。如果至少有两个找到了该 bug，就说明它是可检测的 bug。如果在小 diff 上漏掉了这个 bug，这就是一个值得写入 REVIEW.md 规则的缺口。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不稳定的测试也按同样方式处理。Claude 不能跳过它们、加 sleep 或重试直到通过。如果找不到根本原因，就删除该测试并写下原因。",
+          "inlines": [
+            {
+              "text": "不稳定的测试也按同样方式处理。Claude 不能跳过它们、加 sleep 或重试直到通过。如果找不到根本原因，就删除该测试并写下原因。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "规则也需要清理。测试套件、验证步骤和 .md 文件只会越积越多，所以我们定期整理。",
+          "inlines": [
+            {
+              "text": "规则也需要清理。测试套件、验证步骤和 .md 文件只会越积越多，所以我们定期整理。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "好的测试带来好的结果",
+          "inlines": [
+            {
+              "text": "好的测试带来好的结果"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们发现，给智能体一个能通过强反馈循环验证其工作的方法，会带来天壤之别。像对待任何其他系统一样对待你的验证层。让它远离它所评判的改动，用对你真正重要的 bug 来给它打分，并在它漏掉问题时写下教训，以免同样的问题再次发生，同时精简这些教训，让它们始终值得运行。",
+          "inlines": [
+            {
+              "text": "我们发现，给智能体一个能通过强反馈循环验证其工作的方法，会带来天壤之别。像对待任何其他系统一样对待你的验证层。让它远离它所评判的改动，用对你真正重要的 bug 来给它打分，并在它漏掉问题时写下教训，以免同样的问题再次发生，同时精简这些教训，让它们始终值得运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "做到这一点，你的工作就会从阅读每一个 diff 转变为定义“完成”是什么样子并审查证据，这正是让你能同时运行多个 Claude 的原因。",
+          "inlines": [
+            {
+              "text": "做到这一点，你的工作就会从阅读每一个 diff 转变为定义“完成”是什么样子并审查证据，这正是让你能同时运行多个 Claude 的原因。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "On the Claude Code team, the vast majority of our code (~90%) is written and reviewed by Claude. At this scale, how we equip our agents to verify their work with evidence becomes extremely important.",
+          "inlines": [
+            {
+              "text": "On the Claude Code team, the vast majority of our code (~90%) is written and "
+            },
+            {
+              "href": "https://claude.dev/blog/solving-code-review-at-anthropic/",
+              "text": "reviewed by Claude"
+            },
+            {
+              "text": ". At this scale, how we equip our agents to verify their work with evidence becomes extremely important."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Verification loops are the building block that lets you delegate more work to Claude. Without them, you can really only run one or two Claudes at a time, because you have to check everything yourself. With them, you can run dozens or hundreds in parallel.",
+          "inlines": [
+            {
+              "text": "Verification loops are the building block that lets you delegate more work to Claude. Without them, you can really only run one or two Claudes at a time, because you have to check everything yourself. With them, you can run dozens or hundreds in parallel."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That’s because giving agents a way to verify their output is an effective way to improve quality. In internal testing around structured file generation, having a separate grader check Claude’s work against a rubric improved task success by up to 10 points over a standard prompting loop, with the largest gains on the hardest problems.",
+          "inlines": [
+            {
+              "text": "That’s because giving agents a "
+            },
+            {
+              "href": "https://claude.com/blog/building-verification-loops-in-claude-code-with-skills",
+              "text": "way to verify their output"
+            },
+            {
+              "text": " is an effective way to improve quality. In internal testing around structured file generation, having a separate grader check Claude’s work against a rubric "
+            },
+            {
+              "href": "https://claude.com/blog/claude-managed-agents",
+              "text": "improved task success by up to 10 points"
+            },
+            {
+              "text": " over a standard prompting loop, with the largest gains on the hardest problems."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What was once expensive to verify (tests, benchmarks, specs, real end-to-end runs) is now cheap to request from an agent. Like code, agents can quickly generate tests, benchmarks, and specs. And once generated, these tests and benchmarks run as software so they can be run frequently without using many additional tokens.",
+          "inlines": [
+            {
+              "text": "What was once expensive to verify (tests, benchmarks, specs, real end-to-end runs) is now cheap to request from an agent. Like code, agents can quickly generate tests, benchmarks, and specs. And once generated, these tests and benchmarks run as software so they can be run frequently without using many additional tokens."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You can also close the verification loop by using the results to improve the agent’s performance on that task. For example, if an agent repeatedly fails a test that checks logs for user data, you can create a hook or a more explicit rule in your CLAUDE.md to avoid future issues. This (mostly) stops issues from happening again.",
+          "inlines": [
+            {
+              "text": "You can also close the verification loop by using the results to improve the agent’s performance on that task. For example, if an agent repeatedly fails a test that checks logs for user data, you can create a hook or a more explicit rule in your CLAUDE.md to avoid future issues. This (mostly) stops issues from happening again."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So if verification is critical to producing quality code at a high velocity, what types of tests should you use and how should you apply them across your pipeline? This article answers those questions and also shares the process used by the Claude Code team.",
+          "inlines": [
+            {
+              "text": "So if verification is critical to producing quality code at a high velocity, what types of tests should you use and how should you apply them across your pipeline? This article answers those questions and also shares the process used by the Claude Code team."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "NOT ALL TESTS ARE CREATED EQUAL: 3 TESTS WORTH INVESTING IN",
+          "inlines": [
+            {
+              "text": "NOT ALL TESTS ARE CREATED EQUAL: 3 TESTS WORTH INVESTING IN"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "No matter which test type you choose, there are a few failure modes to avoid.",
+          "inlines": [
+            {
+              "text": "No matter which test type you choose, there are a few failure modes to avoid."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If your tests are flaky you’ll train the agent to run them again rather than fixing the failing code. If your tests are slow, the agent will do fewer tests across batches which can make pinpointing issues difficult. Heavier tests are best deployed before you’ve committed the changes.",
+          "inlines": [
+            {
+              "text": "If your tests are flaky you’ll train the agent to run them again rather than fixing the failing code. If your tests are slow, the agent will do fewer tests across batches which can make pinpointing issues difficult. Heavier tests are best deployed before you’ve committed the changes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Now, here are the three types of tests I think are most worth investing in.",
+          "inlines": [
+            {
+              "text": "Now, here are the three types of tests I think are most worth investing in."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "E2E tests",
+          "inlines": [
+            {
+              "text": "E2E tests"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "If you have to focus on one test type, pick end-to-end. These tests describe real user flows like adding an item to a cart, checking out, and moving to a confirmation page.",
+          "inlines": [
+            {
+              "text": "If you have to focus on one test type, pick end-to-end. These tests describe real user flows like adding an item to a cart, checking out, and moving to a confirmation page."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The reason E2E tests are so effective is that they are difficult to fool–either the whole feature works or it doesn't. They also have definitive done criteria and can concretely tell you what’s broken.",
+          "inlines": [
+            {
+              "text": "The reason E2E tests are so effective is that they are difficult to fool–either the whole feature works or it doesn't. They also have definitive done criteria and can concretely tell you what’s broken."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/6022d4bf50eed8823c4e7fc6dcaa2f2d1e417b37e3da1710816d523a387e9af7.webp",
+          "alt": "Unit test failure vs. end-to-end test failure. Left: checkout.test.ts shows only “FAIL checkout.test.ts / Error: Timeout after 30s”, captioned “Shooting blind. No step, no trace.” Right: checkout.spec.ts shows a step trace (Register, Add item to cart, Checkout failed, See confirmation page not reached), a screenshot of shop.example/checkout with “Payment form failed to load” and a disabled “Place order” button, and “What step failed: Checkout: ‘Place order’ stayed disabled because the payment form never loaded”, captioned “Screenshots, trace, and a description of what step failed.”",
+          "width": 1999,
+          "height": 1093
+        },
+        {
+          "type": "paragraph",
+          "text": "FIG AA unit test may show “Error: Timeout after 30 seconds,” but an end-to-end test can show a screenshot with a description of what’s broken.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "FIG A"
+            },
+            {
+              "text": "A unit test may show “Error: Timeout after 30 seconds,” but an end-to-end test can show a screenshot with a description of what’s broken."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "While unit tests are faster and less flaky, it’s possible to pass them and still break the feature. This is because both the agent and the test don’t understand the full task.",
+          "inlines": [
+            {
+              "text": "While unit tests are faster and less flaky, it’s possible to pass them and still break the feature. This is because both the agent and the test don’t understand the full task."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With E2E tests, it is effective to give your agent hands and eyes on the real running system. You can use a skill to boot, drive, and inspect the app with tools like CDP, simulators, or API harnesses.",
+          "inlines": [
+            {
+              "text": "With E2E tests, it is effective to give your agent hands and eyes on the real running system. You can use a skill to boot, drive, and inspect the app with tools like "
+            },
+            {
+              "href": "https://chromedevtools.github.io/devtools-protocol/",
+              "text": "CDP"
+            },
+            {
+              "text": ", simulators, or API harnesses."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The feature map can serve as a guide and grading rubric for agents as they typically list features from the user’s point of view with descriptions of paths, keyboard shortcuts, selectors, and expected results.",
+          "inlines": [
+            {
+              "text": "The feature map can serve as a guide and grading rubric for agents as they typically list features from the user’s point of view with descriptions of paths, keyboard shortcuts, selectors, and expected results."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Property tests: constraints that can’t break",
+          "inlines": [
+            {
+              "text": "Property tests: constraints that can’t break"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "A lot of tests are based on what you thought might go wrong. Property tests look at the edge cases that people tend to miss, which is where agents often fail.",
+          "inlines": [
+            {
+              "text": "A lot of tests are based on what you thought might go wrong. Property tests look at the edge cases that people tend to miss, which is where agents often fail."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You start by writing a statement you think can’t fail and then use a test library (fast-check for JS/TS, Hypothesis for Python, proptest for Rust, etc.) to generate thousands of inputs that try to prove otherwise.",
+          "inlines": [
+            {
+              "text": "You start by writing a statement you think can’t fail and then use a test library ("
+            },
+            {
+              "href": "https://fast-check.dev/",
+              "text": "fast-check"
+            },
+            {
+              "text": " for JS/TS, "
+            },
+            {
+              "href": "https://hypothesis.readthedocs.io/en/latest/",
+              "text": "Hypothesis"
+            },
+            {
+              "text": " for Python, "
+            },
+            {
+              "href": "https://proptest-rs.github.io/proptest/",
+              "text": "proptest"
+            },
+            {
+              "text": " for Rust, etc.) to generate thousands of inputs that try to prove otherwise."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "There are many properties in virtually every software project like:",
+          "inlines": [
+            {
+              "text": "There are many properties in virtually every software project like:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Round-trip encoding"
+                },
+                {
+                  "text": ": “if you encode X then decode it back, you get X.” This works for parsing and serialization as well."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Invariants"
+                },
+                {
+                  "text": ": Things that must always be true, like “account balance can never become negative.”"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Idempotency"
+                },
+                {
+                  "text": ": Doing an action (migration, normalization, retry) twice has the same effect as doing it once."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Equivalence"
+                },
+                {
+                  "text": ": Optimized code produces the same result as naive but correct code."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Property libraries are a great way to keep agents honest by using edge cases that aren’t created with the same bias as the agent that created the original code. They are also particularly helpful for rewrites when the spec has drifted from production behavior and is no longer a reliable source for verification.",
+          "inlines": [
+            {
+              "text": "Property libraries are a great way to keep agents honest by using edge cases that aren’t created with the same bias as the agent that created the original code. They are also particularly helpful for rewrites when the spec has drifted from production behavior and is no longer a reliable source for verification."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Differential tests: the old system is the oracle",
+          "inlines": [
+            {
+              "text": "Differential tests: the old system is the oracle"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Differential tests are particularly effective for large-scale migration use cases where functionality is expected to remain the same. For these tests, you run both the old system and the new system with the same inputs and see if you get different results. If you do, there is a bug or breaking change that needs to be fixed.",
+          "inlines": [
+            {
+              "text": "Differential tests are particularly effective for "
+            },
+            {
+              "href": "https://claude.com/resources/articles/ai-code-migration",
+              "text": "large-scale migration"
+            },
+            {
+              "text": " use cases where functionality is expected to remain the same. For these tests, you run both the old system and the new system with the same inputs and see if you get different results. If you do, there is a bug or breaking change that needs to be fixed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The key for differential tests is to use randomly generated inputs or a sample of production traffic. You’ll also want to normalize irrelevant factors like whitespace and keep a list of approved changes for situations where the new environment should differ from the old.",
+          "inlines": [
+            {
+              "text": "The key for differential tests is to use randomly generated inputs or a sample of production traffic. You’ll also want to normalize irrelevant factors like whitespace and keep a list of approved changes for situations where the new environment should differ from the old."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "HOW THE CLAUDE CODE TEAM THINKS ABOUT VERIFICATION",
+          "inlines": [
+            {
+              "text": "HOW THE CLAUDE CODE TEAM THINKS ABOUT VERIFICATION"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We have previously written about how code review works at Anthropic, but this article aims to go deeper on how we verify our work.",
+          "inlines": [
+            {
+              "text": "We have previously written about "
+            },
+            {
+              "href": "https://claude.dev/blog/solving-code-review-at-anthropic/",
+              "text": "how code review works at Anthropic"
+            },
+            {
+              "text": ", but this article aims to go deeper on how we verify our work."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Verification means running the change",
+          "inlines": [
+            {
+              "text": "Verification means running the change"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Running the app end to end matters more than tests. You wouldn't ship an iOS change without trying it in a simulator, and the same goes for Claude.",
+          "inlines": [
+            {
+              "text": "Running the app end to end matters more than tests. You wouldn't ship an iOS change without trying it in a simulator, and the same goes for Claude."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude can test the whole app the way a human or QA engineer would. Ask it to use the Claude Chrome extension for web changes, an iOS or Android MCP for mobile, computer use for desktop, or to run the service locally for backend work.",
+          "inlines": [
+            {
+              "text": "Claude can test the whole app the way a human or QA engineer would. Ask it to use the Claude Chrome extension for web changes, an iOS or Android MCP for mobile, computer use for desktop, or to run the service locally for backend work."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To codify how to start the simulator or run your app, create a skill called verify. Put it in a .claude/skills/ folder in your repo, as close to the relevant code as you can, and add as many as you need. Claude knows to use the verify skill before committing changes.",
+          "inlines": [
+            {
+              "text": "To codify how to start the simulator or run your app, create a skill called verify. Put it in a .claude/skills/ folder in your repo, as close to the relevant code as you can, and add as many as you need. Claude knows to use the verify skill before committing changes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Then invest in making your verify skill fast and reliable. Ask Claude to iterate on it and stress test it. It's your smoke test harness, so you want it rock solid.",
+          "inlines": [
+            {
+              "text": "Then invest in making your verify skill fast and reliable. Ask Claude to iterate on it and stress test it. It's your smoke test harness, so you want it rock solid."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When you give Claude a way to smoke test its changes end to end, you get much better results. You'll see it iterate and catch real mistakes faster, the way a human would. This is how we test nearly all changes at Anthropic.",
+          "inlines": [
+            {
+              "text": "When you give Claude a way to smoke test its changes end to end, you get much better results. You'll see it iterate and catch real mistakes faster, the way a human would. This is how we test nearly all changes at Anthropic."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Failing tests require human attention",
+          "inlines": [
+            {
+              "text": "Failing tests require human attention"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Nobody can read every change, so we use failures as one way to decide what needs a person. Claude runs the checks and tries to fix anything that fails. If a check is still failing after three rounds, Claude stops and brings in a human.",
+          "inlines": [
+            {
+              "text": "Nobody can read every change, so we use failures as one way to decide what needs a person. Claude runs the checks and tries to fix anything that fails. If a check is still failing after three rounds, Claude stops and brings in a human."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Code owners write their own checks",
+          "inlines": [
+            {
+              "text": "Code owners write their own checks"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The people who own the code write the checks for it, and refine them until they flag what the owner would flag. When a check pulls in a reviewer, it should say why, so they don't have to work it out from the diff.",
+          "inlines": [
+            {
+              "text": "The people who own the code write the checks for it, and refine them until they flag what the owner would flag. When a check pulls in a reviewer, it should say why, so they don't have to work it out from the diff."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Reliability checks trigger on the diff",
+          "inlines": [
+            {
+              "text": "Reliability checks trigger on the diff"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We maintain a reliability checklist with 39 items, each with a trigger that can be read from a diff, a check, and the incidents or PRs behind it. One is “--resume loads old transcripts.” When session storage or message types change, we ask whether a new field loads safely, since older transcripts won’t have it.",
+          "inlines": [
+            {
+              "text": "We maintain a reliability checklist with 39 items, each with a trigger that can be read from a diff, a check, and the incidents or PRs behind it. One is “--resume loads old transcripts.” When session storage or message types change, we ask whether a new field loads safely, since older transcripts won’t have it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude reads the diff and checks only the items whose trigger matches–usually 3 to 10–so nobody has to memorize past outages.",
+          "inlines": [
+            {
+              "text": "Claude reads the diff and checks only the items whose trigger matches–usually 3 to 10–so nobody has to memorize past outages."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "One reviewer, multiple rounds",
+          "inlines": [
+            {
+              "text": "One reviewer, multiple rounds"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We don't try to improve reviews by stacking on more reviewers. Adding a second, more expensive, reviewer on top of the primary one is often a worse approach than tuning the primary. Instead, we have a REVIEW.md that says what the reviewer should pay attention to for this code.",
+          "inlines": [
+            {
+              "text": "We don't try to improve reviews by stacking on more reviewers. Adding a second, more expensive, reviewer on top of the primary one is often a worse approach than tuning the primary. Instead, we have a "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/code-review-customize",
+              "text": "REVIEW.md"
+            },
+            {
+              "text": " that says what the reviewer should pay attention to for this code."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We also think review and verification rounds should build on each other. We point each pass at context from earlier rounds and past failures rather than re-checking everything from scratch. It’s cheaper and finds more.",
+          "inlines": [
+            {
+              "text": "We also think review and verification rounds should build on each other. We point each pass at context from earlier rounds and past failures rather than re-checking everything from scratch. It’s cheaper and finds more."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Changes can't modify their own checks",
+          "inlines": [
+            {
+              "text": "Changes can't modify their own checks"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "If a change can modify the check that judges it, the check is broken. Code Review reads the REVIEW.md file from the base or default branch, never from the pull request's changes. The Claude Code team ensures the rules that gate changes are on a branch that the change can't modify.",
+          "inlines": [
+            {
+              "text": "If a change can modify the check that judges it, the check is broken. Code Review reads the REVIEW.md file from the base or default branch, "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/code-review-customize",
+              "text": "never from the pull request's changes"
+            },
+            {
+              "text": ". The Claude Code team ensures the rules that gate changes are on a branch that the change can't modify."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The Claude Code team also reserves reviews for commits. If someone's pushing while the review is happening, then the review result is no longer useful. A passing review on an out-of-date commit means nothing.",
+          "inlines": [
+            {
+              "text": "The Claude Code team also reserves reviews for commits. If someone's pushing while the review is happening, then the review result is no longer useful. A passing review on an out-of-date commit means nothing."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The team also runs cheap checks first. If an agent pushes before testing locally, it has spent shared review and CI time when it could have caught the bug itself. On our team, Claude runs the tests, build, and linter before opening a pull request. You can enforce this with a hook that runs the tests when Claude finishes, or a /goal of a passing test suite.",
+          "inlines": [
+            {
+              "text": "The team also runs cheap checks first. If an agent pushes before testing locally, it has spent shared review and CI time when it could have caught the bug itself. On our team, Claude runs the tests, build, and linter before opening a pull request. You can enforce this with a "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/hooks",
+              "text": "hook"
+            },
+            {
+              "text": " that runs the tests when Claude finishes, or a "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/goal",
+              "text": "/goal"
+            },
+            {
+              "text": " of a passing test suite."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Start a new gate in observe mode",
+          "inlines": [
+            {
+              "text": "Start a new gate in observe mode"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "In our own repos, we stamp each commit with how it was verified. The stamp even includes \"none\" so we can query for commits that weren't verified.",
+          "inlines": [
+            {
+              "text": "In our own repos, we stamp each commit with how it was verified. The stamp even includes \"none\" so we can query for commits that weren't verified."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We've also created a commit gate that can block a commit if the session did not contain /code-review or /verify. We've set it up with off, observe, and enforce modes.",
+          "inlines": [
+            {
+              "text": "We've also created a commit gate that can block a commit if the session did not contain /code-review or /verify. We've set it up with off, observe, and enforce modes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Observe mode will log what would have been blocked, so that we can review any false positives and ensure no one is impacted.",
+          "inlines": [
+            {
+              "text": "Observe mode will log what would have been blocked, so that we can review any false positives and ensure no one is impacted."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Enforce mode will block the commit. Any commit can carry an explanation in its message as to why it didn't get verified. If commits have been blocked twice in the session, the next one will be allowed through so Claude doesn't get stuck – Claude Code isn't perfect.",
+          "inlines": [
+            {
+              "text": "Enforce mode will block the commit. Any commit can carry an explanation in its message as to why it didn't get verified. If commits have been blocked twice in the session, the next one will be allowed through so Claude doesn't get stuck – Claude Code isn't perfect."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Test your checks on what actually matters",
+          "inlines": [
+            {
+              "text": "Test your checks on what actually matters"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The Claude Code team also regularly reviews the reviewers. We track how many merged changes were reverted, how many changes a maintainer rejected before merging, and a size-matched subset of changes that have stayed clean.",
+          "inlines": [
+            {
+              "text": "The Claude Code team also regularly reviews the reviewers. We track how many merged changes were reverted, how many changes a maintainer rejected before merging, and a size-matched subset of changes that have stayed clean."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This can also be done with a formal evaluation. In our code review post, we described how the Code Review team has set up an evaluation based on previous incidents and reverts. They recreate the repo to the state at the time of review for each example, and provide a one-sentence answer key to what the bug was. Only findings that correctly describe the bug in question get points. They use merged and stable changes as a control to prevent over-flagging. Their tuning set is split out from the fixed test set they use to evaluate their system.",
+          "inlines": [
+            {
+              "text": "This can also be done with a formal evaluation. In our "
+            },
+            {
+              "href": "https://claude.dev/blog/solving-code-review-at-anthropic/",
+              "text": "code review post"
+            },
+            {
+              "text": ", we described how the Code Review team has set up an evaluation based on previous incidents and reverts. They recreate the repo to the state at the time of review for each example, and provide a one-sentence answer key to what the bug was. Only findings that correctly describe the bug in question get points. They use merged and stable changes as a control to prevent over-flagging. Their tuning set is split out from the fixed test set they use to evaluate their system."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "They also evaluated the recall rate for raw findings, post-verification, and final review separately. This lets them see if the system is losing bugs it had already found. Any evaluation that treats all these as one end-to-end score won't capture this nuance.",
+          "inlines": [
+            {
+              "text": "They also evaluated the recall rate for raw findings, post-verification, and final review separately. This lets them see if the system is losing bugs it had already found. Any evaluation that treats all these as one end-to-end score won't capture this nuance."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In addition to validity, the other dimension we care about is how important it is to make the change. A good reviewer will catch most things that are technically correct, but people care about whether a given bug is a must-fix, a should-fix, or a nit.",
+          "inlines": [
+            {
+              "text": "In addition to validity, the other dimension we care about is how important it is to make the change. A good reviewer will catch most things that are technically correct, but people care about whether a given bug is a must-fix, a should-fix, or a nit."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Code Review has this exact idea, and it will tag things as Important, Nit or Pre-existing. The \"pre-existing\" tag means that the reviewer shouldn't hold the author responsible for something that was already a bug.",
+          "inlines": [
+            {
+              "text": "Code Review has this exact idea, and it will tag things as "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/code-review-pull-requests",
+              "text": "Important, Nit or Pre-existing"
+            },
+            {
+              "text": ". The \"pre-existing\" tag means that the reviewer shouldn't hold the author responsible for something that was already a bug."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Finally, the Claude Code team tunes recall up to the point where the next improvement would be overfitting to the eval rather than actually catching bugs.",
+          "inlines": [
+            {
+              "text": "Finally, the Claude Code team tunes recall up to the point where the next improvement would be overfitting to the eval rather than actually catching bugs."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Turn misses into rules",
+          "inlines": [
+            {
+              "text": "Turn misses into rules"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "In the Claude Code repo, we have two methods of turning missed cases into rules. The first is extracting patterns in human code review comments and PR reverts to identify common issues. These must occur in at least two PRs and be identifiable from a diff to be considered a potential rule. Three agents will try to disprove them, and they will be reviewed and approved by a human in a PR.",
+          "inlines": [
+            {
+              "text": "In the Claude Code repo, we have two methods of turning missed cases into rules. The first is extracting patterns in human code review comments and PR reverts to identify common issues. These must occur in at least two PRs and be identifiable from a diff to be considered a potential rule. Three agents will try to disprove them, and they will be reviewed and approved by a human in a PR."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The second method is replaying three bug finders against a PR that is associated with a known incident. If at least two find the bug, it's a detectable bug. If the bug is missed on a small diff, this is a gap that is worth turning into a rule in REVIEW.md.",
+          "inlines": [
+            {
+              "text": "The second method is replaying three bug finders against a PR that is associated with a known incident. If at least two find the bug, it's a detectable bug. If the bug is missed on a small diff, this is a gap that is worth turning into a rule in REVIEW.md."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Flaky tests get the same treatment. Claude can't skip them, add sleeps or retry until they pass. If it can't find the root cause, it deletes the test and writes down why.",
+          "inlines": [
+            {
+              "text": "Flaky tests get the same treatment. Claude can't skip them, add sleeps or retry until they pass. If it can't find the root cause, it deletes the test and writes down why."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Rules need cleaning up too. Test suites, verification steps and .md files only grow if you let them, so we tidy them up on a routine.",
+          "inlines": [
+            {
+              "text": "Rules need cleaning up too. Test suites, verification steps and .md files only grow if you let them, so we tidy them up on a routine."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "GOOD TESTS, GOOD RESULTS",
+          "inlines": [
+            {
+              "text": "GOOD TESTS, GOOD RESULTS"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We’ve found that giving your agent a way to verify its work with a strong feedback loop makes all the difference. Treat your verification layer like you would any other system. Keep it out of reach of the changes they judge, grade them against the bugs that mattered to you, and write down lessons when they miss something so that it doesn’t happen more than once, and prune those lessons so they stay worth running.",
+          "inlines": [
+            {
+              "text": "We’ve found that giving your agent a way to verify its work with a strong feedback loop makes all the difference. Treat your verification layer like you would any other system. Keep it out of reach of the changes they judge, grade them against the bugs that mattered to you, and write down lessons when they miss something so that it doesn’t happen more than once, and prune those lessons so they stay worth running."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Do that and your job shifts from reading every diff to defining what “done” looks like and reviewing the evidence, which is what lets you run many Claudes at once.",
+          "inlines": [
+            {
+              "text": "Do that and your job shifts from reading every diff to defining what “done” looks like and reviewing the evidence, which is what lets you run many Claudes at once."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-17T01:10:39.006280Z",
+  "contentMode": "full"
+}
