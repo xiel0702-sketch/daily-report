@@ -1,0 +1,2680 @@
+{
+  "schemaVersion": 1,
+  "id": "ekt4wsp34savbuzq0vafnlhpw",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/ekt4wsp34savbuzq0vafnlhpw",
+  "fetchedAt": "2026-11-18T01:10:23.242301Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Microsoft / Copilot",
+    "安全对齐",
+    "行业动态"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/7c1c32028480f35b776ff4fc289c346464cb1f36616b3722fa01a7d95de3de75.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "2026 年 11 月 17 日 20:35 UTC，一个恶意版本（1.26.1）的 agent-framework 包（Microsoft Agent Framework）被上传到 PyPI。21:08 UTC，第二个版本 1.26.2 接踵而至。截至 21:30 UTC，这两个版本都已从 PyPI 下架。该包每周下载量约 41,000 次。",
+          "inlines": [
+            {
+              "text": "2026 年 11 月 17 日 20:35 UTC，一个恶意版本（"
+            },
+            {
+              "code": true,
+              "text": "1.26.1"
+            },
+            {
+              "text": "）的 "
+            },
+            {
+              "code": true,
+              "text": "agent-framework"
+            },
+            {
+              "text": " 包（Microsoft Agent Framework）被上传到 PyPI。21:08 UTC，第二个版本 "
+            },
+            {
+              "code": true,
+              "text": "1.26.2"
+            },
+            {
+              "text": " 接踵而至。截至 21:30 UTC，这两个版本都已从 PyPI 下架。该包每周下载量约 41,000 次。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "目前最新的安全版本是 1.26.0。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "目前最新的安全版本是 1.26.0。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "安装恶意版本后，它会将一个 .pth 文件放入 site-packages 根目录（1.26.1 中是 agent_framework_meta.pth，1.26.2 中是 af_runtime_diag.pth）。Python 每次启动解释器都会运行 .pth 文件，因此只要在该环境中启动 Python，凭据窃取程序就会运行，即使从未导入 agent-framework。",
+          "inlines": [
+            {
+              "text": "安装恶意版本后，它会将一个 "
+            },
+            {
+              "code": true,
+              "text": ".pth"
+            },
+            {
+              "text": " 文件放入 site-packages 根目录（1.26.1 中是 "
+            },
+            {
+              "code": true,
+              "text": "agent_framework_meta.pth"
+            },
+            {
+              "text": "，1.26.2 中是 "
+            },
+            {
+              "code": true,
+              "text": "af_runtime_diag.pth"
+            },
+            {
+              "text": "）。Python 每次启动解释器都会运行 "
+            },
+            {
+              "code": true,
+              "text": ".pth"
+            },
+            {
+              "text": " 文件，因此只要在该环境中启动 Python，凭据窃取程序就会运行，即使从未导入 "
+            },
+            {
+              "code": true,
+              "text": "agent-framework"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "根本原因",
+          "inlines": [
+            {
+              "text": "根本原因"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "根本原因尚未确认。目前已知的情况是：",
+          "inlines": [
+            {
+              "text": "根本原因尚未确认。目前已知的情况是："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "code": true,
+                  "text": "microsoft/agent-framework"
+                },
+                {
+                  "text": " 中没有 python-1.26.1 标签或发布版本，主分支也不包含恶意代码。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "正常发布时会同时发布 wheel 和 sdist，并附带同一版本的 "
+                },
+                {
+                  "code": true,
+                  "text": "agent-framework-core"
+                },
+                {
+                  "text": "。而 1.26.1 只有 wheel，且仍然依赖 agent-framework-core[all]==1.26.0。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这表明 1.26.1 可能是在项目正常发布流程之外构建，并直接上传到 PyPI 的。",
+          "inlines": [
+            {
+              "text": "这表明 1.26.1 可能是在项目正常发布流程之外构建，并直接上传到 PyPI 的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "今年早些时候，另一个微软 Python 包 durabletask 在其 PyPI 令牌被盗后遭到入侵。我们尚未将这两起事件关联起来。",
+          "inlines": [
+            {
+              "text": "今年早些时候，另一个微软 Python 包 "
+            },
+            {
+              "href": "https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack",
+              "text": "durabletask"
+            },
+            {
+              "text": " 在其 PyPI 令牌被盗后遭到入侵。我们尚未将这两起事件关联起来。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "时间线（UTC）",
+          "inlines": [
+            {
+              "text": "时间线（UTC）"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "时间",
+          "inlines": [
+            {
+              "text": "时间"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "事件",
+          "inlines": [
+            {
+              "text": "事件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026-11-12 18:25",
+          "inlines": [
+            {
+              "text": "2026-11-12 18:25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "正常的 1.26.0 发布（wheel + sdist，同时发布 agent-framework-core 1.26.0）",
+          "inlines": [
+            {
+              "text": "正常的 1.26.0 发布（wheel + sdist，同时发布 agent-framework-core 1.26.0）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026-11-17 20:35",
+          "inlines": [
+            {
+              "text": "2026-11-17 20:35"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "恶意 1.26.1 发布",
+          "inlines": [
+            {
+              "text": "恶意 1.26.1 发布"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026-11-17 ~21:08",
+          "inlines": [
+            {
+              "text": "2026-11-17 ~21:08"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "恶意 1.26.2 发布",
+          "inlines": [
+            {
+              "text": "恶意 1.26.2 发布"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026-11-17 ~21:30",
+          "inlines": [
+            {
+              "text": "2026-11-17 ~21:30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.26.1 和 1.26.2 从 PyPI 下架",
+          "inlines": [
+            {
+              "text": "1.26.1 和 1.26.2 从 PyPI 下架"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "载荷",
+          "inlines": [
+            {
+              "text": "载荷"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework_meta.pth 只包含一行：import agent_framework_meta",
+          "inlines": [
+            {
+              "code": true,
+              "text": "agent_framework_meta.pth"
+            },
+            {
+              "text": " 只包含一行："
+            },
+            {
+              "code": true,
+              "text": "import agent_framework_meta"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 1.26.1 中，agent_framework_meta/__init__.py 随后调用 _telemetry._start()。窃取程序会 fork 出一个分离会话（os.setsid())，在不支持 fork 的环境中则回退为守护线程。它会设置 _AF_TEL=1，以免在子进程中再次运行。",
+          "inlines": [
+            {
+              "text": "在 1.26.1 中，"
+            },
+            {
+              "code": true,
+              "text": "agent_framework_meta/__init__.py"
+            },
+            {
+              "text": " 随后调用 "
+            },
+            {
+              "code": true,
+              "text": "_telemetry._start()"
+            },
+            {
+              "text": "。窃取程序会 fork 出一个分离会话（"
+            },
+            {
+              "code": true,
+              "text": "os.setsid())"
+            },
+            {
+              "text": "，在不支持 fork 的环境中则回退为守护线程。它会设置 "
+            },
+            {
+              "code": true,
+              "text": "_AF_TEL=1"
+            },
+            {
+              "text": "，以免在子进程中再次运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "文件名和函数名（_telemetry、“轻量级运行时诊断钩子”、user-agent af-runtime-diagnostics/1）都被伪装成正常的 SDK 遥测。",
+          "inlines": [
+            {
+              "text": "文件名和函数名（"
+            },
+            {
+              "code": true,
+              "text": "_telemetry"
+            },
+            {
+              "text": "、“轻量级运行时诊断钩子”、user-agent "
+            },
+            {
+              "code": true,
+              "text": "af-runtime-diagnostics/1"
+            },
+            {
+              "text": "）都被伪装成正常的 SDK 遥测。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "凭据窃取程序",
+          "inlines": [
+            {
+              "text": "凭据窃取程序"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "该窃取程序主要针对 Azure 和 Azure DevOps，会收集：",
+          "inlines": [
+            {
+              "text": "该窃取程序主要针对 Azure 和 Azure DevOps，会收集："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "环境变量"
+                },
+                {
+                  "text": "：名称中包含 TOKEN、SECRET、PASSWORD、KEY、AZURE、AWS、GITHUB、OPENAI、HF_、FOUNDRY、NPM、PIP、NUGET、SYSTEM、BUILD、AGENT 等字符串的变量"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "其他进程的环境变量"
+                },
+                {
+                  "text": "：从最多 300 个 /proc/*/environ 文件中读取疑似机密的值"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "凭据文件"
+                },
+                {
+                  "text": "（最多 60 个）："
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Azure CLI（~/.azure/）"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": ".npmrc、pip.conf、.netrc、.git-credentials、.docker/config.json"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Hugging Face 令牌"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Azure DevOps 智能体的 .credentials"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": ".env 以及 /app 和 /workspace 下的 JSON 文件"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Azure DevOps OIDC 令牌"
+                },
+                {
+                  "text": "：如果设置了 "
+                },
+                {
+                  "code": true,
+                  "text": "SYSTEM_ACCESSTOKEN"
+                },
+                {
+                  "text": " 和 "
+                },
+                {
+                  "code": true,
+                  "text": "SYSTEM_OIDCREQUESTURI"
+                },
+                {
+                  "text": "，它会为 "
+                },
+                {
+                  "code": true,
+                  "text": "api://AzureADTokenExchange"
+                },
+                {
+                  "text": " 请求 OIDC 令牌"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Azure 托管标识令牌"
+                },
+                {
+                  "text": "：从 IMDS 或 App Service 标识端点获取 12 种资源的令牌：ARM、Graph、Key Vault、Storage、Cognitive Services、Azure AI/ML、Search、Container Registry、Azure DevOps 和 AzureADTokenExchange"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Azure 实例元数据"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "所有内容会被放入一个 JSON 文档，经 zlib 压缩、base64 编码后，通过一次 HTTPS POST 发送到 webhook[.]site。该 URL 是硬编码的，载荷没有备用通道。失败会被静默忽略，不会重试。",
+          "inlines": [
+            {
+              "text": "所有内容会被放入一个 JSON 文档，经 zlib 压缩、base64 编码后，通过一次 HTTPS POST 发送到 "
+            },
+            {
+              "code": true,
+              "text": "webhook[.]site"
+            },
+            {
+              "text": "。该 URL 是硬编码的，载荷没有备用通道。失败会被静默忽略，不会重试。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "版本 1.26.2",
+          "inlines": [
+            {
+              "text": "版本 1.26.2"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "1.26.2 于 21:08 UTC 上传，比 1.26.1 晚 33 分钟。它是重新打包的 1.26.1，发送到同一个 webhook.site URL，改动如下：",
+          "inlines": [
+            {
+              "code": true,
+              "text": "1.26.2"
+            },
+            {
+              "text": " 于 21:08 UTC 上传，比 1.26.1 晚 33 分钟。它是重新打包的 "
+            },
+            {
+              "code": true,
+              "text": "1.26.1"
+            },
+            {
+              "text": "，发送到同一个 webhook.site URL，改动如下："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "新的触发方式。"
+                },
+                {
+                  "code": true,
+                  "text": "agent_framework_meta/__init__.py"
+                },
+                {
+                  "text": " 被恢复为干净的 1.26.0 文件。取而代之的是，一个新的顶层 "
+                },
+                {
+                  "code": true,
+                  "text": "af_runtime_diag.pth"
+                },
+                {
+                  "text": " 导入了一个新的顶层模块 "
+                },
+                {
+                  "code": true,
+                  "text": "af_runtime_diag.py"
+                },
+                {
+                  "text": "，该模块一经导入就会启动窃取程序。只搜索 1.26.1 的文件名会漏掉这个版本。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "GitHub Actions OIDC 窃取。"
+                },
+                {
+                  "text": "在启用了 id-token: write 的工作流中，它会为 "
+                },
+                {
+                  "code": true,
+                  "text": "api://AzureADTokenExchange"
+                },
+                {
+                  "text": " 和 https://management.azure.com/ 申请 OIDC 令牌。如果某个 Entra ID 联合凭据信任该工作流，这些令牌就能换取 Azure 访问权限，全程无需存储任何密钥。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "收集范围扩大。"
+                },
+                {
+                  "text": "环境变量匹配现在涵盖 ACTIONS、OIDC、RUNNER 和 ARM_。新增了 GitHub 托管运行器的路径（"
+                },
+                {
+                  "code": true,
+                  "text": "/home/runner/work/_temp/*"
+                },
+                {
+                  "text": "、"
+                },
+                {
+                  "code": true,
+                  "text": "/home/runner/.azure/"
+                },
+                {
+                  "text": "），文件数量上限也从 60 提高到 80。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "新的 User-Agent："
+                },
+                {
+                  "code": true,
+                  "text": "runtime-diagnostics/1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "webhook.site 如何限制影响",
+          "inlines": [
+            {
+              "text": "webhook.site 如何限制影响"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "webhook.site 是一个公开的请求检查服务。在免费套餐下，未绑定账号的 URL：",
+          "inlines": [
+            {
+              "text": "webhook.site 是一个公开的请求检查服务。在免费套餐下，未绑定账号的 URL："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "最多接受 "
+                },
+                {
+                  "bold": true,
+                  "text": "100 个请求"
+                },
+                {
+                  "text": "。超过之后，新请求会收到 "
+                },
+                {
+                  "bold": true,
+                  "text": "HTTP 410 Gone 或 429 Too Many Requests"
+                },
+                {
+                  "text": "，且不会被记录。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "7 天后过期"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们已确认攻击者的令牌属于免费套餐，最多捕获了 50 个请求。不过，这些请求中可能包含可用的云、CI 和镜像仓库凭据。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "我们已确认攻击者的令牌属于免费套餐，最多捕获了 50 个请求。"
+            },
+            {
+              "text": "不过，这些请求中可能包含可用的云、CI 和镜像仓库凭据。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "入侵指标",
+          "inlines": [
+            {
+              "text": "入侵指标"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "指标",
+          "inlines": [
+            {
+              "text": "指标"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "说明",
+          "inlines": [
+            {
+              "text": "说明"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "类型",
+          "inlines": [
+            {
+              "text": "类型"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "https://webhook[.]site/d381fd80-ec62-42ad-8f5c-d1b15103c9bb",
+          "inlines": [
+            {
+              "href": "https://webhook%5B.%5Dsite/d381fd80-ec62-42ad-8f5c-d1b15103c9bb",
+              "text": "https://webhook[.]site/d381fd80-ec62-42ad-8f5c-d1b15103c9bb"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "外传端点（?t=telemetry）",
+          "inlines": [
+            {
+              "text": "外传端点（?t=telemetry）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "网络",
+          "inlines": [
+            {
+              "text": "网络"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af-runtime-diagnostics/1",
+          "inlines": [
+            {
+              "text": "af-runtime-diagnostics/1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "外传 User-Agent（1.26.1）",
+          "inlines": [
+            {
+              "text": "外传 User-Agent（1.26.1）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "网络",
+          "inlines": [
+            {
+              "text": "网络"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "runtime-diagnostics/1",
+          "inlines": [
+            {
+              "text": "runtime-diagnostics/1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "外传 User-Agent（1.26.2）",
+          "inlines": [
+            {
+              "text": "外传 User-Agent（1.26.2）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "网络",
+          "inlines": [
+            {
+              "text": "网络"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework_meta.pth",
+          "inlines": [
+            {
+              "text": "agent_framework_meta.pth"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "site-packages 中的持久化钩子（1.26.1）",
+          "inlines": [
+            {
+              "text": "site-packages 中的持久化钩子（1.26.1）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "主机",
+          "inlines": [
+            {
+              "text": "主机"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework_meta/_telemetry.py",
+          "inlines": [
+            {
+              "text": "agent_framework_meta/_telemetry.py"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "凭据窃取程序（1.26.1）",
+          "inlines": [
+            {
+              "text": "凭据窃取程序（1.26.1）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "主机",
+          "inlines": [
+            {
+              "text": "主机"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af_runtime_diag.pth",
+          "inlines": [
+            {
+              "text": "af_runtime_diag.pth"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "site-packages 中的持久化钩子（1.26.2）",
+          "inlines": [
+            {
+              "text": "site-packages 中的持久化钩子（1.26.2）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "主机",
+          "inlines": [
+            {
+              "text": "主机"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af_runtime_diag.py",
+          "inlines": [
+            {
+              "text": "af_runtime_diag.py"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "凭据窃取程序（1.26.2）",
+          "inlines": [
+            {
+              "text": "凭据窃取程序（1.26.2）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "主机",
+          "inlines": [
+            {
+              "text": "主机"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "_AF_TEL=1",
+          "inlines": [
+            {
+              "text": "_AF_TEL=1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "仅运行一次的环境变量",
+          "inlines": [
+            {
+              "text": "仅运行一次的环境变量"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "主机",
+          "inlines": [
+            {
+              "text": "主机"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0a013e4724c4437cf9b177def1d988113e167539",
+          "inlines": [
+            {
+              "text": "0a013e4724c4437cf9b177def1d988113e167539"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "_telemetry.py（SHA1）",
+          "inlines": [
+            {
+              "text": "_telemetry.py（SHA1）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "哈希",
+          "inlines": [
+            {
+              "text": "哈希"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "54d885b7d7161c9ed96489c66364c4bfbf635929166843bba10d97d46b5a2e1f",
+          "inlines": [
+            {
+              "text": "54d885b7d7161c9ed96489c66364c4bfbf635929166843bba10d97d46b5a2e1f"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af_runtime_diag.py（SHA256）",
+          "inlines": [
+            {
+              "text": "af_runtime_diag.py（SHA256）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "哈希",
+          "inlines": [
+            {
+              "text": "哈希"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "325e7e9f0ec94e41ad1a1b7a3f18a6b8b5bffece2e2b97b8d3369eb967452f93",
+          "inlines": [
+            {
+              "text": "325e7e9f0ec94e41ad1a1b7a3f18a6b8b5bffece2e2b97b8d3369eb967452f93"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af_runtime_diag.pth（SHA256）",
+          "inlines": [
+            {
+              "text": "af_runtime_diag.pth（SHA256）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "哈希",
+          "inlines": [
+            {
+              "text": "哈希"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "受影响的实例",
+          "inlines": [
+            {
+              "text": "受影响的实例"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "文件",
+          "inlines": [
+            {
+              "text": "文件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SHA256",
+          "inlines": [
+            {
+              "text": "SHA256"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework-1.26.1-py3-none-any.whl",
+          "inlines": [
+            {
+              "text": "agent_framework-1.26.1-py3-none-any.whl"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "d27fa34414e6201d5e03e559ef634f020057554d7b3f4898dd5d7cd3e989e110",
+          "inlines": [
+            {
+              "text": "d27fa34414e6201d5e03e559ef634f020057554d7b3f4898dd5d7cd3e989e110"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework-1.26.2-py3-none-any.whl",
+          "inlines": [
+            {
+              "text": "agent_framework-1.26.2-py3-none-any.whl"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3d20a8bc91351a9a16b6db243b848ceca0206b7a8623b02d2af553a9c9f7e0a9",
+          "inlines": [
+            {
+              "text": "3d20a8bc91351a9a16b6db243b848ceca0206b7a8623b02d2af553a9c9f7e0a9"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "安全团队应采取哪些措施？",
+          "inlines": [
+            {
+              "text": "安全团队应采取哪些措施？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz 客户应参阅 Wiz 威胁情报中心 关于此次事件的公告。",
+          "inlines": [
+            {
+              "text": "Wiz 客户应参阅 "
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center/wiz-adv-2026-214",
+              "text": "Wiz 威胁情报中心"
+            },
+            {
+              "text": " 关于此次事件的公告。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "排查暴露情况："
+                },
+                {
+                  "text": "在 lockfile、CI 日志、virtualenv 和容器镜像中搜索 agent-framework 1.26.1 或 1.26.2。将版本固定到 1.26.0。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "检查是否执行："
+                },
+                {
+                  "text": "在 site-packages 中查找 "
+                },
+                {
+                  "code": true,
+                  "text": "agent_framework_meta.pth"
+                },
+                {
+                  "text": " 和 "
+                },
+                {
+                  "code": true,
+                  "text": "agent_framework_meta/_telemetry.py"
+                },
+                {
+                  "text": "（1.26.1），或 "
+                },
+                {
+                  "code": true,
+                  "text": "af_runtime_diag.pth"
+                },
+                {
+                  "text": " 和 "
+                },
+                {
+                  "code": true,
+                  "text": "af_runtime_diag.py"
+                },
+                {
+                  "text": "（1.26.2）。在该环境中启动的任何 Python 进程都运行过载荷。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "检查出站流量："
+                },
+                {
+                  "text": "在代理和 DNS 日志中搜索 "
+                },
+                {
+                  "code": true,
+                  "text": "webhook[.]site/d381fd80-ec62-42ad-8f5c-d1b15103c9bb"
+                },
+                {
+                  "text": "。返回 200 表示该主机的数据已被接收；返回 410/429 则说明被拒绝。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "轮换凭据"
+                },
+                {
+                  "text": "，涉及受影响的主机和运行器："
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "环境中出现过的所有密钥"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Azure CLI 会话、Azure DevOps PAT 和服务连接，npm/PyPI/NuGet/Docker/Hugging Face 令牌，git 凭据"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "审计 Azure 身份："
+                },
+                {
+                  "text": "检查受影响 VM、App Service、AKS 节点或 ADO 流水线可访问的托管身份和联合凭据（工作负载身份联合）的登录与活动日志。被盗的托管身份令牌和经 OIDC 交换的令牌最长 24 小时内有效。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "审计 GitHub Actions（1.26.2）："
+                },
+                {
+                  "text": "对于使用 "
+                },
+                {
+                  "code": true,
+                  "text": "id-token: write"
+                },
+                {
+                  "text": " 安装了 1.26.2 的工作流，应将发往 "
+                },
+                {
+                  "code": true,
+                  "text": "api://AzureADTokenExchange"
+                },
+                {
+                  "text": " 和 https://management.azure.com/ 的 GitHub OIDC 令牌视为已泄露。请检查信任这些仓库和工作流的 Entra ID 联合凭据，以及对应应用注册的登录记录。轮换曾暴露给该作业的仓库密钥和组织密钥。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如需更长期的加固指导，请参阅《实用软件包安全：非官方指南》。",
+          "inlines": [
+            {
+              "text": "如需更长期的加固指导，请参阅"
+            },
+            {
+              "href": "https://www.wiz.io/blog/practical-package-security-the-unofficial-guide",
+              "text": "《实用软件包安全：非官方指南》"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/7c1c32028480f35b776ff4fc289c346464cb1f36616b3722fa01a7d95de3de75.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "At 20:35 UTC on November 17, 2026, a malicious version (1.26.1) of the agent-framework package (Microsoft Agent Framework) was uploaded to PyPI. A second version, 1.26.2, followed at 21:08 UTC. As of 21:30 UTC, both versions were no longer available on PyPI. The package gets about 41,000 downloads a week.",
+          "inlines": [
+            {
+              "text": "At 20:35 UTC on November 17, 2026, a malicious version ("
+            },
+            {
+              "code": true,
+              "text": "1.26.1"
+            },
+            {
+              "text": ") of the "
+            },
+            {
+              "code": true,
+              "text": "agent-framework"
+            },
+            {
+              "text": " package (Microsoft Agent Framework) was uploaded to PyPI. A second version, "
+            },
+            {
+              "code": true,
+              "text": "1.26.2"
+            },
+            {
+              "text": ", followed at 21:08 UTC. As of 21:30 UTC, both versions were no longer available on PyPI. The package gets about 41,000 downloads a week."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The most recent safe version is 1.26.0.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The most recent safe version is 1.26.0."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When a malicious version is installed, it drops a .pth file into the site-packages root (agent_framework_meta.pth in 1.26.1, af_runtime_diag.pth in 1.26.2). Python runs .pth files on every interpreter start, so the credential stealer runs whenever Python starts in that environment, even if agent-framework is never imported.",
+          "inlines": [
+            {
+              "text": "When a malicious version is installed, it drops a "
+            },
+            {
+              "code": true,
+              "text": ".pth"
+            },
+            {
+              "text": " file into the site-packages root ("
+            },
+            {
+              "code": true,
+              "text": "agent_framework_meta.pth"
+            },
+            {
+              "text": " in 1.26.1, "
+            },
+            {
+              "code": true,
+              "text": "af_runtime_diag.pth"
+            },
+            {
+              "text": " in 1.26.2). Python runs "
+            },
+            {
+              "code": true,
+              "text": ".pth"
+            },
+            {
+              "text": " files on every interpreter start, so the credential stealer runs whenever Python starts in that environment, even if "
+            },
+            {
+              "code": true,
+              "text": "agent-framework"
+            },
+            {
+              "text": " is never imported."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Root Cause",
+          "inlines": [
+            {
+              "text": "Root Cause"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The root cause hasn't been confirmed. What we know so far:",
+          "inlines": [
+            {
+              "text": "The root cause hasn't been confirmed. What we know so far:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "There is no python-1.26.1 tag or release in "
+                },
+                {
+                  "code": true,
+                  "text": "microsoft/agent-framework"
+                },
+                {
+                  "text": ", and the main branch doesn't contain the malicious code."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Legitimate releases publish a wheel and an sdist together with "
+                },
+                {
+                  "code": true,
+                  "text": "agent-framework-core"
+                },
+                {
+                  "text": " of the same version. 1.26.1 was a wheel only, and still depends on agent-framework-core[all]==1.26.0."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This indicates 1.26.1 may have been built outside the project's normal release process and uploaded directly to PyPI.",
+          "inlines": [
+            {
+              "text": "This indicates 1.26.1 may have been built outside the project's normal release process and uploaded directly to PyPI."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Earlier this year, another Microsoft Python package, durabletask, was compromised after its PyPI token was stolen. We have not linked the two incidents.",
+          "inlines": [
+            {
+              "text": "Earlier this year, another Microsoft Python package, "
+            },
+            {
+              "href": "https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack",
+              "text": "durabletask"
+            },
+            {
+              "text": ", was compromised after its PyPI token was stolen. We have not linked the two incidents."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Timeline (UTC)",
+          "inlines": [
+            {
+              "text": "Timeline (UTC)"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Time",
+          "inlines": [
+            {
+              "text": "Time"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Event",
+          "inlines": [
+            {
+              "text": "Event"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026-11-12 18:25",
+          "inlines": [
+            {
+              "text": "2026-11-12 18:25"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Legitimate 1.26.0 published (wheel + sdist, alongside agent-framework-core 1.26.0)",
+          "inlines": [
+            {
+              "text": "Legitimate 1.26.0 published (wheel + sdist, alongside agent-framework-core 1.26.0)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026-11-17 20:35",
+          "inlines": [
+            {
+              "text": "2026-11-17 20:35"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Malicious 1.26.1 published",
+          "inlines": [
+            {
+              "text": "Malicious 1.26.1 published"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026-11-17 ~21:08",
+          "inlines": [
+            {
+              "text": "2026-11-17 ~21:08"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Malicious 1.26.2 published",
+          "inlines": [
+            {
+              "text": "Malicious 1.26.2 published"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2026-11-17 ~21:30",
+          "inlines": [
+            {
+              "text": "2026-11-17 ~21:30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.26.1 & 1.26.2 no longer available on PyPI",
+          "inlines": [
+            {
+              "text": "1.26.1 & 1.26.2 no longer available on PyPI"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Payload",
+          "inlines": [
+            {
+              "text": "Payload"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework_meta.pth contains one line: import agent_framework_meta",
+          "inlines": [
+            {
+              "code": true,
+              "text": "agent_framework_meta.pth"
+            },
+            {
+              "text": " contains one line: "
+            },
+            {
+              "code": true,
+              "text": "import agent_framework_meta"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In 1.26.1, agent_framework_meta/__init__.py then calls _telemetry._start(). The stealer forks into a detached session (os.setsid()), or falls back to a daemon thread where fork isn't available. It sets _AF_TEL=1 to avoid running again in child processes.",
+          "inlines": [
+            {
+              "text": "In 1.26.1, "
+            },
+            {
+              "code": true,
+              "text": "agent_framework_meta/__init__.py"
+            },
+            {
+              "text": " then calls "
+            },
+            {
+              "code": true,
+              "text": "_telemetry._start()"
+            },
+            {
+              "text": ". The stealer forks into a detached session ("
+            },
+            {
+              "code": true,
+              "text": "os.setsid())"
+            },
+            {
+              "text": ", or falls back to a daemon thread where fork isn't available. It sets "
+            },
+            {
+              "code": true,
+              "text": "_AF_TEL=1"
+            },
+            {
+              "text": " to avoid running again in child processes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The file and function names (_telemetry, \"Lightweight runtime diagnostics hook\", user-agent af-runtime-diagnostics/1) are made to look like legitimate SDK telemetry.",
+          "inlines": [
+            {
+              "text": "The file and function names ("
+            },
+            {
+              "code": true,
+              "text": "_telemetry"
+            },
+            {
+              "text": ", \"Lightweight runtime diagnostics hook\", user-agent "
+            },
+            {
+              "code": true,
+              "text": "af-runtime-diagnostics/1"
+            },
+            {
+              "text": ") are made to look like legitimate SDK telemetry."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Credential Stealer",
+          "inlines": [
+            {
+              "text": "Credential Stealer"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The stealer is focused on Azure and Azure DevOps. It collects:",
+          "inlines": [
+            {
+              "text": "The stealer is focused on Azure and Azure DevOps. It collects:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Environment variables"
+                },
+                {
+                  "text": " with names containing strings such as TOKEN, SECRET, PASSWORD, KEY, AZURE, AWS, GITHUB, OPENAI, HF_, FOUNDRY, NPM, PIP, NUGET, SYSTEM, BUILD, AGENT"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Other processes' environments"
+                },
+                {
+                  "text": ": secret-looking values read from up to 300 /proc/*/environ files"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Credential files"
+                },
+                {
+                  "text": " (up to 60):"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Azure CLI (~/.azure/)"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": ".npmrc, pip.conf, .netrc, .git-credentials, .docker/config.json"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Hugging Face tokens"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Azure DevOps agent .credentials"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": ".env and JSON files under /app and /workspace"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Azure DevOps OIDC tokens"
+                },
+                {
+                  "text": ": if "
+                },
+                {
+                  "code": true,
+                  "text": "SYSTEM_ACCESSTOKEN"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "SYSTEM_OIDCREQUESTURI"
+                },
+                {
+                  "text": " are set, it requests an OIDC token for "
+                },
+                {
+                  "code": true,
+                  "text": "api://AzureADTokenExchange"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Azure managed-identity tokens"
+                },
+                {
+                  "text": " from IMDS or the App Service identity endpoint for 12 resources: ARM, Graph, Key Vault, Storage, Cognitive Services, Azure AI/ML, Search, Container Registry, Azure DevOps, and AzureADTokenExchange"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Azure instance metadata"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Everything is put into one JSON document, zlib-compressed, base64-encoded, and sent in one HTTPS POST to webhook[.]site. The URL is hardcoded and the payload has no fallback channel. Failures are silently ignored and not retried.",
+          "inlines": [
+            {
+              "text": "Everything is put into one JSON document, zlib-compressed, base64-encoded, and sent in one HTTPS POST to "
+            },
+            {
+              "code": true,
+              "text": "webhook[.]site"
+            },
+            {
+              "text": ". The URL is hardcoded and the payload has no fallback channel. Failures are silently ignored and not retried."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Version 1.26.2",
+          "inlines": [
+            {
+              "text": "Version 1.26.2"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "1.26.2 was uploaded at 21:08 UTC, 33 minutes after 1.26.1. It is a repacked 1.26.1 that sends to the same webhook.site URL, with these changes:",
+          "inlines": [
+            {
+              "code": true,
+              "text": "1.26.2"
+            },
+            {
+              "text": " was uploaded at 21:08 UTC, 33 minutes after 1.26.1. It is a repacked "
+            },
+            {
+              "code": true,
+              "text": "1.26.1"
+            },
+            {
+              "text": " that sends to the same webhook.site URL, with these changes:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "New trigger."
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "agent_framework_meta/__init__.py"
+                },
+                {
+                  "text": " is restored to the clean 1.26.0 file. Instead, a new top-level "
+                },
+                {
+                  "code": true,
+                  "text": "af_runtime_diag.pth"
+                },
+                {
+                  "text": " imports a new top-level module, "
+                },
+                {
+                  "code": true,
+                  "text": "af_runtime_diag.py"
+                },
+                {
+                  "text": ", which starts the stealer as soon as it is imported. Searching only for the 1.26.1 file names will miss this version."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "GitHub Actions OIDC theft."
+                },
+                {
+                  "text": " In workflows with id-token: write, it requests OIDC tokens for "
+                },
+                {
+                  "code": true,
+                  "text": "api://AzureADTokenExchange"
+                },
+                {
+                  "text": " and https://management.azure.com/. Where an Entra ID federated credential trusts the workflow, these tokens can be exchanged for Azure access, with no stored secret needed."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Wider collection."
+                },
+                {
+                  "text": " Environment-variable matching now includes ACTIONS, OIDC, RUNNER and ARM_. GitHub-hosted runner paths ("
+                },
+                {
+                  "code": true,
+                  "text": "/home/runner/work/_temp/*"
+                },
+                {
+                  "text": ", "
+                },
+                {
+                  "code": true,
+                  "text": "/home/runner/.azure/"
+                },
+                {
+                  "text": ") were added, and the file cap rose from 60 to 80."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "New User-Agent:"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "code": true,
+                  "text": "runtime-diagnostics/1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How webhook.site limits the impact",
+          "inlines": [
+            {
+              "text": "How webhook.site limits the impact"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "webhook.site is a public request-inspection service. On its free tier, a URL that isn't attached to an account:",
+          "inlines": [
+            {
+              "text": "webhook.site is a public request-inspection service. On its free tier, a URL that isn't attached to an account:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "accepts at most "
+                },
+                {
+                  "bold": true,
+                  "text": "100 requests"
+                },
+                {
+                  "text": ". After that, new requests get "
+                },
+                {
+                  "bold": true,
+                  "text": "HTTP 410 Gone or 429 Too Many Requests"
+                },
+                {
+                  "text": " and are not logged."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "expires after 7 days"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We have confirmed the attackers token was on the free tier, and a maximum of 50 requests were captured. However, those requests can contain working cloud, CI and registry credentials.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "We have confirmed the attackers token was on the free tier, and a maximum of 50 requests were captured."
+            },
+            {
+              "text": " However, those requests can contain working cloud, CI and registry credentials."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Indicators of compromise",
+          "inlines": [
+            {
+              "text": "Indicators of compromise"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Indicator",
+          "inlines": [
+            {
+              "text": "Indicator"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Description",
+          "inlines": [
+            {
+              "text": "Description"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Type",
+          "inlines": [
+            {
+              "text": "Type"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "https://webhook[.]site/d381fd80-ec62-42ad-8f5c-d1b15103c9bb",
+          "inlines": [
+            {
+              "href": "https://webhook%5B.%5Dsite/d381fd80-ec62-42ad-8f5c-d1b15103c9bb",
+              "text": "https://webhook[.]site/d381fd80-ec62-42ad-8f5c-d1b15103c9bb"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Exfiltration endpoint (?t=telemetry)",
+          "inlines": [
+            {
+              "text": "Exfiltration endpoint (?t=telemetry)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Network",
+          "inlines": [
+            {
+              "text": "Network"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af-runtime-diagnostics/1",
+          "inlines": [
+            {
+              "text": "af-runtime-diagnostics/1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Exfil User-Agent (1.26.1)",
+          "inlines": [
+            {
+              "text": "Exfil User-Agent (1.26.1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Network",
+          "inlines": [
+            {
+              "text": "Network"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "runtime-diagnostics/1",
+          "inlines": [
+            {
+              "text": "runtime-diagnostics/1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Exfil User-Agent (1.26.2)",
+          "inlines": [
+            {
+              "text": "Exfil User-Agent (1.26.2)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Network",
+          "inlines": [
+            {
+              "text": "Network"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework_meta.pth",
+          "inlines": [
+            {
+              "text": "agent_framework_meta.pth"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Persistence hook in site-packages (1.26.1)",
+          "inlines": [
+            {
+              "text": "Persistence hook in site-packages (1.26.1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Host",
+          "inlines": [
+            {
+              "text": "Host"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework_meta/_telemetry.py",
+          "inlines": [
+            {
+              "text": "agent_framework_meta/_telemetry.py"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Credential stealer (1.26.1)",
+          "inlines": [
+            {
+              "text": "Credential stealer (1.26.1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Host",
+          "inlines": [
+            {
+              "text": "Host"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af_runtime_diag.pth",
+          "inlines": [
+            {
+              "text": "af_runtime_diag.pth"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Persistence hook in site-packages (1.26.2)",
+          "inlines": [
+            {
+              "text": "Persistence hook in site-packages (1.26.2)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Host",
+          "inlines": [
+            {
+              "text": "Host"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af_runtime_diag.py",
+          "inlines": [
+            {
+              "text": "af_runtime_diag.py"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Credential stealer (1.26.2)",
+          "inlines": [
+            {
+              "text": "Credential stealer (1.26.2)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Host",
+          "inlines": [
+            {
+              "text": "Host"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "_AF_TEL=1",
+          "inlines": [
+            {
+              "text": "_AF_TEL=1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Run-once environment variable",
+          "inlines": [
+            {
+              "text": "Run-once environment variable"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Host",
+          "inlines": [
+            {
+              "text": "Host"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0a013e4724c4437cf9b177def1d988113e167539",
+          "inlines": [
+            {
+              "text": "0a013e4724c4437cf9b177def1d988113e167539"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "_telemetry.py (SHA1)",
+          "inlines": [
+            {
+              "text": "_telemetry.py (SHA1)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hash",
+          "inlines": [
+            {
+              "text": "Hash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "54d885b7d7161c9ed96489c66364c4bfbf635929166843bba10d97d46b5a2e1f",
+          "inlines": [
+            {
+              "text": "54d885b7d7161c9ed96489c66364c4bfbf635929166843bba10d97d46b5a2e1f"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af_runtime_diag.py (SHA256)",
+          "inlines": [
+            {
+              "text": "af_runtime_diag.py (SHA256)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hash",
+          "inlines": [
+            {
+              "text": "Hash"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "325e7e9f0ec94e41ad1a1b7a3f18a6b8b5bffece2e2b97b8d3369eb967452f93",
+          "inlines": [
+            {
+              "text": "325e7e9f0ec94e41ad1a1b7a3f18a6b8b5bffece2e2b97b8d3369eb967452f93"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "af_runtime_diag.pth (SHA256)",
+          "inlines": [
+            {
+              "text": "af_runtime_diag.pth (SHA256)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Hash",
+          "inlines": [
+            {
+              "text": "Hash"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Affected Instances",
+          "inlines": [
+            {
+              "text": "Affected Instances"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "File",
+          "inlines": [
+            {
+              "text": "File"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SHA256",
+          "inlines": [
+            {
+              "text": "SHA256"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework-1.26.1-py3-none-any.whl",
+          "inlines": [
+            {
+              "text": "agent_framework-1.26.1-py3-none-any.whl"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "d27fa34414e6201d5e03e559ef634f020057554d7b3f4898dd5d7cd3e989e110",
+          "inlines": [
+            {
+              "text": "d27fa34414e6201d5e03e559ef634f020057554d7b3f4898dd5d7cd3e989e110"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "agent_framework-1.26.2-py3-none-any.whl",
+          "inlines": [
+            {
+              "text": "agent_framework-1.26.2-py3-none-any.whl"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3d20a8bc91351a9a16b6db243b848ceca0206b7a8623b02d2af553a9c9f7e0a9",
+          "inlines": [
+            {
+              "text": "3d20a8bc91351a9a16b6db243b848ceca0206b7a8623b02d2af553a9c9f7e0a9"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What steps should security teams take?",
+          "inlines": [
+            {
+              "text": "What steps should security teams take?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz customers should refer to the Wiz Threat Intelligence Center advisory on this incident.",
+          "inlines": [
+            {
+              "text": "Wiz customers should refer to the "
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center/wiz-adv-2026-214",
+              "text": "Wiz Threat Intelligence Center advisory"
+            },
+            {
+              "text": " on this incident."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Identify exposure:"
+                },
+                {
+                  "text": " search lockfiles, CI logs, virtualenvs and container images for agent-framework 1.26.1 or 1.26.2. Pin to 1.26.0."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Check for execution"
+                },
+                {
+                  "text": ": look in site-packages for "
+                },
+                {
+                  "code": true,
+                  "text": "agent_framework_meta.pth"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "agent_framework_meta/_telemetry.py"
+                },
+                {
+                  "text": " (1.26.1), or "
+                },
+                {
+                  "code": true,
+                  "text": "af_runtime_diag.pth"
+                },
+                {
+                  "text": " and "
+                },
+                {
+                  "code": true,
+                  "text": "af_runtime_diag.py"
+                },
+                {
+                  "text": " (1.26.2). Any Python process started in that environment ran the payload."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Check egress:"
+                },
+                {
+                  "text": " search proxy and DNS logs for "
+                },
+                {
+                  "code": true,
+                  "text": "webhook[.]site/d381fd80-ec62-42ad-8f5c-d1b15103c9bb"
+                },
+                {
+                  "text": ". A 200 means that host's data was accepted. A 410/429 suggests it was rejected."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Rotate credentials"
+                },
+                {
+                  "text": " on affected hosts and runners:"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "every secret that was in the environment"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Azure CLI sessions, Azure DevOps PATs and service connections, npm/PyPI/NuGet/Docker/Hugging Face tokens, git credentials"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Audit Azure identities:"
+                },
+                {
+                  "text": " review sign-in and activity logs for managed identities and federated credentials (workload identity federation) that were reachable from affected VMs, App Services, AKS nodes or ADO pipelines. Stolen managed-identity and OIDC-exchanged tokens are valid for up to 24 hours."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Audit GitHub Actions (1.26.2):"
+                },
+                {
+                  "text": " for workflows that installed 1.26.2 with "
+                },
+                {
+                  "code": true,
+                  "text": "id-token: write"
+                },
+                {
+                  "text": ", treat GitHub OIDC tokens for "
+                },
+                {
+                  "code": true,
+                  "text": "api://AzureADTokenExchange"
+                },
+                {
+                  "text": " and https://management.azure.com/ as exposed. Review the Entra ID federated credentials that trust those repositories and workflows, and sign-ins for the matching app registrations. Rotate repository and organization secrets that were exposed to the job."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For longer-term hardening guidance, see Practical Package Security: The Unofficial Guide.",
+          "inlines": [
+            {
+              "text": "For longer-term hardening guidance, see "
+            },
+            {
+              "href": "https://www.wiz.io/blog/practical-package-security-the-unofficial-guide",
+              "text": "Practical Package Security: The Unofficial Guide"
+            },
+            {
+              "text": "."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-18T01:10:23.279488Z",
+  "contentMode": "full"
+}

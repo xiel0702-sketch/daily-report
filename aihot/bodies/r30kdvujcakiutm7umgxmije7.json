@@ -1,0 +1,697 @@
+{
+  "schemaVersion": 1,
+  "id": "r30kdvujcakiutm7umgxmije7",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/r30kdvujcakiutm7umgxmije7",
+  "fetchedAt": "2026-11-18T01:10:27.456029Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "安全对齐",
+    "行业动态"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "2026年11月17日，有细节披露了OpenJDK中一个严重的远程代码执行（RCE）漏洞，编号为CVE-2026-114938（被称为“Java4Shell”），CVSSv4.0评分为9.2。该漏洞存在于处理AVX-512 Base64解码的优化汇编代码中，可让远程未认证攻击者造成堆内存破坏。在受影响系统上触发该缺陷可能导致远程代码执行。",
+          "inlines": [
+            {
+              "text": "2026年11月17日，有细节披露了OpenJDK中一个严重的远程代码执行（RCE）漏洞，编号为CVE-2026-114938（被称为“Java4Shell”），CVSSv4.0评分为9.2。该漏洞存在于处理AVX-512 Base64解码的优化汇编代码中，可让远程未认证攻击者造成堆内存破坏。在受影响系统上触发该缺陷可能导致远程代码执行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "“Java4Shell”漏洞及其利用方式由安全公司Calif发现并披露。",
+          "inlines": [
+            {
+              "text": "“Java4Shell”漏洞及其利用方式由安全公司Calif发现并披露。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "CVE-2026-114938是什么？",
+          "inlines": [
+            {
+              "text": "CVE-2026-114938是什么？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-114938是一个内存破坏漏洞，位于Java虚拟机（JVM）的优化Base64解码intrinsic引擎中。为最大化性能，OpenJDK在支持的x86-64处理器上使用了基于AVX-512 VBMI指令的优化实现。然而，当处理包含意外数量尾部填充字符（=）的输入时，优化汇编代码会错误计算输出数组边界。",
+          "inlines": [
+            {
+              "text": "CVE-2026-114938是一个内存破坏漏洞，位于Java虚拟机（JVM）的优化Base64解码intrinsic引擎中。为最大化性能，OpenJDK在支持的x86-64处理器上使用了基于AVX-512 VBMI指令的优化实现。然而，当处理包含意外数量尾部填充字符（=）的输入时，优化汇编代码会错误计算输出数组边界。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当解析包含特定序列的输入时——例如64个A字符后跟一个=——解码器的长度计算会下溢为负值。这种计算不匹配会导致越界写入，越过已分配的堆内存缓冲区。攻击者可利用这一点覆盖相邻对象元数据，进而可能导致代码执行。我们已证明，针对Jenkins、Confluence和Apache Tomcat等标准Java应用的远程利用是可行的。",
+          "inlines": [
+            {
+              "text": "当解析包含特定序列的输入时——例如64个A字符后跟一个=——解码器的长度计算会下溢为负值。这种计算不匹配会导致越界写入，越过已分配的堆内存缓冲区。攻击者可利用这一点覆盖相邻对象元数据，进而可能导致代码执行。我们已证明，针对Jenkins、Confluence和Apache Tomcat等标准Java应用的远程利用是可行的。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Wiz Research数据：云环境面临什么风险？",
+          "inlines": [
+            {
+              "text": "Wiz Research数据：云环境面临什么风险？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "与其他内存安全问题一样，借助AI可以实现利用，但并非易事。我们基于AI的漏洞研究框架Wiz Atlas在完整细节披露之前，就在2小时内找到并构建了该漏洞的概念验证利用。话虽如此，将利用泛化到任意目标仍然困难。我们应预期攻击者会瞄准常见的Java应用，因为特定构建和内存布局在这些目标之间会重复出现。有动机的攻击者可能会借助AI为特定目标（包括自研应用）定制利用。",
+          "inlines": [
+            {
+              "text": "与其他内存安全问题一样，借助AI可以实现利用，但并非易事。我们基于AI的漏洞研究框架"
+            },
+            {
+              "href": "https://www.wiz.io/blog/atlas-ai-vulnerability-researcher",
+              "text": "Wiz Atlas"
+            },
+            {
+              "text": "在完整细节披露之前，就在2小时内找到并构建了该漏洞的概念验证利用。话虽如此，将利用泛化到任意目标仍然困难。我们应预期攻击者会瞄准常见的Java应用，因为特定构建和内存布局在这些目标之间会重复出现。有动机的攻击者可能会借助AI为特定目标（包括自研应用）定制利用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Web应用防火墙可以在一些利用出现于野外时帮助缓解。由于该漏洞根植于OpenJDK本身，许多使用用户输入的代码路径都可能进入易受攻击的代码路径，因此WAF规则不太可能覆盖所有可能路径，也永远无法完全覆盖自研应用。最佳解决方案是升级到最新OpenJDK版本。",
+          "inlines": [
+            {
+              "text": "Web应用防火墙可以在一些利用出现于野外时帮助缓解。由于该漏洞根植于OpenJDK本身，许多使用用户输入的代码路径都可能进入易受攻击的代码路径，因此WAF规则不太可能覆盖所有可能路径，也永远无法完全覆盖自研应用。最佳解决方案是升级到最新OpenJDK版本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "优先处理对外暴露的打包Java应用，确保它们已打补丁或被限制公开访问。升级自研Java应用，并更新到包含修复的最新OpenJDK版本。",
+          "inlines": [
+            {
+              "text": "优先处理对外暴露的打包Java应用，确保它们已打补丁或被限制公开访问。升级自研Java应用，并更新到包含修复的最新OpenJDK版本。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "哪些产品受影响？",
+          "inlines": [
+            {
+              "text": "哪些产品受影响？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "该漏洞影响OpenJDK 17.0.6及更高版本，以及下游发行版，前提是它们运行在支持AVX-512 VBMI指令集的x86-64硬件上（ARM64处理器不受影响）。受影响的软件发行版和硬件包括：",
+          "inlines": [
+            {
+              "text": "该漏洞影响OpenJDK 17.0.6及更高版本，以及下游发行版，前提是它们运行在支持AVX-512 VBMI指令集的x86-64硬件上（ARM64处理器不受影响）。受影响的软件发行版和硬件包括："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "OpenJDK发行版：Amazon Corretto、Eclipse Temurin、Microsoft Build of OpenJDK、Azul Zulu、BellSoft Liberica、SAP SapMachine、Red Hat OpenJDK和Oracle Java SE（具体版本为8u511b33-perf、17.0.21.0.3、21.0.13.0.3、25.0.5.0.3、27.0.1.0.3）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "存在漏洞的 CPU 架构：Intel Xeon（Ice Lake、Sapphire Rapids、Emerald Rapids、Granite Rapids）以及 AMD EPYC/Ryzen（Zen 4 及更新版本）。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "已证实存在漏洞的应用（可未授权远程代码执行）：Atlassian Jira、Atlassian Confluence、Keycloak、JFrog Artifactory、Jenkins，以及基于 Spring Boot、Apache Struts、Apache Kafka Broker、Apache Solr、Elasticsearch、Gerrit、Netflix Spinnaker 和 Apache Tomcat 构建的自定义框架。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "安全团队应该采取哪些行动？",
+          "inlines": [
+            {
+              "text": "安全团队应该采取哪些行动？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "安全团队应立即优先落实以下缓解措施：",
+          "inlines": [
+            {
+              "text": "安全团队应立即优先落实以下缓解措施："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "审计并打补丁："
+                },
+                {
+                  "text": "找出所有在支持 AVX-512 的 x86-64 硬件上运行 OpenJDK 17.0.6 或更高版本的系统。立即安装 2026 年 11 月 17 日发布的官方安全补丁，或升级到下游厂商提供的构建版本。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "核实硬件是否存在漏洞："
+                },
+                {
+                  "text": "在 Linux 系统上运行以下命令，检查你的基础设施是否在物理层面受到影响："
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "grep -m1 '^flags' /proc/cpuinfo | tr ' ' '\\n' | grep -E '^(avx512f|avx512bw|avx512vbmi|bmi2)$'"
+        },
+        {
+          "type": "paragraph",
+          "text": "如果输出中同时出现这四个 CPU 标志，说明该主机正在走存在漏洞的硬件执行路径。",
+          "inlines": [
+            {
+              "text": "如果输出中同时出现这四个 CPU 标志，说明该主机正在走存在漏洞的硬件执行路径。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "实施 JVM 运行时规避方案："
+                },
+                {
+                  "text": "如果无法立即打补丁，可在 JVM 启动参数中加入以下任一标志，彻底消除该漏洞的影响。这些标志可能会影响应用性能。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "禁用 Base64 内建函数（推荐）："
+                },
+                {
+                  "code": true,
+                  "text": "-XX:-UseBASE64Intrinsics"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "禁用 AVX-512 执行（仅限 x86-64）："
+                },
+                {
+                  "code": true,
+                  "text": "-XX:UseAVX=2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "隔离面向互联网的服务："
+                },
+                {
+                  "text": "在部署缓解措施或更新之前，暂时限制外部网络访问存在漏洞的管理门户（例如 Jira、Jenkins、Keycloak）。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz 客户可以使用 Wiz 威胁中心中预置的查询和公告，在自身环境中搜索存在漏洞的实例。",
+          "inlines": [
+            {
+              "text": "Wiz 客户可以使用 "
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center?filters=%7B%22publishedAt%22%3A%7B%22dateRange%22%3A%7B%22past%22%3A%7B%22amount%22%3A12%2C%22unit%22%3A%22month%22%7D%7D%7D%7D",
+              "text": "Wiz 威胁中心"
+            },
+            {
+              "text": "中预置的查询和公告，在自身环境中搜索存在漏洞的实例。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3aa2edc3ded79d145612a78b7198a1540f985f47ef6fb59f71804e64b0d1b359.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "text": "参考资料",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "参考资料"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://www.oracle.com/security-alerts/",
+                  "text": "Oracle 安全公告"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://calif.io/java4shell/",
+                  "text": "Calif 博客文章"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openjdk.org/groups/vulnerability/advisories/2026-11-17",
+                  "text": "OpenJDK 公告"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://www.oracle.com/java/technologies/javase/17-0-21-1-relnotes.html?utm_source=chatgpt.com",
+                  "text": "Oracle 发行说明"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "On November 17, 2026, details emerged exposing a critical remote code execution (RCE) vulnerability in OpenJDK, tracked as CVE-2026-114938 (dubbed \"Java4Shell\") with a CVSSv4.0 score of 9.2. The bug exists in the optimized assembly code handling AVX-512 Base64 decoding, allowing remote unauthenticated attackers to cause heap memory corruption. Triggering this flaw on affected systems can lead to remote code execution.",
+          "inlines": [
+            {
+              "text": "On November 17, 2026, details emerged exposing a critical remote code execution (RCE) vulnerability in OpenJDK, tracked as CVE-2026-114938 (dubbed \"Java4Shell\") with a CVSSv4.0 score of 9.2. The bug exists in the optimized assembly code handling AVX-512 Base64 decoding, allowing remote unauthenticated attackers to cause heap memory corruption. Triggering this flaw on affected systems can lead to remote code execution."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The \"Java4Shell\" vulnerability and exploit were discovered and disclosed by security firm Calif.",
+          "inlines": [
+            {
+              "text": "The \"Java4Shell\" vulnerability and exploit were discovered and disclosed by security firm Calif."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is CVE-2026-114938?",
+          "inlines": [
+            {
+              "text": "What is CVE-2026-114938?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-114938 is a memory-corruption vulnerability residing in the optimized Base64 decoding intrinsic engine of the Java Virtual Machine (JVM). To maximize performance, OpenJDK uses an optimized implementation on supported x86-64 processors, based on AVX-512 VBMI instructions. However, the optimized assembly code miscalculates the output array bounds when handling inputs that contain an unexpected number of trailing padding characters (=).",
+          "inlines": [
+            {
+              "text": "CVE-2026-114938 is a memory-corruption vulnerability residing in the optimized Base64 decoding intrinsic engine of the Java Virtual Machine (JVM). To maximize performance, OpenJDK uses an optimized implementation on supported x86-64 processors, based on AVX-512 VBMI instructions. However, the optimized assembly code miscalculates the output array bounds when handling inputs that contain an unexpected number of trailing padding characters (=)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When an input containing a specific sequence -such as 64 A characters followed by a single = - is parsed, the decoder's length calculation underflows to a negative value. This calculation mismatch causes an out-of-bounds write past the allocated heap memory buffer. Attackers can leverage this to overwrite adjacent object metadata, which can lead to code execution. We have proved that remote exploitation is feasible against standard Java applications such Jenkins, Confluence, and Apache Tomcat.",
+          "inlines": [
+            {
+              "text": "When an input containing a specific sequence -such as 64 A characters followed by a single = - is parsed, the decoder's length calculation underflows to a negative value. This calculation mismatch causes an out-of-bounds write past the allocated heap memory buffer. Attackers can leverage this to overwrite adjacent object metadata, which can lead to code execution. We have proved that remote exploitation is feasible against standard Java applications such Jenkins, Confluence, and Apache Tomcat."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Wiz Research data: what’s the risk to cloud environments?",
+          "inlines": [
+            {
+              "text": "Wiz Research data: what’s the risk to cloud environments?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Like other memory safety issues, exploitation is possible with AI, but is not trivial. Our AI based vulnerability research harness, Wiz Atlas, managed to find and build a proof-of-concept exploit for this vulnerability within 2 hours, even before the full details were disclosed. Having said that, generalizing the exploit for an arbitrary target is difficult. We should expect adversaries to target commonplace Java applications, where specific builds and memory layouts repeat across targets. Motivated adversaries may tailor exploits with AI for specific targets, including home-grown applications.",
+          "inlines": [
+            {
+              "text": "Like other memory safety issues, exploitation is possible with AI, but is not trivial. Our AI based vulnerability research harness, "
+            },
+            {
+              "href": "https://www.wiz.io/blog/atlas-ai-vulnerability-researcher",
+              "text": "Wiz Atlas"
+            },
+            {
+              "text": ", managed to find and build a proof-of-concept exploit for this vulnerability within 2 hours, even before the full details were disclosed. Having said that, generalizing the exploit for an arbitrary target is difficult. We should expect adversaries to target commonplace Java applications, where specific builds and memory layouts repeat across targets. Motivated adversaries may tailor exploits with AI for specific targets, including home-grown applications."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Web Application Firewalls can help mitigate some of the exploits as they emerge in the wild. Since this vulnerability is rooted in OpenJDK itself, many possible code paths using user inputs may lead into the vulnerable code path, so it’s unlikely that WAF rules will be able to cover all possible paths, and will never be able to cover home grown applications completely. The best solution is upgrading to the latest OpenJDK version.",
+          "inlines": [
+            {
+              "text": "Web Application Firewalls can help mitigate some of the exploits as they emerge in the wild. Since this vulnerability is rooted in OpenJDK itself, many possible code paths using user inputs may lead into the vulnerable code path, so it’s unlikely that WAF rules will be able to cover all possible paths, and will never be able to cover home grown applications completely. The best solution is upgrading to the latest OpenJDK version."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Prioritize externally facing, packaged Java applications, and make sure they are either patched or restricted from public access. Upgrade home-grown Java applications and update to the latest OpenJDK version containing the fix.",
+          "inlines": [
+            {
+              "text": "Prioritize externally facing, packaged Java applications, and make sure they are either patched or restricted from public access. Upgrade home-grown Java applications and update to the latest OpenJDK version containing the fix."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Which products are affected?",
+          "inlines": [
+            {
+              "text": "Which products are affected?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The vulnerability affects OpenJDK versions 17.0.6 and later, as well as downstream distributions, provided they run on x86-64 hardware supporting AVX-512 VBMI instruction sets (ARM64 processors are unaffected). Affected software distributions and hardware include:",
+          "inlines": [
+            {
+              "text": "The vulnerability affects OpenJDK versions 17.0.6 and later, as well as downstream distributions, provided they run on x86-64 hardware supporting AVX-512 VBMI instruction sets (ARM64 processors are unaffected). Affected software distributions and hardware include:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "OpenJDK Distributions: Amazon Corretto, Eclipse Temurin, Microsoft Build of OpenJDK, Azul Zulu, BellSoft Liberica, SAP SapMachine, Red Hat OpenJDK, and Oracle Java SE (specifically versions 8u511b33-perf, 17.0.21.0.3, 21.0.13.0.3, 25.0.5.0.3, 27.0.1.0.3)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Vulnerable CPU Architectures: Intel Xeon (Ice Lake, Sapphire Rapids, Emerald Rapids, Granite Rapids) and AMD EPYC/Ryzen (Zen 4 or newer)."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Proven Vulnerable Applications (Pre-Auth RCE): Atlassian Jira, Atlassian Confluence, Keycloak, JFrog Artifactory, Jenkins, and custom frameworks built on Spring Boot, Apache Struts, Apache Kafka Broker, Apache Solr, Elasticsearch, Gerrit, Netflix Spinnaker and Apache Tomcat."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Which actions should security teams take?",
+          "inlines": [
+            {
+              "text": "Which actions should security teams take?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Security teams should immediately prioritize the following mitigation steps:",
+          "inlines": [
+            {
+              "text": "Security teams should immediately prioritize the following mitigation steps:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Audit and Patch:"
+                },
+                {
+                  "text": " Identify all systems running OpenJDK 17.0.6 or later on AVX-512-capable x86-64 hardware. Apply the official security patches released on November 17, 2026, or update to downstream vendor-supplied builds immediately."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Verify Hardware Vulnerability:"
+                },
+                {
+                  "text": " Run the following command on Linux systems to check if your infrastructure is physically affected:"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "grep -m1 '^flags' /proc/cpuinfo | tr ' ' '\\n' | grep -E '^(avx512f|avx512bw|avx512vbmi|bmi2)$'"
+        },
+        {
+          "type": "paragraph",
+          "text": "If all four CPU flags are present in the output, the host runs the vulnerable hardware execution path.",
+          "inlines": [
+            {
+              "text": "If all four CPU flags are present in the output, the host runs the vulnerable hardware execution path."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Implement JVM Runtime Workarounds:"
+                },
+                {
+                  "text": " If immediate patching is not possible, apply one of the following flags to JVM startup parameters to completely neutralize the vulnerability. They may have performance impact on the application."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Disable Base64 Intrinsics (Recommended): "
+                },
+                {
+                  "code": true,
+                  "text": "-XX:-UseBASE64Intrinsics"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": " "
+                },
+                {
+                  "text": "Disable AVX-512 execution (x86-64 only): "
+                },
+                {
+                  "code": true,
+                  "text": "-XX:UseAVX=2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Isolate Internet-Facing Services:"
+                },
+                {
+                  "text": " Temporarily restrict external network access to vulnerable management portals (e.g., Jira, Jenkins, Keycloak) until mitigations or updates are deployed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz customers can use the pre-built query and advisory in the Wiz Threat Center to search for vulnerable instances in their environment.",
+          "inlines": [
+            {
+              "text": "Wiz customers can use the pre-built query and advisory in the "
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center?filters=%7B%22publishedAt%22%3A%7B%22dateRange%22%3A%7B%22past%22%3A%7B%22amount%22%3A12%2C%22unit%22%3A%22month%22%7D%7D%7D%7D",
+              "text": "Wiz Threat Center"
+            },
+            {
+              "text": " to search for vulnerable instances in their environment."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3aa2edc3ded79d145612a78b7198a1540f985f47ef6fb59f71804e64b0d1b359.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "text": "References",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "References"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://www.oracle.com/security-alerts/",
+                  "text": "Oracle security alert"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://calif.io/java4shell/",
+                  "text": "Calif blogpost"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openjdk.org/groups/vulnerability/advisories/2026-11-17",
+                  "text": "OpenJDK advisory"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://www.oracle.com/java/technologies/javase/17-0-21-1-relnotes.html?utm_source=chatgpt.com",
+                  "text": "Oracle release notes"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-18T01:10:27.503266Z",
+  "contentMode": "full"
+}
