@@ -1,0 +1,676 @@
+{
+  "schemaVersion": 1,
+  "id": "zyv7euqbikadbvaxfjxdh850k",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/zyv7euqbikadbvaxfjxdh850k",
+  "fetchedAt": "2026-11-19T01:11:12.066997Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenAI",
+    "OpenAI / ChatGPT",
+    "行业动态"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "用 OpenAI 模型推进芯片设计",
+          "inlines": [
+            {
+              "text": "用 OpenAI 模型推进芯片设计"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI 的模型正在快速改进为 AI 提供算力的芯片。今年 8 月，我们分享了 OpenAI 工程师如何借助我们的前沿模型，加速开发我们的首款自研推理芯片 Jalapeño。本文将进一步介绍 Jalapeño 性能提升背后专家级的设计改进，以及我们如何把同样的方法用于 AMD 的第三方硬件，并取得显著收益。",
+          "inlines": [
+            {
+              "text": "OpenAI 的模型正在快速改进为 AI 提供算力的芯片。"
+            },
+            {
+              "href": "https://openai.com/index/jalapeno-first-results/",
+              "text": "今年 8 月，"
+            },
+            {
+              "text": "我们分享了 OpenAI 工程师如何借助我们的前沿模型，加速开发我们的首款自研推理芯片 Jalapeño。本文将进一步介绍 Jalapeño 性能提升背后专家级的设计改进，以及我们如何把同样的方法用于 AMD 的第三方硬件，并取得显著收益。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了衡量模型在端到端芯片设计任务上的能力，我们在两款开源处理器设计上对连续几代模型进行了评测，得到了不少有意思的发现。同时，为了让能力发展建立在可信的评测之上，我们正与 Synopsys 合作，把前沿智能集成进工程师设计、验证芯片时已经在用的电子设计自动化（EDA）工具中。",
+          "inlines": [
+            {
+              "text": "为了衡量模型在端到端芯片设计任务上的能力，我们在两款开源处理器设计上对连续几代模型进行了评测，得到了不少有意思的发现。同时，为了让能力发展建立在可信的评测之上，我们正与 Synopsys 合作，把前沿智能集成进工程师设计、验证芯片时已经在用的电子设计自动化（EDA）工具中。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "改进 Jalapeño 的计算模块",
+          "inlines": [
+            {
+              "text": "改进 Jalapeño 的计算模块"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "2025 年初，我们开始用 GPT‑4o 协助设计 Jalapeño。即便是那时的早期模型，也找到了实现不小 PPA 改进的方法，例如：",
+          "inlines": [
+            {
+              "text": "2025 年初，我们开始用 GPT‑4o 协助设计 Jalapeño。即便是那时的早期模型，也找到了实现不小 PPA 改进的方法，例如："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在负责管理和执行并行计算任务的 warp 引擎中，收益来自浮点加法器和乘法器、转换函数、归约逻辑以及特殊函数单元。模型既探索了替代的逻辑实现方式，也研究了如何把计算拆分到不同流水线阶段，从中找到共享硬件、减少中间存储的机会。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "在负责管理和执行并行计算任务的 warp 引擎中"
+            },
+            {
+              "text": "，收益来自浮点加法器和乘法器、转换函数、归约逻辑以及特殊函数单元。模型既探索了替代的逻辑实现方式，也研究了如何把计算拆分到不同流水线阶段，从中找到共享硬件、减少中间存储的机会。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在作为算术组件的矩阵单元中，改进累积体现在浮点加法器、乘法器和低精度点积电路上。其中一款乘法器重新设计后，综合时的单元面积减少约 15%，同时延迟从两个时钟周期降到一周期。另一款加法器重新设计后，单元面积减少约 15%，并保持两周期延迟。对点积逻辑和流水线组织的进一步改进，也为整个模块带来了更多节省。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "在作为算术组件的矩阵单元中"
+            },
+            {
+              "text": "，改进累积体现在浮点加法器、乘法器和低精度点积电路上。其中一款乘法器重新设计后，综合时的单元面积减少约 15%，同时延迟从两个时钟周期降到一周期。另一款加法器重新设计后，单元面积减少约 15%，并保持两周期延迟。对点积逻辑和流水线组织的进一步改进，也为整个模块带来了更多节省。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Jalapeño 的整体设计工作中，团队估计模型提出的改动让标准单元面积在 warp 引擎中减少约 13%，在矩阵单元中减少约 10%。这些优化已在Jalapeño 的硅片点亮过程中得到硅验证。",
+          "inlines": [
+            {
+              "text": "在 Jalapeño 的整体设计工作中，团队估计模型提出的改动让标准单元面积在 warp 引擎中减少约 13%，在矩阵单元中减少约 10%。这些优化已在"
+            },
+            {
+              "href": "https://openai.com/index/jalapeno-first-results/",
+              "text": "Jalapeño 的硅片点亮"
+            },
+            {
+              "text": "过程中得到硅验证。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "与 AMD 的合作",
+          "inlines": [
+            {
+              "text": "与 AMD 的合作"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们与 AMD 合作改进 PPA，在旗舰 GPU IP 上相对经过深度优化的基线最高提升了 14%。我们的模型通过重写描述芯片电路的代码（SystemVerilog RTL），找到了进一步的改进空间。这相当于用不到 5 个月的时间取得了大约一年的进展，在芯片设计前沿可谓前所未有的成果。AMD 已将其中部分改动纳入近期送交制造的设计，并把另一些改动加入其量产设计文件，供未来版本使用。",
+          "inlines": [
+            {
+              "text": "我们与 AMD 合作改进 PPA，在旗舰 GPU IP 上相对经过深度优化的基线最高提升了 14%。我们的模型通过重写描述芯片电路的代码（SystemVerilog RTL），找到了进一步的改进空间。这相当于用不到 5 个月的时间取得了大约一年的进展，在芯片设计前沿可谓前所未有的成果。AMD 已将其中部分改动纳入近期送交制造的设计，并把另一些改动加入其量产设计文件，供未来版本使用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们观察到，模型能以专家级微架构师的水平推理 RTL。它可以重写执行计算、控制操作或搬运数据的电路，并用 Synopsys 工具验证每次重写都保持了模块行为不变，同时评估功耗、性能和面积上的权衡。",
+          "inlines": [
+            {
+              "text": "我们观察到，模型能以专家级微架构师的水平推理 RTL。它可以重写执行计算、控制操作或搬运数据的电路，并用 Synopsys 工具验证每次重写都保持了模块行为不变，同时评估功耗、性能和面积上的权衡。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AMD 还验证了，在其即将推出的下一代旗舰 CPU 的关键模块上，用我们模型写出的设计带来了个位数百分比的 PPA 提升。展望未来，我们预计在 GPU 和 CPU 上，相对最优化的基线还能取得进一步的 PPA 改进。",
+          "inlines": [
+            {
+              "text": "AMD 还验证了，在其即将推出的下一代旗舰 CPU 的关键模块上，用我们模型写出的设计带来了个位数百分比的 PPA 提升。展望未来，我们预计在 GPU 和 CPU 上，相对最优化的基线还能取得进一步的 PPA 改进。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "优化 RISC-V 核心",
+          "inlines": [
+            {
+              "text": "优化 RISC-V 核心"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 Jalapeño 和 AMD 芯片上的结果表明，模型能够在生产设计中带来改进。为了衡量芯片设计能力从一代模型到下一代的进步，我们在两个开源 32 位 RISC-V 核心上测试了每个模型。PicoRV32 是一款紧凑型核心，专为可重编程芯片 FPGA 设计。OpenTitan 则在其安全芯片中采用 Ibex 作为嵌入式处理器。两者都是面向嵌入式、微控制器级工作负载的完整处理器核心。",
+          "inlines": [
+            {
+              "text": "我们在 Jalapeño 和 AMD 芯片上的结果表明，模型能够在生产设计中带来改进。为了衡量芯片设计能力从一代模型到下一代的进步，我们在两个开源 32 位 RISC-V 核心上测试了每个模型。PicoRV32 是一款紧凑型核心，专为可重编程芯片 FPGA 设计。OpenTitan 则在其安全芯片中采用 Ibex 作为嵌入式处理器。两者都是面向嵌入式、微控制器级工作负载的完整处理器核心。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们向每个模型提供每个核心的原始硬件描述，并要求它提升吞吐量（即核心每秒能执行的指令数）。例如，某项改动可能让核心用更少的时钟周期完成一条指令，但每个周期耗时更长。测量吞吐量可以同时反映这两种效应。",
+          "inlines": [
+            {
+              "text": "我们向每个模型提供每个核心的原始硬件描述，并要求它提升吞吐量（即核心每秒能执行的指令数）。例如，某项改动可能让核心用更少的时钟周期完成一条指令，但每个周期耗时更长。测量吞吐量可以同时反映这两种效应。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在仿真中检查了每个设计的输出。如果设计未通过检查，或所用面积超过原始核心的 16 倍，则记为零分。对于通过检查的设计，我们在对模型隐藏的工作负载上测量每时钟周期指令数。我们取这些工作负载的几何平均值，再乘以用 Yosys 估算的最高时钟频率，从而得到每秒指令数的估计值。对于每个核心，我们将相同约束下观察到的最佳吞吐量记为 1.0 分。图表显示的是多次运行的平均得分，包括得零分的运行。",
+          "inlines": [
+            {
+              "text": "我们在仿真中检查了每个设计的输出。如果设计未通过检查，或所用面积超过原始核心的 16 倍，则记为零分。对于通过检查的设计，我们在对模型隐藏的工作负载上测量每时钟周期指令数。我们取这些工作负载的几何平均值，再乘以用 Yosys 估算的最高时钟频率，从而得到每秒指令数的估计值。对于每个核心，我们将相同约束下观察到的最佳吞吐量记为 1.0 分。图表显示的是多次运行的平均得分，包括得零分的运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在每次运行约 112,000 个 token 的可比预算下，GPT‑6.2 Astra 在两个核心上的平均得分都最高。GPT‑6.1 Sol 在两个核心上的得分也都高于 GPT‑5.6 Sol。",
+          "inlines": [
+            {
+              "text": "在每次运行约 112,000 个 token 的可比预算下，GPT‑6.2 Astra 在两个核心上的平均得分都最高。GPT‑6.1 Sol 在两个核心上的得分也都高于 GPT‑5.6 Sol。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在现有的 PicoRV32 核心上，GPT‑6.2 Astra 在较大的可比预算下平均得分最高。在约 112,000 个 token 时，其得分约为 GPT‑6 Astra 的两倍。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "在现有的 PicoRV32 核心上，GPT‑6.2 Astra 在较大的可比预算下平均得分最高。在约 112,000 个 token 时，其得分约为 GPT‑6 Astra 的两倍。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在现有的 Ibex 核心上，GPT‑6.2 Astra 的平均得分随着其达到的更高预算继续攀升。GPT‑6 Astra 和 GPT‑6.1 Sol 的差距更小。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "在现有的 Ibex 核心上，GPT‑6.2 Astra 的平均得分随着其达到的更高预算继续攀升。GPT‑6 Astra 和 GPT‑6.1 Sol 的差距更小。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "根据规格设计 RISC-V 核心",
+          "inlines": [
+            {
+              "text": "根据规格设计 RISC-V 核心"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在第二项任务中，我们向每个模型提供书面要求，以及来自开源代码的模板，展示核心如何与系统其余部分连接。模型自行决定数据如何在核心中流动，以及如何将工作划分为多个阶段。对于每个核心，我们保持正确性检查、内存与缓存设置以及吞吐量目标与 RTL 优化任务相同。",
+          "inlines": [
+            {
+              "text": "在第二项任务中，我们向每个模型提供书面要求，以及来自开源代码的模板，展示核心如何与系统其余部分连接。模型自行决定数据如何在核心中流动，以及如何将工作划分为多个阶段。对于每个核心，我们保持正确性检查、内存与缓存设置以及吞吐量目标与 RTL 优化任务相同。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在每次运行约 112,000 个 token 时，五个模型在根据书面要求设计核心时的得分都高于它们尝试改进现有设计时的得分。PicoRV32 和 Ibex 都是如此。GPT‑6.2 Astra 在 Ibex 上的提升大于在 PicoRV32 上的提升。完整评估涵盖两项任务、两个核心和所有 token 预算，共 9,881 次计分运行。",
+          "inlines": [
+            {
+              "text": "在每次运行约 112,000 个 token 时，五个模型在根据书面要求设计核心时的得分都高于它们尝试改进现有设计时的得分。PicoRV32 和 Ibex 都是如此。GPT‑6.2 Astra 在 Ibex 上的提升大于在 PicoRV32 上的提升。完整评估涵盖两项任务、两个核心和所有 token 预算，共 9,881 次计分运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "从 PicoRV32 规格出发，GPT‑6.2 Astra 在接近 112,000 个 token 时平均得分超过 0.7，并在接下来观察到的两个预算下得分更高。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "从 PicoRV32 规格出发，GPT‑6.2 Astra 在接近 112,000 个 token 时平均得分超过 0.7，并在接下来观察到的两个预算下得分更高。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Ibex 上，GPT‑6.2 Astra 根据规格设计时，在接近 112,000 个 token 时平均得分约为 0.75。在更大的共享预算下，其曲线始终高于其他模型。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "在 Ibex 上，GPT‑6.2 Astra 根据规格设计时，在接近 112,000 个 token 时平均得分约为 0.75。在更大的共享预算下，其曲线始终高于其他模型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "从书面要求出发，模型有余地省略原始核心中的某些特性，例如性能计数器和额外指令。这些特性对提升测试工作负载的吞吐量可能作用不大，这或许能解释部分得分优势。要求保留这些特性、对电路面积设定更严格的限制，并在物理综合后检查时序，将使测试更贴近实际生产芯片设计。",
+          "inlines": [
+            {
+              "text": "从书面要求出发，模型有余地省略原始核心中的某些特性，例如性能计数器和额外指令。这些特性对提升测试工作负载的吞吐量可能作用不大，这或许能解释部分得分优势。要求保留这些特性、对电路面积设定更严格的限制，并在物理综合后检查时序，将使测试更贴近实际生产芯片设计。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "下一步计划",
+          "inlines": [
+            {
+              "text": "下一步计划"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们已经证明，模型可以在 RISC-V 评测中探索新的处理器架构，并在 Jalapeño 以及 AMD 下一代旗舰 GPU 和 CPU 等复杂生产级设计的基础上，带来了全新的改进。为了让模型开发建立在可信的评测方之上，并拓展所应对的设计挑战，我们正与 Synopsys 合作训练新模型 GPT‑Synopsys⁠（在新窗口打开），让它像资深芯片设计师一样使用 Synopsys 的电子设计自动化（EDA）工具。",
+          "inlines": [
+            {
+              "text": "我们已经证明，模型可以在 RISC-V 评测中探索新的处理器架构，并在 Jalapeño 以及 AMD 下一代旗舰 GPU 和 CPU 等复杂生产级设计的基础上，带来了全新的改进。为了让模型开发建立在可信的评测方之上，并拓展所应对的设计挑战，我们正与 Synopsys 合作训练新模型 "
+            },
+            {
+              "href": "https://investor.synopsys.com/news/news-details/2026/OpenAI-and-Synopsys-Announce-GPT-Synopsys-Frontier-Intelligence-to-Revolutionize-Chip-Design/default.aspx",
+              "text": "GPT‑Synopsys⁠（在新窗口打开）"
+            },
+            {
+              "text": "，让它像资深芯片设计师一样使用 Synopsys 的电子设计自动化（EDA）工具。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openai.com/news/?tags=2026",
+                  "text": "2026"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openai.com/news/?tags=software-engineering",
+                  "text": "软件与工程"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "作者",
+          "inlines": [
+            {
+              "text": "作者"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI",
+          "inlines": [
+            {
+              "text": "OpenAI"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Advancing chip design with OpenAI models",
+          "inlines": [
+            {
+              "text": "Advancing chip design with OpenAI models"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI’s models are quickly improving the chips that power AI. In August,⁠ we shared how OpenAI engineers used our frontier models to accelerate the development of our first custom inference chip, Jalapeño. Here, we look more closely at the expert-level design improvements behind the Jalapeño gains and how we’re applying the same approach to deliver significant gains on third-party hardware with AMD.",
+          "inlines": [
+            {
+              "text": "OpenAI’s models are quickly improving the chips that power AI. "
+            },
+            {
+              "href": "https://openai.com/index/jalapeno-first-results/",
+              "text": "In August,⁠"
+            },
+            {
+              "text": " we shared how OpenAI engineers used our frontier models to accelerate the development of our first custom inference chip, Jalapeño. Here, we look more closely at the expert-level design improvements behind the Jalapeño gains and how we’re applying the same approach to deliver significant gains on third-party hardware with AMD."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To measure our model’s ability at end to end chip design tasks, we evaluated successive generations on two open-source processor designs with interesting findings. And to ground capability development in trusted evaluators, we’re working with Synopsys to integrate frontier intelligence with the electronic design automation (EDA) tools that engineers already use to design and verify chips.",
+          "inlines": [
+            {
+              "text": "To measure our model’s ability at end to end chip design tasks, we evaluated successive generations on two open-source processor designs with interesting findings. And to ground capability development in trusted evaluators, we’re working with Synopsys to integrate frontier intelligence with the electronic design automation (EDA) tools that engineers already use to design and verify chips."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Improving Jalapeño’s compute blocks",
+          "inlines": [
+            {
+              "text": "Improving Jalapeño’s compute blocks"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We started using GPT‑4o to help design Jalapeño in early 2025. Even that early model found ways to make nontrivial PPA improvements, such as:",
+          "inlines": [
+            {
+              "text": "We started using GPT‑4o to help design Jalapeño in early 2025. Even that early model found ways to make nontrivial PPA improvements, such as:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the warp engine, which manages and executes parallel computing tasks, the savings came from floating-point adders and multipliers, conversion functions, reduction logic, and the special-function unit. The models explored both alternative logic implementations and how to divide computations across pipeline stages, finding opportunities to share hardware and reduce intermediate storage.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "In the warp engine"
+            },
+            {
+              "text": ", which manages and executes parallel computing tasks, the savings came from floating-point adders and multipliers, conversion functions, reduction logic, and the special-function unit. The models explored both alternative logic implementations and how to divide computations across pipeline stages, finding opportunities to share hardware and reduce intermediate storage."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the matrix unit, an arithmetic component, improvements accumulated across floating-point adders, multipliers, and low-precision dot-product circuits. One multiplier redesign used about 15% less cell area in synthesis while reducing latency from two clock cycles to one. A separate adder redesign reduced cell area by about 15% while retaining its two-cycle latency. Further improvements to dot-product logic and pipeline organization contributed additional savings across the block.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "In the matrix unit"
+            },
+            {
+              "text": ", an arithmetic component, improvements accumulated across floating-point adders, multipliers, and low-precision dot-product circuits. One multiplier redesign used about 15% less cell area in synthesis while reducing latency from two clock cycles to one. A separate adder redesign reduced cell area by about 15% while retaining its two-cycle latency. Further improvements to dot-product logic and pipeline organization contributed additional savings across the block."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Across the broader Jalapeño design effort, the team estimates that model proposed changes reduced standard-cell area by about 13% in the warp engine and 10% in the matrix unit. These optimizations were silicon proven duringJalapeño’s silicon bring-up⁠.",
+          "inlines": [
+            {
+              "text": "Across the broader Jalapeño design effort, the team estimates that model proposed changes reduced standard-cell area by about 13% in the warp engine and 10% in the matrix unit. These optimizations were silicon proven during"
+            },
+            {
+              "href": "https://openai.com/index/jalapeno-first-results/",
+              "text": "Jalapeño’s silicon bring-up⁠"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Our collaboration with AMD",
+          "inlines": [
+            {
+              "text": "Our collaboration with AMD"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We have partnered with AMD on PPA improvements and seen up to 14% improvement relative to heavily optimized baselines on the flagship GPU IP. Our model identified further improvements by rewriting the code that describes the chip’s circuits (SystemVerilog RTL). This represents roughly a year of progress achieved in less than 5 months–unprecedented results at the frontier of chip design. AMD has already included some of these changes in a recent design it sent for manufacturing, and added others to its production design files for use in future versions.",
+          "inlines": [
+            {
+              "text": "We have partnered with AMD on PPA improvements and seen up to 14% improvement relative to heavily optimized baselines on the flagship GPU IP. Our model identified further improvements by rewriting the code that describes the chip’s circuits (SystemVerilog RTL). This represents roughly a year of progress achieved in less than 5 months–unprecedented results at the frontier of chip design. AMD has already included some of these changes in a recent design it sent for manufacturing, and added others to its production design files for use in future versions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We’ve observed the model reason about RTL at the level of an expert microarchitect. The model can rewrite circuits that perform calculations, control operations, or move data. It used Synopsys tools to verify that each rewrite preserved the block’s behavior and to evaluate the trade-offs in power, performance, and area.",
+          "inlines": [
+            {
+              "text": "We’ve observed the model reason about RTL at the level of an expert microarchitect. The model can rewrite circuits that perform calculations, control operations, or move data. It used Synopsys tools to verify that each rewrite preserved the block’s behavior and to evaluate the trade-offs in power, performance, and area."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "AMD also verified single-digit percentage gains in PPA across key blocks of its upcoming next-generation flagship CPU using designs written by our model. Looking ahead, we expect further PPA improvements on top of GPU and CPU relative to the most optimized baseline.",
+          "inlines": [
+            {
+              "text": "AMD also verified single-digit percentage gains in PPA across key blocks of its upcoming next-generation flagship CPU using designs written by our model. Looking ahead, we expect further PPA improvements on top of GPU and CPU relative to the most optimized baseline."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Optimizing RISC-V cores",
+          "inlines": [
+            {
+              "text": "Optimizing RISC-V cores"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Our results on Jalapeño and AMD’s chips show that models can make improvements in production designs. To measure the progression in chip design capabilities from one model generation to the next, we tested each model on two open-source 32-bit RISC-V cores. PicoRV32 is a compact core designed for reprogrammable chips called FPGAs. OpenTitan uses Ibex as the embedded processor in its security chip. Each is a complete processor core for embedded, microcontroller class workloads.",
+          "inlines": [
+            {
+              "text": "Our results on Jalapeño and AMD’s chips show that models can make improvements in production designs. To measure the progression in chip design capabilities from one model generation to the next, we tested each model on two open-source 32-bit RISC-V cores. PicoRV32 is a compact core designed for reprogrammable chips called FPGAs. OpenTitan uses Ibex as the embedded processor in its security chip. Each is a complete processor core for embedded, microcontroller class workloads."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We gave each model the original hardware description for each core and asked it to increase throughput (the number of instructions the core can execute per second). For example, a change might let a core finish an instruction in fewer clock cycles but make each cycle take longer. Measuring throughput captures both effects.",
+          "inlines": [
+            {
+              "text": "We gave each model the original hardware description for each core and asked it to increase throughput (the number of instructions the core can execute per second). For example, a change might let a core finish an instruction in fewer clock cycles but make each cycle take longer. Measuring throughput captures both effects."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We checked each design’s outputs in simulation. Designs scored zero if they failed a check or used more than 16 times the original core’s area. For designs that passed, we measured instructions per clock cycle on workloads hidden from the models. We took the geometric mean across those workloads and multiplied it by the maximum clock frequency estimated with Yosys. That gave us an estimate of instructions per second. For each core, we assigned the best throughput we observed under the same constraints a score of 1.0. The charts show the average score across runs, including those that scored zero.",
+          "inlines": [
+            {
+              "text": "We checked each design’s outputs in simulation. Designs scored zero if they failed a check or used more than 16 times the original core’s area. For designs that passed, we measured instructions per clock cycle on workloads hidden from the models. We took the geometric mean across those workloads and multiplied it by the maximum clock frequency estimated with Yosys. That gave us an estimate of instructions per second. For each core, we assigned the best throughput we observed under the same constraints a score of 1.0. The charts show the average score across runs, including those that scored zero."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With a comparable budget of about 112,000 tokens per run, GPT‑6.2 Astra had the highest average score on both cores. GPT‑6.1 Sol also outscored GPT‑5.6 Sol on both.",
+          "inlines": [
+            {
+              "text": "With a comparable budget of about 112,000 tokens per run, GPT‑6.2 Astra had the highest average score on both cores. GPT‑6.1 Sol also outscored GPT‑5.6 Sol on both."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On the existing PicoRV32 core, GPT‑6.2 Astra has the highest mean score at the larger comparable budgets. Around 112,000 tokens, its score is about twice GPT‑6 Astra’s.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "On the existing PicoRV32 core, GPT‑6.2 Astra has the highest mean score at the larger comparable budgets. Around 112,000 tokens, its score is about twice GPT‑6 Astra’s."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On the existing Ibex core, GPT‑6.2 Astra’s mean score continues to climb across the higher budgets it reaches. GPT‑6 Astra and GPT‑6.1 Sol are closer together.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "On the existing Ibex core, GPT‑6.2 Astra’s mean score continues to climb across the higher budgets it reaches. GPT‑6 Astra and GPT‑6.1 Sol are closer together."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Designing a RISC-V core from a specification",
+          "inlines": [
+            {
+              "text": "Designing a RISC-V core from a specification"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "For the second task, we gave each model written requirements and templates from the open-source code showing how the core connects to the rest of the system. The model chose how data would move through the core and how to divide the work into stages. For each core, we kept the correctness checks, memory and cache settings, and throughput objectives the same as in the RTL optimization task.",
+          "inlines": [
+            {
+              "text": "For the second task, we gave each model written requirements and templates from the open-source code showing how the core connects to the rest of the system. The model chose how data would move through the core and how to divide the work into stages. For each core, we kept the correctness checks, memory and cache settings, and throughput objectives the same as in the RTL optimization task."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At about 112,000 tokens per run, all five models scored higher when they designed a core from written requirements than when they tried to improve the existing design. That held for both PicoRV32 and Ibex. GPT‑6.2 Astra gained more on Ibex than on PicoRV32. The full evaluation included 9,881 scored runs across both tasks, both cores, and all token budgets.",
+          "inlines": [
+            {
+              "text": "At about 112,000 tokens per run, all five models scored higher when they designed a core from written requirements than when they tried to improve the existing design. That held for both PicoRV32 and Ibex. GPT‑6.2 Astra gained more on Ibex than on PicoRV32. The full evaluation included 9,881 scored runs across both tasks, both cores, and all token budgets."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Starting from a PicoRV32 specification, GPT‑6.2 Astra passes a mean score of 0.7 near 112,000 tokens and scores higher at the next two observed budgets.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Starting from a PicoRV32 specification, GPT‑6.2 Astra passes a mean score of 0.7 near 112,000 tokens and scores higher at the next two observed budgets."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On Ibex, GPT‑6.2 Astra averages about 0.75 near 112,000 tokens when designing from a specification. Its curve stays above the others at larger shared budgets.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "On Ibex, GPT‑6.2 Astra averages about 0.75 near 112,000 tokens when designing from a specification. Its curve stays above the others at larger shared budgets."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Starting from written requirements gives the models room to omit features found in the original cores, such as performance counters and additional instructions. Those features may do little to improve throughput on the test workloads, which could explain part of the score advantage. Requiring those features, setting a tighter limit on circuit area, and checking timing after physical synthesis would make the test more representative of production chip design.",
+          "inlines": [
+            {
+              "text": "Starting from written requirements gives the models room to omit features found in the original cores, such as performance counters and additional instructions. Those features may do little to improve throughput on the test workloads, which could explain part of the score advantage. Requiring those features, setting a tighter limit on circuit area, and checking timing after physical synthesis would make the test more representative of production chip design."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What’s next",
+          "inlines": [
+            {
+              "text": "What’s next"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We have demonstrated that our models can explore new processor architectures in RISC-V evals and contributed net new improvements on top of sophisticated production designs such as Jalapeño and AMD’s next generation flagship GPU and CPU. To ground model development in trusted evaluators and broaden the design challenges addressed, we’re partnering with Synopsys to train GPT‑Synopsys⁠(opens in a new window), a new model, to use Synopsys electronic design automation (EDA) tools the way expert chip designers do.",
+          "inlines": [
+            {
+              "text": "We have demonstrated that our models can explore new processor architectures in RISC-V evals and contributed net new improvements on top of sophisticated production designs such as Jalapeño and AMD’s next generation flagship GPU and CPU. To ground model development in trusted evaluators and broaden the design challenges addressed, we’re partnering with Synopsys to train "
+            },
+            {
+              "href": "https://investor.synopsys.com/news/news-details/2026/OpenAI-and-Synopsys-Announce-GPT-Synopsys-Frontier-Intelligence-to-Revolutionize-Chip-Design/default.aspx",
+              "text": "GPT‑Synopsys⁠(opens in a new window)"
+            },
+            {
+              "text": ", a new model, to use Synopsys electronic design automation (EDA) tools the way expert chip designers do."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openai.com/news/?tags=2026",
+                  "text": "2026"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openai.com/news/?tags=software-engineering",
+                  "text": "Software & Engineering"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Author",
+          "inlines": [
+            {
+              "text": "Author"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenAI",
+          "inlines": [
+            {
+              "text": "OpenAI"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-19T01:11:12.067761Z",
+  "contentMode": "full"
+}

@@ -1,0 +1,2611 @@
+{
+  "schemaVersion": 1,
+  "id": "x8i90coywg5pag1dmf436vgg5",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/x8i90coywg5pag1dmf436vgg5",
+  "fetchedAt": "2026-11-19T01:11:15.191171Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "安全对齐",
+    "论文研究"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "执行摘要",
+          "inlines": [
+            {
+              "text": "执行摘要"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Wiz Research、Ikotas Labs、Metnir、Rapid7 和 Xint 各自独立发现了 NGINX 中的两个严重远程代码执行漏洞。NGINX 是一款用于接收流量并将其路由到生产应用和 API 的软件。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在现代 Web 架构中，NGINX 常被默认用作前门，负责处理 HTTPS 并将传入流量路由到正确的应用或 API。作为"
+                },
+                {
+                  "href": "https://w3techs.com/technologies/overview/web_server",
+                  "text": "全球使用最广泛的开源 Web 服务器"
+                },
+                {
+                  "text": "，它为"
+                },
+                {
+                  "href": "https://www.netcraft.com/blog/september-2026-web-server-survey",
+                  "text": "超过 2.25 亿个网站"
+                },
+                {
+                  "text": "提供支持。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "攻击者一旦利用成功，就能控制受影响的 NGINX 服务器、窃取敏感数据、篡改网站或中断服务。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "这两个漏洞编号为 CVE-2026-123633 和 CVE-2026-123007，均被评为严重级别，CVSS 4.0 评分为 9.2。漏洞存在于 NGINX 本身。即使网站和 API 自身的应用代码是安全的，也可能受到影响。"
+                },
+                {
+                  "bold": true,
+                  "text": "两个漏洞都要求受影响的 NGINX 服务器启用 HTTP/2。"
+                },
+                {
+                  "text": "其他条件见下文。CVE-2026-123007 影响的最早版本可追溯到 2015 年的 NGINX 1.9.5。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们已将发现报告给 NGINX 背后的公司 F5，并与该公司安全团队合作进行修复和协同披露。各组织应识别受影响的部署，并在安全更新发布后及时应用。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "我们建议将受影响的 NGINX 部署更新到包含多项安全修复的最新版本。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "负责任的披露时间线",
+          "inlines": [
+            {
+              "text": "负责任的披露时间线"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 10 月 21 日："
+                },
+                {
+                  "text": "Wiz 向 F5 报告了 HTTP/2 释放后使用漏洞（后编号为 CVE-2026-123633），其中包括已确认的远程代码执行、ASLR 绕过以及建议的修复方案。F5 确认另一个研究团队此前已报告过同一漏洞。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 11 月 10 日："
+                },
+                {
+                  "text": "F5 提供 CVE-2026-123633 的补丁供审查。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 11 月 16 日"
+                },
+                {
+                  "text": "：Wiz 向 F5 报告了第二个 HTTP/2 漏洞，后编号为 CVE-2026-123007。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 11 月 17 日"
+                },
+                {
+                  "text": "：F5 确认第二份报告与 CVE-2026-123007 相符，并已纳入计划于 11 月 18 日发布的安全版本。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "2026 年 11 月 18 日："
+                },
+                {
+                  "text": "F5 发布安全版本，并协同公开披露。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "概述",
+          "inlines": [
+            {
+              "text": "概述"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz Research、Ikotas Labs、Metnir、Rapid7 和 Xint 各自独立发现了 CVE-2026-123633 和 CVE-2026-123007，这是 NGINX 中的两个严重未认证远程代码执行漏洞，并已报告给 NGINX 背后的公司 F5。攻击者一旦利用成功，就能攻陷运行 NGINX 的服务器，执行代码、窃取敏感数据、篡改网站或中断服务。",
+          "inlines": [
+            {
+              "text": "Wiz Research、Ikotas Labs、Metnir、Rapid7 和 Xint 各自独立发现了 CVE-2026-123633 和 CVE-2026-123007，这是 NGINX 中的两个严重未认证远程代码执行漏洞，并已报告给 NGINX 背后的公司 F5。攻击者一旦利用成功，就能攻陷运行 NGINX 的服务器，执行代码、窃取敏感数据、篡改网站或中断服务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX 通常为多个应用处理流量，因此单个受影响的部署就可能让多个服务面临风险。漏洞存在于 NGINX 本身，即使网站自身的应用代码是安全的，也可能受到影响。两个漏洞都要求受影响的 NGINX 服务器启用 HTTP/2。我们对 CVE-2026-123007 的测试表明，在 NGINX 仅提供普通静态文件、没有后端应用或第三方模块的情况下，也能实现代码执行。",
+          "inlines": [
+            {
+              "text": "NGINX 通常为多个应用处理流量，因此单个受影响的部署就可能让多个服务面临风险。漏洞存在于 NGINX 本身，即使网站自身的应用代码是安全的，也可能受到影响。"
+            },
+            {
+              "bold": true,
+              "text": "两个漏洞都要求受影响的 NGINX 服务器启用 HTTP/2。"
+            },
+            {
+              "text": "我们对 CVE-2026-123007 的测试表明，在 NGINX 仅提供普通静态文件、没有后端应用或第三方模块的情况下，也能实现代码执行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz Research 利用 Wiz Atlas（支撑 Wiz AI 代码扫描方案的测试框架）发现了这两个漏洞。研究人员使用 Gemini 4 Carbon 和 ChatGPT 5.6 Sol 验证了两个漏洞的影响，确认每一个都能让未认证攻击者在服务器上执行代码。我们已将发现报告给 F5，并与 F5 安全团队合作完成修复和协同披露。",
+          "inlines": [
+            {
+              "text": "Wiz Research 利用 "
+            },
+            {
+              "href": "https://www.wiz.io/blog/atlas-ai-vulnerability-researcher",
+              "text": "Wiz Atlas"
+            },
+            {
+              "text": "（支撑 Wiz "
+            },
+            {
+              "href": "https://www.wiz.io/blog/introducing-wiz-ai-sast",
+              "text": "AI 代码扫描方案"
+            },
+            {
+              "text": "的测试框架）发现了这两个漏洞。研究人员使用 Gemini 4 Carbon 和 ChatGPT 5.6 Sol 验证了两个漏洞的影响，确认每一个都能让未认证攻击者在服务器上执行代码。我们已将发现报告给 F5，并与 F5 安全团队合作完成修复和协同披露。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "整数下溢漏洞可追溯到 2015 年的 NGINX 1.9.5，也就是说它在代码里藏了十多年。释放后使用漏洞则存在了近六年。与我们上个月报告的 PHP2Shell 漏洞以及昨天由 Calif 披露的 Java4Shell 一样，这些都是内存安全缺陷，历来极难发现和利用。要找到它们，往往需要追踪内存操作与多条代码路径之间微妙的交互。多年来，这种复杂性本身就构成了一道实际屏障。而 AI 正在从根本上瓦解这道屏障。随着 AI 模型越来越擅长追踪这些交互，研究人员和攻击者都能发现支撑互联网和现代应用的软件中长期存在的缺陷。多个独立研究团队在 PHP 和 NGINX 中发现了同样的漏洞，而这些漏洞已在代码中存在多年，这让上述转变尤为引人注目。随着 AI 能力提升，每一代新模型都可能挖出更复杂的漏洞，而这些漏洞此前在实际中根本无法触及。复杂性不再能作为阻止发现或利用的屏障。这不仅改变了哪些漏洞能被发现，也改变了长期存在的风险能以多快的速度变成真实威胁。",
+          "inlines": [
+            {
+              "text": "整数下溢漏洞可追溯到 2015 年的 NGINX 1.9.5，也就是说它在代码里藏了十多年。释放后使用漏洞则存在了近六年。与我们上个月报告的 "
+            },
+            {
+              "href": "https://www.wiz.io/blog/php2shell-php-rce",
+              "text": "PHP2Shell"
+            },
+            {
+              "text": " 漏洞以及昨天由 Calif 披露的 "
+            },
+            {
+              "href": "https://calif.io/java4shell/",
+              "text": "Java4Shell"
+            },
+            {
+              "text": " 一样，这些都是内存安全缺陷，历来极难发现和利用。要找到它们，往往需要追踪内存操作与多条代码路径之间微妙的交互。多年来，这种复杂性本身就构成了一道实际屏障。而 AI 正在从根本上瓦解这道屏障。随着 AI 模型越来越擅长追踪这些交互，研究人员和攻击者都能发现支撑互联网和现代应用的软件中长期存在的缺陷。多个独立研究团队在 PHP 和 NGINX 中发现了同样的漏洞，而这些漏洞已在代码中存在多年，这让上述转变尤为引人注目。随着 AI 能力提升，每一代新模型都可能挖出更复杂的漏洞，而这些漏洞此前在实际中根本无法触及。复杂性不再能作为阻止发现或利用的屏障。这不仅改变了哪些漏洞能被发现，也改变了长期存在的风险能以多快的速度变成真实威胁。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "长期来看，发现并修复这些缺陷能让所有人都依赖的软件变得更坚固。短期而言，更快的发现速度以及披露到利用之间更短的时间窗口，会让本已繁重的安全团队工作雪上加霜。把已发布的修复变成生产环境的防护，仍需大量人工操作，从验证补丁到与服务负责人协调分批上线。我们建议重点关注如何尽快降低生产环境的暴露面：找出运行受影响版本和配置的部署，优先处理攻击者能够触及的实例，并在补丁测试和上线期间先采取缓解措施。",
+          "inlines": [
+            {
+              "text": "长期来看，发现并修复这些缺陷能让所有人都依赖的软件变得更坚固。短期而言，更快的发现速度以及披露到利用之间更短的时间窗口，会让本已繁重的安全团队工作雪上加霜。把已发布的修复变成生产环境的防护，仍需大量人工操作，从验证补丁到与服务负责人协调分批上线。我们建议重点关注如何尽快降低生产环境的暴露面：找出运行受影响版本和配置的部署，优先处理攻击者能够触及的实例，并在补丁测试和上线期间先采取缓解措施。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本文介绍这两个漏洞及其影响，并给出缓解和检测指引。各组织应确认受影响的部署，并在安全更新发布后尽快应用。如果无法立即升级，请暂时禁用 HTTP/2。",
+          "inlines": [
+            {
+              "text": "本文介绍这两个漏洞及其影响，并给出缓解和检测指引。各组织应确认受影响的部署，并在安全更新发布后尽快应用。如果无法立即升级，请暂时禁用 HTTP/2。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "NGINX 是什么？",
+          "inlines": [
+            {
+              "text": "NGINX 是什么？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX 是全球使用最广泛的开源 Web 服务器，为超过 2.25 亿个网站提供支持。它通常作为网站和 API 前方的反向代理使用。在这一角色中，NGINX 接收传入请求，根据配置将其转发到相应的应用服务器，再把响应返回给用户。",
+          "inlines": [
+            {
+              "text": "NGINX 是"
+            },
+            {
+              "href": "https://w3techs.com/technologies/overview/web_server",
+              "text": "全球使用最广泛的开源 Web 服务器"
+            },
+            {
+              "text": "，为"
+            },
+            {
+              "href": "https://www.netcraft.com/blog/september-2026-web-server-survey",
+              "text": "超过 2.25 亿个网站"
+            },
+            {
+              "text": "提供支持。它通常作为网站和 API 前方的"
+            },
+            {
+              "href": "https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/",
+              "text": "反向代理"
+            },
+            {
+              "text": "使用。在这一角色中，NGINX 接收传入请求，根据配置将其转发到相应的应用服务器，再把响应返回给用户。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX 也能直接提供 Web 内容，并充当负载均衡器，把流量分发到多台服务器。单个 NGINX 部署可以服务多个应用，从而成为其背后网站和 API 的共享入口。",
+          "inlines": [
+            {
+              "text": "NGINX 也能直接提供 Web 内容，并充当"
+            },
+            {
+              "href": "https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/",
+              "text": "负载均衡器"
+            },
+            {
+              "text": "，把流量分发到多台服务器。单个 NGINX 部署可以服务多个应用，从而成为其背后网站和 API 的共享入口。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/957074c5636703a21b17498a468cfa25f5cafe8ba8ecae4398435b1282736f02.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "text": "漏洞详情",
+          "inlines": [
+            {
+              "text": "漏洞详情"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "这两个漏洞都是 NGINX 处理 HTTP/2 流量时出现的内存安全问题。在 CVE-2026-123633 中，连接的内存已被释放，但请求仍需要使用它，从而形成释放后重用（use-after-free）。在 CVE-2026-123007 中，流量控制计数出错，导致无效的内存拷贝。两者都可能让攻击者无需认证就在 NGINX 服务器上远程执行代码。",
+          "inlines": [
+            {
+              "text": "这两个漏洞都是 NGINX 处理 HTTP/2 流量时出现的内存安全问题。在 CVE-2026-123633 中，连接的内存已被释放，但请求仍需要使用它，从而形成释放后重用（use-after-free）。在 CVE-2026-123007 中，流量控制计数出错，导致无效的内存拷贝。两者都可能让攻击者无需认证就在 NGINX 服务器上远程执行代码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "追踪编号",
+          "inlines": [
+            {
+              "text": "追踪编号"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "漏洞详情",
+          "inlines": [
+            {
+              "text": "漏洞详情"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "攻击者能达成什么",
+          "inlines": [
+            {
+              "text": "攻击者能达成什么"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123633",
+          "inlines": [
+            {
+              "text": "CVE-2026-123633"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HTTP/2 连接释放后重用",
+          "inlines": [
+            {
+              "text": "HTTP/2 连接释放后重用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "无需认证即可在 NGINX 服务器上执行任意代码。",
+          "inlines": [
+            {
+              "text": "无需认证即可在 NGINX 服务器上执行任意代码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123007",
+          "inlines": [
+            {
+              "text": "CVE-2026-123007"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HTTP/2 send_window 整数下溢",
+          "inlines": [
+            {
+              "text": "HTTP/2 send_window 整数下溢"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "无需认证即可在 NGINX 服务器上执行任意代码。",
+          "inlines": [
+            {
+              "text": "无需认证即可在 NGINX 服务器上执行任意代码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "两个漏洞都要求启用 HTTP/2，但各自的附加条件不同。CVE-2026-123633 影响反向代理处理，且发生在可用连接槽位不足时。CVE-2026-123007 还能影响直接提供内容的 NGINX，我们在 64 位系统上通过 HTTPS 测试时已复现。ASLR 等常见内存安全缓解措施无法防御这些问题，因为攻击者可以利用任一漏洞在代码执行前获得内存读取权限。",
+          "inlines": [
+            {
+              "text": "两个漏洞都要求启用 HTTP/2，但各自的附加条件不同。CVE-2026-123633 影响反向代理处理，且发生在可用连接槽位不足时。CVE-2026-123007 还能影响直接提供内容的 NGINX，我们在 64 位系统上通过 HTTPS 测试时已复现。ASLR 等常见内存安全缓解措施无法防御这些问题，因为攻击者可以利用任一漏洞在代码执行前获得内存读取权限。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "影响",
+          "inlines": [
+            {
+              "text": "影响"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "在启用了 HTTP/2 的受影响 NGINX 版本上，这些漏洞可让未认证的攻击者在服务器上执行任意代码。",
+          "inlines": [
+            {
+              "text": "在启用了 HTTP/2 的受影响 NGINX 版本上，这些漏洞可让未认证的攻击者在服务器上执行任意代码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "缺陷出在 NGINX 本身。利用过程不依赖其背后网站或 API 的漏洞，因此即使应用代码安全，仍可能暴露在风险中。对于 CVE-2026-123007，我们在仅提供普通静态文件的服务器上演示了远程代码执行，该服务器没有后端应用，也没有第三方模块。",
+          "inlines": [
+            {
+              "text": "缺陷出在 NGINX 本身。利用过程不依赖其背后网站或 API 的漏洞，因此即使应用代码安全，仍可能暴露在风险中。对于 CVE-2026-123007，我们在仅提供普通静态文件的服务器上演示了远程代码执行，该服务器没有后端应用，也没有第三方模块。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "攻击者可利用这一访问权限执行命令、窃取敏感数据、篡改网站或中断服务。由于一个 NGINX 部署可能服务多个应用，影响范围可能波及多个网站和 API。",
+          "inlines": [
+            {
+              "text": "攻击者可利用这一访问权限执行命令、窃取敏感数据、篡改网站或中断服务。由于一个 NGINX 部署可能服务多个应用，影响范围可能波及多个网站和 API。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f35012145085ef5fa37fb7b72b1820c62e7587cb7441e6164cbcbc64a523bf56.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "示意图：攻击者利用 NGINX 在服务器上运行代码，使其所服务的应用和数据面临风险。",
+          "inlines": [
+            {
+              "text": "示意图：攻击者利用 NGINX 在服务器上运行代码，使其所服务的应用和数据面临风险。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "协同披露",
+          "inlines": [
+            {
+              "text": "协同披露"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们已向 F5 报告这两个漏洞，并与 F5 安全团队合作完成修复和协同披露。我们还提交了建议的修复方案。Ikotas Labs、Metnir、Rapid7 和 Xint 也独立发现并向 F5 报告了这些问题。感谢 F5 和 NGINX 团队在修复方面所做的工作。",
+          "inlines": [
+            {
+              "text": "我们已向 F5 报告这两个漏洞，并与 F5 安全团队合作完成修复和协同披露。我们还提交了建议的修复方案。Ikotas Labs、Metnir、Rapid7 和 Xint 也独立发现并向 F5 报告了这些问题。感谢 F5 和 NGINX 团队在修复方面所做的工作。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "缓解与检测",
+          "inlines": [
+            {
+              "text": "缓解与检测"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "找出启用了 HTTP/2 的受影响 NGINX 部署，并在修复版本发布后尽快升级。",
+          "inlines": [
+            {
+              "text": "找出启用了 HTTP/2 的受影响 NGINX 部署，并在修复版本发布后尽快升级。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "产品",
+          "inlines": [
+            {
+              "text": "产品"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE 及首个受影响版本或分支",
+          "inlines": [
+            {
+              "text": "CVE 及首个受影响版本或分支"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "修复版本",
+          "inlines": [
+            {
+              "text": "修复版本"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX OSS",
+          "inlines": [
+            {
+              "text": "NGINX OSS"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123633：1.19.7",
+          "inlines": [
+            {
+              "text": "CVE-2026-123633：1.19.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.30.7 稳定版；1.31.9 主线版",
+          "inlines": [
+            {
+              "text": "1.30.7 稳定版；1.31.9 主线版"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX Plus",
+          "inlines": [
+            {
+              "text": "NGINX Plus"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123633：R33；37.0.0",
+          "inlines": [
+            {
+              "text": "CVE-2026-123633：R33；37.0.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "37.0.7.1; 37.2.0.1",
+          "inlines": [
+            {
+              "text": "37.0.7.1; 37.2.0.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX OSS",
+          "inlines": [
+            {
+              "text": "NGINX OSS"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123007：1.9.5",
+          "inlines": [
+            {
+              "text": "CVE-2026-123007：1.9.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.30.7 稳定版；1.31.9 主线版",
+          "inlines": [
+            {
+              "text": "1.30.7 稳定版；1.31.9 主线版"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX Plus",
+          "inlines": [
+            {
+              "text": "NGINX Plus"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123007：R33；37.0.0",
+          "inlines": [
+            {
+              "text": "CVE-2026-123007：R33；37.0.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "37.0.8.1; 37.3.0.1",
+          "inlines": [
+            {
+              "text": "37.0.8.1; 37.3.0.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果无法立即升级，可暂时在受影响的 NGINX 实例上禁用 HTTP/2：",
+          "inlines": [
+            {
+              "text": "如果无法立即升级，可暂时在受影响的 NGINX 实例上禁用 HTTP/2："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "在 NGINX 1.25.1 或更高版本的受影响 server 块中设置 "
+                },
+                {
+                  "href": "https://nginx.org/en/docs/http/ngx_http_v2_module.html#http2",
+                  "text": "http2 off;"
+                },
+                {
+                  "text": "，并从所有 listen 指令中移除 "
+                },
+                {
+                  "href": "https://nginx.org/en/docs/http/ngx_http_core_module.html#listen",
+                  "text": "http2 参数"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "测试应用兼容性，"
+                },
+                {
+                  "href": "https://nginx.org/en/docs/control.html",
+                  "text": "重新加载 NGINX"
+                },
+                {
+                  "text": "，并确认旧 worker 进程已退出。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "升级后重新启用 HTTP/2。",
+          "inlines": [
+            {
+              "text": "升级后重新启用 HTTP/2。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "排查 NGINX worker 进程意外崩溃或由 NGINX 启动的命令；这些只是通用警示信号，并非这些漏洞的确认指标。",
+          "inlines": [
+            {
+              "text": "排查 NGINX worker 进程意外崩溃或由 NGINX 启动的命令；这些只是通用警示信号，并非这些漏洞的确认指标。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "技术深入分析",
+          "inlines": [
+            {
+              "text": "技术深入分析"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "CVE-2026-123633：活动连接被错误标记为可复用",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "CVE-2026-123633：活动连接被错误标记为可复用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX 维护着一份连接列表，当需要为新连接腾出空间时，它可以从这份列表中关闭连接。一个 HTTP/2 连接在没有活跃请求时可以加入这个列表，但一旦有请求开始，就必须离开该列表。",
+          "inlines": [
+            {
+              "text": "NGINX 维护着一份连接列表，当需要为新连接腾出空间时，它可以从这份列表中关闭连接。一个 HTTP/2 连接在没有活跃请求时可以加入这个列表，但一旦有请求开始，就必须离开该列表。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们首先只发送一个 HEADERS 帧的一部分，该帧携带 HTTP/2 请求的头部。此时没有活跃的请求流， ngx_http_v2_handle_connection() 会在等待剩余部分的同时，将该连接标记为可复用：",
+          "inlines": [
+            {
+              "text": "我们首先只发送一个 "
+            },
+            {
+              "code": true,
+              "text": "HEADERS"
+            },
+            {
+              "text": " 帧的一部分，该帧携带 HTTP/2 请求的头部。此时没有活跃的请求流，"
+            },
+            {
+              "code": true,
+              "text": " "
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/http/v2/ngx_http_v2.c#L620-L676",
+              "code": true,
+              "text": "ngx_http_v2_handle_connection()"
+            },
+            {
+              "text": " 会在等待剩余部分的同时，将该连接标记为可复用："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ngx_reusable_connection(c, 1);",
+          "inlines": [
+            {
+              "code": true,
+              "text": "ngx_reusable_connection(c, 1);"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "if (h2c->state.incomplete) {",
+          "inlines": [
+            {
+              "code": true,
+              "text": "if (h2c->state.incomplete) {"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "    return;",
+          "inlines": [
+            {
+              "code": true,
+              "text": "    return;"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "}",
+          "inlines": [
+            {
+              "code": true,
+              "text": "}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当我们发送该帧的剩余部分时， ngx_http_v2_create_stream() 会创建一个请求流并递增 h2c->processing。然而，它并没有将该连接从可复用列表中移除。于是，现在有一个请求正在一个 NGINX 仍认为可以安全关闭的连接上处理。",
+          "inlines": [
+            {
+              "text": "当我们发送该帧的剩余部分时，"
+            },
+            {
+              "code": true,
+              "text": " "
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/http/v2/ngx_http_v2.c#L2983-L3118",
+              "code": true,
+              "text": "ngx_http_v2_create_stream()"
+            },
+            {
+              "text": " 会创建一个请求流并递增 "
+            },
+            {
+              "code": true,
+              "text": "h2c->processing"
+            },
+            {
+              "text": "。然而，它并没有将该连接从可复用列表中移除。于是，现在有一个请求正在一个 NGINX 仍认为可以安全关闭的连接上处理。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "触发释放后使用",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "触发释放后使用"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "接下来，我们需要让 NGINX 在请求仍在运行时关闭这个连接。将请求转发到应用服务器可以触发这一点。",
+          "inlines": [
+            {
+              "text": "接下来，我们需要让 NGINX 在请求仍在运行时关闭这个连接。将请求转发到应用服务器可以触发这一点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "打开上游连接会调用 ngx_get_connection(). 当空闲连接槽位不足时，ngx_drain_connections() 会选择可复用的连接进行关闭。我们的 HTTP/2 连接仍在那个列表中，因此 NGINX 可以在处理其自身请求的同时选中它。",
+          "inlines": [
+            {
+              "text": "打开上游连接会调用 "
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/core/ngx_connection.c#L1210-L1244",
+              "code": true,
+              "text": "ngx_get_connection()"
+            },
+            {
+              "code": true,
+              "text": "."
+            },
+            {
+              "text": " 当空闲连接槽位不足时，"
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/core/ngx_connection.c#L1409-L1446",
+              "code": true,
+              "text": "ngx_drain_connections()"
+            },
+            {
+              "code": true,
+              "text": " "
+            },
+            {
+              "text": "会选择可复用的连接进行关闭。我们的 HTTP/2 连接仍在那个列表中，因此 NGINX 可以在处理其自身请求的同时选中它。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在关闭它之前，NGINX 会尝试发送一个 GOAWAY 帧来通知客户端。即使创建这个帧也可能失败，例如，如果 NGINX 已达到该连接的内部帧限制，并且没有可复用的帧。在这种情况下，错误路径会关闭连接并释放与之关联的内存。然后处理会回到原始请求中继续，而该请求仍在使用那块内存。我们就达到了释放后使用。",
+          "inlines": [
+            {
+              "text": "在关闭它之前，NGINX 会尝试发送一个 "
+            },
+            {
+              "code": true,
+              "text": "GOAWAY"
+            },
+            {
+              "text": " 帧来通知客户端。即使创建这个帧也可能失败，例如，如果 NGINX 已达到该连接的"
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/http/v2/ngx_http_v2.c#L2888-L2940",
+              "text": "内部帧限制"
+            },
+            {
+              "text": "，并且没有可复用的帧。在这种情况下，"
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/http/v2/ngx_http_v2.c#L369-L384",
+              "text": "错误路径"
+            },
+            {
+              "text": "会关闭连接并释放与之关联的内存。然后处理会回到原始请求中继续，而该请求仍在使用那块内存。我们就达到了释放后使用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "从释放后使用到远程代码执行",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "从释放后使用到远程代码执行"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "被释放的内存现在可以被重新用于其他数据。请求处理代码仍然沿着旧的指针操作，将新的内容当作原始请求或连接。",
+          "inlines": [
+            {
+              "text": "被释放的内存现在可以被重新用于其他数据。请求处理代码仍然沿着旧的指针操作，将新的内容当作原始请求或连接。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种释放后使用可能导致在 NGINX 服务器上实现未经身份验证的远程代码执行。",
+          "inlines": [
+            {
+              "text": "这种释放后使用可能导致在 NGINX 服务器上实现未经身份验证的远程代码执行。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "CVE-2026-123007：HTTP/2 send_window 整数下溢",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "CVE-2026-123007：HTTP/2 send_window 整数下溢"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "归还未发送数据的额度",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "归还未发送数据的额度"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "HTTP/2 允许几个请求（称为流）共享一个连接。流量控制限制了 NGINX 在客户端准备好接收更多数据之前可以发送多少响应数据。NGINX 在一个名为 h2c->send_window 的计数器中跟踪连接的剩余额度。",
+          "inlines": [
+            {
+              "text": "HTTP/2 允许几个请求（称为流）共享一个连接。流量控制限制了 NGINX 在客户端准备好接收更多数据之前可以发送多少响应数据。NGINX 在一个名为 "
+            },
+            {
+              "code": true,
+              "text": "h2c->send_window"
+            },
+            {
+              "text": " 的计数器中跟踪连接的剩余额度。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当 NGINX 将响应数据排队时，它会在发送前从计数器中减去该数据的大小。如果一个流在其数据仍在排队时被取消，ngx_http_v2_filter_cleanup() 会移除未发送的数据并归还未使用的额度：",
+          "inlines": [
+            {
+              "text": "当 NGINX 将响应数据排队时，它会在发送前从计数器中减去该数据的大小。如果一个流在其数据仍在排队时被取消，"
+            },
+            {
+              "code": true,
+              "text": "ngx_http_v2_filter_cleanup()"
+            },
+            {
+              "text": " 会移除未发送的数据并归还未使用的额度："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "h2c->send_window += window;",
+          "inlines": [
+            {
+              "code": true,
+              "text": "h2c->send_window += window;"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种归还没有检查 HTTP/2 允许的最大窗口。如果客户端在数据等待发送期间已经增加了额度，归还操作可能会将计数器推高到超过该最大值。此时 NGINX 跟踪的值是 HTTP/2 其余代码认为不可能出现的。",
+          "inlines": [
+            {
+              "text": "这种归还没有检查 HTTP/2 允许的最大窗口。如果客户端在数据等待发送期间已经增加了额度，归还操作可能会将计数器推高到超过该最大值。此时 NGINX 跟踪的值是 HTTP/2 其余代码认为不可能出现的。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "一个不再有效的边界检查",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "一个不再有效的边界检查"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "下一个问题出在 ngx_http_v2_state_window_update() 中，它检查增加额度是否会超过限制：",
+          "inlines": [
+            {
+              "text": "下一个问题出在 "
+            },
+            {
+              "code": true,
+              "text": "ngx_http_v2_state_window_update()"
+            },
+            {
+              "text": " 中，它检查增加额度是否会超过限制："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "if (window > NGX_HTTP_V2_MAX_WINDOW - h2c->send_window)",
+          "inlines": [
+            {
+              "code": true,
+              "text": "if (window > NGX_HTTP_V2_MAX_WINDOW - h2c->send_window)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该检查从最大值中减去当前额度，以计算还剩多少空间。但归还操作已经将额度推高到超过该最大值。由于计算使用无符号整数，无法表示负数，减法会回绕并下溢成一个非常大的正值。现在，该检查将一个无效的计数器视为还有充足空间，并允许进一步增加。",
+          "inlines": [
+            {
+              "text": "该检查从最大值中减去当前额度，以计算还剩多少空间。但归还操作已经将额度推高到超过该最大值。由于计算使用无符号整数，无法表示负数，减法会回绕并下溢成一个非常大的正值。现在，该检查将一个无效的计数器视为还有充足空间，并允许进一步增加。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "从无效长度到远程代码执行",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "从无效长度到远程代码执行"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "这个无效的计数器最终会到达ngx_http_v2_send_chain()，在那里被转换成有符号整数类型off_t，用来计算要发送多少数据。数值足够大时就会变成负数。这个负的长度随后进入描述响应缓冲区某一部分的代码，导致其结束指针位于起始指针之前。",
+          "inlines": [
+            {
+              "text": "这个无效的计数器最终会到达"
+            },
+            {
+              "code": true,
+              "text": "ngx_http_v2_send_chain()"
+            },
+            {
+              "text": "，在那里被转换成有符号整数类型"
+            },
+            {
+              "code": true,
+              "text": "off_t"
+            },
+            {
+              "text": "，用来计算要发送多少数据。数值足够大时就会变成负数。这个负的长度随后进入描述响应缓冲区某一部分的代码，导致其结束指针位于起始指针之前。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当ngx_ssl_send_chain() 中的 TLS 发送路径处理这个畸形缓冲区时，进一步的有符号与无符号转换会把无效长度变成越界内存拷贝。攻击者可借此泄露内存、破坏堆，最终在 NGINX 服务器上实现无需认证的远程代码执行。",
+          "inlines": [
+            {
+              "text": "当"
+            },
+            {
+              "code": true,
+              "text": "ngx_ssl_send_chain() "
+            },
+            {
+              "text": "中的 TLS 发送路径处理这个畸形缓冲区时，进一步的有符号与无符号转换会把无效长度变成越界内存拷贝。攻击者可借此泄露内存、破坏堆，最终在 NGINX 服务器上实现无需认证的远程代码执行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在官方 NGINX 1.31.7 和 1.31.8 构建版本上，通过绕过 ASLR 确认了远程代码执行。测试路径在 64 位系统上使用基于 TLS 的 HTTP/2，并从内存中提供响应数据。普通的静态文件通过标准 TLS 处理就能走到这条路径，不需要后端应用或第三方模块。",
+          "inlines": [
+            {
+              "text": "我们在官方 NGINX 1.31.7 和 1.31.8 构建版本上，通过绕过 ASLR 确认了远程代码执行。测试路径在 64 位系统上使用基于 TLS 的 HTTP/2，并从内存中提供响应数据。普通的静态文件通过标准 TLS 处理就能走到这条路径，不需要后端应用或第三方模块。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "漏洞利用",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "漏洞利用"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "为确认这些漏洞，Wiz Research 构建了概念验证利用程序，并在多个实验环境中针对运行常见 NGINX 配置的服务器成功运行，这些配置与我们在客户环境中见到的一致。出于保护客户的考虑，我们目前不会公开这些利用程序。",
+          "inlines": [
+            {
+              "text": "为确认这些漏洞，Wiz Research 构建了概念验证利用程序，并在多个实验环境中针对运行常见 NGINX 配置的服务器成功运行，这些配置与我们在客户环境中见到的一致。出于保护客户的考虑，我们目前不会公开这些利用程序。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "与其他内存安全问题一样，这类漏洞很难远程利用，攻击者需要泄露内存地址、正确地整理和塑造堆布局，还要应对不同的 NGINX 版本、构建和配置。现实中，攻击者未必需要针对每一种配置，我们在 PHP2Shell 中就看到，大规模攻击最初针对的是打包产品，许多客户使用的正是完全相同的构建和配置。有动机的攻击者可能会为特定目标量身定制利用程序。",
+          "inlines": [
+            {
+              "text": "与其他内存安全问题一样，这类漏洞很难远程利用，攻击者需要泄露内存地址、正确地整理和塑造堆布局，还要应对不同的 NGINX 版本、构建和配置。现实中，攻击者未必需要针对每一种配置，我们在 "
+            },
+            {
+              "href": "https://www.wiz.io/blog/php2shell-php-rce",
+              "text": "PHP2Shell"
+            },
+            {
+              "text": " 中就看到，大规模攻击最初针对的是打包产品，许多客户使用的正是完全相同的构建和配置。有动机的攻击者可能会为特定目标量身定制利用程序。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "任何利用都假定攻击者能够直接与受影响的 NGINX 服务器通信。终止 HTTP/2 的 CDN 和 WAF 可能通过不把确切载荷回传给底层 NGINX 服务器来缓解部分利用，但这取决于具体实现。",
+          "inlines": [
+            {
+              "text": "任何利用都假定攻击者能够直接与受影响的 NGINX 服务器通信。终止 HTTP/2 的 CDN 和 WAF 可能通过不把确切载荷回传给底层 NGINX 服务器来缓解部分利用，但这取决于具体实现。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "具体来说，CVE-2026-123007 要求攻击者发送大量 WINDOW_UPDATE 记录，将其增大到任意值。针对长期保持的 HTTP/2 连接发送大量数据的检测规则，可能提示存在与该漏洞相关的攻击。CVE-2026-123633 的利用约束不同，当 NGINX 配置为代理模式时更可能被利用。",
+          "inlines": [
+            {
+              "text": "具体来说，CVE-2026-123007 要求攻击者发送大量 WINDOW_UPDATE 记录，将其增大到任意值。针对长期保持的 HTTP/2 连接发送大量数据的检测规则，可能提示存在与该漏洞相关的攻击。CVE-2026-123633 的利用约束不同，当 NGINX 配置为代理模式时更可能被利用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Wiz 如何提供帮助？",
+          "inlines": [
+            {
+              "text": "Wiz 如何提供帮助？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz 客户可以使用 Wiz 威胁中心中预置的查询和公告，在其环境中搜索存在漏洞的实例。",
+          "inlines": [
+            {
+              "text": "Wiz 客户可以使用 "
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center?filters=%7B%22publishedAt%22%3A%7B%22dateRange%22%3A%7B%22past%22%3A%7B%22amount%22%3A12%2C%22unit%22%3A%22month%22%7D%7D%7D%7D",
+              "text": "Wiz 威胁中心"
+            },
+            {
+              "text": "中预置的查询和公告，在其环境中搜索存在漏洞的实例。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "结论",
+          "inlines": [
+            {
+              "text": "结论"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX 为关键网站和应用处理流量，其核心缺陷的影响远远超出单一服务。这项研究再次表明，AI 能够发现广泛部署的基础设施中的严重漏洞。这些漏洞本就存在，是 AI 帮我们找到了它们。",
+          "inlines": [
+            {
+              "text": "NGINX 为关键网站和应用处理流量，其核心缺陷的影响远远超出单一服务。这项研究再次表明，AI 能够发现广泛部署的基础设施中的严重漏洞。这些漏洞本就存在，是 AI 帮我们找到了它们。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "正如我们在 PHP2Shell 中看到的，AI 正在改变漏洞研究的经济账。帮助防御者发现漏洞的能力，同样也能帮助攻击者研究漏洞。随着这些工具不断进步，那些已被使用和审查多年的软件仍然需要重新审视。",
+          "inlines": [
+            {
+              "text": "正如我们在 "
+            },
+            {
+              "href": "https://www.wiz.io/blog/php2shell-php-rce",
+              "text": "PHP2Shell"
+            },
+            {
+              "text": " 中看到的，AI 正在改变漏洞研究的经济账。帮助防御者发现漏洞的能力，同样也能帮助攻击者研究漏洞。随着这些工具不断进步，那些已被使用和审查多年的软件仍然需要重新审视。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "关键在于让这项工作成为常态：找出各类组织所依赖的软件中的漏洞，并与维护者合作修复。我们与 F5 的合作把这一做法带到了 NGINX 上，帮助保护其背后的应用和服务。",
+          "inlines": [
+            {
+              "text": "关键在于让这项工作成为常态：找出各类组织所依赖的软件中的漏洞，并与维护者合作修复。我们与 F5 的合作把这一做法带到了 NGINX 上，帮助保护其背后的应用和服务。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "保持联系",
+          "inlines": [
+            {
+              "text": "保持联系"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "大家好！我们是来自 Wiz 研究团队的 Nir Ohfeld 和 Tomer Schwartz（@wiz_io）。我们是一群资深白帽黑客，目标只有一个：让云对每个人来说都更安全。我们专注于在云软件中寻找新的攻击向量，并发现各类组织所依赖的系统中的隔离问题。欢迎在 X 上联系我们，或发送邮件至 research@wiz.io。",
+          "inlines": [
+            {
+              "text": "大家好！我们是来自 Wiz 研究团队的 "
+            },
+            {
+              "href": "https://x.com/nirohfeld",
+              "text": "Nir Ohfeld"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "href": "https://x.com/tom41sh",
+              "text": "Tomer Schwartz"
+            },
+            {
+              "text": "（"
+            },
+            {
+              "href": "https://x.com/wiz_io",
+              "text": "@wiz_io"
+            },
+            {
+              "text": "）。我们是一群资深白帽黑客，目标只有一个：让云对每个人来说都更安全。我们专注于在云软件中寻找新的攻击向量，并发现各类组织所依赖的系统中的隔离问题。欢迎在 X 上联系我们，或发送邮件至 research@wiz.io。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Executive Summary",
+          "inlines": [
+            {
+              "text": "Executive Summary"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Wiz Research, Ikotas Labs, Metnir, Rapid7, and Xint independently uncovered two critical remote code execution vulnerabilities in NGINX, software used to receive and route traffic to production applications and APIs."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "NGINX is a common default for the front door of modern web architectures, where it handles HTTPS and routes incoming traffic to the right application or API. As the "
+                },
+                {
+                  "href": "https://w3techs.com/technologies/overview/web_server",
+                  "text": "world's most widely used open-source web server"
+                },
+                {
+                  "text": ", it powers "
+                },
+                {
+                  "href": "https://www.netcraft.com/blog/september-2026-web-server-survey",
+                  "text": "more than 225 million websites"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Successful exploitation could let attackers take control of affected NGINX servers, steal sensitive data, tamper with websites, or disrupt services."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The vulnerabilities, tracked as CVE-2026-123633 and CVE-2026-123007, are both rated Critical, with a CVSS 4.0 score of 9.2. The flaws are in NGINX itself. Websites and APIs can be exposed even when their own application code is secure. "
+                },
+                {
+                  "bold": true,
+                  "text": "Both vulnerabilities require HTTP/2 to be enabled on the affected NGINX server."
+                },
+                {
+                  "text": " Additional conditions are described below. CVE-2026-123007 affects versions dating back to NGINX 1.9.5 in 2015."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We reported our findings to F5, the company behind NGINX, and collaborated with its security team on remediation and coordinated disclosure. Organizations should identify affected deployments and apply the security updates when released."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "We recommend updating affected NGINX deployments to the latest release which includes multiple security fixes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Responsible disclosure timeline",
+          "inlines": [
+            {
+              "text": "Responsible disclosure timeline"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "October 21, 2026: "
+                },
+                {
+                  "text": "Wiz reports the HTTP/2 use-after-free vulnerability, later assigned CVE-2026-123633, to F5, including confirmed remote code execution with an ASLR bypass and a proposed fix. F5 confirms that another research team had previously reported the same vulnerability."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "November 10, 2026: "
+                },
+                {
+                  "text": "F5 supplies a patch for CVE-2026-123633 for review."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "November 16, 2026"
+                },
+                {
+                  "text": ": Wiz reports the second HTTP/2 vulnerability, later assigned CVE-2026-123007, to F5."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "November 17, 2026"
+                },
+                {
+                  "text": ": F5 confirms that the second report matches CVE-2026-123007 and is included in the planned November 18 security release."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "November 18, 2026:"
+                },
+                {
+                  "text": " F5 security release and coordinated public disclosure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Overview",
+          "inlines": [
+            {
+              "text": "Overview"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz Research, Ikotas Labs, Metnir, Rapid7, and Xint independently uncovered CVE-2026-123633 and CVE-2026-123007, two critical unauthenticated remote code execution vulnerabilities in NGINX, and reported them to F5, the company behind NGINX. Successful exploitation can compromise the server running NGINX, allowing attackers to execute code, steal sensitive data, tamper with websites, or disrupt services.",
+          "inlines": [
+            {
+              "text": "Wiz Research, Ikotas Labs, Metnir, Rapid7, and Xint independently uncovered CVE-2026-123633 and CVE-2026-123007, two critical unauthenticated remote code execution vulnerabilities in NGINX, and reported them to F5, the company behind NGINX. Successful exploitation can compromise the server running NGINX, allowing attackers to execute code, steal sensitive data, tamper with websites, or disrupt services."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX often handles traffic for several applications, so a single affected deployment can put multiple services at risk. The flaws are in NGINX itself and can affect websites even when their own application code is secure. Both vulnerabilities require HTTP/2 to be enabled on the affected NGINX server. Our testing of CVE-2026-123007 demonstrated code execution on NGINX serving ordinary static files, without a backend application or third-party modules.",
+          "inlines": [
+            {
+              "text": "NGINX often handles traffic for several applications, so a single affected deployment can put multiple services at risk. The flaws are in NGINX itself and can affect websites even when their own application code is secure. "
+            },
+            {
+              "bold": true,
+              "text": "Both vulnerabilities require HTTP/2 to be enabled on the affected NGINX server."
+            },
+            {
+              "text": " Our testing of CVE-2026-123007 demonstrated code execution on NGINX serving ordinary static files, without a backend application or third-party modules."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz Research used Wiz Atlas, the harness powering Wiz’s AI Code scanning solution, to discover both vulnerabilities. Our researchers used Gemini 4 Carbon and ChatGPT 5.6 Sol to validate the impact of both vulnerabilities, confirming that each could allow an unauthenticated attacker to execute code on the server. We reported our findings to F5 and worked with its security team on remediation and coordinated disclosure.",
+          "inlines": [
+            {
+              "text": "Wiz Research used "
+            },
+            {
+              "href": "https://www.wiz.io/blog/atlas-ai-vulnerability-researcher",
+              "text": "Wiz Atlas"
+            },
+            {
+              "text": ", the harness powering Wiz’s "
+            },
+            {
+              "href": "https://www.wiz.io/blog/introducing-wiz-ai-sast",
+              "text": "AI Code scanning solution"
+            },
+            {
+              "text": ", to discover both vulnerabilities. Our researchers used Gemini 4 Carbon and ChatGPT 5.6 Sol to validate the impact of both vulnerabilities, confirming that each could allow an unauthenticated attacker to execute code on the server. We reported our findings to F5 and worked with its security team on remediation and coordinated disclosure."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The integer underflow vulnerability dates back to NGINX 1.9.5 in 2015, meaning it had been hiding in the code for more than a decade. The use-after-free vulnerability had been there for nearly six years. Like the PHP2Shell vulnerabilities we reported last month and Java4Shell, disclosed yesterday by Calif, these are memory-safety flaws that have historically been extremely difficult to discover and exploit. Finding them often requires tracing subtle interactions between memory operations and multiple code paths. For years, that complexity itself created a practical barrier. AI is fundamentally dissolving that barrier. As AI models get better at following those interactions, both researchers and attackers can uncover longstanding flaws in software that powers the internet and modern applications. The fact that multiple independent research teams uncovered the same vulnerabilities in both PHP and NGINX, after they had remained in the code for years, makes this shift particularly striking. And as AI capabilities advance, each new generation of models may uncover even more complex vulnerabilities that were previously beyond practical reach. Complexity can no longer be relied upon as a barrier to discovery or exploitation. This changes not only which vulnerabilities can be found, but how quickly longstanding risks can become real threats.",
+          "inlines": [
+            {
+              "text": "The integer underflow vulnerability dates back to NGINX 1.9.5 in 2015, meaning it had been hiding in the code for more than a decade. The use-after-free vulnerability had been there for nearly six years. Like the "
+            },
+            {
+              "href": "https://www.wiz.io/blog/php2shell-php-rce",
+              "text": "PHP2Shell"
+            },
+            {
+              "text": " vulnerabilities we reported last month and"
+            },
+            {
+              "href": "https://calif.io/java4shell/",
+              "text": " Java4Shell"
+            },
+            {
+              "text": ", disclosed yesterday by Calif, these are memory-safety flaws that have historically been extremely difficult to discover and exploit. Finding them often requires tracing subtle interactions between memory operations and multiple code paths. For years, that complexity itself created a practical barrier. AI is fundamentally dissolving that barrier. As AI models get better at following those interactions, both researchers and attackers can uncover longstanding flaws in software that powers the internet and modern applications. The fact that multiple independent research teams uncovered the same vulnerabilities in both PHP and NGINX, after they had remained in the code for years, makes this shift particularly striking. And as AI capabilities advance, each new generation of models may uncover even more complex vulnerabilities that were previously beyond practical reach. Complexity can no longer be relied upon as a barrier to discovery or exploitation. This changes not only which vulnerabilities can be found, but how quickly longstanding risks can become real threats."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Over time, finding and fixing these flaws can harden the software we all depend on. In the near term, faster discovery and a shorter window between disclosure and exploitation add to an already demanding workload for security teams. Turning a published fix into protection in production still takes substantial manual work, from validating patches to coordinating rollouts with service owners. We recommend focusing on how quickly you can reduce exposure in production. Identify deployments running the affected version and configuration, prioritize those an attacker can reach, and apply mitigations while patches are tested and rolled out.",
+          "inlines": [
+            {
+              "text": "Over time, finding and fixing these flaws can harden the software we all depend on. In the near term, faster discovery and a shorter window between disclosure and exploitation add to an already demanding workload for security teams. Turning a published fix into protection in production still takes substantial manual work, from validating patches to coordinating rollouts with service owners. We recommend focusing on how quickly you can reduce exposure in production. Identify deployments running the affected version and configuration, prioritize those an attacker can reach, and apply mitigations while patches are tested and rolled out."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this post, we explain the vulnerabilities and their impact, and provide mitigation and detection guidance. Organizations should identify affected deployments and apply the security updates as soon as they are available. If upgrading is not immediately possible, temporarily disable HTTP/2.",
+          "inlines": [
+            {
+              "text": "In this post, we explain the vulnerabilities and their impact, and provide mitigation and detection guidance. Organizations should identify affected deployments and apply the security updates as soon as they are available. If upgrading is not immediately possible, temporarily disable HTTP/2."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is NGINX?",
+          "inlines": [
+            {
+              "text": "What is NGINX?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX is the world's most widely used open-source web server, powering more than 225 million websites. It is commonly used as a reverse proxy in front of websites and APIs. In this role, NGINX accepts incoming requests, forwards them to the appropriate application server based on its configuration, and returns the response to the user.",
+          "inlines": [
+            {
+              "text": "NGINX is the "
+            },
+            {
+              "href": "https://w3techs.com/technologies/overview/web_server",
+              "text": "world's most widely used open-source web server"
+            },
+            {
+              "text": ", powering "
+            },
+            {
+              "href": "https://www.netcraft.com/blog/september-2026-web-server-survey",
+              "text": "more than 225 million websites"
+            },
+            {
+              "text": ". It is commonly used as a "
+            },
+            {
+              "href": "https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/",
+              "text": "reverse proxy"
+            },
+            {
+              "text": " in front of websites and APIs. In this role, NGINX accepts incoming requests, forwards them to the appropriate application server based on its configuration, and returns the response to the user."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX can also serve web content directly and act as a load balancer, distributing traffic across multiple servers. A single NGINX deployment can serve several applications, making it a shared entry point for the websites and APIs behind it.",
+          "inlines": [
+            {
+              "text": "NGINX can also serve web content directly and act as a "
+            },
+            {
+              "href": "https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/",
+              "text": "load balancer"
+            },
+            {
+              "text": ", distributing traffic across multiple servers. A single NGINX deployment can serve several applications, making it a shared entry point for the websites and APIs behind it."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/957074c5636703a21b17498a468cfa25f5cafe8ba8ecae4398435b1282736f02.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "text": "The Vulnerabilities",
+          "inlines": [
+            {
+              "text": "The Vulnerabilities"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Both vulnerabilities are memory-safety issues in how NGINX handles HTTP/2 traffic. In CVE-2026-123633, a connection's memory is freed while a request still needs it, creating a use-after-free. In CVE-2026-123007, incorrect flow-control accounting leads to an invalid memory copy. Each can lead to unauthenticated remote code execution on the NGINX server.",
+          "inlines": [
+            {
+              "text": "Both vulnerabilities are memory-safety issues in how NGINX handles HTTP/2 traffic. In CVE-2026-123633, a connection's memory is freed while a request still needs it, creating a use-after-free. In CVE-2026-123007, incorrect flow-control accounting leads to an invalid memory copy. Each can lead to unauthenticated remote code execution on the NGINX server."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tracking ID",
+          "inlines": [
+            {
+              "text": "Tracking ID"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The bug",
+          "inlines": [
+            {
+              "text": "The bug"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What an attacker can achieve",
+          "inlines": [
+            {
+              "text": "What an attacker can achieve"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123633",
+          "inlines": [
+            {
+              "text": "CVE-2026-123633"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HTTP/2 connection use-after-free",
+          "inlines": [
+            {
+              "text": "HTTP/2 connection use-after-free"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Execute arbitrary code on the NGINX server without authentication.",
+          "inlines": [
+            {
+              "text": "Execute arbitrary code on the NGINX server without authentication."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123007",
+          "inlines": [
+            {
+              "text": "CVE-2026-123007"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "HTTP/2 send_window integer underflow",
+          "inlines": [
+            {
+              "text": "HTTP/2 send_window integer underflow"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Execute arbitrary code on the NGINX server without authentication.",
+          "inlines": [
+            {
+              "text": "Execute arbitrary code on the NGINX server without authentication."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Both vulnerabilities require HTTP/2 to be enabled, but their additional requirements differ. CVE-2026-123633 affects reverse-proxy processing when available connection slots run low. CVE-2026-123007 can also affect NGINX serving content directly, as demonstrated in our testing over HTTPS on 64-bit systems. Typical memory safety mitigations such as ASLR do not protect against these issues, as attackers can use either vulnerabilities for memory read access prior to code execution.",
+          "inlines": [
+            {
+              "text": "Both vulnerabilities require HTTP/2 to be enabled, but their additional requirements differ. CVE-2026-123633 affects reverse-proxy processing when available connection slots run low. CVE-2026-123007 can also affect NGINX serving content directly, as demonstrated in our testing over HTTPS on 64-bit systems. Typical memory safety mitigations such as ASLR do not protect against these issues, as attackers can use either vulnerabilities for memory read access prior to code execution."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Impact",
+          "inlines": [
+            {
+              "text": "Impact"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "On affected NGINX versions with HTTP/2 enabled, these vulnerabilities can allow an unauthenticated attacker to execute arbitrary code on the server.",
+          "inlines": [
+            {
+              "text": "On affected NGINX versions with HTTP/2 enabled, these vulnerabilities can allow an unauthenticated attacker to execute arbitrary code on the server."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The flaws are in NGINX itself. Exploitation does not depend on a bug in the website or API behind it, so applications with secure code can still be exposed. For CVE-2026-123007, we demonstrated remote code execution on a server serving ordinary static files, without a backend application or third-party module.",
+          "inlines": [
+            {
+              "text": "The flaws are in NGINX itself. Exploitation does not depend on a bug in the website or API behind it, so applications with secure code can still be exposed. For CVE-2026-123007, we demonstrated remote code execution on a server serving ordinary static files, without a backend application or third-party module."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "An attacker could use this access to run commands, steal sensitive data, tamper with websites, or disrupt services. Because one NGINX deployment can serve several applications, the impact could extend across multiple websites and APIs.",
+          "inlines": [
+            {
+              "text": "An attacker could use this access to run commands, steal sensitive data, tamper with websites, or disrupt services. Because one NGINX deployment can serve several applications, the impact could extend across multiple websites and APIs."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f35012145085ef5fa37fb7b72b1820c62e7587cb7441e6164cbcbc64a523bf56.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Illustrative deployment: an attacker exploits NGINX to run code on the server, putting the applications and data it serves at risk.",
+          "inlines": [
+            {
+              "text": "Illustrative deployment: an attacker exploits NGINX to run code on the server, putting the applications and data it serves at risk."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Coordinated disclosure",
+          "inlines": [
+            {
+              "text": "Coordinated disclosure"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We reported both vulnerabilities to F5 and collaborated with its security team on remediation and coordinated disclosure. We also shared proposed fixes. Ikotas Labs, Metnir, Rapid7, and Xint also independently discovered and reported these issues to F5. We thank the F5 and NGINX teams for their work on the fixes.",
+          "inlines": [
+            {
+              "text": "We reported both vulnerabilities to F5 and collaborated with its security team on remediation and coordinated disclosure. We also shared proposed fixes. Ikotas Labs, Metnir, Rapid7, and Xint also independently discovered and reported these issues to F5. We thank the F5 and NGINX teams for their work on the fixes."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Mitigation and detection",
+          "inlines": [
+            {
+              "text": "Mitigation and detection"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Identify affected NGINX deployments with HTTP/2 enabled and upgrade to a release that fixes both vulnerabilities as soon as it is available.",
+          "inlines": [
+            {
+              "text": "Identify affected NGINX deployments with HTTP/2 enabled and upgrade to a release that fixes both vulnerabilities as soon as it is available."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Product",
+          "inlines": [
+            {
+              "text": "Product"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE and first affected version or branch",
+          "inlines": [
+            {
+              "text": "CVE and first affected version or branch"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fixed releases",
+          "inlines": [
+            {
+              "text": "Fixed releases"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX OSS",
+          "inlines": [
+            {
+              "text": "NGINX OSS"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123633: 1.19.7",
+          "inlines": [
+            {
+              "text": "CVE-2026-123633: 1.19.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.30.7 stable; 1.31.9 mainline",
+          "inlines": [
+            {
+              "text": "1.30.7 stable; 1.31.9 mainline"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX Plus",
+          "inlines": [
+            {
+              "text": "NGINX Plus"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123633: R33; 37.0.0",
+          "inlines": [
+            {
+              "text": "CVE-2026-123633: R33; 37.0.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "37.0.7.1; 37.2.0.1",
+          "inlines": [
+            {
+              "text": "37.0.7.1; 37.2.0.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX OSS",
+          "inlines": [
+            {
+              "text": "NGINX OSS"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123007: 1.9.5",
+          "inlines": [
+            {
+              "text": "CVE-2026-123007: 1.9.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1.30.7 stable; 1.31.9 mainline",
+          "inlines": [
+            {
+              "text": "1.30.7 stable; 1.31.9 mainline"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX Plus",
+          "inlines": [
+            {
+              "text": "NGINX Plus"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2026-123007: R33; 37.0.0",
+          "inlines": [
+            {
+              "text": "CVE-2026-123007: R33; 37.0.0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "37.0.8.1; 37.3.0.1",
+          "inlines": [
+            {
+              "text": "37.0.8.1; 37.3.0.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you cannot upgrade immediately, temporarily disable HTTP/2 on affected NGINX instances:",
+          "inlines": [
+            {
+              "text": "If you cannot upgrade immediately, temporarily disable HTTP/2 on affected NGINX instances:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Set "
+                },
+                {
+                  "href": "https://nginx.org/en/docs/http/ngx_http_v2_module.html#http2",
+                  "text": "http2 off;"
+                },
+                {
+                  "text": " in affected server blocks on NGINX 1.25.1 or later, and remove the "
+                },
+                {
+                  "href": "https://nginx.org/en/docs/http/ngx_http_core_module.html#listen",
+                  "text": "http2 parameter from any listen directives"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Test application compatibility, "
+                },
+                {
+                  "href": "https://nginx.org/en/docs/control.html",
+                  "text": "reload NGINX"
+                },
+                {
+                  "text": ", and confirm the old workers have exited."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Re-enable HTTP/2 after upgrading.",
+          "inlines": [
+            {
+              "text": "Re-enable HTTP/2 after upgrading."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Investigate unexpected NGINX worker crashes or commands launched by NGINX; these are general warning signs, not confirmed indicators of these vulnerabilities.",
+          "inlines": [
+            {
+              "text": "Investigate unexpected NGINX worker crashes or commands launched by NGINX; these are general warning signs, not confirmed indicators of these vulnerabilities."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Technical deep dive",
+          "inlines": [
+            {
+              "text": "Technical deep dive"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "CVE-2026-123633: An active connection marked as reusable",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "CVE-2026-123633: An active connection marked as reusable"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "NGINX keeps a list of connections that it can close when it needs room for new ones. An HTTP/2 connection can join this list when it has no active requests, but must leave it when a request starts.",
+          "inlines": [
+            {
+              "text": "NGINX keeps a list of connections that it can close when it needs room for new ones. An HTTP/2 connection can join this list when it has no active requests, but must leave it when a request starts."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We start by sending only part of a HEADERS frame, which carries an HTTP/2 request's headers. With no active request streams, ngx_http_v2_handle_connection() marks the connection as reusable while waiting for the rest:",
+          "inlines": [
+            {
+              "text": "We start by sending only part of a "
+            },
+            {
+              "code": true,
+              "text": "HEADERS"
+            },
+            {
+              "text": " frame, which carries an HTTP/2 request's headers. With no active request streams,"
+            },
+            {
+              "code": true,
+              "text": " "
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/http/v2/ngx_http_v2.c#L620-L676",
+              "code": true,
+              "text": "ngx_http_v2_handle_connection()"
+            },
+            {
+              "text": " marks the connection as reusable while waiting for the rest:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ngx_reusable_connection(c, 1);",
+          "inlines": [
+            {
+              "code": true,
+              "text": "ngx_reusable_connection(c, 1);"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "if (h2c->state.incomplete) {",
+          "inlines": [
+            {
+              "code": true,
+              "text": "if (h2c->state.incomplete) {"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "    return;",
+          "inlines": [
+            {
+              "code": true,
+              "text": "    return;"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "}",
+          "inlines": [
+            {
+              "code": true,
+              "text": "}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When we send the rest of the frame, ngx_http_v2_create_stream() creates a request stream and increments h2c->processing. However, it does not remove the connection from the reusable list. We now have a request being processed on a connection that NGINX still considers safe to close.",
+          "inlines": [
+            {
+              "text": "When we send the rest of the frame,"
+            },
+            {
+              "code": true,
+              "text": " "
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/http/v2/ngx_http_v2.c#L2983-L3118",
+              "code": true,
+              "text": "ngx_http_v2_create_stream()"
+            },
+            {
+              "text": " creates a request stream and increments "
+            },
+            {
+              "code": true,
+              "text": "h2c->processing"
+            },
+            {
+              "text": ". However, it does not remove the connection from the reusable list. We now have a request being processed on a connection that NGINX still considers safe to close."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Triggering the use-after-free",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Triggering the use-after-free"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Next, we need NGINX to close this connection while the request is still running. Forwarding the request to an application server can trigger this.",
+          "inlines": [
+            {
+              "text": "Next, we need NGINX to close this connection while the request is still running. Forwarding the request to an application server can trigger this."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Opening an upstream connection calls ngx_get_connection(). When free connection slots run low, ngx_drain_connections() selects reusable connections to close. Our HTTP/2 connection is still on that list, so NGINX can select it while processing its own request.",
+          "inlines": [
+            {
+              "text": "Opening an upstream connection calls "
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/core/ngx_connection.c#L1210-L1244",
+              "code": true,
+              "text": "ngx_get_connection()"
+            },
+            {
+              "code": true,
+              "text": "."
+            },
+            {
+              "text": " When free connection slots run low, "
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/core/ngx_connection.c#L1409-L1446",
+              "code": true,
+              "text": "ngx_drain_connections()"
+            },
+            {
+              "code": true,
+              "text": " "
+            },
+            {
+              "text": "selects reusable connections to close. Our HTTP/2 connection is still on that list, so NGINX can select it while processing its own request."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Before closing it, NGINX tries to send a GOAWAY frame to notify the client. Even creating this frame can fail, for example, if NGINX has reached its internal frame limit for the connection and has no frame available for reuse. In that case, the error path closes the connection and frees the memory associated with it. Processing then resumes in the original request, which still uses that memory. We have reached the use-after-free.",
+          "inlines": [
+            {
+              "text": "Before closing it, NGINX tries to send a "
+            },
+            {
+              "code": true,
+              "text": "GOAWAY"
+            },
+            {
+              "text": " frame to notify the client. Even creating this frame can fail, for example, if NGINX has reached its"
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/http/v2/ngx_http_v2.c#L2888-L2940",
+              "text": " internal frame limit"
+            },
+            {
+              "text": " for the connection and has no frame available for reuse. In that case, the "
+            },
+            {
+              "href": "https://github.com/nginx/nginx/blob/release-1.30.6/src/http/v2/ngx_http_v2.c#L369-L384",
+              "text": "error path"
+            },
+            {
+              "text": " closes the connection and frees the memory associated with it. Processing then resumes in the original request, which still uses that memory. We have reached the use-after-free."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "From use-after-free to remote code execution",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "From use-after-free to remote code execution"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The freed memory can now be reused for other data. The request-processing code still follows its old pointers, treating the new contents as the original request or connection.",
+          "inlines": [
+            {
+              "text": "The freed memory can now be reused for other data. The request-processing code still follows its old pointers, treating the new contents as the original request or connection."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This use-after-free can lead to unauthenticated remote code execution on the NGINX server.",
+          "inlines": [
+            {
+              "text": "This use-after-free can lead to unauthenticated remote code execution on the NGINX server."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "CVE-2026-123007: HTTP/2 send_window integer underflow",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "CVE-2026-123007: HTTP/2 send_window integer underflow"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Returning credit for unsent data",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Returning credit for unsent data"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "HTTP/2 allows several requests, called streams, to share one connection. Flow control limits how much response data NGINX can send before the client is ready to receive more. NGINX tracks the connection's remaining allowance in a counter called h2c->send_window.",
+          "inlines": [
+            {
+              "text": "HTTP/2 allows several requests, called streams, to share one connection. Flow control limits how much response data NGINX can send before the client is ready to receive more. NGINX tracks the connection's remaining allowance in a counter called "
+            },
+            {
+              "code": true,
+              "text": "h2c->send_window"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When NGINX queues response data, it subtracts that data's size from the counter before sending it. If a stream is canceled while its data is still queued, ngx_http_v2_filter_cleanup() removes the unsent data and returns the unused allowance:",
+          "inlines": [
+            {
+              "text": "When NGINX queues response data, it subtracts that data's size from the counter before sending it. If a stream is canceled while its data is still queued, "
+            },
+            {
+              "code": true,
+              "text": "ngx_http_v2_filter_cleanup()"
+            },
+            {
+              "text": " removes the unsent data and returns the unused allowance:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "h2c->send_window += window;",
+          "inlines": [
+            {
+              "code": true,
+              "text": "h2c->send_window += window;"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This refund does not check HTTP/2's maximum allowed window. If the client has already increased the allowance while data was waiting to be sent, the refund can push the counter above that maximum. NGINX is now tracking a value the rest of its HTTP/2 code assumes cannot occur.",
+          "inlines": [
+            {
+              "text": "This refund does not check HTTP/2's maximum allowed window. If the client has already increased the allowance while data was waiting to be sent, the refund can push the counter above that maximum. NGINX is now tracking a value the rest of its HTTP/2 code assumes cannot occur."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A bounds check that no longer works",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "A bounds check that no longer works"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The next problem is in ngx_http_v2_state_window_update(), which checks whether an increase would exceed the limit:",
+          "inlines": [
+            {
+              "text": "The next problem is in "
+            },
+            {
+              "code": true,
+              "text": "ngx_http_v2_state_window_update()"
+            },
+            {
+              "text": ", which checks whether an increase would exceed the limit:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "if (window > NGX_HTTP_V2_MAX_WINDOW - h2c->send_window)",
+          "inlines": [
+            {
+              "code": true,
+              "text": "if (window > NGX_HTTP_V2_MAX_WINDOW - h2c->send_window)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The check subtracts the current allowance from the maximum to calculate how much room remains. But the refund has already pushed the allowance past that maximum. Because the calculation uses an unsigned integer, which cannot represent a negative number, the subtraction wraps around and underflows to a very large positive value. The check now treats an invalid counter as though it has plenty of room left and allows further increases.",
+          "inlines": [
+            {
+              "text": "The check subtracts the current allowance from the maximum to calculate how much room remains. But the refund has already pushed the allowance past that maximum. Because the calculation uses an unsigned integer, which cannot represent a negative number, the subtraction wraps around and underflows to a very large positive value. The check now treats an invalid counter as though it has plenty of room left and allows further increases."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "From an invalid length to remote code execution",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "From an invalid length to remote code execution"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The invalid counter eventually reaches ngx_http_v2_send_chain(), where it is converted to the signed integer type off_t to calculate how much data to send. A sufficiently large value becomes negative. That negative length then reaches the code that describes a portion of a response buffer, leaving its end pointer before its start pointer.",
+          "inlines": [
+            {
+              "text": "The invalid counter eventually reaches "
+            },
+            {
+              "code": true,
+              "text": "ngx_http_v2_send_chain()"
+            },
+            {
+              "text": ", where it is converted to the signed integer type "
+            },
+            {
+              "code": true,
+              "text": "off_t"
+            },
+            {
+              "text": " to calculate how much data to send. A sufficiently large value becomes negative. That negative length then reaches the code that describes a portion of a response buffer, leaving its end pointer before its start pointer."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When the TLS send path in ngx_ssl_send_chain() processes this malformed buffer, further signed and unsigned conversions turn the invalid length into an out-of-bounds memory copy. An attacker can use this to disclose memory, corrupt the heap, and lead to unauthenticated remote code execution on the NGINX server.",
+          "inlines": [
+            {
+              "text": "When the TLS send path in "
+            },
+            {
+              "code": true,
+              "text": "ngx_ssl_send_chain() "
+            },
+            {
+              "text": "processes this malformed buffer, further signed and unsigned conversions turn the invalid length into an out-of-bounds memory copy. An attacker can use this to disclose memory, corrupt the heap, and lead to unauthenticated remote code execution on the NGINX server."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We confirmed remote code execution with an ASLR bypass on official NGINX 1.31.7 and 1.31.8 builds. The tested path used HTTP/2 over TLS on 64-bit systems serving response data from memory. Ordinary static files can reach this path through standard TLS processing, without a backend application or third-party module.",
+          "inlines": [
+            {
+              "text": "We confirmed remote code execution with an ASLR bypass on official NGINX 1.31.7 and 1.31.8 builds. The tested path used HTTP/2 over TLS on 64-bit systems serving response data from memory. Ordinary static files can reach this path through standard TLS processing, without a backend application or third-party module."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Exploitation",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Exploitation"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "To confirm these vulnerabilities, Wiz Research built proof-of-concept exploits and managed to run them in multiple lab settings against servers running common NGINX configurations we’ve seen in customer environments. In the interest of customer protection, we will not be releasing these exploits at this time.",
+          "inlines": [
+            {
+              "text": "To confirm these vulnerabilities, Wiz Research built proof-of-concept exploits and managed to run them in multiple lab settings against servers running common NGINX configurations we’ve seen in customer environments. In the interest of customer protection, we will not be releasing these exploits at this time."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Like other memory-safety issues, such vulnerabilities are difficult to exploit remotely and require the attacker to disclose memory addresses, groom and shape the heap correctly, and handle different NGINX versions, builds, and configurations. In reality, attackers may not need to target every single configuration, and we have seen in PHP2Shell that widespread attacks initially start against packaged products where many customers use the exact same build and configuration. Motivated attackers may tailor exploits for specific targets.",
+          "inlines": [
+            {
+              "text": "Like other memory-safety issues, such vulnerabilities are difficult to exploit remotely and require the attacker to disclose memory addresses, groom and shape the heap correctly, and handle different NGINX versions, builds, and configurations. In reality, attackers may not need to target every single configuration, and we have seen in "
+            },
+            {
+              "href": "https://www.wiz.io/blog/php2shell-php-rce",
+              "text": "PHP2Shell"
+            },
+            {
+              "text": " that widespread attacks initially start against packaged products where many customers use the exact same build and configuration. Motivated attackers may tailor exploits for specific targets."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Any exploit assumes the attacker is able to communicate directly with the affected NGINX server. CDNs and WAFs that terminate HTTP/2 may mitigate parts of the exploit by not reflecting the exact payload back to the underlying NGINX server. This depends on implementation.",
+          "inlines": [
+            {
+              "text": "Any exploit assumes the attacker is able to communicate directly with the affected NGINX server. CDNs and WAFs that terminate HTTP/2 may mitigate parts of the exploit by not reflecting the exact payload back to the underlying NGINX server. This depends on implementation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Specifically, CVE-2026-123007 requires the attacker to send a large number of WINDOW_UPDATE records to increase it to an arbitrary value. Detection rules covering long standing HTTP/2 connections sending large amounts of data may hint at an attack associated with this vulnerability. CVE-2026-123633 has different exploitation constraints and is more likely to be exploited when NGINX is configured in proxy configuration.",
+          "inlines": [
+            {
+              "text": "Specifically, CVE-2026-123007 requires the attacker to send a large number of WINDOW_UPDATE records to increase it to an arbitrary value. Detection rules covering long standing HTTP/2 connections sending large amounts of data may hint at an attack associated with this vulnerability. CVE-2026-123633 has different exploitation constraints and is more likely to be exploited when NGINX is configured in proxy configuration."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How Can Wiz Help?",
+          "inlines": [
+            {
+              "text": "How Can Wiz Help?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Wiz customers can use the pre-built query and advisory in the Wiz Threat Center to search for vulnerable instances in their environment.",
+          "inlines": [
+            {
+              "text": "Wiz customers can use the pre-built query and advisory in the "
+            },
+            {
+              "href": "https://app.wiz.io/boards/threat-center?filters=%7B%22publishedAt%22%3A%7B%22dateRange%22%3A%7B%22past%22%3A%7B%22amount%22%3A12%2C%22unit%22%3A%22month%22%7D%7D%7D%7D",
+              "text": "Wiz Threat Center"
+            },
+            {
+              "text": " to search for vulnerable instances in their environment."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Conclusion",
+          "inlines": [
+            {
+              "text": "Conclusion"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "With NGINX handling traffic for critical websites and applications, the impact of flaws in its core extends far beyond a single service. This research is another example of AI uncovering critical vulnerabilities in widely deployed infrastructure. The flaws were already there; AI helped us find them.",
+          "inlines": [
+            {
+              "text": "With NGINX handling traffic for critical websites and applications, the impact of flaws in its core extends far beyond a single service. This research is another example of AI uncovering critical vulnerabilities in widely deployed infrastructure. The flaws were already there; AI helped us find them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As we saw with PHP2Shell, AI is changing the economics of vulnerability research. The same capabilities that help defenders uncover flaws can also help attackers investigate them. Software that has been used and reviewed for years still needs to be examined as these tools improve.",
+          "inlines": [
+            {
+              "text": "As we saw with "
+            },
+            {
+              "href": "https://www.wiz.io/blog/php2shell-php-rce",
+              "text": "PHP2Shell"
+            },
+            {
+              "text": ", AI is changing the economics of vulnerability research. The same capabilities that help defenders uncover flaws can also help attackers investigate them. Software that has been used and reviewed for years still needs to be examined as these tools improve."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The opportunity is to make this work routine: finding vulnerabilities in the software organizations depend on and working with maintainers to fix them. Our collaboration with F5 brings that approach to NGINX, helping protect the applications and services behind it.",
+          "inlines": [
+            {
+              "text": "The opportunity is to make this work routine: finding vulnerabilities in the software organizations depend on and working with maintainers to fix them. Our collaboration with F5 brings that approach to NGINX, helping protect the applications and services behind it."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Stay in touch",
+          "inlines": [
+            {
+              "text": "Stay in touch"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Hi there! We are Nir Ohfeld and Tomer Schwartz from the Wiz Research Team (@wiz_io). We are a group of veteran white-hat hackers with a single goal: to make the cloud a safer place for everyone. We focus on finding new attack vectors in cloud software and uncovering isolation issues in the systems organizations depend on. We would love to hear from you on X or at research@wiz.io.",
+          "inlines": [
+            {
+              "text": "Hi there! We are "
+            },
+            {
+              "href": "https://x.com/nirohfeld",
+              "text": "Nir Ohfeld"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "href": "https://x.com/tom41sh",
+              "text": "Tomer Schwartz"
+            },
+            {
+              "text": " from the Wiz Research Team ("
+            },
+            {
+              "href": "https://x.com/wiz_io",
+              "text": "@wiz_io"
+            },
+            {
+              "text": "). We are a group of veteran white-hat hackers with a single goal: to make the cloud a safer place for everyone. We focus on finding new attack vectors in cloud software and uncovering isolation issues in the systems organizations depend on. We would love to hear from you on X or at research@wiz.io."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-19T01:11:17.836669Z",
+  "contentMode": "full"
+}

@@ -1,0 +1,1607 @@
+{
+  "schemaVersion": 1,
+  "id": "snkvsiff90slvj17hf9i5u4do",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/snkvsiff90slvj17hf9i5u4do",
+  "fetchedAt": "2026-11-19T01:12:03.164329Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic",
+    "Anthropic / Claude",
+    "Agent 智能体",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Claude Docs 向公众开放前三周，它还只是一个概念验证，跑在单个节点上，只有 Anthropic 内部几千人在用。当时我们正赶一个野心不小的上线日期，而按我们自己的估算，上线头几天就会产生数百万份文档。",
+          "inlines": [
+            {
+              "text": "Claude Docs 向公众开放前三周，它还只是一个概念验证，跑在单个节点上，只有 Anthropic 内部几千人在用。当时我们正赶一个野心不小的上线日期，而按我们自己的估算，上线头几天就会产生数百万份文档。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 9 月 16 日上线。到 9 月 22 日，用户已经创建了超过 460 万份文档。在 20 亿次请求中，我们只看到 60 次服务器错误，而且全程没有回滚过。整个 Docs 服务跑在大约 50 个内存优化型 pod 上。",
+          "inlines": [
+            {
+              "text": "我们在 9 月 16 日上线。到 9 月 22 日，用户已经创建了超过 460 万份文档。在 20 亿次请求中，我们只看到 60 次服务器错误，而且全程没有回滚过。整个 Docs 服务跑在大约 50 个内存优化型 pod 上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "靠的是两个决定：",
+          "inlines": [
+            {
+              "text": "靠的是两个决定："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "在上线规模下跑混沌循环。"
+                },
+                {
+                  "text": "我们在预发布环境搭了一套测试框架，让 Claude 连续跑了两周，专门想办法把服务搞垮。它对基础设施的每个部分都做了压力测试，哪里扛不住就修哪里。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "让 Claude 更容易看懂。"
+                },
+                {
+                  "text": "只有当系统在每一轮迭代中都产出准确的遥测数据，Claude 才能有效地把修复闭环跑起来。我们很早就做了一个决定：避开那些会以代码难以控制的方式占用内存或 CPU 的运行时（比如带垃圾回收的运行时）。这样当某个遥测信号看起来不对劲时，Claude 就能轻松追到某个 bug 或某个具体的设计决策上。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "但说实话，这事能成，主要还是因为我们的前沿模型最近进步很大（我用的是一个内部研究模型，大致相当于 Claude Fable 5.2）。在我们的经验里，它们现在能在一个像这样的任务里盯住同一个目标好几周，这正是我们能在紧张的时间表里撑到上线规模的原因。",
+          "inlines": [
+            {
+              "text": "但说实话，这事能成，主要还是因为我们的前沿模型最近进步很大（我用的是一个内部研究模型，大致相当于 Claude Fable 5.2）。在我们的经验里，它们现在能在一个像这样的任务里盯住同一个目标好几周，这正是我们能在紧张的时间表里撑到上线规模的原因。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "混沌循环",
+          "inlines": [
+            {
+              "text": "混沌循环"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "一台机器上几千个内部用户，根本说明不了服务能不能扛住上线，而我们显然也没有上线流量可以用来测试。",
+          "inlines": [
+            {
+              "text": "一台机器上几千个内部用户，根本说明不了服务能不能扛住上线，而我们显然也没有上线流量可以用来测试。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们需要真实证据来判断能多快放量。所以在 9 月 4 日，也就是上线前大约两周，我让 Claude 去驱动一个与生产环境镜像的预发布集群，每天造出超过一百万份合成文档，并故意打坏核心组件。然后……我就让它一直跑着（完整成本我放在文末了）。",
+          "inlines": [
+            {
+              "text": "我们需要真实证据来判断能多快放量。所以在 9 月 4 日，也就是上线前大约两周，我让 Claude 去驱动一个与生产环境镜像的预发布集群，每天造出超过一百万份合成文档，并故意打坏核心组件。然后……我就让它一直跑着（完整成本我放在文末了）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我的设置很简单。这个循环就是 Claude Code 里一个我一直开着的会话：选一个场景，跑测试框架，读遥测，提出修复方案，部署到预发布环境，重复。这个会话充当协调者，把大部分工作交给子智能体。最忙的一周，通常同时有大约 11 个子智能体在跑，峰值到过 30 个。协调者还通过 Slack MCP 跟我们内部的 Claude Tag（beta）变体对话，向 Anthropic 内部其他扩展过类似服务的基础设施团队取经。他们的智能体帮我们检查扩展方案，看有没有他们踩过的坑。",
+          "inlines": [
+            {
+              "text": "我的设置很简单。这个循环就是 Claude Code 里一个我一直开着的会话：选一个场景，跑测试框架，读遥测，提出修复方案，部署到预发布环境，重复。这个会话充当协调者，把大部分工作交给子智能体。最忙的一周，通常同时有大约 11 个子智能体在跑，峰值到过 30 个。协调者还通过 Slack MCP 跟我们内部的 Claude Tag（beta）变体对话，向 Anthropic 内部其他扩展过类似服务的基础设施团队取经。他们的智能体帮我们检查扩展方案，看有没有他们踩过的坑。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "有意思的是挑场景，我专挑那些我觉得偏执的：",
+          "inlines": [
+            {
+              "text": "有意思的是挑场景，我专挑那些我觉得偏执的："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "单日新建 1000 万份文档"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "2.2 万个活跃连接同时重连"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "一份热门文档有几百人同时在看，服务器在还在加载文档时被杀掉，数据库卡住"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每一轮迭代都差不多。测试框架选一个功能，比如文档创建，把创建压到饱和。然后 Claude 通过 Datadog MCP 读遥测，回来给出一份简短的选项清单和一条建议。",
+          "inlines": [
+            {
+              "text": "每一轮迭代都差不多。测试框架选一个功能，比如文档创建，把创建压到饱和。然后 Claude 通过 Datadog MCP 读遥测，回来给出一份简短的选项清单和一条建议。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果建议容易回退，Claude 就写好改动、部署到预发布环境，再重跑测试。服务执行的每个操作都有遥测。比如每条数据库查询都会报告自己的名字、扫描了多少行、返回了多少行，这样 Claude 就能发现烂查询并重写它。",
+          "inlines": [
+            {
+              "text": "如果建议容易回退，Claude 就写好改动、部署到预发布环境，再重跑测试。服务执行的每个操作都有遥测。比如每条数据库查询都会报告自己的名字、扫描了多少行、返回了多少行，这样 Claude 就能发现烂查询并重写它。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c7f7ec16bb3480a29ce46504ce4a731258a46ee74b9b02dda8a1106fb7d67a7b.webp",
+          "alt": "A loop of eight steps, with a legend marking the steps Claude does and the ones you do. Top row, left to right: the harness adds load, Claude reads the telemetry, Claude proposes options, and you pick one. Bottom row, right to left: Claude writes the change, Claude reviews it in a separate session, you approve, and Claude deploys to staging, which leads back to the harness. Inside the loop: opens instantly, and check that no confirmed edit was lost.",
+          "width": 2280,
+          "height": 978
+        },
+        {
+          "type": "paragraph",
+          "text": "图 1循环的一次迭代，其中有两项决策由人做出",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 1"
+            },
+            {
+              "text": "循环的一次迭代，其中有两项决策由人做出"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在循环开始之前，我告诉 Claude 哪些决策需要我批准；基本上都是难以撤销的事情，比如更改数据库 schema 或键布局，或者更改文档的存储和物化方式。",
+          "inlines": [
+            {
+              "text": "在循环开始之前，我告诉 Claude 哪些决策需要我批准；基本上都是难以撤销的事情，比如更改数据库 schema 或键布局，或者更改文档的存储和物化方式。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当 Claude 遇到其中一项时，它会停下来问我，通常还会附上一条建议，而我最终都批准了。Schema 变更就是典型的例子，我希望这类事情必须经过我：通常有几个合理的答案，而中途改变方向往往很痛苦。",
+          "inlines": [
+            {
+              "text": "当 Claude 遇到其中一项时，它会停下来问我，通常还会附上一条建议，而我最终都批准了。Schema 变更就是典型的例子，我希望这类事情必须经过我：通常有几个合理的答案，而中途改变方向往往很痛苦。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在整个测试过程中，Claude 必须遵守两条不变量：",
+          "inlines": [
+            {
+              "text": "在整个测试过程中，Claude 必须遵守两条不变量："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "文档必须几乎瞬间打开（即使是历史很长的文档）"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "一旦服务器确认了某次编辑，测试就必须证明该编辑仍然存在"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "让服务对 Claude 清晰可读",
+          "inlines": [
+            {
+              "text": "让服务对 Claude 清晰可读"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我的同事 Felix Rieseberg 最近写了一篇关于对模型更有野心的教程。他的核心观点是提高你给 Claude 下提示词的“高度”：要求你想要的结果，而不是单个任务。",
+          "inlines": [
+            {
+              "text": "我的同事 Felix Rieseberg 最近写了一篇"
+            },
+            {
+              "href": "https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/",
+              "text": "关于对模型更有野心的教程"
+            },
+            {
+              "text": "。他的核心观点是提高你给 Claude 下提示词的“高度”：要求你想要的"
+            },
+            {
+              "italic": true,
+              "text": "结果"
+            },
+            {
+              "text": "，而不是单个任务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "所以，与其让 Claude 去修复一个个崩溃，不如让它把你的应用做到不崩溃。（我们自己的应用还没完全做到，但我们正是这样取得实质进展的。）不过，要在那个高度上工作，你必须把代码设置好，让 Claude 能自己拉取崩溃报告，并运行一个能复现每个崩溃、检查修复效果的测试框架。",
+          "inlines": [
+            {
+              "text": "所以，与其让 Claude 去修复一个个崩溃，不如让它把你的应用做到不崩溃。（我们自己的应用还没完全做到，但我们正是这样取得实质进展的。）不过，要在那个高度上工作，你必须把代码设置好，让 Claude 能自己拉取崩溃报告，并运行一个能复现每个崩溃、检查修复效果的测试框架。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对我们来说，结果就是一个能扛住发布的服务。为了达到这个目标，我们做了两件事，让服务尽可能对 Claude 清晰可读：",
+          "inlines": [
+            {
+              "text": "对我们来说，结果就是一个能扛住发布的服务。为了达到这个目标，我们做了两件事，让服务尽可能对 Claude 清晰可读："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "诊断循环。"
+                },
+                {
+                  "text": "Claude 在每次迭代时读取遥测数据，并补充它认为缺失的内容。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "清晰可读的技术选型。"
+                },
+                {
+                  "text": "我们挑选了运行时和依赖，使 Claude 测量的任何数字都能追溯到我们写的代码。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "诊断循环",
+          "inlines": [
+            {
+              "text": "诊断循环"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "每次迭代，Claude 都会读取遥测数据，并补充它认为缺失的内容。手写遥测很枯燥，所以实际上大部分遥测都是在出问题之后才加进去的。现在 Claude 会边做边写。",
+          "inlines": [
+            {
+              "text": "每次迭代，Claude 都会读取遥测数据，并补充它认为缺失的内容。手写遥测很枯燥，所以实际上大部分遥测都是在出问题之后才加进去的。现在 Claude 会边做边写。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "内存是最好的例子。",
+          "inlines": [
+            {
+              "text": "内存是最好的例子。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在测试框架运行的早期，有一份大文档在其 pod 上占用了约 3 GB（这数字可不好看）。Claude 第一次尝试修复时，是缩小我们的一个缓存，让服务器更早地驱逐文档。下一次测试框架运行显示，内存实际上在一个单独的缓存里，位于我们的某个依赖项内部，于是 Claude 撤回了那个改动。",
+          "inlines": [
+            {
+              "text": "在测试框架运行的早期，有一份大文档在其 pod 上占用了约 3 GB（这数字可不好看）。Claude 第一次尝试修复时，是缩小我们的一个缓存，让服务器更早地驱逐文档。下一次测试框架运行显示，内存实际上在一个"
+            },
+            {
+              "italic": true,
+              "text": "单独的"
+            },
+            {
+              "text": "缓存里，位于我们的某个依赖项内部，于是 Claude 撤回了那个改动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "接着，Claude 用更细粒度的内存分析不断缩小范围。最终它发现，每次按键都会把文档复制到几个不同的数据结构中，每次增加几 MB。Claude 把这些结构改为写时复制，于是它们现在共享一个引用，而不是各自持有一份副本。",
+          "inlines": [
+            {
+              "text": "接着，Claude 用更细粒度的内存分析不断缩小范围。最终它发现，每次按键都会把文档复制到几个不同的数据结构中，每次增加几 MB。Claude 把这些结构改为写时复制，于是它们现在共享一个引用，而不是各自持有一份副本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "经过大约三天的迭代，那份文档的内存占用最高降到了约 180 MB，而我们对发布所需资源的估计从 500 多台内存优化型 pod 降到了约 50 台。",
+          "inlines": [
+            {
+              "text": "经过大约三天的迭代，那份文档的内存占用最高降到了约 180 MB，而我们对发布所需资源的估计从 500 多台内存优化型 pod 降到了约 50 台。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/27a30dc727e955e2aed662e3320f8cae210fac9c9c4182d15872d9d3a70f2a30.webp",
+          "alt": "Claude adds telemetry as it goes. A loop of six steps: the harness stresses the service, the service reports telemetry, and Claude reads it and traces it to a cause. Then Claude adds what's missing, which is highlighted, Claude fixes it or drops a wrong guess, and Claude deploys and reruns, with hard-to-undo changes going to you first, which leads back to the harness.",
+          "width": 2280,
+          "height": 870
+        },
+        {
+          "type": "paragraph",
+          "text": "图 2诊断循环",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 2"
+            },
+            {
+              "text": "诊断循环"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "清晰可读的技术选型",
+          "inlines": [
+            {
+              "text": "清晰可读的技术选型"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们对服务的运行时和依赖很挑剔。我们希望 Claude 测量的任何东西都能追溯到我们写的代码。",
+          "inlines": [
+            {
+              "text": "我们对服务的运行时和依赖很挑剔。我们希望 Claude 测量的任何东西都能追溯到我们写的代码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这是因为我们的模型在信号干净时爬山效果最好。我们预计垃圾回收器会带来噪声，因为内存和延迟会随回收器的调度而波动。",
+          "inlines": [
+            {
+              "text": "这是因为我们的模型在信号干净时爬山效果最好。我们预计垃圾回收器会带来噪声，因为内存和延迟会随回收器的调度而波动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "有两个选择帮助最大。",
+          "inlines": [
+            {
+              "text": "有两个选择帮助最大。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "我们用 Rust 写了这个服务"
+                },
+                {
+                  "text": "。没有垃圾回收器，一个文档的所有内存都放在我们自己定义的结构里，所以当内存增长时，Claude 能指出是哪一处造成的，改掉它，再看下一轮迭代内存有没有降下来。Anthropic 的 Go 工具链也很好，我们并没有对两种语言做对比评测，所以这只是我们在 Rust 上的经验。我过去写过 Go，这次让我欣赏的一点是：代码用完某块内存之后，我几乎不用去想它还会不会一直占着。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "我们还把依赖压到了最少"
+                },
+                {
+                  "text": "。每个库都会带来我们没写过、也不容易说清楚的数据结构。对少数确实需要的库，我们把代码 vendor 进来，这样就能自己读、自己测。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Rust 写起来对人很难，几年前这会严重影响选型。现在 Claude 写 Rust 和写大多数其他语言都没问题，这一点就没那么重要了。",
+          "inlines": [
+            {
+              "text": "Rust 写起来对人很难，几年前这会严重影响选型。现在 Claude 写 Rust 和写大多数其他语言都没问题，这一点就没那么重要了。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7de67259afab370e11fba5f3ddd56d43509a040505a79d772c7a40663b0c84aa.webp",
+          "alt": "We wanted every number to trace back to code we wrote, so we used Rust and kept dependencies to a minimum. Two lanes. What we chose: Rust and few dependencies, so memory sits in our own structures, then Claude finds the cause, then fixes are easy to check. What we avoided, a bet and not a test: garbage collection and libraries we didn't write, then memory we can't account for, then a noisier signal that is harder to trace to our code.",
+          "width": 2280,
+          "height": 900
+        },
+        {
+          "type": "paragraph",
+          "text": "图 3可解释的技术选择：我们的代码能解释的内存，和解释不了的内存",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "图 3"
+            },
+            {
+              "text": "可解释的技术选择：我们的代码能解释的内存，和解释不了的内存"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "发布周",
+          "inlines": [
+            {
+              "text": "发布周"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "服务扛住了发布规模的负载。头一百万份文档大约 30 小时内出现，到 9 月 22 日已经超过 460 万份。9 月我们一共上线了 629 次，一次都没有回滚。",
+          "inlines": [
+            {
+              "text": "服务扛住了发布规模的负载。头一百万份文档大约 30 小时内出现，到 9 月 22 日已经超过 460 万份。9 月我们一共上线了 629 次，一次都没有回滚。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "发布周有种奇怪的熟悉感。Claude 很擅长设想一个服务会怎么失败，而且早在发布前就把大多数情况规划好了。我们在预发环境演练过的十个场景里，有七个真的在生产环境发生了。到那时，测试框架已经让预发环境把大部分情况都跑过一遍，Claude 也把修复放在运行时开关后面发布出去了。基础设施某部分吃紧时，我们通常只要拨一下开关。",
+          "inlines": [
+            {
+              "text": "发布周有种奇怪的熟悉感。Claude 很擅长设想一个服务会怎么失败，而且早在发布前就把大多数情况规划好了。我们在预发环境演练过的十个场景里，有七个真的在生产环境发生了。到那时，测试框架已经让预发环境把大部分情况都跑过一遍，Claude 也把修复放在运行时开关后面发布出去了。基础设施某部分吃紧时，我们通常只要拨一下开关。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么现在能做成",
+          "inlines": [
+            {
+              "text": "为什么现在能做成"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "几个月前这大概还做不成。旧模型通过 MCP 服务器读遥测数据没问题，但在一个长循环里迭代十次二十次之后，它们就开始忘记我们在优化什么，我只好反复重申目标。Anthropic 的其他同事把这种现象叫作目标漂移。",
+          "inlines": [
+            {
+              "text": "几个月前这大概还做不成。旧模型通过 MCP 服务器读遥测数据没问题，但在一个长循环里迭代十次二十次之后，它们就开始忘记我们在优化什么，我只好反复重申目标。Anthropic 的其他同事把这种现象叫作"
+            },
+            {
+              "href": "https://claude.dev/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code/#why-dynamic-workflows",
+              "text": "目标漂移"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们更新的前沿模型是为长时间运行的任务打造的。Claude 在多次上下文压缩中始终守住了我们所有的约束条件，我一次都不用重复。",
+          "inlines": [
+            {
+              "text": "我们更新的前沿模型是为长时间运行的任务打造的。Claude 在多次上下文压缩中始终守住了我们所有的约束条件，我一次都不用重复。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "做这件事的也不只我们。Vercel 用一个和我们的做法很像的受监督智能体循环，把 Turborepo 提速了最多 96%。",
+          "inlines": [
+            {
+              "text": "做这件事的也不只我们。Vercel 用一个和我们的做法很像的受监督智能体循环，"
+            },
+            {
+              "href": "https://vercel.com/blog/making-turborepo-ninety-six-percent-faster-with-agents-sandboxes-and-humans",
+              "text": "把 Turborepo 提速了最多 96%"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "花了多少钱",
+          "inlines": [
+            {
+              "text": "花了多少钱"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "按 Claude Fable 5.2 的 API 标价（截至 2026 年 11 月），从 8 月底到发布日，我大约用掉了 12.5 万美元的推理费用。放在几年前，这个规模的工作我估计要一个工程师团队做上大约六个月。",
+          "inlines": [
+            {
+              "text": "按 Claude Fable 5.2 的 API 标价（截至 2026 年 11 月），从 8 月底到发布日，我大约用掉了 12.5 万美元的推理费用。放在几年前，这个规模的工作我估计要一个工程师团队做上大约六个月。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些钱大部分花在读遥测数据、写方案、生成修复和审查代码上。",
+          "inlines": [
+            {
+              "text": "这些钱大部分花在读遥测数据、写方案、生成修复和审查代码上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "关于成本有几点要说：",
+          "inlines": [
+            {
+              "text": "关于成本有几点要说："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "我们的发布规模特别大。"
+                },
+                {
+                  "text": "相当一部分钱花在了只有这个规模才说得通的基础设施上，而理解这些基础设施本身又需要更多推理。Claude 得花更多心思去想，一组不断增长的服务如何协同工作，以及它们可能以哪些方式失败。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "我也烧了很多 token 去摸索流程。"
+                },
+                {
+                  "text": "我试验这套配置的时候，循环一直在不停地跑。以我现在的认识，我觉得本来可以只花大约一半的钱。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "想试试的话",
+          "inlines": [
+            {
+              "text": "想试试的话"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "这套做法对规模小得多的服务同样适用，成本也应该低得多。",
+          "inlines": [
+            {
+              "text": "这套做法对规模小得多的服务同样适用，成本也应该低得多。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了估算一个大概的数字，我按经典的小团队配置算了一笔账：两个规格适中的 Kubernetes 节点，外加一个 Postgres 实例。然后我梳理了从八月底到上线当天落地的所有改动，把这套配置用不上的部分剔除掉：",
+          "inlines": [
+            {
+              "text": "为了估算一个大概的数字，我按经典的小团队配置算了一笔账：两个规格适中的 Kubernetes 节点，外加一个 Postgres 实例。然后我梳理了从八月底到上线当天落地的所有改动，把这套配置用不上的部分剔除掉："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "与内部其他服务的对接"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "和扩容工作混在一起做的客户端与产品相关改动"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "跨多个 Pod 运行"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "细粒度限流"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "最后剩下大约三分之一的改动。",
+          "inlines": [
+            {
+              "text": "最后剩下大约三分之一的改动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "把开销按这三分之一折算，再去掉我在摸索阶段犯的错误，按同样的报价水平，这样一次两周的冲刺我估计在 3000 到 10000 美元之间（我并没有实际跑过，所以只是个粗略的判断）。",
+          "inlines": [
+            {
+              "text": "把开销按这三分之一折算，再去掉我在摸索阶段犯的错误，按同样的报价水平，这样一次两周的冲刺我估计在 3000 到 10000 美元之间（我并没有实际跑过，所以只是个粗略的判断）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下面的步骤假设有一名工程师，配备 Claude Code、一套预发布环境和一家可观测性服务商。协调者和子智能体确实加快了进度，但如果你发现它们每小时消耗的 token 太多，退回单个智能体应该也能跑得不错。想试的话：",
+          "inlines": [
+            {
+              "text": "下面的步骤假设有一名工程师，配备 Claude Code、一套预发布环境和一家可观测性服务商。协调者和子智能体确实加快了进度，但如果你发现它们每小时消耗的 token 太多，退回单个智能体应该也能跑得不错。想试的话："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "让 Claude 能访问你的遥测数据。多数可观测性服务商都提供 Claude 可用的 MCP 服务器。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "让 Claude 写一个压测脚本，向预发布环境的服务副本灌入十倍于真实流量的请求，并故意制造故障。杀掉一个实例、让数据库卡住、在流量高峰中途部署，都是不错的起点。然后让 Claude 不断修复被压垮的部分。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "选技术栈时，尽量偏向 Claude 最容易测量的方案。对我们来说就是 Rust，以及尽可能少的依赖。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "动手之前，先写下最重要的技术不变量，交给 Claude。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "凡是难以回退的操作，让 Claude 停下来，给你几个选项并附上明确的推荐。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "特别感谢文档团队，他们在同样的三周里提交了数千处编辑器修复；也感谢平台和存储团队，这套东西所依赖的一切都是他们搭建的。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "特别感谢文档团队，他们在同样的三周里提交了数千处编辑器修复；也感谢平台和存储团队，这套东西所依赖的一切都是他们搭建的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "延伸阅读。 我们如何在两周内让 claude.ai 快了三倍（claude.dev）· 为每个任务配一套框架：Claude Code 中的动态工作流（claude.dev），谈的是目标漂移。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "延伸阅读。"
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://claude.dev/blog/how-we-made-claude-ai-faster/",
+              "text": "我们如何在两周内让 claude.ai 快了三倍"
+            },
+            {
+              "text": "（claude.dev）· "
+            },
+            {
+              "href": "https://claude.dev/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code/",
+              "text": "为每个任务配一套框架：Claude Code 中的动态工作流"
+            },
+            {
+              "text": "（claude.dev），谈的是目标漂移。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Three weeks before Claude Docs opened to the public, it was running as a proof of concept on a single node, used by a few thousand people inside Anthropic. We were racing toward an ambitious launch date, and our own estimate said we'd see millions of docs within the first few days.",
+          "inlines": [
+            {
+              "text": "Three weeks before Claude Docs opened to the public, it was running as a proof of concept on a single node, used by a few thousand people inside Anthropic. We were racing toward an ambitious launch date, and our own estimate said we'd see millions of docs within the first few days."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We launched on September 16. By September 22, people had created over 4.6 million docs. Across 2 billion requests we saw only 60 server errors, and we never had to roll back. The whole Docs service ran on about 50 memory-optimized pods.",
+          "inlines": [
+            {
+              "text": "We launched on September 16. By September 22, people had created over 4.6 million docs. Across 2 billion requests we saw only 60 server errors, and we never had to roll back. The whole Docs service ran on about 50 memory-optimized pods."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Two decisions got us there:",
+          "inlines": [
+            {
+              "text": "Two decisions got us there:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "A chaos loop at launch scale."
+                },
+                {
+                  "text": " We set up a test harness on our staging environment where Claude ran constantly for two weeks to try and break the service. It load tested every part of our infrastructure and fixed whatever fell over."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Improving legibility to Claude."
+                },
+                {
+                  "text": " Claude could only close the loop effectively on fixes if our system produced accurate telemetry every iteration. We made a call early to avoid any runtime that uses memory or CPU in ways our code can't easily control (e.g. runtimes with garbage collection). When a telemetry signal looked concerning, Claude could easily trace it to a bug or a specific design decision."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "But honestly, this only worked because our frontier models have gotten much better recently (I used an internal research model roughly comparable to Claude Fable 5.2). In our experience, they can now stick with one goal through a run like this for weeks, which is what helped us hit launch scale in a tight timeline.",
+          "inlines": [
+            {
+              "text": "But honestly, this only worked because our frontier models have gotten much better recently (I used an internal research model roughly comparable to Claude Fable 5.2). In our experience, they can now stick with one goal through a run like this for weeks, which is what helped us hit launch scale in a tight timeline."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "THE CHAOS LOOP",
+          "inlines": [
+            {
+              "text": "THE CHAOS LOOP"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "A few thousand internal users on one machine told us nothing about whether the service would survive launch, and we obviously didn't have launch traffic to test with.",
+          "inlines": [
+            {
+              "text": "A few thousand internal users on one machine told us nothing about whether the service would survive launch, and we obviously didn't have launch traffic to test with."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We wanted real evidence to decide how fast we could roll out. So on September 4, about two weeks before launch, I had Claude drive a staging cluster that mirrored production at over a million synthetic docs a day and break core components on purpose. And then... I just left it running (I've included the full cost at the end of this article).",
+          "inlines": [
+            {
+              "text": "We wanted real evidence to decide how fast we could roll out. So on September 4, about two weeks before launch, I had Claude drive a staging cluster that mirrored production at over a million synthetic docs a day and break core components on purpose. And then... I just left it running (I've included the full cost at the end of this article)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "My setup was pretty simple. The loop was a session in Claude Code that I left running: pick a scenario, run the harness, read the telemetry, propose a fix, ship it to staging, repeat. That session acted as a coordinator and handed most of the work to sub-agents. In the busiest week, that usually meant about 11 sub-agents running at a time, and 30 at the peak. The coordinator also talked to our internal variant of Claude Tag (beta) via the Slack MCP to learn from other infrastructure teams at Anthropic who had scaled similar services. Their agents checked our scaling approach for pitfalls they’d already hit.",
+          "inlines": [
+            {
+              "text": "My setup was pretty simple. The loop was a session in Claude Code that I left running: pick a scenario, run the harness, read the telemetry, propose a fix, ship it to staging, repeat. That session acted as a coordinator and handed most of the work to sub-agents. In the busiest week, that usually meant about 11 sub-agents running at a time, and 30 at the peak. The coordinator also talked to our internal variant of Claude Tag (beta) via the Slack MCP to learn from other infrastructure teams at Anthropic who had scaled similar services. Their agents checked our scaling approach for pitfalls they’d already hit."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The fun part was picking scenarios I thought were paranoid:",
+          "inlines": [
+            {
+              "text": "The fun part was picking scenarios I thought were paranoid:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "10M new docs created in a single day"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "22,000 live connections reconnecting at once"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "One hot doc with hundreds of viewers, a server killed while it was still loading a doc, and the database stalling"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each iteration looked the same. Our testing harness selected a feature like document creation and pushed creation to saturation. Claude then read telemetry using the Datadog MCP and came back with a short menu of options and a recommendation.",
+          "inlines": [
+            {
+              "text": "Each iteration looked the same. Our testing harness selected a feature like document creation and pushed creation to saturation. Claude then read telemetry using the Datadog MCP and came back with a short menu of options and a recommendation."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If the recommendation was easy to undo, Claude wrote and deployed the change to staging and reran the test. We had telemetry on every operation the service ran. Every database query, for example, reported its name and how many rows it scanned versus how many it returned, so Claude could spot a bad query and rewrite it.",
+          "inlines": [
+            {
+              "text": "If the recommendation was easy to undo, Claude wrote and deployed the change to staging and reran the test. We had telemetry on every operation the service ran. Every database query, for example, reported its name and how many rows it scanned versus how many it returned, so Claude could spot a bad query and rewrite it."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c7f7ec16bb3480a29ce46504ce4a731258a46ee74b9b02dda8a1106fb7d67a7b.webp",
+          "alt": "A loop of eight steps, with a legend marking the steps Claude does and the ones you do. Top row, left to right: the harness adds load, Claude reads the telemetry, Claude proposes options, and you pick one. Bottom row, right to left: Claude writes the change, Claude reviews it in a separate session, you approve, and Claude deploys to staging, which leads back to the harness. Inside the loop: opens instantly, and check that no confirmed edit was lost.",
+          "width": 2280,
+          "height": 978
+        },
+        {
+          "type": "paragraph",
+          "text": "FIG 1One iteration of the loop, with two decisions made by a person",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "FIG 1"
+            },
+            {
+              "text": "One iteration of the loop, with two decisions made by a person"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Before the loop started, I told Claude which decisions needed my approval; basically anything hard to undo, like changing the database schema or key layout, or changing how a doc is stored and materialized.",
+          "inlines": [
+            {
+              "text": "Before the loop started, I told Claude which decisions needed my approval; basically anything hard to undo, like changing the database schema or key layout, or changing how a doc is stored and materialized."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When Claude ran into one of those, it stopped and asked me, usually with a recommendation that I ended up approving. Schema changes were the classic case where I wanted to be consulted: there are usually a few reasonable answers, and changing directions is often painful.",
+          "inlines": [
+            {
+              "text": "When Claude ran into one of those, it stopped and asked me, usually with a recommendation that I ended up approving. Schema changes were the classic case where I wanted to be consulted: there are usually a few reasonable answers, and changing directions is often painful."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "And during the whole testing process, Claude had to conform to two invariants:",
+          "inlines": [
+            {
+              "text": "And during the whole testing process, Claude had to conform to two invariants:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Docs had to open almost instantly (even ones with a long history)"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Once the server acknowledged an edit, tests had to show the edit was still there"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "MAKING THE SERVICE LEGIBLE TO CLAUDE",
+          "inlines": [
+            {
+              "text": "MAKING THE SERVICE LEGIBLE TO CLAUDE"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "My colleague Felix Rieseberg recently wrote a tutorial on being more ambitious with models. His main idea is to raise the \"altitude\" you prompt Claude at: ask for the outcome you want, not the individual task.",
+          "inlines": [
+            {
+              "text": "My colleague Felix Rieseberg recently wrote "
+            },
+            {
+              "href": "https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/",
+              "text": "a tutorial on being more ambitious with models"
+            },
+            {
+              "text": ". His main idea is to raise the \"altitude\" you prompt Claude at: ask for the "
+            },
+            {
+              "italic": true,
+              "text": "outcome"
+            },
+            {
+              "text": " you want, not the individual task."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So instead of asking Claude to fix individual crashes, you ask it to make your app crash-free. (Our own apps aren't all the way there yet, but this is how we're making real progress.) To work at that altitude, though, you have to set up your code so Claude can pull crash reports on its own and run a harness that reproduces each crash and checks the fix.",
+          "inlines": [
+            {
+              "text": "So instead of asking Claude to fix individual crashes, you ask it to make your app crash-free. (Our own apps aren't all the way there yet, but this is how we're making real progress.) To work at that altitude, though, you have to set up your code so Claude can pull crash reports on its own and run a harness that reproduces each crash and checks the fix."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For us, the outcome was a service that could handle launch. To get there, we did two things to make the service as legible to Claude as we could:",
+          "inlines": [
+            {
+              "text": "For us, the outcome was a service that could handle launch. To get there, we did two things to make the service as legible to Claude as we could:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "A diagnostic loop."
+                },
+                {
+                  "text": " Claude read the telemetry on every iteration and added whatever it thought was missing."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Legible technology choices."
+                },
+                {
+                  "text": " We picked a runtime and dependencies so any number Claude measured traced back to code we wrote."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A diagnostic loop",
+          "inlines": [
+            {
+              "text": "A diagnostic loop"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Every iteration, Claude read the telemetry and added whatever it thought was missing. Writing telemetry by hand is tedious, so in practice most telemetry would go in after something broke. Now Claude just writes it as it goes.",
+          "inlines": [
+            {
+              "text": "Every iteration, Claude read the telemetry and added whatever it thought was missing. Writing telemetry by hand is tedious, so in practice most telemetry would go in after something broke. Now Claude just writes it as it goes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Memory is the best example.",
+          "inlines": [
+            {
+              "text": "Memory is the best example."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Early in the harness run, one large doc was using about 3 GB on its pod (not a fun number to see). Claude’s first stab at fixing it was to shrink one of our caches so our server would evict docs sooner. The next harness run showed the memory was actually in a separate cache inside one of our dependencies, so Claude dropped the change.",
+          "inlines": [
+            {
+              "text": "Early in the harness run, one large doc was using about 3 GB on its pod (not a fun number to see). Claude’s first stab at fixing it was to shrink one of our caches so our server would evict docs sooner. The next harness run showed the memory was actually in a "
+            },
+            {
+              "italic": true,
+              "text": "separate"
+            },
+            {
+              "text": " cache inside one of our dependencies, so Claude dropped the change."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "From there Claude kept narrowing it down with finer-grained memory profiling. Eventually it found that every keystroke was copying the doc into several different data structures, adding a few MB each time. Claude switched those structures to copy-on-write, so they now share one reference instead of each holding its own copy.",
+          "inlines": [
+            {
+              "text": "From there Claude kept narrowing it down with finer-grained memory profiling. Eventually it found that every keystroke was copying the doc into several different data structures, adding a few MB each time. Claude switched those structures to copy-on-write, so they now share one reference instead of each holding its own copy."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "After about three days of iterating, that doc topped out around 180 MB, and our estimate of what we’d need for launch dropped from more than 500 memory-optimized pods to about 50.",
+          "inlines": [
+            {
+              "text": "After about three days of iterating, that doc topped out around 180 MB, and our estimate of what we’d need for launch dropped from more than 500 memory-optimized pods to about 50."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/27a30dc727e955e2aed662e3320f8cae210fac9c9c4182d15872d9d3a70f2a30.webp",
+          "alt": "Claude adds telemetry as it goes. A loop of six steps: the harness stresses the service, the service reports telemetry, and Claude reads it and traces it to a cause. Then Claude adds what's missing, which is highlighted, Claude fixes it or drops a wrong guess, and Claude deploys and reruns, with hard-to-undo changes going to you first, which leads back to the harness.",
+          "width": 2280,
+          "height": 870
+        },
+        {
+          "type": "paragraph",
+          "text": "FIG 2The diagnostic loop",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "FIG 2"
+            },
+            {
+              "text": "The diagnostic loop"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Legible technology choices",
+          "inlines": [
+            {
+              "text": "Legible technology choices"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We were picky about the service’s runtime and dependencies. We wanted any number Claude measured to trace back to code we wrote.",
+          "inlines": [
+            {
+              "text": "We were picky about the service’s runtime and dependencies. We wanted any number Claude measured to trace back to code we wrote."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This is because our models hill climb best with a clean signal. We expected a garbage collector to add noise, because memory and latency shift on the collector’s schedule.",
+          "inlines": [
+            {
+              "text": "This is because our models hill climb best with a clean signal. We expected a garbage collector to add noise, because memory and latency shift on the collector’s schedule."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Two choices helped the most.",
+          "inlines": [
+            {
+              "text": "Two choices helped the most."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "We wrote the service in Rust"
+                },
+                {
+                  "text": ". With no garbage collector, all of a doc’s memory sits in structures we defined, so when it grew, Claude could point to the one responsible, change it, and see whether memory came down on the next iteration. We have great Go tooling at Anthropic too, and we didn’t bake off the two languages, so this is our experience with Rust. What I did appreciate, coming from past work in Go, was how little I had to think about memory sticking around after my code was done with it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "We also kept dependencies to a minimum"
+                },
+                {
+                  "text": ". Every library brings data structures we didn’t write and can’t easily account for. For the few we really needed, we vendored the code so we could read and measure it ourselves."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Rust is hard for people to write, and a few years ago that would have weighed heavily on the choice. Claude writes it and most other languages fine, so that matters a lot less now.",
+          "inlines": [
+            {
+              "text": "Rust is hard for people to write, and a few years ago that would have weighed heavily on the choice. Claude writes it and most other languages fine, so that matters a lot less now."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7de67259afab370e11fba5f3ddd56d43509a040505a79d772c7a40663b0c84aa.webp",
+          "alt": "We wanted every number to trace back to code we wrote, so we used Rust and kept dependencies to a minimum. Two lanes. What we chose: Rust and few dependencies, so memory sits in our own structures, then Claude finds the cause, then fixes are easy to check. What we avoided, a bet and not a test: garbage collection and libraries we didn't write, then memory we can't account for, then a noisier signal that is harder to trace to our code.",
+          "width": 2280,
+          "height": 900
+        },
+        {
+          "type": "paragraph",
+          "text": "FIG 3Legible technology choices: memory our code can explain, and memory it can't",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "FIG 3"
+            },
+            {
+              "text": "Legible technology choices: memory our code can explain, and memory it can't"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "LAUNCH WEEK",
+          "inlines": [
+            {
+              "text": "LAUNCH WEEK"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The service held at launch scale. The first million docs showed up in about 30 hours, and we were past 4.6 million by September 22. We rolled prod 629 times in September and never once rolled back.",
+          "inlines": [
+            {
+              "text": "The service held at launch scale. The first million docs showed up in about 30 hours, and we were past 4.6 million by September 22. We rolled prod 629 times in September and never once rolled back."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch week felt weirdly familiar. Claude is great at imagining ways a service can fail and had planned for most of them well before launch. Seven of the ten scenarios we’d rehearsed on staging actually happened in prod. By then the harness had already put staging through most of it, and Claude had shipped the fixes behind runtime flags. When part of the infra ran into pressure, we usually just flipped a flag.",
+          "inlines": [
+            {
+              "text": "Launch week felt weirdly familiar. Claude is great at imagining ways a service can fail and had planned for most of them well before launch. Seven of the ten scenarios we’d rehearsed on staging actually happened in prod. By then the harness had already put staging through most of it, and Claude had shipped the fixes behind runtime flags. When part of the infra ran into pressure, we usually just flipped a flag."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "WHY THIS WORKS NOW",
+          "inlines": [
+            {
+              "text": "WHY THIS WORKS NOW"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "A few months ago this probably wouldn’t have worked. Older models were fine at reading telemetry through an MCP server, but ten or twenty iterations into a long loop, they’d start forgetting what we were optimizing for, and I’d end up restating the goal. Other Anthropic employees have called this goal drift.",
+          "inlines": [
+            {
+              "text": "A few months ago this probably wouldn’t have worked. Older models were fine at reading telemetry through an MCP server, but ten or twenty iterations into a long loop, they’d start forgetting what we were optimizing for, and I’d end up restating the goal. Other Anthropic employees have called this "
+            },
+            {
+              "href": "https://claude.dev/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code/#why-dynamic-workflows",
+              "text": "goal drift"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our newer frontier models are built for long-running work. Claude held all of our invariants across many compactions, and I never had to repeat them.",
+          "inlines": [
+            {
+              "text": "Our newer frontier models are built for long-running work. Claude held all of our invariants across many compactions, and I never had to repeat them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We're not the only ones doing this, either. Vercel made Turborepo up to 96% faster with a supervised agent loop a lot like ours.",
+          "inlines": [
+            {
+              "text": "We're not the only ones doing this, either. Vercel "
+            },
+            {
+              "href": "https://vercel.com/blog/making-turborepo-ninety-six-percent-faster-with-agents-sandboxes-and-humans",
+              "text": "made Turborepo up to 96% faster"
+            },
+            {
+              "text": " with a supervised agent loop a lot like ours."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "WHAT IT COST",
+          "inlines": [
+            {
+              "text": "WHAT IT COST"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "At Claude Fable 5.2's API list price (as of November 2026), I used roughly $125,000 of inference from the end of August to launch day. A couple of years ago, work on this scale I'd guess would have taken a team of engineers about six months.",
+          "inlines": [
+            {
+              "text": "At Claude Fable 5.2's API list price (as of November 2026), I used roughly $125,000 of inference from the end of August to launch day. A couple of years ago, work on this scale I'd guess would have taken a team of engineers about six months."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Most of that went to reading telemetry, writing proposals, generating fixes, and reviewing code.",
+          "inlines": [
+            {
+              "text": "Most of that went to reading telemetry, writing proposals, generating fixes, and reviewing code."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A couple of things about the cost:",
+          "inlines": [
+            {
+              "text": "A couple of things about the cost:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Our launch was particularly massive."
+                },
+                {
+                  "text": " A good chunk of the money went into infrastructure that only makes sense at that scale, and that infrastructure took more inference to reason about. Claude had to think a lot harder about how a growing set of services fit together and all the ways they could fail."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "I also burned a lot of tokens figuring out the process."
+                },
+                {
+                  "text": " The loop ran nonstop while I was experimenting with the setup. Knowing what I know now, I think we could have spent about half as much."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "TRYING THIS OUT",
+          "inlines": [
+            {
+              "text": "TRYING THIS OUT"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "This works for much smaller services too, and it should cost a lot less.",
+          "inlines": [
+            {
+              "text": "This works for much smaller services too, and it should cost a lot less."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To get a rough number, I priced out a classic small team stack: a couple of reasonably sized Kubernetes nodes and a Postgres instance. Then I went through the changes I landed between the end of August and launch day and removed the work that setup wouldn’t need:",
+          "inlines": [
+            {
+              "text": "To get a rough number, I priced out a classic small team stack: a couple of reasonably sized Kubernetes nodes and a Postgres instance. Then I went through the changes I landed between the end of August and launch day and removed the work that setup wouldn’t need:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Fitting in with our other internal services"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Client and product work that was intermixed with the scale work"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Running across many pods"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Fine-grained rate limiting"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "About a third of the changes were left.",
+          "inlines": [
+            {
+              "text": "About a third of the changes were left."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Scaling our spend down to that third and taking out the mistakes I made while I was still figuring out the setup, I’d put a two week push like this one at $3,000 to $10,000 at the same list price (I haven’t actually run this, so it’s only a rough sense).",
+          "inlines": [
+            {
+              "text": "Scaling our spend down to that third and taking out the mistakes I made while I was still figuring out the setup, I’d put a two week push like this one at $3,000 to $10,000 at the same list price (I haven’t actually run this, so it’s only a rough sense)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The steps below assume one engineer with Claude Code, a staging environment, and an observability provider. The coordinator and sub-agents helped speed up the process, but if you find they’re burning too many tokens per hour, going back to a single agent should also work quite well. If you want to try it:",
+          "inlines": [
+            {
+              "text": "The steps below assume one engineer with Claude Code, a staging environment, and an observability provider. The coordinator and sub-agents helped speed up the process, but if you find they’re burning too many tokens per hour, going back to a single agent should also work quite well. If you want to try it:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Give Claude access to your telemetry. Most observability providers have an MCP server that Claude can use."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Have Claude write a load script that throws ten times your real traffic at the staging copy of the service and breaks things on purpose. Killing an instance, stalling the database, and deploying in the middle of a spike are good places to start. Then let Claude keep fixing whatever falls over."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "When you’re picking your stack, lean toward whatever Claude can measure most easily. For us that was Rust and as few dependencies as possible."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Before you start, write down your most important technical invariants and give them to Claude."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "For anything that’s hard to undo, have Claude stop and give you a few options with a clear recommendation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Huge thanks to the Docs team, who landed thousands of editor fixes in the same three weeks, and to the platform and storage teams who built everything this sits on.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Huge thanks to the Docs team, who landed thousands of editor fixes in the same three weeks, and to the platform and storage teams who built everything this sits on."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Further reading. How we made claude.ai 3x faster in two weeks (claude.dev) · A harness for every task: dynamic workflows in Claude Code (claude.dev), on goal drift.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Further reading."
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://claude.dev/blog/how-we-made-claude-ai-faster/",
+              "text": "How we made claude.ai 3x faster in two weeks"
+            },
+            {
+              "text": " (claude.dev) · "
+            },
+            {
+              "href": "https://claude.dev/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code/",
+              "text": "A harness for every task: dynamic workflows in Claude Code"
+            },
+            {
+              "text": " (claude.dev), on goal drift."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-19T01:12:08.563700Z",
+  "contentMode": "full"
+}
