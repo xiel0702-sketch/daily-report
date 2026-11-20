@@ -1,0 +1,904 @@
+{
+  "schemaVersion": 1,
+  "id": "n3npoqbr48wu58cke5p3ox18l",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/n3npoqbr48wu58cke5p3ox18l",
+  "fetchedAt": "2026-11-20T01:10:21.032152Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Google",
+    "Google / Gemini",
+    "Agent 智能体",
+    "MCP 与工具调用",
+    "产品更新"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "2026年11月19日",
+          "inlines": [
+            {
+              "text": "2026年11月19日"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "|",
+          "inlines": [
+            {
+              "text": "|"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Retrieval 现已在 Gemini Interactions API 中开放预览。按需加载工具参数 schema，无需在每次提示词中发送完整的工具库，旨在减少输入 token，并在智能体规模扩大时保持工具选择的准确性。",
+          "inlines": [
+            {
+              "text": "Tool Retrieval 现已在 Gemini Interactions API 中开放预览。按需加载工具参数 schema，无需在每次提示词中发送完整的工具库，旨在减少输入 token，并在智能体规模扩大时保持工具选择的准确性。"
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "paragraph",
+          "text": "Lucia Loher",
+          "inlines": [
+            {
+              "text": "Lucia Loher"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gemini API 产品经理",
+          "inlines": [
+            {
+              "text": "Gemini API 产品经理"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nora Kassner",
+          "inlines": [
+            {
+              "text": "Nora Kassner"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Google DeepMind 研究科学家",
+          "inlines": [
+            {
+              "text": "Google DeepMind 研究科学家"
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/58a625502f2ac836977df7ed6c2aff5cb19cc63162766988ef7599006ffb0c46.webp",
+          "alt": "Gemini spark on a space background"
+        },
+        {
+          "type": "paragraph",
+          "text": "您的浏览器不支持音频元素。",
+          "inlines": [
+            {
+              "text": "您的浏览器不支持音频元素。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "收听文章",
+          "inlines": [
+            {
+              "text": "收听文章"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "[[duration]] 分钟",
+          "inlines": [
+            {
+              "text": "[[duration]] 分钟"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本内容由 Google AI 生成。生成式 AI 仍处于实验阶段",
+          "inlines": [
+            {
+              "text": "本内容由 Google AI 生成。生成式 AI 仍处于实验阶段"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "今天我们推出 Gemini API 中的 Tool Retrieval，现已在 Interactions API 中开放预览。",
+          "inlines": [
+            {
+              "text": "今天我们推出 Gemini API 中的 Tool Retrieval，现已在"
+            },
+            {
+              "href": "https://aistudio.google.com/docs/interactions-overview",
+              "text": " Interactions API"
+            },
+            {
+              "text": " 中开放预览。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当智能体接入几十甚至上百个工具时，每次请求都发送完整的参数 schema，开销会迅速累积：输入 token 数被推高、延迟增加，而且候选列表越长，工具选择的准确性越低。Tool Retrieval 让智能体把完整的工具库放在待命状态，只在当前任务需要时才加载参数 schema。",
+          "inlines": [
+            {
+              "text": "当智能体接入几十甚至上百个工具时，每次请求都发送完整的参数 schema，开销会迅速累积：输入 token 数被推高、延迟增加，而且候选列表越长，工具选择的准确性越低。Tool Retrieval 让智能体把完整的工具库放在待命状态，只在当前任务需要时才加载参数 schema。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "工作原理",
+          "inlines": [
+            {
+              "text": "工作原理"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "要启用 Tool Retrieval，在请求中添加一个 tool_search 工具，并在你希望暂缓加载的工具上设置 defer_loading: true。模型仍然能看到每个延迟工具的 name 和 description，因此知道有哪些工具可用，但参数 schema 不会进入上下文。当模型需要某个工具时，它会按名称请求，API 加载完整 schema，模型再调用该函数，整个过程都在同一个请求内完成。",
+          "inlines": [
+            {
+              "text": "要启用 Tool Retrieval，在请求中添加一个 "
+            },
+            {
+              "code": true,
+              "text": "tool_search"
+            },
+            {
+              "text": " 工具，并在你希望暂缓加载的工具上设置 "
+            },
+            {
+              "code": true,
+              "text": "defer_loading: true"
+            },
+            {
+              "text": "。模型仍然能看到每个延迟工具的 name 和 description，因此知道有哪些工具可用，但参数 schema 不会进入上下文。当模型需要某个工具时，它会按名称请求，API 加载完整 schema，模型再调用该函数，整个过程都在同一个请求内完成。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from google import genai\n\nclient = genai.Client()\n\ntools = [\n   {\"type\": \"tool_search\"},\n   {\n       \"type\": \"function\",\n       \"name\": \"issue_refund\",\n       \"description\": \"Refund an order to the original payment method.\",\n       \"defer_loading\": True,\n       \"parameters\": {\n           \"type\": \"object\",\n           \"properties\": {\n               \"order_id\": {\"type\": \"string\"},\n               \"amount\": {\"type\": \"number\"},\n           },\n           \"required\": [\"order_id\", \"amount\"],\n       },\n   },\n   # ... 50+ other deferred functions (leave frequent tools undeferred)\n]\n\ninteraction = client.interactions.create(\n   model=\"gemini-4-hydrogen\",\n   input=\"Order A-1042 arrived damaged. Please refund 40 dollars.\",\n   tools=tools,\n)"
+        },
+        {
+          "type": "paragraph",
+          "text": "在这单次 API 调用中，模型搜索 issue_refund，API 加载其 schema，模型发出 function_call。这三个步骤都会出现在 interaction.steps 中，因此在调试工具名称或描述时，可以轻松查看模型考虑过哪些工具：",
+          "inlines": [
+            {
+              "text": "在这单次 API 调用中，模型搜索 "
+            },
+            {
+              "code": true,
+              "text": "issue_refund"
+            },
+            {
+              "text": "，API 加载其 schema，模型发出 "
+            },
+            {
+              "code": true,
+              "text": "function_call"
+            },
+            {
+              "text": "。这三个步骤都会出现在 "
+            },
+            {
+              "code": true,
+              "text": "interaction.steps"
+            },
+            {
+              "text": " 中，因此在调试工具名称或描述时，可以轻松查看模型考虑过哪些工具："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "\"steps\": [\n {\n   \"type\": \"tool_search_call\",\n   \"id\": \"tsc_7f2a\",\n   \"arguments\": {\"function_names\": [\"issue_refund\"]},\n   \"signature\": \"...\"\n },\n {\n   \"type\": \"tool_search_result\",\n   \"call_id\": \"tsc_7f2a\",\n   \"result\": [{\"type\": \"function\", \"name\": \"issue_refund\", \"parameters\": {...}}],\n   \"signature\": \"...\"\n },\n {\n   \"type\": \"function_call\",\n   \"id\": \"fc_91c3\",\n   \"name\": \"issue_refund\",\n   \"arguments\": {\"order_id\": \"A-1042\", \"amount\": 40}\n }\n]"
+        },
+        {
+          "type": "paragraph",
+          "text": "接下来就是常规的函数调用：你的代码执行退款，并返回一个 function_result。",
+          "inlines": [
+            {
+              "text": "接下来就是常规的函数调用：你的代码执行退款，并返回一个 "
+            },
+            {
+              "code": true,
+              "text": "function_result"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "无需构建或托管索引。Gemini 在服务器端执行搜索，因此你的代码只需改动两处：新增的工具，以及在你想要延迟加载的工具上添加一个标志。你可以把最常用的工具预先加载，把长尾工具延迟加载。",
+          "inlines": [
+            {
+              "text": "无需构建或托管索引。Gemini 在服务器端执行搜索，因此你的代码只需改动两处：新增的工具，以及在你想要延迟加载的工具上添加一个标志。你可以把最常用的工具预先加载，把长尾工具延迟加载。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Retrieval 也能与前缀缓存良好配合。延迟的 schema 不会出现在提示词开头，模型加载的 schema 是在对话中稍后加入的，因此缓存的前缀在各轮之间保持不变。",
+          "inlines": [
+            {
+              "text": "Tool Retrieval 也能与前缀缓存良好配合。延迟的 schema 不会出现在提示词开头，模型加载的 schema 是在对话中稍后加入的，因此缓存的前缀在各轮之间保持不变。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Retrieval 还支持 Gemini API 中的远程 MCP 服务器。在 mcp_server 工具上设置 defer_loading: true，该服务器暴露的每个工具都会按需加载，这样你就能连接一个大型服务器，而无需逐个列出其中的工具。",
+          "inlines": [
+            {
+              "text": "Tool Retrieval 还支持 "
+            },
+            {
+              "href": "https://ai.google.dev/gemini-api/docs/function-calling#mcp",
+              "text": "Gemini API 中的远程 MCP 服务器"
+            },
+            {
+              "text": "。在 "
+            },
+            {
+              "code": true,
+              "text": "mcp_server"
+            },
+            {
+              "text": " 工具上设置 "
+            },
+            {
+              "code": true,
+              "text": "defer_loading: true"
+            },
+            {
+              "text": "，该服务器暴露的每个工具都会按需加载，这样你就能连接一个大型服务器，而无需逐个列出其中的工具。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "客户端检索如何工作",
+          "inlines": [
+            {
+              "text": "客户端检索如何工作"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你维护自己的工具注册表、嵌入索引或按用户权限过滤，可以用 \"execution\": \"client\" 声明 tool_search 并定义搜索参数。客户端检索每次搜索会多一次往返，因为查找由你的应用执行。工具无需预先声明，因此当用户连接某个集成时，你也可以在对话中途暴露新工具：",
+          "inlines": [
+            {
+              "text": "如果你维护自己的工具注册表、嵌入索引或按用户权限过滤，可以用 "
+            },
+            {
+              "code": true,
+              "text": "\"execution\": \"client\""
+            },
+            {
+              "text": " 声明 "
+            },
+            {
+              "code": true,
+              "text": "tool_search"
+            },
+            {
+              "text": " 并定义搜索参数。客户端检索每次搜索会多一次往返，因为查找由你的应用执行。工具无需预先声明，因此当用户连接某个集成时，你也可以在对话中途暴露新工具："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "tools = [{\n    \"type\": \"tool_search\",\n    \"execution\": \"client\",\n    \"name\": \"search_tools\",\n    \"description\": \"Search the internal tool registry for functions.\",\n    \"parameters\": {\n        \"type\": \"object\",\n        \"properties\": {\"query\": {\"type\": \"string\"}},\n        \"required\": [\"query\"],\n    },\n}]\n\n# When the model emits a function_call for \"search_tools\",\n# return matching {\"type\": \"function\", ...} schemas in function_result:\nfollowup = client.interactions.create(\n    model=\"gemini-4-hydrogen\",\n    previous_interaction_id=interaction.id,\n    tools=tools,\n    input=[{\n        \"type\": \"function_result\",\n        \"name\": \"search_tools\",\n        \"call_id\": step.id,\n        \"result\": my_registry.search(**step.arguments),\n    }],\n)"
+        },
+        {
+          "type": "heading",
+          "text": "定价与支持的模型",
+          "inlines": [
+            {
+              "text": "定价与支持的模型"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Retrieval 不单独收费。输入和输出 token 按你所调用模型的标准费率计费。开启 tool_search 会增加一小块固定的输入 token，模型加载的每个 schema 在后续对话中都会作为输入计费，与预先声明的工具相同。当从未加载的 schema 多于实际加载的 schema 时，你就能节省 token，对于大型工具库来说这通常是常态。请结合你自己的流量进行衡量。",
+          "inlines": [
+            {
+              "text": "Tool Retrieval 不单独收费。输入和输出 token 按你所调用模型的标准费率计费。开启 "
+            },
+            {
+              "code": true,
+              "text": "tool_search"
+            },
+            {
+              "text": " 会增加一小块固定的输入 token，模型加载的每个 schema 在后续对话中都会作为输入计费，与预先声明的工具相同。当从未加载的 schema 多于实际加载的 schema 时，你就能节省 token，对于大型工具库来说这通常是常态。请结合你自己的流量进行衡量。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "工具检索功能可在 Interactions API 中配合 Gemini 3.6 及更高版本模型使用，包括所有 Gemini 4 模型。",
+          "inlines": [
+            {
+              "text": "工具检索功能可在 Interactions API 中配合 Gemini 3.6 及更高版本模型使用，包括"
+            },
+            {
+              "href": "https://aistudio.google.com/docs/latest-model",
+              "text": "所有 Gemini 4 模型"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "如何开始",
+          "inlines": [
+            {
+              "text": "如何开始"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://aistudio.google.com/docs/tool-retrieval",
+                  "bold": true,
+                  "text": "阅读文档"
+                },
+                {
+                  "text": "——包含示例的完整设置指南"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://aistudio.google.com/docs/choosing-a-model?e=0",
+                  "bold": true,
+                  "text": "对比 Gemini 模型"
+                },
+                {
+                  "text": "——找到最适合你使用场景的模型"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://discuss.ai.google.dev/",
+                  "bold": true,
+                  "text": "加入 Discord 讨论"
+                },
+                {
+                  "text": "——与团队分享反馈"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在收件箱中获取 Google 最新资讯",
+          "inlines": [
+            {
+              "text": "在收件箱中获取 Google 最新资讯"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "订阅我们的新闻邮件，获取产品更新、活动信息、特别优惠等更多内容。",
+          "inlines": [
+            {
+              "text": "订阅我们的新闻邮件，获取产品更新、活动信息、特别优惠等更多内容。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你的信息将按照Google 隐私政策使用。你可以随时退订。",
+          "inlines": [
+            {
+              "text": "你的信息将按照"
+            },
+            {
+              "href": "https://policies.google.com/privacy",
+              "text": "Google 隐私政策"
+            },
+            {
+              "text": "使用。你可以随时退订。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Nov 19, 2026",
+          "inlines": [
+            {
+              "text": "Nov 19, 2026"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "|",
+          "inlines": [
+            {
+              "text": "|"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Retrieval is now in preview in the Gemini Interactions API. Load tool parameter schemas on demand instead of sending your full tool library in every prompt,designed to reduce input tokens and keep tool selection accurate as your agent scales.",
+          "inlines": [
+            {
+              "text": "Tool Retrieval is now in preview in the Gemini Interactions API. Load tool parameter schemas on demand instead of sending your full tool library in every prompt,designed to reduce input tokens and keep tool selection accurate as your agent scales."
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "paragraph",
+          "text": "Lucia Loher",
+          "inlines": [
+            {
+              "text": "Lucia Loher"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Product Manager, Gemini API",
+          "inlines": [
+            {
+              "text": "Product Manager, Gemini API"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nora Kassner",
+          "inlines": [
+            {
+              "text": "Nora Kassner"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Research Scientist, Google DeepMind",
+          "inlines": [
+            {
+              "text": "Research Scientist, Google DeepMind"
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/58a625502f2ac836977df7ed6c2aff5cb19cc63162766988ef7599006ffb0c46.webp",
+          "alt": "Gemini spark on a space background"
+        },
+        {
+          "type": "paragraph",
+          "text": "Your browser does not support the audio element.",
+          "inlines": [
+            {
+              "text": "Your browser does not support the audio element."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Listen to article",
+          "inlines": [
+            {
+              "text": "Listen to article"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "[[duration]] minutes",
+          "inlines": [
+            {
+              "text": "[[duration]] minutes"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This content is generated by Google AI. Generative AI is experimental",
+          "inlines": [
+            {
+              "text": "This content is generated by Google AI. Generative AI is experimental"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Today we're launching Tool Retrieval in the Gemini API, available in preview in the Interactions API.",
+          "inlines": [
+            {
+              "text": "Today we're launching Tool Retrieval in the Gemini API, available in preview in the"
+            },
+            {
+              "href": "https://aistudio.google.com/docs/interactions-overview",
+              "text": " Interactions API"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When an agent connects to dozens or even hundreds of tools, sending every full parameter schema on every request adds up fast. It inflates input token counts, adds latency, and lowers tool-selection accuracy as the candidate list grows. Tool Retrieval lets your agent keep its full tool library on standby and load parameter schemas only when the current task needs them.",
+          "inlines": [
+            {
+              "text": "When an agent connects to dozens or even hundreds of tools, sending every full parameter schema on every request adds up fast. It inflates input token counts, adds latency, and lowers tool-selection accuracy as the candidate list grows. Tool Retrieval lets your agent keep its full tool library on standby and load parameter schemas only when the current task needs them."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How it works",
+          "inlines": [
+            {
+              "text": "How it works"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "To turn on Tool Retrieval, add a tool_search tool to your request and set defer_loading: true on the tools you want to hold back. The model still sees the name and description of every deferred tool, so it knows what's available, but the parameter schemas stay out of context. When the model needs a tool, it asks for it by name, the API loads the full schema, and the model calls the function, all inside the same request.",
+          "inlines": [
+            {
+              "text": "To turn on Tool Retrieval, add a "
+            },
+            {
+              "code": true,
+              "text": "tool_search"
+            },
+            {
+              "text": " tool to your request and set "
+            },
+            {
+              "code": true,
+              "text": "defer_loading: true"
+            },
+            {
+              "text": " on the tools you want to hold back. The model still sees the name and description of every deferred tool, so it knows what's available, but the parameter schemas stay out of context. When the model needs a tool, it asks for it by name, the API loads the full schema, and the model calls the function, all inside the same request."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from google import genai\n\nclient = genai.Client()\n\ntools = [\n   {\"type\": \"tool_search\"},\n   {\n       \"type\": \"function\",\n       \"name\": \"issue_refund\",\n       \"description\": \"Refund an order to the original payment method.\",\n       \"defer_loading\": True,\n       \"parameters\": {\n           \"type\": \"object\",\n           \"properties\": {\n               \"order_id\": {\"type\": \"string\"},\n               \"amount\": {\"type\": \"number\"},\n           },\n           \"required\": [\"order_id\", \"amount\"],\n       },\n   },\n   # ... 50+ other deferred functions (leave frequent tools undeferred)\n]\n\ninteraction = client.interactions.create(\n   model=\"gemini-4-hydrogen\",\n   input=\"Order A-1042 arrived damaged. Please refund 40 dollars.\",\n   tools=tools,\n)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Inside that single API call, the model searches for issue_refund, the API loads its schema, and the model emits the function_call. All three steps appear in interaction.steps, making it easy to inspect which tools the model considered when debugging tool names or descriptions:",
+          "inlines": [
+            {
+              "text": "Inside that single API call, the model searches for "
+            },
+            {
+              "code": true,
+              "text": "issue_refund"
+            },
+            {
+              "text": ", the API loads its schema, and the model emits the "
+            },
+            {
+              "code": true,
+              "text": "function_call"
+            },
+            {
+              "text": ". All three steps appear in "
+            },
+            {
+              "code": true,
+              "text": "interaction.steps"
+            },
+            {
+              "text": ", making it easy to inspect which tools the model considered when debugging tool names or descriptions:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "\"steps\": [\n {\n   \"type\": \"tool_search_call\",\n   \"id\": \"tsc_7f2a\",\n   \"arguments\": {\"function_names\": [\"issue_refund\"]},\n   \"signature\": \"...\"\n },\n {\n   \"type\": \"tool_search_result\",\n   \"call_id\": \"tsc_7f2a\",\n   \"result\": [{\"type\": \"function\", \"name\": \"issue_refund\", \"parameters\": {...}}],\n   \"signature\": \"...\"\n },\n {\n   \"type\": \"function_call\",\n   \"id\": \"fc_91c3\",\n   \"name\": \"issue_refund\",\n   \"arguments\": {\"order_id\": \"A-1042\", \"amount\": 40}\n }\n]"
+        },
+        {
+          "type": "paragraph",
+          "text": "From here it's normal function calling: your code runs the refund and sends back a function_result.",
+          "inlines": [
+            {
+              "text": "From here it's normal function calling: your code runs the refund and sends back a "
+            },
+            {
+              "code": true,
+              "text": "function_result"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "There's no index to build or host. Gemini runs the search on the server, so the only changes to your code are the new tool and a flag on the tools you want to defer. You can keep your most-used tools loaded up front and defer the long tail.",
+          "inlines": [
+            {
+              "text": "There's no index to build or host. Gemini runs the search on the server, so the only changes to your code are the new tool and a flag on the tools you want to defer. You can keep your most-used tools loaded up front and defer the long tail."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Retrieval also plays well with prefix caching. Deferred schemas stay out of the start of the prompt, and the schemas the model loads are added later in the conversation, so the cached prefix stays the same from turn to turn.",
+          "inlines": [
+            {
+              "text": "Tool Retrieval also plays well with prefix caching. Deferred schemas stay out of the start of the prompt, and the schemas the model loads are added later in the conversation, so the cached prefix stays the same from turn to turn."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Retrieval also works with remote MCP servers in the Gemini API. Set defer_loading: true on an mcp_server tool and every tool that server exposes is loaded on demand, so you can connect a large server without listing its tools one by one.",
+          "inlines": [
+            {
+              "text": "Tool Retrieval also works with "
+            },
+            {
+              "href": "https://ai.google.dev/gemini-api/docs/function-calling#mcp",
+              "text": "remote MCP servers in the Gemini API"
+            },
+            {
+              "text": ". Set "
+            },
+            {
+              "code": true,
+              "text": "defer_loading: true"
+            },
+            {
+              "text": " on an "
+            },
+            {
+              "code": true,
+              "text": "mcp_server"
+            },
+            {
+              "text": " tool and every tool that server exposes is loaded on demand, so you can connect a large server without listing its tools one by one."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How client-side retrieval works",
+          "inlines": [
+            {
+              "text": "How client-side retrieval works"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "If you maintain your own tool registry, embedding index, or per-user permission filter, declare the tool_search with \"execution\": \"client\" and define your search parameters. Client-side retrieval adds one round trip per search, because your app runs the lookup. Tools do not need to be declared upfront, so you can also expose new tools mid-conversation when a user connects an integration:",
+          "inlines": [
+            {
+              "text": "If you maintain your own tool registry, embedding index, or per-user permission filter, declare the "
+            },
+            {
+              "code": true,
+              "text": "tool_search"
+            },
+            {
+              "text": " with "
+            },
+            {
+              "code": true,
+              "text": "\"execution\": \"client\""
+            },
+            {
+              "text": " and define your search parameters. Client-side retrieval adds one round trip per search, because your app runs the lookup. Tools do not need to be declared upfront, so you can also expose new tools mid-conversation when a user connects an integration:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "tools = [{\n    \"type\": \"tool_search\",\n    \"execution\": \"client\",\n    \"name\": \"search_tools\",\n    \"description\": \"Search the internal tool registry for functions.\",\n    \"parameters\": {\n        \"type\": \"object\",\n        \"properties\": {\"query\": {\"type\": \"string\"}},\n        \"required\": [\"query\"],\n    },\n}]\n\n# When the model emits a function_call for \"search_tools\",\n# return matching {\"type\": \"function\", ...} schemas in function_result:\nfollowup = client.interactions.create(\n    model=\"gemini-4-hydrogen\",\n    previous_interaction_id=interaction.id,\n    tools=tools,\n    input=[{\n        \"type\": \"function_result\",\n        \"name\": \"search_tools\",\n        \"call_id\": step.id,\n        \"result\": my_registry.search(**step.arguments),\n    }],\n)"
+        },
+        {
+          "type": "heading",
+          "text": "How pricing and supported models work",
+          "inlines": [
+            {
+              "text": "How pricing and supported models work"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Retrieval has no separate charge. Input and output tokens are billed at the standard rates for the model you call. Turning on tool_search adds a small, fixed block of input tokens, and each schema the model loads is billed as input for the rest of the conversation, the same as a tool declared up front. You save tokens when the schemas you never load outweigh the ones you do, which is the usual case for large libraries. Measure it against your own traffic.",
+          "inlines": [
+            {
+              "text": "Tool Retrieval has no separate charge. Input and output tokens are billed at the standard rates for the model you call. Turning on "
+            },
+            {
+              "code": true,
+              "text": "tool_search"
+            },
+            {
+              "text": " adds a small, fixed block of input tokens, and each schema the model loads is billed as input for the rest of the conversation, the same as a tool declared up front. You save tokens when the schemas you never load outweigh the ones you do, which is the usual case for large libraries. Measure it against your own traffic."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Tool Retrieval works with Gemini 3.6 and later models, including all Gemini 4 models, in the Interactions API.",
+          "inlines": [
+            {
+              "text": "Tool Retrieval works with Gemini 3.6 and later models, including "
+            },
+            {
+              "href": "https://aistudio.google.com/docs/latest-model",
+              "text": "all Gemini 4 models"
+            },
+            {
+              "text": ", in the Interactions API."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How to get started",
+          "inlines": [
+            {
+              "text": "How to get started"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://aistudio.google.com/docs/tool-retrieval",
+                  "bold": true,
+                  "text": "Read the documentation"
+                },
+                {
+                  "text": " — Full setup guide with examples"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://aistudio.google.com/docs/choosing-a-model?e=0",
+                  "bold": true,
+                  "text": "Compare Gemini models"
+                },
+                {
+                  "text": " — Find the best model for your use case"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://discuss.ai.google.dev/",
+                  "bold": true,
+                  "text": "Join the discussion on Discord"
+                },
+                {
+                  "text": " — Share feedback with the team"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Get the latest news from Google in your inbox",
+          "inlines": [
+            {
+              "text": "Get the latest news from Google in your inbox"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Sign up for our newsletters with product updates, event information, special offers, and more.",
+          "inlines": [
+            {
+              "text": "Sign up for our newsletters with product updates, event information, special offers, and more."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Your information will be used in accordance with Google's privacy policy. You may opt out at any time.",
+          "inlines": [
+            {
+              "text": "Your information will be used in accordance with "
+            },
+            {
+              "href": "https://policies.google.com/privacy",
+              "text": "Google's privacy policy."
+            },
+            {
+              "text": " You may opt out at any time."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-20T01:10:21.070260Z",
+  "contentMode": "full"
+}
