@@ -1,0 +1,528 @@
+{
+  "schemaVersion": 1,
+  "id": "wibzzhd168cafn7o3gl8336di",
+  "status": "available",
+  "provenance": "source-public-page",
+  "sourceURL": "https://browser-use.com/posts/browser-use-1-0",
+  "fetchedAt": "2026-11-21T01:10:15.513531Z",
+  "label": "正文 · 原文来源",
+  "notice": "AI HOT 页面未提供完整正文，以下内容抓取自原始来源。",
+  "topics": [],
+  "tags": [],
+  "languages": {
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "browser-use 1.0: Why We Replaced 24 Agent Tools With One",
+          "inlines": [
+            {
+              "text": "browser-use 1.0: Why We Replaced 24 Agent Tools With One"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "browser-use 1.0 gives the model one main tool, python, instead of 24 browser actions. The same models scored 14 to 33 points higher, and the agent started doing things we never built.",
+          "inlines": [
+            {
+              "text": "browser-use 1.0 gives the model one main tool, python, instead of 24 browser actions. The same models scored 14 to 33 points higher, and the agent started doing things we never built."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/423ae22ce8e9017b950f205d84e4f9e148b88ff9487e0cc46747a32c811f81ae.webp",
+          "alt": "",
+          "width": 80,
+          "height": 80
+        },
+        {
+          "type": "paragraph",
+          "text": "Magnus Müller",
+          "inlines": [
+            {
+              "href": "https://browser-use.com/team/magnus-muller?from=blog",
+              "text": "Magnus Müller"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Co-Founder, CEO",
+          "inlines": [
+            {
+              "text": "Co-Founder, CEO"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this articleWhat changed in browser-use 1.0How browser-use grew to 29 toolsHalf our helpers were dead within 50 minutesWhat the agent does with raw CDPWhen a dedicated tool still winsHow to try browser-use 1.0",
+          "inlines": [
+            {
+              "text": "In this article"
+            },
+            {
+              "href": "https://browser-use.com/posts/browser-use-1-0#what-changed-in-browser-use-10",
+              "text": "What changed in browser-use 1.0"
+            },
+            {
+              "href": "https://browser-use.com/posts/browser-use-1-0#how-browser-use-grew-to-29-tools",
+              "text": "How browser-use grew to 29 tools"
+            },
+            {
+              "href": "https://browser-use.com/posts/browser-use-1-0#half-our-helpers-were-dead-within-50-minutes",
+              "text": "Half our helpers were dead within 50 minutes"
+            },
+            {
+              "href": "https://browser-use.com/posts/browser-use-1-0#what-the-agent-does-with-raw-cdp",
+              "text": "What the agent does with raw CDP"
+            },
+            {
+              "href": "https://browser-use.com/posts/browser-use-1-0#when-a-dedicated-tool-still-wins",
+              "text": "When a dedicated tool still wins"
+            },
+            {
+              "href": "https://browser-use.com/posts/browser-use-1-0#how-to-try-browser-use-10",
+              "text": "How to try browser-use 1.0"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "TL;DR: browser-use 1.0 (November 10, 2026) replaces the 24 browser actions of 0.x with one main tool, python: a persistent REPL with raw Chrome DevTools Protocol access. On BU Bench v2.1 the same three models scored 14 to 33 points higher than on 0.x and cost 2.7x to 5.2x less. That covers the whole release, one run per model, so the tool change can't take all the credit. With code instead of a menu, the agent started unblocking hung pages and calling private APIs that none of our actions covered."
+        },
+        {
+          "type": "paragraph",
+          "text": "For two years we fixed browser-use the same way. When the agent got stuck, we gave it a new action, and by June 2025 it picked from 29 of them. browser-use 1.0 throws that menu away. The model now gets one main tool, python, plus two ways to finish.",
+          "inlines": [
+            {
+              "text": "For two years we fixed browser-use the same way. When the agent got stuck, we gave it a new action, and by June 2025 it picked from 29 of them. browser-use 1.0 throws that menu away. The model now gets one main tool, "
+            },
+            {
+              "code": true,
+              "text": "python"
+            },
+            {
+              "text": ", plus two ways to finish."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The release deleted 136,905 lines and added 29,601 across 554 files, and 178 Python files became 43. It also changed the defaults, which is why I won't pin the score jump on the tool change alone.",
+          "inlines": [
+            {
+              "text": "The release deleted 136,905 lines and added 29,601 across 554 files, and 178 Python files became 43. It also changed the defaults, which is why I won't pin the score jump on the tool change alone."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What changed in browser-use 1.0",
+          "inlines": [
+            {
+              "text": "What changed in browser-use 1.0"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The model gets a persistent REPL with the browser-harness helpers and raw cdp() already imported:",
+          "inlines": [
+            {
+              "text": "The model gets a persistent REPL with the browser-harness helpers and raw "
+            },
+            {
+              "code": true,
+              "text": "cdp()"
+            },
+            {
+              "text": " already imported:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "async def python(ctx: RunContext[Session], code: str) -> list[Any]:\n    \"\"\"Run Python in the persistent REPL (browser-harness helpers and raw cdp() pre-imported).\"\"\"\n    ...\n \ntools=[Tool(python, max_retries=TOOL_RETRIES, sequential=True), *tools]"
+        },
+        {
+          "type": "paragraph",
+          "text": "Your own tools still register next to it. Hello world is three lines again, because the model and the browser default to Browser Use Cloud:",
+          "inlines": [
+            {
+              "text": "Your own tools still register next to it. Hello world is three lines again, because the model and the browser default to Browser Use Cloud:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "from browser_use import Agent\n \nresult = Agent('Find the number of stars of the browser-use repo').run_sync()\nprint(result.final_result())"
+        },
+        {
+          "type": "paragraph",
+          "text": "The benchmark chart is in the release notes: 200 tasks run on November 8, 2026, with the frozen 180-task set scored.",
+          "inlines": [
+            {
+              "text": "The benchmark chart is in the "
+            },
+            {
+              "href": "https://github.com/browser-use/browser-use/releases/tag/1.0.0",
+              "text": "release notes"
+            },
+            {
+              "text": ": 200 tasks run on November 8, 2026, with the frozen 180-task set scored."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The library on the way up and back down. 6 of the 29 tools at the peak were Google Sheets actions.",
+          "inlines": [
+            {
+              "text": "The library on the way up and back down. 6 of the 29 tools at the peak were Google Sheets actions."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How browser-use grew to 29 tools",
+          "inlines": [
+            {
+              "text": "How browser-use grew to 29 tools"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The first commit landed on October 31, 2024 with 8 files, 670 lines and 10 actions. After that, every bug became an action. Dropdowns that click couldn't open got two of their own, scrolling to a phrase got scroll_to_text, and Google Sheets got six. By version 0.3.3 in June 2025 the model was choosing from 29.",
+          "inlines": [
+            {
+              "text": "The first commit landed on October 31, 2024 with 8 files, 670 lines and 10 actions. After that, every bug became an action. Dropdowns that "
+            },
+            {
+              "code": true,
+              "text": "click"
+            },
+            {
+              "text": " couldn't open got two of their own, scrolling to a phrase got "
+            },
+            {
+              "code": true,
+              "text": "scroll_to_text"
+            },
+            {
+              "text": ", and Google Sheets got six. By version 0.3.3 in June 2025 the model was choosing from 29."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each action costs you twice. Its schema sits in every prompt, and when the page needs something the menu doesn't have, the agent is stuck, because the menu is its only way to touch the browser. We moved from Playwright to raw CDP in August 2025 and added a JavaScript tool (The Bitter Lesson of Browser Agents tells that part), but the library still had 24 actions in October 2026.",
+          "inlines": [
+            {
+              "text": "Each action costs you twice. Its schema sits in every prompt, and when the page needs something the menu doesn't have, the agent is stuck, because the menu is its only way to touch the browser. We "
+            },
+            {
+              "href": "https://browser-use.com/posts/playwright-to-cdp",
+              "text": "moved from Playwright to raw CDP"
+            },
+            {
+              "text": " in August 2025 and added a JavaScript tool ("
+            },
+            {
+              "href": "https://browser-use.com/posts/bitter-lesson-browser-agents",
+              "text": "The Bitter Lesson of Browser Agents"
+            },
+            {
+              "text": " tells that part), but the library still had 24 actions in October 2026."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Half our helpers were dead within 50 minutes",
+          "inlines": [
+            {
+              "text": "Half our helpers were dead within 50 minutes"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "What changed our minds was a side project. On April 16, 2026, Gregor committed harnesless, 404 lines of Python. A daemon holds one CDP websocket to Chrome, the agent writes Python, and cdp(\"Domain.method\", ...) reaches anything Chrome can do:",
+          "inlines": [
+            {
+              "text": "What changed our minds was a side project. On April 16, 2026, Gregor committed "
+            },
+            {
+              "code": true,
+              "text": "harnesless"
+            },
+            {
+              "text": ", 404 lines of Python. A daemon holds one CDP websocket to Chrome, the agent writes Python, and "
+            },
+            {
+              "code": true,
+              "text": "cdp(\"Domain.method\", ...)"
+            },
+            {
+              "text": " reaches anything Chrome can do:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import sys\nfrom helpers import *  # noqa: F401,F403\nexec(sys.stdin.read())"
+        },
+        {
+          "type": "paragraph",
+          "text": "That first version still shipped 32 helpers, including our indexed-DOM ones like get_dom, click_element and type_in. Gregor ran 7 real tasks on it (Upwork, X, Google Flights, Hacker News, Netflix and an iPhone comparison), and the model never called any of them. The commit 50 minutes later says why:",
+          "inlines": [
+            {
+              "text": "That first version still shipped 32 helpers, including our indexed-DOM ones like "
+            },
+            {
+              "code": true,
+              "text": "get_dom"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "click_element"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "type_in"
+            },
+            {
+              "text": ". Gregor ran 7 real tasks on it (Upwork, X, Google Flights, Hacker News, Netflix and an iPhone comparison), and the model never called any of them. The commit 50 minutes later says why:"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "every DOM interaction went through js() + a bespoke selector, never through the indexed-DOM helpers."
+        },
+        {
+          "type": "paragraph",
+          "text": "16 helpers went out and 4 came in, so 32 became 20. The model was happier writing its own selectors.",
+          "inlines": [
+            {
+              "text": "16 helpers went out and 4 came in, so 32 became 20. The model was happier writing its own selectors."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Since then we keep a helper only if the model couldn't rewrite it after reading it once. The core has grown to 2,176 lines anyway, and the helpers file has 26 helpers. The Bitter Lesson of Agent Harnesses makes the full argument. One correction, because people (us included) get this wrong: the library kept its 24 tools until November. The harness proved the idea first and the library caught up months later.",
+          "inlines": [
+            {
+              "text": "Since then we keep a helper only if the model couldn't rewrite it after reading it once. The core has grown to 2,176 lines anyway, and the helpers file has 26 helpers. "
+            },
+            {
+              "href": "https://browser-use.com/posts/bitter-lesson-agent-harnesses",
+              "text": "The Bitter Lesson of Agent Harnesses"
+            },
+            {
+              "text": " makes the full argument. One correction, because people (us included) get this wrong: the library kept its 24 tools until November. The harness proved the idea first and the library caught up months later."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What the agent does with raw CDP",
+          "inlines": [
+            {
+              "text": "What the agent does with raw CDP"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Give the model one code tool and raw CDP, and you can count what it reaches for. We did that on 199 traces from a BU Bench v2.1 run on November 13, 2026: 12,976 code calls and about 47 distinct CDP commands. The top five are what our helpers already wrap. Nobody designed the rest.",
+          "inlines": [
+            {
+              "text": "Give the model one code tool and raw CDP, and you can count what it reaches for. We did that on 199 traces from a BU Bench v2.1 run on November 13, 2026: 12,976 code calls and about 47 distinct CDP commands. The top five are what our helpers already wrap. Nobody designed the rest."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "9 of about 47 command names, counted by regex over the code calls.",
+          "inlines": [
+            {
+              "text": "9 of about 47 command names, counted by regex over the code calls."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One task wanted two years of daily data from a stock exchange statistics page, and the page hung on load. The agent called Page.stopLoading, saw an empty body, and then blocked the script that was stuck:",
+          "inlines": [
+            {
+              "text": "One task wanted two years of daily data from a stock exchange statistics page, and the page hung on load. The agent called "
+            },
+            {
+              "code": true,
+              "text": "Page.stopLoading"
+            },
+            {
+              "text": ", saw an empty body, and then blocked the script that was stuck:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "cdp('Network.enable')\ncdp('Network.setBlockedURLs', urls=['*<stuck-script>*'])\ngoto_url('https://<exchange-stats-page>/')"
+        },
+        {
+          "type": "paragraph",
+          "text": "The reload took 1.3 seconds. Then it read the site's own JavaScript, found the JSONP endpoint behind the table and called it directly for 730 dates in batches of 30. When 30 of them timed out, it retried only those. It came back with 4,720 rows in three and a half minutes and a judge score of 0.92. We never built anything for that.",
+          "inlines": [
+            {
+              "text": "The reload took 1.3 seconds. Then it read the site's own JavaScript, found the JSONP endpoint behind the table and called it directly for 730 dates in batches of 30. When 30 of them timed out, it retried only those. It came back with 4,720 rows in three and a half minutes and a judge score of 0.92. We never built anything for that."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One trace from that run. Times are minutes since the task started.",
+          "inlines": [
+            {
+              "text": "One trace from that run. Times are minutes since the task started."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Other traces, which scored between 0.58 and 0.76, show the same habit. On a task marked \"observation only\" about a site impersonating a software brand, the agent turned off JavaScript, blocked two tracker hosts and logged every redirect before it navigated. On an ad library task it set Animation.setPlaybackRate to 100 so dialogs stopped costing time, collected 140 IDs, set the rate back to 1 and printed \"restored animation rate\". We never wrote a cleanup rule for that.",
+          "inlines": [
+            {
+              "text": "Other traces, which scored between 0.58 and 0.76, show the same habit. On a task marked \"observation only\" about a site impersonating a software brand, the agent turned off JavaScript, blocked two tracker hosts and logged every redirect before it navigated. On an ad library task it set "
+            },
+            {
+              "code": true,
+              "text": "Animation.setPlaybackRate"
+            },
+            {
+              "text": " to 100 so dialogs stopped costing time, collected 140 IDs, set the rate back to 1 and printed \"restored animation rate\". We never wrote a cleanup rule for that."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "When a dedicated tool still wins",
+          "inlines": [
+            {
+              "text": "When a dedicated tool still wins"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Captchas are where code and prose lost. On our Ultrafast agent on staging, a prompt that explained captchas went 0 for 3 on hCaptcha, and our solve_captcha tool went 6 for 6. That's a small test with one vendor. We think the tool wins because it flips a solver switch inside the browser with a custom CDP command that the agent can't reach from the page.",
+          "inlines": [
+            {
+              "text": "Captchas are where code and prose lost. On our Ultrafast agent on staging, a prompt that explained captchas went 0 for 3 on hCaptcha, and our "
+            },
+            {
+              "href": "https://browser-use.com/posts/browser-agent-blocked",
+              "code": true,
+              "text": "solve_captcha"
+            },
+            {
+              "href": "https://browser-use.com/posts/browser-agent-blocked",
+              "text": " tool"
+            },
+            {
+              "text": " went 6 for 6. That's a small test with one vendor. We think the tool wins because it flips a solver switch inside the browser with a custom CDP command that the agent can't reach from the page."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So our rule is simple. If the agent already has the primitive, write prose and let it use it. If it doesn't, build the tool.",
+          "inlines": [
+            {
+              "text": "So our rule is simple. If the agent already has the primitive, write prose and let it use it. If it doesn't, build the tool."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How to try browser-use 1.0",
+          "inlines": [
+            {
+              "text": "How to try browser-use 1.0"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Run uv add browser-use, set BROWSER_USE_API_KEY (or pass your own model with llm=), and use the three lines above.",
+          "inlines": [
+            {
+              "text": "Run "
+            },
+            {
+              "code": true,
+              "text": "uv add browser-use"
+            },
+            {
+              "text": ", set "
+            },
+            {
+              "code": true,
+              "text": "BROWSER_USE_API_KEY"
+            },
+            {
+              "text": " (or pass your own model with "
+            },
+            {
+              "code": true,
+              "text": "llm="
+            },
+            {
+              "text": "), and use the three lines above."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Then log which helpers your own agent actually calls and delete the rest. It took us 7 tasks and 50 minutes to learn that half of ours were dead.",
+          "inlines": [
+            {
+              "text": "Then log which helpers your own agent actually calls and delete the rest. It took us 7 tasks and 50 minutes to learn that half of ours were dead."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Published November 20, 2026",
+          "inlines": [
+            {
+              "text": "Published November 20, 2026"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-21T01:10:15.565339Z",
+  "contentMode": "full"
+}

@@ -1,0 +1,1017 @@
+{
+  "schemaVersion": 1,
+  "id": "i94tul4bae051uizh2kkpn2r4",
+  "status": "available",
+  "provenance": "source-public-page",
+  "sourceURL": "https://www.openhands.dev/blog/automating-cve-remediation-with-openhands",
+  "fetchedAt": "2026-11-21T01:10:31.004449Z",
+  "label": "正文 · 原文来源",
+  "notice": "AI HOT 页面未提供完整正文，以下内容抓取自原始来源。",
+  "topics": [],
+  "tags": [],
+  "languages": {
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Inside our CVE software factory: how OpenHands patches its own images",
+          "inlines": [
+            {
+              "text": "Inside our CVE software factory: how OpenHands patches its own images"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/180050f6c6b686e8bc903a8fad4eb236adb4e1dd4340feb2e97676c9789cc84a.png",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Written by",
+          "inlines": [
+            {
+              "text": "Written by"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Dylan Jacoby",
+          "inlines": [
+            {
+              "text": "Dylan Jacoby"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Published on",
+          "inlines": [
+            {
+              "text": "Published on"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "November 19, 2026",
+          "inlines": [
+            {
+              "text": "November 19, 2026"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "October was a heavy month for security teams. 17,050 new CVEs were published, about 550 a day. That's nearly four times as many as in October 2025, and the most of any month on record. Vulnerabilities are popping up faster than ever, and triaging them quickly is hard for teams of any size.",
+          "inlines": [
+            {
+              "text": "October was a heavy month for security teams. "
+            },
+            {
+              "href": "https://cve.0xosprey.com/",
+              "text": "17,050 new CVEs were published"
+            },
+            {
+              "text": ", about 550 a day. That's nearly four times as many as in October 2025, and the most of any month on record. Vulnerabilities are popping up faster than ever, and triaging them quickly is hard for teams of any size."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "And yet, the backlog is often very routine. A version bump here, an image rebuild there. Most of the time you’re just staying on top of patch versions and then confirming nothing has broken.",
+          "inlines": [
+            {
+              "text": "And yet, the backlog is often very routine. A version bump here, an image rebuild there. Most of the time you’re just staying on top of patch versions and then confirming nothing has broken."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These days, I think about AI at work in roughly three flavors:",
+          "inlines": [
+            {
+              "text": "These days, I think about AI at work in roughly three flavors:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Piloting:"
+                },
+                {
+                  "text": " We’re all doing this for much of our day now. Jamming out in the CLI or app of your choice and churning out changes."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Reporting:"
+                },
+                {
+                  "text": " Asking or automating the condensing of information into a message, email or dashboard. Reading logs, interpreting metrics, etc."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Offloading:"
+                },
+                {
+                  "text": " Truly giving the entire capability for a task to an agent, with as little human thought or involvement as possible."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Offloading feels the least common, and that’s where we’re spending a lot of time experimenting at OpenHands. CVE remediation is just one example of many common engineering tasks that seem ideal for higher agent control. I truly believe that at least 80% of CVE remediation work can be handled by autonomous agents, with people reviewing only particular changes and making the calls that need judgment.",
+          "inlines": [
+            {
+              "text": "Offloading feels the least common, and that’s where we’re spending a lot of time experimenting at OpenHands. CVE remediation is just one example of many common engineering tasks that seem ideal for higher agent control. I truly believe that "
+            },
+            {
+              "italic": true,
+              "text": "at least"
+            },
+            {
+              "text": " 80% of CVE remediation work can be handled by autonomous agents, with people reviewing only particular changes and making the calls that need judgment."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At OpenHands, we have handed over the majority of our remediation efforts to agent workflows: an agent picks the fixes, opens the PRs, merges the low-risk ones and tracks each fix until it's deployed. We read one Slack message a day and review a few PRs. We open-sourced this workflow when we launched OpenHands Teams, and you can try it yourself below. This post will dive a bit deeper into the components and design of this workflow and may help anyone reading get an automated CVE remediation pipeline up and running in no time!",
+          "inlines": [
+            {
+              "text": "At OpenHands, we have handed over the majority of our remediation efforts to agent workflows: an agent picks the fixes, opens the PRs, merges the low-risk ones and tracks each fix until it's deployed. We read one Slack message a day and review a few PRs. We open-sourced this workflow when we "
+            },
+            {
+              "href": "https://www.openhands.dev/blog/introducing-openhands-teams",
+              "text": "launched OpenHands Teams"
+            },
+            {
+              "text": ", and you can try it yourself below. This post will dive a bit deeper into the components and design of this workflow and may help anyone reading get an automated CVE remediation pipeline up and running in no time!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you just want to see this working on your own stack, everything in this post is now available as an automation template: download OpenHands, create an account, find the GitHub CVE Remediation Factory template and go from there!",
+          "inlines": [
+            {
+              "text": "If you just want to see this working on your own stack, everything in this post is now available as an automation template: download OpenHands, create an account, find the GitHub CVE Remediation Factory template and go from there!"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why CVEs are a good job for an agent",
+          "inlines": [
+            {
+              "text": "Why CVEs are a good job for an agent"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Lots of engineering work is hard to grade. Was the refactor better? Is the doc clearer? People can argue either way.",
+          "inlines": [
+            {
+              "text": "Lots of engineering work is hard to grade. Was the refactor better? Is the doc clearer? People can argue either way."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE remediation, however, leaves little room for argument. With a scanning pipeline in place, you see vulnerabilities when they are reported and then they disappear after a fix ships. If the count went down and nothing broke, the work was good. In a world where we are all scrambling to decide how, exactly, to measure the quality of AI output, I was very excited to have an unassailable mechanism by which to judge results. Let's dive into what we built. I'll cover the approach we took and offer some general advice for the many ways software gets built and delivered.",
+          "inlines": [
+            {
+              "text": "CVE remediation, however, leaves little room for argument. With a scanning pipeline in place, you see vulnerabilities when they are reported and then they disappear after a fix ships. If the count went down and nothing broke, the work was good. In a world where we are all scrambling to decide how, exactly, to measure the quality of AI output, I was very excited to have an unassailable mechanism by which to judge results. Let's dive into what we built. I'll cover the approach we took and offer some general advice for the many ways software gets built and delivered."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 1: Know what you ship",
+          "inlines": [
+            {
+              "text": "Step 1: Know what you ship"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "You need a comprehensive picture of your deliverables in order to populate an accurate list of vulnerability scanning targets. For OpenHands, before any agent runs, we needed an inventory of every image we deploy, including third-party ones like Redis or Keycloak.",
+          "inlines": [
+            {
+              "text": "You need a comprehensive picture of your deliverables in order to populate an accurate list of vulnerability scanning targets. For OpenHands, before any agent runs, we needed an inventory of every image we deploy, including third-party ones like Redis or Keycloak."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Don't keep this list by hand. It goes stale the first time someone adds a service or new dependency. We generate ours on every vulnerability scan. Since OpenHands can be deployed into Kubernetes environments, we already have Helm charts that capture every image that our customers might be bringing along. A script checks out our Helm charts at the latest release tags, renders them with every optional component turned on, collects every image that could possibly be deployed, and then passes those into our scanning pipeline.",
+          "inlines": [
+            {
+              "text": "Don't keep this list by hand. It goes stale the first time someone adds a service or new dependency. We generate ours on every vulnerability scan. Since OpenHands can be deployed into Kubernetes environments, "
+            },
+            {
+              "href": "https://github.com/OpenHands/OpenHands-Cloud",
+              "text": "we already have Helm charts"
+            },
+            {
+              "text": " that capture every image that our customers might be bringing along. A script checks out our Helm charts at the latest release tags, renders them with every optional component turned on, collects every image that could possibly be deployed, and then passes those into our scanning pipeline."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The Helm chart is a handy catchall for us, and it's a good starting point for any Kubernetes shop. Elsewhere, the inventory might come from:",
+          "inlines": [
+            {
+              "text": "The Helm chart is a handy catchall for us, and it's a good starting point for any Kubernetes shop. Elsewhere, the inventory might come from:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Your production repos."
+                },
+                {
+                  "text": " Scan the lockfiles, Dockerfiles and manifests in every repo that ships to production."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Your container registry."
+                },
+                {
+                  "text": " Amazon ECR, Google Artifact Registry and the like hold every image you've pushed."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Your package proxy."
+                },
+                {
+                  "text": " An internal Artifactory or Nexus shows which Maven, npm or PyPI packages your builds actually pull."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Whatever is running right now."
+                },
+                {
+                  "text": " Listing the images on your live clusters or ECS services catches anything that never made it into a repo or chart."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 2: Scan with at least two tools",
+          "inlines": [
+            {
+              "text": "Step 2: Scan with at least two tools"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We scan every image with both Trivy and Grype. They use different vulnerability data and look in different places, so each catches things the other misses. For example, here's what they found on two old public images, redis:6.0.5 and python:3.9.0-slim, on November 17. Trivy reported 630 vulnerabilities and Grype reported 743, but only 462 showed up in both. Together they found 911 different ones:",
+          "inlines": [
+            {
+              "text": "We scan every image with both Trivy and Grype. They use different vulnerability data and look in different places, so each catches things the other misses. For example, here's what they found on two old public images, "
+            },
+            {
+              "code": true,
+              "text": "redis:6.0.5"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "python:3.9.0-slim"
+            },
+            {
+              "text": ", on November 17. Trivy reported 630 vulnerabilities and Grype reported 743, but only 462 showed up in both. Together they found 911 different ones:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Findings",
+          "inlines": [
+            {
+              "text": "Findings"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Example",
+          "inlines": [
+            {
+              "text": "Example"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Where it lives",
+          "inlines": [
+            {
+              "text": "Where it lives"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Both tools",
+          "inlines": [
+            {
+              "text": "Both tools"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "462",
+          "inlines": [
+            {
+              "text": "462"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2021-3520 (critical) in liblz4",
+          "inlines": [
+            {
+              "text": "CVE-2021-3520 (critical) in liblz4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Debian system packages",
+          "inlines": [
+            {
+              "text": "Debian system packages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Trivy only",
+          "inlines": [
+            {
+              "text": "Trivy only"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "168",
+          "inlines": [
+            {
+              "text": "168"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2021-44716 (high) in Go 1.13.10",
+          "inlines": [
+            {
+              "text": "CVE-2021-44716 (high) in Go 1.13.10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Go code compiled into Redis's gosu helper",
+          "inlines": [
+            {
+              "text": "Go code compiled into Redis's "
+            },
+            {
+              "code": true,
+              "text": "gosu"
+            },
+            {
+              "text": " helper"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Grype only",
+          "inlines": [
+            {
+              "text": "Grype only"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "281",
+          "inlines": [
+            {
+              "text": "281"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "CVE-2021-32762 (high) in redis-server 6.0.5",
+          "inlines": [
+            {
+              "text": "CVE-2021-32762 (high) in redis-server 6.0.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Redis and Python themselves, plus Debian advisories only Grype's data has",
+          "inlines": [
+            {
+              "text": "Redis and Python themselves, plus Debian advisories only Grype's data has"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "These differences can be sneaky, and it comes down to understanding their blind spots. For example, Grype can identify packages that weren’t installed through a package manager and therefore captured 36 findings in the Redis image. Trivy reads version information from Go programs and detected vulnerabilities in the bundled Go version in Redis’s gosu helper. Every vulnerability tool will have blind spots that other tools might cover.",
+          "inlines": [
+            {
+              "text": "These differences can be sneaky, and it comes down to understanding their blind spots. For example, Grype can identify packages that weren’t installed through a package manager and therefore captured 36 findings in the Redis image. Trivy reads version information from Go programs and detected vulnerabilities in the bundled Go version in Redis’s "
+            },
+            {
+              "code": true,
+              "text": "gosu"
+            },
+            {
+              "text": " helper. Every vulnerability tool will have blind spots that other tools might cover."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The scan runs daily in GitHub Actions and commits its results to a scan-results branch: one summary per image, every finding with the version that fixes it, and a daily snapshot for trends.",
+          "inlines": [
+            {
+              "text": "The scan runs daily in GitHub Actions and commits its results to a "
+            },
+            {
+              "code": true,
+              "text": "scan-results"
+            },
+            {
+              "text": " branch: one summary per image, every finding with the version that fixes it, and a daily snapshot for trends."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 3: Decide who reads what",
+          "inlines": [
+            {
+              "text": "Step 3: Decide who reads what"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "This is probably the most important decision in the whole process. Security teams are already buried in information, both human and AI-generated, so we decided up front exactly what people would look at and what they would never look at. Dashboards, charts and tables of vulnerabilities have their place, but in a month like October you just need to see the numbers go down, quickly and safely. So nobody at OpenHands reads the raw scan output from this pipeline. It's thousands of lines of JSON, organized specifically for agent consumption.",
+          "inlines": [
+            {
+              "text": "This is probably the most important decision in the whole process. Security teams are already buried in information, both human and AI-generated, so we decided up front exactly what people would look at and what they would "
+            },
+            {
+              "italic": true,
+              "text": "never"
+            },
+            {
+              "text": " look at. Dashboards, charts and tables of vulnerabilities have their place, but in a month like October you just need to see the numbers go down, quickly and safely. So nobody at OpenHands reads the raw scan output from this pipeline. It's thousands of lines of JSON, organized specifically for agent consumption."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each day, people read just two things: one Slack message and up to 3 PRs. I have found that reduced cognitive load results directly from having a constrained workload (once per day) and a constrained Slack message (11 lines max). This really is a game changer for truly automating this workflow and allowing me and my teammates to focus on more important tasks. You could absolutely open up a Claude Code session, jam out for a few hours, and submit 50 PRs to address vulnerabilities. But what about next month, and the month after that?",
+          "inlines": [
+            {
+              "text": "Each day, people read just two things: one Slack message and up to 3 PRs. I have found that reduced cognitive load results directly from having a constrained workload (once per day) and a constrained Slack message (11 lines max). This really is a game changer for "
+            },
+            {
+              "italic": true,
+              "text": "truly"
+            },
+            {
+              "text": " automating this workflow and allowing me and my teammates to focus on more important tasks. You could "
+            },
+            {
+              "italic": true,
+              "text": "absolutely"
+            },
+            {
+              "text": " open up a Claude Code session, jam out for a few hours, and submit 50 PRs to address vulnerabilities. But what about next month, and the month after that?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Once all is said and done, this is all we see each day, in the form of a Slack message:",
+          "inlines": [
+            {
+              "text": "Once all is said and done, this is all we see each day, in the form of a Slack message:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The message may sometimes end with a short “Needs you” tagline. It’s the agent’s best guess at what might need human input, like cutting a release or merging a chart bump that has been waiting for weeks, and acting on it is optional.",
+          "inlines": [
+            {
+              "text": "The message may sometimes end with a short “Needs you” tagline. It’s the agent’s best guess at what might need human input, like cutting a release or merging a chart bump that has been waiting for weeks, and acting on it is optional."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Step 4: Write the automation prompt",
+          "inlines": [
+            {
+              "text": "Step 4: Write the automation prompt"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The agent is an OpenHands automation that runs every weekday from one prompt. It follows a pretty simple, constrained heuristic that is providing very consistent results:",
+          "inlines": [
+            {
+              "text": "The agent is an OpenHands automation that runs every weekday from one prompt. It follows a pretty simple, constrained heuristic that is providing very consistent results:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Start by reading in:"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Scan results"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The work log: a markdown file with a table of PRs in-flight or merged and which CVEs they remediate"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Any Slack replies or human comments on PRs in the past 15 days, to influence behavior"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Read through the scan results, along with the context above, and simply pick a few changes that would remediate the most Critical/High CVEs with the least risk"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Keep at most 3 of its own PRs open at once, assign a risk score to each and put that in its work log"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Post a Slack message with a summary and links to PRs"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In addition to the constraints, the concept of a work log is not a new one, but is especially helpful for agentic workflows owning a capability on their own. Since each run starts in a fresh sandbox, we needed a good, self-cleaning way for the agent to manage the work stream. It simply maintains a table that contains PRs until the CVE the PR claims to address has actually fallen off the latest scan results, at which point it is removed.",
+          "inlines": [
+            {
+              "text": "In addition to the constraints, the concept of a work log is not a new one, but is especially helpful for agentic workflows owning a capability on their own. Since each run starts in a fresh sandbox, we needed a good, self-cleaning way for the agent to manage the work stream. It simply maintains a table that contains PRs until the CVE the PR claims to address has actually fallen off the latest scan results, at which point it is removed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A few more rules were particularly helpful in keeping the cognitive load low:",
+          "inlines": [
+            {
+              "text": "A few more rules were particularly helpful in keeping the cognitive load low:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Merge the easy ones directly."
+                },
+                {
+                  "text": " We already have Dependabot opening upgrade PRs. The agent merges up to 3 per run when checks pass and its risk score is low."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Bundle."
+                },
+                {
+                  "text": " One PR per repo with multiple minor and patch upgrades. Majors get their own PR, so the bundles can merge quickly without a deep review."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Take no for an answer."
+                },
+                {
+                  "text": " If a person closes a PR without merging it, the agent records that in the work log and won't open it again."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Use a bot account."
+                },
+                {
+                  "text": " Every commit and PR comes from a machine user. This means that you only "
+                },
+                {
+                  "italic": true,
+                  "text": "need"
+                },
+                {
+                  "text": " one more human in the loop instead of one to submit the PR and one to review. This also allows for a better audit trail on agent performance and throughput."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Where people still come in",
+          "inlines": [
+            {
+              "text": "Where people still come in"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "People then come in to handle the rest, the work that may need judgment:",
+          "inlines": [
+            {
+              "text": "People then come in to handle the rest, the work that may need judgment:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Major upgrades"
+                },
+                {
+                  "text": " with breaking changes the agent can't rule out."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Real vulnerabilities:"
+                },
+                {
+                  "text": " findings with no released fix, or where the question is whether our code is actually exploitable."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Shipping."
+                },
+                {
+                  "text": " A merged fix doesn't protect anyone until a release goes out and the chart picks it up. What a “release” means is different for every org, so determining a definition of done for CVE remediation is something that agentic automations can assist with."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How it's going",
+          "inlines": [
+            {
+              "text": "How it's going"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Since we started this process last month, fixable critical vulnerabilities in the images we build have dropped from a peak of 87 to 5, and fixable high vulnerabilities from 1,997 to 188. Across everything we ship, including third-party images, fixable critical and high findings are down by half.",
+          "inlines": [
+            {
+              "text": "Since we started this process last month, fixable critical vulnerabilities in the images we build have dropped from a peak of 87 to 5, and fixable high vulnerabilities from 1,997 to 188. Across everything we ship, including third-party images, fixable critical and high findings are down by half."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What's next",
+          "inlines": [
+            {
+              "text": "What's next"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We're evaluating every day how much of this work can be safely handed to AI automations. If you want to get started on your own stack, download OpenHands, create an account, and set up the GitHub CVE Remediation Factory template.",
+          "inlines": [
+            {
+              "text": "We're evaluating every day how much of this work can be safely handed to AI automations. If you want to get started on your own stack, download OpenHands, create an account, and set up the "
+            },
+            {
+              "href": "https://github.com/OpenHands/extensions/tree/main/skills/cve-remediation-factory",
+              "text": "GitHub CVE Remediation Factory"
+            },
+            {
+              "text": " template."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Want to see it built live? Join our technical webinar on December 8, where we build a CVE remediation workflow with OpenHands, from a vulnerable dependency to a pull request ready for review. Save your spot →",
+          "inlines": [
+            {
+              "text": "Want to see it built live? Join our technical webinar on December 8, where we build a CVE remediation workflow with OpenHands, from a vulnerable dependency to a pull request ready for review. "
+            },
+            {
+              "href": "https://www.openhands.dev/build-a-cve-remediation-workflow-with-ai-agents",
+              "text": "Save your spot →"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ready to get started? Try OpenHands Teams free for 30 days.",
+          "inlines": [
+            {
+              "text": "Ready to get started? "
+            },
+            {
+              "href": "https://customercenter.openhands.dev/signup",
+              "text": "Try OpenHands Teams free for 30 days."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ASYNC CODING AGENTS",
+          "inlines": [
+            {
+              "text": "ASYNC CODING AGENTS"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Agents that don't stop when you do",
+          "inlines": [
+            {
+              "text": "Agents that don't stop when you do"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Run long-running coding tasks in the background while you stay focused on the work that needs you.",
+          "inlines": [
+            {
+              "text": "Run long-running coding tasks in the background while you stay focused on the work that needs you."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Download for free",
+          "inlines": [
+            {
+              "href": "https://hubs.la/Q04nHKLl0",
+              "text": "Download for free"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Inside our CVE software factory: how OpenHands patches its own images",
+          "inlines": [
+            {
+              "href": "https://www.openhands.dev/blog/automating-cve-remediation-with-openhands",
+              "text": "Inside our CVE software factory: how OpenHands patches its own images"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Introducing OpenHands Teams: Build Automated Engineering Workflows Without the Enterprise Barrier",
+          "inlines": [
+            {
+              "href": "https://www.openhands.dev/blog/introducing-openhands-teams",
+              "text": "Introducing OpenHands Teams: Build Automated Engineering Workflows Without the Enterprise Barrier"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Stop Choosing Coding Models by Hand",
+          "inlines": [
+            {
+              "href": "https://www.openhands.dev/blog/stop-choosing-models-by-hand",
+              "text": "Stop Choosing Coding Models by Hand"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Get useful insights in our blog",
+          "inlines": [
+            {
+              "text": "Get useful insights in our blog"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Insights and updates from the OpenHands team",
+          "inlines": [
+            {
+              "text": "Insights and updates from the OpenHands team"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sign up for our newsletter for updates, events, and community insights.",
+          "inlines": [
+            {
+              "text": "Sign up for our newsletter for updates, events, and community insights."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Thank you for your submission!",
+          "inlines": [
+            {
+              "text": "Thank you for your submission!"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Building the open standard for autonomous software development.",
+          "inlines": [
+            {
+              "text": "Building the open standard for autonomous software development."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenHands is the foundation for secure, transparent, model-agnostic coding agents - empowering every software team to build faster with full control.",
+          "inlines": [
+            {
+              "text": "OpenHands is the foundation for secure, transparent, model-agnostic coding agents - empowering every software team to build faster with full control."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Join The Community",
+          "inlines": [
+            {
+              "href": "https://www.openhands.dev/community",
+              "text": "Join The Community"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "© 2026 OpenHands - All rights reserved",
+          "inlines": [
+            {
+              "text": "© 2026 OpenHands - All rights reserved"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Privacy PolicyContact",
+          "inlines": [
+            {
+              "href": "https://www.openhands.dev/privacy",
+              "text": "Privacy Policy"
+            },
+            {
+              "href": "https://www.openhands.dev/contact",
+              "text": "Contact"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-21T01:10:31.040628Z",
+  "contentMode": "full"
+}
