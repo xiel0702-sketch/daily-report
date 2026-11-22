@@ -1,0 +1,1273 @@
+{
+  "schemaVersion": 1,
+  "id": "rlj39tzyujneo0u35iyrfb4uc",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/rlj39tzyujneo0u35iyrfb4uc",
+  "fetchedAt": "2026-11-22T01:10:14.467149Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "阿里",
+    "千问 Qwen",
+    "AI 编码",
+    "产品更新"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "我们把一份 bug 报告和整个代码库一次性交给了 Qwen4 Max。代码库是 Python Web 框架 Tornado：全部 344 个文件，652,519 个 token。模型没有工具可用，我们也没有预先挑选相关文件或先跑一遍检索。72 秒后它返回了一个补丁，而这个补丁通过了 Tornado 维护者为该 bug 编写的测试。这次请求花了 69 美分。",
+          "inlines": [
+            {
+              "text": "我们把一份 bug 报告和整个代码库一次性交给了 "
+            },
+            {
+              "href": "https://www.together.ai/models/qwen4-max",
+              "text": "Qwen4 Max"
+            },
+            {
+              "text": "。代码库是 Python Web 框架 Tornado：全部 344 个文件，652,519 个 token。模型没有工具可用，我们也没有预先挑选相关文件或先跑一遍检索。72 秒后它返回了一个补丁，而这个补丁通过了 Tornado 维护者为该 bug 编写的测试。这次请求花了 69 美分。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "它还在仓库的其他地方找到了先例。bug 报告里从未提到 tornado/iostream.py，但模型指出那里的代码已经用它的补丁所需的方式处理了错误。Tornado 维护者在自己修复时也引用了同一处代码。",
+          "inlines": [
+            {
+              "text": "它还在仓库的其他地方找到了先例。bug 报告里从未提到 "
+            },
+            {
+              "code": true,
+              "text": "tornado/iostream.py"
+            },
+            {
+              "text": "，但模型指出那里的代码已经用它的补丁所需的方式处理了错误。Tornado 维护者在自己修复时也引用了同一处代码。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max 是阿里巴巴的旗舰 Qwen 模型。它今天已在 Together AI 上线，并在 2026 年 11 月 22 日前享受 30% 折扣。",
+          "inlines": [
+            {
+              "text": "Qwen4 Max 是阿里巴巴的旗舰 Qwen 模型。它今天已在 Together AI 上线，并在 2026 年 11 月 22 日前享受 30% 折扣。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "测试",
+          "inlines": [
+            {
+              "text": "测试"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Tornado 是一个开源 Python Web 框架。它的仓库包含约 340 个代码、测试和文档文件。这能放进 Qwen4 Max 的上下文窗口，而且远超任何人会手动粘贴进提示词的内容。我们挑选了维护者在 2026 年 11 月 18 日提交的一个修复——也就是 Qwen4 Max 发布两天后——并针对该提交之前的仓库状态进行了测试。",
+          "inlines": [
+            {
+              "text": "Tornado 是一个开源 Python Web 框架。它的仓库包含约 340 个代码、测试和文档文件。这能放进 Qwen4 Max 的上下文窗口，而且远超任何人会手动粘贴进提示词的内容。我们挑选了维护者在 2026 年 11 月 18 日提交的一个修复——也就是 Qwen4 Max 发布两天后——并针对该提交之前的仓库状态进行了测试。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这只是一个例子，用来展示单次调用能做到什么，以及它的成本。",
+          "inlines": [
+            {
+              "text": "这只是一个例子，用来展示单次调用能做到什么，以及它的成本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这个 bug 出在 Tornado 的 websocket 代码里。当连接关闭时仍有消息未发送，每一个未被 await 的 write_message() 调用都会记录一条错误，尽管 await 它是可选的。我们把该检出中的每个文本文件作为一个提示词发送，并附上一份只描述症状的 bug 报告：",
+          "inlines": [
+            {
+              "text": "这个 bug 出在 Tornado 的 websocket 代码里。当连接关闭时仍有消息未发送，每一个未被 await 的 "
+            },
+            {
+              "code": true,
+              "text": "write_message()"
+            },
+            {
+              "text": " 调用都会记录一条错误，尽管 await 它是可选的。我们把该检出中的每个文本文件作为一个提示词发送，并附上一份只描述症状的 bug 报告："
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "write_message logs \"Task exception was never retrieved\" when the connection closes"
+        },
+        {
+          "type": "quote",
+          "text": "当 websocket 连接在仍有消息未发送时关闭（例如，客户端发送了消息和一个 FIN，或重置了连接，却没有读取回复），每一个结果未被 await 的 write_message() 调用都会在 ERROR 级别记录“Task exception was never retrieved”。"
+        },
+        {
+          "type": "quote",
+          "text": "await write_message 返回的 Future 是可选的，因此未 await 的调用不应记录任何内容。而确实 await 它的调用方仍应收到 WebSocketClosedError。"
+        },
+        {
+          "type": "paragraph",
+          "text": "我们要求给出原因和补丁。这是重放后的请求：",
+          "inlines": [
+            {
+              "text": "我们要求给出原因和补丁。这是重放后的请求："
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "返回结果",
+          "inlines": [
+            {
+              "text": "返回结果"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "第一个 token 在 54 秒后到达，回复在 72 秒时完成。Qwen4 Max 将错误追溯到 tornado/websocket.py 中的 WebSocketProtocol13.write_message。该方法把每次写入包装在一个任务中。当连接关闭时，任务因一个无人必须收集的异常而失败，Python 会将其记录为“Task exception was never retrieved”。",
+          "inlines": [
+            {
+              "text": "第一个 token 在 54 秒后到达，回复在 72 秒时完成。Qwen4 Max 将错误追溯到 "
+            },
+            {
+              "code": true,
+              "text": "tornado/websocket.py"
+            },
+            {
+              "text": " 中的 "
+            },
+            {
+              "code": true,
+              "text": "WebSocketProtocol13.write_message"
+            },
+            {
+              "text": "。该方法把每次写入包装在一个任务中。当连接关闭时，任务因一个无人必须收集的异常而失败，Python 会将其记录为“Task exception was never retrieved”。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型的补丁将该异常标记为已检索。这样就不会记录任何内容，而确实 await 写入的调用方仍会收到错误：",
+          "inlines": [
+            {
+              "text": "模型的补丁将该异常标记为已检索。这样就不会记录任何内容，而确实 await 写入的调用方仍会收到错误："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "-        return asyncio.ensure_future(wrapper())\n+        task = asyncio.ensure_future(wrapper())\n+\n+        # Awaiting the returned Future is optional, so an error nobody looks\n+        # at must not be reported as \"Task exception was never retrieved\".\n+        # Retrieving it here leaves it in place for callers that do await.\n+        def _mark_retrieved(t: \"asyncio.Task[None]\") -> None:\n+            if not t.cancelled():\n+                t.exception()\n+\n+        task.add_done_callback(_mark_retrieved)\n+        return task"
+        },
+        {
+          "type": "paragraph",
+          "text": "先例让这个补丁读起来像是项目本身的一部分。模型的解释称，修复应当做 BaseIOStream.write 已经为其自身的 future 所做的事。该方法位于 tornado/iostream.py 中，比 websocket 代码低一层，并且用同样的方式解决了同样的问题。维护者的提交也做了同样的比较。",
+          "inlines": [
+            {
+              "text": "先例让这个补丁读起来像是项目本身的一部分。模型的解释称，修复应当做 "
+            },
+            {
+              "code": true,
+              "text": "BaseIOStream.write"
+            },
+            {
+              "text": " 已经为其自身的 future 所做的事。该方法位于 "
+            },
+            {
+              "code": true,
+              "text": "tornado/iostream.py"
+            },
+            {
+              "text": " 中，比 websocket 代码低一层，并且用同样的方式解决了同样的问题。维护者的提交也做了同样的比较。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/63cf12c825edd1931d56870ae9ccc90218d92586f95f0da27510cdddc3f4c13c.webp",
+          "alt": "A grid of 344 squares, one for each file in the Tornado repository, grouped by folder. Two squares in the tornado folder are highlighted and joined by a line: websocket.py, where the bug was, and iostream.py, the precedent the model pointed to."
+        },
+        {
+          "type": "paragraph",
+          "text": "没有人替它挑选这些文件。全部 344 个文件都放进去了，而模型找到了关键的那两个。",
+          "inlines": [
+            {
+              "text": "没有人替它挑选这些文件。全部 344 个文件都放进去了，而模型找到了关键的那两个。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们如何验证",
+          "inlines": [
+            {
+              "text": "我们如何验证"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Tornado 维护者在修复中增加了两个回归测试：一个针对未 await 的写入，一个针对已 await 的写入。在修复前的代码上，第一个测试失败。应用模型的补丁后，两个测试都通过。随后我们在应用补丁的情况下运行了 Tornado 的完整测试套件，共 1,673 个测试，没有一个失败。",
+          "inlines": [
+            {
+              "text": "Tornado 维护者在修复中增加了两个回归测试：一个针对未 await 的写入，一个针对已 await 的写入。在修复前的代码上，第一个测试失败。应用模型的补丁后，两个测试都通过。随后我们在应用补丁的情况下运行了 Tornado 的完整测试套件，共 1,673 个测试，没有一个失败。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "成本",
+          "inlines": [
+            {
+              "text": "成本"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "按折扣价计算，这次请求约为 69 美分，几乎全部花在 652,519 个输入 token 上。按原价计算则是 98 美分。",
+          "inlines": [
+            {
+              "text": "按折扣价计算，这次请求约为 69 美分，几乎全部花在 652,519 个输入 token 上。按原价计算则是 98 美分。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "再次发送同一个仓库，费用会低得多。Together AI 会自动缓存提示词输入，促销期间缓存输入的价格是每百万 token \\$0.0525。我们重复发送一个约 63 万 token 的请求时，几乎全部命中缓存。首个 token 8 秒就返回了，而不是 54 秒；输入费用约 3 美分，而不是 66 美分。",
+          "inlines": [
+            {
+              "text": "再次发送同一个仓库，费用会低得多。Together AI 会自动缓存提示词输入，促销期间缓存输入的价格是每百万 token \\$0.0525。我们重复发送一个约 63 万 token 的请求时，几乎全部命中缓存。首个 token 8 秒就返回了，而不是 54 秒；输入费用约 3 美分，而不是 66 美分。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "关于 Qwen4 Max",
+          "inlines": [
+            {
+              "text": "关于 Qwen4 Max"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "阿里巴巴于 2026 年 11 月 16 日发布 Qwen4 Max，称其为 Qwen 系列迄今能力最强的模型。该模型面向长时间运行的智能体任务，包括跨大型仓库的编码，这正是我们测试的那类任务。",
+          "inlines": [
+            {
+              "text": "阿里巴巴于 2026 年 11 月 16 日发布 Qwen4 Max，称其为 Qwen 系列迄今能力最强的模型。该模型面向长时间运行的智能体任务，包括跨大型仓库的编码，这正是我们测试的那类任务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max 是一个稀疏混合专家模型，总参数 2.4 万亿，每个 token 激活 71 亿。在 Work360 上——这是阿里巴巴自建的基准，覆盖 721 个专业领域的行业任务——阿里报告称其整体表现优于 Qwen3.8 Max，在高推理强度下少用 35% 的 token，平均每个任务成本低约 60%。这些是阿里巴巴的数据，其发布公告中有详细说明。",
+          "inlines": [
+            {
+              "text": "Qwen4 Max 是一个稀疏混合专家模型，总参数 2.4 万亿，每个 token 激活 71 亿。在 Work360 上——这是阿里巴巴自建的基准，覆盖 721 个专业领域的行业任务——阿里报告称其整体表现优于 Qwen3.8 Max，在高推理强度下少用 35% 的 token，平均每个任务成本低约 60%。这些是阿里巴巴的数据，"
+            },
+            {
+              "href": "https://www.alibabacloud.com/en/press-room/alibaba-unveils-qwen4-max",
+              "text": "其发布公告"
+            },
+            {
+              "text": "中有详细说明。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在 Together AI 上运行",
+          "inlines": [
+            {
+              "text": "在 Together AI 上运行"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max 已上线 Together Serverless Inference，模型字符串为 Qwen/Qwen4-Max。下面这个脚本像我们的测试那样，在一次请求中发送整个仓库和一份缺陷报告。你需要 Together Python SDK（pip install together）、一个 TOGETHER_API_KEY、仓库的本地克隆，以及保存为 bug_report.md 的缺陷报告。脚本会发送 git 跟踪的所有文本文件，所以先检查仓库里有没有密钥。",
+          "inlines": [
+            {
+              "text": "Qwen4 Max 已上线 Together Serverless Inference，模型字符串为 "
+            },
+            {
+              "code": true,
+              "text": "Qwen/Qwen4-Max"
+            },
+            {
+              "text": "。下面这个脚本像我们的测试那样，在一次请求中发送整个仓库和一份缺陷报告。你需要 Together Python SDK（"
+            },
+            {
+              "code": true,
+              "text": "pip install together"
+            },
+            {
+              "text": "）、一个 "
+            },
+            {
+              "code": true,
+              "text": "TOGETHER_API_KEY"
+            },
+            {
+              "text": "、仓库的本地克隆，以及保存为 "
+            },
+            {
+              "code": true,
+              "text": "bug_report.md"
+            },
+            {
+              "text": " 的缺陷报告。脚本会发送 git 跟踪的所有文本文件，所以先检查仓库里有没有密钥。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import subprocess\nfrom pathlib import Path\n\nfrom together import Together\n\nrepo = Path(\"tornado\")\nbug_report = Path(\"bug_report.md\").read_text()\n\n# Every file git tracks, skipping the ones that aren't text\nnames = subprocess.check_output(\n    [\"git\", \"-C\", str(repo), \"ls-files\"], text=True\n).splitlines()\nfiles = []\nfor name in names:\n    try:\n        files.append(f\"=== FILE: {name} ===\\n{(repo / name).read_text()}\\n\")\n    except UnicodeDecodeError:\n        continue\n\nclient = Together()\n\nstream = client.chat.completions.create(\n    model=\"Qwen/Qwen4-Max\",\n    messages=[\n        {\n            \"role\": \"system\",\n            \"content\": f\"This is a complete repository, {len(files)} files.\\n\\n\"\n            + \"\".join(files),\n        },\n        {\n            \"role\": \"user\",\n            \"content\": f\"Here is a bug report.\\n\\n{bug_report}\\n\\n\"\n            \"Explain the cause, then write a patch.\",\n        },\n    ],\n    stream=True,\n)\n\nfor chunk in stream:\n    if not chunk.choices:\n        continue\n    delta = chunk.choices[0].delta\n    # delta.reasoning carries the model's thinking, delta.content the answer\n    if delta.content:\n        print(delta.content, end=\"\", flush=True)"
+        },
+        {
+          "type": "paragraph",
+          "text": "其中有两点是该模型特有的。请求必须设置 stream=True，因为 Together AI 上的 Qwen4 Max 只接受流式请求。另外思考默认开启，所以模型的推理会先在 delta.reasoning 中流式输出，然后停顿一下才开始给出答案。思考 token 计入输出 token。如果简单请求想跳过思考，传入 reasoning={\"enabled\": False}。",
+          "inlines": [
+            {
+              "text": "其中有两点是该模型特有的。请求必须设置 "
+            },
+            {
+              "code": true,
+              "text": "stream=True"
+            },
+            {
+              "text": "，因为 Together AI 上的 Qwen4 Max 只接受流式请求。另外思考默认开启，所以模型的推理会先在 "
+            },
+            {
+              "code": true,
+              "text": "delta.reasoning"
+            },
+            {
+              "text": " 中流式输出，然后停顿一下才开始给出答案。思考 token 计入输出 token。如果简单请求想跳过思考，传入 "
+            },
+            {
+              "code": true,
+              "text": "reasoning={\"enabled\": False}"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不想写代码的话，可以在 playground 里试用。模型页面有同样的信息。",
+          "inlines": [
+            {
+              "text": "不想写代码的话，可以"
+            },
+            {
+              "href": "https://api.together.ai/playground/v2/chat/Qwen/Qwen4-Max",
+              "text": "在 playground 里"
+            },
+            {
+              "text": "试用。"
+            },
+            {
+              "href": "https://www.together.ai/models/qwen4-max",
+              "text": "模型页面"
+            },
+            {
+              "text": "有同样的信息。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "常见问题",
+          "inlines": [
+            {
+              "text": "常见问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Qwen4 Max 在 Together AI 上多少钱？",
+          "inlines": [
+            {
+              "text": "Qwen4 Max 在 Together AI 上多少钱？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Together AI 上 Qwen4 Max 的标价是每 100 万输入 token \\$1.50、每 100 万输出 token \\$4.50、每 100 万缓存输入 token \\$0.075。2026 年 11 月 22 日之前打七折：\\$1.05、\\$3.15 和 \\$0.0525。思考 token 计入输出 token。",
+          "inlines": [
+            {
+              "text": "Together AI 上 Qwen4 Max 的标价是每 100 万输入 token \\$1.50、每 100 万输出 token \\$4.50、每 100 万缓存输入 token \\$0.075。2026 年 11 月 22 日之前打七折：\\$1.05、\\$3.15 和 \\$0.0525。思考 token 计入输出 token。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Qwen4 Max 在 Together AI 上的上下文窗口有多大？",
+          "inlines": [
+            {
+              "text": "Qwen4 Max 在 Together AI 上的上下文窗口有多大？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max 在 Together AI 上的上下文窗口为 100 万 token。在我们的测试中，一个输入 652,519 token 的请求在 54 秒后返回首个 token。",
+          "inlines": [
+            {
+              "text": "Qwen4 Max 在 Together AI 上的上下文窗口为 100 万 token。在我们的测试中，一个输入 652,519 token 的请求在 54 秒后返回首个 token。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Qwen4 Max 接受图片吗？",
+          "inlines": [
+            {
+              "text": "Qwen4 Max 接受图片吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "接受。Qwen4 Max 在 Together AI 上支持文本和图片输入，输出文本。每张图片以 image_url 块的形式放在消息内容中，具体见视觉文档。",
+          "inlines": [
+            {
+              "text": "接受。Qwen4 Max 在 Together AI 上支持文本和图片输入，输出文本。每张图片以 "
+            },
+            {
+              "code": true,
+              "text": "image_url"
+            },
+            {
+              "text": " 块的形式放在消息内容中，具体见"
+            },
+            {
+              "href": "https://docs.together.ai/docs/inference/vision/overview",
+              "text": "视觉文档"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么我的 Qwen4 Max 请求不开流式就会失败？",
+          "inlines": [
+            {
+              "text": "为什么我的 Qwen4 Max 请求不开流式就会失败？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Together AI 上的 Qwen4 Max 只接受流式请求。不带 \"stream\": true 的请求会返回 400 错误，错误码为 streaming_required。在 SDK 中设置 stream=True，或在请求体中设置 \"stream\": true，然后从流中读取回复。",
+          "inlines": [
+            {
+              "text": "Together AI 上的 Qwen4 Max 只接受流式请求。不带 "
+            },
+            {
+              "code": true,
+              "text": "\"stream\": true"
+            },
+            {
+              "text": " 的请求会返回 400 错误，错误码为 "
+            },
+            {
+              "code": true,
+              "text": "streaming_required"
+            },
+            {
+              "text": "。在 SDK 中设置 "
+            },
+            {
+              "code": true,
+              "text": "stream=True"
+            },
+            {
+              "text": "，或在请求体中设置 "
+            },
+            {
+              "code": true,
+              "text": "\"stream\": true"
+            },
+            {
+              "text": "，然后从流中读取回复。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "如何关闭 Qwen4 Max 的思考？",
+          "inlines": [
+            {
+              "text": "如何关闭 Qwen4 Max 的思考？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Python SDK 中传入 reasoning={\"enabled\": False}，或在请求体中传入 \"reasoning\": {\"enabled\": false}，即可关闭 Qwen4 Max 的思考。思考默认开启，会通过 reasoning 字段在答案之前返回。遇到难题想让它多想一些，把 reasoning_effort 设为 \"max\"。",
+          "inlines": [
+            {
+              "text": "在 Python SDK 中传入 "
+            },
+            {
+              "code": true,
+              "text": "reasoning={\"enabled\": False}"
+            },
+            {
+              "text": "，或在请求体中传入 "
+            },
+            {
+              "code": true,
+              "text": "\"reasoning\": {\"enabled\": false}"
+            },
+            {
+              "text": "，即可关闭 Qwen4 Max 的思考。思考默认开启，会通过 "
+            },
+            {
+              "code": true,
+              "text": "reasoning"
+            },
+            {
+              "text": " 字段在答案之前返回。遇到难题想让它多想一些，把 "
+            },
+            {
+              "code": true,
+              "text": "reasoning_effort"
+            },
+            {
+              "text": " 设为 "
+            },
+            {
+              "code": true,
+              "text": "\"max\""
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Qwen4 Max 支持工具调用吗？",
+          "inlines": [
+            {
+              "text": "Qwen4 Max 支持工具调用吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "支持。Qwen4 Max 在 Together AI 上通过标准的 tools 参数支持工具调用，一轮中可以返回多个调用。",
+          "inlines": [
+            {
+              "text": "支持。Qwen4 Max 在 Together AI 上通过标准的 "
+            },
+            {
+              "code": true,
+              "text": "tools"
+            },
+            {
+              "text": " 参数支持工具调用，一轮中可以返回多个调用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "提示词缓存对 Qwen4 Max 有效吗？",
+          "inlines": [
+            {
+              "text": "提示词缓存对 Qwen4 Max 有效吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "是的，在 Together AI 上，Qwen4 Max 的提示词缓存是自动开启的，缓存输入 token 按标价每 100 万 token 收费 \\$0.075。在我们的测试中，重复发送一个 63 万 token 的请求，返回结果几乎全部命中缓存，首个 token 的到达时间从 54 秒缩短到 8 秒。缓存是尽力而为的，所以并非每次重复请求都能命中缓存。",
+          "inlines": [
+            {
+              "text": "是的，在 Together AI 上，Qwen4 Max 的提示词缓存是自动开启的，缓存输入 token 按标价每 100 万 token 收费 \\$0.075。在我们的测试中，重复发送一个 63 万 token 的请求，返回结果几乎全部命中缓存，首个 token 的到达时间从 54 秒缩短到 8 秒。缓存是尽力而为的，所以并非每次重复请求都能命中缓存。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我可以对 Qwen4 Max 进行微调，或在专用端点上运行它吗？",
+          "inlines": [
+            {
+              "text": "我可以对 Qwen4 Max 进行微调，或在专用端点上运行它吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "不行，目前 Qwen4 Max 在 Together AI 上仅提供无服务器版本，也不支持微调。阿里巴巴表示，Qwen4 系列中更小的开放权重模型后续会推出。",
+          "inlines": [
+            {
+              "text": "不行，目前 Qwen4 Max 在 Together AI 上仅提供无服务器版本，也不支持微调。阿里巴巴表示，Qwen4 系列中更小的开放权重模型后续会推出。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We gave Qwen4 Max a bug report and an entire codebase in one request. The codebase was Tornado, the Python web framework: all 344 files, 652,519 tokens. The model had no tools, and we didn't select relevant files or run a retrieval step first. Seventy-two seconds later it returned a patch, and the patch passes the tests Tornado's maintainers wrote for that bug. The request cost 69 cents.",
+          "inlines": [
+            {
+              "text": "We gave "
+            },
+            {
+              "href": "https://www.together.ai/models/qwen4-max",
+              "text": "Qwen4 Max"
+            },
+            {
+              "text": " a bug report and an entire codebase in one request. The codebase was Tornado, the Python web framework: all 344 files, 652,519 tokens. The model had no tools, and we didn't select relevant files or run a retrieval step first. Seventy-two seconds later it returned a patch, and the patch passes the tests Tornado's maintainers wrote for that bug. The request cost 69 cents."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "It also found a precedent elsewhere in the repository. The bug report never mentions tornado/iostream.py, but the model pointed to code there that already handles errors the way its patch needed to. Tornado's maintainers cite the same code in their own fix.",
+          "inlines": [
+            {
+              "text": "It also found a precedent elsewhere in the repository. The bug report never mentions "
+            },
+            {
+              "code": true,
+              "text": "tornado/iostream.py"
+            },
+            {
+              "text": ", but the model pointed to code there that already handles errors the way its patch needed to. Tornado's maintainers cite the same code in their own fix."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max is Alibaba's flagship Qwen model. It's live on Together AI today, and it's 30% off through November 22, 2026.",
+          "inlines": [
+            {
+              "text": "Qwen4 Max is Alibaba's flagship Qwen model. It's live on Together AI today, and it's 30% off through November 22, 2026."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "The test",
+          "inlines": [
+            {
+              "text": "The test"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Tornado is an open-source Python web framework. Its repository holds about 340 files of code, tests and docs. That fits in Qwen4 Max's context window, and it's far more than anyone would paste into a prompt by hand. We picked a fix the maintainers committed on November 18, 2026, two days after Qwen4 Max was released, and tested against the repository as it was just before that commit.",
+          "inlines": [
+            {
+              "text": "Tornado is an open-source Python web framework. Its repository holds about 340 files of code, tests and docs. That fits in Qwen4 Max's context window, and it's far more than anyone would paste into a prompt by hand. We picked a fix the maintainers committed on November 18, 2026, two days after Qwen4 Max was released, and tested against the repository as it was just before that commit."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This is one example, chosen to show what a single call can do and what it costs.",
+          "inlines": [
+            {
+              "text": "This is one example, chosen to show what a single call can do and what it costs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The bug is in Tornado's websocket code. When a connection closed with messages still unsent, every write_message() call that wasn't awaited logged an error, even though awaiting it is optional. We sent every text file in that checkout as one prompt, with a bug report that describes only the symptom:",
+          "inlines": [
+            {
+              "text": "The bug is in Tornado's websocket code. When a connection closed with messages still unsent, every "
+            },
+            {
+              "code": true,
+              "text": "write_message()"
+            },
+            {
+              "text": " call that wasn't awaited logged an error, even though awaiting it is optional. We sent every text file in that checkout as one prompt, with a bug report that describes only the symptom:"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "write_message logs \"Task exception was never retrieved\" when the connection closes"
+        },
+        {
+          "type": "quote",
+          "text": "When a websocket connection closes while messages are still unsent (for example, the client sends its messages and a FIN, or resets the connection, without reading the replies), every write_message() call whose result was not awaited logs \"Task exception was never retrieved\" at ERROR level."
+        },
+        {
+          "type": "quote",
+          "text": "Awaiting the Future returned by write_message is optional, so an unawaited call should not log anything. A caller that does await it should still get WebSocketClosedError."
+        },
+        {
+          "type": "paragraph",
+          "text": "We asked for the cause and a patch. This is the request, replayed:",
+          "inlines": [
+            {
+              "text": "We asked for the cause and a patch. This is the request, replayed:"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What came back",
+          "inlines": [
+            {
+              "text": "What came back"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The first token arrived after 54 seconds, and the reply was complete at 72. Qwen4 Max traced the error to WebSocketProtocol13.write_message in tornado/websocket.py. That method wraps each write in a task. When the connection closes, the task fails with an exception that nobody is required to collect, and Python logs that as \"Task exception was never retrieved.\"",
+          "inlines": [
+            {
+              "text": "The first token arrived after 54 seconds, and the reply was complete at 72. Qwen4 Max traced the error to "
+            },
+            {
+              "code": true,
+              "text": "WebSocketProtocol13.write_message"
+            },
+            {
+              "text": " in "
+            },
+            {
+              "code": true,
+              "text": "tornado/websocket.py"
+            },
+            {
+              "text": ". That method wraps each write in a task. When the connection closes, the task fails with an exception that nobody is required to collect, and Python logs that as \"Task exception was never retrieved.\""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The model's patch marks the exception as retrieved. Nothing is logged, and a caller who does await the write still gets the error:",
+          "inlines": [
+            {
+              "text": "The model's patch marks the exception as retrieved. Nothing is logged, and a caller who does await the write still gets the error:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "-        return asyncio.ensure_future(wrapper())\n+        task = asyncio.ensure_future(wrapper())\n+\n+        # Awaiting the returned Future is optional, so an error nobody looks\n+        # at must not be reported as \"Task exception was never retrieved\".\n+        # Retrieving it here leaves it in place for callers that do await.\n+        def _mark_retrieved(t: \"asyncio.Task[None]\") -> None:\n+            if not t.cancelled():\n+                t.exception()\n+\n+        task.add_done_callback(_mark_retrieved)\n+        return task"
+        },
+        {
+          "type": "paragraph",
+          "text": "The precedent is what makes the patch read like it belongs in the project. The model's explanation says the fix should do what BaseIOStream.write already does for its own futures. That method is in tornado/iostream.py, one layer below the websocket code, and it solves the same problem the same way. The maintainers' commit makes the same comparison.",
+          "inlines": [
+            {
+              "text": "The precedent is what makes the patch read like it belongs in the project. The model's explanation says the fix should do what "
+            },
+            {
+              "code": true,
+              "text": "BaseIOStream.write"
+            },
+            {
+              "text": " already does for its own futures. That method is in "
+            },
+            {
+              "code": true,
+              "text": "tornado/iostream.py"
+            },
+            {
+              "text": ", one layer below the websocket code, and it solves the same problem the same way. The maintainers' commit makes the same comparison."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/63cf12c825edd1931d56870ae9ccc90218d92586f95f0da27510cdddc3f4c13c.webp",
+          "alt": "A grid of 344 squares, one for each file in the Tornado repository, grouped by folder. Two squares in the tornado folder are highlighted and joined by a line: websocket.py, where the bug was, and iostream.py, the precedent the model pointed to."
+        },
+        {
+          "type": "paragraph",
+          "text": "Nobody picked those files for it. All 344 went in, and the model found the two that mattered.",
+          "inlines": [
+            {
+              "text": "Nobody picked those files for it. All 344 went in, and the model found the two that mattered."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How we checked it",
+          "inlines": [
+            {
+              "text": "How we checked it"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Tornado's maintainers added two regression tests with their fix: one for a write that isn't awaited, and one for a write that is. On the code before the fix, the first one fails. With the model's patch applied, both pass. We then ran Tornado's full suite, 1,673 tests, with the patch in place, and none failed.",
+          "inlines": [
+            {
+              "text": "Tornado's maintainers added two regression tests with their fix: one for a write that isn't awaited, and one for a write that is. On the code before the fix, the first one fails. With the model's patch applied, both pass. We then ran Tornado's full suite, 1,673 tests, with the patch in place, and none failed."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What it cost",
+          "inlines": [
+            {
+              "text": "What it cost"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "At the sale price, the request works out to about 69 cents, nearly all of it for the 652,519 input tokens. At list price it would be 98 cents.",
+          "inlines": [
+            {
+              "text": "At the sale price, the request works out to about 69 cents, nearly all of it for the 652,519 input tokens. At list price it would be 98 cents."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Sending the same repository again costs far less. Together AI caches prompt input automatically, and cached input is \\$0.0525 per million tokens during the sale. When we repeated a request of about 630,000 tokens, nearly all of it came back cached. The first token arrived in 8 seconds instead of 54, and the input cost about 3 cents instead of 66.",
+          "inlines": [
+            {
+              "text": "Sending the same repository again costs far less. Together AI caches prompt input automatically, and cached input is \\$0.0525 per million tokens during the sale. When we repeated a request of about 630,000 tokens, nearly all of it came back cached. The first token arrived in 8 seconds instead of 54, and the input cost about 3 cents instead of 66."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "About Qwen4 Max",
+          "inlines": [
+            {
+              "text": "About Qwen4 Max"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Alibaba released Qwen4 Max on November 16, 2026, and describes it as the most capable model in the Qwen family to date. It positions the model for long agent work, including coding across large repositories, which is the kind of task we tested.",
+          "inlines": [
+            {
+              "text": "Alibaba released Qwen4 Max on November 16, 2026, and describes it as the most capable model in the Qwen family to date. It positions the model for long agent work, including coding across large repositories, which is the kind of task we tested."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max is a sparse mixture-of-experts model with 2.4 trillion parameters, of which 71 billion are active for each token. On Work360, Alibaba's own benchmark of industry tasks across 721 specialized fields, Alibaba reports that it outperforms Qwen3.8 Max overall, uses 35% fewer tokens at high reasoning effort, and costs about 60% less per task on average. Those are Alibaba's figures, and its announcement has the details.",
+          "inlines": [
+            {
+              "text": "Qwen4 Max is a sparse mixture-of-experts model with 2.4 trillion parameters, of which 71 billion are active for each token. On Work360, Alibaba's own benchmark of industry tasks across 721 specialized fields, Alibaba reports that it outperforms Qwen3.8 Max overall, uses 35% fewer tokens at high reasoning effort, and costs about 60% less per task on average. Those are Alibaba's figures, and "
+            },
+            {
+              "href": "https://www.alibabacloud.com/en/press-room/alibaba-unveils-qwen4-max",
+              "text": "its announcement"
+            },
+            {
+              "text": " has the details."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Run it on Together AI",
+          "inlines": [
+            {
+              "text": "Run it on Together AI"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max is on Together Serverless Inference under the model string Qwen/Qwen4-Max. This script sends a whole repository and a bug report in one request, the way our test did. You need the Together Python SDK (pip install together), a TOGETHER_API_KEY, a local clone of the repository and the bug report saved as bug_report.md. It sends every text file git tracks, so check the repository for secrets first.",
+          "inlines": [
+            {
+              "text": "Qwen4 Max is on Together Serverless Inference under the model string "
+            },
+            {
+              "code": true,
+              "text": "Qwen/Qwen4-Max"
+            },
+            {
+              "text": ". This script sends a whole repository and a bug report in one request, the way our test did. You need the Together Python SDK ("
+            },
+            {
+              "code": true,
+              "text": "pip install together"
+            },
+            {
+              "text": "), a "
+            },
+            {
+              "code": true,
+              "text": "TOGETHER_API_KEY"
+            },
+            {
+              "text": ", a local clone of the repository and the bug report saved as "
+            },
+            {
+              "code": true,
+              "text": "bug_report.md"
+            },
+            {
+              "text": ". It sends every text file git tracks, so check the repository for secrets first."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "import subprocess\nfrom pathlib import Path\n\nfrom together import Together\n\nrepo = Path(\"tornado\")\nbug_report = Path(\"bug_report.md\").read_text()\n\n# Every file git tracks, skipping the ones that aren't text\nnames = subprocess.check_output(\n    [\"git\", \"-C\", str(repo), \"ls-files\"], text=True\n).splitlines()\nfiles = []\nfor name in names:\n    try:\n        files.append(f\"=== FILE: {name} ===\\n{(repo / name).read_text()}\\n\")\n    except UnicodeDecodeError:\n        continue\n\nclient = Together()\n\nstream = client.chat.completions.create(\n    model=\"Qwen/Qwen4-Max\",\n    messages=[\n        {\n            \"role\": \"system\",\n            \"content\": f\"This is a complete repository, {len(files)} files.\\n\\n\"\n            + \"\".join(files),\n        },\n        {\n            \"role\": \"user\",\n            \"content\": f\"Here is a bug report.\\n\\n{bug_report}\\n\\n\"\n            \"Explain the cause, then write a patch.\",\n        },\n    ],\n    stream=True,\n)\n\nfor chunk in stream:\n    if not chunk.choices:\n        continue\n    delta = chunk.choices[0].delta\n    # delta.reasoning carries the model's thinking, delta.content the answer\n    if delta.content:\n        print(delta.content, end=\"\", flush=True)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Two things in it are specific to this model. Requests have to set stream=True, because Qwen4 Max on Together AI accepts streaming requests only. And thinking is on by default, so the model's reasoning streams first in delta.reasoning and there's a pause before the answer starts. Thinking tokens count as output tokens. To skip the thinking on a simple request, pass reasoning={\"enabled\": False}.",
+          "inlines": [
+            {
+              "text": "Two things in it are specific to this model. Requests have to set "
+            },
+            {
+              "code": true,
+              "text": "stream=True"
+            },
+            {
+              "text": ", because Qwen4 Max on Together AI accepts streaming requests only. And thinking is on by default, so the model's reasoning streams first in "
+            },
+            {
+              "code": true,
+              "text": "delta.reasoning"
+            },
+            {
+              "text": " and there's a pause before the answer starts. Thinking tokens count as output tokens. To skip the thinking on a simple request, pass "
+            },
+            {
+              "code": true,
+              "text": "reasoning={\"enabled\": False}"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To try it without writing code, open it in the playground. The model page has the same details.",
+          "inlines": [
+            {
+              "text": "To try it without writing code, open it "
+            },
+            {
+              "href": "https://api.together.ai/playground/v2/chat/Qwen/Qwen4-Max",
+              "text": "in the playground"
+            },
+            {
+              "text": ". The "
+            },
+            {
+              "href": "https://www.together.ai/models/qwen4-max",
+              "text": "model page"
+            },
+            {
+              "text": " has the same details."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "FAQs",
+          "inlines": [
+            {
+              "text": "FAQs"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "How much does Qwen4 Max cost on Together AI?",
+          "inlines": [
+            {
+              "text": "How much does Qwen4 Max cost on Together AI?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max on Together AI has a list price of \\$1.50 per 1M input tokens, \\$4.50 per 1M output tokens and \\$0.075 per 1M cached input tokens. Through November 22, 2026, it's 30% off: \\$1.05, \\$3.15 and \\$0.0525. Thinking tokens count as output tokens.",
+          "inlines": [
+            {
+              "text": "Qwen4 Max on Together AI has a list price of \\$1.50 per 1M input tokens, \\$4.50 per 1M output tokens and \\$0.075 per 1M cached input tokens. Through November 22, 2026, it's 30% off: \\$1.05, \\$3.15 and \\$0.0525. Thinking tokens count as output tokens."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is the context window of Qwen4 Max on Together AI?",
+          "inlines": [
+            {
+              "text": "What is the context window of Qwen4 Max on Together AI?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max has a 1M-token context window on Together AI. In our test, a request with 652,519 input tokens returned its first token after 54 seconds.",
+          "inlines": [
+            {
+              "text": "Qwen4 Max has a 1M-token context window on Together AI. In our test, a request with 652,519 input tokens returned its first token after 54 seconds."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Does Qwen4 Max accept images?",
+          "inlines": [
+            {
+              "text": "Does Qwen4 Max accept images?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Yes, Qwen4 Max accepts text and image input on Together AI and returns text. Send each image as an image_url block in the message content, as described in the vision docs.",
+          "inlines": [
+            {
+              "text": "Yes, Qwen4 Max accepts text and image input on Together AI and returns text. Send each image as an "
+            },
+            {
+              "code": true,
+              "text": "image_url"
+            },
+            {
+              "text": " block in the message content, as described in the "
+            },
+            {
+              "href": "https://docs.together.ai/docs/inference/vision/overview",
+              "text": "vision docs"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why does my Qwen4 Max request fail without streaming?",
+          "inlines": [
+            {
+              "text": "Why does my Qwen4 Max request fail without streaming?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Qwen4 Max on Together AI accepts streaming requests only. A request without \"stream\": true returns a 400 error with the code streaming_required. Set stream=True in the SDK, or \"stream\": true in the request body, and read the reply from the stream.",
+          "inlines": [
+            {
+              "text": "Qwen4 Max on Together AI accepts streaming requests only. A request without "
+            },
+            {
+              "code": true,
+              "text": "\"stream\": true"
+            },
+            {
+              "text": " returns a 400 error with the code "
+            },
+            {
+              "code": true,
+              "text": "streaming_required"
+            },
+            {
+              "text": ". Set "
+            },
+            {
+              "code": true,
+              "text": "stream=True"
+            },
+            {
+              "text": " in the SDK, or "
+            },
+            {
+              "code": true,
+              "text": "\"stream\": true"
+            },
+            {
+              "text": " in the request body, and read the reply from the stream."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How do I turn off thinking on Qwen4 Max?",
+          "inlines": [
+            {
+              "text": "How do I turn off thinking on Qwen4 Max?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Pass reasoning={\"enabled\": False} in the Python SDK, or \"reasoning\": {\"enabled\": false} in the request body, to turn off thinking on Qwen4 Max. Thinking is on by default, and it comes back in the reasoning field ahead of the answer. To get more thinking on a hard problem, set reasoning_effort to \"max\".",
+          "inlines": [
+            {
+              "text": "Pass "
+            },
+            {
+              "code": true,
+              "text": "reasoning={\"enabled\": False}"
+            },
+            {
+              "text": " in the Python SDK, or "
+            },
+            {
+              "code": true,
+              "text": "\"reasoning\": {\"enabled\": false}"
+            },
+            {
+              "text": " in the request body, to turn off thinking on Qwen4 Max. Thinking is on by default, and it comes back in the "
+            },
+            {
+              "code": true,
+              "text": "reasoning"
+            },
+            {
+              "text": " field ahead of the answer. To get more thinking on a hard problem, set "
+            },
+            {
+              "code": true,
+              "text": "reasoning_effort"
+            },
+            {
+              "text": " to "
+            },
+            {
+              "code": true,
+              "text": "\"max\""
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Does Qwen4 Max support tool calling?",
+          "inlines": [
+            {
+              "text": "Does Qwen4 Max support tool calling?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Yes, Qwen4 Max supports tool calling on Together AI through the standard tools parameter. It can return more than one call in a turn.",
+          "inlines": [
+            {
+              "text": "Yes, Qwen4 Max supports tool calling on Together AI through the standard "
+            },
+            {
+              "code": true,
+              "text": "tools"
+            },
+            {
+              "text": " parameter. It can return more than one call in a turn."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Does prompt caching work with Qwen4 Max?",
+          "inlines": [
+            {
+              "text": "Does prompt caching work with Qwen4 Max?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Yes, prompt caching is automatic for Qwen4 Max on Together AI, and cached input tokens cost \\$0.075 per 1M at list price. In our test, a repeat of a 630,000-token request came back almost entirely cached, and its first token arrived in 8 seconds instead of 54. Caching is best effort, so not every repeat is cached.",
+          "inlines": [
+            {
+              "text": "Yes, prompt caching is automatic for Qwen4 Max on Together AI, and cached input tokens cost \\$0.075 per 1M at list price. In our test, a repeat of a 630,000-token request came back almost entirely cached, and its first token arrived in 8 seconds instead of 54. Caching is best effort, so not every repeat is cached."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Can I fine-tune Qwen4 Max or run it on a dedicated endpoint?",
+          "inlines": [
+            {
+              "text": "Can I fine-tune Qwen4 Max or run it on a dedicated endpoint?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "No, Qwen4 Max is serverless only on Together AI today, and it isn't available for fine-tuning. Alibaba says smaller open-weight models from the Qwen4 series will follow.",
+          "inlines": [
+            {
+              "text": "No, Qwen4 Max is serverless only on Together AI today, and it isn't available for fine-tuning. Alibaba says smaller open-weight models from the Qwen4 series will follow."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-22T01:10:14.525040Z",
+  "contentMode": "full"
+}
