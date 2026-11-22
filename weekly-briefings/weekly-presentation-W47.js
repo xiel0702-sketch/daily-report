@@ -1,7 +1,7 @@
 /* Both views use the complete weekly Markdown as their content source. */
 (() => {
   'use strict';
-  const SOURCE = '../weekly-reports/2026-W47.md?v=20261122-w47';
+  const SOURCE = '../weekly-reports/2026-W47.md?v=20261122-w47-r2';
   const deck = document.getElementById('deck');
   const modeButton = document.getElementById('presentationToggle');
   const fullButton = document.getElementById('fullscreenToggle');
@@ -104,7 +104,7 @@
           images.forEach(image => {
             const card = element('figure', 'weekly-image-card');
             const assetSrc = new URL('../' + image.src, location.href);
-            assetSrc.searchParams.set('v', '20261122-w47');
+            assetSrc.searchParams.set('v', '20261122-w47-r2');
             const anchor = link('', assetSrc.href);
             const picture = element('img');
             picture.src = assetSrc.href; picture.alt = image.alt;
@@ -168,7 +168,7 @@
           wrapper = element('div', 'table-block');
           if (caption) { const label = caption.cloneNode(true); if (isContinuation) label.append(document.createTextNode('（续）')); wrapper.append(label); }
           const scroller = element('div', 'table-scroll'); const copy = table.cloneNode(false);
-          if (page.section >= 2) copy.classList.add('finance-compact');
+          if (page.section >= 1) copy.classList.add('finance-compact');
           copy.append(table.querySelector('thead').cloneNode(true)); body = element('tbody'); copy.append(body); scroller.append(copy); wrapper.append(scroller); page.content.append(wrapper);
         }
         let continued = false;
