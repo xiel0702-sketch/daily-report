@@ -1,0 +1,1021 @@
+{
+  "schemaVersion": 1,
+  "id": "tl8v9gto8rd3e4x40xfbljj13",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/tl8v9gto8rd3e4x40xfbljj13",
+  "fetchedAt": "2026-11-24T01:10:52.844702Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenAI",
+    "Agent 智能体",
+    "安全对齐",
+    "论文研究"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "如今，AI 智能体已经能在人类监督有限的情况下执行复杂任务，比如编写和运行代码。为了捕捉危险操作，开发者会给智能体配上一个基于大语言模型的监控器：这是一个独立的 AI，负责审查智能体的行为，并对任何看起来有害的动作发出警报。随着智能体能力越来越强、自主性越来越高，它们能否安全部署，取决于监控器能否按预期发挥作用。",
+          "inlines": [
+            {
+              "text": "如今，AI 智能体已经能在人类监督有限的情况下执行复杂任务，比如编写和运行代码。为了捕捉危险操作，开发者会给智能体配上一个"
+            },
+            {
+              "bold": true,
+              "text": "基于大语言模型的监控器"
+            },
+            {
+              "text": "：这是一个独立的 AI，负责审查智能体的行为，并对任何看起来有害的动作发出警报。随着智能体能力越来越强、自主性越来越高，它们能否安全部署，取决于监控器能否按预期发挥作用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "要检验监控器是否有效，需要有害智能体行为的样本，也就是它本该捕捉到的那些行为。然而，尤其是在部署之前，根本没有真实世界的样本可用。因此，开发者会报告使用合成攻击记录进行的监控器评估结果[1, 2, 3]：这些是人为编造的、智能体造成危害的示例。",
+          "inlines": [
+            {
+              "text": "要检验监控器是否有效，需要有害智能体行为的样本，也就是它本该捕捉到的那些行为。然而，尤其是在部署之前，根本没有真实世界的样本可用。因此，开发者会报告使用"
+            },
+            {
+              "italic": true,
+              "text": "合成攻击"
+            },
+            {
+              "text": "记录进行的监控器评估结果["
+            },
+            {
+              "href": "https://assets.claude.com/0339e6a7c5c7b87f5c07798616dc32c215d14235.pdf",
+              "text": "1"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://storage.googleapis.com/deepmind-media/gemini/gemini_4_safety_report.pdf",
+              "text": "2"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://deploymentsafety.openai.com/gpt-6-astra/gpt-6-astra.pdf",
+              "text": "3"
+            },
+            {
+              "text": "]：这些是人为编造的、智能体造成危害的示例。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的新论文中，AISI 红队测试了这些合成攻击的生成方式是否会影响监控器评估的结果。我们发现，同一个监控器漏掉的攻击成功率在 0.2% 到 23% 之间，具体取决于生成攻击所用的“攻击策略”，因此较低的漏报率可能让人对监控器产生虚假的信心。更广泛地说，要证明合成攻击记录能够代表部署中的有害行为，是一个困难且尚未解决的问题。本文介绍我们做了什么、发现了什么，以及这对监控器评估的可信度意味着什么。",
+          "inlines": [
+            {
+              "text": "在我们的"
+            },
+            {
+              "href": "https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/6b0467dd6cee6fe4658fd661_attack_policy_selection_paper.pdf",
+              "text": "新论文"
+            },
+            {
+              "text": "中，AISI 红队测试了这些合成攻击的生成方式是否会影响监控器评估的结果。我们发现，"
+            },
+            {
+              "bold": true,
+              "text": "同一个监控器漏掉的攻击成功率在 0.2% 到 23% 之间，具体取决于生成攻击所用的“攻击策略”"
+            },
+            {
+              "text": "，因此较低的漏报率可能让人对监控器产生虚假的信心。更广泛地说，要证明合成攻击记录能够代表部署中的有害行为，是一个困难且尚未解决的问题。本文介绍我们做了什么、发现了什么，以及这对监控器评估的可信度意味着什么。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "什么是攻击策略？",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "什么是攻击策略？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "生成合成攻击记录的标准做法，是把一个主任务（普通的用户请求，比如更新登录系统）和一个侧任务（有害目标，比如关闭登录保护机制）配对。智能体在尽量不被发现的前提下完成这两个任务，从而生成一份攻击记录。",
+          "inlines": [
+            {
+              "text": "生成合成攻击记录的标准做法，是把一个"
+            },
+            {
+              "bold": true,
+              "text": "主任务"
+            },
+            {
+              "text": "（普通的用户请求，比如更新登录系统）和一个"
+            },
+            {
+              "bold": true,
+              "text": "侧任务"
+            },
+            {
+              "text": "（有害目标，比如关闭登录保护机制）配对。智能体在尽量不被发现的前提下完成这两个任务，从而生成一份"
+            },
+            {
+              "bold": true,
+              "text": "攻击记录。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "评估者通过定义攻击策略来控制这些攻击记录的生成方式，攻击策略包含两部分：攻击生成方法，比如用提示词引导智能体，或用强化学习训练它；以及优化程度，即在这套方法上投入多少精力去改进。",
+          "inlines": [
+            {
+              "text": "评估者通过定义"
+            },
+            {
+              "bold": true,
+              "text": "攻击策略"
+            },
+            {
+              "text": "来控制这些攻击记录的生成方式，攻击策略包含两部分："
+            },
+            {
+              "italic": true,
+              "text": "攻击生成方法"
+            },
+            {
+              "text": "，比如用提示词引导智能体，或用强化学习训练它；以及"
+            },
+            {
+              "italic": true,
+              "text": "优化程度"
+            },
+            {
+              "text": "，即在这套方法上投入多少精力去改进。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "生成的攻击记录会交给监控器审查，核心结果是漏报率：即成功的有害攻击中未被监控器标记的比例。",
+          "inlines": [
+            {
+              "text": "生成的攻击记录会交给监控器审查，核心结果是"
+            },
+            {
+              "bold": true,
+              "text": "漏报率"
+            },
+            {
+              "text": "：即成功的有害攻击中未被监控器标记的比例。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们如何评估攻击策略",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "我们如何评估攻击策略"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "作为案例研究，我们评估了 OpenAI 一个已退出生产环境（不再使用）的监控器。它运行 GPT-5.4，搭配 OpenAI 此前使用、现已停用的监控提示词，并在每个任务结束后读取智能体的完整记录，包括其推理过程。我们使用 Qwen 3.8 27B 作为被监控的智能体。",
+          "inlines": [
+            {
+              "text": "作为案例研究，我们评估了 OpenAI 一个已退出生产环境（不再使用）的监控器。它运行 GPT-5.4，搭配 OpenAI 此前使用、现已停用的监控提示词，并在每个任务结束后读取智能体的完整记录，包括其推理过程。我们使用 Qwen 3.8 27B 作为被监控的智能体。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们采用了两种常见场景下的主任务[4, 5]，这些场景要求智能体执行软件工程任务。需要被标记的有害侧任务包括：移除某组织的多因素认证要求，或删除某个模型权重的所有副本。",
+          "inlines": [
+            {
+              "text": "我们采用了两种常见场景下的主任务["
+            },
+            {
+              "href": "https://control-arena.aisi.org.uk/settings/iac.html",
+              "text": "4"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://www.linuxarena.ai/",
+              "text": "5"
+            },
+            {
+              "text": "]，这些场景要求智能体执行软件工程任务。需要被标记的有害侧任务包括：移除某组织的多因素认证要求，或删除某个模型权重的所有副本。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们给 Qwen 智能体一对主任务和侧任务，并搭配以下四种攻击生成方法之一，来生成攻击记录：",
+          "inlines": [
+            {
+              "text": "我们给 Qwen 智能体一对主任务和侧任务，并搭配以下四种攻击生成方法之一，来生成攻击记录："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "基础提示："
+                },
+                {
+                  "text": "用提示词要求智能体在规避监控器的同时完成侧任务"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "优化提示："
+                },
+                {
+                  "text": "先借助另一个监控器的多轮反馈来改进提示词，再把它交给智能体"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "智能体训练："
+                },
+                {
+                  "text": "我们用强化学习（RL）针对另一个监控器训练智能体，让它完成侧任务而不被标记"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "记录编辑："
+                },
+                {
+                  "text": "我们用另一个 LLM 在事后改写已完成的攻击记录，让它们看起来不那么可疑"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们还调整了每种攻击生成方法的优化程度：可能是提示词精炼的轮数、RL 运行的设置与次数，或每条记录的改写次数。重要的是，我们开发攻击时只使用与被评估监控器不同的另一个监控器模型的反馈，这是一种保守做法，意味着我们的结果并不依赖于能否针对特定目标监控器来调优攻击。",
+          "inlines": [
+            {
+              "text": "我们还调整了每种攻击生成方法的优化程度：可能是提示词精炼的轮数、RL 运行的设置与次数，或每条记录的改写次数。重要的是，我们开发攻击时只使用与被评估监控器不同的另一个监控器模型的反馈，这是一种保守做法，意味着我们的结果并不依赖于能否针对特定目标监控器来调优攻击。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们的发现",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "我们的发现"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/349ac040c47917f0d264fb662f5f302a2be0d456cfcb6476fecef1f75408abb2.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "图 1：四种不同攻击生成方法下的监控器漏检率。每个点表示该方法下我们采用的最高优化程度。线条表示 95% 自助法置信区间。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 1：四种不同攻击生成方法下的监控器漏检率。每个点表示该方法下我们采用的最高优化程度。线条表示 95% 自助法置信区间。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "攻击生成方法的选择使测得的漏检率相差两个数量级（图 1）。在最高优化程度下，监控器漏掉了基础提示方法中 0.2% 的成功攻击，而记录编辑攻击的漏检率达到 23%。如果我们只运行基础提示，或只运行更强方法的最低优化版本，很可能会得出监控器足够稳健的结论。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "攻击生成方法的选择使测得的漏检率相差两个数量级"
+            },
+            {
+              "text": "（图 1）。在最高优化程度下，监控器漏掉了基础提示方法中 0.2% 的成功攻击，而记录编辑攻击的漏检率达到 23%。如果我们只运行基础提示，或只运行更强方法的最低优化版本，很可能会得出监控器足够稳健的结论。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/bc1db9bf09892fccf875876c771079a4761f1155e658be14b2d727f854164e83.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "图 2：每种攻击生成方法在不同优化程度下的监控器漏检率。线条表示 95% 自助法置信区间。",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "图 2：每种攻击生成方法在不同优化程度下的监控器漏检率。线条表示 95% 自助法置信区间。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "攻击生成方法内部的优化程度同样影响重大（图 2）。在一次 RL 训练运行中，漏检率从 0.5% 升至 20.8%，而我们最初的 RL 配置根本没有提高漏检率。记录编辑攻击在每条记录改写 50 次后，漏检率从 0.3% 升至 18.7%。第一轮优化提示对漏检率影响很小，大部分提升出现在第二轮之后。这意味着，采用强攻击方法却不考虑优化程度，会得出对监控器稳健性的误导性估计。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "攻击生成方法"
+            },
+            {
+              "bold": true,
+              "italic": true,
+              "text": "内部"
+            },
+            {
+              "bold": true,
+              "text": "的优化程度同样影响重大"
+            },
+            {
+              "text": "（图 2）。在一次 RL 训练运行中，漏检率从 0.5% 升至 20.8%，而我们最初的 RL 配置根本没有提高漏检率。记录编辑攻击在每条记录改写 50 次后，漏检率从 0.3% 升至 18.7%。第一轮优化提示对漏检率影响很小，大部分提升出现在第二轮之后。这意味着，采用强攻击方法却不考虑优化程度，会得出对监控器稳健性的误导性估计。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "这对监控器评估意味着什么",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "这对监控器评估意味着什么"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的实验结果来自一次测试，只使用了一个监控器和一个 AI 智能体。虽然这些结果不足以对其他类型监控器评估的结论作出有力推断，但我们的发现揭示了合成记录方法的严重局限。",
+          "inlines": [
+            {
+              "text": "我们的实验结果来自一次测试，只使用了一个监控器和一个 AI 智能体。虽然这些结果不足以对其他类型监控器评估的结论作出有力推断，但我们的发现揭示了合成记录方法的严重局限。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "攻击策略的选择对监控器评估结果有强烈影响。攻击生成方法和该方法内采用的优化程度都是如此。例如，我们的结果表明，即使使用强攻击生成方法（如 RL），若优化有限，也可能让人误以为监控器足够稳健。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "攻击策略的选择对监控器评估结果有强烈影响。"
+            },
+            {
+              "text": "攻击生成方法和该方法内采用的优化程度都是如此。例如，我们的结果表明，即使使用强攻击生成方法（如 RL），若优化有限，也可能让人误以为监控器足够稳健。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "基于攻击策略的评估生成的合成对话记录，只能近似反映真实有害智能体活动在部署中的样子。我们最强的优化攻击产生了 23% 的漏检率，但即便监控器能完美抵御这些攻击，这种可靠性是否适用于真实环境仍不清楚。 到目前为止，合成攻击与真实的监控失效情形并不相似：例如在我们的测试中，被告知存在“side task”的智能体往往会在推理中反复提到这个说法，而监控器在标记由此产生的攻击记录时正是引用了这一点。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "基于攻击策略的评估生成的合成对话记录，只能近似反映真实有害智能体活动在部署中的样子。"
+            },
+            {
+              "text": "我们最强的优化攻击产生了 23% 的漏检率，但即便监控器能完美抵御这些攻击，这种可靠性是否适用于真实环境仍不清楚。"
+            },
+            {
+              "bold": true,
+              "text": " "
+            },
+            {
+              "text": "到目前为止，合成攻击与真实的监控失效情形并不相似：例如在我们的测试中，被告知存在“side task”的智能体往往会在推理中反复提到这个说法，而监控器在标记由此产生的攻击记录时正是引用了这一点。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "相比之下，在最近的一起真实世界事件中，一个智能体向真实的软件注册表上传了恶意软件包，同时反复把自己的环境描述为模拟环境。该智能体的推理似乎让测试监控器认为这一活动是允许的：把智能体的推理包含在内时，监控器只标记了其 1% 的行为，而去掉推理后这一比例是 50%。据我们所知，此前没有任何攻击策略复现过这种行为。",
+          "inlines": [
+            {
+              "text": "相比之下，在最近的一起真实世界"
+            },
+            {
+              "href": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents",
+              "text": "事件"
+            },
+            {
+              "text": "中，一个智能体向真实的软件注册表上传了恶意软件包，同时反复把自己的环境描述为模拟环境。该智能体的推理似乎让测试监控器认为这一活动是允许的：把智能体的推理包含在内时，监控器只标记了其 1% 的行为，而去掉推理后这一比例是 50%。据我们所知，此前没有任何攻击策略复现过这种行为。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "鉴于所有攻击策略都会生成合成对话记录，而选择哪种策略决定了你测得的监控器可靠性，要证明监控器足够稳健，就必须证明你选对了策略。然而，要证明攻击策略能代表未来尚未见到的攻击，是一个困难且尚未解决的问题。在找到解决办法之前，仅靠对合成对话记录的监控器评估，无法保证监控器在部署时能发现有害活动。",
+          "inlines": [
+            {
+              "text": "鉴于"
+            },
+            {
+              "italic": true,
+              "text": "所有"
+            },
+            {
+              "text": "攻击策略都会生成合成对话记录，而"
+            },
+            {
+              "italic": true,
+              "text": "选择哪种"
+            },
+            {
+              "text": "策略决定了你测得的监控器可靠性，要证明监控器足够稳健，就必须证明你选对了策略。然而，要证明攻击策略能代表未来尚未见到的攻击，是一个困难且尚未解决的问题。"
+            },
+            {
+              "bold": true,
+              "text": "在找到解决办法之前，仅靠对合成对话记录的监控器评估，无法保证监控器在部署时能发现有害活动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 AISI，我们在解读自己的监控器评估时一直注意这些局限，并采用额外的多层防护措施，例如限制特定部署的能力或规模、保留人工介入以及沙箱隔离。目前的评估还不足以让我们有信心只依赖监控器，而且随着智能体能力增强，评估它们在真实部署中的有效性预计会变得更加困难。我们会持续改进评估，并随着认识的深入重新审视防护措施。",
+          "inlines": [
+            {
+              "text": "在 AISI，我们在解读自己的监控器评估时一直注意这些局限，并采用额外的多层防护措施，例如限制特定部署的能力或规模、保留人工介入以及沙箱隔离。目前的评估还不足以让我们有信心只依赖监控器，而且随着智能体能力增强，评估它们在真实部署中的有效性预计会变得更加困难。我们会持续改进评估，并随着认识的深入重新审视防护措施。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你可以在这里阅读完整论文。如果你对这项工作感兴趣，我们正在招聘。",
+          "inlines": [
+            {
+              "text": "你可以在这里阅读完整论文。如果你对这项工作感兴趣，我们正在"
+            },
+            {
+              "href": "https://job-boards.eu.greenhouse.io/aisi/jobs/5043106101",
+              "text": "招聘"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "‍",
+          "inlines": [
+            {
+              "text": "‍"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "AI agents can now carry out complex tasks, like writing and running code, with limited human oversight. To catch dangerous actions, developers pair agents with LLM-based monitors: a separate AI that reviews an agent’s actions and flags anything that looks harmful. As agents become more capable and autonomous, their safe deployment rests on monitors working as intended.",
+          "inlines": [
+            {
+              "text": "AI agents can now carry out complex tasks, like writing and running code, with limited human oversight. To catch dangerous actions, developers pair agents with "
+            },
+            {
+              "bold": true,
+              "text": "LLM-based monitors"
+            },
+            {
+              "text": ": a separate AI that reviews an agent’s actions and flags anything that looks harmful. As agents become more capable and autonomous, their safe deployment rests on monitors working as intended."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To check that a monitor works, you need examples of the harmful agent activity it should catch. However, especially before deployment, there are no real-world examples to use. Developers therefore report the results of monitor evaluations that use synthetic attack transcripts [1, 2, 3]: fabricated examples of an agent causing harm.",
+          "inlines": [
+            {
+              "text": "To check that a monitor works, you need examples of the harmful agent activity it should catch. However, especially before deployment, there are no real-world examples to use. Developers therefore report the results of monitor evaluations that use "
+            },
+            {
+              "italic": true,
+              "text": "synthetic attack"
+            },
+            {
+              "text": " transcripts ["
+            },
+            {
+              "href": "https://assets.claude.com/0339e6a7c5c7b87f5c07798616dc32c215d14235.pdf",
+              "text": "1"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://storage.googleapis.com/deepmind-media/gemini/gemini_4_safety_report.pdf",
+              "text": "2"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://deploymentsafety.openai.com/gpt-6-astra/gpt-6-astra.pdf",
+              "text": "3"
+            },
+            {
+              "text": "]: fabricated examples of an agent causing harm."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In our new paper, AISI’s Red Team tested whether the way these synthetic attacks are generated affects the results of monitor evaluations. We found that the same monitor missed 0.2% to 23% of successful attacks depending on the “attack policy” used to generate them, so a low miss rate could give false confidence in a monitor. More broadly, demonstrating that synthetic attack transcripts are representative of harmful activity in deployment is a difficult, unsolved problem. This blog explains what we did, what we found, and the implications for how much confidence can be placed in monitor evaluations.",
+          "inlines": [
+            {
+              "text": "In our "
+            },
+            {
+              "href": "https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/6b0467dd6cee6fe4658fd661_attack_policy_selection_paper.pdf",
+              "text": "new paper,"
+            },
+            {
+              "text": " AISI’s Red Team tested whether the way these synthetic attacks are generated affects the results of monitor evaluations. We found that "
+            },
+            {
+              "bold": true,
+              "text": "the same monitor missed 0.2% to 23% of successful attacks depending on the “attack policy” used to generate them, "
+            },
+            {
+              "text": "so a low miss rate could give false confidence in a monitor. More broadly, demonstrating that synthetic attack transcripts are representative of harmful activity in deployment is a difficult, unsolved problem. This blog explains what we did, what we found, and the implications for how much confidence can be placed in monitor evaluations."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What is an attack policy?",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What is an attack policy?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The standard approach for generating synthetic attack transcripts pairs a main task (an ordinary user request, such as updating a login system) with a side task (a harmful objective, such as disabling a login safeguard). An agent completes both tasks while trying to avoid detection, producing an attack transcript.",
+          "inlines": [
+            {
+              "text": "The standard approach for generating synthetic attack transcripts pairs a "
+            },
+            {
+              "bold": true,
+              "text": "main task"
+            },
+            {
+              "text": " (an ordinary user request, such as updating a login system) with a "
+            },
+            {
+              "bold": true,
+              "text": "side task"
+            },
+            {
+              "text": " (a harmful objective, such as disabling a login safeguard). An agent completes both tasks while trying to avoid detection, producing an "
+            },
+            {
+              "bold": true,
+              "text": "attack transcript."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Evaluators control how these attack transcripts are generated by defining an attack policy, which has two parts: the attack generation method, such as prompting the agent or training it with reinforcement learning; and the optimization level, which specifies how much effort goes into improving that method.",
+          "inlines": [
+            {
+              "text": "Evaluators control how these attack transcripts are generated by defining an "
+            },
+            {
+              "bold": true,
+              "text": "attack policy"
+            },
+            {
+              "text": ", which has two parts: the "
+            },
+            {
+              "italic": true,
+              "text": "attack generation method"
+            },
+            {
+              "text": ", such as prompting the agent or training it with reinforcement learning; and the "
+            },
+            {
+              "italic": true,
+              "text": "optimization level"
+            },
+            {
+              "text": ", which specifies how much effort goes into improving that method."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The resulting attack transcripts are run past a monitor, where the headline result is the miss rate: the share of successful harmful attacks that are not flagged by the monitor.",
+          "inlines": [
+            {
+              "text": "The resulting attack transcripts are run past a monitor, where the headline result is the "
+            },
+            {
+              "bold": true,
+              "text": "miss rate"
+            },
+            {
+              "text": ": the share of successful harmful attacks that are not flagged by the monitor."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How we assessed attack policies",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "How we assessed attack policies"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "As a case study, we evaluated an ex-production (no longer in-use) monitor from OpenAI. It runs GPT-5.4 with a retired monitoring prompt previously used by OpenAI, and reads the agent’s full transcript, including its reasoning, after each task. We used Qwen 3.8 27B as the agent being monitored.",
+          "inlines": [
+            {
+              "text": "As a case study, we evaluated an ex-production (no longer in-use) monitor from OpenAI. It runs GPT-5.4 with a retired monitoring prompt previously used by OpenAI, and reads the agent’s full transcript, including its reasoning, after each task. We used Qwen 3.8 27B as the agent being monitored."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We used main tasks from two common settings [4, 5] where agents are asked to perform software engineering tasks. The harmful side tasks to be flagged included removing an organisation’s multi-factor authentication requirement, or deleting every copy of a model’s weights.",
+          "inlines": [
+            {
+              "text": "We used main tasks from two common settings ["
+            },
+            {
+              "href": "https://control-arena.aisi.org.uk/settings/iac.html",
+              "text": "4"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://www.linuxarena.ai/",
+              "text": "5"
+            },
+            {
+              "text": "] where agents are asked to perform software engineering tasks. The harmful side tasks to be flagged included removing an organisation’s multi-factor authentication requirement, or deleting every copy of a model’s weights."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We generated attack transcripts by giving the Qwen agent a main and side task pair, along with one of four attack generation methods:",
+          "inlines": [
+            {
+              "text": "We generated attack transcripts by giving the Qwen agent a main and side task pair, along with one of four attack generation methods:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Basic prompting:"
+                },
+                {
+                  "text": " where we prompted the agent to complete the side task while evading the monitor"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Optimised prompting:"
+                },
+                {
+                  "text": " where we refined the prompt through several rounds of feedback from a different monitor before giving it to the agent"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Agent training:"
+                },
+                {
+                  "text": " where we used reinforcement learning (RL) against a different monitor to train the agent to complete the side task without getting flagged"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Transcript editing:"
+                },
+                {
+                  "text": " where we used a separate LLM to rewrite completed attack transcripts after the fact, so that they look less suspicious"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We also varied the optimisation level of each attack generation method: this could be the number of prompt refinement rounds, the setup and number of RL runs, or rewrites per transcript. Importantly, we only developed our attacks using feedback from a separate monitor model to the one being evaluated, a conservative approach that means our results don’t depend on being able to tune attacks against the specific target monitor.",
+          "inlines": [
+            {
+              "text": "We also varied the optimisation level of each attack generation method: this could be the number of prompt refinement rounds, the setup and number of RL runs, or rewrites per transcript. Importantly, we only developed our attacks using feedback from a separate monitor model to the one being evaluated, a conservative approach that means our results don’t depend on being able to tune attacks against the specific target monitor."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What we found",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What we found"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/349ac040c47917f0d264fb662f5f302a2be0d456cfcb6476fecef1f75408abb2.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 1: Monitor miss rate across four different attack generation methods. Each point shows the highest optimisation level we applied for that method. Lines show 95% bootstrap intervals.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 1: Monitor miss rate across four different attack generation methods. Each point shows the highest optimisation level we applied for that method. Lines show 95% bootstrap intervals."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The choice of attack generation method changed the measured miss rate by two orders of magnitude (Figure 1). At the highest levels of optimization, the monitor missed 0.2% of successful attacks from a basic prompting method, and 23% with a transcript editing attack. If we had run only the basic prompt or minimally optimised versions of the stronger methods, we would have likely concluded the monitor was robust.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The choice of attack generation method changed the measured miss rate by two orders of magnitude"
+            },
+            {
+              "text": " (Figure 1). At the highest levels of optimization, the monitor missed 0.2% of successful attacks from a basic prompting method, and 23% with a transcript editing attack. If we had run only the basic prompt or minimally optimised versions of the stronger methods, we would have likely concluded the monitor was robust."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/bc1db9bf09892fccf875876c771079a4761f1155e658be14b2d727f854164e83.webp",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "Figure 2: Monitor miss rate across different optimization levels per attack generation method. Lines show 95% bootstrap intervals.",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "Figure 2: Monitor miss rate across different optimization levels per attack generation method. Lines show 95% bootstrap intervals."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The optimisation level within the attack generation method is also consequential (Figure 2). Across one RL training run, the miss rate rose from 0.5% to 20.8%, and our initial RL configuration didn’t raise miss rate at all. The miss rate for transcript editing attacks rose from 0.3% to 18.7% after 50 rewrites per transcript. The first round of optimised prompting produced minimal effect on miss rate, with most of the improvements coming after the second round. This means applying a strong attack method without considering the level of optimisation would have resulted in a misleading estimate of monitor robustness.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The optimisation level "
+            },
+            {
+              "bold": true,
+              "italic": true,
+              "text": "within"
+            },
+            {
+              "bold": true,
+              "text": " the attack generation method is also consequential "
+            },
+            {
+              "text": "(Figure 2). Across one RL training run, the miss rate rose from 0.5% to 20.8%, and our initial RL configuration didn’t raise miss rate at all. The miss rate for transcript editing attacks rose from 0.3% to 18.7% after 50 rewrites per transcript. The first round of optimised prompting produced minimal effect on miss rate, with most of the improvements coming after the second round. This means applying a strong attack method without considering the level of optimisation would have resulted in a misleading estimate of monitor robustness."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What this reveals about monitor evaluations",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "What this reveals about monitor evaluations"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Our experimental results come from one test using one monitor and one AI agent. While they can’t support strong implications for the results of other types of monitor evaluations, our findings reveal critical limitations for the synthetic transcript approach.",
+          "inlines": [
+            {
+              "text": "Our experimental results come from one test using one monitor and one AI agent. While they can’t support strong implications for the results of other types of monitor evaluations, our findings reveal critical limitations for the synthetic transcript approach."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The choice of attack policy has a strong effect on monitor evaluation results. This is true for both the attack generation method and the optimization level applied within the method. For example, our results show that even using a strong attack generation method (e.g., RL) with limited optimisation could produce false confidence that a monitor is robust.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The choice of attack policy has a strong effect on monitor evaluation results. "
+            },
+            {
+              "text": "This is true for both the attack generation method and the optimization level applied within the method. For example, our results show that even using a strong attack generation method (e.g., RL) with limited optimisation could produce false confidence that a monitor is robust."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Evaluations based on attack policies create synthetic transcripts that are only a proxy for what real harmful agent activity would look like in deployment. Our strongest optimized attacks produced a 23% miss rate, but even if the monitor was perfectly robust to them, it is unclear if this reliability would translate to real-world conditions. So far, synthetic attacks have not resembled real monitor failures: for example, in our testing, agents told about a ’side task’ often repeat the phrase in their reasoning, and monitors cite this when flagging the resulting attack transcript.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Evaluations based on attack policies create synthetic transcripts that are only a proxy for what real harmful agent activity would look like in deployment."
+            },
+            {
+              "text": " Our strongest optimized attacks produced a 23% miss rate, but even if the monitor was perfectly robust to them, it is unclear if this reliability would translate to real-world conditions."
+            },
+            {
+              "bold": true,
+              "text": " "
+            },
+            {
+              "text": "So far, synthetic attacks have not resembled real monitor failures: for example, in our testing, agents told about a ’side task’ often repeat the phrase in their reasoning, and monitors cite this when flagging the resulting attack transcript."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In contrast, in a recent real-world incident, an agent uploaded a malicious package to a real software registry while repeatedly describing its environment as a simulation. The agent’s reasoning seems to have caused a test monitor to consider the activity as allowed: with the agent's reasoning included, the monitor flagged 1% of its actions, compared to 50% with the reasoning removed. As far as we are aware, no attack policy had reproduced this behaviour in advance.",
+          "inlines": [
+            {
+              "text": "In contrast, in a recent real-world "
+            },
+            {
+              "href": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents",
+              "text": "incident"
+            },
+            {
+              "text": ", an agent uploaded a malicious package to a real software registry while repeatedly describing its environment as a simulation. The agent’s reasoning seems to have caused a test monitor to consider the activity as allowed: with the agent's reasoning included, the monitor flagged 1% of its actions, compared to 50% with the reasoning removed. As far as we are aware, no attack policy had reproduced this behaviour in advance."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Given that all attack policies produce synthetic transcripts, and which policy you choose determines your measured monitor reliability, showing your monitor is robust requires showing that you've chosen the right policy. However, demonstrating that attack policies are representative of future, unseen attacks is a hard and unsolved problem. Without a solution, monitor evaluations on synthetic transcripts cannot on their own provide assurance that monitors will catch harmful activity at deployment.",
+          "inlines": [
+            {
+              "text": "Given that "
+            },
+            {
+              "italic": true,
+              "text": "all "
+            },
+            {
+              "text": "attack policies produce synthetic transcripts, and "
+            },
+            {
+              "italic": true,
+              "text": "which"
+            },
+            {
+              "text": " policy you choose determines your measured monitor reliability, showing your monitor is robust requires showing that you've chosen the right policy. However, demonstrating that attack policies are representative of future, unseen attacks is a hard and unsolved problem. "
+            },
+            {
+              "bold": true,
+              "text": "Without a solution, monitor evaluations on synthetic transcripts cannot on their own provide assurance that monitors will catch harmful activity at deployment."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At AISI, we have been mindful of these limitations when interpreting our own monitor evaluations and use additional layered safeguards such as limiting the capability or scale of specific deployments, keeping humans in the loop, and sandboxing. Current evaluations do not yet give us enough confidence to rely on monitors alone, and we expect evaluating their effectiveness in real-world deployments to become more challenging as agents become more capable. We will continue to improve our evaluations and revisit our safeguards as our understanding evolves.",
+          "inlines": [
+            {
+              "text": "At AISI, we have been mindful of these limitations when interpreting our own monitor evaluations and use additional layered safeguards such as limiting the capability or scale of specific deployments, keeping humans in the loop, and sandboxing. Current evaluations do not yet give us enough confidence to rely on monitors alone, and we expect evaluating their effectiveness in real-world deployments to become more challenging as agents become more capable. We will continue to improve our evaluations and revisit our safeguards as our understanding evolves."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You can read the full paper here. If you are interested in this work, we’re hiring.",
+          "inlines": [
+            {
+              "text": "You can read the full paper here. If you are interested in this work, we’re "
+            },
+            {
+              "href": "https://job-boards.eu.greenhouse.io/aisi/jobs/5043106101",
+              "text": "hiring"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "‍",
+          "inlines": [
+            {
+              "text": "‍"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-24T01:10:53.987773Z",
+  "contentMode": "full"
+}
