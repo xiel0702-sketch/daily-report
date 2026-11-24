@@ -1,0 +1,646 @@
+{
+  "id": "robot-eb2701ff66febea272938825",
+  "title": "RoboTrack: Point tracking for real-world robotic manipulation",
+  "summary": "Ai2发布RoboTrack点追踪基准、训练数据套件及RoboTracker/RoboTracker-Warp模型，基准含307段人工标注视频；公司称在移液任务20次布局中成功17次。",
+  "reason": "材料为Ai2官方技术报告，披露新基准、仿真数据、模型及实机移液试验，量化较充分；但属机构自评，尚无独立复现或商业部署，产业影响和可行动性中等。；存在待复核项",
+  "sourceURL": "https://huggingface.co/blog/allenai/robotrack",
+  "sourceName": "Hugging Face 机器人研究博客",
+  "sourceId": "robot-huggingface",
+  "sourceTier": "T1",
+  "sourceMode": "SIGNAL",
+  "publishedAt": "2026-11-23T17:20:37+00:00",
+  "fetchedAt": "2026-11-24T00:40:19.849760+00:00",
+  "articleBody": "Back to Articles\n\nRoboTrack: Point tracking for real-world robotic manipulation\n\nEnterprise Article\n\nPublished\nNovember 23, 2026\n\nUpvote\n\n2\n\nKyle Wiggers\n\nAi2Comms\n\nFollow\n\nallenai\n\n🤖 Models | 📄 Tech Report | 📊 Data | 💻 Code | 🌐 Project Page | 📈 Benchmark\n\nDeploying robots in real-world settings requires reliable perception throughout an interaction. To pick something up, a robot needs to follow the positions of its gripper and the object as they move. In a laboratory, a robot handling a pipette must keep track of its tip while aligning it with the opening of a tube. These tasks become harder when nearby objects clutter the view, the gripper obscures the object being handled, or the viewing angle changes.\n\nOne way to help robots follow these interactions is to track specific locations on the objects they handle. This is the idea behind point tracking. Given a location in one video frame, a tracker estimates where that same point appears in subsequent frames, when it is occluded, and where it reappears. These trajectories can help robots learn from demonstrations, plan and guide movements, and model how objects respond to actions.\n\nRobotics systems often rely on off-the-shelf trackers to automatically annotate motion in videos and provide feedback during execution. And current trackers score well on established robotics benchmarks, suggesting they could be ready for wider use in real-world systems. We wanted to see whether those results hold up across the varied scenes, viewpoints, and object interactions robots encounter in practice.\n\nWe introduce RoboTrack, a benchmark and training data suite for point tracking in robotic manipulation. RoboTrack-Bench contains 307 human-annotated videos from DROID, Ego-Exo4D, MolmoAct 2, and EgoVerse, covering different robots and human hands, cluttered scenes, and first- and third-person viewpoints. To study how training data affects tracking in these settings, we also extend MolmoSpaces, Ai2’s simulation ecosystem for robot learning, to generate dense point tracks from simulated robot manipulation trajectories. This pipeline produces RoboTrack-15M, a new synthetic training dataset targeted toward robotic manipulation.\n\nRoboTrack is a benchmark and training data suite for point tracking in robotic manipulation. Built on MolmoSpaces, RoboTrack-15M (top-left) generates point tracks for training. Training with this simulated data improves tracking on real manipulation footage. RoboTrack-Bench (top-right) provides human-annotated point tracks in real manipulation videos.\n\nOur evaluations show that leading trackers score much lower on RoboTrack-Bench than on existing robotics benchmarks. Adding RoboTrack-15M to an existing tracker’s training improves performance on real manipulation video, with gains extending to other tracking benchmarks. We bring these pieces together on a real robot, using the resulting tracker to help guide pipette handling in wet-lab tasks.\n\nToday, we’re releasing both RoboTrack components and two new point tracking models: RoboTracker and RoboTracker-Warp. RoboTracker is a fine-tuned AllTracker model using our techniques and data, while RoboTracker-Warp is trained from CoWTracker. Both models improve average AJ across the three robotics benchmarks compared with their respective released baselines, and RoboTracker-Warp achieves state-of-the-art performance on four out of the five benchmarks we evaluated. We’re also releasing our paper describing the work and evaluation results.\n\nRoboTrack-Bench: A benchmark for point-tracking in real-world manipulation\n\nRoboTrack-Bench at a glance. Examples from each source dataset (307 clips and 2,522 human-verified tracks in total). MolmoAct 2 and EgoVerse show one embodiment per panel. DROID and EgoExo4D show synchronized ego (top) and exo (bottom) views.\n\nRoboTrack-Bench expands evaluation beyond controlled tabletop setups. It contains 307 videos from DROID, Ego-Exo4D, MolmoAct 2, and EgoVerse, annotated with a total of 2,522 point tracks. The videos show robots and human hands manipulating objects across cluttered scenes and first- and third-person viewpoints. Small objects can be difficult to follow against a busy background, and grippers often hide the objects they hold.\n\nEvery track in RoboTrack-Bench is annotated and verified by humans. We ask annotators to prioritize points that move or become occluded rather than the many static background points in robot videos. Following the TAP-Vid annotation approach, annotators use motion estimates to help trace each point through a video. They label each track as belonging to a robot or human body, a manipulated object, or a static object to support future analysis of performance on each group. A second group of annotators checks every track frame by frame before it’s included in our curated data.\n\nTo support research in multi-view pointing, correspondence, and tracking, RoboTrack-Bench contains a subset of 33 video pairs that were recorded simultaneously from two cameras. We annotate the same physical points in both views, synchronized across frames, connecting different views of the same interaction.\n\nPoint trackers struggle on real-world manipulation\n\nWe evaluated four leading trackers – CoTracker3, BootsTAPNext, AllTracker, and CoWTracker – on RoboTrack-Bench and four other benchmarks: RoboTAP (real-world tabletop manipulation), RGB-Stacking (simulated manipulation), and DAVIS and Kinetics (general video). We report Average Jaccard (AJ), which measures tracking accuracy and visibility prediction; higher scores are better.\n\nRoboTrack-Bench is harder than existing robot benchmarks. Every final tracker we evaluated scores lower on RoboTrack-Bench than on RoboTAP, the only other real-video robotics benchmark. Their score drops by 3.0 to 6.6 AJ. Even the strongest off-the-shelf tracker, CoWTracker, drops from 70.5 AJ on RoboTAP to 63.9 on RoboTrack-Bench. The drop holds across models despite their different architectures and training data, indicating RoboTrack-Bench identifies weaknesses across multiple trackers.\n\nRGB-Stacking rewards synthetic training more than real-world ability. BootsTAPNext is TAPNext trained further on 15 million real videos. That extra real-world training raises its RoboTrack-Bench score by 5.1 AJ (55.1 to 60.2), but lowers its RGB-Stacking score by 9.5 AJ (75.0 to 65.5). RGB-Stacking is built from simulated block stacking, and it ranks the Kubric-only model higher, while real manipulation video ranks them the other way around.\n\nA lead on the older benchmarks does not carry over. CoWTracker leads CoTracker3 by 4.7 AJ on RoboTAP, but by only 2.1 AJ on RoboTrack-Bench. AllTracker’s 2.7-point lead over CoTracker3 on RoboTAP shrinks to 0.8. BootsTAPNext, the strongest model on DAVIS, falls 3.7 AJ behind CoWTracker on RoboTrack-Bench and even trails the Kubric-only AllTracker (60.2 vs 61.4 AJ), despite its training on 15 million real videos.\n\nThese results suggest that existing benchmarks give an incomplete picture of tracking performance in real-world manipulation. Evaluating on more varied scenes reveals difficulties shared by all four trackers and changes how their strengths compare.\n\nNote: Each tracker runs with its authors’ settings and is all scored in the same way. Our AllTracker scores differ slightly from the published ones because we fixed a scoring bug in its released evaluation code. Additionally, we evaluate RoboTAP and Kinetics on all annotated points rather than following AllTracker’s protocol. See our paper for full evaluation protocols.\n\nRoboTrack-15M: Simulation data from MolmoSpaces\n\nWhy do these trackers struggle with real-world manipulation? Many trackers train on synthetic videos generated with Kubric, which shows objects tossed into a scene. These provide examples of motion and occlusion, but don’t focus on robots grasping and moving objects. We wanted to test whether adding trajectories from these interactions could improve tracking on real manipulation videos.\n\nThis is where MolmoSpaces comes in—our robotic simulation environment at Ai2. We extend its existing manipulation simulations to generate dense point tracks on the robot and the objects it handles. In each episode, a simulated robot arm picks up an everyday object, such as a cup, a plate, or a block. Two cameras record the interaction: one on the wrist and one at the robot’s base, rendered in MuJoCo. Using the simulator’s geometry, object poses, and camera information, we calculate each point’s position and visibility in every frame without human annotation and filter out static points on the background and the robot’s fixed base.\n\nThe pipeline produces RoboTrack-15M for training. RoboTrack-15M has 3,000 videos from 300 simulated homes with 5,000 tracks per video, for 15 million tracks in total.\n\nData generation pipeline of RoboTrack-15M. Objects, indoor scenes, and robot grasps are obtained from MolmoSpaces. We use the simulator’s geometry and camera information to calculate point positions and visibility.\n\nRoboTracker: Point tracker trained on simulated manipulation\n\nWe introduce two models trained on RoboTrack-15M, RoboTracker and RoboTracker-Warp. Each fine-tunes an existing tracker on RoboTrack-15M together with its original training data. RoboTracker builds on AllTracker, a lightweight model with 17 million parameters, and RoboTracker-Warp builds on CoWTracker, a much larger model with about 1 billion parameters.\n\nWe’re releasing both model checkpoints so other researchers can inspect and build on this work. RoboTracker-Warp’s weights are for noncommercial use.\n\nAdding RoboTrack-15M improves scores on robotics benchmarks. Compared with the released AllTracker and CoWTracker models, respectively, RoboTracker improves RoboTrack-Bench by 0.8 AJ (62.6 to 63.4) and RoboTracker-Warp by 2.1 AJ (63.9 to 66.0), with gains of up to 1.2 AJ averaged across the three robotics benchmarks. On general video benchmarks, both models perform on par with their base models. Overall, RoboTracker-Warp has the highest AJ of the models we evaluated on four of the five benchmarks. The exception is DAVIS, where BootsTAPNext and CoWTracker score slightly higher.\n\nImprovements from fine-tuning on RoboTrack-15M, for AllTracker (RoboTracker) and CoWTracker (RoboTracker-Warp). The robotics average is taken over RoboTrack-Bench, RoboTAP, and RGB-Stacking.\n\nResults on RoboTrack-Bench by video source.\n\nBreaking the gains down by source shows where they come from. RoboTracker-Warp improves on every source by roughly 1 to 3 AJ, including the human footage from EgoVerse and Ego-Exo4D, even though RoboTrack-15M contains only robot arms. RoboTracker’s gains are smaller and come mostly from robot footage—clearest on DROID Franka and EgoVerse EVA.\n\nWhat makes good simulation data for point tracking?\n\nRoboTrack-15M is the result of multiple iterations and experiments with our synthetic data. In fact, our first attempt didn’t bring any gain on RoboTrack-Bench. To find out why, we looked at a simple question: how far do the tracked points move compared with real manipulation videos? We plot this as a histogram for each version of our data and measure its distance from RoboTrack-Bench (figure below).\n\nHow far points move in each version of our training data compared with RoboTrack-Bench, for third-person (top) and first-person (bottom) views. Distance is the Jensen–Shannon divergence (JSD) between the two histograms, with 0 indicating identical histograms. Kubric has one camera type, so the same clips appear in both rows. AJ is measured on the full RoboTrack-Bench.\n\nThe histograms made it clear what was going wrong. Our first version picked points anywhere in the frame, including walls, floors, and furniture, so most points seen from the fixed third-person camera never moved. To address this, we next sampled points only on the robot and the objects it handles, which brought the wrist view close to real video and raised the score. Interestingly, we found that Kubric had the same mismatch in the wrist view, which likely explains why it alone isn’t enough for the varied viewpoints of robotic manipulation. Finally, we moved points from the robot’s fixed base and mounting platform onto the moving arm, which brings our third-person view in line with real video as well and raises the ablation score to 63.0 AJ, 1.5 points above the Kubric-only control.\n\nApplication: Robotic manipulation using point tracking\n\nOur wet-lab pipeline for guiding the robot with point tracks from a single demonstration.\n\nWhat does better point tracking mean for robotics? Many robotic systems have found point tracks useful as a compact representation of how objects move that can guide a policy directly. To see this in practice, we built a similar system for a wet-lab task: pipetting liquid from one vial to another.\n\nHere, a robot arm picks up an electronic pipette, draws liquid from the first vial, dispenses it into the second, and returns the pipette to its holder. The task is challenging because the pipette tip has to line up with the vial opening within millimeters, and the robot needs to adjust to different layouts of vials in each trial.\n\nFollowing RoboTap, the robot learns the task from a single demonstration, which we record by teleoperation and split into steps. At test time, the robot compares what its camera sees with the demonstration and uses RoboTracker to estimate the motion required to align with the vial. Because the following motion runs without further feedback, the task only succeeds if that estimate is accurate.\n\nWe compare three ways of estimating where the vial has moved:\n\nOptical flow (RAFT) matches pixels directly between the demonstration image and the live camera image.\n\nObject masks (SAM3) find the vial in each new image and line up the center of its mask with the demonstration.\n\nPoint tracking (RoboTracker) follows points on the vial throughout the video, matching points in the demonstration image to the live image.\n\nWe ran each method on 20 layouts with the vials in different positions: 10 with a clear view and 10 with partial occlusion. Point tracking completed the full transfer in 17 of 20 trials, compared with 8 for object masks and 5 for optical flow. It succeeded in all 10 clear-view trials and 7 of 10 with occlusion, where the mask-based method succeeded only once.\n\nThe other methods fail in different ways. Optical flow breaks down when the vials sit far from where they were in the demonstration, and masks can latch onto a similar-looking object or lose the vial when it’s occluded. Point tracking, on the other hand, follows the same vial object from frame to frame, so it handles both large moves and partial occlusion. These results suggest point tracking is a promising tool for precise robotic manipulation tasks.\n\nSuccess rate of pipetting trials with each method, with and without occlusion (10 layouts each). A trial counts as a success when the robot completes the full transfer.\n\nLimitations and what’s next\n\nWe find the trackers still struggle with long occlusions, finding points when they reappear, and following small objects against busy backgrounds. Training on RoboTrack-15M improves performance, but these failures remain a challenge for real-world use.\n\nOur simulations also focus on picking up everyday objects. They don't yet capture the precise movements involved in tasks such as pipette handling. A next step is to simulate these tasks more closely and test whether training on their trajectories improves tracking during deployment.\n\nRoboTrack gives us a way to measure these failures and generate training data to address them. We hope the benchmarks, simulation pipeline, and released model help others build trackers that robots can rely on.",
+  "score": 54,
+  "axes": {
+    "IMP": 4,
+    "NOV": 6,
+    "EVI": 6,
+    "REL": 6,
+    "ACT": 3
+  },
+  "selected": false,
+  "status": "review",
+  "relevance": "PASS",
+  "eventType": "research",
+  "factKey": null,
+  "tags": [
+    "具身模型与数据"
+  ],
+  "evidence": [
+    {
+      "quote": "These results suggest that existing benchmarks give an incomplete picture of tra",
+      "sourceURL": "https://huggingface.co/blog/allenai/robotrack"
+    }
+  ],
+  "relatedSources": [],
+  "verification": {
+    "publisherDateVerified": true,
+    "contentHash": "a54d5421e520cc941a395ff3e613df6a1550c95cb294d7cba27ed0d2cfc14c50"
+  },
+  "articleContent": {
+    "schemaVersion": 1,
+    "sourceLanguage": "en",
+    "translationStatus": "complete",
+    "languages": {
+      "original": {
+        "label": "English",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Back to Articles"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "RoboTrack: Point tracking for real-world robotic manipulation"
+          },
+          {
+            "type": "paragraph",
+            "text": "Enterprise Article"
+          },
+          {
+            "type": "paragraph",
+            "text": "Published\nNovember 23, 2026"
+          },
+          {
+            "type": "paragraph",
+            "text": "Upvote"
+          },
+          {
+            "type": "paragraph",
+            "text": "2"
+          },
+          {
+            "type": "image",
+            "src": "robotics/media/ed1050ea6adf6d24df26e031d9c60771a815599c8c9d00eec0d604c3986b25df.webp",
+            "alt": "",
+            "caption": "",
+            "width": 200,
+            "height": 200
+          },
+          {
+            "type": "image",
+            "src": "robotics/media/19d778c8390b47b029f096efadc0aa64bd6570f335efab63d3378d9e629ef113.webp",
+            "alt": "",
+            "caption": "",
+            "width": 200,
+            "height": 200
+          },
+          {
+            "type": "paragraph",
+            "text": "Kyle Wiggers"
+          },
+          {
+            "type": "paragraph",
+            "text": "Ai2Comms"
+          },
+          {
+            "type": "paragraph",
+            "text": "Follow"
+          },
+          {
+            "type": "paragraph",
+            "text": "allenai"
+          },
+          {
+            "type": "paragraph",
+            "text": "🤖 Models | 📄 Tech Report | 📊 Data | 💻 Code | 🌐 Project Page | 📈 Benchmark"
+          },
+          {
+            "type": "paragraph",
+            "text": "Deploying robots in real-world settings requires reliable perception throughout an interaction. To pick something up, a robot needs to follow the positions of its gripper and the object as they move. In a laboratory, a robot handling a pipette must keep track of its tip while aligning it with the opening of a tube. These tasks become harder when nearby objects clutter the view, the gripper obscures the object being handled, or the viewing angle changes."
+          },
+          {
+            "type": "paragraph",
+            "text": "One way to help robots follow these interactions is to track specific locations on the objects they handle. This is the idea behind point tracking. Given a location in one video frame, a tracker estimates where that same point appears in subsequent frames, when it is occluded, and where it reappears. These trajectories can help robots learn from demonstrations, plan and guide movements, and model how objects respond to actions."
+          },
+          {
+            "type": "paragraph",
+            "text": "Robotics systems often rely on off-the-shelf trackers to automatically annotate motion in videos and provide feedback during execution. And current trackers score well on established robotics benchmarks, suggesting they could be ready for wider use in real-world systems. We wanted to see whether those results hold up across the varied scenes, viewpoints, and object interactions robots encounter in practice."
+          },
+          {
+            "type": "paragraph",
+            "text": "We introduce RoboTrack, a benchmark and training data suite for point tracking in robotic manipulation. RoboTrack-Bench contains 307 human-annotated videos from DROID, Ego-Exo4D, MolmoAct 2, and EgoVerse, covering different robots and human hands, cluttered scenes, and first- and third-person viewpoints. To study how training data affects tracking in these settings, we also extend MolmoSpaces, Ai2’s simulation ecosystem for robot learning, to generate dense point tracks from simulated robot manipulation trajectories. This pipeline produces RoboTrack-15M, a new synthetic training dataset targeted toward robotic manipulation."
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：Overview diagram of RoboTrack showing RoboTrack-15M simulated data generation from MolmoSpaces and RoboTrack-Bench human-annotated real-world manipulation footage）"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack is a benchmark and training data suite for point tracking in robotic manipulation. Built on MolmoSpaces, RoboTrack-15M (top-left) generates point tracks for training. Training with this simulated data improves tracking on real manipulation footage. RoboTrack-Bench (top-right) provides human-annotated point tracks in real manipulation videos."
+          },
+          {
+            "type": "paragraph",
+            "text": "Our evaluations show that leading trackers score much lower on RoboTrack-Bench than on existing robotics benchmarks. Adding RoboTrack-15M to an existing tracker’s training improves performance on real manipulation video, with gains extending to other tracking benchmarks. We bring these pieces together on a real robot, using the resulting tracker to help guide pipette handling in wet-lab tasks."
+          },
+          {
+            "type": "paragraph",
+            "text": "Today, we’re releasing both RoboTrack components and two new point tracking models: RoboTracker and RoboTracker-Warp. RoboTracker is a fine-tuned AllTracker model using our techniques and data, while RoboTracker-Warp is trained from CoWTracker. Both models improve average AJ across the three robotics benchmarks compared with their respective released baselines, and RoboTracker-Warp achieves state-of-the-art performance on four out of the five benchmarks we evaluated. We’re also releasing our paper describing the work and evaluation results."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "RoboTrack-Bench: A benchmark for point-tracking in real-world manipulation"
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：Examples of human-verified point tracks in RoboTrack-Bench across DROID, Ego-Exo4D, MolmoAct 2, and EgoVerse）"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-Bench at a glance. Examples from each source dataset (307 clips and 2,522 human-verified tracks in total). MolmoAct 2 and EgoVerse show one embodiment per panel. DROID and EgoExo4D show synchronized ego (top) and exo (bottom) views."
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-Bench expands evaluation beyond controlled tabletop setups. It contains 307 videos from DROID, Ego-Exo4D, MolmoAct 2, and EgoVerse, annotated with a total of 2,522 point tracks. The videos show robots and human hands manipulating objects across cluttered scenes and first- and third-person viewpoints. Small objects can be difficult to follow against a busy background, and grippers often hide the objects they hold."
+          },
+          {
+            "type": "paragraph",
+            "text": "Every track in RoboTrack-Bench is annotated and verified by humans. We ask annotators to prioritize points that move or become occluded rather than the many static background points in robot videos. Following the TAP-Vid annotation approach, annotators use motion estimates to help trace each point through a video. They label each track as belonging to a robot or human body, a manipulated object, or a static object to support future analysis of performance on each group. A second group of annotators checks every track frame by frame before it’s included in our curated data."
+          },
+          {
+            "type": "paragraph",
+            "text": "To support research in multi-view pointing, correspondence, and tracking, RoboTrack-Bench contains a subset of 33 video pairs that were recorded simultaneously from two cameras. We annotate the same physical points in both views, synchronized across frames, connecting different views of the same interaction."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "Point trackers struggle on real-world manipulation"
+          },
+          {
+            "type": "paragraph",
+            "text": "We evaluated four leading trackers – CoTracker3, BootsTAPNext, AllTracker, and CoWTracker – on RoboTrack-Bench and four other benchmarks: RoboTAP (real-world tabletop manipulation), RGB-Stacking (simulated manipulation), and DAVIS and Kinetics (general video). We report Average Jaccard (AJ), which measures tracking accuracy and visibility prediction; higher scores are better."
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：Evaluation table comparing CoTracker3, BootsTAPNext, AllTracker, and CoWTracker in Average Jaccard across RoboTrack-Bench, RoboTAP, RGB-Stacking, DAVIS, and Kinetics）"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-Bench is harder than existing robot benchmarks. Every final tracker we evaluated scores lower on RoboTrack-Bench than on RoboTAP, the only other real-video robotics benchmark. Their score drops by 3.0 to 6.6 AJ. Even the strongest off-the-shelf tracker, CoWTracker, drops from 70.5 AJ on RoboTAP to 63.9 on RoboTrack-Bench. The drop holds across models despite their different architectures and training data, indicating RoboTrack-Bench identifies weaknesses across multiple trackers."
+          },
+          {
+            "type": "paragraph",
+            "text": "RGB-Stacking rewards synthetic training more than real-world ability. BootsTAPNext is TAPNext trained further on 15 million real videos. That extra real-world training raises its RoboTrack-Bench score by 5.1 AJ (55.1 to 60.2), but lowers its RGB-Stacking score by 9.5 AJ (75.0 to 65.5). RGB-Stacking is built from simulated block stacking, and it ranks the Kubric-only model higher, while real manipulation video ranks them the other way around."
+          },
+          {
+            "type": "paragraph",
+            "text": "A lead on the older benchmarks does not carry over. CoWTracker leads CoTracker3 by 4.7 AJ on RoboTAP, but by only 2.1 AJ on RoboTrack-Bench. AllTracker’s 2.7-point lead over CoTracker3 on RoboTAP shrinks to 0.8. BootsTAPNext, the strongest model on DAVIS, falls 3.7 AJ behind CoWTracker on RoboTrack-Bench and even trails the Kubric-only AllTracker (60.2 vs 61.4 AJ), despite its training on 15 million real videos."
+          },
+          {
+            "type": "paragraph",
+            "text": "These results suggest that existing benchmarks give an incomplete picture of tracking performance in real-world manipulation. Evaluating on more varied scenes reveals difficulties shared by all four trackers and changes how their strengths compare."
+          },
+          {
+            "type": "paragraph",
+            "text": "Note: Each tracker runs with its authors’ settings and is all scored in the same way. Our AllTracker scores differ slightly from the published ones because we fixed a scoring bug in its released evaluation code. Additionally, we evaluate RoboTAP and Kinetics on all annotated points rather than following AllTracker’s protocol. See our paper for full evaluation protocols."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "RoboTrack-15M: Simulation data from MolmoSpaces"
+          },
+          {
+            "type": "paragraph",
+            "text": "Why do these trackers struggle with real-world manipulation? Many trackers train on synthetic videos generated with Kubric, which shows objects tossed into a scene. These provide examples of motion and occlusion, but don’t focus on robots grasping and moving objects. We wanted to test whether adding trajectories from these interactions could improve tracking on real manipulation videos."
+          },
+          {
+            "type": "paragraph",
+            "text": "This is where MolmoSpaces comes in—our robotic simulation environment at Ai2. We extend its existing manipulation simulations to generate dense point tracks on the robot and the objects it handles. In each episode, a simulated robot arm picks up an everyday object, such as a cup, a plate, or a block. Two cameras record the interaction: one on the wrist and one at the robot’s base, rendered in MuJoCo. Using the simulator’s geometry, object poses, and camera information, we calculate each point’s position and visibility in every frame without human annotation and filter out static points on the background and the robot’s fixed base."
+          },
+          {
+            "type": "paragraph",
+            "text": "The pipeline produces RoboTrack-15M for training. RoboTrack-15M has 3,000 videos from 300 simulated homes with 5,000 tracks per video, for 15 million tracks in total."
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：Diagram of the RoboTrack-15M synthetic data generation pipeline built on MolmoSpaces and MuJoCo）"
+          },
+          {
+            "type": "paragraph",
+            "text": "Data generation pipeline of RoboTrack-15M. Objects, indoor scenes, and robot grasps are obtained from MolmoSpaces. We use the simulator’s geometry and camera information to calculate point positions and visibility."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "RoboTracker: Point tracker trained on simulated manipulation"
+          },
+          {
+            "type": "paragraph",
+            "text": "We introduce two models trained on RoboTrack-15M, RoboTracker and RoboTracker-Warp. Each fine-tunes an existing tracker on RoboTrack-15M together with its original training data. RoboTracker builds on AllTracker, a lightweight model with 17 million parameters, and RoboTracker-Warp builds on CoWTracker, a much larger model with about 1 billion parameters."
+          },
+          {
+            "type": "paragraph",
+            "text": "We’re releasing both model checkpoints so other researchers can inspect and build on this work. RoboTracker-Warp’s weights are for noncommercial use."
+          },
+          {
+            "type": "paragraph",
+            "text": "Adding RoboTrack-15M improves scores on robotics benchmarks. Compared with the released AllTracker and CoWTracker models, respectively, RoboTracker improves RoboTrack-Bench by 0.8 AJ (62.6 to 63.4) and RoboTracker-Warp by 2.1 AJ (63.9 to 66.0), with gains of up to 1.2 AJ averaged across the three robotics benchmarks. On general video benchmarks, both models perform on par with their base models. Overall, RoboTracker-Warp has the highest AJ of the models we evaluated on four of the five benchmarks. The exception is DAVIS, where BootsTAPNext and CoWTracker score slightly higher."
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：Comparison of Average Jaccard scores before and after fine-tuning AllTracker (RoboTracker) and CoWTracker (RoboTracker-Warp) on RoboTrack-15M）"
+          },
+          {
+            "type": "paragraph",
+            "text": "Improvements from fine-tuning on RoboTrack-15M, for AllTracker (RoboTracker) and CoWTracker (RoboTracker-Warp). The robotics average is taken over RoboTrack-Bench, RoboTAP, and RGB-Stacking."
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：Chart of RoboTrack-Bench results broken down by video source dataset）"
+          },
+          {
+            "type": "paragraph",
+            "text": "Results on RoboTrack-Bench by video source."
+          },
+          {
+            "type": "paragraph",
+            "text": "Breaking the gains down by source shows where they come from. RoboTracker-Warp improves on every source by roughly 1 to 3 AJ, including the human footage from EgoVerse and Ego-Exo4D, even though RoboTrack-15M contains only robot arms. RoboTracker’s gains are smaller and come mostly from robot footage—clearest on DROID Franka and EgoVerse EVA."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "What makes good simulation data for point tracking?"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-15M is the result of multiple iterations and experiments with our synthetic data. In fact, our first attempt didn’t bring any gain on RoboTrack-Bench. To find out why, we looked at a simple question: how far do the tracked points move compared with real manipulation videos? We plot this as a histogram for each version of our data and measure its distance from RoboTrack-Bench (figure below)."
+          },
+          {
+            "type": "paragraph",
+            "text": "How far points move in each version of our training data compared with RoboTrack-Bench, for third-person (top) and first-person (bottom) views. Distance is the Jensen–Shannon divergence (JSD) between the two histograms, with 0 indicating identical histograms. Kubric has one camera type, so the same clips appear in both rows. AJ is measured on the full RoboTrack-Bench."
+          },
+          {
+            "type": "paragraph",
+            "text": "The histograms made it clear what was going wrong. Our first version picked points anywhere in the frame, including walls, floors, and furniture, so most points seen from the fixed third-person camera never moved. To address this, we next sampled points only on the robot and the objects it handles, which brought the wrist view close to real video and raised the score. Interestingly, we found that Kubric had the same mismatch in the wrist view, which likely explains why it alone isn’t enough for the varied viewpoints of robotic manipulation. Finally, we moved points from the robot’s fixed base and mounting platform onto the moving arm, which brings our third-person view in line with real video as well and raises the ablation score to 63.0 AJ, 1.5 points above the Kubric-only control."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "Application: Robotic manipulation using point tracking"
+          },
+          {
+            "type": "paragraph",
+            "text": "Our wet-lab pipeline for guiding the robot with point tracks from a single demonstration."
+          },
+          {
+            "type": "paragraph",
+            "text": "What does better point tracking mean for robotics? Many robotic systems have found point tracks useful as a compact representation of how objects move that can guide a policy directly. To see this in practice, we built a similar system for a wet-lab task: pipetting liquid from one vial to another."
+          },
+          {
+            "type": "paragraph",
+            "text": "Here, a robot arm picks up an electronic pipette, draws liquid from the first vial, dispenses it into the second, and returns the pipette to its holder. The task is challenging because the pipette tip has to line up with the vial opening within millimeters, and the robot needs to adjust to different layouts of vials in each trial."
+          },
+          {
+            "type": "paragraph",
+            "text": "Following RoboTap, the robot learns the task from a single demonstration, which we record by teleoperation and split into steps. At test time, the robot compares what its camera sees with the demonstration and uses RoboTracker to estimate the motion required to align with the vial. Because the following motion runs without further feedback, the task only succeeds if that estimate is accurate."
+          },
+          {
+            "type": "paragraph",
+            "text": "We compare three ways of estimating where the vial has moved:"
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "Optical flow (RAFT) matches pixels directly between the demonstration image and the live camera image.",
+              "Object masks (SAM3) find the vial in each new image and line up the center of its mask with the demonstration.",
+              "Point tracking (RoboTracker) follows points on the vial throughout the video, matching points in the demonstration image to the live image."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "We ran each method on 20 layouts with the vials in different positions: 10 with a clear view and 10 with partial occlusion. Point tracking completed the full transfer in 17 of 20 trials, compared with 8 for object masks and 5 for optical flow. It succeeded in all 10 clear-view trials and 7 of 10 with occlusion, where the mask-based method succeeded only once."
+          },
+          {
+            "type": "paragraph",
+            "text": "The other methods fail in different ways. Optical flow breaks down when the vials sit far from where they were in the demonstration, and masks can latch onto a similar-looking object or lose the vial when it’s occluded. Point tracking, on the other hand, follows the same vial object from frame to frame, so it handles both large moves and partial occlusion. These results suggest point tracking is a promising tool for precise robotic manipulation tasks."
+          },
+          {
+            "type": "paragraph",
+            "text": "Success rate of pipetting trials with each method, with and without occlusion (10 layouts each). A trial counts as a success when the robot completes the full transfer."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "Limitations and what’s next"
+          },
+          {
+            "type": "paragraph",
+            "text": "We find the trackers still struggle with long occlusions, finding points when they reappear, and following small objects against busy backgrounds. Training on RoboTrack-15M improves performance, but these failures remain a challenge for real-world use."
+          },
+          {
+            "type": "paragraph",
+            "text": "Our simulations also focus on picking up everyday objects. They don't yet capture the precise movements involved in tasks such as pipette handling. A next step is to simulate these tasks more closely and test whether training on their trajectories improves tracking during deployment."
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack gives us a way to measure these failures and generate training data to address them. We hope the benchmarks, simulation pipeline, and released model help others build trackers that robots can rely on."
+          }
+        ]
+      },
+      "zh": {
+        "label": "中文",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "返回文章列表"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "RoboTrack：面向真实世界机器人操作的点跟踪"
+          },
+          {
+            "type": "paragraph",
+            "text": "企业文章"
+          },
+          {
+            "type": "paragraph",
+            "text": "发布于\n2026年11月23日"
+          },
+          {
+            "type": "paragraph",
+            "text": "点赞"
+          },
+          {
+            "type": "paragraph",
+            "text": "2"
+          },
+          {
+            "type": "image",
+            "src": "robotics/media/ed1050ea6adf6d24df26e031d9c60771a815599c8c9d00eec0d604c3986b25df.webp",
+            "alt": "",
+            "caption": "",
+            "width": 200,
+            "height": 200
+          },
+          {
+            "type": "image",
+            "src": "robotics/media/19d778c8390b47b029f096efadc0aa64bd6570f335efab63d3378d9e629ef113.webp",
+            "alt": "",
+            "caption": "",
+            "width": 200,
+            "height": 200
+          },
+          {
+            "type": "paragraph",
+            "text": "Kyle Wiggers"
+          },
+          {
+            "type": "paragraph",
+            "text": "Ai2Comms"
+          },
+          {
+            "type": "paragraph",
+            "text": "关注"
+          },
+          {
+            "type": "paragraph",
+            "text": "allenai"
+          },
+          {
+            "type": "paragraph",
+            "text": "🤖 模型 | 📄 技术报告 | 📊 数据 | 💻 代码 | 🌐 项目主页 | 📈 基准"
+          },
+          {
+            "type": "paragraph",
+            "text": "要在真实世界环境中部署机器人，就需要在整个交互过程中保持可靠的感知。要拿起某件物体，机器人需要在其末端执行器和物体移动时持续跟踪二者的位置。在实验室里，机器人操作移液器时，必须在将吸头对准试管开口的同时持续追踪吸头的位置。当附近物体使视野杂乱、末端执行器遮挡了正在操作的物体，或观察角度发生变化时，这些任务会变得更加困难。"
+          },
+          {
+            "type": "paragraph",
+            "text": "帮助机器人跟踪这些交互过程的一种方法是追踪其所操作物体上的特定位置，这正是点跟踪的思路。给定某一视频帧中的一个位置，跟踪器会估计同一位置在后续帧中出现的位置、被遮挡时的位置以及重新出现的位置。这些轨迹可以帮助机器人从演示中学习、规划并引导运动，以及建模物体对动作的响应。"
+          },
+          {
+            "type": "paragraph",
+            "text": "机器人系统常常依赖现成的跟踪器来自动标注视频中的运动，并在执行过程中提供反馈。当前跟踪器在既有机器人基准上得分良好，这暗示它们可能已准备好更广泛地用于真实世界系统。我们希望检验这些结果在机器人实际遇到的多样场景、视角和物体交互中是否依然成立。"
+          },
+          {
+            "type": "paragraph",
+            "text": "我们推出 RoboTrack，这是一套面向机器人操作中点跟踪的基准与训练数据套件。RoboTrack-Bench 包含 307 段经人工标注的视频，来自 DROID、Ego-Exo4D、MolmoAct 2 和 EgoVerse，涵盖不同的机器人与人类手部、杂乱场景以及第一人称与第三人称视角。为研究训练数据如何影响这些场景下的跟踪效果，我们还扩展了 MolmoSpaces（Ai2 面向机器人学习的仿真生态系统），以从仿真机器人操作轨迹中生成稠密点轨迹。该流程产出了 RoboTrack-15M，这是一个面向机器人操作的新合成训练数据集。"
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：RoboTrack 概览图，展示由 MolmoSpaces 生成 RoboTrack-15M 仿真数据，以及 RoboTrack-Bench 人工标注的真实世界操作视频）"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack 是一套面向机器人操作中点跟踪的基准与训练数据套件。RoboTrack-15M（左上）基于 MolmoSpaces 构建，生成用于训练的点轨迹。使用这些仿真数据训练可提升在真实操作视频上的跟踪效果。RoboTrack-Bench（右上）提供真实操作视频中经人工标注的点轨迹。"
+          },
+          {
+            "type": "paragraph",
+            "text": "我们的评测显示，领先的跟踪器在 RoboTrack-Bench 上的得分远低于其在既有机器人基准上的得分。将 RoboTrack-15M 加入现有跟踪器的训练中，可提升其在真实操作视频上的表现，且增益还可扩展到其他跟踪基准。我们将这些部分整合到一台真实机器人上，用所得跟踪器辅助引导湿实验室任务中的移液器操作。"
+          },
+          {
+            "type": "paragraph",
+            "text": "今天，我们发布 RoboTrack 的两个组成部分以及两个新的点跟踪模型：RoboTracker 和 RoboTracker-Warp。RoboTracker 是采用我们的技术与数据微调的 AllTracker 模型，而 RoboTracker-Warp 则基于 CoWTracker 训练。与其各自已发布的基线相比，这两个模型在三个机器人基准上的平均 AJ 均有提升；在我们评测的五个基准中，RoboTracker-Warp 在其中四个上达到当前最优性能。我们同时发布描述该工作与评测结果的论文。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "RoboTrack-Bench：面向真实世界操作的点跟踪基准"
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：RoboTrack-Bench 中经人工核验的点轨迹示例，覆盖 DROID、Ego-Exo4D、MolmoAct 2 和 EgoVerse）"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-Bench 概览。每个来源数据集的示例（总计 307 个视频片段和 2,522 条经人工验证的轨迹）。MolmoAct 2 和 EgoVerse 每个面板展示一种具身形态。DROID 和 EgoExo4D 展示同步的自我中心视角（上）和外部视角（下）。"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-Bench 将评测扩展到受控桌面场景之外。它包含来自 DROID、Ego-Exo4D、MolmoAct 2 和 EgoVerse 的 307 段视频，共标注 2,522 条点轨迹。视频展示了机器人和人类手部在杂乱场景中以及第一人称和第三人称视角下操作物体。小物体在复杂背景下可能难以跟踪，而夹爪常常遮挡其抓取的物体。"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-Bench 中的每条轨迹都由人工标注并验证。我们要求标注者优先选择会移动或被遮挡的点，而不是机器人视频中大量静态背景点。遵循 TAP-Vid 标注方法，标注者利用运动估计帮助在视频中追踪每个点。他们将每条轨迹标注为属于机器人或人体、被操作物体或静态物体，以支持未来对各类别性能的分析。第二组标注者会逐帧检查每条轨迹，之后才将其纳入我们整理的数据中。"
+          },
+          {
+            "type": "paragraph",
+            "text": "为支持多视角指向、对应和跟踪研究，RoboTrack-Bench 包含 33 对由两个相机同时录制的视频子集。我们在两个视角中标注相同的物理点，并跨帧同步，从而连接同一交互的不同视角。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "点跟踪器在真实世界操作中表现吃力"
+          },
+          {
+            "type": "paragraph",
+            "text": "我们在 RoboTrack-Bench 和另外四个基准上评估了四种领先的跟踪器——CoTracker3、BootsTAPNext、AllTracker 和 CoWTracker：RoboTAP（真实世界桌面操作）、RGB-Stacking（仿真操作），以及 DAVIS 和 Kinetics（通用视频）。我们报告 Average Jaccard（AJ），它衡量跟踪准确性和可见性预测；分数越高越好。"
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：评估表比较 CoTracker3、BootsTAPNext、AllTracker 和 CoWTracker 在 RoboTrack-Bench、RoboTAP、RGB-Stacking、DAVIS 和 Kinetics 上的 Average Jaccard 分数）"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-Bench 比现有机器人基准更难。我们评估的每一个最终跟踪器在 RoboTrack-Bench 上的得分都低于 RoboTAP——后者是唯一另一个真实视频机器人基准。它们的分数下降了 3.0 到 6.6 AJ。即便是最强的现成跟踪器 CoWTracker，也从 RoboTAP 上的 70.5 AJ 降至 RoboTrack-Bench 上的 63.9。尽管模型架构和训练数据不同，这一下降在各模型上均存在，表明 RoboTrack-Bench 能识别多个跟踪器的弱点。"
+          },
+          {
+            "type": "paragraph",
+            "text": "RGB-Stacking 更有利于在合成数据上训练的模型，而不是衡量真实世界能力。BootsTAPNext 是在 1500 万段真实视频上进一步训练的 TAPNext。额外的真实世界训练使其 RoboTrack-Bench 分数提高了 5.1 AJ（从 55.1 到 60.2），但使其 RGB-Stacking 分数降低了 9.5 AJ（从 75.0 到 65.5）。RGB-Stacking 基于仿真积木堆叠构建，它把仅在 Kubric 上训练的模型排得更高，而真实操作视频则把两者的排名反过来。"
+          },
+          {
+            "type": "paragraph",
+            "text": "在较旧基准上的领先优势并未延续。CoWTracker 在 RoboTAP 上领先 CoTracker3 4.7 AJ，但在 RoboTrack-Bench 上仅领先 2.1 AJ。AllTracker 在 RoboTAP 上对 CoTracker3 的 2.7 分领先缩小到 0.8。BootsTAPNext 是 DAVIS 上最强的模型，但在 RoboTrack-Bench 上落后 CoWTracker 3.7 AJ，甚至落后仅在 Kubric 上训练的 AllTracker（60.2 对 61.4 AJ），尽管它在 1500 万段真实视频上训练过。"
+          },
+          {
+            "type": "paragraph",
+            "text": "这些结果表明，现有基准对真实世界操作中的跟踪性能给出的图景并不完整。在更多样化的场景中评估，揭示了四种跟踪器共有的困难，并改变了它们优势的比较方式。"
+          },
+          {
+            "type": "paragraph",
+            "text": "注：每个跟踪器均按其作者的设置运行，并且全部以相同方式评分。我们的 AllTracker 分数与已发表分数略有不同，因为我们修复了其公开评估代码中的一个评分错误。此外，我们在所有标注点上评估 RoboTAP 和 Kinetics，而不是遵循 AllTracker 的协议。完整评估协议见我们的论文。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "RoboTrack-15M：来自 MolmoSpaces 的仿真数据"
+          },
+          {
+            "type": "paragraph",
+            "text": "为什么这些跟踪器在真实世界操作中表现不佳？许多跟踪器使用由 Kubric 生成的合成视频训练，这些视频展示的是被抛入场景中的物体。它们提供了运动和遮挡的示例，但不聚焦于机器人抓取和移动物体。我们想测试，加入这些交互产生的轨迹是否能提升在真实操作视频上的跟踪效果。"
+          },
+          {
+            "type": "paragraph",
+            "text": "这正是 MolmoSpaces 的用武之地——它是我们在 Ai2 的机器人仿真环境。我们扩展其现有的操作仿真，以在机器人及其操作的物体上生成密集点轨迹。在每个回合中，一个仿真机械臂拿起日常物体，例如杯子、盘子或积木。两台相机记录该交互：一台安装在腕部，一台位于机器人基座，使用 MuJoCo 渲染。利用仿真器的几何、物体位姿和相机信息，我们在无需人工标注的情况下计算每个点在每一帧中的位置和可见性，并过滤掉背景和机器人固定基座上的静态点。"
+          },
+          {
+            "type": "paragraph",
+            "text": "该流水线生成用于训练的 RoboTrack-15M。RoboTrack-15M 包含来自 300 个仿真住宅的 3,000 段视频，每段视频有 5,000 条轨迹，总计 1,500 万条轨迹。"
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：基于 MolmoSpaces 和 MuJoCo 构建的 RoboTrack-15M 合成数据生成流水线示意图）"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-15M 的数据生成流水线。物体、室内场景和机器人抓取均来自 MolmoSpaces。我们使用仿真器的几何和相机信息来计算点的位置和可见性。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "RoboTracker：在仿真操作数据上训练的点跟踪器"
+          },
+          {
+            "type": "paragraph",
+            "text": "我们提出两个在 RoboTrack-15M 上训练的模型：RoboTracker 和 RoboTracker-Warp。二者各自在 RoboTrack-15M 及其原始训练数据上微调一个现有跟踪器。RoboTracker 基于 AllTracker，这是一个 1700 万参数的轻量级模型；RoboTracker-Warp 基于 CoWTracker，这是一个约 10 亿参数的更大模型。"
+          },
+          {
+            "type": "paragraph",
+            "text": "我们发布两个模型的检查点，以便其他研究人员检查并在此基础上开展研究。RoboTracker-Warp 的权重仅限非商业用途。"
+          },
+          {
+            "type": "paragraph",
+            "text": "加入 RoboTrack-15M 提升了机器人基准上的分数。分别与已发布的 AllTracker 和 CoWTracker 模型相比，RoboTracker 将 RoboTrack-Bench 提升 0.8 AJ（62.6 至 63.4），RoboTracker-Warp 提升 2.1 AJ（63.9 至 66.0），在三个机器人基准上平均增益最高达 1.2 AJ。在通用视频基准上，两个模型的表现与其基础模型相当。总体而言，在我们于五个基准中的四个上评估的模型中，RoboTracker-Warp 的 AJ 最高。例外是 DAVIS，BootsTAPNext 和 CoWTracker 的分数略高。"
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：在 RoboTrack-15M 上微调 AllTracker（RoboTracker）和 CoWTracker（RoboTracker-Warp）前后的平均 Jaccard 分数对比）"
+          },
+          {
+            "type": "paragraph",
+            "text": "在 RoboTrack-15M 上微调带来的提升，针对 AllTracker（RoboTracker）和 CoWTracker（RoboTracker-Warp）。机器人平均值为 RoboTrack-Bench、RoboTAP 和 RGB-Stacking 上的平均值。"
+          },
+          {
+            "type": "paragraph",
+            "text": "（原文配图未能获取：按视频来源数据集拆分的 RoboTrack-Bench 结果图表）"
+          },
+          {
+            "type": "paragraph",
+            "text": "按视频来源划分的 RoboTrack-Bench 结果。"
+          },
+          {
+            "type": "paragraph",
+            "text": "按来源拆分增益可以看出增益来自哪里。RoboTracker-Warp 在每个来源上都提升约 1 至 3 AJ，包括来自 EgoVerse 和 Ego-Exo4D 的人类视频，尽管 RoboTrack-15M 只包含机械臂。RoboTracker 的增益较小，且主要来自机器人视频——在 DROID Franka 和 EgoVerse EVA 上最明显。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "什么样的仿真数据适合点跟踪？"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack-15M 是我们合成数据经过多次迭代和实验的成果。事实上，我们的首次尝试在 RoboTrack-Bench 上并未带来任何增益。为找出原因，我们研究了一个简单问题：与真实操作视频相比，被跟踪点移动的距离有多远？我们为每个数据版本绘制直方图，并测量其与 RoboTrack-Bench 的距离（下图）。"
+          },
+          {
+            "type": "paragraph",
+            "text": "每个训练数据版本中点的移动距离与 RoboTrack-Bench 的对比，分别对应第三人称（上）和第一人称（下）视角。距离是两个直方图之间的 Jensen–Shannon 散度（JSD），0 表示直方图完全相同。Kubric 只有一种相机类型，因此同样的片段会同时出现在两行中。AJ 在完整 RoboTrack-Bench 上测量。"
+          },
+          {
+            "type": "paragraph",
+            "text": "直方图清楚地揭示了问题所在。我们的第一版在画面任意位置采样点，包括墙壁、地板和家具，因此从固定第三人称相机看到的大多数点从未移动。为解决这一问题，我们接下来只在机器人及其操作的物体上采样点，这使腕部视角接近真实视频并提高了分数。有趣的是，我们发现 Kubric 在腕部视角也存在同样的不匹配，这很可能解释了为何仅靠它不足以应对机器人操作中多变的视角。最后，我们将点从机器人固定底座和安装平台移到运动臂上，这也使我们的第三人称视角与真实视频一致，并将消融分数提高到 63.0 AJ，比仅用 Kubric 的对照组高 1.5 分。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "应用：使用点跟踪的机器人操作"
+          },
+          {
+            "type": "paragraph",
+            "text": "我们基于单次演示的点轨迹引导机器人的湿实验室流程。"
+          },
+          {
+            "type": "paragraph",
+            "text": "更好的点跟踪对机器人意味着什么？许多机器人系统发现点轨迹可作为物体如何运动的紧凑表示，并能直接引导策略。为了在实践中验证这一点，我们为一项湿实验室任务构建了类似系统：将液体从一个样品瓶移液到另一个样品瓶。"
+          },
+          {
+            "type": "paragraph",
+            "text": "在这里，机器人手臂拿起电子移液器，从第一个样品瓶中吸取液体，将其分配到第二个样品瓶中，然后将移液器放回支架。该任务颇具挑战，因为移液器吸头必须与样品瓶开口在毫米级范围内对齐，并且机器人需要在每次试验中适应不同的样品瓶布局。"
+          },
+          {
+            "type": "paragraph",
+            "text": "遵循 RoboTap，机器人从单次演示中学习该任务，我们通过遥操作记录演示并将其拆分为多个步骤。在测试时，机器人将其相机所见与演示进行比较，并使用 RoboTracker 估计对齐样品瓶所需的运动。由于后续运动在没有进一步反馈的情况下运行，只有当该估计准确时任务才会成功。"
+          },
+          {
+            "type": "paragraph",
+            "text": "我们比较三种估计样品瓶移动位置的方法："
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              "光流（RAFT）直接在演示图像和实时相机图像之间匹配像素。",
+              "对象掩码（SAM3）在每张新图像中找到样品瓶，并将其掩码中心与演示对齐。",
+              "点跟踪（RoboTracker）在整个视频中跟踪样品瓶上的点，将演示图像中的点与实时图像匹配。"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "我们在 20 种样品瓶位置不同的布局上运行了每种方法：10 种为清晰视野，10 种为部分遮挡。点跟踪在 20 次试验中的 17 次完成了完整转移，而对象掩码为 8 次，光流为 5 次。它在全部 10 次清晰视野试验中成功，并在 10 次遮挡试验中成功 7 次，而基于掩码的方法仅成功 1 次。"
+          },
+          {
+            "type": "paragraph",
+            "text": "其他方法以不同方式失败。当样品瓶远离其在演示中的位置时，光流会失效；而掩码可能锁定到外观相似的物体上，或在样品瓶被遮挡时丢失它。另一方面，点跟踪逐帧跟踪同一个样品瓶对象，因此能处理大幅移动和部分遮挡。这些结果表明，点跟踪是精确机器人操作任务中一种有前景的工具。"
+          },
+          {
+            "type": "paragraph",
+            "text": "每种方法在有无遮挡条件下的移液试验成功率（每种情况各 10 种布局）。当机器人完成完整移液转移时，该试验计为成功。"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "局限性与后续工作"
+          },
+          {
+            "type": "paragraph",
+            "text": "我们发现，这些跟踪器在长时间遮挡、点重新出现后的定位，以及跟踪杂乱背景中的小物体方面仍存在困难。在 RoboTrack-15M 上训练可提升性能，但这些失败案例仍是实际应用中的挑战。"
+          },
+          {
+            "type": "paragraph",
+            "text": "我们的仿真也侧重于抓取日常物体。它们尚未能捕捉移液管操作等任务中所涉及的精确动作。下一步是更贴近地仿真这些任务，并检验在其轨迹上训练能否提升部署时的跟踪效果。"
+          },
+          {
+            "type": "paragraph",
+            "text": "RoboTrack 为我们提供了一种衡量这些失败并生成训练数据以解决这些问题的方法。我们希望这些基准、仿真流程和已发布的模型能帮助他人构建机器人可以信赖的跟踪器。"
+          }
+        ]
+      }
+    },
+    "updatedAt": "2026-11-24T00:40:01.804313+00:00"
+  },
+  "articleBodyZh": "返回文章列表\n\nRoboTrack：面向真实世界机器人操作的点跟踪\n\n企业文章\n\n发布于\n2026年11月23日\n\n点赞\n\n2\n\nKyle Wiggers\n\nAi2Comms\n\n关注\n\nallenai\n\n🤖 模型 | 📄 技术报告 | 📊 数据 | 💻 代码 | 🌐 项目主页 | 📈 基准\n\n要在真实世界环境中部署机器人，就需要在整个交互过程中保持可靠的感知。要拿起某件物体，机器人需要在其末端执行器和物体移动时持续跟踪二者的位置。在实验室里，机器人操作移液器时，必须在将吸头对准试管开口的同时持续追踪吸头的位置。当附近物体使视野杂乱、末端执行器遮挡了正在操作的物体，或观察角度发生变化时，这些任务会变得更加困难。\n\n帮助机器人跟踪这些交互过程的一种方法是追踪其所操作物体上的特定位置，这正是点跟踪的思路。给定某一视频帧中的一个位置，跟踪器会估计同一位置在后续帧中出现的位置、被遮挡时的位置以及重新出现的位置。这些轨迹可以帮助机器人从演示中学习、规划并引导运动，以及建模物体对动作的响应。\n\n机器人系统常常依赖现成的跟踪器来自动标注视频中的运动，并在执行过程中提供反馈。当前跟踪器在既有机器人基准上得分良好，这暗示它们可能已准备好更广泛地用于真实世界系统。我们希望检验这些结果在机器人实际遇到的多样场景、视角和物体交互中是否依然成立。\n\n我们推出 RoboTrack，这是一套面向机器人操作中点跟踪的基准与训练数据套件。RoboTrack-Bench 包含 307 段经人工标注的视频，来自 DROID、Ego-Exo4D、MolmoAct 2 和 EgoVerse，涵盖不同的机器人与人类手部、杂乱场景以及第一人称与第三人称视角。为研究训练数据如何影响这些场景下的跟踪效果，我们还扩展了 MolmoSpaces（Ai2 面向机器人学习的仿真生态系统），以从仿真机器人操作轨迹中生成稠密点轨迹。该流程产出了 RoboTrack-15M，这是一个面向机器人操作的新合成训练数据集。\n\n（原文配图未能获取：RoboTrack 概览图，展示由 MolmoSpaces 生成 RoboTrack-15M 仿真数据，以及 RoboTrack-Bench 人工标注的真实世界操作视频）\n\nRoboTrack 是一套面向机器人操作中点跟踪的基准与训练数据套件。RoboTrack-15M（左上）基于 MolmoSpaces 构建，生成用于训练的点轨迹。使用这些仿真数据训练可提升在真实操作视频上的跟踪效果。RoboTrack-Bench（右上）提供真实操作视频中经人工标注的点轨迹。\n\n我们的评测显示，领先的跟踪器在 RoboTrack-Bench 上的得分远低于其在既有机器人基准上的得分。将 RoboTrack-15M 加入现有跟踪器的训练中，可提升其在真实操作视频上的表现，且增益还可扩展到其他跟踪基准。我们将这些部分整合到一台真实机器人上，用所得跟踪器辅助引导湿实验室任务中的移液器操作。\n\n今天，我们发布 RoboTrack 的两个组成部分以及两个新的点跟踪模型：RoboTracker 和 RoboTracker-Warp。RoboTracker 是采用我们的技术与数据微调的 AllTracker 模型，而 RoboTracker-Warp 则基于 CoWTracker 训练。与其各自已发布的基线相比，这两个模型在三个机器人基准上的平均 AJ 均有提升；在我们评测的五个基准中，RoboTracker-Warp 在其中四个上达到当前最优性能。我们同时发布描述该工作与评测结果的论文。\n\nRoboTrack-Bench：面向真实世界操作的点跟踪基准\n\n（原文配图未能获取：RoboTrack-Bench 中经人工核验的点轨迹示例，覆盖 DROID、Ego-Exo4D、MolmoAct 2 和 EgoVerse）\n\nRoboTrack-Bench 概览。每个来源数据集的示例（总计 307 个视频片段和 2,522 条经人工验证的轨迹）。MolmoAct 2 和 EgoVerse 每个面板展示一种具身形态。DROID 和 EgoExo4D 展示同步的自我中心视角（上）和外部视角（下）。\n\nRoboTrack-Bench 将评测扩展到受控桌面场景之外。它包含来自 DROID、Ego-Exo4D、MolmoAct 2 和 EgoVerse 的 307 段视频，共标注 2,522 条点轨迹。视频展示了机器人和人类手部在杂乱场景中以及第一人称和第三人称视角下操作物体。小物体在复杂背景下可能难以跟踪，而夹爪常常遮挡其抓取的物体。\n\nRoboTrack-Bench 中的每条轨迹都由人工标注并验证。我们要求标注者优先选择会移动或被遮挡的点，而不是机器人视频中大量静态背景点。遵循 TAP-Vid 标注方法，标注者利用运动估计帮助在视频中追踪每个点。他们将每条轨迹标注为属于机器人或人体、被操作物体或静态物体，以支持未来对各类别性能的分析。第二组标注者会逐帧检查每条轨迹，之后才将其纳入我们整理的数据中。\n\n为支持多视角指向、对应和跟踪研究，RoboTrack-Bench 包含 33 对由两个相机同时录制的视频子集。我们在两个视角中标注相同的物理点，并跨帧同步，从而连接同一交互的不同视角。\n\n点跟踪器在真实世界操作中表现吃力\n\n我们在 RoboTrack-Bench 和另外四个基准上评估了四种领先的跟踪器——CoTracker3、BootsTAPNext、AllTracker 和 CoWTracker：RoboTAP（真实世界桌面操作）、RGB-Stacking（仿真操作），以及 DAVIS 和 Kinetics（通用视频）。我们报告 Average Jaccard（AJ），它衡量跟踪准确性和可见性预测；分数越高越好。\n\n（原文配图未能获取：评估表比较 CoTracker3、BootsTAPNext、AllTracker 和 CoWTracker 在 RoboTrack-Bench、RoboTAP、RGB-Stacking、DAVIS 和 Kinetics 上的 Average Jaccard 分数）\n\nRoboTrack-Bench 比现有机器人基准更难。我们评估的每一个最终跟踪器在 RoboTrack-Bench 上的得分都低于 RoboTAP——后者是唯一另一个真实视频机器人基准。它们的分数下降了 3.0 到 6.6 AJ。即便是最强的现成跟踪器 CoWTracker，也从 RoboTAP 上的 70.5 AJ 降至 RoboTrack-Bench 上的 63.9。尽管模型架构和训练数据不同，这一下降在各模型上均存在，表明 RoboTrack-Bench 能识别多个跟踪器的弱点。\n\nRGB-Stacking 更有利于在合成数据上训练的模型，而不是衡量真实世界能力。BootsTAPNext 是在 1500 万段真实视频上进一步训练的 TAPNext。额外的真实世界训练使其 RoboTrack-Bench 分数提高了 5.1 AJ（从 55.1 到 60.2），但使其 RGB-Stacking 分数降低了 9.5 AJ（从 75.0 到 65.5）。RGB-Stacking 基于仿真积木堆叠构建，它把仅在 Kubric 上训练的模型排得更高，而真实操作视频则把两者的排名反过来。\n\n在较旧基准上的领先优势并未延续。CoWTracker 在 RoboTAP 上领先 CoTracker3 4.7 AJ，但在 RoboTrack-Bench 上仅领先 2.1 AJ。AllTracker 在 RoboTAP 上对 CoTracker3 的 2.7 分领先缩小到 0.8。BootsTAPNext 是 DAVIS 上最强的模型，但在 RoboTrack-Bench 上落后 CoWTracker 3.7 AJ，甚至落后仅在 Kubric 上训练的 AllTracker（60.2 对 61.4 AJ），尽管它在 1500 万段真实视频上训练过。\n\n这些结果表明，现有基准对真实世界操作中的跟踪性能给出的图景并不完整。在更多样化的场景中评估，揭示了四种跟踪器共有的困难，并改变了它们优势的比较方式。\n\n注：每个跟踪器均按其作者的设置运行，并且全部以相同方式评分。我们的 AllTracker 分数与已发表分数略有不同，因为我们修复了其公开评估代码中的一个评分错误。此外，我们在所有标注点上评估 RoboTAP 和 Kinetics，而不是遵循 AllTracker 的协议。完整评估协议见我们的论文。\n\nRoboTrack-15M：来自 MolmoSpaces 的仿真数据\n\n为什么这些跟踪器在真实世界操作中表现不佳？许多跟踪器使用由 Kubric 生成的合成视频训练，这些视频展示的是被抛入场景中的物体。它们提供了运动和遮挡的示例，但不聚焦于机器人抓取和移动物体。我们想测试，加入这些交互产生的轨迹是否能提升在真实操作视频上的跟踪效果。\n\n这正是 MolmoSpaces 的用武之地——它是我们在 Ai2 的机器人仿真环境。我们扩展其现有的操作仿真，以在机器人及其操作的物体上生成密集点轨迹。在每个回合中，一个仿真机械臂拿起日常物体，例如杯子、盘子或积木。两台相机记录该交互：一台安装在腕部，一台位于机器人基座，使用 MuJoCo 渲染。利用仿真器的几何、物体位姿和相机信息，我们在无需人工标注的情况下计算每个点在每一帧中的位置和可见性，并过滤掉背景和机器人固定基座上的静态点。\n\n该流水线生成用于训练的 RoboTrack-15M。RoboTrack-15M 包含来自 300 个仿真住宅的 3,000 段视频，每段视频有 5,000 条轨迹，总计 1,500 万条轨迹。\n\n（原文配图未能获取：基于 MolmoSpaces 和 MuJoCo 构建的 RoboTrack-15M 合成数据生成流水线示意图）\n\nRoboTrack-15M 的数据生成流水线。物体、室内场景和机器人抓取均来自 MolmoSpaces。我们使用仿真器的几何和相机信息来计算点的位置和可见性。\n\nRoboTracker：在仿真操作数据上训练的点跟踪器\n\n我们提出两个在 RoboTrack-15M 上训练的模型：RoboTracker 和 RoboTracker-Warp。二者各自在 RoboTrack-15M 及其原始训练数据上微调一个现有跟踪器。RoboTracker 基于 AllTracker，这是一个 1700 万参数的轻量级模型；RoboTracker-Warp 基于 CoWTracker，这是一个约 10 亿参数的更大模型。\n\n我们发布两个模型的检查点，以便其他研究人员检查并在此基础上开展研究。RoboTracker-Warp 的权重仅限非商业用途。\n\n加入 RoboTrack-15M 提升了机器人基准上的分数。分别与已发布的 AllTracker 和 CoWTracker 模型相比，RoboTracker 将 RoboTrack-Bench 提升 0.8 AJ（62.6 至 63.4），RoboTracker-Warp 提升 2.1 AJ（63.9 至 66.0），在三个机器人基准上平均增益最高达 1.2 AJ。在通用视频基准上，两个模型的表现与其基础模型相当。总体而言，在我们于五个基准中的四个上评估的模型中，RoboTracker-Warp 的 AJ 最高。例外是 DAVIS，BootsTAPNext 和 CoWTracker 的分数略高。\n\n（原文配图未能获取：在 RoboTrack-15M 上微调 AllTracker（RoboTracker）和 CoWTracker（RoboTracker-Warp）前后的平均 Jaccard 分数对比）\n\n在 RoboTrack-15M 上微调带来的提升，针对 AllTracker（RoboTracker）和 CoWTracker（RoboTracker-Warp）。机器人平均值为 RoboTrack-Bench、RoboTAP 和 RGB-Stacking 上的平均值。\n\n（原文配图未能获取：按视频来源数据集拆分的 RoboTrack-Bench 结果图表）\n\n按视频来源划分的 RoboTrack-Bench 结果。\n\n按来源拆分增益可以看出增益来自哪里。RoboTracker-Warp 在每个来源上都提升约 1 至 3 AJ，包括来自 EgoVerse 和 Ego-Exo4D 的人类视频，尽管 RoboTrack-15M 只包含机械臂。RoboTracker 的增益较小，且主要来自机器人视频——在 DROID Franka 和 EgoVerse EVA 上最明显。\n\n什么样的仿真数据适合点跟踪？\n\nRoboTrack-15M 是我们合成数据经过多次迭代和实验的成果。事实上，我们的首次尝试在 RoboTrack-Bench 上并未带来任何增益。为找出原因，我们研究了一个简单问题：与真实操作视频相比，被跟踪点移动的距离有多远？我们为每个数据版本绘制直方图，并测量其与 RoboTrack-Bench 的距离（下图）。\n\n每个训练数据版本中点的移动距离与 RoboTrack-Bench 的对比，分别对应第三人称（上）和第一人称（下）视角。距离是两个直方图之间的 Jensen–Shannon 散度（JSD），0 表示直方图完全相同。Kubric 只有一种相机类型，因此同样的片段会同时出现在两行中。AJ 在完整 RoboTrack-Bench 上测量。\n\n直方图清楚地揭示了问题所在。我们的第一版在画面任意位置采样点，包括墙壁、地板和家具，因此从固定第三人称相机看到的大多数点从未移动。为解决这一问题，我们接下来只在机器人及其操作的物体上采样点，这使腕部视角接近真实视频并提高了分数。有趣的是，我们发现 Kubric 在腕部视角也存在同样的不匹配，这很可能解释了为何仅靠它不足以应对机器人操作中多变的视角。最后，我们将点从机器人固定底座和安装平台移到运动臂上，这也使我们的第三人称视角与真实视频一致，并将消融分数提高到 63.0 AJ，比仅用 Kubric 的对照组高 1.5 分。\n\n应用：使用点跟踪的机器人操作\n\n我们基于单次演示的点轨迹引导机器人的湿实验室流程。\n\n更好的点跟踪对机器人意味着什么？许多机器人系统发现点轨迹可作为物体如何运动的紧凑表示，并能直接引导策略。为了在实践中验证这一点，我们为一项湿实验室任务构建了类似系统：将液体从一个样品瓶移液到另一个样品瓶。\n\n在这里，机器人手臂拿起电子移液器，从第一个样品瓶中吸取液体，将其分配到第二个样品瓶中，然后将移液器放回支架。该任务颇具挑战，因为移液器吸头必须与样品瓶开口在毫米级范围内对齐，并且机器人需要在每次试验中适应不同的样品瓶布局。\n\n遵循 RoboTap，机器人从单次演示中学习该任务，我们通过遥操作记录演示并将其拆分为多个步骤。在测试时，机器人将其相机所见与演示进行比较，并使用 RoboTracker 估计对齐样品瓶所需的运动。由于后续运动在没有进一步反馈的情况下运行，只有当该估计准确时任务才会成功。\n\n我们比较三种估计样品瓶移动位置的方法：\n\n光流（RAFT）直接在演示图像和实时相机图像之间匹配像素。\n\n对象掩码（SAM3）在每张新图像中找到样品瓶，并将其掩码中心与演示对齐。\n\n点跟踪（RoboTracker）在整个视频中跟踪样品瓶上的点，将演示图像中的点与实时图像匹配。\n\n我们在 20 种样品瓶位置不同的布局上运行了每种方法：10 种为清晰视野，10 种为部分遮挡。点跟踪在 20 次试验中的 17 次完成了完整转移，而对象掩码为 8 次，光流为 5 次。它在全部 10 次清晰视野试验中成功，并在 10 次遮挡试验中成功 7 次，而基于掩码的方法仅成功 1 次。\n\n其他方法以不同方式失败。当样品瓶远离其在演示中的位置时，光流会失效；而掩码可能锁定到外观相似的物体上，或在样品瓶被遮挡时丢失它。另一方面，点跟踪逐帧跟踪同一个样品瓶对象，因此能处理大幅移动和部分遮挡。这些结果表明，点跟踪是精确机器人操作任务中一种有前景的工具。\n\n每种方法在有无遮挡条件下的移液试验成功率（每种情况各 10 种布局）。当机器人完成完整移液转移时，该试验计为成功。\n\n局限性与后续工作\n\n我们发现，这些跟踪器在长时间遮挡、点重新出现后的定位，以及跟踪杂乱背景中的小物体方面仍存在困难。在 RoboTrack-15M 上训练可提升性能，但这些失败案例仍是实际应用中的挑战。\n\n我们的仿真也侧重于抓取日常物体。它们尚未能捕捉移液管操作等任务中所涉及的精确动作。下一步是更贴近地仿真这些任务，并检验在其轨迹上训练能否提升部署时的跟踪效果。\n\nRoboTrack 为我们提供了一种衡量这些失败并生成训练数据以解决这些问题的方法。我们希望这些基准、仿真流程和已发布的模型能帮助他人构建机器人可以信赖的跟踪器。"
+}
