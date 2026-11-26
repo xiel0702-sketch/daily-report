@@ -1,0 +1,2106 @@
+{
+  "schemaVersion": 1,
+  "id": "h1ja45355xx1xf9rqf89cv1if",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/h1ja45355xx1xf9rqf89cv1if",
+  "fetchedAt": "2026-11-26T01:10:33.928035Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic",
+    "Anthropic / Claude",
+    "Agent 智能体",
+    "部署工程",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "很多问题都存在生成—验证之间的落差：验证一个解法是否正确，往往比想出一个解法要容易得多。数独就是典型例子。检查答案很简单（只要数一数每行、每列、每个宫里的数字），但找到这个答案可能要花很长时间。许多雄心勃勃的 Claude 项目正是依赖这一落差：在数学中形式化证明，或者迁移规模庞大、经过充分测试的代码库——只要 Claude 有可靠的办法验证自己的工作，这类任务它就能承担。",
+          "inlines": [
+            {
+              "text": "很多问题都存在"
+            },
+            {
+              "italic": true,
+              "text": "生成—验证"
+            },
+            {
+              "text": "之间的落差：验证一个解法是否正确，往往比想出一个解法要容易得多。数独就是典型例子。检查答案很简单（只要数一数每行、每列、每个宫里的数字），但找到这个答案可能要花很长时间。许多雄心勃勃的 Claude 项目正是依赖这一落差：在数学中形式化"
+            },
+            {
+              "href": "https://alpo.ge/remark.pdf",
+              "text": "证明"
+            },
+            {
+              "text": "，或者"
+            },
+            {
+              "href": "https://bun.com/blog/bun-in-rust",
+              "text": "迁移"
+            },
+            {
+              "text": "规模庞大、经过充分测试的代码库——只要 Claude 有可靠的办法验证自己的工作，这类任务它就能承担。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "但随着 Claude 能力越来越强，它开始接手真实运行系统中的项目，而在这些系统里，生成工作反而比验证工作更容易。这类系统的用户常常依赖一些不在测试套件覆盖范围内的边界情况和特殊行为，而很难写出一个能覆盖所有情况的“正确”定义。没有可靠的办法检查 Claude 的工作，线上系统的迁移就很难让人放心——无论 Claude 生成代码有多快。",
+          "inlines": [
+            {
+              "text": "但随着 Claude 能力越来越强，它开始接手真实运行系统中的项目，而在这些系统里，生成工作反而比验证工作更容易。这类系统的用户常常依赖一些"
+            },
+            {
+              "href": "https://github.blog/2016-02-03-scientist/",
+              "text": "不在测试套件覆盖范围内"
+            },
+            {
+              "text": "的边界情况和特殊行为，而很难写出"
+            },
+            {
+              "href": "https://www.anthropic.com/research/formal-verification",
+              "text": "一个能覆盖所有情况的“正确”定义"
+            },
+            {
+              "text": "。没有可靠的办法检查 Claude 的工作，线上系统的迁移就很难让人放心——无论 Claude 生成代码有多快。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在把 Messages API 从 Python 迁移到 Rust 时就遇到了这个问题。这个 API 是客户以及我们自己的应用（比如 Claude Code 和 Cowork）访问 Claude 的主要途径。从 2024 年初到 2026 年秋，API 流量增长了约 1,800 倍。改用 Rust 后，每个请求消耗的 CPU 会少得多。Claude 用大约一周时间写出了这个 API 核心请求路径的第一版。但要让人信任这次迁移，我们必须找到一种办法，验证 Rust 版 API 与生产环境 API 行为一致。这件事之所以困难，原因有好几个：Python 版 API 在整个迁移过程中一直在变，所以“一致”是个不断移动的目标；Claude 对同一个请求的回复可能不确定，所以两份输出有差异不一定就是 bug；而且我们看不到客户的请求内容，也就无法轻易发现两个版本在哪里出现了分歧。",
+          "inlines": [
+            {
+              "text": "我们在把 "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/working-with-messages",
+              "text": "Messages API"
+            },
+            {
+              "text": " 从 Python 迁移到 Rust 时就遇到了这个问题。这个 API 是客户以及我们自己的应用（比如 Claude Code 和 Cowork）访问 Claude 的主要途径。从 2024 年初到 2026 年秋，API 流量增长了约 1,800 倍。改用 Rust 后，每个请求消耗的 CPU 会少得多。Claude 用大约一周时间写出了这个 API 核心请求路径的第一版。但要让人信任这次迁移，我们必须找到一种办法，验证 Rust 版 API 与生产环境 API 行为一致。这件事之所以困难，原因有好几个：Python 版 API 在整个迁移过程中一直在变，所以“一致”是个不断移动的目标；Claude 对同一个请求的回复可能不确定，所以两份输出有差异不一定就是 bug；而且我们看不到客户的请求内容，也就无法轻易发现两个版本在哪里出现了分歧。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本文介绍我们如何把生产环境的 Messages API 本身变成一个验证器，以及这如何帮助我们在生产流量上测试新的 Rust 版本、找出两者的差异，并自动派发智能体去修复这些差异。最终我们上线了一个 Rust 版 API，每个请求消耗的 CPU 减少约 70%，首 token 中位延迟降低约 20%，而且全程没有让服务下线，也没有冻结功能开发。",
+          "inlines": [
+            {
+              "text": "本文介绍我们如何把生产环境的 Messages API 本身变成一个验证器，以及这如何帮助我们在生产流量上测试新的 Rust 版本、找出两者的差异，并自动派发智能体去修复这些差异。最终我们上线了一个 Rust 版 API，每个请求消耗的 CPU 减少约 70%，首 token 中位延迟降低约 20%，而且全程没有让服务下线，也没有冻结功能开发。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么要迁移？",
+          "inlines": [
+            {
+              "text": "为什么要迁移？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我们在 2023 年构建了 Messages API，用 Python 编写，因为当时公司内部大量研究代码都用 Python。起初它很简单：Messages API 把请求转给模型，再把模型写出的内容发回去。（当时有位工程师称它“基本就是个请求转发器”。）但随着 Messages API 功能越来越强、与我们的代码库结合得越来越深，它也开始与研究团队和推理团队维护的 Python 库产生共享依赖，这让它很难挪动。如果哪天想换用另一种语言，就意味着日志、指标和工具全都要重新做一遍。",
+          "inlines": [
+            {
+              "text": "我们在 2023 年构建了 Messages API，用 Python 编写，因为当时公司内部大量研究代码都用 Python。起初它很简单：Messages API 把请求转给模型，再把模型写出的内容发回去。（当时有位工程师称它“基本就是个请求转发器”。）但随着 Messages API 功能越来越强、与我们的代码库结合得越来越深，它也开始与研究团队和推理团队维护的 Python 库产生共享依赖，这让它很难挪动。如果哪天想换用另一种语言，就意味着日志、指标和工具全都要重新做一遍。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这种权衡逐渐开始改变。到 2025 年底，每个 Messages API 请求都必须经过校验、转换成提示词、分词，再由我们的安全分类器筛查。每收到一条回复，token 流都要被分拣成文本、思考和工具调用，而 Python 在每一步都会带来额外开销——每次创建对象、释放内存或把工作交给下一个任务时都是如此。流量最终远远超出了最初那个 Python 服务的设计承载能力（图 1），我们很快需要想办法让服务高效得多。",
+          "inlines": [
+            {
+              "text": "这种权衡逐渐开始改变。到 2025 年底，每个 Messages API 请求都必须经过校验、转换成提示词、分词，再由我们的安全分类器筛查。每收到一条回复，token 流都要被分拣成文本、思考和工具调用，而 Python 在每一步都会带来额外开销——每次创建对象、释放内存或把工作交给下一个任务时都是如此。流量最终远远超出了最初那个 Python 服务的设计承载能力（图 1），我们很快需要想办法让服务高效得多。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d3a7408d291c321237429462b9a878a183296d5f822dc0cdf9310fd8a2d32603.webp",
+          "alt": "Bar chart of API requests per day by month, from January 2024 to October 2026. Bars are barely visible through 2024, rise gradually in 2025, and climb steeply in 2026 to their highest point in October.",
+          "width": 2400,
+          "height": 1138
+        },
+        {
+          "type": "paragraph",
+          "text": "我们自有平台上日均 API 请求数的月平均值，包含我们自己的使用量。",
+          "inlines": [
+            {
+              "text": "我们自有平台上日均 API 请求数的月平均值，包含我们自己的使用量。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "增量改造，还是一次性重写？",
+          "inlines": [
+            {
+              "text": "增量改造，还是一次性重写？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "对大型生产系统做彻底重写，人们往往慎之又慎，至少有两个原因。第一，无法保证测试套件覆盖了生产代码 100% 的行为，重写有风险。第二，所需的工作量之大，常常让这种项目难以推进。（2024 年，我们一位工程师提出迁移到 Go 或 Rust 后，另一位工程师暂时给这个问题定了调：“我们不会用 go 或 rust 重写 API！”）",
+          "inlines": [
+            {
+              "text": "对大型生产系统做彻底重写，人们往往慎之又慎，至少有两个原因。第一，无法保证测试套件覆盖了生产代码 100% 的行为，重写有风险。第二，所需的工作量之大，常常让这种项目难以推进。（2024 年，我们一位工程师提出迁移到 Go 或 Rust 后，另一位工程师暂时给这个问题定了调：“"
+            },
+            {
+              "italic": true,
+              "text": "我们不会用 go 或 rust 重写 API！"
+            },
+            {
+              "text": "”）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "因此，想提升性能，通常的建议是只重写拖慢系统的那部分代码，我们也是从这里入手的。我们用 Rust 重写了负责解析模型输出的代码，并从 Python 调用它。这让 API 的 CPU 占用降低了约 8% 到 10%。不过，增量方案往往会带来额外的复杂度，因此必须确保增量改进值得付出这些代价。在我们的案例中，收益并不足以抵消增加的复杂度。现在每个 token 都要在 Python 和 Rust 之间来回穿越三次（图 2），又制造出新的开销来源。",
+          "inlines": [
+            {
+              "text": "因此，想提升性能，通常的建议是只重写拖慢系统的那部分代码，我们也是从这里入手的。我们用 Rust 重写了负责解析模型输出的代码，并从 Python 调用它。这让 API 的 CPU 占用降低了约 8% 到 10%。不过，增量方案往往会带来额外的复杂度，因此必须确保增量改进值得付出这些代价。在我们的案例中，收益并不足以抵消增加的复杂度。现在每个 token 都要在 Python 和 Rust 之间来回穿越三次（图 2），又制造出新的开销来源。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/4625bb310f23863ff65e252ae5f0a80ea3d2d34703dd6dfa9d52f104def5d7d3.webp",
+          "alt": "Two diagrams of the request path. In the partial rewrite (March 2026), Rust receives and parses tokens while Python does the other steps, so each token crosses between languages three times. In the full rewrite (September 2026), Python hands over the request and Rust does every other step around the model.",
+          "width": 2400,
+          "height": 1064
+        },
+        {
+          "type": "paragraph",
+          "text": "增量重写之后，回复中的每个 token 都要在 Python 和 Rust 之间来回穿越三次。",
+          "inlines": [
+            {
+              "text": "增量重写之后，回复中的每个 token 都要在 Python 和 Rust 之间来回穿越三次。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "随着 Claude 能力越来越强，我们开始质疑：过去那些避免整体迁移的理由是否仍然成立。这个项目所需的工作量正在快速下降：到 2026 年 5 月，Claude 已经编写了 Anthropic 合并代码的 80% 以上。我们想，Claude 现在能否帮我们写出代码，以实证方式捕捉生产系统中的每一项行为和修复？但问题变成了：我们如何验证迁移后的行为是正确的？瓶颈已经从生成代码变成了验证。",
+          "inlines": [
+            {
+              "text": "随着 Claude 能力越来越强，我们开始质疑：过去那些避免整体迁移的理由是否仍然成立。这个项目所需的工作量正在快速下降：到 2026 年 5 月，Claude 已经编写了 "
+            },
+            {
+              "href": "https://www.anthropic.com/institute/recursive-self-improvement",
+              "text": "Anthropic 合并代码的 80% 以上"
+            },
+            {
+              "text": "。我们想，Claude 现在能否帮我们写出代码，以实证方式捕捉生产系统中的每一项行为和修复？但问题变成了：我们如何验证迁移后的行为是正确的？瓶颈已经从生成代码变成了验证。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "我们如何验证这次迁移",
+          "inlines": [
+            {
+              "text": "我们如何验证这次迁移"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "通用方法",
+          "inlines": [
+            {
+              "text": "通用方法"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "要验证迁移，首先需要定义什么叫“正确”。有几种做法（图 3）。运气好的话，你可以直接写一条规则。数学中的定理就是一个精确的陈述，证明助手（比如 Lean）可以依据一套固定规则检查证明的每一步。另一些时候——在软件工程中更常见——你用一组示例来定义“正确”，比如测试。例如，Bun 从 Zig 迁移到 Rust 时，它的测试套件是用 TypeScript 写的，因此同一套测试可以评判两个版本。在我们的案例中，这两种方法都不够用，于是我们以现有系统作为基准，在迁移过程中测试两者是否一致。但问题在于，我们的现有系统（Messages API）一直在变。我们定期发布新模型、上线新功能，这让“正确”的定义成了一个移动靶。",
+          "inlines": [
+            {
+              "text": "要验证迁移，首先需要定义什么叫“正确”。有几种做法（图 3）。运气好的话，你可以直接写一条规则。"
+            },
+            {
+              "href": "https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/",
+              "text": "数学中的定理"
+            },
+            {
+              "text": "就是一个精确的陈述，证明助手（比如 Lean）可以依据一套固定规则检查证明的每一步。另一些时候——在软件工程中更常见——你用一组示例来定义“正确”，比如测试。例如，"
+            },
+            {
+              "href": "https://bun.com/blog/bun-in-rust",
+              "text": "Bun 从 Zig 迁移到 Rust"
+            },
+            {
+              "text": " 时，它的测试套件是用 TypeScript 写的，因此同一套测试可以评判两个版本。在我们的案例中，这两种方法都不够用，于是我们以现有系统作为基准，在迁移过程中测试两者是否一致。但问题在于，我们的现有系统（Messages API）一直在变。我们定期发布新模型、上线新功能，这让“正确”的定义成了一个移动靶。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ca9970b8da3d765ca134fd38383e42188e38ec69ff195bb7c7326d6c82b98f84.webp",
+          "alt": "Three rows, each sending a signal to a Claude agent. A rule, like Lean for proofs, is all written down and flags a step that doesn’t follow. Examples, like Bun’s test suite, are partly written down and flag a failing test. An existing system, like our Python service, has no answers written down, so you build a checker that flags where the two differ.",
+          "width": 2400,
+          "height": 920
+        },
+        {
+          "type": "paragraph",
+          "text": "“正确性”的三种常见来源。",
+          "inlines": [
+            {
+              "text": "“正确性”的三种常见来源。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "测试",
+          "inlines": [
+            {
+              "text": "测试"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "测试是我们最容易入手的地方，因为我们已经有一套约 700 个集成测试。然而，有两个问题让我们无法放心地依靠它们来验证如此高风险的迁移是否正确（图 4）。",
+          "inlines": [
+            {
+              "text": "测试是我们最容易入手的地方，因为我们已经有一套约 700 个集成测试。然而，有两个问题让我们无法放心地依靠它们来验证如此高风险的迁移是否正确（图 4）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "测试与 Python 实现耦合在一起。一个集成测试会发送请求，然后检查返回结果以及发送给其他服务的内容。我们的测试在测试进程内运行 Python API，并在 Python 内存中模拟计费、限流等服务。测试必须随代码一起改动，而 Claude 在两方面都帮了忙。这样一来，一个“通过”可能意味着代码是对的，也可能意味着测试被改成了能让错误代码通过的样子。我们确实看到了这种情况：审计移植后的测试时，发现了 100 多处被弱化的断言。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "测试与 Python 实现耦合在一起。"
+            },
+            {
+              "text": "一个集成测试会发送请求，然后检查返回结果以及发送给其他服务的内容。我们的测试在测试进程内运行 Python API，并在 Python 内存中模拟计费、限流等服务。测试必须随代码一起改动，而 Claude 在两方面都帮了忙。这样一来，一个“通过”可能意味着代码是对的，也可能意味着测试被改成了能让错误代码通过的样子。我们确实看到了这种情况：审计移植后的测试时，发现了 100 多处被弱化的断言。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "测试并不完整。Messages API 有几十项功能，配置组合多到无法穷尽测试。仅 20 个二元选项就能产生超过一百万种组合——按每个测试一秒计算，单个模型就要跑 12 天，这还没算上在测试内部变换提示词。实践中，工程师会测试一个尽量接近生产环境的子集，但这个过程不可避免地会漏掉一些情况。有些项目（比如 Bun）有一套足够全面的独立测试套件，足以评判一次重写。许多生产服务并没有这样的套件；所谓“正确”，既取决于测试和文档里写了什么，也取决于服务实际怎么运行。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "测试并不完整。"
+            },
+            {
+              "text": "Messages API 有几十项功能，配置组合多到无法穷尽测试。仅 20 个二元选项就能产生超过一百万种组合——按每个测试一秒计算，单个模型就要跑 12 天，这还没算上在测试内部变换提示词。实践中，工程师会测试一个尽量接近生产环境的子集，但这个过程不可避免地会漏掉一些情况。有些项目（比如 Bun）有一套足够全面的独立测试套件，足以评判一次重写。许多生产服务并没有这样的套件；所谓“正确”，既取决于测试和文档里写了什么，也取决于服务实际怎么运行。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c829ac12dfc98012aa4ed844808b41776ab361446ba117d24d30422bf9ec871e.webp",
+          "alt": "Two panels. Left, tests coupled to the legacy implementation: a Python test is ported to a Rust test that Claude also wrote, which checks a smaller area and misses differences. Right, incomplete tests: a few small clusters of checked cases in a large grid of feature combinations, with many missed differences outside them.",
+          "width": 2400,
+          "height": 1224
+        },
+        {
+          "type": "paragraph",
+          "text": "移植后的测试可能比原测试检查得更少（虚线），而测试只覆盖了有人想到的那些组合。",
+          "inlines": [
+            {
+              "text": "移植后的测试可能比原测试检查得更少（虚线），而测试只覆盖了有人想到的那些组合。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "用生产数据检测一致性",
+          "inlines": [
+            {
+              "text": "用生产数据检测一致性"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "生产数据有时是判断新代码行为是否与旧代码一致的“唯一真正的测试”。把请求分别交给新旧代码运行并比较结果，通常称为影子运行。要弄清需要比较什么，不妨先看看一个请求在 Messages API 上会经历什么（图 5）。API 会校验每个请求，把它转换成模型能读的提示词（用于推理的提示词），进行分词，再跑一遍安全分类器。然后模型逐个 token 写出回复。在输出侧，API 把这些 token 整理成文本、思考内容和工具调用，流式发送给客户，并统计用量用于限流和计费。",
+          "inlines": [
+            {
+              "text": "生产数据有时是判断新代码行为是否与旧代码一致的“"
+            },
+            {
+              "href": "https://github.blog/2016-02-03-scientist/",
+              "text": "唯一真正的测试"
+            },
+            {
+              "text": "”。把请求分别交给新旧代码运行并比较结果，通常称为"
+            },
+            {
+              "italic": true,
+              "text": "影子运行"
+            },
+            {
+              "text": "。要弄清需要比较什么，不妨先看看一个请求在 Messages API 上会经历什么（图 5）。API 会校验每个请求，把它转换成模型能读的提示词（用于推理的提示词），进行分词，再跑一遍安全分类器。然后模型逐个 token 写出回复。在输出侧，API 把这些 token 整理成文本、思考内容和工具调用，流式发送给客户，并统计用量用于限流和计费。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7e77a2f5061fbe90c4062945c678efc87f6270756ec4f147b41a361227297620.webp",
+          "alt": "Flow diagram of a request. The input path accepts or rejects it, resolves settings, and builds the prompt; about a quarter of inputs matched at first. Claude runs once. The output path sorts the reply, streams it, and counts usage. Examples of differences include a rejected field, a 1M limit read as 200K, a missing tool description, stripped newlines, and missing usage fields. The risk designed against is a copy counted twice.",
+          "width": 2400,
+          "height": 846
+        },
+        {
+          "type": "paragraph",
+          "text": "Messages API 的输入与输出路径。实心点是我们发现的 Python 与 Rust 之间的差异示例。空心点是我们必须防范的风险。",
+          "inlines": [
+            {
+              "text": "Messages API 的输入与输出路径。实心点是我们发现的 Python 与 Rust 之间的差异示例。空心点是我们必须防范的风险。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这次迁移同时覆盖了输入和输出路径。有些差异很明显，比如 Rust API 拒绝了 Python 原本接受的请求。但很多差异很细微。例如，如果 Rust API 漏掉了提示词的一部分，请求仍然会成功，模型也仍然会回答，只是有时会有细微差别。",
+          "inlines": [
+            {
+              "text": "这次迁移同时覆盖了输入和输出路径。有些差异很明显，比如 Rust API 拒绝了 Python 原本接受的请求。但很多差异很细微。例如，如果 Rust API 漏掉了提示词的一部分，请求仍然会成功，模型也仍然会回答，只是有时会有细微差别。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们的 Rust API 在四月份通过了约 98% 的测试，但在生产流量上只有约四分之一的输入结果一致（图 6）。差距部分来自生产流量中测试未覆盖的情况。例如，Python 在写 JSON 工具调用时，会把某些字符（比如 emoji）转义成文本编码。Rust 则原样写出这些字符，于是两个提示词相差了几个字节。生产环境对 bug 的权重也不同。在测试套件里，每个用例只计一次；但在真实流量中，一个 bug 会在每个触发它的请求里出现，这意味着一个常见的 bug 就能造成大量不一致。",
+          "inlines": [
+            {
+              "text": "我们的 Rust API 在四月份通过了约 98% 的测试，但在生产流量上只有约四分之一的输入结果一致（图 6）。差距部分来自生产流量中测试未覆盖的情况。例如，Python 在写 JSON 工具调用时，会把某些字符（比如 emoji）转义成文本编码。Rust 则原样写出这些字符，于是两个提示词相差了几个字节。生产环境对 bug 的权重也不同。在测试套件里，每个用例只计一次；但在真实流量中，一个 bug 会在每个触发它的请求里出现，这意味着一个常见的 bug 就能造成大量不一致。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f9fd86a2e2795ebf3a32a037dcf597b615bd7fffc242e58c6254a654fbbb9663.webp",
+          "alt": "Line chart of the share of inputs that matched, from late April to August. It starts at 24%, drops to 6.5% in early May, then rises sharply as fixes roll out, with two falls from changes on the Rust side, and ends at 99.6%. The comparison began on our own traffic and then moved to a wider sample.",
+          "width": 2400,
+          "height": 1490
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们对比的请求中，Rust 的输入与 Python 的输入匹配的频率。回复是单独对比的。每个点代表一天，折线是七天中位数。我们对比的内容随时间变化，另有六个具有误导性的日子被排除在外。",
+          "inlines": [
+            {
+              "text": "在我们对比的请求中，Rust 的输入与 Python 的输入匹配的频率。回复是单独对比的。每个点代表一天，折线是七天中位数。我们对比的内容随时间变化，另有六个具有误导性的日子被排除在外。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用于影子流量的常见工具往往假定一个请求可以安全地运行两次，或者假定某个服务是确定性的。这些假设在我们的场景中并不成立。我们必须确保一个请求只对客户的限额和账单计入一次。此外，Claude 是非确定性的，也就是说，相同的输入可能得到不同的回复（图 7）。为解决这个问题，我们只运行一次模型，然后把模型输出重放给 Rust。",
+          "inlines": [
+            {
+              "text": "用于影子流量的"
+            },
+            {
+              "href": "https://github.blog/2016-02-03-scientist/",
+              "text": "常见"
+            },
+            {
+              "href": "https://blog.x.com/en/engineering/diffy-testing-services-without-writing-tests",
+              "text": "工具"
+            },
+            {
+              "text": "往往假定一个请求可以安全地运行两次，或者假定某个服务是确定性的。这些假设在我们的场景中并不成立。我们必须确保一个请求只对客户的限额和账单计入一次。此外，Claude 是非确定性的，也就是说，相同的输入"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/glossary",
+              "text": "可能得到不同的回复"
+            },
+            {
+              "text": "（图 7）。为解决这个问题，我们只运行一次模型，然后把模型输出重放给 Rust。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "两个版本都基于同一份模型输出运行，但我们仍需对比模型调用前后的每一个阶段，而且结果必须完全一致。在很多系统里，错误的输入会在调用栈的某个位置引发错误。但 Claude 几乎接受任何提示词，所以哪怕是很小的偏差，也可能改变它的回复，却不触发任何错误。我们对比了模型调用前后的每一个步骤，这样才能定位任何可能改变客户所收到内容的偏差。",
+          "inlines": [
+            {
+              "text": "两个版本都基于同一份模型输出运行，但我们仍需对比模型调用前后的每一个阶段，而且结果必须完全一致。在很多系统里，错误的输入会在调用栈的某个位置引发错误。但 Claude 几乎接受任何提示词，所以哪怕是很小的偏差，也可能改变它的回复，却不触发任何错误。我们对比了模型调用前后的每一个步骤，这样才能定位任何可能改变客户所收到内容的偏差。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/15913c048563feb61033442e8dc50096c20bba10ecd5ce1cd90e3bd9ecb92211.webp",
+          "alt": "Two comparisons. In a typical service, two old copies and a new one match on ID, the new copy shows a bug in the total, and the time varies, so it is ignored as noise. In an inference API, two Python copies and Rust each word the answer to “Is 91 prime?” differently, so the whole reply would count as noise and go unchecked.",
+          "width": 2400,
+          "height": 1400
+        },
+        {
+          "type": "paragraph",
+          "text": "差异对比工具通常会把旧代码运行两次，找出哪些变化是它自身固有的，然后忽略这些变化。而 Claude 的回复本身就会变化，这些工具会把它们连同其中的 bug 一起忽略掉。",
+          "inlines": [
+            {
+              "text": "差异对比工具通常会把旧代码运行两次，找出哪些变化是它自身固有的，然后忽略这些变化。而 Claude 的回复本身就会变化，这些工具会把它们连同其中的 bug 一起忽略掉。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对我们来说，做这件事时保护用户隐私很重要。为此，我们必须在不去读取用户请求或 Claude 对其回复的情况下工作，这意味着我们无法轻易看出 API 的 Rust 版本和 Python 版本在哪里出现了差异。所以，我们不看文本，而是记录每一处差异的形态，比如它发生在服务中的哪个位置、有多大。我们用了以下几种不同的方法：",
+          "inlines": [
+            {
+              "text": "对我们来说，做这件事时保护用户隐私很重要。为此，我们必须在不去读取用户请求或 Claude 对其回复的情况下工作，这意味着我们无法轻易看出 API 的 Rust 版本和 Python 版本在哪里出现了差异。所以，我们不看文本，而是记录每一处差异的"
+            },
+            {
+              "italic": true,
+              "text": "形态"
+            },
+            {
+              "text": "，比如它发生在服务中的哪个位置、有多大。我们用了以下几种不同的方法："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "检查点。"
+                },
+                {
+                  "text": "两个 API 版本都用相同的步骤处理请求：接受或拒绝请求、解析其设置、构建提示词。每个步骤都会产生某种结果，比如一个错误或提示词的各个片段，我们可以逐步对比，并在提示词内部逐片段对比。它们首次出现差异的位置，大致指示了迁移代码与生产代码在哪里不同（图 8）。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/433feeb8d1af84327154333e0df2bc93e4df2a264a94e56652aaad0e7e14f424.webp",
+          "alt": "Python and Rust compared at each step, with the model called once and its output replayed to Rust. Building the prompt is the first step to differ: in piece 2, two keys are in a different order from byte 17. The record passed to a Claude agent lists the step, piece, both lengths of 190 bytes, and first differing byte, but no text.",
+          "width": 2400,
+          "height": 1552
+        },
+        {
+          "type": "paragraph",
+          "text": "在检查点进行对比的简化示意，数值为虚构。第一个出现差异的步骤指示了该去哪里排查。记录给出了片段、长度以及首次出现差异的位置，但不包含文本。",
+          "inlines": [
+            {
+              "text": "在检查点进行对比的简化示意，数值为虚构。第一个出现差异的步骤指示了该去哪里排查。记录给出了片段、长度以及首次出现差异的位置，但不包含文本。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "指纹。"
+                },
+                {
+                  "text": "一旦大致知道每处差异位于哪里，我们还需要一种方法来区分不同的 bug。我们记录每处差异在提示词中的起始位置，以及两个版本之间的长度差。结合检查点定位到的步骤和提示词片段，我们发现 bug 会呈现出特定的指纹。也就是说，同一个 bug 往往会在它影响的每个请求上留下相同的指纹（图 9）。这样我们就能按指纹对错误分组，有助于安排修复的优先级。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fe9c66217bb8f51d326900a46fab1eef455425bd58be6477d9a4d1017385b7f3.webp",
+          "alt": "Four dot grids show mismatches being counted, grouped by fingerprint, split by build, and regrouped after a fix. Fingerprint A accounts for nearly all mismatches; fixing it reveals two older groups, B and C. A table below distinguishes the three by piece and position in the prompt, length gap, and hash.",
+          "width": 2400,
+          "height": 1868
+        },
+        {
+          "type": "paragraph",
+          "text": "某一类请求产生的指纹。位于提示词开头的 A 掩盖了更早的差异。A 修复后，这些差异以 B 和 C 的形式显现出来。图中的点为示意。",
+          "inlines": [
+            {
+              "text": "某一类请求产生的指纹。位于提示词开头的 A 掩盖了更早的差异。A 修复后，这些差异以 B 和 C 的形式显现出来。图中的点为示意。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "最终得到的影子系统会为 Rust 与 Python API 之间的每一处差异生成一条简短记录。下面是一个示例，数值为虚构：",
+          "inlines": [
+            {
+              "text": "最终得到的影子系统会为 Rust 与 Python API 之间的每一处差异生成一条简短记录。下面是一个示例，数值为虚构："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "然后我们可以把这条记录交给智能体去修复。",
+          "inlines": [
+            {
+              "text": "然后我们可以把这条记录交给智能体去修复。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "验证循环",
+          "inlines": [
+            {
+              "text": "验证循环"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "每一个有差异的请求都会在日志里留下一条记录。一个 bug 就可能产生几十万条几乎相同的差异记录。我们没有把每条记录都发给智能体，而是每 10 到 30 分钟运行一次脚本，按差异字段把它们分组，只有当出现新类型的记录时，才通知一个负责协调的 Claude 智能体。这个协调者会为每一种新类型的记录指派一个工作智能体来负责。它还会在共享的 Slack 频道里新建一个话题串，让人类工程师可以跟进，并在必要时介入引导。",
+          "inlines": [
+            {
+              "text": "每一个有差异的请求都会在日志里留下一条记录。一个 bug 就可能产生几十万条几乎相同的差异记录。我们没有把每条记录都发给智能体，而是每 10 到 30 分钟运行一次脚本，按差异字段把它们分组，只有当出现新"
+            },
+            {
+              "italic": true,
+              "text": "类型"
+            },
+            {
+              "text": "的记录时，才通知一个负责协调的 Claude 智能体。这个协调者会为每一种新类型的记录指派一个工作智能体来负责。它还会在共享的 Slack 频道里新建一个话题串，让人类工程师可以跟进，并在必要时介入引导。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了处理大量 bug，我们搭建了一系列验证回路。快速的内层回路为智能体提供一个沙箱，让它们可以快速试验想法、提出修复方案。较慢的外层回路则负责在生产环境中验证修复。此外还有一个记忆回路，记录过程中出现的所有错误并保存下来，让智能体可以随着时间不断学习（图 10）。",
+          "inlines": [
+            {
+              "text": "为了处理大量 bug，我们搭建了一系列验证回路。快速的"
+            },
+            {
+              "italic": true,
+              "text": "内层"
+            },
+            {
+              "text": "回路为智能体提供一个沙箱，让它们可以快速试验想法、提出修复方案。较慢的"
+            },
+            {
+              "italic": true,
+              "text": "外层"
+            },
+            {
+              "text": "回路则负责在生产环境中验证修复。此外还有一个"
+            },
+            {
+              "italic": true,
+              "text": "记忆回路"
+            },
+            {
+              "text": "，记录过程中出现的所有错误并保存下来，让智能体可以随着时间不断学习（图 10）。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c95fcd0ec6091469feb1a7f0712a2b0d8e1aed69a9754514266eb7bb52fa0286.webp",
+          "alt": "Three nested loops. The inner loop asks whether an edit fixes the difference, using local checks that take under a second to compare. The outer loop asks whether it is gone in production, using shadowed live traffic over hours or days. The memory loop asks why it keeps happening, and turns people’s corrections into new rules.",
+          "width": 2400,
+          "height": 1392
+        },
+        {
+          "type": "paragraph",
+          "text": "验证回路。一次修改先在沙箱中检查，然后在影子流量上检查。人的纠正会沉淀为规则。每一层回路都能捕捉到内层回路漏掉的问题。",
+          "inlines": [
+            {
+              "text": "验证回路。一次修改先在沙箱中检查，然后在影子流量上检查。人的纠正会沉淀为规则。每一层回路都能捕捉到内层回路漏掉的问题。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "内层回路",
+          "inlines": [
+            {
+              "text": "内层回路"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "今年 4 月我们刚开始测试时，给每个智能体一条记录，显示 Rust 和 Python 版本在哪里出现差异。智能体会从代码中推测根因，然后提交一个 pull request。修复经过评审并合并后，它们会部署到 staging——Rust API 的一个预生产副本，我们在那里对测试流量运行同样的影子对比。智能体再检查差异是否被消除。由于每个假设都需要评审和部署，反馈往往要花上几小时甚至几天。",
+          "inlines": [
+            {
+              "text": "今年 4 月我们刚开始测试时，给每个智能体一条记录，显示 Rust 和 Python 版本在哪里出现差异。智能体会从代码中推测根因，然后提交一个 pull request。修复经过评审并合并后，它们会部署到 staging——Rust API 的一个预生产副本，我们在那里对测试流量运行同样的影子对比。智能体再检查差异是否被消除。由于每个假设都需要评审和部署，反馈往往要花上几小时甚至几天。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们需要让智能体更快拿到验证信号，于是把它们移进了独立的工作区。我们重新设计了内层回路，让智能体有一个可以快速试验、安全失败的地方。每个智能体都运行在一个云沙箱里，里面有两套代码库，以及针对模型调用前后行为的快速本地检查。输入检查会接收一个请求，分别构建两个版本要发给模型的提示词，并显示差异所在。由于这个检查从不真正调用模型，对比两个版本耗时不到一秒。后来我们又加了输出检查：用一个假模型分别运行两个版本。输出检查会把一段脚本化的回复（比如一次工具调用）依次传给两个版本，再比较结果。",
+          "inlines": [
+            {
+              "text": "我们需要让智能体更快拿到验证信号，于是把它们移进了独立的工作区。我们重新设计了内层回路，让智能体有一个可以快速试验、安全失败的地方。每个智能体都运行在一个云沙箱里，里面有两套代码库，以及针对模型调用前后行为的快速本地检查。输入检查会接收一个请求，分别构建两个版本要发给模型的提示词，并显示差异所在。由于这个检查从不真正调用模型，对比两个版本耗时不到一秒。后来我们又加了输出检查：用一个假模型分别运行两个版本。输出检查会把一段脚本化的回复（比如一次工具调用）依次传给两个版本，再比较结果。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "主要的限制在于，智能体只能看到指纹，看不到每条记录背后的请求。于是智能体会先假设差异的成因，然后自己写一个请求或模型回复，试图复现这个差异。由于这些内容都是智能体自己写的，它可以完整读取两边的结果。如果结果一致，说明它的猜测错了，智能体会再试一次。如果结果以记录所描述的方式出现差异，智能体就会修改 Rust，直到两个版本一致，然后补一个在旧代码上失败、在新代码上通过的测试（图 11）。",
+          "inlines": [
+            {
+              "text": "主要的限制在于，智能体只能看到指纹，看不到每条记录背后的请求。于是智能体会先假设差异的成因，然后自己写一个请求或模型回复，试图复现这个差异。由于这些内容都是智能体自己写的，它可以完整读取两边的结果。如果结果一致，说明它的猜测错了，智能体会再试一次。如果结果以记录所描述的方式出现差异，智能体就会修改 Rust，直到两个版本一致，然后补一个在旧代码上失败、在新代码上通过的测试（图 11）。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/93be4f7637d7e076608527cb43fc4b112e66d90b78a391ed416f6c57feef3233.webp",
+          "alt": "The inner loop, highlighted. From a fingerprint, the agent guesses the cause and writes a triggering request or reply. Input and output checks run it through both versions. If they match, it guesses again; if they differ as the record did, it edits the Rust and rechecks. Once they match after the edit, it opens a PR with a fix and a test.",
+          "width": 2400,
+          "height": 1616
+        },
+        {
+          "type": "paragraph",
+          "text": "内层回路。智能体根据指纹猜测成因，并写一个应当能触发该成因的请求或回复。本地检查会把它跑过两个版本，直到某次修改让两者一致。",
+          "inlines": [
+            {
+              "text": "内层回路。智能体根据指纹猜测成因，并写一个应当能触发该成因的请求或回复。本地检查会把它跑过两个版本，直到某次修改让两者一致。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "内环与外环之间的衔接处是一个很好的人工审查检查点。在沙箱里，猜错一次对智能体来说只损失几秒钟，也不会影响用户。智能体可以自行迭代。只有当修复经过 PR 审查后，我们才允许它进入外环；这样一来，工程师就能把注意力集中在提议的修复上（而不是各种猜测上），以及验证器无法回答的问题上，比如 Rust 与 Python API 之间的差异究竟是 bug 还是有意为之的改动。",
+          "inlines": [
+            {
+              "text": "内环与外环之间的衔接处是一个很好的人工审查检查点。在沙箱里，猜错一次对智能体来说只损失几秒钟，也不会影响用户。智能体可以自行迭代。只有当修复经过 PR 审查后，我们才允许它进入外环；这样一来，工程师就能把注意力集中在提议的修复上（而不是各种猜测上），以及验证器无法回答的问题上，比如 Rust 与 Python API 之间的差异究竟是 bug 还是有意为之的改动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "智能体把修复方案和证据发到各自的 Slack 线程里，供工程师审查。5 月中旬，Rust 与 Python API 之间剩下的最大差异之一来自网页搜索。生产 API 会从内部服务获取网页搜索工具的说明。Rust API 当时还没有调用这个服务，所以提示词里缺少该工具的说明。一个智能体提出了一条捷径：把文本复制到 Rust 能读取的文件里。这样提示词就一致了，修复也通过了本地验证器。但一位工程师否决了它，因为这并没有真正解决问题：Rust 在发布前仍然需要调用该服务，到那时这个变通方案就会被丢弃（图 12）。",
+          "inlines": [
+            {
+              "text": "智能体把修复方案和证据发到各自的 Slack 线程里，供工程师审查。5 月中旬，Rust 与 Python API 之间剩下的最大差异之一来自网页搜索。生产 API 会从内部服务获取网页搜索工具的说明。Rust API 当时还没有调用这个服务，所以提示词里缺少该工具的说明。一个智能体提出了一条捷径：把文本复制到 Rust 能读取的文件里。这样提示词就一致了，修复也通过了本地验证器。但一位工程师否决了它，因为这并没有真正解决问题：Rust 在发布前仍然需要调用该服务，到那时这个变通方案就会被丢弃（图 12）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "但验证器奖励的是输出一致，而智能体找到了产出这种一致的最省事办法。验证器能告诉智能体输出是否一致，却无法判断这个修复是否好到可以上线。正因如此，人工审查才是一道重要的关卡。",
+          "inlines": [
+            {
+              "text": "但验证器奖励的是输出一致，而智能体找到了产出这种一致的最省事办法。验证器能告诉智能体输出是否一致，却无法判断这个修复是否好到可以上线。正因如此，人工审查才是一道重要的关卡。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/58b57706120bcd14c8c852125a5a764b0abd068e86c5b53e1571baa4da7f4605.webp",
+          "alt": "A Slack channel, #rust-migration. An engineer asks a coordinating Claude agent to explain its next target. Claude agents trace the mismatch to web search, find it is already tracked, and open a fix that loads the description from text files. A second engineer replies: “We know we have to fetch that text before we ship, so this seems like throwaway code. Abandon that PR.”",
+          "width": 2400,
+          "height": 2150
+        },
+        {
+          "type": "paragraph",
+          "text": "智能体在四个 Slack 线程中追踪到一处与网页搜索工具相关的不一致，并提出修复方案，工程师认为这是用完即弃的代码而予以否决。我们对消息做了精简和改写，并补充了线程名称和智能体标签。",
+          "inlines": [
+            {
+              "text": "智能体在四个 Slack 线程中追踪到一处与网页搜索工具相关的不一致，并提出修复方案，工程师认为这是用完即弃的代码而予以否决。我们对消息做了精简和改写，并补充了线程名称和智能体标签。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "外环",
+          "inlines": [
+            {
+              "text": "外环"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "在内环中，智能体排查差异并提出修复。在内环与外环的衔接处，工程师审查提议的修复、给出反馈，并批准部署。随后外环会比较应用了各项修复与未应用修复的 Rust API 部署。",
+          "inlines": [
+            {
+              "text": "在内环中，智能体排查差异并提出修复。在内环与外环的衔接处，工程师审查提议的修复、给出反馈，并批准部署。随后外环会比较应用了各项修复与未应用修复的 Rust API 部署。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了让比较公平，我们记录了所比较的每个请求的相关事实，但不记录其文本，包括它使用了哪个模型和哪些 API 功能，例如提示词缓存、工具或扩展思考。有了这些细节，智能体就能比较同类请求（图 13），并统计该 bug 的特征在应用修复与未应用修复的构建上分别出现了多少次。这样，智能体就能在新构建上监控该 bug。",
+          "inlines": [
+            {
+              "text": "为了让比较公平，我们记录了所比较的每个请求的相关事实，但不记录其文本，包括它使用了哪个模型和哪些 API 功能，例如提示词缓存、工具或扩展思考。有了这些细节，智能体就能比较同类请求（图 13），并统计该 bug 的特征在应用修复与未应用修复的构建上分别出现了多少次。这样，智能体就能在新构建上监控该 bug。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c5e609ec995322755bad0b8a92c319176ea02e47193eb7e66810415048ccbe97.webp",
+          "alt": "The outer loop, highlighted. An engineer reviews the PR, which merges and deploys to a test environment, then production. Shadowed live traffic is watched for the fingerprint. If it remains, work returns to the inner loop. If repeated checks find it gone, the task closes, and the thread reopens if it returns.",
+          "width": 2400,
+          "height": 1564
+        },
+        {
+          "type": "paragraph",
+          "text": "外环。工程师审查修复，修复部署上线，影子流量显示其特征是否消失。如果没有消失，任务就回到内环。",
+          "inlines": [
+            {
+              "text": "外环。工程师审查修复，修复部署上线，影子流量显示其特征是否消失。如果没有消失，任务就回到内环。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们设计外环，是为了捕捉内环漏掉的问题。内环能快速模拟生产环境，但并不完美：智能体可以在几秒内验证一个假设，但只能针对自己编写的请求，而且本地验证器的配置并不总是与生产环境完全一致。",
+          "inlines": [
+            {
+              "text": "我们设计外环，是为了捕捉内环漏掉的问题。内环能快速模拟生产环境，但并不完美：智能体可以在几秒内验证一个假设，但只能针对自己编写的请求，而且本地验证器的配置并不总是与生产环境完全一致。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这意味着有时修复在沙箱里通过了，生产环境却仍然显示出差异。负责该 bug 的智能体会在新构建的记录中看到差异，或者收到协调智能体的提醒。然后它回到内环，利用这些证据形成新的假设。",
+          "inlines": [
+            {
+              "text": "这意味着有时修复在沙箱里通过了，生产环境却仍然显示出差异。负责该 bug 的智能体会在新构建的记录中看到差异，或者收到协调智能体的提醒。然后它回到内环，利用这些证据形成新的假设。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "记忆环",
+          "inlines": [
+            {
+              "text": "记忆环"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "内层循环和外层循环每次只固定一处差异。记忆循环则改进了智能体做这些修复的方式。我们不希望工程师把同一个修正做两遍，于是把评审结论和智能体自身工作的产出记录下来，应用到之后每一个智能体上。",
+          "inlines": [
+            {
+              "text": "内层循环和外层循环每次只固定一处差异。"
+            },
+            {
+              "href": "https://www.anthropic.com/research/components-of-agent-memory",
+              "text": "记忆"
+            },
+            {
+              "text": "循环则改进了智能体做这些修复的方式。我们不希望工程师把同一个修正做两遍，于是把评审结论和智能体自身工作的产出记录下来，应用到之后每一个智能体上。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "例如，当一位工程师否决了网页搜索这条捷径时（图 12），智能体就往记忆里存了一条笔记，说明这个决定、做出决定的理由，以及正确的修法——让 Rust 调用提供工具描述的那个服务。",
+          "inlines": [
+            {
+              "text": "例如，当一位工程师否决了网页搜索这条捷径时（图 12），智能体就往记忆里存了一条笔记，说明这个决定、做出决定的理由，以及正确的修法——让 Rust 调用提供工具描述的那个服务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "搭建这个调用花了团队好几周，在此期间这个 bug 还在不断产生记录。有些记录带有新的指纹，因为缺失的文本落在提示词的其他位置，或者属于另一个使用同一服务的工具。智能体查了记忆笔记，认出这是已知 bug，就把这些记录关联到它上面，而不是再写一个临时绕行方案（图 14）。",
+          "inlines": [
+            {
+              "text": "搭建这个调用花了团队好几周，在此期间这个 bug 还在不断产生记录。有些记录带有新的指纹，因为缺失的文本落在提示词的其他位置，或者属于另一个使用同一服务的工具。智能体查了记忆笔记，认出这是已知 bug，就把这些记录关联到它上面，而不是再写一个临时绕行方案（图 14）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "还有些经验被提炼成了移植和编写 Rust 的通用规则。在一个智能体对 Python 的行为做了猜测之后，一位工程师立下规则：必须原样移植 Python 的行为。随后一个智能体拿现有代码对照这条规则，又找出七处移植时靠猜测的地方。",
+          "inlines": [
+            {
+              "text": "还有些经验被提炼成了移植和编写 Rust 的通用规则。在一个智能体对 Python 的行为做了猜测之后，一位工程师立下规则：必须原样移植 Python 的行为。随后一个智能体拿现有代码对照这条规则，又找出七处移植时靠猜测的地方。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "6 月，一个智能体还梳理了团队约 60 条评审意见，把反复出现的问题归类并提出规则，由一位工程师修改后批准写入 CLAUDE.md（图 14）。",
+          "inlines": [
+            {
+              "text": "6 月，一个智能体还梳理了团队约 60 条评审意见，把反复出现的问题归类并提出规则，由一位工程师修改后批准写入 "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/memory",
+              "text": "CLAUDE.md"
+            },
+            {
+              "text": "（图 14）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "记忆循环还把一些经验固化成永久性的检查，包括：当 Rust 与 Python 行为出现偏差时就会失败的新测试；禁止评审者反复指出的模式的 lint 规则；以及后来增加的一项合并检查——任何人改动 Python 代码，都必须在 Rust 中做对应改动，或者申请豁免。",
+          "inlines": [
+            {
+              "text": "记忆循环还把一些经验固化成永久性的检查，包括：当 Rust 与 Python 行为出现偏差时就会失败的新测试；禁止评审者反复指出的模式的 lint 规则；以及后来增加的一项合并检查——任何人改动 Python 代码，都必须在 Rust 中做对应改动，或者申请豁免。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/6d825c23e13eb75fb5c139eefa9c1b05d53192977bb13b4bee9fa61299cd547e.webp",
+          "alt": "The memory loop, highlighted. A repeated mistake prompts an engineer’s correction, “Did you make that up yourself?” It becomes a rule each new agent reads first, a search by another agent that finds the same mistake in seven places, and a test that fails if the versions drift. A daily read of merged changes flags what Rust might need to mirror.",
+          "width": 2400,
+          "height": 1640
+        },
+        {
+          "type": "paragraph",
+          "text": "记忆循环。工程师的一次修正会变成三样东西：一条每个新智能体都会读取的规则、一次对同类错误的搜索，以及一个测试。",
+          "inlines": [
+            {
+              "text": "记忆循环。工程师的一次修正会变成三样东西：一条每个新智能体都会读取的规则、一次对同类错误的搜索，以及一个测试。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "展望未来",
+          "inlines": [
+            {
+              "text": "展望未来"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "用 Claude 迁移生产系统正变得越来越可行——无论是为了更好的性能还是安全性——而且不必让 API 下线，也不会拖慢功能开发。既然最难的部分不再是写新代码，我们就需要建立足够的信心，确认新系统的行为与旧系统一致。",
+          "inlines": [
+            {
+              "text": "用 Claude 迁移生产系统正变得越来越可行——无论是为了更好的性能还是安全性——而且不必让 API 下线，也不会拖慢功能开发。既然最难的部分不再是写新代码，我们就需要建立足够的信心，确认新系统的行为与旧系统一致。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "常规的迁移方式有点像重建忒修斯之船：旧船的木板被一块块换掉。一般来说，船还在航行时就能换木板，但一次换太多就得进船坞。把这个比喻用足的话，Claude 现在可以让你在第一条船旁边造一艘功能完全相同的船——即便第一条船仍在航行、仍在换木板。旧船变化时，智能体让新船保持同步，我们则不断检查两者行为是否一致。一旦我们确信一致，就分批把乘客转移过去。新船比旧船航行得更快、更高效。",
+          "inlines": [
+            {
+              "text": "常规的迁移方式有点像重建忒修斯之船：旧船的木板被一块块换掉。一般来说，船还在航行时就能换木板，但一次换太多就得进船坞。把这个比喻用足的话，Claude 现在可以让你在第一条船旁边造一艘功能完全相同的船——即便第一条船仍在航行、仍在换木板。旧船变化时，智能体让新船保持同步，我们则不断检查两者行为是否一致。一旦我们确信一致，就分批把乘客转移过去。新船比旧船航行得更快、更高效。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "经验教训",
+          "inlines": [
+            {
+              "text": "经验教训"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "验证成了新的瓶颈。过去，迁移这类大型软件项目很难立项，因为投入太大、风险太高。但如果写代码不再是瓶颈，主要制约就变成了你能多快验证结果。总的来说，只要 Claude 有办法验证正确性，就可以把目标定得更大胆一些。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "验证成了新的瓶颈。"
+            },
+            {
+              "text": "过去，迁移这类大型软件项目很难立项，因为投入太大、风险太高。但如果写代码不再是瓶颈，主要制约就变成了你能多快验证结果。总的来说，只要 Claude 有办法验证正确性，就可以把目标定得更大胆一些。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "验证是赢得信任的方式。在数学领域，我们用证明助手来验证 Claude 写出的证明每一步是否成立。在软件领域，测试或形式化验证也能帮我们获得类似的信心。但当这些检查还不够时，生产系统本身也可以充当验证者。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "验证是赢得信任的方式。"
+            },
+            {
+              "text": "在数学领域，我们用证明助手来验证 Claude 写出的证明每一步是否成立。在软件领域，测试或"
+            },
+            {
+              "href": "https://www.anthropic.com/research/formal-verification",
+              "text": "形式化验证"
+            },
+            {
+              "text": "也能帮我们获得类似的信心。但当这些检查还不够时，生产系统本身也可以充当验证者。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "精心设计验证信号。验证器提供的信号，是 Claude 可以据此行动的依据。我们可以校准这个信号，让 Claude 知道哪里出了问题。证明助手会指出失败的步骤，测试会点名失败的用例，而生产系统默认往往给不出这样的信号。这个项目的大部分精力，都花在构建这样的信号上。具体来说，检查点负责定位代码中的每一处差异，指纹则帮助区分不同的 bug。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "精心设计验证信号。"
+            },
+            {
+              "text": "验证器提供的信号，是 Claude 可以据此行动的依据。我们可以校准这个信号，让 Claude 知道哪里出了问题。证明助手会指出失败的步骤，测试会点名失败的用例，而生产系统默认往往给不出这样的信号。这个项目的大部分精力，都花在构建这样的信号上。具体来说，检查点负责定位"
+            },
+            {
+              "italic": true,
+              "text": "代码中"
+            },
+            {
+              "text": "的每一处差异，指纹则帮助"
+            },
+            {
+              "italic": true,
+              "text": "区分不同的 bug"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "构建让 Claude 能自主响应信号的循环。内层循环速度很快，在沙箱中本地运行。智能体用自己编写的请求，几秒钟就能验证一个假设。外层循环较慢，在影子生产流量上检验修复效果。最外层循环则只是文字，把修正作为规则存入记忆，供流程中后续的每个智能体读取。这些循环结合起来，让我们把 Messages API 迁移到了 Rust，每次请求的 CPU 占用降低约 70%，首个 token 的中位耗时缩短约 20%（图 15）。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "构建让 Claude 能自主响应信号的循环。"
+            },
+            {
+              "text": "内层循环速度很快，在沙箱中本地运行。智能体用自己编写的请求，几秒钟就能验证一个假设。外层循环较慢，在影子生产流量上检验修复效果。最外层循环则只是文字，把修正作为规则存入记忆，供流程中后续的每个智能体读取。这些循环结合起来，让我们把 Messages API 迁移到了 Rust，每次请求的 CPU 占用降低约 70%，首个 token 的中位耗时缩短约 20%（图 15）。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c941470b3b44254a16dc89b440e9b4411c6329f14a53b2fbf0a62f6447ecb930.webp",
+          "alt": "Three charts of the move from Python to Rust. CPU used per request falls by about 70% and memory used per request by more than 80%, both from August to October. Median time to first token falls by about 20% between roughly September 7 and 21.",
+          "width": 2400,
+          "height": 850
+        },
+        {
+          "type": "paragraph",
+          "text": "随着请求从 Python（灰色）迁移到 Rust（蓝色），每次请求的 CPU 与内存占用以及首个 token 的中位耗时变化。折线为七天平均值，100 约等于迁移前的水平，每个箭头表示从第一个点到第二个点的变化。CPU 为一个区域的数据，内存为全部生产环境的数据，首个 token 耗时统计的是客户 Claude Code 请求在较短时间段内的情况。第三幅图中，第一个点之前的下降，发生在这些请求几乎还全部跑在 Python 上的时候。",
+          "inlines": [
+            {
+              "text": "随着请求从 Python（灰色）迁移到 Rust（蓝色），每次请求的 CPU 与内存占用以及首个 token 的中位耗时变化。折线为七天平均值，100 约等于迁移前的水平，每个箭头表示从第一个点到第二个点的变化。CPU 为一个区域的数据，内存为全部生产环境的数据，首个 token 耗时统计的是客户 Claude Code 请求在较短时间段内的情况。第三幅图中，第一个点之前的下降，发生在这些请求几乎还全部跑在 Python 上的时候。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "让循环保持简单，才能随 Claude 能力提升而扩展。我们尽量只把人的判断放在“什么算正确”上，其余怎么达成，交给 Claude 自己决定。智能体自行选择验证哪些假设、如何复现每个 bug、如何修复。验证器负责评判结果。围绕强验证器搭建的简单循环，让我们能持续高效地推进（图 16）。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "让循环保持简单，才能随 Claude 能力提升而扩展。"
+            },
+            {
+              "text": "我们尽量只把人的判断放在“什么算正确”上，其余怎么达成，交给 Claude 自己决定。智能体自行选择验证哪些假设、如何复现每个 bug、如何修复。验证器负责评判结果。围绕强验证器搭建的简单循环，让我们能持续高效地推进（图 16）。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7192e0a2ee78676dde786aa6168e1792979cc1e6afde0614ef166b4a19dc711e.webp",
+          "alt": "Bar chart of changes merged per two-week period, April 6 to September 7, 2026. Changes climb from under 100 to roughly 1,000 by late June, level off through July, then jump to more than 3,000 in the period starting August 10 and stay above 2,500 for the next two periods.",
+          "width": 2400,
+          "height": 1072
+        },
+        {
+          "type": "paragraph",
+          "text": "从 4 月到 2026 年 9 月公开流量迁至 Rust 期间，每两周合并进 API Rust 代码的变更数量。其中并非全部都是迁移工作。",
+          "inlines": [
+            {
+              "text": "从 4 月到 2026 年 9 月公开流量迁至 Rust 期间，每两周合并进 API Rust 代码的变更数量。其中并非全部都是迁移工作。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "逐步转向外层循环。起初，工程师身处内层循环之中，亲自运行 Claude、追查差异。后来，他们移到循环之间的衔接处，帮助引导智能体，并在 Slack 上审查修复。随着系统成熟，他们越来越多地走向边缘，在那里能发挥最大的杠杆作用——编写智能体工作所遵循的规则和检查。随着 Claude 变得更聪明（我们与它协作的本领也在提高），我们从指挥 Claude 演变为让 Claude 指挥自己，人主要负责重要的判断决策。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "逐步转向外层循环。"
+            },
+            {
+              "text": "起初，工程师身处内层循环之中，亲自运行 Claude、追查差异。后来，他们移到循环之间的衔接处，帮助引导智能体，并在 Slack 上审查修复。随着系统成熟，他们越来越多地走向边缘，在那里能发挥最大的杠杆作用——编写智能体工作所遵循的规则和检查。随着 Claude 变得更聪明（我们与它协作的本领也在提高），我们从指挥 Claude 演变为让 Claude 指挥自己，人主要负责重要的判断决策。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Many problems have a generator–verifier gap: it’s often far easier to verify that a solution is correct than to come up with one. Sudoku is a classic example. It’s simple to check the solution (just count the numbers in each row, column, and box), but finding that solution can take a long time. Many ambitious Claude projects have relied on this gap: formalizing proofs in mathematics or migrating large, well-tested codebases are tasks Claude can take on as long as it has a reliable way to verify its work.",
+          "inlines": [
+            {
+              "text": "Many problems have a "
+            },
+            {
+              "italic": true,
+              "text": "generator–verifier"
+            },
+            {
+              "text": " gap: it’s often far easier to verify that a solution is correct than to come up with one. Sudoku is a classic example. It’s simple to check the solution (just count the numbers in each row, column, and box), but finding that solution can take a long time. Many ambitious Claude projects have relied on this gap: formalizing "
+            },
+            {
+              "href": "https://alpo.ge/remark.pdf",
+              "text": "proofs"
+            },
+            {
+              "text": " in mathematics or "
+            },
+            {
+              "href": "https://bun.com/blog/bun-in-rust",
+              "text": "migrating"
+            },
+            {
+              "text": " large, well-tested codebases are tasks Claude can take on as long as it has a reliable way to verify its work."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "But as Claude has become more capable, it’s begun to take on projects in live systems, where generating the work is easier than verifying it. In these systems, users often rely on edge cases and quirks that fall outside the test suite, and it’s hard to write a definition of “correct” that covers everything. Without a reliable way to check Claude’s work, the migration of a live system is hard to trust—however quickly Claude can generate the code for it.",
+          "inlines": [
+            {
+              "text": "But as Claude has become more capable, it’s begun to take on projects in live systems, where generating the work is easier than verifying it. In these systems, users often rely on edge cases and quirks that "
+            },
+            {
+              "href": "https://github.blog/2016-02-03-scientist/",
+              "text": "fall outside the test suite"
+            },
+            {
+              "text": ", and it’s hard to write "
+            },
+            {
+              "href": "https://www.anthropic.com/research/formal-verification",
+              "text": "a definition of “correct” that covers everything"
+            },
+            {
+              "text": ". Without a reliable way to check Claude’s work, the migration of a live system is hard to trust—however quickly Claude can generate the code for it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We ran into this problem when we migrated our Messages API from Python to Rust. This API is the primary way that customers—as well as our own apps, like Claude Code and Cowork—reach Claude. From early 2024 to fall 2026, API traffic grew roughly 1,800 times. Rust would allow us to use far less CPU per request. Claude wrote a first version of the API’s core request path in about a week. But building trust in the migration required us to find a way to verify that our Rust API was at parity with our production API. This proved hard for several reasons, including that the Python API continued changing throughout the migration, so parity was a moving target; Claude can reply nondeterministically to the same request, so a difference between two outputs didn’t necessarily mean a bug; and we couldn't read customer requests, so we weren't able to easily see where the two versions diverged.",
+          "inlines": [
+            {
+              "text": "We ran into this problem when we migrated our "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/working-with-messages",
+              "text": "Messages API"
+            },
+            {
+              "text": " from Python to Rust. This API is the primary way that customers—as well as our own apps, like Claude Code and Cowork—reach Claude. From early 2024 to fall 2026, API traffic grew roughly 1,800 times. Rust would allow us to use far less CPU per request. Claude wrote a first version of the API’s core request path in about a week. But building trust in the migration required us to find a way to verify that our Rust API was at parity with our production API. This proved hard for several reasons, including that the Python API continued changing throughout the migration, so parity was a moving target; Claude can reply nondeterministically to the same request, so a difference between two outputs didn’t necessarily mean a bug; and we couldn't read customer requests, so we weren't able to easily see where the two versions diverged."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this post, we share how we turned the production Messages API itself into a verifier—and how that helped us test the new Rust version on production traffic, find where it differed, and automatically dispatch agents to fix those differences. This allowed us to ship an API on Rust that uses about 70% less CPU per request and cuts median time to first token by about 20% without ever taking the service offline or freezing feature development.",
+          "inlines": [
+            {
+              "text": "In this post, we share how we turned the production Messages API itself into a verifier—and how that helped us test the new Rust version on production traffic, find where it differed, and automatically dispatch agents to fix those differences. This allowed us to ship an API on Rust that uses about 70% less CPU per request and cuts median time to first token by about 20% without ever taking the service offline or freezing feature development."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why migrate?",
+          "inlines": [
+            {
+              "text": "Why migrate?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "We built the Messages API in 2023 and wrote it in Python, which was widely used internally for much of our research code. At first, it was simple. The Messages API passed requests to the model and sent back what the model wrote. (One engineer at the time called it “basically a request forwarder.”) But as the Messages API became more capable and deeply integrated with our codebases, it also developed shared dependencies with Python libraries that were owned by our research and inference teams, which made it hard to move. If we ever wanted to move to another language, it would mean building logging, metrics, and tools all over again.",
+          "inlines": [
+            {
+              "text": "We built the Messages API in 2023 and wrote it in Python, which was widely used internally for much of our research code. At first, it was simple. The Messages API passed requests to the model and sent back what the model wrote. (One engineer at the time called it “basically a request forwarder.”) But as the Messages API became more capable and deeply integrated with our codebases, it also developed shared dependencies with Python libraries that were owned by our research and inference teams, which made it hard to move. If we ever wanted to move to another language, it would mean building logging, metrics, and tools all over again."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This calculus gradually began to change. By late 2025, every Messages API request had to be validated, converted into the prompt, tokenized, and screened by our safety classifiers. As each reply arrived, the stream of tokens had to be sorted into text, thinking, and tool calls, and Python added overhead to every one of those steps each time it created an object, freed memory, or handed its work to the next task. Traffic eventually grew far beyond what the initial Python service was built for (Figure 1), and we quickly needed to find a way to make the service much more efficient.",
+          "inlines": [
+            {
+              "text": "This calculus gradually began to change. By late 2025, every Messages API request had to be validated, converted into the prompt, tokenized, and screened by our safety classifiers. As each reply arrived, the stream of tokens had to be sorted into text, thinking, and tool calls, and Python added overhead to every one of those steps each time it created an object, freed memory, or handed its work to the next task. Traffic eventually grew far beyond what the initial Python service was built for (Figure 1), and we quickly needed to find a way to make the service much more efficient."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/d3a7408d291c321237429462b9a878a183296d5f822dc0cdf9310fd8a2d32603.webp",
+          "alt": "Bar chart of API requests per day by month, from January 2024 to October 2026. Bars are barely visible through 2024, rise gradually in 2025, and climb steeply in 2026 to their highest point in October.",
+          "width": 2400,
+          "height": 1138
+        },
+        {
+          "type": "paragraph",
+          "text": "The monthly average of API requests per day on our own platform, including our own use.",
+          "inlines": [
+            {
+              "text": "The monthly average of API requests per day on our own platform, including our own use."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Incremental or all at once?",
+          "inlines": [
+            {
+              "text": "Incremental or all at once?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Full rewrites of large production systems are often approached cautiously, for at least two reasons. First, there is no guarantee that test suites cover 100% of production code behavior, and rewriting it is risky. Second, the sheer effort required often makes such work intractable. (In 2024, after one of our engineers suggested migrating to Go or Rust, another temporarily settled the question: “We are not rewriting the API in go or rust!”)",
+          "inlines": [
+            {
+              "text": "Full rewrites of large production systems are often approached cautiously, for at least two reasons. First, there is no guarantee that test suites cover 100% of production code behavior, and rewriting it is risky. Second, the sheer effort required often makes such work intractable. (In 2024, after one of our engineers suggested migrating to Go or Rust, another temporarily settled the question: “"
+            },
+            {
+              "italic": true,
+              "text": "We are not rewriting the API in go or rust!"
+            },
+            {
+              "text": "”)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The standard advice if you’re looking for performance gains is thus to rewrite only the parts that are slowing the system down, so that’s where we started. In Rust, we rewrote the code that parses a model’s output and called it from Python. This reduced the API’s CPU usage by about 8% to 10%. However, incremental solutions often incur added complexity, and it’s important to make sure that incremental improvements justify those costs. In our case, the gains didn’t justify the added complexity. Each token now crossed between Python and Rust three times (Figure 2), creating new sources of overhead.",
+          "inlines": [
+            {
+              "text": "The standard advice if you’re looking for performance gains is thus to rewrite only the parts that are slowing the system down, so that’s where we started. In Rust, we rewrote the code that parses a model’s output and called it from Python. This reduced the API’s CPU usage by about 8% to 10%. However, incremental solutions often incur added complexity, and it’s important to make sure that incremental improvements justify those costs. In our case, the gains didn’t justify the added complexity. Each token now crossed between Python and Rust three times (Figure 2), creating new sources of overhead."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/4625bb310f23863ff65e252ae5f0a80ea3d2d34703dd6dfa9d52f104def5d7d3.webp",
+          "alt": "Two diagrams of the request path. In the partial rewrite (March 2026), Rust receives and parses tokens while Python does the other steps, so each token crosses between languages three times. In the full rewrite (September 2026), Python hands over the request and Rust does every other step around the model.",
+          "width": 2400,
+          "height": 1064
+        },
+        {
+          "type": "paragraph",
+          "text": "After the incremental rewrite, each token of a reply crossed between Python and Rust three times.",
+          "inlines": [
+            {
+              "text": "After the incremental rewrite, each token of a reply crossed between Python and Rust three times."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As Claude became increasingly capable, we began to question whether the usual reasons to avoid a full migration still held. The effort required to undertake the project was dropping fast: by May 2026, Claude was writing more than 80% of the code Anthropic merged. We wondered if Claude could now help us write code that would empirically capture every behavior and fix in the production system. But the question became: how could we verify that the behavior of our migration was correct? Verification, not generation, had become the bottleneck.",
+          "inlines": [
+            {
+              "text": "As Claude became increasingly capable, we began to question whether the usual reasons to avoid a full migration still held. The effort required to undertake the project was dropping fast: by May 2026, Claude was writing "
+            },
+            {
+              "href": "https://www.anthropic.com/institute/recursive-self-improvement",
+              "text": "more than 80% of the code Anthropic merged"
+            },
+            {
+              "text": ". We wondered if Claude could now help us write code that would empirically capture every behavior and fix in the production system. But the question became: how could we verify that the behavior of our migration was correct? Verification, not generation, had become the bottleneck."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How we verified the migration",
+          "inlines": [
+            {
+              "text": "How we verified the migration"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "General approaches",
+          "inlines": [
+            {
+              "text": "General approaches"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "To verify the migration, we first needed to define what “correct” meant. You can do this in a few ways (Figure 3). If you’re lucky, you can simply write a rule. A theorem in mathematics is a precise statement, and a proof assistant (like Lean) can check each step of a proof against a fixed set of rules. Other times—and more frequently in software engineering—you define “correct” with a set of examples, like tests. For instance, when Bun moved from Zig to Rust, its test suite was written in TypeScript, so the same tests could judge both versions. In our case, neither approach was sufficient, so we used the existing system as an oracle to test parity during the migration. In this case, our existing system (the Messages API) kept changing. We were releasing new models and shipping new features regularly, which made the definition of “correct” a moving target.",
+          "inlines": [
+            {
+              "text": "To verify the migration, we first needed to define what “correct” meant. You can do this in a few ways (Figure 3). If you’re lucky, you can simply write a rule. A "
+            },
+            {
+              "href": "https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/",
+              "text": "theorem in mathematics"
+            },
+            {
+              "text": " is a precise statement, and a proof assistant (like Lean) can check each step of a proof against a fixed set of rules. Other times—and more frequently in software engineering—you define “correct” with a set of examples, like tests. For instance, when "
+            },
+            {
+              "href": "https://bun.com/blog/bun-in-rust",
+              "text": "Bun moved"
+            },
+            {
+              "text": " from Zig to Rust, its test suite was written in TypeScript, so the same tests could judge both versions. In our case, neither approach was sufficient, so we used the existing system as an oracle to test parity during the migration. In this case, our existing system (the Messages API) kept changing. We were releasing new models and shipping new features regularly, which made the definition of “correct” a moving target."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/ca9970b8da3d765ca134fd38383e42188e38ec69ff195bb7c7326d6c82b98f84.webp",
+          "alt": "Three rows, each sending a signal to a Claude agent. A rule, like Lean for proofs, is all written down and flags a step that doesn’t follow. Examples, like Bun’s test suite, are partly written down and flag a failing test. An existing system, like our Python service, has no answers written down, so you build a checker that flags where the two differ.",
+          "width": 2400,
+          "height": 920
+        },
+        {
+          "type": "paragraph",
+          "text": "Three common sources of “correctness.”",
+          "inlines": [
+            {
+              "text": "Three common sources of “correctness.”"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Tests",
+          "inlines": [
+            {
+              "text": "Tests"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Tests were the easiest place for us to start, since we already had an existing set of about 700 integration tests. However, two problems limited our ability to trust them to verify the correctness of a migration as high stakes as this (Figure 4).",
+          "inlines": [
+            {
+              "text": "Tests were the easiest place for us to start, since we already had an existing set of about 700 integration tests. However, two problems limited our ability to trust them to verify the correctness of a migration as high stakes as this (Figure 4)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The tests were coupled to the Python implementation. An integration test sends a request, then checks the reply and what was sent to other services. Our tests ran the Python API inside the test’s process and mocked services, like billing and rate limiting, in Python’s memory. The tests had to change along with the code, and Claude helped with both. Now, a “pass” could mean that the code was right, or that the test had been changed in a way that let wrong code through. We saw this happen: when we audited the ported tests, we found more than 100 weakened assertions.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The tests were coupled to the Python implementation."
+            },
+            {
+              "text": " An integration test sends a request, then checks the reply and what was sent to other services. Our tests ran the Python API inside the test’s process and mocked services, like billing and rate limiting, in Python’s memory. The tests had to change along with the code, and Claude helped with both. Now, a “pass” could mean that the code was right, or that the test had been changed in a way that let wrong code through. We saw this happen: when we audited the ported tests, we found more than 100 weakened assertions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The tests were incomplete. The Messages API has dozens of features, and there are far too many configurations to test them exhaustively. Just 20 binary options make over a million combinations—that translates to 12 days of tests at a second each, for one model, before we even vary the prompts inside them. In practice, engineers test a subset that tries to approximate production, but that process inevitably misses cases. Some projects, like Bun, have an independent suite that’s extensive enough to judge a rewrite. Many production services don’t; what counts as correct depends as much on how they behave as on what’s in their tests or documentation.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The tests were incomplete."
+            },
+            {
+              "text": " The Messages API has dozens of features, and there are far too many configurations to test them exhaustively. Just 20 binary options make over a million combinations—that translates to 12 days of tests at a second each, for one model, before we even vary the prompts inside them. In practice, engineers test a subset that tries to approximate production, but that process inevitably misses cases. Some projects, like Bun, have an independent suite that’s extensive enough to judge a rewrite. Many production services don’t; what counts as correct depends as much on how they behave as on what’s in their tests or documentation."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c829ac12dfc98012aa4ed844808b41776ab361446ba117d24d30422bf9ec871e.webp",
+          "alt": "Two panels. Left, tests coupled to the legacy implementation: a Python test is ported to a Rust test that Claude also wrote, which checks a smaller area and misses differences. Right, incomplete tests: a few small clusters of checked cases in a large grid of feature combinations, with many missed differences outside them.",
+          "width": 2400,
+          "height": 1224
+        },
+        {
+          "type": "paragraph",
+          "text": "A ported test may check less than the original (dashed), and tests cover only the combinations someone thought of.",
+          "inlines": [
+            {
+              "text": "A ported test may check less than the original (dashed), and tests cover only the combinations someone thought of."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Detecting parity with production",
+          "inlines": [
+            {
+              "text": "Detecting parity with production"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Production data is sometimes “the only true test” that new code behaves like the old code. Running requests through old and new code and comparing the results is often called shadowing. To understand what we needed to compare, it helps to walk through what happens to a single request on the Messages API (Figure 5). The API validates each request, converts it into a prompt a model can read (the prompt for inference), tokenizes it, and runs it through safety classifiers. A model then writes a reply, one token at a time. On the output side, the API sorts those tokens into text, thinking, and tool calls, streams them to the customer, and counts usage for limits and billing.",
+          "inlines": [
+            {
+              "text": "Production data is sometimes “"
+            },
+            {
+              "href": "https://github.blog/2016-02-03-scientist/",
+              "text": "the only true test"
+            },
+            {
+              "text": "” that new code behaves like the old code. Running requests through old and new code and comparing the results is often called "
+            },
+            {
+              "italic": true,
+              "text": "shadowing"
+            },
+            {
+              "text": ". To understand what we needed to compare, it helps to walk through what happens to a single request on the Messages API (Figure 5). The API validates each request, converts it into a prompt a model can read (the prompt for inference), tokenizes it, and runs it through safety classifiers. A model then writes a reply, one token at a time. On the output side, the API sorts those tokens into text, thinking, and tool calls, streams them to the customer, and counts usage for limits and billing."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7e77a2f5061fbe90c4062945c678efc87f6270756ec4f147b41a361227297620.webp",
+          "alt": "Flow diagram of a request. The input path accepts or rejects it, resolves settings, and builds the prompt; about a quarter of inputs matched at first. Claude runs once. The output path sorts the reply, streams it, and counts usage. Examples of differences include a rejected field, a 1M limit read as 200K, a missing tool description, stripped newlines, and missing usage fields. The risk designed against is a copy counted twice.",
+          "width": 2400,
+          "height": 846
+        },
+        {
+          "type": "paragraph",
+          "text": "The Messages API’s input and output paths. Filled dots are examples of differences we found between Python and Rust. The hollow dot is a risk we had to prevent.",
+          "inlines": [
+            {
+              "text": "The Messages API’s input and output paths. Filled dots are examples of differences we found between Python and Rust. The hollow dot is a risk we had to prevent."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The migration covered both the input and output paths. Some differences were obvious, such as when the Rust API rejected a request that Python had accepted. But many were subtle. For instance, if the Rust API left out part of a prompt, the request would still succeed and the model would still answer, though sometimes with minor differences.",
+          "inlines": [
+            {
+              "text": "The migration covered both the input and output paths. Some differences were obvious, such as when the Rust API rejected a request that Python had accepted. But many were subtle. For instance, if the Rust API left out part of a prompt, the request would still succeed and the model would still answer, though sometimes with minor differences."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our Rust API passed about 98% of its tests in April, yet only about a quarter of inputs matched on production traffic (Figure 6). The gap came partly from cases in production traffic that our tests didn’t cover. For example, when Python writes JSON tool calls, it escapes certain characters (e.g., an emoji) by replacing them with text codes. Rust wrote those characters as is, so the two prompts differed by a few bytes. Production also weighted bugs differently. In a test suite, each case counts once, but in live traffic, a bug will show up in each request where it’s triggered, which means a single common bug can cause many mismatches.",
+          "inlines": [
+            {
+              "text": "Our Rust API passed about 98% of its tests in April, yet only about a quarter of inputs matched on production traffic (Figure 6). The gap came partly from cases in production traffic that our tests didn’t cover. For example, when Python writes JSON tool calls, it escapes certain characters (e.g., an emoji) by replacing them with text codes. Rust wrote those characters as is, so the two prompts differed by a few bytes. Production also weighted bugs differently. In a test suite, each case counts once, but in live traffic, a bug will show up in each request where it’s triggered, which means a single common bug can cause many mismatches."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f9fd86a2e2795ebf3a32a037dcf597b615bd7fffc242e58c6254a654fbbb9663.webp",
+          "alt": "Line chart of the share of inputs that matched, from late April to August. It starts at 24%, drops to 6.5% in early May, then rises sharply as fixes roll out, with two falls from changes on the Rust side, and ends at 99.6%. The comparison began on our own traffic and then moved to a wider sample.",
+          "width": 2400,
+          "height": 1490
+        },
+        {
+          "type": "paragraph",
+          "text": "How often Rust’s input matched Python’s on the requests we compared. Replies were compared separately. Each dot is a day, and the line is a seven-day median. What we compared changed over time, and six misleading days are left out.",
+          "inlines": [
+            {
+              "text": "How often Rust’s input matched Python’s on the requests we compared. Replies were compared separately. Each dot is a day, and the line is a seven-day median. What we compared changed over time, and six misleading days are left out."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Common tools for shadowing often assume that a request can safely run twice, or that a service is deterministic. These assumptions didn’t apply in our case. We had to ensure that a request only counted once toward a customer’s limits and bill. In addition, Claude is nondeterministic, meaning that replies can differ for the same input (Figure 7). To address this, we ran the model once and replayed the model output to Rust.",
+          "inlines": [
+            {
+              "href": "https://github.blog/2016-02-03-scientist/",
+              "text": "Common"
+            },
+            {
+              "text": " "
+            },
+            {
+              "href": "https://blog.x.com/en/engineering/diffy-testing-services-without-writing-tests",
+              "text": "tools"
+            },
+            {
+              "text": " for shadowing often assume that a request can safely run twice, or that a service is deterministic. These assumptions didn’t apply in our case. We had to ensure that a request only counted once toward a customer’s limits and bill. In addition, Claude is nondeterministic, meaning that replies "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/about-claude/glossary",
+              "text": "can differ for the same input"
+            },
+            {
+              "text": " (Figure 7). To address this, we ran the model once and replayed the model output to Rust."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With both versions working from the same model output, we still had to compare every stage before and after the model call, and the results had to match exactly. In many systems, bad input causes an error somewhere down the stack. But since Claude accepts almost any prompt, even a small deviation can change its reply without triggering an error. We compared each step before and after the model call, so that we could pin down any deviation that might change what a customer received.",
+          "inlines": [
+            {
+              "text": "With both versions working from the same model output, we still had to compare every stage before and after the model call, and the results had to match exactly. In many systems, bad input causes an error somewhere down the stack. But since Claude accepts almost any prompt, even a small deviation can change its reply without triggering an error. We compared each step before and after the model call, so that we could pin down any deviation that might change what a customer received."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/15913c048563feb61033442e8dc50096c20bba10ecd5ce1cd90e3bd9ecb92211.webp",
+          "alt": "Two comparisons. In a typical service, two old copies and a new one match on ID, the new copy shows a bug in the total, and the time varies, so it is ignored as noise. In an inference API, two Python copies and Rust each word the answer to “Is 91 prime?” differently, so the whole reply would count as noise and go unchecked.",
+          "width": 2400,
+          "height": 1400
+        },
+        {
+          "type": "paragraph",
+          "text": "Diff tools often run the old code twice to learn what varies on its own, then ignore it. Claude's replies vary, so those tools would ignore them, along with any bugs in them.",
+          "inlines": [
+            {
+              "text": "Diff tools often run the old code twice to learn what varies on its own, then ignore it. Claude's replies vary, so those tools would ignore them, along with any bugs in them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "It was important to us to do this in a way that protected user privacy. To do that we had to work without reading user requests or Claude’s replies to them, which means we couldn’t easily see where the Rust and Python versions of the API differed. So instead of looking at text, we recorded the shape of each difference, such as where it happened in the service and how big it was. We did this using a few different approaches:",
+          "inlines": [
+            {
+              "text": "It was important to us to do this in a way that protected user privacy. To do that we had to work without reading user requests or Claude’s replies to them, which means we couldn’t easily see where the Rust and Python versions of the API differed. So instead of looking at text, we recorded the "
+            },
+            {
+              "italic": true,
+              "text": "shape"
+            },
+            {
+              "text": " of each difference, such as where it happened in the service and how big it was. We did this using a few different approaches:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Checkpointing."
+                },
+                {
+                  "text": " Both API versions handle a request using the same steps: accept or reject it, resolve its settings, build the prompt. Every step produces some result, such as an error or the pieces of the prompt, that we could compare step by step, and within the prompt, piece by piece. The first place they differed indicated roughly where the migration code differed from production code (Figure 8)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/433feeb8d1af84327154333e0df2bc93e4df2a264a94e56652aaad0e7e14f424.webp",
+          "alt": "Python and Rust compared at each step, with the model called once and its output replayed to Rust. Building the prompt is the first step to differ: in piece 2, two keys are in a different order from byte 17. The record passed to a Claude agent lists the step, piece, both lengths of 190 bytes, and first differing byte, but no text.",
+          "width": 2400,
+          "height": 1552
+        },
+        {
+          "type": "paragraph",
+          "text": "Comparing at checkpoints, simplified, with made-up values. The first step to differ shows where to look. The record gives the piece, the lengths, and where they first differ, but not the text.",
+          "inlines": [
+            {
+              "text": "Comparing at checkpoints, simplified, with made-up values. The first step to differ shows where to look. The record gives the piece, the lengths, and where they first differ, but not the text."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Fingerprint."
+                },
+                {
+                  "text": " Once we knew roughly where each diff resided, we still needed a way to distinguish one bug from another. We recorded where each difference began in the prompt, as well as the length difference between the two versions. Combined with the step and piece of the prompt isolated in checkpointing, we found that bugs presented with a specific fingerprint. That is, one bug tends to leave the same fingerprint on every request it affects (Figure 9). We could then group errors by fingerprint, which helped us triage the fixes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/fe9c66217bb8f51d326900a46fab1eef455425bd58be6477d9a4d1017385b7f3.webp",
+          "alt": "Four dot grids show mismatches being counted, grouped by fingerprint, split by build, and regrouped after a fix. Fingerprint A accounts for nearly all mismatches; fixing it reveals two older groups, B and C. A table below distinguishes the three by piece and position in the prompt, length gap, and hash.",
+          "width": 2400,
+          "height": 1868
+        },
+        {
+          "type": "paragraph",
+          "text": "Fingerprints from one kind of request. A, at the start of the prompt, hid older differences. Once it was fixed, they appeared as B and C. Dots are illustrative.",
+          "inlines": [
+            {
+              "text": "Fingerprints from one kind of request. A, at the start of the prompt, hid older differences. Once it was fixed, they appeared as B and C. Dots are illustrative."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The result was a shadowing system that produced a small record of each difference between our Rust and Python APIs. Here is an example, with made-up values:",
+          "inlines": [
+            {
+              "text": "The result was a shadowing system that produced a small record of each difference between our Rust and Python APIs. Here is an example, with made-up values:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We could then pass this record to an agent to fix it.",
+          "inlines": [
+            {
+              "text": "We could then pass this record to an agent to fix it."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Verification loops",
+          "inlines": [
+            {
+              "text": "Verification loops"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Each request that differed left a record in our logs. A single bug could produce hundreds of thousands of nearly identical diff records. Rather than send each to an agent, we ran a script every 10 to 30 minutes that grouped them by which fields differed, then alerted a coordinating Claude agent only when it saw a new kind of record. This coordinator assigned a worker agent to own each new kind of record. It also created a new thread in a shared Slack channel where human engineers could follow along and steer it when necessary.",
+          "inlines": [
+            {
+              "text": "Each request that differed left a record in our logs. A single bug could produce hundreds of thousands of nearly identical diff records. Rather than send each to an agent, we ran a script every 10 to 30 minutes that grouped them by which fields differed, then alerted a coordinating Claude agent only when it saw a new "
+            },
+            {
+              "italic": true,
+              "text": "kind"
+            },
+            {
+              "text": " of record. This coordinator assigned a worker agent to own each new kind of record. It also created a new thread in a shared Slack channel where human engineers could follow along and steer it when necessary."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To tackle the many bugs, we set up a series of verification loops. A fast inner loop gave agents a sandbox in which they could test ideas and propose fixes. A slower outer loop then validated fixes in production. In addition, a memory loop recorded any mistakes along the way, saving them so that agents could learn over time (Figure 10).",
+          "inlines": [
+            {
+              "text": "To tackle the many bugs, we set up a series of verification loops. A fast "
+            },
+            {
+              "italic": true,
+              "text": "inner"
+            },
+            {
+              "text": " loop gave agents a sandbox in which they could test ideas and propose fixes. A slower "
+            },
+            {
+              "italic": true,
+              "text": "outer"
+            },
+            {
+              "text": " loop then validated fixes in production. In addition, a "
+            },
+            {
+              "italic": true,
+              "text": "memory loop"
+            },
+            {
+              "text": " recorded any mistakes along the way, saving them so that agents could learn over time (Figure 10)."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c95fcd0ec6091469feb1a7f0712a2b0d8e1aed69a9754514266eb7bb52fa0286.webp",
+          "alt": "Three nested loops. The inner loop asks whether an edit fixes the difference, using local checks that take under a second to compare. The outer loop asks whether it is gone in production, using shadowed live traffic over hours or days. The memory loop asks why it keeps happening, and turns people’s corrections into new rules.",
+          "width": 2400,
+          "height": 1392
+        },
+        {
+          "type": "paragraph",
+          "text": "Verification loops. An edit is checked in a sandbox, and then on shadowed live traffic. People’s corrections become rules. Each loop can catch what the one inside it misses.",
+          "inlines": [
+            {
+              "text": "Verification loops. An edit is checked in a sandbox, and then on shadowed live traffic. People’s corrections become rules. Each loop can catch what the one inside it misses."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Inner loop",
+          "inlines": [
+            {
+              "text": "Inner loop"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "When we first started testing this in April, we gave each agent a record that showed where the Rust and Python versions differed. Agents would guess the root cause from the code and open a pull request. Once the fix was reviewed and merged, they deployed it to staging, a preproduction copy of the Rust API where we ran the same shadow comparison on test traffic. The agents checked whether the difference was eliminated. Since every hypothesis needed a review and a deployment, feedback was taking hours or days.",
+          "inlines": [
+            {
+              "text": "When we first started testing this in April, we gave each agent a record that showed where the Rust and Python versions differed. Agents would guess the root cause from the code and open a pull request. Once the fix was reviewed and merged, they deployed it to staging, a preproduction copy of the Rust API where we ran the same shadow comparison on test traffic. The agents checked whether the difference was eliminated. Since every hypothesis needed a review and a deployment, feedback was taking hours or days."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We needed agents to get a signal from verification much sooner, so we moved them into their own workspace. We redesigned the inner loop so that agents could have a place to test ideas quickly and fail safely. Each agent ran in a cloud sandbox with both codebases and fast, local checks for what happens before and after the model call. The input check took a request, built the prompt that each version would send to the model, and showed what differed. Because this check never actually called the model, comparing the versions took under a second. We later added an output check, which ran both versions against a fake model. The output check passed a scripted reply, such as a tool call, through each version and compared the results.",
+          "inlines": [
+            {
+              "text": "We needed agents to get a signal from verification much sooner, so we moved them into their own workspace. We redesigned the inner loop so that agents could have a place to test ideas quickly and fail safely. Each agent ran in a cloud sandbox with both codebases and fast, local checks for what happens before and after the model call. The input check took a request, built the prompt that each version would send to the model, and showed what differed. Because this check never actually called the model, comparing the versions took under a second. We later added an output check, which ran both versions against a fake model. The output check passed a scripted reply, such as a tool call, through each version and compared the results."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The main limitation was that agents could only see the fingerprint, not the request behind each record. So an agent would hypothesize what had caused the difference, then write its own request or model reply to try to reproduce the difference. Since each agent was writing these itself, it could read both results in full. If the results matched, its guess was wrong and the agent tried again. If they differed the same way the record described, the agent edited the Rust until the two versions matched, then added a test that failed on the old code and passed on the new (Figure 11).",
+          "inlines": [
+            {
+              "text": "The main limitation was that agents could only see the fingerprint, not the request behind each record. So an agent would hypothesize what had caused the difference, then write its own request or model reply to try to reproduce the difference. Since each agent was writing these itself, it could read both results in full. If the results matched, its guess was wrong and the agent tried again. If they differed the same way the record described, the agent edited the Rust until the two versions matched, then added a test that failed on the old code and passed on the new (Figure 11)."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/93be4f7637d7e076608527cb43fc4b112e66d90b78a391ed416f6c57feef3233.webp",
+          "alt": "The inner loop, highlighted. From a fingerprint, the agent guesses the cause and writes a triggering request or reply. Input and output checks run it through both versions. If they match, it guesses again; if they differ as the record did, it edits the Rust and rechecks. Once they match after the edit, it opens a PR with a fix and a test.",
+          "width": 2400,
+          "height": 1616
+        },
+        {
+          "type": "paragraph",
+          "text": "Inner loop. From a fingerprint, an agent guesses the cause and writes a request or reply that should trigger it. Local checks run it through both versions until an edit makes them match.",
+          "inlines": [
+            {
+              "text": "Inner loop. From a fingerprint, an agent guesses the cause and writes a request or reply that should trigger it. Local checks run it through both versions until an edit makes them match."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The seam between the inner and outer loops was a good checkpoint for human review. Inside the sandbox, a wrong guess cost an agent only a few seconds and had no impact on users. Agents could iterate on their own. We allowed a fix to cross into the outer loop only after it had undergone PR review; this allowed engineers to focus their attention on proposed fixes (rather than on guesses) and on the questions the verifiers couldn’t answer, such as whether a difference between the Rust and Python APIs was the result of a bug or a deliberate change.",
+          "inlines": [
+            {
+              "text": "The seam between the inner and outer loops was a good checkpoint for human review. Inside the sandbox, a wrong guess cost an agent only a few seconds and had no impact on users. Agents could iterate on their own. We allowed a fix to cross into the outer loop only after it had undergone PR review; this allowed engineers to focus their attention on proposed fixes (rather than on guesses) and on the questions the verifiers couldn’t answer, such as whether a difference between the Rust and Python APIs was the result of a bug or a deliberate change."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Agents posted their fixes and evidence to their Slack threads for engineers to review. In mid-May, one of the largest remaining differences between the Rust and Python APIs came from web search. The production API retrieved the web search tool’s description from an internal service. The Rust API didn’t call this service yet, so the tool description was missing from the prompts. An agent proposed a shortcut to copy the text into files that would be readable by Rust. The prompts then matched, and the fix passed the local verifier. But an engineer turned it down because it didn’t solve the problem: Rust would still need to call the service before launch, at which point the workaround would be thrown out (Figure 12).",
+          "inlines": [
+            {
+              "text": "Agents posted their fixes and evidence to their Slack threads for engineers to review. In mid-May, one of the largest remaining differences between the Rust and Python APIs came from web search. The production API retrieved the web search tool’s description from an internal service. The Rust API didn’t call this service yet, so the tool description was missing from the prompts. An agent proposed a shortcut to copy the text into files that would be readable by Rust. The prompts then matched, and the fix passed the local verifier. But an engineer turned it down because it didn’t solve the problem: Rust would still need to call the service before launch, at which point the workaround would be thrown out (Figure 12)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "But the verifier rewarded matching outputs, and the agent found the cheapest way to produce them. A verifier can tell an agent whether the outputs matched, but not whether the fix is good enough to ship. That’s why human review was an important gate.",
+          "inlines": [
+            {
+              "text": "But the verifier rewarded matching outputs, and the agent found the cheapest way to produce them. A verifier can tell an agent whether the outputs matched, but not whether the fix is good enough to ship. That’s why human review was an important gate."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/58b57706120bcd14c8c852125a5a764b0abd068e86c5b53e1571baa4da7f4605.webp",
+          "alt": "A Slack channel, #rust-migration. An engineer asks a coordinating Claude agent to explain its next target. Claude agents trace the mismatch to web search, find it is already tracked, and open a fix that loads the description from text files. A second engineer replies: “We know we have to fetch that text before we ship, so this seems like throwaway code. Abandon that PR.”",
+          "width": 2400,
+          "height": 2150
+        },
+        {
+          "type": "paragraph",
+          "text": "Agents trace a mismatch to the web search tool across four Slack threads and propose a fix, which an engineer rejects as throwaway code. We shortened and reworded the messages and added the thread names and agent labels.",
+          "inlines": [
+            {
+              "text": "Agents trace a mismatch to the web search tool across four Slack threads and propose a fix, which an engineer rejects as throwaway code. We shortened and reworded the messages and added the thread names and agent labels."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Outer loop",
+          "inlines": [
+            {
+              "text": "Outer loop"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "In the inner loop, agents debugged differences and proposed fixes. At the seam between the inner loop and the outer loop, engineers reviewed the proposed fixes, gave feedback, and approved them to deploy. The outer loop then compared Rust API deployments with and without each fix.",
+          "inlines": [
+            {
+              "text": "In the inner loop, agents debugged differences and proposed fixes. At the seam between the inner loop and the outer loop, engineers reviewed the proposed fixes, gave feedback, and approved them to deploy. The outer loop then compared Rust API deployments with and without each fix."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To make that comparison fair, we logged facts about each request we compared, but not its text, including which model and API features it used—for example, prompt caching, tools, or extended thinking. These details let agents compare requests of the same kind (Figure 13) and ask how often the bug’s fingerprint appeared on builds with and without the fix. This way, agents could monitor the new builds for the bug.",
+          "inlines": [
+            {
+              "text": "To make that comparison fair, we logged facts about each request we compared, but not its text, including which model and API features it used—for example, prompt caching, tools, or extended thinking. These details let agents compare requests of the same kind (Figure 13) and ask how often the bug’s fingerprint appeared on builds with and without the fix. This way, agents could monitor the new builds for the bug."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c5e609ec995322755bad0b8a92c319176ea02e47193eb7e66810415048ccbe97.webp",
+          "alt": "The outer loop, highlighted. An engineer reviews the PR, which merges and deploys to a test environment, then production. Shadowed live traffic is watched for the fingerprint. If it remains, work returns to the inner loop. If repeated checks find it gone, the task closes, and the thread reopens if it returns.",
+          "width": 2400,
+          "height": 1564
+        },
+        {
+          "type": "paragraph",
+          "text": "Outer loop. An engineer reviews the fix, it deploys, and shadowed traffic shows whether its fingerprint is gone. If not, the task returns to the inner loop.",
+          "inlines": [
+            {
+              "text": "Outer loop. An engineer reviews the fix, it deploys, and shadowed traffic shows whether its fingerprint is gone. If not, the task returns to the inner loop."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We designed the outer loop to catch problems that the inner loop missed. The inner loop simulated production quickly but imperfectly: agents could test a hypothesis in seconds, but only on requests they had written, and with a local verifier that wasn’t always configured exactly like production.",
+          "inlines": [
+            {
+              "text": "We designed the outer loop to catch problems that the inner loop missed. The inner loop simulated production quickly but imperfectly: agents could test a hypothesis in seconds, but only on requests they had written, and with a local verifier that wasn’t always configured exactly like production."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This means that sometimes a fix passed in the sandbox and production still showed the difference. The agent assigned to the bug would either see the difference in the new build’s records, or be alerted by the coordinating agent. It then went back to the inner loop and used that evidence to form a new hypothesis.",
+          "inlines": [
+            {
+              "text": "This means that sometimes a fix passed in the sandbox and production still showed the difference. The agent assigned to the bug would either see the difference in the new build’s records, or be alerted by the coordinating agent. It then went back to the inner loop and used that evidence to form a new hypothesis."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Memory loop",
+          "inlines": [
+            {
+              "text": "Memory loop"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The inner and outer loops fixed one difference at a time. The memory loop improved how agents made those fixes. We didn’t want engineers to have to make the same correction twice, so we recorded what came out of reviews and agents’ own work and applied it to every agent that followed.",
+          "inlines": [
+            {
+              "text": "The inner and outer loops fixed one difference at a time. The "
+            },
+            {
+              "href": "https://www.anthropic.com/research/components-of-agent-memory",
+              "text": "memory"
+            },
+            {
+              "text": " loop improved how agents made those fixes. We didn’t want engineers to have to make the same correction twice, so we recorded what came out of reviews and agents’ own work and applied it to every agent that followed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For example, when an engineer turned down the web search shortcut (Figure 12), the agent saved a note to memory explaining the decision, the reason for it, and the correct fix, which was to have Rust call the service that supplies tool descriptions.",
+          "inlines": [
+            {
+              "text": "For example, when an engineer turned down the web search shortcut (Figure 12), the agent saved a note to memory explaining the decision, the reason for it, and the correct fix, which was to have Rust call the service that supplies tool descriptions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Building that call took our team weeks, and in the meantime the bug kept producing records. Some had new fingerprints, because the missing text fell at other positions in the prompt or belonged to another tool that used the same service. Agents checked the memory note, recognized the known bug, and linked those records to it, instead of writing another workaround (Figure 14).",
+          "inlines": [
+            {
+              "text": "Building that call took our team weeks, and in the meantime the bug kept producing records. Some had new fingerprints, because the missing text fell at other positions in the prompt or belonged to another tool that used the same service. Agents checked the memory note, recognized the known bug, and linked those records to it, instead of writing another workaround (Figure 14)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Other lessons became general rules for porting and writing Rust. After one agent guessed at Python’s behavior, an engineer made it a rule to port exactly what Python did. An agent then compared the existing code with that rule and found seven more places where the port had relied on a guess.",
+          "inlines": [
+            {
+              "text": "Other lessons became general rules for porting and writing Rust. After one agent guessed at Python’s behavior, an engineer made it a rule to port exactly what Python did. An agent then compared the existing code with that rule and found seven more places where the port had relied on a guess."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In June, an agent also went through about 60 of the team’s review comments, grouped the recurring problems and proposed rules, which an engineer edited and approved for CLAUDE.md (Figure 14).",
+          "inlines": [
+            {
+              "text": "In June, an agent also went through about 60 of the team’s review comments, grouped the recurring problems and proposed rules, which an engineer edited and approved for "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/memory",
+              "text": "CLAUDE.md"
+            },
+            {
+              "text": " (Figure 14)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The memory loop also encoded some lessons in permanent checks. This included new tests that failed when Rust drifted from Python, lints that banned patterns reviewers kept flagging, and later a merge check that required anyone changing the Python code to make a matching change in Rust or request an exemption.",
+          "inlines": [
+            {
+              "text": "The memory loop also encoded some lessons in permanent checks. This included new tests that failed when Rust drifted from Python, lints that banned patterns reviewers kept flagging, and later a merge check that required anyone changing the Python code to make a matching change in Rust or request an exemption."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/6d825c23e13eb75fb5c139eefa9c1b05d53192977bb13b4bee9fa61299cd547e.webp",
+          "alt": "The memory loop, highlighted. A repeated mistake prompts an engineer’s correction, “Did you make that up yourself?” It becomes a rule each new agent reads first, a search by another agent that finds the same mistake in seven places, and a test that fails if the versions drift. A daily read of merged changes flags what Rust might need to mirror.",
+          "width": 2400,
+          "height": 1640
+        },
+        {
+          "type": "paragraph",
+          "text": "Memory loop. An engineer’s correction becomes three things: a rule that each new agent reads, a search for the same mistake, and a test.",
+          "inlines": [
+            {
+              "text": "Memory loop. An engineer’s correction becomes three things: a rule that each new agent reads, a search for the same mistake, and a test."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Looking ahead",
+          "inlines": [
+            {
+              "text": "Looking ahead"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "It’s increasingly feasible to migrate production systems with Claude, either for better performance or security, without taking an API offline or slowing feature development. Now that the hard part is no longer writing new code, we need to build sufficient confidence that the new system behaves like the old one.",
+          "inlines": [
+            {
+              "text": "It’s increasingly feasible to migrate production systems with Claude, either for better performance or security, without taking an API offline or slowing feature development. Now that the hard part is no longer writing new code, we need to build sufficient confidence that the new system behaves like the old one."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The usual approach to migration is a bit like rebuilding the Ship of Theseus, in which the old ship was replaced plank by plank. Generally it’s been possible to replace planks while the ship still sails, but changing too many planks at once requires coming into dock. To fully stretch the metaphor, Claude now makes it possible to build an identically functioning ship alongside the first—even as the first keeps sailing and having its planks replaced. Agents kept the new ship in step as the old one changed, and we kept checking that the two behaved the same. Once we trusted that they did, we moved the passengers over a few at a time. The new ship sails faster and more efficiently than the old one.",
+          "inlines": [
+            {
+              "text": "The usual approach to migration is a bit like rebuilding the Ship of Theseus, in which the old ship was replaced plank by plank. Generally it’s been possible to replace planks while the ship still sails, but changing too many planks at once requires coming into dock. To fully stretch the metaphor, Claude now makes it possible to build an identically functioning ship alongside the first—even as the first keeps sailing and having its planks replaced. Agents kept the new ship in step as the old one changed, and we kept checking that the two behaved the same. Once we trusted that they did, we moved the passengers over a few at a time. The new ship sails faster and more efficiently than the old one."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Lessons learned",
+          "inlines": [
+            {
+              "text": "Lessons learned"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Verification is the new bottleneck. Previously, large software projects like migrations were hard to justify because they took too much effort and carried too much risk. But if writing code is no longer the bottleneck, the main constraint becomes how quickly you can verify results. In general, ambition can be increased as long as there’s a way for Claude to verify correctness.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Verification is the new bottleneck."
+            },
+            {
+              "text": " Previously, large software projects like migrations were hard to justify because they took too much effort and carried too much risk. But if writing code is no longer the bottleneck, the main constraint becomes how quickly you can verify results. In general, ambition can be increased as long as there’s a way for Claude to verify correctness."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Verification is how you earn confidence. In math, we use a proof assistant to verify that each step of a proof Claude wrote is valid. For software, tests or formal verification can help us gain similar confidence. But when these checks aren’t enough, a production system itself can also be a verifier.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Verification is how you earn confidence."
+            },
+            {
+              "text": " In math, we use a proof assistant to verify that each step of a proof Claude wrote is valid. For software, tests or "
+            },
+            {
+              "href": "https://www.anthropic.com/research/formal-verification",
+              "text": "formal verification"
+            },
+            {
+              "text": " can help us gain similar confidence. But when these checks aren’t enough, a production system itself can also be a verifier."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Carefully design the verification signal. A verifier provides a signal that Claude can act on. We can calibrate this signal to show Claude where things went wrong. Where a proof assistant points to the failing step or a test names the failing case, a production system often offers no such signal by default. Much of our effort for this project went to building such a signal. In this case, checkpoints located each difference in the code and fingerprints helped tell one bug from another.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Carefully design the verification signal."
+            },
+            {
+              "text": " A verifier provides a signal that Claude can act on. We can calibrate this signal to show Claude where things went wrong. Where a proof assistant points to the failing step or a test names the failing case, a production system often offers no such signal by default. Much of our effort for this project went to building such a signal. In this case, checkpoints located each difference "
+            },
+            {
+              "italic": true,
+              "text": "in the code"
+            },
+            {
+              "text": " and fingerprints helped "
+            },
+            {
+              "italic": true,
+              "text": "tell one bug from another"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Build loops that let Claude autonomously act on the signal. Our inner loop was fast and ran locally in a sandbox. Agents tested hypotheses in seconds using requests they wrote themselves. The outer loop was slower and checked fixes on shadowed production traffic. The outermost loop was just prose, with corrections saved as rules in memory that could be read by every agent later in the process. Together, these loops allowed us to migrate the Messages API to Rust, which uses about 70% less CPU per request and reduces median time to first token by about 20% (Figure 15).",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Build loops that let Claude autonomously act on the signal."
+            },
+            {
+              "text": " Our inner loop was fast and ran locally in a sandbox. Agents tested hypotheses in seconds using requests they wrote themselves. The outer loop was slower and checked fixes on shadowed production traffic. The outermost loop was just prose, with corrections saved as rules in memory that could be read by every agent later in the process. Together, these loops allowed us to migrate the Messages API to Rust, which uses about 70% less CPU per request and reduces median time to first token by about 20% (Figure 15)."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c941470b3b44254a16dc89b440e9b4411c6329f14a53b2fbf0a62f6447ecb930.webp",
+          "alt": "Three charts of the move from Python to Rust. CPU used per request falls by about 70% and memory used per request by more than 80%, both from August to October. Median time to first token falls by about 20% between roughly September 7 and 21.",
+          "width": 2400,
+          "height": 850
+        },
+        {
+          "type": "paragraph",
+          "text": "CPU and memory used per request, and median time to first token, as requests moved from Python (gray) to Rust (blue). Lines are seven-day averages, 100 is about the level just before the move, and each arrow shows the change from the first dot to the second. CPU is one region, memory is all of production, and time to first token is customers' Claude Code requests over a shorter period. In the third panel, the fall before the first dot came while almost all of those requests were still on Python.",
+          "inlines": [
+            {
+              "text": "CPU and memory used per request, and median time to first token, as requests moved from Python (gray) to Rust (blue). Lines are seven-day averages, 100 is about the level just before the move, and each arrow shows the change from the first dot to the second. CPU is one region, memory is all of production, and time to first token is customers' Claude Code requests over a shorter period. In the third panel, the fall before the first dot came while almost all of those requests were still on Python."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Keep the loops simple, so they scale with Claude’s capability. We tried to put human judgment only into what counted as correct; otherwise we left it up to Claude how to get there. Agents chose which hypotheses to test, how to reproduce each bug, and how to fix it. The verifiers judged the result. Simple loops around strong verifiers allowed us to move productively over time (Figure 16).",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Keep the loops simple, so they scale with Claude’s capability."
+            },
+            {
+              "text": " We tried to put human judgment only into what counted as correct; otherwise we left it up to Claude how to get there. Agents chose which hypotheses to test, how to reproduce each bug, and how to fix it. The verifiers judged the result. Simple loops around strong verifiers allowed us to move productively over time (Figure 16)."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/7192e0a2ee78676dde786aa6168e1792979cc1e6afde0614ef166b4a19dc711e.webp",
+          "alt": "Bar chart of changes merged per two-week period, April 6 to September 7, 2026. Changes climb from under 100 to roughly 1,000 by late June, level off through July, then jump to more than 3,000 in the period starting August 10 and stay above 2,500 for the next two periods.",
+          "width": 2400,
+          "height": 1072
+        },
+        {
+          "type": "paragraph",
+          "text": "Changes merged to our API's Rust code in each two-week period, from April until public traffic moved to Rust in September 2026. Not all of them are migration work.",
+          "inlines": [
+            {
+              "text": "Changes merged to our API's Rust code in each two-week period, from April until public traffic moved to Rust in September 2026. Not all of them are migration work."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Move toward outer loops. At first, we had our engineers working inside the inner loop, running Claude and chasing differences themselves. Later, they moved to the seam between loops, helping to steer agents and reviewing fixes in Slack. But as the system matured, they increasingly moved to the edge, where they could provide the highest leverage, writing the rules and checks that agents worked within. As Claude grew more intelligent (and as we grew more intelligent at working with it), we evolved from directing Claude to Claude directing itself, relying on humans mainly for important judgment calls.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Move toward outer loops."
+            },
+            {
+              "text": " At first, we had our engineers working inside the inner loop, running Claude and chasing differences themselves. Later, they moved to the seam between loops, helping to steer agents and reviewing fixes in Slack. But as the system matured, they increasingly moved to the edge, where they could provide the highest leverage, writing the rules and checks that agents worked within. As Claude grew more intelligent (and as we grew more intelligent at working with it), we evolved from directing Claude to Claude directing itself, relying on humans mainly for important judgment calls."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-26T01:10:57.702373Z",
+  "contentMode": "full"
+}

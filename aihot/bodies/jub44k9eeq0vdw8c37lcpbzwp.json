@@ -1,0 +1,1946 @@
+{
+  "schemaVersion": 1,
+  "id": "jub44k9eeq0vdw8c37lcpbzwp",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/jub44k9eeq0vdw8c37lcpbzwp",
+  "fetchedAt": "2026-11-26T01:11:59.586546Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "OpenRouter",
+    "Claude",
+    "Anthropic / Claude",
+    "图像生成",
+    "MCP 与工具调用",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Claude 本身无法生成图像，因为它没有图像模型。借助连接器，它可以调用图像模型，把生成好的图片交给你。",
+          "inlines": [
+            {
+              "text": "Claude 本身无法生成图像，因为它没有图像模型。借助连接器，它可以调用图像模型，把生成好的图片交给你。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你只需给出简短的需求，Claude 会写出详细的提示词，并在产生任何费用之前先给你看。图片返回后，Claude 能查看结果，并对照你的要求进行检查。本文使用 OpenRouter MCP 服务器作为连接器，截至 2026 年 11 月 19 日，它可接入来自不同实验室的 74 个图像模型。",
+          "inlines": [
+            {
+              "text": "你只需给出简短的需求，Claude 会写出详细的提示词，并在产生任何费用之前先给你看。图片返回后，Claude 能查看结果，并对照你的要求进行检查。本文使用 OpenRouter MCP 服务器作为连接器，截至 2026 年 11 月 19 日，它可接入来自不同实验室的 74 个图像模型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你只想看设置步骤，请跳到如何通过连接器在 Claude 中生成图像。",
+          "inlines": [
+            {
+              "text": "如果你只想看设置步骤，请跳到"
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/can-claude-generate-images/#how-to-make-images-in-claude-with-a-connector",
+              "text": "如何通过连接器在 Claude 中生成图像"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "简要说明",
+          "inlines": [
+            {
+              "text": "简要说明"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Claude 没有自己的图像模型。连接器让它能调用一个图像模型，并返回真实的图片。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在 Claude 应用或 Claude Code 中把 "
+                },
+                {
+                  "code": true,
+                  "text": "https://mcp.openrouter.ai/mcp"
+                },
+                {
+                  "text": " 添加为连接器。你的电脑上无需安装任何东西。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "在请求中指明你想要的模型，或者先让 Claude 针对你的任务比较各模型，这一步不收费。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "2026 年 11 月 19 日，我们的测试图片每张花费在 0.035 到 0.10 美元之间，每张图片在计费前都需要你确认。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "图片会直接出现在对话中，或以一个 24 小时内有效的链接形式提供。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude 能生成图像吗？",
+          "inlines": [
+            {
+              "text": "Claude 能生成图像吗？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 无法自行生成照片或插图。Anthropic 于 2026 年 3 月 16 日发布的帮助中心文章写道：“Claude 不会像图像生成工具那样生成照片或插图”，并指出它用 HTML 和 SVG 来构建示意图和图表。其视觉文档还补充道：“Claude 只是一个图像理解模型。它可以解读和分析图像，但无法生成、产出、编辑、处理或创建图像。”",
+          "inlines": [
+            {
+              "text": "Claude 无法自行生成照片或插图。Anthropic 于 2026 年 3 月 16 日发布的"
+            },
+            {
+              "href": "https://support.claude.com/en/articles/9002504-can-claude-produce-images",
+              "text": "帮助中心文章"
+            },
+            {
+              "text": "写道：“Claude 不会像图像生成工具那样生成照片或插图”，并指出它用 HTML 和 SVG 来构建示意图和图表。其"
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/vision",
+              "text": "视觉文档"
+            },
+            {
+              "text": "还补充道：“Claude 只是一个图像理解模型。它可以解读和分析图像，但无法生成、产出、编辑、处理或创建图像。”"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "连接器是 Claude 对添加到应用中的 MCP 服务器的叫法。OpenRouter MCP 服务器就是这样一个连接器，它可接入OpenRouter 图像目录中的所有模型。",
+          "inlines": [
+            {
+              "text": "连接器是 Claude 对添加到应用中的 MCP 服务器的叫法。"
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/overview/mcp-server",
+              "text": "OpenRouter MCP 服务器"
+            },
+            {
+              "text": "就是这样一个连接器，它可接入"
+            },
+            {
+              "href": "https://openrouter.ai/models?output_modalities=image",
+              "text": "OpenRouter 图像目录"
+            },
+            {
+              "text": "中的所有模型。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude 用图像模型做什么？",
+          "inlines": [
+            {
+              "text": "Claude 用图像模型做什么？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "图像模型负责画图，Claude 负责画图之外的各项工作。如果只用图像工具，这些周边工作才是难点：你得自己写详细的提示词，图片生成后还要对照要求检查，并把文件搬运到该放的地方。",
+          "inlines": [
+            {
+              "text": "图像模型负责画图，Claude 负责画图之外的各项工作。如果只用图像工具，这些周边工作才是难点：你得自己写详细的提示词，图片生成后还要对照要求检查，并把文件搬运到该放的地方。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Claude 中，简短的需求就够了，因为详细的提示词由 Claude 来写。指明你想要的模型，例如：“你能生成一张图片吗？画面是一只红狐在雪夜的街灯下读一本平装书，柔和的水彩风格。使用 Seedream 5.5。”在我们的测试中，Claude 把这句话扩展成了更长的提示词。每张图片生成前，Claude 都会请求批准，批准界面会显示所用模型和它写的提示词，你可以在产生任何费用之前先读一遍。",
+          "inlines": [
+            {
+              "text": "在 Claude 中，简短的需求就够了，因为详细的提示词由 Claude 来写。指明你想要的模型，例如：“你能生成一张图片吗？画面是一只红狐在雪夜的街灯下读一本平装书，柔和的水彩风格。使用 Seedream 5.5。”在我们的测试中，Claude 把这句话扩展成了更长的提示词。每张图片生成前，Claude 都会请求批准，批准界面会显示所用模型和它写的提示词，你可以在产生任何费用之前先读一遍。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2d5095ff2d09c2c43bec77c2529b2428f8f54d57f47149936aaf2041968f11d6.jpg",
+          "alt": "Claude Desktop approval card reading \"Claude wants to use Generate an image from OpenRouter\", showing the model, the prompt and the Deny, Allow for this task and Allow once buttons."
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 还能查看结果。在我们的 Claude 应用测试中，图片返回后，Claude 已经看过图片并对其进行了描述。",
+          "inlines": [
+            {
+              "text": "Claude 还能查看结果。在我们的 Claude 应用测试中，图片返回后，Claude 已经看过图片并对其进行了描述。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/748f08f9d293cd6edad8401dea64390ef0816ade1f7dbcd8b0d77f7109269c29.jpg",
+          "alt": "Claude Desktop showing a generated watercolor of a red fox reading under a streetlamp in the snow, opened full size inside the app."
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的 Claude Code 测试中，Claude 打开了保存的文件，并指出那本书是绿色精装本，而我们要求的是平装本。出现这种情况时，不匹配之处会被发现，无需你自己拿图片和需求逐一比对。当你要求修改时，Claude 可以把第一张图片作为参考传回给模型，在我们的测试中，场景的其余部分保持不变。详情请见Claude 能编辑它生成的图像吗？",
+          "inlines": [
+            {
+              "text": "在我们的 Claude Code 测试中，Claude 打开了保存的文件，并指出那本书是绿色精装本，而我们要求的是平装本。出现这种情况时，不匹配之处会被发现，无需你自己拿图片和需求逐一比对。当你要求修改时，Claude 可以把第一张图片作为参考传回给模型，在我们的测试中，场景的其余部分保持不变。详情请见"
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/can-claude-generate-images/#can-claude-edit-an-image-it-generated",
+              "text": "Claude 能编辑它生成的图像吗？"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "如何通过连接器在 Claude 中生成图像",
+          "inlines": [
+            {
+              "text": "如何通过连接器在 Claude 中生成图像"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "把 OpenRouter MCP 服务器添加为自定义连接器。它是远程服务器，因此你的电脑上无需安装任何东西。你需要一个带有额度的 OpenRouter 账户。",
+          "inlines": [
+            {
+              "text": "把 OpenRouter MCP 服务器添加为自定义连接器。它是远程服务器，因此你的电脑上无需安装任何东西。你需要一个带有额度的 OpenRouter 账户。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Claude 应用中：",
+          "inlines": [
+            {
+              "text": "在 Claude 应用中："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "打开“设置”>“连接器”，添加一个自定义连接器。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "将其命名为 "
+                },
+                {
+                  "code": true,
+                  "text": "OpenRouter MCP"
+                },
+                {
+                  "text": "，并把远程 MCP 服务器 URL 设为 "
+                },
+                {
+                  "code": true,
+                  "text": "https://mcp.openrouter.ai/mcp"
+                },
+                {
+                  "text": "。OAuth 相关字段留空。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "添加连接器，然后连接它。浏览器中会打开 OpenRouter 的授权页面。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "批准这个连接专用的密钥。密钥会在 7 天内过期，你随时可以断开连接。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "有些组织不允许使用自定义连接器，所以在工作账号上可能看不到这个选项。",
+          "inlines": [
+            {
+              "text": "有些组织不允许使用自定义连接器，所以在工作账号上可能看不到这个选项。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Claude Code 中运行：",
+          "inlines": [
+            {
+              "text": "在 Claude Code 中运行："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "claude mcp add --transport http openrouter https://mcp.openrouter.ai/mcp\nclaude mcp login openrouter"
+        },
+        {
+          "type": "paragraph",
+          "text": "OpenRouter MCP 服务器指南里给出了每个客户端逐步点击的操作步骤。",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/docs/guides/overview/mcp-server",
+              "text": "OpenRouter MCP 服务器指南"
+            },
+            {
+              "text": "里给出了每个客户端逐步点击的操作步骤。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude 该用哪个图像模型？",
+          "inlines": [
+            {
+              "text": "Claude 该用哪个图像模型？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "先给想用的模型起个名字，因为没有哪个模型能胜任所有任务。我们把同一个狐狸提示词分别发给四个模型，统一用 1:1 宽高比和默认分辨率，对比效果和价格。",
+          "inlines": [
+            {
+              "text": "先给想用的模型起个名字，因为没有哪个模型能胜任所有任务。我们把同一个狐狸提示词分别发给四个模型，统一用 1:1 宽高比和默认分辨率，对比效果和价格。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9f14aee777f7670dad9928e8ac6de4324deed69a2e59f0ca8afefe37ebc754bc.jpg",
+          "alt": "The same fox prompt on four image models in a two-by-two grid: GPT Image 2.6 Flare, Seedream 5.5, MAI-Image-2.7 and Nano Banana 2.1."
+        },
+        {
+          "type": "paragraph",
+          "text": "表中每一行都是一次单独测量的结果，按 2026 年 11 月 19 日的计费标准。每个模型的页面会显示当前价格。",
+          "inlines": [
+            {
+              "text": "表中每一行都是一次单独测量的结果，按 2026 年 11 月 19 日的计费标准。每个模型的页面会显示当前价格。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型",
+          "inlines": [
+            {
+              "text": "模型"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "标识",
+          "inlines": [
+            {
+              "text": "标识"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "耗时",
+          "inlines": [
+            {
+              "text": "耗时"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "每张图费用",
+          "inlines": [
+            {
+              "text": "每张图费用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "尺寸",
+          "inlines": [
+            {
+              "text": "尺寸"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT Image 2.6 Flare",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/openai/gpt-image-2.6-flare",
+              "text": "GPT Image 2.6 Flare"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-image-2.6-flare",
+          "inlines": [
+            {
+              "code": true,
+              "text": "openai/gpt-image-2.6-flare"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26.4 秒",
+          "inlines": [
+            {
+              "text": "26.4 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.094",
+          "inlines": [
+            {
+              "text": "$0.094"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1024×1024",
+          "inlines": [
+            {
+              "text": "1024×1024"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Seedream 5.5",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/bytedance-seed/seedream-5-5",
+              "text": "Seedream 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "bytedance-seed/seedream-5-5",
+          "inlines": [
+            {
+              "code": true,
+              "text": "bytedance-seed/seedream-5-5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20.9 秒",
+          "inlines": [
+            {
+              "text": "20.9 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.035",
+          "inlines": [
+            {
+              "text": "$0.035"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2048×2048",
+          "inlines": [
+            {
+              "text": "2048×2048"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MAI-Image-2.7",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/microsoft/mai-image-2.7",
+              "text": "MAI-Image-2.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "microsoft/mai-image-2.7",
+          "inlines": [
+            {
+              "code": true,
+              "text": "microsoft/mai-image-2.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "34.0 秒",
+          "inlines": [
+            {
+              "text": "34.0 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.035",
+          "inlines": [
+            {
+              "text": "$0.035"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1024×1024",
+          "inlines": [
+            {
+              "text": "1024×1024"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nano Banana 2.1",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/google/gemini-nano-banana-2.1",
+              "text": "Nano Banana 2.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "google/gemini-nano-banana-2.1",
+          "inlines": [
+            {
+              "code": true,
+              "text": "google/gemini-nano-banana-2.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.2 秒",
+          "inlines": [
+            {
+              "text": "13.2 秒"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.040",
+          "inlines": [
+            {
+              "text": "$0.040"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1024×1024",
+          "inlines": [
+            {
+              "text": "1024×1024"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "最贵的一张图价格是最便宜的两倍多（0.094 美元对 0.035 美元），而 Seedream 5.5 在并列最低价的同时，生成的图片尺寸最大。四个模型中有三个加上了我们没要求的文字，比如书名或悬挂的招牌，所以记得在提示词里加上“不要文字”。想看更全面的对比，请阅读图像生成模型对比。",
+          "inlines": [
+            {
+              "text": "最贵的一张图价格是最便宜的两倍多（0.094 美元对 0.035 美元），而 Seedream 5.5 在并列最低价的同时，生成的图片尺寸最大。四个模型中有三个加上了我们没要求的文字，比如书名或悬挂的招牌，所以记得在提示词里加上“不要文字”。想看更全面的对比，请阅读"
+            },
+            {
+              "href": "https://openrouter.ai/blog/insights/image-generation-models-compared/",
+              "text": "图像生成模型对比"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你可以先让 Claude 针对你的任务比较各个模型，再决定是否花钱，因为查询模型信息不计费。我们问它纯白背景的产品图该用哪个模型时，Claude 从五个选项中推荐了 Nano Banana 2.1，为每个选项给出了理由和注意事项，并说明这份候选名单来自目录数据，而不是测试图片。它还提出，只要我们同意，就可以对排名前三的模型做付费测试。",
+          "inlines": [
+            {
+              "text": "你可以先让 Claude 针对你的任务比较各个模型，再决定是否花钱，因为查询模型信息不计费。我们问它纯白背景的产品图该用哪个模型时，Claude 从五个选项中推荐了 Nano Banana 2.1，为每个选项给出了理由和注意事项，并说明这份候选名单来自目录数据，而不是测试图片。它还提出，只要我们同意，就可以对排名前三的模型做付费测试。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你不指定模型，Claude 会自己选。在我们的 Claude Code 运行中，它选了 FLUX 3 Image；而在一次 Claude 应用运行中，它选了一个较旧的模型。",
+          "inlines": [
+            {
+              "text": "如果你不指定模型，Claude 会自己选。在我们的 Claude Code 运行中，它选了 "
+            },
+            {
+              "href": "https://openrouter.ai/black-forest-labs/flux-3-image",
+              "text": "FLUX 3 Image"
+            },
+            {
+              "text": "；而在一次 Claude 应用运行中，它选了一个较旧的模型。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "费用是多少？",
+          "inlines": [
+            {
+              "text": "费用是多少？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "每张图的费用就是生成它的模型的价格，在我们 2026 年 11 月 19 日的运行中是 0.035 到 0.10 美元。Claude 自身的使用量另行计费。",
+          "inlines": [
+            {
+              "text": "每张图的费用就是生成它的模型的价格，在我们 2026 年 11 月 19 日的运行中是 0.035 到 0.10 美元。Claude 自身的使用量另行计费。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "宽高比和分辨率会改变价格。GPT Image 2.6 Flare 在 16:9 下是 0.058 美元，在 1:1 下是 0.094 美元；FLUX 3 Image 在 16:9、2K 分辨率（2736×1536）下是 0.10 美元。",
+          "inlines": [
+            {
+              "text": "宽高比和分辨率会改变价格。GPT Image 2.6 Flare 在 16:9 下是 0.058 美元，在 1:1 下是 0.094 美元；FLUX 3 Image 在 16:9、2K 分辨率（2736×1536）下是 0.10 美元。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "连接器的密钥初始设有 10 美元的消费上限，你可以在授权页面上修改。在我们的运行中，Claude 还会在回复里重复每张图的费用。",
+          "inlines": [
+            {
+              "text": "连接器的密钥初始设有 10 美元的消费上限，你可以在授权页面上修改。在我们的运行中，Claude 还会在回复里重复每张图的费用。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "为什么图片有时以链接形式返回？",
+          "inlines": [
+            {
+              "text": "为什么图片有时以链接形式返回？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "generate-image 工具在能签发链接时会返回链接，否则返回图片本身。链接可在任何浏览器中打开，无需登录，有效期为 24 小时。",
+          "inlines": [
+            {
+              "code": true,
+              "text": "generate-image"
+            },
+            {
+              "text": " 工具在能签发链接时会返回链接，否则返回图片本身。链接可在任何浏览器中打开，无需登录，有效期为 24 小时。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 Claude 应用中，图片会显示在聊天里，Claude 也能看到它。链接则会在你的浏览器中打开，而在我们的运行中，Claude 并没有看到那张图，也无法在聊天中显示它。在 Claude Code 中，链接反而是更方便的情况，因为图片会直接下载到你的项目里。直接返回的图片会留在 Claude Code 自己的文件夹中，直到你批准复制它。",
+          "inlines": [
+            {
+              "text": "在 Claude 应用中，图片会显示在聊天里，Claude 也能看到它。链接则会在你的浏览器中打开，而在我们的运行中，Claude 并没有看到那张图，也无法在聊天中显示它。在 Claude Code 中，链接反而是更方便的情况，因为图片会直接下载到你的项目里。直接返回的图片会留在 Claude Code 自己的文件夹中，直到你批准复制它。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你拿到的是哪种形式，在不同请求之间并不固定，即使是同一个模型也一样。在我们 2026 年 11 月 19 日的一小组运行中，Seedream 5.5 四次全部返回图片本身，GPT Image 2.6 Flare 四次中有三次返回链接，FLUX 3 Image 两次全部返回链接，Nano Banana 2.1 则各返回过一次。如果你希望图片出现在 Claude 应用里，Seedream 5.5 在我们这里每次都做到了。如果拿到的是链接，打开它即可。",
+          "inlines": [
+            {
+              "text": "你拿到的是哪种形式，在不同请求之间并不固定，即使是同一个模型也一样。在我们 2026 年 11 月 19 日的一小组运行中，Seedream 5.5 四次全部返回图片本身，GPT Image 2.6 Flare 四次中有三次返回链接，FLUX 3 Image 两次全部返回链接，Nano Banana 2.1 则各返回过一次。如果你希望图片出现在 Claude 应用里，Seedream 5.5 在我们这里每次都做到了。如果拿到的是链接，打开它即可。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude Code 能生成图片吗？",
+          "inlines": [
+            {
+              "text": "Claude Code 能生成图片吗？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "可以。Claude Code 用同一个连接器生成图片，并直接放进你的项目里。你只要说明文件存到哪里、哪个页面会用到它，比如：“这个落地页需要一张主视觉插画。用 OpenRouter 生成一张：雪夜里，一只红狐狸在路灯下读一本平装书，柔和的水彩风格。保存到 assets/hero.png，并加到 index.html 里。”",
+          "inlines": [
+            {
+              "text": "可以。Claude Code 用同一个连接器生成图片，并直接放进你的项目里。你只要说明文件存到哪里、哪个页面会用到它，比如：“这个落地页需要一张主视觉插画。用 OpenRouter 生成一张：雪夜里，一只红狐狸在路灯下读一本平装书，柔和的水彩风格。保存到 assets/hero.png，并加到 index.html 里。”"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的实测中，Claude Code 把 FLUX 3 Image 生成的一张 2736×1536 插画保存到了这个路径，并把它加进了页面。完整步骤见 cookbook Generate and Edit Images from Claude Code。",
+          "inlines": [
+            {
+              "text": "在我们的实测中，Claude Code 把 FLUX 3 Image 生成的一张 2736×1536 插画保存到了这个路径，并把它加进了页面。完整步骤见 cookbook "
+            },
+            {
+              "href": "https://openrouter.ai/docs/cookbook/coding-agents/generate-images-in-claude-code",
+              "text": "Generate and Edit Images from Claude Code"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude 能编辑自己生成的图片吗？",
+          "inlines": [
+            {
+              "text": "Claude 能编辑自己生成的图片吗？"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "能，前提是第一次返回的结果是一个链接，而且模型支持图像输入。Claude 会把该链接作为参考图，连同你要求的修改一起传回给模型。",
+          "inlines": [
+            {
+              "text": "能，前提是第一次返回的结果是一个链接，而且模型支持图像输入。Claude 会把该链接作为参考图，连同你要求的修改一起传回给模型。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们的 Claude Code 会话里，我们要求给狐狸加上一条红围巾、把平装书换成纯红色封面，并覆盖保存到同一个文件。Claude 把第一张图发回给 FLUX 3 Image，两处修改都出现了，场景的其余部分保持不变。",
+          "inlines": [
+            {
+              "text": "在我们的 Claude Code 会话里，我们要求给狐狸加上一条红围巾、把平装书换成纯红色封面，并覆盖保存到同一个文件。Claude 把第一张图发回给 FLUX 3 Image，两处修改都出现了，场景的其余部分保持不变。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e4b7ee12368b6ed373ca10e83ca088e9adb81b1ce5ce757de7fc10bbd2139cc6.jpg",
+          "alt": "Two versions of a watercolor fox illustration side by side: the first request, and the same scene after a follow-up request added a red scarf and a red book."
+        },
+        {
+          "type": "paragraph",
+          "text": "如果没有链接，Claude 就无法复用这张图。在 Claude 应用里，如果返回的结果是图片本身，再要求加一条红围巾，它就会根据文字描述生成一张新图。场景变了，Claude 也说明了这一点。",
+          "inlines": [
+            {
+              "text": "如果没有链接，Claude 就无法复用这张图。在 Claude 应用里，如果返回的结果是图片本身，再要求加一条红围巾，它就会根据文字描述生成一张新图。场景变了，Claude 也说明了这一点。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "常见问题",
+          "inlines": [
+            {
+              "text": "常见问题"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Claude 能生成真实的图片吗？",
+          "inlines": [
+            {
+              "text": "Claude 能生成真实的图片吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "单靠它自己不行。没有连接器时，Claude 只能用 HTML 和 SVG 画示意图和图表。接入 OpenRouter MCP server 这类连接器后，它会调用图像模型，返回一张真实的图片。",
+          "inlines": [
+            {
+              "text": "单靠它自己不行。没有连接器时，Claude 只能用 HTML 和 SVG 画示意图和图表。接入 OpenRouter MCP server 这类连接器后，它会调用图像模型，返回一张真实的图片。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude 为什么不能生成图片？",
+          "inlines": [
+            {
+              "text": "Claude 为什么不能生成图片？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 没有图像生成模型。Anthropic 的文档称它“只是一个图像理解模型”，所以它能读懂你给它的图片，而要画图就得另用一个图像模型，由连接器来提供。",
+          "inlines": [
+            {
+              "text": "Claude 没有图像生成模型。Anthropic 的文档称它“只是一个图像理解模型”，所以它能读懂你给它的图片，而要画图就得另用一个图像模型，由连接器来提供。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude 生成图片的方式和图像生成器一样吗？",
+          "inlines": [
+            {
+              "text": "Claude 生成图片的方式和图像生成器一样吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "不一样。画图的是图像模型，Claude 负责根据你的需求写提示词，并且可以检查结果。",
+          "inlines": [
+            {
+              "text": "不一样。画图的是图像模型，Claude 负责根据你的需求写提示词，并且可以检查结果。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Claude 能生成视频吗？",
+          "inlines": [
+            {
+              "text": "Claude 能生成视频吗？"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "本文没有测试视频。OpenRouter MCP 连接器还带有 generate-video、generate-speech 和 transcribe-audio 工具，配置方式相同。",
+          "inlines": [
+            {
+              "text": "本文没有测试视频。OpenRouter MCP 连接器还带有 "
+            },
+            {
+              "code": true,
+              "text": "generate-video"
+            },
+            {
+              "text": "、"
+            },
+            {
+              "code": true,
+              "text": "generate-speech"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "transcribe-audio"
+            },
+            {
+              "text": " 工具，配置方式相同。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "下一步",
+          "inlines": [
+            {
+              "text": "下一步"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "把它接到 Claude 应用或 Claude Code 上，生成你的第一张图片：",
+          "inlines": [
+            {
+              "text": "把它接到 Claude 应用或 Claude Code 上，生成你的第一张图片："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/docs/guides/overview/mcp-server",
+                  "text": "OpenRouter MCP server 指南"
+                },
+                {
+                  "text": "里有各个客户端的配置方法和完整的工具列表。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "cookbook "
+                },
+                {
+                  "href": "https://openrouter.ai/docs/cookbook/coding-agents/generate-images-in-claude-code",
+                  "text": "Generate and Edit Images from Claude Code"
+                },
+                {
+                  "text": " 是给项目配图的完整步骤。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "href": "https://openrouter.ai/models?output_modalities=image",
+                  "text": "OpenRouter 上的图像模型"
+                },
+                {
+                  "text": "页面列出了当前价格。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Claude cannot generate images on its own, because it has no image model. With a connector, it can call an image model and hand you the finished picture.",
+          "inlines": [
+            {
+              "text": "Claude cannot generate images on its own, because it has no image model. With a connector, it can call an image model and hand you the finished picture."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You give a short request, and Claude writes the detailed prompt and shows it to you before anything is billed. When the picture comes back, Claude can look at the result and check it against what you asked for. This post uses the OpenRouter MCP server as the connector, which reaches 74 image models from different labs as of November 19, 2026.",
+          "inlines": [
+            {
+              "text": "You give a short request, and Claude writes the detailed prompt and shows it to you before anything is billed. When the picture comes back, Claude can look at the result and check it against what you asked for. This post uses the OpenRouter MCP server as the connector, which reaches 74 image models from different labs as of November 19, 2026."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you only want the setup, skip to How to make images in Claude with a connector.",
+          "inlines": [
+            {
+              "text": "If you only want the setup, skip to "
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/can-claude-generate-images/#how-to-make-images-in-claude-with-a-connector",
+              "text": "How to make images in Claude with a connector"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Tl;dr",
+          "inlines": [
+            {
+              "text": "Tl;dr"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Claude has no image model of its own. A connector lets it call one and return a real picture."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Add "
+                },
+                {
+                  "code": true,
+                  "text": "https://mcp.openrouter.ai/mcp"
+                },
+                {
+                  "text": " as a connector in the Claude app or Claude Code. Nothing is installed on your computer."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Name the model you want in your request, or ask Claude to compare models for your job first, which is not billed."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Our test images cost between $0.035 and $0.10 each on November 19, 2026, and you approve each one before it is charged."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The picture arrives either in the chat or as a link that works for 24 hours."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Can Claude generate images?",
+          "inlines": [
+            {
+              "text": "Can Claude generate images?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude cannot generate photos or illustrations on its own. Anthropic’s March 16, 2026 Help Center article says “Claude doesn’t generate photos or illustrations the way image-generation tools do” and notes that it builds diagrams and charts with HTML and SVG. Its vision documentation adds: “Claude is an image understanding model only. It can interpret and analyze images, but it cannot generate, produce, edit, manipulate, or create images.”",
+          "inlines": [
+            {
+              "text": "Claude cannot generate photos or illustrations on its own. Anthropic’s March 16, 2026 "
+            },
+            {
+              "href": "https://support.claude.com/en/articles/9002504-can-claude-produce-images",
+              "text": "Help Center article"
+            },
+            {
+              "text": " says “Claude doesn’t generate photos or illustrations the way image-generation tools do” and notes that it builds diagrams and charts with HTML and SVG. Its "
+            },
+            {
+              "href": "https://platform.claude.com/docs/en/build-with-claude/vision",
+              "text": "vision documentation"
+            },
+            {
+              "text": " adds: “Claude is an image understanding model only. It can interpret and analyze images, but it cannot generate, produce, edit, manipulate, or create images.”"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A connector is Claude’s word for an MCP server added to the app. The OpenRouter MCP server is one connector, and it reaches every model in the OpenRouter image catalog.",
+          "inlines": [
+            {
+              "text": "A connector is Claude’s word for an MCP server added to the app. The "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/overview/mcp-server",
+              "text": "OpenRouter MCP server"
+            },
+            {
+              "text": " is one connector, and it reaches every model in the "
+            },
+            {
+              "href": "https://openrouter.ai/models?output_modalities=image",
+              "text": "OpenRouter image catalog"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What does Claude do with an image model?",
+          "inlines": [
+            {
+              "text": "What does Claude do with an image model?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The image model draws, and Claude does the work around the drawing. With an image tool on its own, that surrounding work is the hard part: you write the detailed prompt yourself, and once the picture arrives you check it against your request and carry the file to where it belongs.",
+          "inlines": [
+            {
+              "text": "The image model draws, and Claude does the work around the drawing. With an image tool on its own, that surrounding work is the hard part: you write the detailed prompt yourself, and once the picture arrives you check it against your request and carry the file to where it belongs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In Claude, a short request is enough, because Claude writes the detailed prompt. Name the model you want, for example: “Can you generate an image of a red fox reading a paperback under a streetlamp on a snowy night, in soft watercolor? Use Seedream 5.5.” In our run, Claude expanded that line into a longer prompt. Claude asks for approval before each image, and that approval shows the model and the prompt it wrote, so you can read it before anything is billed.",
+          "inlines": [
+            {
+              "text": "In Claude, a short request is enough, because Claude writes the detailed prompt. Name the model you want, for example: “Can you generate an image of a red fox reading a paperback under a streetlamp on a snowy night, in soft watercolor? Use Seedream 5.5.” In our run, Claude expanded that line into a longer prompt. Claude asks for approval before each image, and that approval shows the model and the prompt it wrote, so you can read it before anything is billed."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/2d5095ff2d09c2c43bec77c2529b2428f8f54d57f47149936aaf2041968f11d6.jpg",
+          "alt": "Claude Desktop approval card reading \"Claude wants to use Generate an image from OpenRouter\", showing the model, the prompt and the Deny, Allow for this task and Allow once buttons."
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude can also look at the result. When the image came back in our Claude app run, Claude had seen the picture and described it.",
+          "inlines": [
+            {
+              "text": "Claude can also look at the result. When the image came back in our Claude app run, Claude had seen the picture and described it."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/748f08f9d293cd6edad8401dea64390ef0816ade1f7dbcd8b0d77f7109269c29.jpg",
+          "alt": "Claude Desktop showing a generated watercolor of a red fox reading under a streetlamp in the snow, opened full size inside the app."
+        },
+        {
+          "type": "paragraph",
+          "text": "In our Claude Code run, Claude opened the saved file and reported that the book was a green hardback where we had asked for a paperback. When that happens, a mismatch gets caught without you comparing the picture to your request yourself. When you ask for a change, Claude can pass the first image back to the model as a reference, and in our run the rest of the scene stayed the same. See Can Claude edit an image it generated? for details.",
+          "inlines": [
+            {
+              "text": "In our Claude Code run, Claude opened the saved file and reported that the book was a green hardback where we had asked for a paperback. When that happens, a mismatch gets caught without you comparing the picture to your request yourself. When you ask for a change, Claude can pass the first image back to the model as a reference, and in our run the rest of the scene stayed the same. See "
+            },
+            {
+              "href": "https://openrouter.ai/blog/tutorials/can-claude-generate-images/#can-claude-edit-an-image-it-generated",
+              "text": "Can Claude edit an image it generated?"
+            },
+            {
+              "text": " for details."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How to make images in Claude with a connector",
+          "inlines": [
+            {
+              "text": "How to make images in Claude with a connector"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Add the OpenRouter MCP server as a custom connector. It is a remote server, so nothing is installed on your computer. You need an OpenRouter account with credits.",
+          "inlines": [
+            {
+              "text": "Add the OpenRouter MCP server as a custom connector. It is a remote server, so nothing is installed on your computer. You need an OpenRouter account with credits."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the Claude app:",
+          "inlines": [
+            {
+              "text": "In the Claude app:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Open Settings > Connectors and add a custom connector."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Name it "
+                },
+                {
+                  "code": true,
+                  "text": "OpenRouter MCP"
+                },
+                {
+                  "text": " and set the remote MCP server URL to "
+                },
+                {
+                  "code": true,
+                  "text": "https://mcp.openrouter.ai/mcp"
+                },
+                {
+                  "text": ". Leave the OAuth fields blank."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Add the connector, then connect it. An OpenRouter consent page opens in your browser."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Approve the dedicated key for this connection. It expires within 7 days, and you can disconnect at any time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Some organizations do not allow custom connectors, so this option may be missing on a work account.",
+          "inlines": [
+            {
+              "text": "Some organizations do not allow custom connectors, so this option may be missing on a work account."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In Claude Code, run:",
+          "inlines": [
+            {
+              "text": "In Claude Code, run:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "claude mcp add --transport http openrouter https://mcp.openrouter.ai/mcp\nclaude mcp login openrouter"
+        },
+        {
+          "type": "paragraph",
+          "text": "The OpenRouter MCP server guide has the click-by-click steps for each client.",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "href": "https://openrouter.ai/docs/guides/overview/mcp-server",
+              "text": "OpenRouter MCP server guide"
+            },
+            {
+              "text": " has the click-by-click steps for each client."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Which image model should Claude use?",
+          "inlines": [
+            {
+              "text": "Which image model should Claude use?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Name the model you want, because no single model fits every job. We sent the same fox prompt to four models, at a 1:1 aspect ratio and the default resolution, to compare look and price.",
+          "inlines": [
+            {
+              "text": "Name the model you want, because no single model fits every job. We sent the same fox prompt to four models, at a 1:1 aspect ratio and the default resolution, to compare look and price."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9f14aee777f7670dad9928e8ac6de4324deed69a2e59f0ca8afefe37ebc754bc.jpg",
+          "alt": "The same fox prompt on four image models in a two-by-two grid: GPT Image 2.6 Flare, Seedream 5.5, MAI-Image-2.7 and Nano Banana 2.1."
+        },
+        {
+          "type": "paragraph",
+          "text": "Each row is a single measurement, as charged on November 19, 2026. Each model’s page has its current price.",
+          "inlines": [
+            {
+              "text": "Each row is a single measurement, as charged on November 19, 2026. Each model’s page has its current price."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Model",
+          "inlines": [
+            {
+              "text": "Model"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Slug",
+          "inlines": [
+            {
+              "text": "Slug"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Time",
+          "inlines": [
+            {
+              "text": "Time"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Cost per image",
+          "inlines": [
+            {
+              "text": "Cost per image"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Size",
+          "inlines": [
+            {
+              "text": "Size"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "GPT Image 2.6 Flare",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/openai/gpt-image-2.6-flare",
+              "text": "GPT Image 2.6 Flare"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "openai/gpt-image-2.6-flare",
+          "inlines": [
+            {
+              "code": true,
+              "text": "openai/gpt-image-2.6-flare"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "26.4 s",
+          "inlines": [
+            {
+              "text": "26.4 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.094",
+          "inlines": [
+            {
+              "text": "$0.094"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1024×1024",
+          "inlines": [
+            {
+              "text": "1024×1024"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Seedream 5.5",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/bytedance-seed/seedream-5-5",
+              "text": "Seedream 5.5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "bytedance-seed/seedream-5-5",
+          "inlines": [
+            {
+              "code": true,
+              "text": "bytedance-seed/seedream-5-5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "20.9 s",
+          "inlines": [
+            {
+              "text": "20.9 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.035",
+          "inlines": [
+            {
+              "text": "$0.035"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2048×2048",
+          "inlines": [
+            {
+              "text": "2048×2048"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "MAI-Image-2.7",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/microsoft/mai-image-2.7",
+              "text": "MAI-Image-2.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "microsoft/mai-image-2.7",
+          "inlines": [
+            {
+              "code": true,
+              "text": "microsoft/mai-image-2.7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "34.0 s",
+          "inlines": [
+            {
+              "text": "34.0 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.035",
+          "inlines": [
+            {
+              "text": "$0.035"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1024×1024",
+          "inlines": [
+            {
+              "text": "1024×1024"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Nano Banana 2.1",
+          "inlines": [
+            {
+              "href": "https://openrouter.ai/google/gemini-nano-banana-2.1",
+              "text": "Nano Banana 2.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "google/gemini-nano-banana-2.1",
+          "inlines": [
+            {
+              "code": true,
+              "text": "google/gemini-nano-banana-2.1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "13.2 s",
+          "inlines": [
+            {
+              "text": "13.2 s"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "$0.040",
+          "inlines": [
+            {
+              "text": "$0.040"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1024×1024",
+          "inlines": [
+            {
+              "text": "1024×1024"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The most expensive image cost more than twice the cheapest ($0.094 against $0.035), and Seedream 5.5 was tied for the lowest price while returning the largest image. Three of the four models added text we did not ask for, such as a book title or a hanging sign, so add “no text” to your request. For a wider comparison, read image generation models compared.",
+          "inlines": [
+            {
+              "text": "The most expensive image cost more than twice the cheapest ($0.094 against $0.035), and Seedream 5.5 was tied for the lowest price while returning the largest image. Three of the four models added text we did not ask for, such as a book title or a hanging sign, so add “no text” to your request. For a wider comparison, read "
+            },
+            {
+              "href": "https://openrouter.ai/blog/insights/image-generation-models-compared/",
+              "text": "image generation models compared"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You can ask Claude to compare models for your job before spending anything, because looking up models is not billed. When we asked which model to use for product photos on a plain white background, Claude recommended Nano Banana 2.1 from five options, gave a reason and a caveat for each, and said the shortlist came from catalog data and not from test images. It offered to run paid tests on the top three once we agreed.",
+          "inlines": [
+            {
+              "text": "You can ask Claude to compare models for your job before spending anything, because looking up models is not billed. When we asked which model to use for product photos on a plain white background, Claude recommended Nano Banana 2.1 from five options, gave a reason and a caveat for each, and said the shortlist came from catalog data and not from test images. It offered to run paid tests on the top three once we agreed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you name no model, Claude chooses one itself. In our Claude Code run it picked FLUX 3 Image, and in one Claude app run it picked an older model.",
+          "inlines": [
+            {
+              "text": "If you name no model, Claude chooses one itself. In our Claude Code run it picked "
+            },
+            {
+              "href": "https://openrouter.ai/black-forest-labs/flux-3-image",
+              "text": "FLUX 3 Image"
+            },
+            {
+              "text": ", and in one Claude app run it picked an older model."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What does it cost?",
+          "inlines": [
+            {
+              "text": "What does it cost?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Each image costs the price of the model that makes it, which was $0.035 to $0.10 in our runs on November 19, 2026. Claude’s own usage is separate.",
+          "inlines": [
+            {
+              "text": "Each image costs the price of the model that makes it, which was $0.035 to $0.10 in our runs on November 19, 2026. Claude’s own usage is separate."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Aspect ratio and resolution change the price. GPT Image 2.6 Flare cost $0.058 at 16:9 against $0.094 at 1:1, and FLUX 3 Image cost $0.10 at 16:9 and 2K resolution (2736×1536).",
+          "inlines": [
+            {
+              "text": "Aspect ratio and resolution change the price. GPT Image 2.6 Flare cost $0.058 at 16:9 against $0.094 at 1:1, and FLUX 3 Image cost $0.10 at 16:9 and 2K resolution (2736×1536)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The connector’s key starts with a $10 spend cap that you can edit on the consent screen. In our runs Claude also repeated each image’s cost in its reply.",
+          "inlines": [
+            {
+              "text": "The connector’s key starts with a $10 spend cap that you can edit on the consent screen. In our runs Claude also repeated each image’s cost in its reply."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why does the image sometimes come back as a link?",
+          "inlines": [
+            {
+              "text": "Why does the image sometimes come back as a link?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The generate-image tool returns a link when one can be issued, and the image itself otherwise. A link opens in any browser, without signing in, for 24 hours.",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "code": true,
+              "text": "generate-image"
+            },
+            {
+              "text": " tool returns a link when one can be issued, and the image itself otherwise. A link opens in any browser, without signing in, for 24 hours."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the Claude app, an image shows in the chat and Claude can see it. A link opens in your browser, and in our run Claude had not seen that picture and could not show it in the chat. In Claude Code, a link is the easier case, because the image downloads straight into your project. An image that comes back directly stays in Claude Code’s own folder until you approve copying it.",
+          "inlines": [
+            {
+              "text": "In the Claude app, an image shows in the chat and Claude can see it. A link opens in your browser, and in our run Claude had not seen that picture and could not show it in the chat. In Claude Code, a link is the easier case, because the image downloads straight into your project. An image that comes back directly stays in Claude Code’s own folder until you approve copying it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Which one you get varied between requests, even for the same model. In our small set of runs on November 19, 2026, Seedream 5.5 returned the image itself 4 of 4 times, GPT Image 2.6 Flare returned a link 3 of 4 times, FLUX 3 Image returned a link 2 of 2 times, and Nano Banana 2.1 returned each once. If you want the picture inside the Claude app, Seedream 5.5 did that every time for us. If you get a link, open it.",
+          "inlines": [
+            {
+              "text": "Which one you get varied between requests, even for the same model. In our small set of runs on November 19, 2026, Seedream 5.5 returned the image itself 4 of 4 times, GPT Image 2.6 Flare returned a link 3 of 4 times, FLUX 3 Image returned a link 2 of 2 times, and Nano Banana 2.1 returned each once. If you want the picture inside the Claude app, Seedream 5.5 did that every time for us. If you get a link, open it."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Can Claude Code generate images?",
+          "inlines": [
+            {
+              "text": "Can Claude Code generate images?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Yes. Claude Code generates images with the same connector and puts them straight into your project. Say where to save the file and which page uses it, for example: “This landing page needs a hero illustration. Use OpenRouter to generate one: a red fox reading a paperback under a streetlamp on a snowy night, soft watercolor style. Save it to assets/hero.png and add it to index.html.”",
+          "inlines": [
+            {
+              "text": "Yes. Claude Code generates images with the same connector and puts them straight into your project. Say where to save the file and which page uses it, for example: “This landing page needs a hero illustration. Use OpenRouter to generate one: a red fox reading a paperback under a streetlamp on a snowy night, soft watercolor style. Save it to assets/hero.png and add it to index.html.”"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In our run, Claude Code saved a 2736×1536 illustration from FLUX 3 Image at that path and added it to the page. For the full recipe, follow the cookbook Generate and Edit Images from Claude Code.",
+          "inlines": [
+            {
+              "text": "In our run, Claude Code saved a 2736×1536 illustration from FLUX 3 Image at that path and added it to the page. For the full recipe, follow the cookbook "
+            },
+            {
+              "href": "https://openrouter.ai/docs/cookbook/coding-agents/generate-images-in-claude-code",
+              "text": "Generate and Edit Images from Claude Code"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Can Claude edit an image it generated?",
+          "inlines": [
+            {
+              "text": "Can Claude edit an image it generated?"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Yes, when the first result came back as a link and the model accepts image input. Claude passes that link back to the model as a reference, along with the changes you asked for.",
+          "inlines": [
+            {
+              "text": "Yes, when the first result came back as a link and the model accepts image input. Claude passes that link back to the model as a reference, along with the changes you asked for."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In our Claude Code session, we asked for a red scarf on the fox and a paperback with a plain red cover, saved over the same file. Claude sent the first image back to FLUX 3 Image, and both changes appeared while the rest of the scene stayed the same.",
+          "inlines": [
+            {
+              "text": "In our Claude Code session, we asked for a red scarf on the fox and a paperback with a plain red cover, saved over the same file. Claude sent the first image back to FLUX 3 Image, and both changes appeared while the rest of the scene stayed the same."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/e4b7ee12368b6ed373ca10e83ca088e9adb81b1ce5ce757de7fc10bbd2139cc6.jpg",
+          "alt": "Two versions of a watercolor fox illustration side by side: the first request, and the same scene after a follow-up request added a red scarf and a red book."
+        },
+        {
+          "type": "paragraph",
+          "text": "Without a link, Claude cannot reuse the picture. In the Claude app, after a result that came back as the image itself, asking for a red scarf produced a new picture from a description. The scene changed, and Claude said so.",
+          "inlines": [
+            {
+              "text": "Without a link, Claude cannot reuse the picture. In the Claude app, after a result that came back as the image itself, asking for a red scarf produced a new picture from a description. The scene changed, and Claude said so."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Frequently asked questions",
+          "inlines": [
+            {
+              "text": "Frequently asked questions"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "heading",
+          "text": "Can Claude create real images?",
+          "inlines": [
+            {
+              "text": "Can Claude create real images?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Not on its own. Without a connector, Claude builds diagrams and charts in HTML and SVG. With a connector such as the OpenRouter MCP server, it calls an image model and returns a real picture.",
+          "inlines": [
+            {
+              "text": "Not on its own. Without a connector, Claude builds diagrams and charts in HTML and SVG. With a connector such as the OpenRouter MCP server, it calls an image model and returns a real picture."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Why can’t Claude generate images?",
+          "inlines": [
+            {
+              "text": "Why can’t Claude generate images?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude has no image generation model. Anthropic’s documentation describes it as “an image understanding model only”, so it can read the pictures you give it, and drawing one takes a separate image model, which a connector provides.",
+          "inlines": [
+            {
+              "text": "Claude has no image generation model. Anthropic’s documentation describes it as “an image understanding model only”, so it can read the pictures you give it, and drawing one takes a separate image model, which a connector provides."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Does Claude generate images like an image generator does?",
+          "inlines": [
+            {
+              "text": "Does Claude generate images like an image generator does?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "No. The image model draws, and Claude writes the prompt from your request and can check the result.",
+          "inlines": [
+            {
+              "text": "No. The image model draws, and Claude writes the prompt from your request and can check the result."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Can Claude generate videos?",
+          "inlines": [
+            {
+              "text": "Can Claude generate videos?"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "We did not test video for this post. The OpenRouter MCP connector also has generate-video, generate-speech and transcribe-audio tools, and they come with the same setup.",
+          "inlines": [
+            {
+              "text": "We did not test video for this post. The OpenRouter MCP connector also has "
+            },
+            {
+              "code": true,
+              "text": "generate-video"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "generate-speech"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "transcribe-audio"
+            },
+            {
+              "text": " tools, and they come with the same setup."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Next steps",
+          "inlines": [
+            {
+              "text": "Next steps"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Connect it to the Claude app or Claude Code and generate your first image:",
+          "inlines": [
+            {
+              "text": "Connect it to the Claude app or Claude Code and generate your first image:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "The "
+                },
+                {
+                  "href": "https://openrouter.ai/docs/guides/overview/mcp-server",
+                  "text": "OpenRouter MCP server guide"
+                },
+                {
+                  "text": " has the setup for each client and the full tool list."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The cookbook "
+                },
+                {
+                  "href": "https://openrouter.ai/docs/cookbook/coding-agents/generate-images-in-claude-code",
+                  "text": "Generate and Edit Images from Claude Code"
+                },
+                {
+                  "text": " is the recipe for project images."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The "
+                },
+                {
+                  "href": "https://openrouter.ai/models?output_modalities=image",
+                  "text": "image models on OpenRouter"
+                },
+                {
+                  "text": " page has current prices."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-26T01:12:08.367708Z",
+  "contentMode": "full"
+}

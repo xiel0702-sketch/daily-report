@@ -1,0 +1,3056 @@
+{
+  "schemaVersion": 1,
+  "id": "uyodjb16jngloilypsm1d3q0d",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/uyodjb16jngloilypsm1d3q0d",
+  "fetchedAt": "2026-11-26T01:11:08.221171Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Anthropic / Claude",
+    "Agent 智能体",
+    "AI 编码",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/a1b24bf0fcd632c055fd88e108e3f3ef870b6c9fbab7873fa15f36bd45250633.jpg",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "我们刚刚推出了 Claude Ship，它可以审查你的拉取请求、着手修复，并在团队策略允许的情况下批准这些请求。你或许已经有一套自定义技能或工作流来完成这些步骤，但我们想提供另一种选择。本指南基于我在 Claude Code 团队的经验，逐步介绍这套流程。",
+          "inlines": [
+            {
+              "text": "我们刚刚推出了 "
+            },
+            {
+              "href": "https://claude.com/resources/articles/introducing-claude-ship",
+              "text": "Claude Ship"
+            },
+            {
+              "text": "，它可以审查你的拉取请求、着手修复，并在团队策略允许的情况下批准这些请求。你或许已经有一套自定义技能或工作流来完成这些步骤，但我们想提供另一种选择。本指南基于我在 Claude Code 团队的经验，逐步介绍这套流程。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当你打开一个拉取请求时，通常还有一堆后续工作要做：",
+          "inlines": [
+            {
+              "text": "当你打开一个拉取请求时，通常还有一堆后续工作要做："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "CI 失败"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "审查意见回来了，带着六条评论"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "主干合并产生了冲突"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些都是很小的任务，但每一个都会让你偏离手头的工作。",
+          "inlines": [
+            {
+              "text": "这些都是很小的任务，但每一个都会让你偏离手头的工作。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在我们团队，这类后续工作通常由智能体来完成。比如，它可以接手审查者发现的问题，这样作者回来时，PR 已经更新过一轮了。",
+          "inlines": [
+            {
+              "text": "在我们团队，这类后续工作通常由智能体来完成。比如，它可以接手审查者发现的问题，这样作者回来时，PR 已经更新过一轮了。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "以我的经验，这是一种更高效、也更愉快的编码方式。它减少了上下文切换，让我保持心流状态。",
+          "inlines": [
+            {
+              "text": "以我的经验，这是一种更高效、也更愉快的编码方式。它减少了上下文切换，让我保持心流状态。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们这里讲过 Claude Code 团队的代码审查流程，也这里讲过其底层的验证流程。",
+          "inlines": [
+            {
+              "text": "我们"
+            },
+            {
+              "href": "https://claude.dev/blog/solving-code-review-at-anthropic/",
+              "text": "这里"
+            },
+            {
+              "text": "讲过 Claude Code 团队的代码审查流程，也"
+            },
+            {
+              "href": "https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/",
+              "text": "这里"
+            },
+            {
+              "text": "讲过其底层的验证流程。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0ce6df629144dc76f8bbe526c053e13f960cf74dfe13ee9e611b813a01b6263c.webp",
+          "alt": "",
+          "width": 3000,
+          "height": 1530
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Ship 面向的是团队使用 GitHub、且没有管理员权限的开发者或技术负责人。你现在就可以自己动手，运行几条命令开始，并把学到的东西保存到仓库文件里供团队审阅。只有当你希望智能体自动处理团队的 PR 时，才需要管理员介入。",
+          "inlines": [
+            {
+              "text": "Claude Ship 面向的是团队使用 GitHub、且没有管理员权限的开发者或技术负责人。你现在就可以自己动手，运行几条命令开始，并把学到的东西保存到仓库文件里供团队审阅。只有当你希望智能体自动处理团队的 PR 时，才需要管理员介入。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你仍然是这套流程的设计者，由你来定义要构建什么、怎么构建，以及合并的门槛是什么。",
+          "inlines": [
+            {
+              "text": "你仍然是这套流程的设计者，由你来定义要构建什么、怎么构建，以及合并的门槛是什么。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/00d5e5cedcc48bd004bc2d1ae30128bb721c075c04a8fb4455c051f1dd28ac2e.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 814
+        },
+        {
+          "type": "heading",
+          "text": "PR 之后的流程",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "PR 之后的流程"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "打开 PR 之后，你要发现问题、处理问题，并最终决定这次改动能否合并。",
+          "inlines": [
+            {
+              "text": "打开 PR 之后，你要发现问题、处理问题，并最终决定这次改动能否合并。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Ship 由三个智能体来承担这项工作：Code Review、PR Steward（测试版）和 Claude Approvals（测试版）。",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Claude Ship 由三个智能体来承担这项工作：Code Review、PR Steward（测试版）和 Claude Approvals（测试版）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Code Review 会从多个视角对照代码库对拉取请求做深入审查。它收集发现的问题，以对抗性方式加以验证，分类后发布到 PR 上。",
+          "inlines": [
+            {
+              "text": "Code Review 会从多个视角对照代码库对拉取请求做深入审查。它收集发现的问题，以对抗性方式加以验证，分类后发布到 PR 上。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b2ecd885f3f8a8c95f5612e77f7001aae87d1acb0d1a6d6e04c6f56b4caa4b34.webp",
+          "alt": "",
+          "width": 3000,
+          "height": 2127
+        },
+        {
+          "type": "paragraph",
+          "text": "PR Steward 负责让 PR 保持绿灯，但它的设计目标不是批准或合并拉取请求。它会在 CI 检查失败、出现合并冲突，以及收到 Code Review、其他审查工具或团队成员的审查反馈时介入。每次推送后，它都会评论说明改了什么、如何撤销。",
+          "inlines": [
+            {
+              "text": "PR Steward 负责让 PR 保持绿灯，但它的设计目标不是批准或合并拉取请求。它会在 CI 检查失败、出现合并冲突，以及收到 Code Review、其他审查工具或团队成员的审查反馈时介入。每次推送后，它都会评论说明改了什么、如何撤销。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/620779092a0aedf2fa731b9d8f60c279b587b3b41faf377ce06970db6af50402.jpg",
+          "alt": "",
+          "width": 3000,
+          "height": 2625
+        },
+        {
+          "type": "paragraph",
+          "text": "在此基础上，Claude Approvals 会应用一套由团队写成仓库文件的批准策略。如果策略允许，Claude 可以自行批准常规改动；某些场景下，也可以要求更深入的人工签核。它就像一个更聪明的 CODEOWNERS 文件。团队可以让 Claude Approvals 在决策时参考多种信号，包括 Code Review 的发现或团队自己的分类器。",
+          "inlines": [
+            {
+              "text": "在此基础上，"
+            },
+            {
+              "bold": true,
+              "text": "Claude Approvals"
+            },
+            {
+              "text": " 会应用一套由团队写成仓库文件的批准策略。如果策略允许，Claude 可以自行批准常规改动；某些场景下，也可以要求更深入的人工签核。它就像一个更聪明的 CODEOWNERS 文件。团队可以让 Claude Approvals 在决策时参考多种信号，包括 Code Review 的发现或团队自己的分类器。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3d1a4ab37eb96a9de43d73acb1a5d2236f04a11ba87fbaa434d426ffc6f182b3.jpg",
+          "alt": "",
+          "width": 3000,
+          "height": 2358
+        },
+        {
+          "type": "paragraph",
+          "text": "Code Review 已正式可用，另外两个处于测试阶段。/ship 是你在 Claude Code 中自行运行的命令，用来对自己的拉取请求试用 Claude Ship。它随最新版 Claude Code 提供，即使管理员尚未开启任何智能体也能使用。",
+          "inlines": [
+            {
+              "text": "Code Review 已正式可用，另外两个处于测试阶段。/ship 是你在 Claude Code 中自行运行的命令，用来对自己的拉取请求试用 Claude Ship。它随最新版 Claude Code 提供，即使管理员尚未开启任何智能体也能使用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "前两步今天就可以部分自动化。最后一步是一个决定，由你在分支保护设置和（如果团队采用了的话）策略文件中设定。下面按 Claude Ship 包含的三个智能体来拆解：",
+          "inlines": [
+            {
+              "text": "前两步今天就可以部分自动化。最后一步是一个决定，由你在分支保护设置和（如果团队采用了的话）策略文件中设定。下面按 Claude Ship 包含的三个智能体来拆解："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/38a7a2871cf7a0a4b9ac6cc871f965a037f3f772cdb0e5fa8d5a284bf5804b38.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 916
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9a4a341ba851d8d00d3d79615ec3428920475243e9d200401fb09c28bf77d7f4.jpg",
+          "alt": "",
+          "width": 2400,
+          "height": 1284
+        },
+        {
+          "type": "heading",
+          "text": "在自己的 PR 上",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "在自己的 PR 上"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "今天就用 /code-review 开始",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "今天就用 /code-review 开始"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果这篇帖子你只做一件事，那就是在推送前先审查自己的分支。此时发现的 bug，之后就不太可能变成评审意见或失败的检查项，把你从下一个任务上拽回来。在 Claude Code 提示符下输入这条命令：",
+          "inlines": [
+            {
+              "text": "如果这篇帖子你只做一件事，那就是在推送前先审查自己的分支。此时发现的 bug，之后就不太可能变成评审意见或失败的检查项，把你从下一个任务上拽回来。在 Claude Code 提示符下输入这条命令："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/code-review\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "它会审查你分支上的提交以及尚未提交的改动，找出正确性方面的 bug。有几种变体需要留意：",
+          "inlines": [
+            {
+              "text": "它会审查你分支上的提交以及尚未提交的改动，找出正确性方面的 bug。有几种变体需要留意："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/code-review high 1234       # review PR 1234 at high effort\n/code-review --fix           # apply the findings to your working tree\n/code-review --comment 1234  # post the findings on the PR\n/code-review ultra           # run a deeper review in the cloud\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "effort 范围从 low 到 max，low 只返回审查最有把握的发现，级别越高给出的结果越宽泛（包括一些把握不大的）。命令会记住你上次用的 effort，所以风险等级变了就重新输入一个。",
+          "inlines": [
+            {
+              "text": "effort 范围从 low 到 max，low 只返回审查最有把握的发现，级别越高给出的结果越宽泛（包括一些把握不大的）。命令会记住你上次用的 effort，所以风险等级变了就重新输入一个。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "有几点需要注意：",
+          "inlines": [
+            {
+              "text": "有几点需要注意："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "使用 ultra 设置时要格外小心：它在云端运行，需要登录 claude.ai，而且可能在你的套餐之外单独计费。尝试之前请先阅读 "
+                },
+                {
+                  "href": "https://code.claude.com/docs/en/ultrareview",
+                  "text": "ultrareview 文档"
+                },
+                {
+                  "text": "。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "后台审查期间由 --fix 做出的修改，可能不会被 /rewind 捕获。想留一条方便回退的路，就先提交。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "本地的 /code-review 会读取你的 CLAUDE.md 文件，但不读 REVIEW.md。这一点后面会用到。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你首先要做的是多跑几次 /code-review，弄清它能抓到什么、在哪些地方会出错。后面你会用到这些经验。",
+          "inlines": [
+            {
+              "text": "你首先要做的是多跑几次 /code-review，弄清它能抓到什么、在哪些地方会出错。后面你会用到这些经验。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "下一个 PR 用 /ship",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "下一个 PR 用 /ship"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "准备好之后，输入：",
+          "inlines": [
+            {
+              "text": "准备好之后，输入："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/ship\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你的分支还没有 PR，/ship 会：",
+          "inlines": [
+            {
+              "text": "如果你的分支还没有 PR，/ship 会："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "提交你待处理的改动。它的行为等同于你运行了 git add -A，因此会遵循你的 .gitignore。必要时它会创建分支，并用你的会话撰写提交信息。提交前你会收到通知，按 Esc 可以中止。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "以你的身份推送并创建 PR。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "用 /code-review 做一次代码审查，除非该提交已经过 Code Review 审查。如果代码审查报告了问题，它会替你修复那些它判断为有效的问题。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "最多持续七天关注这个 PR。它会处理失败的检查、冲突和评审意见，PR 被合并或关闭后就会退出。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "第一步里 /ship 会像运行了 git add -A 一样提交你待处理的改动，这一点有时会让人措手不及，所以运行 /ship 前务必先跑一下 git status。",
+          "inlines": [
+            {
+              "text": "第一步里 /ship 会像运行了 git add -A 一样提交你待处理的改动，这一点有时会让人措手不及，所以运行 /ship 前务必先跑一下 git status。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "该命令不会提交涉及文件名看起来像密钥的改动，也不会提交设置规则的文件，比如 CLAUDE.md、REVIEW.md，以及 .claude/ 或 .github/ 目录下的任何内容。这些需要你事先手动提交。",
+          "inlines": [
+            {
+              "text": "该命令不会提交涉及文件名看起来像密钥的改动，也不会提交设置规则的文件，比如 CLAUDE.md、REVIEW.md，以及 .claude/ 或 .github/ 目录下的任何内容。这些需要你事先手动提交。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "另外，如果你在公开仓库中工作，该命令不会替你提交任何改动。你需要先手动提交所有待处理的改动才能继续；如果 PR 已经存在，它也不会包含你待处理的改动。",
+          "inlines": [
+            {
+              "text": "另外，如果你在公开仓库中工作，该命令不会替你提交任何改动。你需要先手动提交所有待处理的改动才能继续；如果 PR 已经存在，它也不会包含你待处理的改动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "可选：指定 effort 级别、PR 或机器人",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "可选：指定 effort 级别、PR 或机器人"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/ship high            # run at high effort\n/ship 41              # work on pull request #41\n/ship +my-lint-bot    # also read comments from my-lint-bot\n/ship stop            # end the watch\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "默认情况下，该命令会读取你本人、有写权限的人以及 Claude GitHub App 的评论。你可以用 +name 的形式指定额外的机器人。如果该机器人发表了评论，它会被当作一条断言，对照代码进行检查。",
+          "inlines": [
+            {
+              "text": "默认情况下，该命令会读取你本人、有写权限的人以及 Claude GitHub App 的评论。你可以用 +name 的形式指定额外的机器人。如果该机器人发表了评论，它会被当作一条断言，对照代码进行检查。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/584b649d58f59b72984d2571b5ae39ce133797fd16f70be788383c4b282af078.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 3998
+        },
+        {
+          "type": "paragraph",
+          "text": "让 Claude 关注 PR",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "让 Claude 关注 PR"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 以你的身份、在你的机器上关注 PR，并消耗你的配额。合上笔记本电脑它就会停止，所以要保持会话打开、机器不休眠。你还需要登录 GitHub CLI（先运行 gh auth login），而且它只关注你打开的 PR。",
+          "inlines": [
+            {
+              "text": "Claude 以你的身份、在你的机器上关注 PR，并消耗你的配额。合上笔记本电脑它就会停止，所以要保持会话打开、机器不休眠。你还需要登录 GitHub CLI（先运行 gh auth login），而且它只关注你打开的 PR。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "除了自动模式之外，watch 会在每个提示处停下，等待你回应。它不会在 bypass-permissions 模式下运行。注意在 Windows 上，/ship 会打开 PR 并进行审查，但 watch 不会启动。",
+          "inlines": [
+            {
+              "text": "除了"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/permission-modes",
+              "text": "自动模式"
+            },
+            {
+              "text": "之外，"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/ship-command#what-claude-does-during-a-watch",
+              "text": "watch"
+            },
+            {
+              "text": " 会在每个提示处停下，等待你回应。它不会在 bypass-permissions 模式下运行。注意在 Windows 上，/ship 会打开 PR 并进行审查，但 watch 不会启动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "确保 watch 有自己独立的检出目录。你需要让该分支保持检出状态。如果你打算直接开始下一个任务，那就为其中一个任务单独使用一个 worktree。",
+          "inlines": [
+            {
+              "text": "确保 watch 有自己独立的检出目录。你需要让该分支保持检出状态。如果你打算直接开始下一个任务，那就为其中一个任务单独使用一个 worktree。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果 watch 启动失败，Claude 会解释原因，但仍会审查 PR。例如，如果你的仓库 .claude/settings.json 中针对 Bash 配置了 PreToolUse 或 PermissionRequest 钩子，就无法运行 watch。",
+          "inlines": [
+            {
+              "text": "如果 watch 启动失败，Claude 会解释原因，但仍会审查 PR。例如，如果你的仓库 .claude/settings.json 中针对 Bash 配置了 PreToolUse 或 PermissionRequest 钩子，就无法运行 watch。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "此外，watch 会在你离开期间消耗模型轮次，因此会计入你的套餐用量或 API 账单。第一次使用时，最好待在机器旁边，确认用量符合预期。",
+          "inlines": [
+            {
+              "text": "此外，watch 会在你离开期间消耗模型轮次，因此会计入你的套餐用量或 API 账单。第一次使用时，最好待在机器旁边，确认用量符合预期。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "只在信任的仓库上运行 watch",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "只在信任的仓库上运行 watch"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "watch 会在必要时把基础分支合并到你的分支，然后运行测试等命令。换句话说，任何有权向基础分支提交改动的人，都能在 watch 期间在你的机器上执行命令。只有在你能信任所有有权向基础分支提交改动的人时，才在本地对该仓库运行 watch。",
+          "inlines": [
+            {
+              "text": "watch 会在必要时把基础分支合并到你的分支，然后运行测试等命令。换句话说，任何有权向基础分支提交改动的人，都能在 watch 期间在你的机器上执行命令。"
+            },
+            {
+              "bold": true,
+              "text": "只有在你能信任所有有权向基础分支提交改动的人时，才在本地对该仓库运行 watch。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 被明确告知永远不要合并 PR，Claude Code 也会限制它在无人值守轮次中可运行的 gh 和 git 命令，防止直接合并或强制推送。watch 自身产生的提交也会排除用于设定规则的文件：.github/、CODEOWNERS、CLAUDE.md、.claude/、git 钩子等。",
+          "inlines": [
+            {
+              "text": "Claude 被明确告知永远不要合并 PR，Claude Code 也会限制它在无人值守轮次中可运行的 gh 和 git 命令，防止直接合并或强制推送。watch 自身产生的提交也会排除用于设定规则的文件：.github/、CODEOWNERS、CLAUDE.md、.claude/、git 钩子等。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "但这并不能防范所有途径。例如，测试脚本同样以你的凭据运行；如果你在某个轮次中输入消息，该轮次的限制就会被解除。此外，如果启用了自动合并，watch 的修复有可能恰好成为 GitHub 允许合并的原因。",
+          "inlines": [
+            {
+              "text": "但这并不能防范所有途径。例如，测试脚本同样以你的凭据运行；如果你在某个轮次中输入消息，该轮次的限制就会被解除。此外，如果启用了自动合并，watch 的修复有可能恰好成为 GitHub 允许合并的原因。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "另外，Claude 在 watch 期间所做的提交和推送不受仓库中 git 钩子的影响，因此请确保必要的检查都已加入 CI 和分支规则。",
+          "inlines": [
+            {
+              "text": "另外，Claude 在 watch 期间所做的提交和推送不受仓库中 git 钩子的影响，因此请确保必要的检查都已加入 CI 和分支规则。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "首次使用前，请在产品中运行 /ship terms 查看 watch 的完整条款。",
+          "inlines": [
+            {
+              "text": "首次使用前，请在产品中运行 /ship terms 查看 watch 的完整条款。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "用 /steward 处理已有 PR",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "用 /steward 处理已有 PR"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "很多 PR 不需要再审查，而是需要有人跟进直到合并。如果你有这样的 PR，检出对应分支并运行：",
+          "inlines": [
+            {
+              "text": "很多 PR 不需要再审查，而是需要有人跟进直到合并。如果你有这样的 PR，检出对应分支并运行："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/steward 41\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "它只运行 /ship 中的 watch 组件。它会监视你打开的 PR，处理检查失败、冲突和评论等事项，但不会先进行审查。",
+          "inlines": [
+            {
+              "text": "它只运行 /ship 中的 watch 组件。它会监视你打开的 PR，处理检查失败、冲突和评论等事项，但不会先进行审查。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果不指定 PR 编号，它会监视当前分支对应的 PR。它同样接受 +name 机器人，之前提到的注意事项同样适用。",
+          "inlines": [
+            {
+              "text": "如果不指定 PR 编号，它会监视当前分支对应的 PR。它同样接受 +name 机器人，之前提到的注意事项同样适用。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不过，如果某个 PR 已被标记为 Steward，它就不会运行本地 watch。如果无法运行 watch，/steward 不会做任何事。",
+          "inlines": [
+            {
+              "text": "不过，如果某个 PR 已被标记为 Steward，它就不会运行本地 watch。如果无法运行 watch，/steward 不会做任何事。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果想停止 watch，可以使用 /steward stop 或 /ship stop。由于一个会话同一时间只能运行一个 watch，启动新的 watch 会终止之前的那个。",
+          "inlines": [
+            {
+              "text": "如果想停止 watch，可以使用 /steward stop 或 /ship stop。由于一个会话同一时间只能运行一个 watch，启动新的 watch 会终止之前的那个。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不要把 /steward 与 PR Steward 混淆，后者是由管理员启用后以 claude[bot] 身份运行的团队服务。/steward 命令则以你的身份在你的会话中运行。",
+          "inlines": [
+            {
+              "text": "不要把 /steward 与 PR Steward 混淆，后者是由管理员启用后以 claude[bot] 身份运行的团队服务。/steward 命令则以你的身份在你的会话中运行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "检查失败的 PR 是个不错的起点。陷入冲突循环的 PR 也很适合。反过来，正处于设计争论中的 PR 则不合适，因为那是需要你来解决的争论。",
+          "inlines": [
+            {
+              "text": "检查失败的 PR 是个不错的起点。陷入冲突循环的 PR 也很适合。反过来，正处于设计争论中的 PR 则不合适，因为那是需要你来解决的争论。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude 把更大的改动交给你决定",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Claude 把更大的改动交给你决定"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在值守过程中，Claude 被要求只做小改动，把较大的改动上报。比如：",
+          "inlines": [
+            {
+              "text": "在值守过程中，Claude 被要求只做小改动，把较大的改动上报。比如："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "要求重新设计某个东西，例如新的 API 或更大的范围"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "它无法解决的安全问题"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "对同一个问题，它最多尝试 3 次，然后报告尝试过的解决方案。",
+          "inlines": [
+            {
+              "text": "对同一个问题，它最多尝试 3 次，然后报告尝试过的解决方案。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这大致相当于我们在验证博客文章中的说法：如果我们反复运行同一项检查，三轮之后仍然失败，那这个方法很可能就是错的。",
+          "inlines": [
+            {
+              "text": "这大致相当于我们在"
+            },
+            {
+              "href": "https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/",
+              "text": "验证博客文章"
+            },
+            {
+              "text": "中的说法：如果我们反复运行同一项检查，三轮之后仍然失败，那这个方法很可能就是错的。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这时，它会把问题上报给代码作者。",
+          "inlines": [
+            {
+              "text": "这时，它会把问题上报给代码作者。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/495ebe282efd3947ff4b2bcb7e21eac9ef2a178e4137a366a8ee3f29936f4ac1.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 718
+        },
+        {
+          "type": "heading",
+          "text": "在你的仓库里",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "在你的仓库里"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "当你处理过几个 PR 之后，就会开始注意到一些规律。例如：",
+          "inlines": [
+            {
+              "text": "当你处理过几个 PR 之后，就会开始注意到一些规律。例如："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "同一位评审者反复给出同样的评论"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Claude 必须自己摸索出来的环境搭建说明"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "不稳定的检查"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你可以把这些写下来给团队用，具体放在哪个文件里，取决于哪个工具需要读取它：",
+          "inlines": [
+            {
+              "text": "你可以把这些写下来给团队用，具体放在哪个文件里，取决于哪个工具需要读取它："
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b220238ec8c3df411e9ec538f52bae2aec05d8c9e0e23f26ef637f3cb06a6dd5.jpg",
+          "alt": "",
+          "width": 2400,
+          "height": 1560
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f57a95f14d53cf7d6f3eccc393b9d1b2de41622e2e561ca09696c82c4c2cb968.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 1614
+        },
+        {
+          "type": "paragraph",
+          "text": "重复的评论变成评审规则",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "重复的评论变成评审规则"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "假设有同事两次要求你确保新查询包含租户检查。如果你使用本地评审，可以把它写进 CLAUDE.md，因为 /ship 会调用 /code-review 来做评审。如果你的仓库启用了 Code Review，那么仅用于评审的规则可以放在根目录的 REVIEW.md 里：",
+          "inlines": [
+            {
+              "text": "假设有同事两次要求你确保新查询包含租户检查。如果你使用本地评审，可以把它写进 CLAUDE.md，因为 /ship 会调用 /code-review 来做评审。如果你的仓库启用了 Code Review，那么仅用于评审的规则可以放在根目录的 REVIEW.md 里："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# Review instructions\n\n## What Important means here\n\nWrong results, leaked data or anything that blocks a rollback.\nStyle and naming are Nit at most.\n\n## Always check\n- Database queries are scoped to the caller's tenant.\n- New API routes have an integration test.\n\n## Keep it quiet\n- Report at most five Nits.\n- Skip generated files and lockfiles.\n- Behavior claims need a file and line.\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Code Review 不会读取正在评审的 PR 中的 REVIEW.md 文件。而且只有在默认分支受保护时，它才会遵循某些指令，比如排除路径和限制细枝末节的评论。",
+          "inlines": [
+            {
+              "text": "Code Review 不会读取正在评审的 PR 中的 REVIEW.md 文件。而且只有在默认分支受保护时，它才会遵循某些指令，比如排除路径和限制细枝末节的评论。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不是每条评论都值得上升为规则。在我们团队，原则是同一个模式至少在 2 个 PR 上重复出现，才会考虑写成规则。然后由一个人批准添加该规则的 PR。这个门槛值得采纳。你还应该按需删除规则。",
+          "inlines": [
+            {
+              "text": "不是每条评论都值得上升为规则。在我们团队，原则是同一个模式至少在 2 个 PR 上重复出现，才会考虑写成规则。然后由一个人批准添加该规则的 PR。这个门槛值得采纳。你还应该按需删除规则。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "重复的搭建步骤变成验证技能",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "重复的搭建步骤变成验证技能"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你发现自己总在告诉 Claude 如何启动应用、如何导航到特定页面，那就干脆写下来。创建 .claude/skills/verify/SKILL.md。这个文件可以放在根目录，也可以放在代码所在目录。",
+          "inlines": [
+            {
+              "text": "如果你发现自己总在告诉 Claude 如何启动应用、如何导航到特定页面，那就干脆写下来。创建 .claude/skills/verify/SKILL.md。这个文件可以放在根目录，也可以放在代码所在目录。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "---\nname: verify\ndescription: Run the web app and exercise a change end to end. Use before committing.\n---\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "1. 用 npm run dev:stack 启动整套服务。",
+          "inlines": [
+            {
+              "text": "1. 用 npm run dev:stack 启动整套服务。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2. 等待 3000 端口的 /healthz 返回 200。",
+          "inlines": [
+            {
+              "text": "2. 等待 3000 端口的 /healthz 返回 200。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3. 用预置的测试账号登录。",
+          "inlines": [
+            {
+              "text": "3. 用预置的测试账号登录。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4. 在浏览器里走一遍改动过的流程，并截图。",
+          "inlines": [
+            {
+              "text": "4. 在浏览器里走一遍改动过的流程，并截图。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5. 报告你执行的步骤和看到的结果。没有这些就不要报告成功。",
+          "inlines": [
+            {
+              "text": "5. 报告你执行的步骤和看到的结果。没有这些就不要报告成功。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "一定要按实际情况定制命令。",
+          "inlines": [
+            {
+              "text": "一定要按实际情况定制命令。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "让 Claude 多跑几次，修掉所有不稳定的行为。人们不会相信自己不信任的验证。",
+          "inlines": [
+            {
+              "text": "让 Claude 多跑几次，修掉所有不稳定的行为。人们不会相信自己不信任的验证。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "重复的 PR 维护变成管家规则",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "重复的 PR 维护变成管家规则"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这一点很容易被忽略。本地值守会从你的工作目录读取 .claude/skills/steward/SKILL.md 文件，而在 Anthropic 云端运行的 PR Steward 则从默认分支读取它。下面是一个例子：",
+          "inlines": [
+            {
+              "text": "这一点很容易被忽略。本地值守会从你的工作目录读取 .claude/skills/steward/SKILL.md 文件，而在 Anthropic 云端运行的 PR Steward 则从默认分支读取它。下面是一个例子："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "---\nname: steward\ndescription: House rules for looking after PRs in this repository\nuser-invocable: false\ndisable-model-invocation: true\n---\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "- 用 npm install 重新生成 lockfile，不要手动编辑。",
+          "inlines": [
+            {
+              "text": "- 用 npm install 重新生成 lockfile，不要手动编辑。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "- `e2e-nightly` 不稳定。先重跑一次，再去找原因。",
+          "inlines": [
+            {
+              "text": "- `e2e-nightly` 不稳定。先重跑一次，再去找原因。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "- 推送修复前运行 npm test 和 npm run lint。",
+          "inlines": [
+            {
+              "text": "- 推送修复前运行 npm test 和 npm run lint。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "- 关于 API 设计的评论留给作者。",
+          "inlines": [
+            {
+              "text": "- 关于 API 设计的评论留给作者。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在这个例子里，最上面的两项设置让它不出现在 / 菜单里，也不出现在 Claude 自行挑选的技能中。",
+          "inlines": [
+            {
+              "text": "在这个例子里，最上面的两项设置让它不出现在 / 菜单里，也不出现在 Claude 自行挑选的技能中。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "管家文件无法改变值守的限制。不过，任何能合并到该仓库的人都可以编辑这个文件，所以要像审查 CI 的任何改动一样，仔细审查对它的修改。",
+          "inlines": [
+            {
+              "text": "管家文件无法改变值守的限制。不过，任何能合并到该仓库的人都可以编辑这个文件，所以要像审查 CI 的任何改动一样，仔细审查对它的修改。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你们团队之后启用了 PR Steward，那么这些准则一旦进入默认分支，就会在 Anthropic 的云端生效。",
+          "inlines": [
+            {
+              "text": "如果你们团队之后启用了 PR Steward，那么这些准则一旦进入默认分支，就会在 Anthropic 的云端生效。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "贯穿团队的 PR",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "贯穿团队的 PR"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "统一 PR 之后的流程",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "统一 PR 之后的流程"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在你对自己的几个 PR 跑过 /ship 之后，就能大致摸清 Claude Ship 在团队 PR 上能发挥什么作用。本文剩下的部分，是留给你和 admin 沟通时用的，讲的是该向他们要什么，以及如何安全地推行。",
+          "inlines": [
+            {
+              "text": "在你对自己的几个 PR 跑过 /ship 之后，就能大致摸清 Claude Ship 在团队 PR 上能发挥什么作用。本文剩下的部分，是留给你和 admin 沟通时用的，讲的是该向他们要什么，以及如何安全地推行。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "上手之前，你需要向管理员申请一个仓库、几位志愿者，以及一段有限的时间，用来在你自己的 pull request 上测试 Claude Ship。",
+          "inlines": [
+            {
+              "href": "https://code.claude.com/docs/en/claude-ship#who-can-use-claude-ship",
+              "text": "上手"
+            },
+            {
+              "text": "之前，你需要向管理员申请一个仓库、几位志愿者，以及一段有限的时间，用来在你自己的 pull request 上测试 Claude Ship。"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "提前就预算限制达成一致。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "保护仓库的默认分支。"
+                },
+                {
+                  "text": "仓库管理员可以设置这项要求，确保任何更新都必须通过 PR，且最新一次推送需获得批准，同时 Claude GitHub App 不在绕过名单中。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "为该仓库启用 Code Review。"
+                },
+                {
+                  "text": "Owner（你 Claude 组织中的管理员角色）可以启用 Code Review。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "以手动模式启用 PR Steward。"
+                },
+                {
+                  "text": "同样由 Owner 启用，触发条件是拥有写权限的用户评论 @claude steward，或作者选择让它自动触发。评论 @claude stop 即可停止 Steward。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "创建观察模式的审批策略。"
+                },
+                {
+                  "text": "这个文件和普通文件一样，你可以在自己的 PR 里创建它；但由于合并该文件会为仓库启用 Approvals，请先征得 Owner 同意。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PR Steward 的设计目标是不批准、不合并 pull request，所以务必用分支保护来要求你想要的合并前审批。",
+          "inlines": [
+            {
+              "text": "PR Steward 的设计目标是不批准、不合并 pull request，所以务必用分支保护来要求你想要的合并前审批。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PR Steward 会读取评审者的评论，并据此执行一些操作。和任何解析文本的智能体一样，它可能被人说的话误导。请只在协作者可信的仓库中使用它，并检查 PR Steward 根据不可信用户评论所做的改动。",
+          "inlines": [
+            {
+              "text": "PR Steward 会读取评审者的评论，并据此执行一些操作。和任何解析文本的智能体一样，它可能被人说的话误导。请只在协作者可信的仓库中使用它，并检查 PR Steward 根据不可信用户评论所做的改动。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "配置你的第一条审批策略",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "配置你的第一条审批策略"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在审批策略方面，Claude Approvals 读取默认分支上的 .claude/approvals.yml 文件。一个简单的初始策略可以是这样：",
+          "inlines": [
+            {
+              "text": "在审批策略方面，Claude Approvals 读取默认分支上的 .claude/approvals.yml 文件。一个简单的初始策略可以是这样："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# .claude/approvals.yml\n\nversion: 1\nmode: observe\n\nrules:\n- purpose: \"A change takes two people.\"\npaths: [\"**\"]\nverdict: { claude: comments, seats: 2 }\nadvisory: [claude/code_review]\n\n- purpose: \"A change to the review rules takes two people.\"\npaths: [\"**/.claude/**\", \"**/REVIEW.md\", \"**/CLAUDE.md\", \"**/CODEOWNERS\", \".github/**\"]\nnested: inherit\n\nverdict: { claude: comments, seats: 2 }\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "seats 是必须批准的人数，作者可以占其中一个名额。",
+          "inlines": [
+            {
+              "text": "seats 是必须批准的人数，作者可以占其中一个名额。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这里有个问题：watch 合并基础分支之后，最新一次提交会是合并提交，此时作者席位无人占据。所以 PR 作者应评论 @claude approve。",
+          "inlines": [
+            {
+              "text": "这里有个问题：watch 合并基础分支之后，最新一次提交会是合并提交，此时作者席位无人占据。所以 PR 作者应评论 @claude approve。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "当某条规则的判定结果为 claude: comments 时，Claude 不会批准。若有多条规则匹配，以最严格的一条为准。在观察模式下，检查会打印结果，但不会批准。",
+          "inlines": [
+            {
+              "text": "当某条规则的判定结果为 claude: comments 时，Claude 不会批准。若有多条规则匹配，以最严格的一条为准。在观察模式下，检查会打印结果，但不会批准。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "务必保留 advisory 这一行。策略文件一旦进入默认分支，Code Review 就只会对匹配到点名它的规则的 PR 自动启动，所以少了这一行，自动评审就会停止。advisory 评审不影响判定结果，按你现有的设置运行。点名 Code Review 的策略可能启动计费评审，即使 Code Review 已关闭也一样。",
+          "inlines": [
+            {
+              "text": "务必保留 advisory 这一行。策略文件一旦进入默认分支，Code Review 就只会对匹配到点名它的规则的 PR 自动启动，所以少了这一行，自动评审就会停止。advisory 评审不影响判定结果，按你现有的设置运行。点名 Code Review 的策略可能启动计费评审，即使 Code Review 已关闭也一样。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果想看看 Claude 评审通过后能在哪些路径上降低要求，可以把 advisory 行换成 override，并相应更新规则的目的（例如“当 Claude 的评审通过时，一个就够，由 Claude 批准”）。",
+          "inlines": [
+            {
+              "text": "如果想看看 Claude 评审通过后能在哪些路径上降低要求，可以把 advisory 行换成 override，并相应更新规则的目的（例如“当 Claude 的评审通过时，一个就够，由 Claude 批准”）。"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": " override:\n      - { if: \"claude/code_review = pass\", verdict: { claude: approves, seats: 1 } }\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "由于这条覆盖规则同时指定了 Code Review，这些拉取请求仍会触发自动审查。审查通过后，覆盖规则会取代原规则的决定，改为一个席位加上 Claude 的批准。作者可以占用这一个席位，于是检查结果就能报告 Claude 本会批准。但拉取请求中的文字可能影响 Claude 的审查，一旦被影响，这条覆盖规则就会降低该拉取请求所需的条件。",
+          "inlines": [
+            {
+              "text": "由于这条覆盖规则同时指定了 Code Review，这些拉取请求仍会触发自动审查。审查通过后，覆盖规则会取代原规则的决定，改为一个席位加上 Claude 的批准。作者可以占用这一个席位，于是检查结果就能报告 Claude 本会批准。但拉取请求中的文字可能影响 Claude 的审查，一旦被影响，这条覆盖规则就会降低该拉取请求所需的条件。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果有些路径必须始终由人工把关，就把它们放进不带覆盖规则的规则里（见下一节第 1 步）。合并之前先告知预算负责人，因为这样配置的策略会开始产生计费的 Code Review，即使在观察模式下也是如此，只要你推送就会触发，不受 Code Review 设置影响。",
+          "inlines": [
+            {
+              "text": "如果有些路径必须始终由人工把关，就把它们放进不带覆盖规则的规则里（见下一节第 1 步）。合并之前先告知预算负责人，因为"
+            },
+            {
+              "bold": true,
+              "text": "这样配置的策略会开始产生计费的 Code Review，即使在观察模式下也是如此"
+            },
+            {
+              "text": "，只要你推送就会触发，不受 Code Review 设置影响。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "你也可以为“这个 PR 是否与迁移相关？”这类问题自建分类器。自定义分类器放在默认分支的 .claude/classifiers/<name>/def.yml 中，每次运行都会计费，即使在观察模式下也一样。建议先从路径和 Code Review 结果入手。",
+          "inlines": [
+            {
+              "text": "你也可以为“这个 PR 是否与迁移相关？”这类问题自建分类器。"
+            },
+            {
+              "href": "https://code.claude.com/docs/en/approvals-classifiers#add-a-custom-classifier",
+              "text": "自定义分类器"
+            },
+            {
+              "text": "放在默认分支的 .claude/classifiers/<name>/def.yml 中，每次运行都会计费，即使在观察模式下也一样。建议先从路径和 Code Review 结果入手。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "监控并过渡到强制执行",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "监控并过渡到强制执行"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我们团队自己的内部提交门禁也采用与观察模式相同的流程。它会把在观察模式下本会做出的决定记录下来，这样我们就能在强制实施之前分析误报。你可以在 Claude Approvals 检查及相关评论中看到这些决定。",
+          "inlines": [
+            {
+              "text": "我们团队自己的内部提交门禁也采用与观察模式相同的流程。它会把在观察模式下本会做出的决定记录下来，这样我们就能在强制实施之前分析误报。你可以在 Claude Approvals 检查及相关评论中看到这些决定。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "请记住，只有真正去监控，观察模式才有价值。启用一两周后，回头看看已合并的 PR，对比这些决定与审查者的实际行为。",
+          "inlines": [
+            {
+              "text": "请记住，只有真正去监控，观察模式才有价值。启用一两周后，回头看看已合并的 PR，对比这些决定与审查者的实际行为。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "前两行在添加覆盖规则后才会生效。",
+          "inlines": [
+            {
+              "text": "前两行在添加覆盖规则后才会生效。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3c18d803fa1b0ce7f6017bb4bb60ec400972ff83441e6657ded94b49ea1b522e.jpg",
+          "alt": "",
+          "width": 2400,
+          "height": 1352
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/14d0b50fca9ace359fdca3e97f42f888de23c63538316852e563ecfe840f5c08.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 2610
+        },
+        {
+          "type": "paragraph",
+          "text": "挑几个示例 PR 过一遍。你会怎么决定？是哪条规则做出的决定？你会改什么？重点关注第二行，先修好这些问题，再放宽任何规则。",
+          "inlines": [
+            {
+              "text": "挑几个示例 PR 过一遍。你会怎么决定？是哪条规则做出的决定？你会改什么？重点关注第二行，先修好这些问题，再放宽任何规则。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "强制执行前需要知道一点：Claude 的批准在 GitHub 上算作真实批准。如果某个规则集只需要一个批准，Claude 的批准单独就够。所以要把你的策略和分支规则放在一起看。",
+          "inlines": [
+            {
+              "text": "强制执行前需要知道一点：Claude 的批准在 GitHub 上算作真实批准。如果某个规则集只需要一个批准，Claude 的批准单独就够。所以要把你的策略和分支规则放在一起看。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你使用自动合并，并且有只有作者才能满足的策略（比如上面的覆盖规则），就可能出现无人操作也会被合并的 PR。对每条路径明确决定这是否可以接受，并写下来。",
+          "inlines": [
+            {
+              "text": "如果你使用自动合并，并且有只有作者才能满足的策略（比如上面的覆盖规则），就可能出现无人操作也会被合并的 PR。对每条路径明确决定这是否可以接受，并写下来。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "然后按以下顺序锁定：",
+          "inlines": [
+            {
+              "text": "然后按以下顺序锁定："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "对于始终需要第二双眼睛把关的路径，使用不带 if 或覆盖规则的规则。任何分类器结果都无法覆盖它，nested: inherit 会把它带入有自己策略的子目录。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "- purpose: \"Auth, billing and CI take a person who isn't an author.\"\n    paths: [\"src/auth/**\", \"src/billing/**\", \".github/**\"]\n    nested: inherit\n    verdict:\n      claude: comments\n      seats: [{ count: 1, from: [humans, \"!pr/authors\"] }]\n"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "移除 mode: observe 并合并。现在只要规则允许，Claude 就可以批准。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "大约五分钟后，在打开的 PR 上评论 @claude approvals rerun，清理掉过期的结果。重新运行可能会再次对分类器计费。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "请仓库管理员把 Claude Approvals 检查设为必需，并选择 Claude 应用作为其来源。在此之前，无论检查结果如何，你的 PR 都可能被合并。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Ship 和本地命令都使用 AI，可能漏掉缺陷、安全问题和其他问题，所以请保留现有的全部测试、扫描工具和审查者。",
+          "inlines": [
+            {
+              "text": "Claude Ship 和本地命令都使用 AI，可能漏掉缺陷、安全问题和其他问题，所以请保留现有的全部测试、扫描工具和审查者。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "本周可以尝试的事",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "本周可以尝试的事"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "我想明确一点：对 Claude Code 团队来说，调用智能体的人要对这次改动负责，就好像这些代码是他们自己敲进去的一样。",
+          "inlines": [
+            {
+              "text": "我想明确一点：对 Claude Code 团队来说，调用智能体的人要对这次改动负责，就好像这些代码是他们自己敲进去的一样。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PR 的范围、设计、证据以及何时可以合并的规则，仍然应该由你的团队负责。记住这些原则，可以从下面几件事入手：",
+          "inlines": [
+            {
+              "text": "PR 的范围、设计、证据以及何时可以合并的规则，仍然应该由你的团队负责。记住这些原则，可以从下面几件事入手："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "今天："
+                },
+                {
+                  "text": "在当前分支上运行 /code-review，记下它判断错误和遗漏的地方。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "下一个 PR："
+                },
+                {
+                  "text": "在一个你信任所有可合并者的仓库里试试 /ship，并且留在旁边观察。再开一个终端、换一个 git checkout，对已有的 PR 试试 /steward。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "到周五："
+                },
+                {
+                  "text": "把你重复次数最多的规则写成一个小 PR，放进 CLAUDE.md、REVIEW.md 或某个 skill 里。提交要自己做，因为 /ship 不会提交规则文件。把这个 PR 和 observe 模式的示例策略分享给团队。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果你这么做了，我很想知道哪个规则文件效果最好，以及你选择继续亲自做哪些任务。",
+          "inlines": [
+            {
+              "text": "如果你这么做了，我很想知道哪个规则文件效果最好，以及你选择继续亲自做哪些任务。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f992090531421f904bd206dd6e7985a0e9b90734b7d6e8a6a13d90774f7d61f2.webp",
+          "alt": "",
+          "width": 858,
+          "height": 304
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "aihot/media/a1b24bf0fcd632c055fd88e108e3f3ef870b6c9fbab7873fa15f36bd45250633.jpg",
+          "alt": ""
+        },
+        {
+          "type": "paragraph",
+          "text": "We just launched Claude Ship which can review your pull requests, work on fixes and approve the ones your team's policy allows. You may have a custom skill or workflow for these steps, but we wanted to offer an alternative. This guide walks through them based on my experience on the Claude Code team.",
+          "inlines": [
+            {
+              "text": "We just launched "
+            },
+            {
+              "href": "https://claude.com/resources/articles/introducing-claude-ship",
+              "text": "Claude Ship"
+            },
+            {
+              "text": " which can review your pull requests, work on fixes and approve the ones your team's policy allows. You may have a custom skill or workflow for these steps, but we wanted to offer an alternative. This guide walks through them based on my experience on the Claude Code team."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When you open a pull request, there's usually a bunch of follow-up work to be done:",
+          "inlines": [
+            {
+              "text": "When you open a pull request, there's usually a bunch of follow-up work to be done:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "CI fails"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A review comes back with six comments"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A main merge creates a conflict"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "They're all tiny little tasks, but each one takes you off your focus work.",
+          "inlines": [
+            {
+              "text": "They're all tiny little tasks, but each one takes you off your focus work."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On our team an agent commonly does this follow-up work. For example, it can pick up an issue a reviewer found, so when the author gets back, the PR has already been updated once.",
+          "inlines": [
+            {
+              "text": "On our team an agent commonly does this follow-up work. For example, it can pick up an issue a reviewer found, so when the author gets back, the PR has already been updated once."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In my experience this is a more productive and enjoyable way to code. It minimizes context switching and keeps me in a flow state.",
+          "inlines": [
+            {
+              "text": "In my experience this is a more productive and enjoyable way to code. It minimizes context switching and keeps me in a flow state."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We've talked about the process the Claude Code team uses for code review here, and about the verification process underneath it here.",
+          "inlines": [
+            {
+              "text": "We've talked about the process the Claude Code team uses for code review "
+            },
+            {
+              "href": "https://claude.dev/blog/solving-code-review-at-anthropic/",
+              "text": "here"
+            },
+            {
+              "text": ", and about the verification process underneath it "
+            },
+            {
+              "href": "https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/",
+              "text": "here"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/0ce6df629144dc76f8bbe526c053e13f960cf74dfe13ee9e611b813a01b6263c.webp",
+          "alt": "",
+          "width": 3000,
+          "height": 1530
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Ship is for a developer or tech lead whose team works on GitHub and who doesn't have admin privileges. You can start on your own right now by running a few commands, and save what you learn to files in your repo for the team to review. Admins only need to get involved if your team wants agents doing this automatically on the team's PRs.",
+          "inlines": [
+            {
+              "text": "Claude Ship is for a developer or tech lead whose team works on GitHub and who doesn't have admin privileges. You can start on your own right now by running a few commands, and save what you learn to files in your repo for the team to review. Admins only need to get involved if your team wants agents doing this automatically on the team's PRs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You're still the architect of the process, so you're defining what to build, how to build it, and what the bar for merging is.",
+          "inlines": [
+            {
+              "text": "You're still the architect of the process, so you're defining what to build, how to build it, and what the bar for merging is."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/00d5e5cedcc48bd004bc2d1ae30128bb721c075c04a8fb4455c051f1dd28ac2e.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 814
+        },
+        {
+          "type": "heading",
+          "text": "The post-PR process",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The post-PR process"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "After you've opened a PR, you want to find issues, address issues, and make a final decision on if the change can be merged.",
+          "inlines": [
+            {
+              "text": "After you've opened a PR, you want to find issues, address issues, and make a final decision on if the change can be merged."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Ship is three agents that tackle this work: Code Review, PR Steward (beta), and Claude Approvals (beta).",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Claude Ship is three agents that tackle this work: Code Review, PR Steward (beta), and Claude Approvals (beta)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Code Review does an in-depth review of pull requests against the codebase through multiple lenses. It collects findings, adversarially verifies them, categorizes them and posts them to a PR.",
+          "inlines": [
+            {
+              "text": "Code Review does an in-depth review of pull requests against the codebase through multiple lenses. It collects findings, adversarially verifies them, categorizes them and posts them to a PR."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b2ecd885f3f8a8c95f5612e77f7001aae87d1acb0d1a6d6e04c6f56b4caa4b34.webp",
+          "alt": "",
+          "width": 3000,
+          "height": 2127
+        },
+        {
+          "type": "paragraph",
+          "text": "PR Steward works to keep a PR green, but is designed not to approve or merge pull requests. It jumps in on failing CI checks, merge conflicts and review feedback from Code Review, other review tools, or team members. After every push, it comments with what it changed and how to undo it.",
+          "inlines": [
+            {
+              "text": "PR Steward works to keep a PR green, but is designed not to approve or merge pull requests. It jumps in on failing CI checks, merge conflicts and review feedback from Code Review, other review tools, or team members. After every push, it comments with what it changed and how to undo it."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/620779092a0aedf2fa731b9d8f60c279b587b3b41faf377ce06970db6af50402.jpg",
+          "alt": "",
+          "width": 3000,
+          "height": 2625
+        },
+        {
+          "type": "paragraph",
+          "text": "From there, Claude Approvals applies an approval policy that the team writes as a file in the repository. Claude can approve routine changes on its own if the policy allows it, or can require deeper human sign-off for certain scenarios. It works like a smarter CODEOWNERS file. Teams can have Claude Approvals consider a variety of signals in its decision-making process, including Code Review findings or their own classifiers.",
+          "inlines": [
+            {
+              "text": "From there, "
+            },
+            {
+              "bold": true,
+              "text": "Claude Approvals"
+            },
+            {
+              "text": " applies an approval policy that the team writes as a file in the repository. Claude can approve routine changes on its own if the policy allows it, or can require deeper human sign-off for certain scenarios. It works like a smarter CODEOWNERS file. Teams can have Claude Approvals consider a variety of signals in its decision-making process, including Code Review findings or their own classifiers."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3d1a4ab37eb96a9de43d73acb1a5d2236f04a11ba87fbaa434d426ffc6f182b3.jpg",
+          "alt": "",
+          "width": 3000,
+          "height": 2358
+        },
+        {
+          "type": "paragraph",
+          "text": "Code Review is generally available, and the other two are in beta. /ship is a command you run yourself in Claude Code to try Claude Ship on your own pull requests. It comes with the latest version of Claude Code, and it works even before an admin has turned on any of the agents.",
+          "inlines": [
+            {
+              "text": "Code Review is generally available, and the other two are in beta. /ship is a command you run yourself in Claude Code to try Claude Ship on your own pull requests. It comes with the latest version of Claude Code, and it works even before an admin has turned on any of the agents."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You can partially automate the first two steps today. The last step is a decision that you set in your branch protections and (if your team adopts one) your policy file. Here is how it breaks down using the three agents that are part of Claude Ship:",
+          "inlines": [
+            {
+              "text": "You can partially automate the first two steps today. The last step is a decision that you set in your branch protections and (if your team adopts one) your policy file. Here is how it breaks down using the three agents that are part of Claude Ship:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/38a7a2871cf7a0a4b9ac6cc871f965a037f3f772cdb0e5fa8d5a284bf5804b38.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 916
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/9a4a341ba851d8d00d3d79615ec3428920475243e9d200401fb09c28bf77d7f4.jpg",
+          "alt": "",
+          "width": 2400,
+          "height": 1284
+        },
+        {
+          "type": "heading",
+          "text": "On your own PRs",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "On your own PRs"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Getting started today with /code-review",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Getting started today with /code-review"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you only do one thing from this post, review your branch before you push it. Any bugs you catch at this point are less likely to come back later as review comments or failed checks that pull you off of your next task. At the Claude Code prompt, enter this command:",
+          "inlines": [
+            {
+              "text": "If you only do one thing from this post, review your branch before you push it. Any bugs you catch at this point are less likely to come back later as review comments or failed checks that pull you off of your next task. At the Claude Code prompt, enter this command:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/code-review\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "It reviews the commits on your branch and your uncommitted changes for correctness bugs. A few variations to keep in mind:",
+          "inlines": [
+            {
+              "text": "It reviews the commits on your branch and your uncommitted changes for correctness bugs. A few variations to keep in mind:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/code-review high 1234       # review PR 1234 at high effort\n/code-review --fix           # apply the findings to your working tree\n/code-review --comment 1234  # post the findings on the PR\n/code-review ultra           # run a deeper review in the cloud\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The effort range goes from low to max, with low returning only the findings the review is most sure about and higher levels giving you a broader set (including some it's less sure about). The command remembers your last effort, so enter a new one if the risk level changes.",
+          "inlines": [
+            {
+              "text": "The effort range goes from low to max, with low returning only the findings the review is most sure about and higher levels giving you a broader set (including some it's less sure about). The command remembers your last effort, so enter a new one if the risk level changes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A few caveats:",
+          "inlines": [
+            {
+              "text": "A few caveats:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "You will want to take extra care when using the ultra setting, which runs in the cloud, needs a login at claude.ai, and can be billed separately from your plan. Read the "
+                },
+                {
+                  "href": "https://code.claude.com/docs/en/ultrareview",
+                  "text": "ultrareview docs"
+                },
+                {
+                  "text": " before trying it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Edits made by --fix during a background review may not be caught by /rewind. Commit first if you want an easy way back."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Local /code-review reads your CLAUDE.md files, but not REVIEW.md. This matters later."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The first thing you should do is run /code-review a few times to understand what it catches and where it gets things wrong. You'll use this later.",
+          "inlines": [
+            {
+              "text": "The first thing you should do is run /code-review a few times to understand what it catches and where it gets things wrong. You'll use this later."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Run /ship for your next PR",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Run /ship for your next PR"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Once you're ready, type:",
+          "inlines": [
+            {
+              "text": "Once you're ready, type:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/ship\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "If you don't have a PR for your branch yet, /ship will:",
+          "inlines": [
+            {
+              "text": "If you don't have a PR for your branch yet, /ship will:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Commit your pending changes. It behaves as if you had run git add -A, so it will respect your .gitignore. It will create a branch if necessary, and it will use your session to write the commit message. You will be notified of this before the commit, and can abort by hitting Esc."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Push and create the PR as you."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Perform a code review using /code-review, unless the commit has already been reviewed by Code Review. If the code review reports any issues, it will fix the ones it judges as valid for you."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Watch the PR for up to seven days. It will work on failing checks, conflicts, and review comments, and will exit if the PR is merged or closed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The first step, where /ship commits your pending changes as if you had run git add -A, sometimes catches people by surprise, so be sure to run git status before running /ship.",
+          "inlines": [
+            {
+              "text": "The first step, where /ship commits your pending changes as if you had run git add -A, sometimes catches people by surprise, so be sure to run git status before running /ship."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The command will not commit changes that touch files with names that look like secrets, or files that set rules, like CLAUDE.md, REVIEW.md, or anything in the .claude/ or .github/ directories. You will need to make these commits manually beforehand.",
+          "inlines": [
+            {
+              "text": "The command will not commit changes that touch files with names that look like secrets, or files that set rules, like CLAUDE.md, REVIEW.md, or anything in the .claude/ or .github/ directories. You will need to make these commits manually beforehand."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Also, if you are working in a public repository, the command will not commit any changes for you. You will need to commit any pending changes manually before you can proceed, and if the PR already exists, it won't include your pending changes.",
+          "inlines": [
+            {
+              "text": "Also, if you are working in a public repository, the command will not commit any changes for you. You will need to commit any pending changes manually before you can proceed, and if the PR already exists, it won't include your pending changes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Optional: specifying effort level, PR, or bot",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Optional: specifying effort level, PR, or bot"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/ship high            # run at high effort\n/ship 41              # work on pull request #41\n/ship +my-lint-bot    # also read comments from my-lint-bot\n/ship stop            # end the watch\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The command will by default read comments by you, people with write access, and the Claude GitHub App. You can specify additional bots in the form +name. If that bot comments, it will be treated as an assertion to check against the code.",
+          "inlines": [
+            {
+              "text": "The command will by default read comments by you, people with write access, and the Claude GitHub App. You can specify additional bots in the form +name. If that bot comments, it will be treated as an assertion to check against the code."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/584b649d58f59b72984d2571b5ae39ce133797fd16f70be788383c4b282af078.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 3998
+        },
+        {
+          "type": "paragraph",
+          "text": "Letting Claude watch the PR",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Letting Claude watch the PR"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude watches the PR as you, on your machine, and uses your quota. Closing your laptop stops it, so keep the session open and the machine awake. You'll also need to be logged in to the GitHub CLI (run gh auth login first), and it only watches a PR that you opened.",
+          "inlines": [
+            {
+              "text": "Claude watches the PR as you, on your machine, and uses your quota. Closing your laptop stops it, so keep the session open and the machine awake. You'll also need to be logged in to the GitHub CLI (run gh auth login first), and it only watches a PR that you opened."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For anything other than auto mode, the watch stops at every prompt and requires your response. It won't watch in bypass-permissions mode. Note that on Windows, /ship opens the PR and reviews, but the watch doesn't start.",
+          "inlines": [
+            {
+              "text": "For anything other than "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/permission-modes",
+              "text": "auto mode"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/ship-command#what-claude-does-during-a-watch",
+              "text": "the watch"
+            },
+            {
+              "text": " stops at every prompt and requires your response. It won't watch in bypass-permissions mode. Note that on Windows, /ship opens the PR and reviews, but the watch doesn't start."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ensure that the watch has its own checkout. You need to leave the branch checked out. If you're just going to jump straight into your next task, then make sure to use a separate worktree for one of them.",
+          "inlines": [
+            {
+              "text": "Ensure that the watch has its own checkout. You need to leave the branch checked out. If you're just going to jump straight into your next task, then make sure to use a separate worktree for one of them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If the watch fails to start, Claude will explain why but still review the PR. For example, you can't run a watch if you have a PreToolUse or PermissionRequest hook on Bash in the .claude/settings.json of your repo.",
+          "inlines": [
+            {
+              "text": "If the watch fails to start, Claude will explain why but still review the PR. For example, you can't run a watch if you have a PreToolUse or PermissionRequest hook on Bash in the .claude/settings.json of your repo."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Additionally, the watch uses up model turns while you're away, so it counts against your plan usage or API bill. The first time you use it, it's a good idea to be near your machine to make sure usage is within your expectations.",
+          "inlines": [
+            {
+              "text": "Additionally, the watch uses up model turns while you're away, so it counts against your plan usage or API bill. The first time you use it, it's a good idea to be near your machine to make sure usage is within your expectations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Only run the watch on repos you trust",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Only run the watch on repos you trust"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The watch will merge the base branch into yours when necessary and then run commands like your tests. In other words, anyone who has the ability to land changes on the base branch has the ability to run commands on your machine during the watch. Only run the watch locally on a repo where you trust everyone who can land changes on the base branch.",
+          "inlines": [
+            {
+              "text": "The watch will merge the base branch into yours when necessary and then run commands like your tests. In other words, anyone who has the ability to land changes on the base branch has the ability to run commands on your machine during the watch. "
+            },
+            {
+              "bold": true,
+              "text": "Only run the watch locally on a repo where you trust everyone who can land changes on the base branch."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude is told never to merge the PR, and Claude Code also constrains the gh and git commands it can run during an unattended turn, preventing direct merging or force-pushing. The watch's own commits also leave out the files that set the rules: .github/, CODEOWNERS, CLAUDE.md, .claude/, git hooks, etc.",
+          "inlines": [
+            {
+              "text": "Claude is told never to merge the PR, and Claude Code also constrains the gh and git commands it can run during an unattended turn, preventing direct merging or force-pushing. The watch's own commits also leave out the files that set the rules: .github/, CODEOWNERS, CLAUDE.md, .claude/, git hooks, etc."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "However, this doesn't protect against all vectors. For example, the test script also runs under your credentials, and if you type a message during a turn, that will allow the constraints to be lifted for that turn. Additionally, if auto-merge is enabled, a fix from the watch could end up being what allows GitHub to merge.",
+          "inlines": [
+            {
+              "text": "However, this doesn't protect against all vectors. For example, the test script also runs under your credentials, and if you type a message during a turn, that will allow the constraints to be lifted for that turn. Additionally, if auto-merge is enabled, a fix from the watch could end up being what allows GitHub to merge."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Furthermore, the commits and pushes made by Claude during the watch are not affected by git hooks in your repo, so make sure any checks that need to be present are added to CI and branch rules.",
+          "inlines": [
+            {
+              "text": "Furthermore, the commits and pushes made by Claude during the watch are not affected by git hooks in your repo, so make sure any checks that need to be present are added to CI and branch rules."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For the full terms of the watch, run /ship terms in the product before your first time using it.",
+          "inlines": [
+            {
+              "text": "For the full terms of the watch, run /ship terms in the product before your first time using it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "/steward for existing PRs",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "/steward for existing PRs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Many PRs don't need another review, but need someone to see them through to merge. If you have such a PR, check out the branch and run:",
+          "inlines": [
+            {
+              "text": "Many PRs don't need another review, but need someone to see them through to merge. If you have such a PR, check out the branch and run:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "/steward 41\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "It will run just the watch component of /ship. It will watch the PR you opened and work on things like failing checks, conflicts, and comments, without reviewing it first.",
+          "inlines": [
+            {
+              "text": "It will run just the watch component of /ship. It will watch the PR you opened and work on things like failing checks, conflicts, and comments, without reviewing it first."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you don't specify a PR number, it will watch the PR for the current branch. It will take the same +name bots, and the same caveats as before apply.",
+          "inlines": [
+            {
+              "text": "If you don't specify a PR number, it will watch the PR for the current branch. It will take the same +name bots, and the same caveats as before apply."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "However, if a PR is already labeled Steward, it will not run the local watch. And if it is unable to run a watch, /steward will not do anything.",
+          "inlines": [
+            {
+              "text": "However, if a PR is already labeled Steward, it will not run the local watch. And if it is unable to run a watch, /steward will not do anything."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you want to stop the watch, you can use either /steward stop or /ship stop. Since a session can only run one watch at a time, starting a new one will terminate the previous one.",
+          "inlines": [
+            {
+              "text": "If you want to stop the watch, you can use either /steward stop or /ship stop. Since a session can only run one watch at a time, starting a new one will terminate the previous one."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Don't confuse /steward with PR Steward, which is a team service that runs as claude[bot] after being enabled by an admin. The /steward command runs as you, in your session.",
+          "inlines": [
+            {
+              "text": "Don't confuse /steward with PR Steward, which is a team service that runs as claude[bot] after being enabled by an admin. The /steward command runs as you, in your session."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A PR that has red checks is a good place to start. A PR that gets stuck in a conflict loop is also a good candidate. On the flip side, a PR that's in the middle of a design debate is a bad one because that's your debate to settle.",
+          "inlines": [
+            {
+              "text": "A PR that has red checks is a good place to start. A PR that gets stuck in a conflict loop is also a good candidate. On the flip side, a PR that's in the middle of a design debate is a bad one because that's your debate to settle."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude escalates bigger calls to you",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Claude escalates bigger calls to you"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As part of the watch, Claude is told to make small changes and elevate the bigger ones. Things like:",
+          "inlines": [
+            {
+              "text": "As part of the watch, Claude is told to make small changes and elevate the bigger ones. Things like:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "A request to redesign something, like a new API or a bigger scope"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A security issue it wasn't able to resolve"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "It also pushes at most 3 times for a given issue, and then reports the attempted solutions.",
+          "inlines": [
+            {
+              "text": "It also pushes at most 3 times for a given issue, and then reports the attempted solutions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That's roughly equivalent to our claim in the verification blog post: if we keep running the same check and it keeps failing after three rounds, then the approach is probably wrong.",
+          "inlines": [
+            {
+              "text": "That's roughly equivalent to our claim in the "
+            },
+            {
+              "href": "https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/",
+              "text": "verification blog post"
+            },
+            {
+              "text": ": if we keep running the same check and it keeps failing after three rounds, then the approach is probably wrong."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "At this point, it escalates to the author of the code.",
+          "inlines": [
+            {
+              "text": "At this point, it escalates to the author of the code."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/495ebe282efd3947ff4b2bcb7e21eac9ef2a178e4137a366a8ee3f29936f4ac1.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 718
+        },
+        {
+          "type": "heading",
+          "text": "In your repo",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "In your repo"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "As you get a few PRs under your belt, you'll start to notice patterns. For instance:",
+          "inlines": [
+            {
+              "text": "As you get a few PRs under your belt, you'll start to notice patterns. For instance:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "The same comment from the same reviewer"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A setup instruction that Claude has to figure out"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "A flaky check"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You can start to write these down for your team, in one of a few files, depending on which tool needs to read it:",
+          "inlines": [
+            {
+              "text": "You can start to write these down for your team, in one of a few files, depending on which tool needs to read it:"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/b220238ec8c3df411e9ec538f52bae2aec05d8c9e0e23f26ef637f3cb06a6dd5.jpg",
+          "alt": "",
+          "width": 2400,
+          "height": 1560
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f57a95f14d53cf7d6f3eccc393b9d1b2de41622e2e561ca09696c82c4c2cb968.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 1614
+        },
+        {
+          "type": "paragraph",
+          "text": "Repeat comments become review rules",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Repeat comments become review rules"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Let's say you get asked by a peer twice to make sure a new query contains a tenant check. If you use local review, you can write this down in CLAUDE.md, since /ship uses /code-review to review. And if you have Code Review on your repository, the review-only rules can go in the root REVIEW.md:",
+          "inlines": [
+            {
+              "text": "Let's say you get asked by a peer twice to make sure a new query contains a tenant check. If you use local review, you can write this down in CLAUDE.md, since /ship uses /code-review to review. And if you have Code Review on your repository, the review-only rules can go in the root REVIEW.md:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# Review instructions\n\n## What Important means here\n\nWrong results, leaked data or anything that blocks a rollback.\nStyle and naming are Nit at most.\n\n## Always check\n- Database queries are scoped to the caller's tenant.\n- New API routes have an integration test.\n\n## Keep it quiet\n- Report at most five Nits.\n- Skip generated files and lockfiles.\n- Behavior claims need a file and line.\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Code Review won't read the REVIEW.md file from the PR being reviewed. It will also only respect some instructions, like excluding paths and limiting nits, when the default branch is protected.",
+          "inlines": [
+            {
+              "text": "Code Review won't read the REVIEW.md file from the PR being reviewed. It will also only respect some instructions, like excluding paths and limiting nits, when the default branch is protected."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Not every comment should be elevated. On our team, we have a principle that a pattern has to be repeated on at least 2 PRs to be considered for a rule. A person then approves the PR that adds the rule. That's a good bar to adopt. You should also be deleting rules as needed.",
+          "inlines": [
+            {
+              "text": "Not every comment should be elevated. On our team, we have a principle that a pattern has to be repeated on at least 2 PRs to be considered for a rule. A person then approves the PR that adds the rule. That's a good bar to adopt. You should also be deleting rules as needed."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Repeat setup becomes verify skills",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Repeat setup becomes verify skills"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you find yourself constantly telling Claude how to boot up the app and navigate to specific pages, you should just write it down. Create .claude/skills/verify/SKILL.md. This can be in the root or in the directory of the code.",
+          "inlines": [
+            {
+              "text": "If you find yourself constantly telling Claude how to boot up the app and navigate to specific pages, you should just write it down. Create .claude/skills/verify/SKILL.md. This can be in the root or in the directory of the code."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "---\nname: verify\ndescription: Run the web app and exercise a change end to end. Use before committing.\n---\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Start the stack with npm run dev:stack.",
+          "inlines": [
+            {
+              "text": "1. Start the stack with npm run dev:stack."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Wait for /healthz on port 3000 to return 200.",
+          "inlines": [
+            {
+              "text": "2. Wait for /healthz on port 3000 to return 200."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Sign in with the seeded test account.",
+          "inlines": [
+            {
+              "text": "3. Sign in with the seeded test account."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Exercise the changed flow in the browser and take a screenshot.",
+          "inlines": [
+            {
+              "text": "4. Exercise the changed flow in the browser and take a screenshot."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "5. Report the steps you ran and what you saw. Don't report success without them.",
+          "inlines": [
+            {
+              "text": "5. Report the steps you ran and what you saw. Don't report success without them."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Be sure to customize the commands.",
+          "inlines": [
+            {
+              "text": "Be sure to customize the commands."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Have Claude run it a few times, and fix any flaky behaviors. People ignore verification they don't trust.",
+          "inlines": [
+            {
+              "text": "Have Claude run it a few times, and fix any flaky behaviors. People ignore verification they don't trust."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Repeat PR maintenance becomes steward rules",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Repeat PR maintenance becomes steward rules"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This one can be easy to miss. The local watch reads the .claude/skills/steward/SKILL.md file from your working directory, whereas PR Steward, which runs in Anthropic's cloud, reads it from the default branch. Here's an example:",
+          "inlines": [
+            {
+              "text": "This one can be easy to miss. The local watch reads the .claude/skills/steward/SKILL.md file from your working directory, whereas PR Steward, which runs in Anthropic's cloud, reads it from the default branch. Here's an example:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "---\nname: steward\ndescription: House rules for looking after PRs in this repository\nuser-invocable: false\ndisable-model-invocation: true\n---\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "- Regenerate the lockfile with npm install; don't edit it by hand.",
+          "inlines": [
+            {
+              "text": "- Regenerate the lockfile with npm install; don't edit it by hand."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "- `e2e-nightly` is flaky. Re-run it once before looking for a cause.",
+          "inlines": [
+            {
+              "text": "- `e2e-nightly` is flaky. Re-run it once before looking for a cause."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "- Run npm test and npm run lint before pushing a fix.",
+          "inlines": [
+            {
+              "text": "- Run npm test and npm run lint before pushing a fix."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "- Leave comments about API design to the author.",
+          "inlines": [
+            {
+              "text": "- Leave comments about API design to the author."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In that example, the two settings at the top keep it out of the / menu and out of the skills that Claude picks on its own.",
+          "inlines": [
+            {
+              "text": "In that example, the two settings at the top keep it out of the / menu and out of the skills that Claude picks on its own."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The steward file can't change the watch's restrictions. However, anyone who can merge to the repository can edit the file, so review changes to it as carefully as you would review any changes to CI.",
+          "inlines": [
+            {
+              "text": "The steward file can't change the watch's restrictions. However, anyone who can merge to the repository can edit the file, so review changes to it as carefully as you would review any changes to CI."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If your team turns on PR Steward later, those guidelines will apply in Anthropic's cloud once they're on the default branch.",
+          "inlines": [
+            {
+              "text": "If your team turns on PR Steward later, those guidelines will apply in Anthropic's cloud once they're on the default branch."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Across your team's PRs",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Across your team's PRs"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Standardizing the post-PR process",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Standardizing the post-PR process"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Once you've run /ship on a few of your own PRs, you'll have a good sense of what Claude Ship could do across your team's PRs. The rest of this post is for when you have that conversation with your admins, so it covers what you should ask them for, and how to roll it out safely.",
+          "inlines": [
+            {
+              "text": "Once you've run /ship on a few of your own PRs, you'll have a good sense of what Claude Ship could do across your team's PRs. The rest of this post is for when you have that conversation with your admins, so it covers what you should ask them for, and how to roll it out safely."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To get started, you'll need to ask your administrators for a single repository, a few volunteers, and a limited amount of time to test Claude Ship on your own pull requests.",
+          "inlines": [
+            {
+              "text": "To "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/claude-ship#who-can-use-claude-ship",
+              "text": "get started"
+            },
+            {
+              "text": ", you'll need to ask your administrators for a single repository, a few volunteers, and a limited amount of time to test Claude Ship on your own pull requests."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Agree on your budget constraints ahead of time."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Protect the default branch of the repository."
+                },
+                {
+                  "text": " A repository admin can set up this requirement, ensuring that any updates require a PR with an approval on the latest push, and that the Claude GitHub App is not on the bypass list."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Enable Code Review for this repository."
+                },
+                {
+                  "text": " An Owner, the admin role in your Claude organization, can enable Code Review."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Enable PR Steward in Manual mode."
+                },
+                {
+                  "text": " The same Owner can enable PR Steward to kick in when a user with write access comments @claude steward, or when authors opt in for it to kick in automatically. Comment @claude stop to stop Steward."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Create an observe mode approval policy."
+                },
+                {
+                  "text": " This file acts like any other file; you can create it in your own PR, but since merging this file enables Approvals for the repository, clear it with an Owner first."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PR Steward is designed not to approve or merge pull requests, so make sure you use branch protection to require the approvals you want before merging.",
+          "inlines": [
+            {
+              "text": "PR Steward is designed not to approve or merge pull requests, so make sure you use branch protection to require the approvals you want before merging."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "PR Steward reads the comments from reviewers and performs some actions based on them. Like any text-parsing agent, it can be fooled by what people say. Make sure you use it only in repositories with trusted collaborators, and check the changes made by PR Steward on comments from untrusted users.",
+          "inlines": [
+            {
+              "text": "PR Steward reads the comments from reviewers and performs some actions based on them. Like any text-parsing agent, it can be fooled by what people say. Make sure you use it only in repositories with trusted collaborators, and check the changes made by PR Steward on comments from untrusted users."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Configure your first approval policy",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Configure your first approval policy"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For approval policies, Claude Approvals reads from the .claude/approvals.yml file on the default branch. A simple first policy could be:",
+          "inlines": [
+            {
+              "text": "For approval policies, Claude Approvals reads from the .claude/approvals.yml file on the default branch. A simple first policy could be:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "# .claude/approvals.yml\n\nversion: 1\nmode: observe\n\nrules:\n- purpose: \"A change takes two people.\"\npaths: [\"**\"]\nverdict: { claude: comments, seats: 2 }\nadvisory: [claude/code_review]\n\n- purpose: \"A change to the review rules takes two people.\"\npaths: [\"**/.claude/**\", \"**/REVIEW.md\", \"**/CLAUDE.md\", \"**/CODEOWNERS\", \".github/**\"]\nnested: inherit\n\nverdict: { claude: comments, seats: 2 }\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "seats is the number of people who have to approve, and the author can take one of those seats.",
+          "inlines": [
+            {
+              "text": "seats is the number of people who have to approve, and the author can take one of those seats."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "There's one catch here, which is that after the watch has merged the base branch, the most recent commit will be a merge commit, and nobody sits in the author's seat for it. So the PR author should comment @claude approve.",
+          "inlines": [
+            {
+              "text": "There's one catch here, which is that after the watch has merged the base branch, the most recent commit will be a merge commit, and nobody sits in the author's seat for it. So the PR author should comment @claude approve."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When a rule's verdict is claude: comments, Claude won't approve. If more than one rule matches, the strictest one wins. In observe mode, the check will print the outcome but not approve.",
+          "inlines": [
+            {
+              "text": "When a rule's verdict is claude: comments, Claude won't approve. If more than one rule matches, the strictest one wins. In observe mode, the check will print the outcome but not approve."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Make sure to keep the advisory line. Once the policy file is on the default branch, Code Review will only start automatically on PRs that match a rule that names it, so without that line your automatic reviews stop. Advisory reviews don't affect the verdict, and they run according to your existing settings. A policy that names Code Review can start billed reviews, even where Code Review is turned off.",
+          "inlines": [
+            {
+              "text": "Make sure to keep the advisory line. Once the policy file is on the default branch, Code Review will only start automatically on PRs that match a rule that names it, so without that line your automatic reviews stop. Advisory reviews don't affect the verdict, and they run according to your existing settings. A policy that names Code Review can start billed reviews, even where Code Review is turned off."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To see where a passing Claude review could lower what a path needs, you can swap the advisory line for an override and update the rule's purpose to match (for example, \"When Claude's review passes, one is enough and Claude approves.\").",
+          "inlines": [
+            {
+              "text": "To see where a passing Claude review could lower what a path needs, you can swap the advisory line for an override and update the rule's purpose to match (for example, \"When Claude's review passes, one is enough and Claude approves.\")."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": " override:\n      - { if: \"claude/code_review = pass\", verdict: { claude: approves, seats: 1 } }\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Because the override also names Code Review, automatic review will still be triggered for those pull requests. When the review passes, the override takes the rule's decision and replaces it with one seat plus Claude's approval. The author can fill that one seat, so the check can now report that Claude would have approved. But text in a pull request can sway Claude's review, and when it does, this override lowers what that pull request needs.",
+          "inlines": [
+            {
+              "text": "Because the override also names Code Review, automatic review will still be triggered for those pull requests. When the review passes, the override takes the rule's decision and replaces it with one seat plus Claude's approval. The author can fill that one seat, so the check can now report that Claude would have approved. But text in a pull request can sway Claude's review, and when it does, this override lowers what that pull request needs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If there are some paths that need to always require a human, put them in a rule without an override (next section, step 1). Tell the budget owner before you merge this, as a policy configured like this will start billed Code Reviews, even in observe mode, whenever you push, regardless of your Code Review settings.",
+          "inlines": [
+            {
+              "text": "If there are some paths that need to always require a human, put them in a rule without an override (next section, step 1). Tell the budget owner before you merge this, as "
+            },
+            {
+              "bold": true,
+              "text": "a policy configured like this will start billed Code Reviews, even in observe mode"
+            },
+            {
+              "text": ", whenever you push, regardless of your Code Review settings."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You can also build your own classifiers for questions like \"is this PR related to a migration?\" Custom classifiers live in .claude/classifiers/<name>/def.yml on the default branch, and each run is billed, even in observe mode. Start out by focusing on paths and the Code Review result.",
+          "inlines": [
+            {
+              "text": "You can also build your own classifiers for questions like \"is this PR related to a migration?\" "
+            },
+            {
+              "href": "https://code.claude.com/docs/en/approvals-classifiers#add-a-custom-classifier",
+              "text": "Custom classifiers"
+            },
+            {
+              "text": " live in .claude/classifiers/<name>/def.yml on the default branch, and each run is billed, even in observe mode. Start out by focusing on paths and the Code Review result."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Monitoring and transitioning to enforcement",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Monitoring and transitioning to enforcement"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Our team uses the same process as observe mode for our own internal commit gate. It logs the decisions it would have made in observe mode, so we can analyze false positives before making them mandatory. You will see the decisions in the Claude Approvals check and the associated comment.",
+          "inlines": [
+            {
+              "text": "Our team uses the same process as observe mode for our own internal commit gate. It logs the decisions it would have made in observe mode, so we can analyze false positives before making them mandatory. You will see the decisions in the Claude Approvals check and the associated comment."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Keep in mind that you only get the value of observe mode if you actually monitor it. After a week or two of having it in place, revisit the merged PRs and see how the decisions compare to your reviewers' behavior.",
+          "inlines": [
+            {
+              "text": "Keep in mind that you only get the value of observe mode if you actually monitor it. After a week or two of having it in place, revisit the merged PRs and see how the decisions compare to your reviewers' behavior."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The first two rows apply once you've added the override.",
+          "inlines": [
+            {
+              "text": "The first two rows apply once you've added the override."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/3c18d803fa1b0ce7f6017bb4bb60ec400972ff83441e6657ded94b49ea1b522e.jpg",
+          "alt": "",
+          "width": 2400,
+          "height": 1352
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/14d0b50fca9ace359fdca3e97f42f888de23c63538316852e563ecfe840f5c08.jpg",
+          "alt": "",
+          "width": 1800,
+          "height": 2610
+        },
+        {
+          "type": "paragraph",
+          "text": "Go through a few example PRs. How would you have decided? Which rule made the decision? What would you change? Pay the most attention to the second row, and fix those before you relax any rules.",
+          "inlines": [
+            {
+              "text": "Go through a few example PRs. How would you have decided? Which rule made the decision? What would you change? Pay the most attention to the second row, and fix those before you relax any rules."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One thing to know before you enforce: Claude's approvals count as real approvals on GitHub. If a ruleset only needs one approval, Claude's can be enough on its own. So read your policy and your branch rules together.",
+          "inlines": [
+            {
+              "text": "One thing to know before you enforce: Claude's approvals count as real approvals on GitHub. If a ruleset only needs one approval, Claude's can be enough on its own. So read your policy and your branch rules together."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you use auto-merge, and have policies that only the author can fulfill (like the override above), you can have PRs that get merged without anyone doing anything. Decide explicitly whether that's OK for each path, and write it down.",
+          "inlines": [
+            {
+              "text": "If you use auto-merge, and have policies that only the author can fulfill (like the override above), you can have PRs that get merged without anyone doing anything. Decide explicitly whether that's OK for each path, and write it down."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Then lock it down in this order:",
+          "inlines": [
+            {
+              "text": "Then lock it down in this order:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Use a rule without an if or override for paths where you always need a second set of eyes. No classifier result can override it, and nested: inherit carries it into subdirectories that have their own policies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "- purpose: \"Auth, billing and CI take a person who isn't an author.\"\n    paths: [\"src/auth/**\", \"src/billing/**\", \".github/**\"]\n    nested: inherit\n    verdict:\n      claude: comments\n      seats: [{ count: 1, from: [humans, \"!pr/authors\"] }]\n"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Remove mode: observe and merge. Now Claude can approve wherever the rules say it approves."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "About five minutes later, comment @claude approvals rerun on open PRs, so any stale results get cleaned up. Reruns can charge for classifiers again."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Ask a repository admin to make the Claude Approvals check required, and to pick the Claude app as its source. Until then, your PR can get merged regardless of what the check says."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Claude Ship and the local commands use AI, and they can miss bugs, security problems, and other issues, so keep all your existing tests, scanners, and reviewers.",
+          "inlines": [
+            {
+              "text": "Claude Ship and the local commands use AI, and they can miss bugs, security problems, and other issues, so keep all your existing tests, scanners, and reviewers."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Things to try this week",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Things to try this week"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "I'd like to make it clear that for the Claude Code team, the person who called the agent is responsible for a change. It's as if they typed it themselves.",
+          "inlines": [
+            {
+              "text": "I'd like to make it clear that for the Claude Code team, the person who called the agent is responsible for a change. It's as if they typed it themselves."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Your team should still be responsible for the PR scope, design, evidence, and rules for when it can merge. With these principles in mind, here is where you can get started:",
+          "inlines": [
+            {
+              "text": "Your team should still be responsible for the PR scope, design, evidence, and rules for when it can merge. With these principles in mind, here is where you can get started:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Today:"
+                },
+                {
+                  "text": " Run /code-review on your current branch. Make a note of what it got wrong and what it missed."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "Next PR:"
+                },
+                {
+                  "text": " In a repository where you trust everyone who can merge, try /ship, and stick around. Try /steward on an existing PR, in a different terminal and git checkout."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "bold": true,
+                  "text": "By Friday:"
+                },
+                {
+                  "text": " Create a small PR with the rule you repeated most, in your CLAUDE.md, REVIEW.md, or a skill. Do the commit yourself, since /ship will not commit rule files. Share the PR and the example observe-mode policy with your team."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you do so, I would love to know which rule file was most impactful, and which tasks you chose to keep doing yourself.",
+          "inlines": [
+            {
+              "text": "If you do so, I would love to know which rule file was most impactful, and which tasks you chose to keep doing yourself."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/f992090531421f904bd206dd6e7985a0e9b90734b7d6e8a6a13d90774f7d61f2.webp",
+          "alt": "",
+          "width": 858,
+          "height": 304
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-26T01:11:34.150682Z",
+  "contentMode": "full"
+}

@@ -1,0 +1,1052 @@
+{
+  "schemaVersion": 1,
+  "id": "br6usy3mxv1q0mzxhgf9y8qam",
+  "status": "available",
+  "provenance": "aihot-public-page",
+  "sourceURL": "https://aihot.news/items/br6usy3mxv1q0mzxhgf9y8qam",
+  "fetchedAt": "2026-11-26T01:10:28.099668Z",
+  "label": "正文",
+  "notice": "",
+  "topics": [
+    "Google / Gemini",
+    "Agent 智能体",
+    "教程实践"
+  ],
+  "tags": [],
+  "languages": {
+    "zh": {
+      "label": "中文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "在 2026 年底用 AI 做开发的人大多已经明白：上下文的质量决定输出的质量。但究竟是什么决定了上下文的质量？",
+          "inlines": [
+            {
+              "text": "在 2026 年底用 AI 做开发的人大多已经明白：上下文的质量决定输出的质量。但究竟是什么决定了上下文的质量？"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "先来拆解一下上下文的几种不同类型：",
+          "inlines": [
+            {
+              "text": "先来拆解一下上下文的几种不同类型："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "你在聊天对话里输入的一次性提示词"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "你的基础指令文件，比如 "
+                },
+                {
+                  "code": true,
+                  "text": "AGENTS.md"
+                },
+                {
+                  "text": "，会在每个新会话中自动注入"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "技能文件，理想情况下是自定义的流程化指令，在相关场景中按需动态加载"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "你 Google Drive 或类似系统里的 Word 文档和电子表格"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "代码仓库里的本地 markdown 文件"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "记忆（通常由你的智能体框架自动管理，一般不会以可视化形式呈现给你）"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "这些来源五花八门，很可能还由不同的人维护，所以你极有可能存在遗留的流程文档，以及过时的事实、指标、决策和策略。",
+          "inlines": [
+            {
+              "text": "这些来源五花八门，很可能还由不同的人维护，所以你极有可能存在遗留的流程文档，以及过时的事实、指标、决策和策略。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "那么，如果你的智能体找到了错误的信息会怎样？或者找到了互相冲突的信息呢？文档 A 说退款政策是 14 天，文档 B 说是 30 天，你的智能体该信哪个？",
+          "inlines": [
+            {
+              "text": "那么，如果你的智能体找到了错误的信息会怎样？或者找到了互相冲突的信息呢？文档 A 说退款政策是 14 天，文档 B 说是 30 天，你的智能体该信哪个？"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "如果文档有明确的日期，或者智能体读了元数据，它也许能判断出来，但我们想要的可不只是“碰巧事实正确”。",
+          "inlines": [
+            {
+              "text": "如果文档有明确的日期，或者智能体读了元数据，它也许能判断出来，但我们想要的可不只是“碰巧事实正确”。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了寻找解决方案，我开始思考：哪些类型的冲突或问题造成的麻烦最大？我决定做个实验来回答这个问题。",
+          "inlines": [
+            {
+              "text": "为了寻找解决方案，我开始思考：哪些类型的冲突或问题造成的麻烦最大？我决定做个实验来回答这个问题。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "上下文腐化 vs. 上下文漂移",
+          "inlines": [
+            {
+              "text": "上下文腐化 vs. 上下文漂移"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "人们常把所有上下文问题都归到 上下文腐化 这个去年出现的说法下，它描述的是会话变得过长、塞满噪音、死胡同和干扰项之后，LLM 的准确率如何下降。",
+          "inlines": [
+            {
+              "text": "人们常把所有上下文问题都归到 "
+            },
+            {
+              "href": "https://research.trychroma.com/context-rot",
+              "text": "上下文腐化"
+            },
+            {
+              "text": " 这个去年出现的说法下，它描述的是会话变得过长、塞满噪音、死胡同和干扰项之后，LLM 的准确率如何下降。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "而在真实团队的文件里，情况略有不同。随着几周、几个月过去，你的底层来源（AGENTS.md、技能、文档、记忆和代码）会逐渐失去同步，于是智能体可能在一个全新会话的第一轮就拿到互相冲突的指令。这才是真正的上下文漂移。",
+          "inlines": [
+            {
+              "text": "而在真实团队的文件里，情况略有不同。随着几周、几个月过去，你的底层来源（"
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": "、技能、文档、记忆和代码）会逐渐失去同步，于是智能体可能在一个全新会话的第一轮就拿到互相冲突的指令。这才是真正的"
+            },
+            {
+              "bold": true,
+              "text": "上下文漂移"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "为了把两者放在一起对比测试，我搭了一个逼真的编程沙盒（一个带真实文件和终端工具的 git 仓库），在 Gemini 3.8 Flash 和 Gemini Pro 上跑了 470 个任务，故意植入冗余内容、重复规则、过时文档和直接矛盾。",
+          "inlines": [
+            {
+              "text": "为了把两者放在一起对比测试，我搭了一个逼真的编程沙盒（一个带真实文件和终端工具的 git 仓库），在 Gemini 3.8 Flash 和 Gemini Pro 上跑了 470 个任务，故意植入冗余内容、重复规则、过时文档和直接矛盾。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "哪些地方出了问题（哪些没有）",
+          "inlines": [
+            {
+              "text": "哪些地方出了问题（哪些没有）"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我原本以为，纯粹由冗余内容造成的上下文腐化会导致明显的错误。结果恰恰相反：注入 5 万个 token 的无关聊天记录，并在多个文件里重复一致的规则，造成的规则违规是零，即使在 Gemini 3.8 Flash 上也是如此。",
+          "inlines": [
+            {
+              "text": "我原本以为，纯粹由冗余内容造成的上下文腐化会导致明显的错误。结果恰恰相反：注入 5 万个 token 的无关聊天记录，并在多个文件里重复一致的规则，造成的规则违规是"
+            },
+            {
+              "bold": true,
+              "text": "零"
+            },
+            {
+              "text": "，即使在 Gemini 3.8 Flash 上也是如此。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "上下文漂移就完全是另一回事了，而且我是靠阅读模型内部思考过程的摘要（它私下的思维草稿本）才察觉到发生了什么。",
+          "inlines": [
+            {
+              "text": "上下文漂移就完全是另一回事了，而且我是靠阅读模型内部思考过程的摘要（它私下的思维草稿本）才察觉到发生了什么。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "在 73% 的运行中，模型在思考时明确注意到两个来源存在分歧。然而在 110 次未加提示的运行中，它向用户提及这一冲突的比例是0%。",
+          "inlines": [
+            {
+              "text": "在 73% 的运行中，模型在思考时明确注意到两个来源存在分歧。然而在 110 次未加提示的运行中，它向用户提及这一冲突的比例是"
+            },
+            {
+              "bold": true,
+              "text": "0%"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "模型不会警告你，而是悄悄挑一个赢家继续往下走。在 95% 到 100% 的匹配任务中，任务专属的技能文件会覆盖根目录的 AGENTS.md，即使 AGENTS.md 用了严格的 MUST 措辞也一样。如果你在 AGENTS.md 里更新了一条全仓库规则，却忘了更新某个仍保留旧值的任务专属技能文件，你的智能体几乎每次都会默默遵循那个过时的技能文件。",
+          "inlines": [
+            {
+              "text": "模型不会警告你，而是悄悄挑一个赢家继续往下走。在 95% 到 100% 的匹配任务中，任务专属的技能文件会覆盖根目录的 "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": "，即使 "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": " 用了严格的 "
+            },
+            {
+              "code": true,
+              "text": "MUST"
+            },
+            {
+              "text": " 措辞也一样。如果你在 "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": " 里更新了一条全仓库规则，却忘了更新某个仍保留旧值的任务专属技能文件，你的智能体几乎每次都会默默遵循那个过时的技能文件。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/614ef055b984ce617ce803c693eaea1b559743d3a95afaf5fcca7a3e1352b4af.webp",
+          "alt": "When Two Context Files Disagree: 95-100% followed task-specific skill over AGENTS.md, 73% noticed mismatch in private thinking, 0% warned in chat",
+          "width": 800,
+          "height": 295
+        },
+        {
+          "type": "paragraph",
+          "text": "过时的文档和实际代码对不上时，情况更隐蔽。当文档引用了代码库里早已改名的旧测试辅助函数名，15 次运行中有 9 次会悄悄在新测试文件里写一个单行包装，让 pytest 照样通过，却只字不提这处不一致。",
+          "inlines": [
+            {
+              "text": "过时的文档和实际代码对不上时，情况更隐蔽。当文档引用了代码库里早已改名的旧测试辅助函数名，15 次运行中有 9 次会悄悄在新测试文件里写一个单行包装，让 "
+            },
+            {
+              "code": true,
+              "text": "pytest"
+            },
+            {
+              "text": " 照样通过，却只字不提这处不一致。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "我猜这来自 RLHF 训练。现在的模型被训练得果断、要把活干完，而不是遇到一点小歧义就追着你问，这通常正是智能体工作流用起来顺手的原因。",
+          "inlines": [
+            {
+              "text": "我猜这来自 RLHF 训练。现在的模型被训练得果断、要把活干完，而不是遇到一点小歧义就追着你问，这通常正是智能体工作流用起来顺手的原因。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "唯一另一项可测量的代价是斟酌：当两个同级技能文件互相矛盾、又没有明确的裁决依据时，模型会多花 47% 的思考 token 在多个回合里反复争论这处冲突。",
+          "inlines": [
+            {
+              "text": "唯一另一项可测量的代价是斟酌：当两个同级技能文件互相矛盾、又没有明确的裁决依据时，模型会多花 "
+            },
+            {
+              "bold": true,
+              "text": "47% 的思考 token"
+            },
+            {
+              "text": " 在多个回合里反复争论这处冲突。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "给智能体留一个逃生出口",
+          "inlines": [
+            {
+              "text": "给智能体留一个逃生出口"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "我发现模型其实已经在思考轨迹里察觉到了这些冲突，于是试着在 AGENTS.md 里加了一行，让它把分歧在对话里说出来。结果所有完成的运行都做到了（16 次全中）。",
+          "inlines": [
+            {
+              "text": "我发现模型其实已经在思考轨迹里察觉到了这些冲突，于是试着在 "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": " 里加了一行，让它把分歧在对话里说出来。结果所有完成的运行都做到了（16 次全中）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "不过，我不想让智能体每次写代码都跳出来抱怨文档。所以我把它做成了一个工具：一个只读的小逃生出口，叫 report_inconsistency，分两类（conflict 和 stale）。",
+          "inlines": [
+            {
+              "text": "不过，我不想让智能体每次写代码都跳出来抱怨文档。所以我把它做成了一个工具：一个只读的小逃生出口，叫 "
+            },
+            {
+              "code": true,
+              "text": "report_inconsistency"
+            },
+            {
+              "text": "，分两类（"
+            },
+            {
+              "code": true,
+              "text": "conflict"
+            },
+            {
+              "text": " 和 "
+            },
+            {
+              "code": true,
+              "text": "stale"
+            },
+            {
+              "text": "）。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "（我最初还试过一个 duplicate 类别，但让智能体记录无害的重复内容，会在正常的交叉引用上浪费额外回合，把更多运行推到沙箱 34 回合的上限，尽管仍有 95% 写出了代码，所以我把这个类别砍掉了。）",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "（我最初还试过一个 "
+            },
+            {
+              "italic": true,
+              "code": true,
+              "text": "duplicate"
+            },
+            {
+              "italic": true,
+              "text": " 类别，但让智能体记录无害的重复内容，会在正常的交叉引用上浪费额外回合，把更多运行推到沙箱 34 回合的上限，尽管仍有 95% 写出了代码，所以我把这个类别砍掉了。）"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "因为模型在探索时本来就在检查一个文件是否取代另一个文件，调用这个工具几乎不费额外力气。",
+          "inlines": [
+            {
+              "text": "因为模型在探索时本来就在检查一个文件是否取代另一个文件，调用这个工具几乎不费额外力气。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "即便在 AGENTS.md 里不加任何指令，仅仅让这个工具可用，智能体在 Gemini 3.8 Flash 和 Gemini Pro 上就记录了它遇到的 98.7% 的冲突（152 次运行中记录了 150 次），Flash 上零误报。",
+          "inlines": [
+            {
+              "text": "即便在 "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": " 里"
+            },
+            {
+              "bold": true,
+              "text": "不加任何指令"
+            },
+            {
+              "text": "，仅仅让这个工具可用，智能体在 Gemini 3.8 Flash 和 Gemini Pro 上就记录了它遇到的 "
+            },
+            {
+              "bold": true,
+              "text": "98.7%"
+            },
+            {
+              "text": " 的冲突（152 次运行中记录了 150 次），Flash 上零误报。"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/41a695f4bd3328263efa88396e53aa979d8f4253530e2392527262448b08fe15.webp",
+          "alt": "Passive Drift Logging: 0% surfaced without tool vs 98.7% logged with report_inconsistency MCP tool",
+          "width": 800,
+          "height": 244
+        },
+        {
+          "type": "paragraph",
+          "text": "token 成本也保持不变。在我们的对照测试中，总回合数几乎没动，思考 token 还略有下降（平均约 19%，在正常的运行间波动范围内），所以真正的结论很简单：被动记录基本上是免费的。",
+          "inlines": [
+            {
+              "text": "token 成本也保持不变。在我们的对照测试中，总回合数几乎没动，思考 token 还略有下降（平均约 19%，在正常的运行间波动范围内），所以真正的结论很简单：被动记录基本上是"
+            },
+            {
+              "bold": true,
+              "text": "免费的"
+            },
+            {
+              "text": "。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "在实践中被动运行",
+          "inlines": [
+            {
+              "text": "在实践中被动运行"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "把它搬进我日常的编码环境后，很快发现了两个值得知道的坑：",
+          "inlines": [
+            {
+              "text": "把它搬进我日常的编码环境后，很快发现了两个值得知道的坑："
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "\n"
+                },
+                {
+                  "bold": true,
+                  "text": "记录会取代对话提醒："
+                },
+                {
+                  "text": "工具一旦存在，智能体就不再在对话里提冲突了（0%），除非你加一行要求两者都做。"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "\n"
+                },
+                {
+                  "bold": true,
+                  "text": "把工具和文件列表放在前面显眼处："
+                },
+                {
+                  "text": "Gemini Pro 这类更大的模型探索步骤比 Flash 少得多，所以只有当摘要列在提示词里（并且 MCP 工具是预先加载、而不是藏在工具搜索后面）时，它们才能发现技能文件或记忆文件的漂移。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "记录下来的冲突怎么处理由你决定。你可以当场暂停智能体，不过日常工作中我更倾向于让它被动运行：智能体在完成任务的同时记录文件路径、原文引用以及它采用了哪个版本，我之后再查看清理队列。",
+          "inlines": [
+            {
+              "text": "记录下来的冲突怎么处理由你决定。你可以当场暂停智能体，不过日常工作中我更倾向于让它被动运行：智能体在完成任务的同时记录文件路径、原文引用以及它采用了哪个版本，我之后再查看清理队列。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "把一个很小的 MCP 工具接到本地日志文件，就等于给智能体装了一个零额外成本的上下文漂移传感器。在我自己的环境里开启后 24 小时内，它就在一次 PR 审查中抓到了一处真实的规格与代码不一致，而我根本没让它去找。",
+          "inlines": [
+            {
+              "text": "把一个很小的 MCP 工具接到本地日志文件，就等于给智能体装了一个零额外成本的上下文漂移传感器。在我自己的环境里开启后 24 小时内，它就在一次 PR 审查中抓到了一处真实的规格与代码不一致，而我根本没让它去找。"
+            }
+          ]
+        }
+      ]
+    },
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Most people building with AI in late 2026 understand that the quality of your context determines the quality of your output. But what exactly determines the quality of your context?",
+          "inlines": [
+            {
+              "text": "Most people building with AI in late 2026 understand that the quality of your context determines the quality of your output. But what exactly determines the quality of your context?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "First, let's break down all the different types of context:",
+          "inlines": [
+            {
+              "text": "First, let's break down all the different types of context:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "One-off prompts that you type into chat conversations"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Your base instruction files like "
+                },
+                {
+                  "code": true,
+                  "text": "AGENTS.md"
+                },
+                {
+                  "text": ", injected automatically into each new session"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Skill files, which are ideally custom procedural instructions, loaded dynamically as-needed in relevant situations"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Word documents and spreadsheets in your Google Drive or similar system"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Local markdown files in your code repo"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Memories (usually automatically managed by your agent harness and generally not exposed to you visually)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "With all these different sources, likely maintained by different people, there's a very high chance you have legacy process docs and out-of-date facts, metrics, decisions, and strategies.",
+          "inlines": [
+            {
+              "text": "With all these different sources, likely maintained by different people, there's a very high chance you have legacy process docs and out-of-date facts, metrics, decisions, and strategies."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "So what happens if your agent finds the wrong information? Or if it finds conflicting information? Doc A says the refund policy is 14 days, Doc B says 30 days. Which one does your agent trust?",
+          "inlines": [
+            {
+              "text": "So what happens if your agent finds the wrong information? Or if it finds conflicting information? Doc A says the refund policy is 14 days, Doc B says 30 days. Which one does your agent trust?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If the documents are clearly dated or the agent reads the metadata, it might figure it out, but we want better than a chance of factual correctness.",
+          "inlines": [
+            {
+              "text": "If the documents are clearly dated or the agent reads the metadata, it might figure it out, but we want better than a chance of factual correctness."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In search of a solution, I started wondering: what types of conflicts or issues create the biggest problems? I decided to run an experiment to answer this question.",
+          "inlines": [
+            {
+              "text": "In search of a solution, I started wondering: what types of conflicts or issues create the biggest problems? I decided to run an experiment to answer this question."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Context rot vs. context drift",
+          "inlines": [
+            {
+              "text": "Context rot vs. context drift"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "People often lump every context issue under context rot, a term coined last year to describe how an LLM's accuracy drops as a session grows too long and fills up with noise, dead ends, and distractors.",
+          "inlines": [
+            {
+              "text": "People often lump every context issue under "
+            },
+            {
+              "href": "https://research.trychroma.com/context-rot",
+              "text": "context rot"
+            },
+            {
+              "text": ", a term coined last year to describe how an LLM's accuracy drops as a session grows too long and fills up with noise, dead ends, and distractors."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "What happens across a real team's files is slightly different. Over weeks and months, your underlying sources (AGENTS.md, skills, docs, memories, and code) gradually fall out of sync, so your agent can get conflicting instructions on the very first turn of a brand-new session. That's really context drift.",
+          "inlines": [
+            {
+              "text": "What happens across a real team's files is slightly different. Over weeks and months, your underlying sources ("
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": ", skills, docs, memories, and code) gradually fall out of sync, so your agent can get conflicting instructions on the very first turn of a brand-new session. That's really "
+            },
+            {
+              "bold": true,
+              "text": "context drift"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "To test both side by side, I built a realistic coding sandbox (a git repo with real files and terminal tools) and ran 470 tasks across Gemini 3.8 Flash and Gemini Pro, intentionally planting bloat, duplicate rules, stale docs, and direct contradictions.",
+          "inlines": [
+            {
+              "text": "To test both side by side, I built a realistic coding sandbox (a git repo with real files and terminal tools) and ran 470 tasks across Gemini 3.8 Flash and Gemini Pro, intentionally planting bloat, duplicate rules, stale docs, and direct contradictions."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What broke (and what didn't)",
+          "inlines": [
+            {
+              "text": "What broke (and what didn't)"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "I went in expecting context rot from pure bloat to cause obvious mistakes. Instead, injecting 50,000 tokens of unrelated chat history and duplicating agreeing rules across files caused zero rule violations, even on Gemini 3.8 Flash.",
+          "inlines": [
+            {
+              "text": "I went in expecting context rot from pure bloat to cause obvious mistakes. Instead, injecting 50,000 tokens of unrelated chat history and duplicating agreeing rules across files caused "
+            },
+            {
+              "bold": true,
+              "text": "zero"
+            },
+            {
+              "text": " rule violations, even on Gemini 3.8 Flash."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Context drift was a different story, and I only caught what was happening by reading the summaries of the model's internal thinking process (its private mental scratchpad).",
+          "inlines": [
+            {
+              "text": "Context drift was a different story, and I only caught what was happening by reading the summaries of the model's internal thinking process (its private mental scratchpad)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In 73% of runs, the model explicitly noticed in its thinking that two sources disagreed. Yet across 110 unprompted runs, it mentioned that conflict to the user 0% of the time.",
+          "inlines": [
+            {
+              "text": "In 73% of runs, the model explicitly noticed in its thinking that two sources disagreed. Yet across 110 unprompted runs, it mentioned that conflict to the user "
+            },
+            {
+              "bold": true,
+              "text": "0% of the time"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Instead of warning you, the model quietly picks a winner and moves on. On 95% to 100% of matching tasks, a task-specific skill file overrode the root AGENTS.md, even when AGENTS.md used strict MUST wording. If you update a repo-wide rule in AGENTS.md and forget to update a task-specific skill file that still has the old value, your agent will silently follow that stale skill file almost every time.",
+          "inlines": [
+            {
+              "text": "Instead of warning you, the model quietly picks a winner and moves on. On 95% to 100% of matching tasks, a task-specific skill file overrode the root "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": ", even when "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": " used strict "
+            },
+            {
+              "code": true,
+              "text": "MUST"
+            },
+            {
+              "text": " wording. If you update a repo-wide rule in "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": " and forget to update a task-specific skill file that still has the old value, your agent will silently follow that stale skill file almost every time."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/614ef055b984ce617ce803c693eaea1b559743d3a95afaf5fcca7a3e1352b4af.webp",
+          "alt": "When Two Context Files Disagree: 95-100% followed task-specific skill over AGENTS.md, 73% noticed mismatch in private thinking, 0% warned in chat",
+          "width": 800,
+          "height": 295
+        },
+        {
+          "type": "paragraph",
+          "text": "Stale docs against live code were even sneakier. When a doc referenced an old test helper name that had already been renamed in the codebase, 9 out of 15 runs quietly wrote a one-line wrapper inside their new test file so pytest would still pass without mentioning the mismatch.",
+          "inlines": [
+            {
+              "text": "Stale docs against live code were even sneakier. When a doc referenced an old test helper name that had already been renamed in the codebase, 9 out of 15 runs quietly wrote a one-line wrapper inside their new test file so "
+            },
+            {
+              "code": true,
+              "text": "pytest"
+            },
+            {
+              "text": " would still pass without mentioning the mismatch."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "My guess is that this comes from RLHF training. Modern models are trained to be decisive and finish the job rather than pestering you with questions on every minor ambiguity, which is normally what keeps agentic workflows pleasant to use.",
+          "inlines": [
+            {
+              "text": "My guess is that this comes from RLHF training. Modern models are trained to be decisive and finish the job rather than pestering you with questions on every minor ambiguity, which is normally what keeps agentic workflows pleasant to use."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The only other measurable penalty was deliberation: when two peer skill files disagreed with no clear tie-breaker, the model spent 47% more thinking tokens debating the conflict across turns.",
+          "inlines": [
+            {
+              "text": "The only other measurable penalty was deliberation: when two peer skill files disagreed with no clear tie-breaker, the model spent "
+            },
+            {
+              "bold": true,
+              "text": "47% more thinking tokens"
+            },
+            {
+              "text": " debating the conflict across turns."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Giving the agent an escape hatch",
+          "inlines": [
+            {
+              "text": "Giving the agent an escape hatch"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Once I saw that the model was already spotting these conflicts in its thinking trace, I tried adding one line to AGENTS.md asking it to mention disagreements in chat. That worked on 100% of completed runs (16 out of 16).",
+          "inlines": [
+            {
+              "text": "Once I saw that the model was already spotting these conflicts in its thinking trace, I tried adding one line to "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": " asking it to mention disagreements in chat. That worked on 100% of completed runs (16 out of 16)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Still, I didn't want my agent interrupting every coding session to complain about docs. So I turned it into a tool instead: a tiny read-only escape hatch called report_inconsistency, with two categories (conflict and stale).",
+          "inlines": [
+            {
+              "text": "Still, I didn't want my agent interrupting every coding session to complain about docs. So I turned it into a tool instead: a tiny read-only escape hatch called "
+            },
+            {
+              "code": true,
+              "text": "report_inconsistency"
+            },
+            {
+              "text": ", with two categories ("
+            },
+            {
+              "code": true,
+              "text": "conflict"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "stale"
+            },
+            {
+              "text": ")."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "(I originally tested a duplicate category too, though asking agents to log harmless repeats wasted extra turns on normal cross-references and pushed more runs into our sandbox's 34-turn limit, even though 95% still wrote the code, so I cut it.)",
+          "inlines": [
+            {
+              "italic": true,
+              "text": "(I originally tested a "
+            },
+            {
+              "italic": true,
+              "code": true,
+              "text": "duplicate"
+            },
+            {
+              "italic": true,
+              "text": " category too, though asking agents to log harmless repeats wasted extra turns on normal cross-references and pushed more runs into our sandbox's 34-turn limit, even though 95% still wrote the code, so I cut it.)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Because the model is already checking whether one file supersedes another while exploring, calling the tool takes almost no extra effort.",
+          "inlines": [
+            {
+              "text": "Because the model is already checking whether one file supersedes another while exploring, calling the tool takes almost no extra effort."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Even with no instructions added to AGENTS.md, simply having the tool available got the agent to log 98.7% of the conflicts it encountered across Gemini 3.8 Flash and Gemini Pro (150 out of 152 runs), with zero false alarms on Flash.",
+          "inlines": [
+            {
+              "text": "Even with "
+            },
+            {
+              "bold": true,
+              "text": "no instructions"
+            },
+            {
+              "text": " added to "
+            },
+            {
+              "code": true,
+              "text": "AGENTS.md"
+            },
+            {
+              "text": ", simply having the tool available got the agent to log "
+            },
+            {
+              "bold": true,
+              "text": "98.7%"
+            },
+            {
+              "text": " of the conflicts it encountered across Gemini 3.8 Flash and Gemini Pro (150 out of 152 runs), with zero false alarms on Flash."
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/41a695f4bd3328263efa88396e53aa979d8f4253530e2392527262448b08fe15.webp",
+          "alt": "Passive Drift Logging: 0% surfaced without tool vs 98.7% logged with report_inconsistency MCP tool",
+          "width": 800,
+          "height": 244
+        },
+        {
+          "type": "paragraph",
+          "text": "Token cost stayed flat too. In our matched tests, total turns barely moved and thinking tokens dipped slightly (~19% on average, within normal run-to-run noise), so the real takeaway is simple: passive logging is essentially free.",
+          "inlines": [
+            {
+              "text": "Token cost stayed flat too. In our matched tests, total turns barely moved and thinking tokens dipped slightly (~19% on average, within normal run-to-run noise), so the real takeaway is simple: passive logging is essentially "
+            },
+            {
+              "bold": true,
+              "text": "free"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Running it passively in practice",
+          "inlines": [
+            {
+              "text": "Running it passively in practice"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Moving this into my daily coding setup surfaced two quick catches worth knowing:",
+          "inlines": [
+            {
+              "text": "Moving this into my daily coding setup surfaced two quick catches worth knowing:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "\n"
+                },
+                {
+                  "bold": true,
+                  "text": "Logging replaces chat warnings:"
+                },
+                {
+                  "text": " Once the tool exists, the agent stops mentioning conflicts in chat (0%) unless you add one line asking for both."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "\n"
+                },
+                {
+                  "bold": true,
+                  "text": "Keep the tool and file list visible up front:"
+                },
+                {
+                  "text": " Larger models like Gemini Pro take far fewer exploratory steps than Flash, so they only catch drift in skill or memory files when summaries are listed in the prompt (and when the MCP tool is loaded eagerly rather than hidden behind tool search)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "How you act on a logged conflict is up to you. You could pause the agent on the spot, though for everyday work I prefer keeping it passive: the agent logs the file paths, exact quotes, and which version it followed while finishing my task, and I review the cleanup queue later.",
+          "inlines": [
+            {
+              "text": "How you act on a logged conflict is up to you. You could pause the agent on the spot, though for everyday work I prefer keeping it passive: the agent logs the file paths, exact quotes, and which version it followed while finishing my task, and I review the cleanup queue later."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Plugging one tiny MCP tool into a local log file gives your agent a built-in sensor for context drift at zero extra cost. Within 24 hours of turning it on in my own setup, it had already caught a real spec-vs-code mismatch during a PR review without me asking.",
+          "inlines": [
+            {
+              "text": "Plugging one tiny MCP tool into a local log file gives your agent a built-in sensor for context drift at zero extra cost. Within 24 hours of turning it on in my own setup, it had already caught a real spec-vs-code mismatch during a PR review without me asking."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-26T01:10:30.328833Z",
+  "contentMode": "full"
+}
